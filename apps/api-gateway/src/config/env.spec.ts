@@ -45,6 +45,19 @@ describe('validateEnv', () => {
     expect(() => validateEnv({ NODE_ENV: 'production', CORS_ORIGINS: 'https://a.example.com', FIREBASE_PROJECT_ID: 'p', DATA_CONNECT_EMULATOR_HOST: '127.0.0.1:9399' })).toThrow(/must not be set in production/);
   });
 
+  it('refuses the Auth emulator in production (it accepts forged tokens) and checks the host shape in development', () => {
+    const prod = { NODE_ENV: 'production', CORS_ORIGINS: 'https://a.example.com', FIREBASE_PROJECT_ID: 'p' };
+    expect(() => validateEnv({ ...prod, FIREBASE_AUTH_EMULATOR_HOST: '127.0.0.1:9099' })).toThrow(/accepts forged tokens/);
+    expect(validateEnv({ FIREBASE_AUTH_EMULATOR_HOST: '127.0.0.1:9099' }).FIREBASE_AUTH_EMULATOR_HOST).toBe('127.0.0.1:9099');
+    expect(() => validateEnv({ FIREBASE_AUTH_EMULATOR_HOST: 'http://127.0.0.1:9099' })).toThrow(/FIREBASE_AUTH_EMULATOR_HOST/);
+  });
+
+  it('AUTH_CHECK_REVOKED defaults to true and accepts only true or false', () => {
+    expect(validateEnv({}).AUTH_CHECK_REVOKED).toBe(true);
+    expect(validateEnv({ AUTH_CHECK_REVOKED: 'false' }).AUTH_CHECK_REVOKED).toBe(false);
+    expect(() => validateEnv({ AUTH_CHECK_REVOKED: 'maybe' })).toThrow(/AUTH_CHECK_REVOKED/);
+  });
+
   it('rejects ports outside 1-65535', () => {
     expect(() => validateEnv({ PORT: '0' })).toThrow(/PORT/);
     expect(() => validateEnv({ PORT: '70000' })).toThrow(/PORT/);
