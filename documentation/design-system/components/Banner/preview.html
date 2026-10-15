@@ -1,0 +1,14 @@
+<!-- @dsCard group="Status" height=230 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Banner — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'col', style:{maxWidth:480}}, h(O.Banner,{tone:'danger',icon:'bus',title:'1 bus is delayed',action:h(O.Button,{size:'comfortable'},'View')},'Route T3 is running 12 minutes late due to traffic.'), h(O.Banner,{tone:'success',title:'Ananya is present today'},'2 classes completed'), h(O.Banner,{tone:'info',title:'School closed on Fri, 28 Jun'},'On account of Bakrid')));
+</script>
+</body>
+</html>

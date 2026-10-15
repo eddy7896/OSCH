@@ -1,0 +1,14 @@
+<!-- @dsCard group="Foundations" height=120 subtitle="Lucide-style outline, 1.9px stroke" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Icon — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'row', style:{color:'var(--text)'}}, O.Icon.names.map(function(n){ return h('div', {key:n, title:n, style:{width:40,height:40,display:'grid',placeItems:'center',borderRadius:8,background:'var(--surface)',border:'1px solid var(--border)'}}, h(O.Icon, {name:n, size:20})); })));
+</script>
+</body>
+</html>

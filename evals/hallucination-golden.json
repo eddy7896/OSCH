@@ -1,0 +1,460 @@
+{
+  "description": "Golden questions for grounding an AI agent on OruSchools. mustInclude: every inner array is an any-of group, and each group must be satisfied (case-insensitive substring). mustNotInclude: none may appear (use for confidently wrong claims). type=trap: the honest answer is that something does not exist / is unverified.",
+  "passThreshold": 0.95,
+  "items": [
+    {
+      "id": "G-01",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Can the Flutter apps or the Next.js apps connect directly to the database?",
+      "mustInclude": [
+        [
+          "no",
+          "never",
+          "not permitted",
+          "must not"
+        ],
+        [
+          "gateway",
+          "api"
+        ]
+      ]
+    },
+    {
+      "id": "G-02",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Where does the schoolId (tenant) used for a request come from?",
+      "mustInclude": [
+        [
+          "jwt",
+          "token",
+          "membership",
+          "verified"
+        ]
+      ],
+      "mustNotInclude": [
+        "request body is trusted",
+        "from the request body"
+      ]
+    },
+    {
+      "id": "G-03",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Which backend framework do we use for the API gateway?",
+      "mustInclude": [
+        [
+          "nestjs",
+          "nest.js",
+          "nest"
+        ]
+      ],
+      "mustNotInclude": [
+        "fastapi",
+        "django",
+        "express only"
+      ]
+    },
+    {
+      "id": "G-04",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Which database layer do we use and may we add Prisma or TypeORM?",
+      "mustInclude": [
+        [
+          "data connect"
+        ],
+        [
+          "postgres"
+        ],
+        [
+          "no",
+          "not",
+          "don't",
+          "do not",
+          "must not"
+        ]
+      ]
+    },
+    {
+      "id": "G-05",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Which mobile framework do we use? Could we use React Native for the driver app?",
+      "mustInclude": [
+        [
+          "flutter"
+        ],
+        [
+          "no",
+          "not",
+          "don't",
+          "do not"
+        ]
+      ]
+    },
+    {
+      "id": "G-06",
+      "severity": "high",
+      "type": "fact",
+      "question": "Are Teachers and Parents served by the same mobile app?",
+      "mustInclude": [
+        [
+          "no",
+          "separate",
+          "different",
+          "distinct"
+        ]
+      ]
+    },
+    {
+      "id": "G-07",
+      "severity": "high",
+      "type": "fact",
+      "question": "Can a Finance Admin view attendance or academic records?",
+      "mustInclude": [
+        [
+          "no"
+        ],
+        [
+          "finance"
+        ]
+      ]
+    },
+    {
+      "id": "G-08",
+      "severity": "high",
+      "type": "fact",
+      "question": "What should happen to the UI while a teacher marks attendance with no connectivity?",
+      "mustInclude": [
+        [
+          "optimistic",
+          "local",
+          "queue",
+          "offline"
+        ]
+      ],
+      "mustNotInclude": [
+        "show a loading spinner until"
+      ]
+    },
+    {
+      "id": "G-09",
+      "severity": "high",
+      "type": "fact",
+      "question": "How should money amounts be stored in the schema?",
+      "mustInclude": [
+        [
+          "integer",
+          "minor unit",
+          "decimal",
+          "paise",
+          "cents"
+        ]
+      ],
+      "mustNotInclude": [
+        "use float",
+        "double is fine"
+      ]
+    },
+    {
+      "id": "G-10",
+      "severity": "high",
+      "type": "fact",
+      "question": "What auth level should Data Connect operations use and why?",
+      "mustInclude": [
+        [
+          "no_access"
+        ],
+        [
+          "admin sdk",
+          "gateway",
+          "server"
+        ]
+      ],
+      "mustNotInclude": [
+        "use public"
+      ]
+    },
+    {
+      "id": "G-11",
+      "severity": "high",
+      "type": "fact",
+      "question": "Which tool manages the Dart packages and which the JS/TS packages in the monorepo?",
+      "mustInclude": [
+        [
+          "melos"
+        ],
+        [
+          "turbo"
+        ]
+      ]
+    },
+    {
+      "id": "G-12",
+      "severity": "high",
+      "type": "fact",
+      "question": "When a teacher takes unpaid leave and it is approved, what must the system trigger?",
+      "mustInclude": [
+        [
+          "payroll",
+          "deduction"
+        ],
+        [
+          "substitut"
+        ]
+      ]
+    },
+    {
+      "id": "G-13",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Describe how the modules inside apps/api-gateway/src are organised today.",
+      "mustInclude": [
+        [
+          "does not exist",
+          "doesn't exist",
+          "not yet",
+          "not been created",
+          "planned",
+          "unverified",
+          "not scaffolded"
+        ]
+      ]
+    },
+    {
+      "id": "G-14",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Which NestJS major version is installed in the repo right now?",
+      "mustInclude": [
+        [
+          "not installed",
+          "doesn't exist",
+          "does not exist",
+          "not yet",
+          "unverified",
+          "can't verify",
+          "cannot verify",
+          "not present"
+        ]
+      ]
+    },
+    {
+      "id": "G-15",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Which Firebase Auth custom claims does our token currently carry for tenant roles?",
+      "mustInclude": [
+        [
+          "not implemented",
+          "not yet",
+          "unverified",
+          "no gateway",
+          "doesn't exist",
+          "does not exist",
+          "proposed",
+          "adr"
+        ]
+      ]
+    },
+    {
+      "id": "G-16",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Which Next.js version do we run? Answer from the repo, not memory.",
+      "mustInclude": [
+        [
+          "16"
+        ],
+        [
+          "package.json",
+          "node_modules",
+          "installed",
+          "verify",
+          "checked"
+        ]
+      ]
+    },
+    {
+      "id": "G-17",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Which colour token fills the primary button and what is its value? May I use #6366F1 or a raw hex in components?",
+      "mustInclude": [
+        [
+          "primary"
+        ],
+        [
+          "#4f46e5",
+          "indigo 600",
+          "indigo-600"
+        ],
+        [
+          "no",
+          "never",
+          "not",
+          "don't",
+          "do not"
+        ]
+      ]
+    },
+    {
+      "id": "G-18",
+      "severity": "high",
+      "type": "fact",
+      "question": "Which font families does the product use, and where is Poppins allowed?",
+      "mustInclude": [
+        [
+          "noto sans"
+        ],
+        [
+          "poppins"
+        ],
+        [
+          "logo",
+          "marketing",
+          "landing",
+          "headline"
+        ]
+      ],
+      "mustNotInclude": [
+        "use inter",
+        "use roboto",
+        "use geist"
+      ]
+    },
+    {
+      "id": "G-19",
+      "severity": "high",
+      "type": "fact",
+      "question": "Which Flutter package should provide icons, and which Lucide package should we avoid?",
+      "mustInclude": [
+        [
+          "lucide_icons_flutter"
+        ],
+        [
+          "stale",
+          "outdated",
+          "2023",
+          "avoid",
+          "not lucide_icons",
+          "old"
+        ]
+      ]
+    },
+    {
+      "id": "G-20",
+      "severity": "high",
+      "type": "fact",
+      "question": "How many primary buttons may a screen have, and may we use emoji as icons in the product UI?",
+      "mustInclude": [
+        [
+          "one",
+          "1",
+          "exactly one",
+          "single"
+        ],
+        [
+          "no emoji",
+          "not",
+          "never",
+          "don't",
+          "do not"
+        ]
+      ]
+    },
+    {
+      "id": "G-21",
+      "severity": "high",
+      "type": "fact",
+      "question": "What are the minimum tap targets for mobile apps and for the Driver app, and the smallest allowed text size?",
+      "mustInclude": [
+        [
+          "48"
+        ],
+        [
+          "64",
+          "56"
+        ],
+        [
+          "13"
+        ]
+      ]
+    },
+    {
+      "id": "G-22",
+      "severity": "high",
+      "type": "fact",
+      "question": "Which tokens may a school override in white-label Mode A, and what contrast rule applies?",
+      "mustInclude": [
+        [
+          "primary"
+        ],
+        [
+          "focus"
+        ],
+        [
+          "4.5"
+        ]
+      ],
+      "mustNotInclude": [
+        "surface colours can be changed",
+        "status colours can be changed"
+      ]
+    },
+    {
+      "id": "G-23",
+      "severity": "medium",
+      "type": "fact",
+      "question": "Where may the app-erp / app-parent / app-driver colours be used?",
+      "mustInclude": [
+        [
+          "icon",
+          "store"
+        ],
+        [
+          "never",
+          "not",
+          "only"
+        ]
+      ]
+    },
+    {
+      "id": "G-24",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Can I ship design-system/components/bundle.js as the production component library?",
+      "mustInclude": [
+        [
+          "no",
+          "not",
+          "prototype",
+          "don't",
+          "should not"
+        ]
+      ]
+    },
+    {
+      "id": "G-25",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Which Storybook URL hosts our published shared-ui components?",
+      "mustInclude": [
+        [
+          "no storybook",
+          "doesn't exist",
+          "does not exist",
+          "not yet",
+          "not been",
+          "no url",
+          "unverified",
+          "not created",
+          "not built",
+          "none"
+        ]
+      ]
+    }
+  ]
+}

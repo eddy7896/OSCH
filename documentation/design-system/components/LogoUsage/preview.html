@@ -1,0 +1,77 @@
+<!-- @dsCard group="Brand" height=1180 page subtitle="Construction, clear space, sizes, misuse, app family" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Logo usage</title>
+<style>
+  body { margin:0; padding:24px; font-family:var(--font-sans); color:var(--text); background:var(--bg); }
+  h2 { font-size:18px; line-height:26px; font-weight:600; margin:0 0 4px; }
+  p.lead { margin:0 0 16px; font-size:14px; line-height:22px; color:var(--text-muted); max-width:640px; }
+  section { margin-bottom:32px; }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px; }
+  .row { display:flex; flex-wrap:wrap; gap:24px; align-items:flex-end; }
+  .cap { font-size:13px; line-height:18px; color:var(--text-muted); margin-top:8px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; }
+  .tile { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:12px; }
+  .stage { height:72px; display:grid; place-items:center; border-radius:8px; background:var(--surface-muted); overflow:hidden; }
+  .no { display:flex; gap:6px; align-items:flex-start; font-size:13px; line-height:18px; color:var(--danger-fg); font-weight:600; }
+  .ok { color:var(--success-fg); }
+  .clear { position:relative; display:inline-block; padding:22px; outline:1px dashed var(--border-strong); background:repeating-linear-gradient(45deg, var(--primary-soft) 0 6px, transparent 6px 12px); }
+  .clear > .inner { background:var(--surface); display:inline-flex; }
+  .icons { display:flex; flex-wrap:wrap; gap:20px; }
+  .icons figure { margin:0; display:flex; flex-direction:column; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); }
+  .icons img { width:88px; height:88px; border-radius:20px; display:block; }
+  .anat { display:flex; gap:32px; align-items:center; flex-wrap:wrap; }
+  .anat ul { margin:0; padding-left:18px; font-size:14px; line-height:24px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  function Mark(props) { return h(O.Logo, Object.assign({ variant: 'mark' }, props)); }
+  function Tile(label, stage, good, stageStyle) {
+    return h('div', { className: 'tile', key: label },
+      h('div', { className: 'stage', style: stageStyle }, stage),
+      h('div', { className: 'no' + (good ? ' ok' : '') }, h(O.Icon, { name: good ? 'check' : 'x', size: 16, strokeWidth: 2.6 }), label));
+  }
+  var closedRing = h('svg', { viewBox: '7 7 50 50', width: 40, height: 40 }, h('circle', { cx: 32, cy: 32, r: 20, fill: 'none', stroke: 'var(--primary-text)', strokeWidth: 10 }), h('circle', { cx: 32, cy: 32, r: 6, fill: 'var(--primary-text)' }));
+  var icons = [['ERP','dc552ed9adfb3e54d8533973a497c9f9'],['Teacher','c9def882c77e43f758f6066d2ec49829'],['Staff','00b15f2f24d840b4dd64ebb9c5671283'],['Parent','a182466cc6f2afc9e8d9db8ab572bea7'],['Driver','d71b6e24543f25c0f745feb69bfcc169']];
+  ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
+    h('section', null,
+      h('h2', null, 'Anatomy'),
+      h('p', { className: 'lead' }, 'An O for Oru. The ring is the school community, the opening keeps it open to parents, the dot is the student moving forward.'),
+      h('div', { className: 'panel anat' }, h(Mark, { size: 120 }),
+        h('ul', null, h('li', null, 'Ring: stroke = 20% of the mark height, round ends'), h('li', null, 'Opening: one quarter of the circle, top-right'), h('li', null, 'Dot: diameter = 24% of the mark height, centred in the opening'), h('li', null, 'Wordmark: Poppins Bold, outlined, cap height = 46% of the mark height')))),
+    h('section', null,
+      h('h2', null, 'Clear space'),
+      h('p', { className: 'lead' }, 'Keep at least one dot-diameter of empty space on every side (the striped area). The supplied files already include it.'),
+      h('div', { className: 'panel' }, h('span', { className: 'clear' }, h('span', { className: 'inner' }, h(O.Logo, { size: 90 }))))),
+    h('section', null,
+      h('h2', null, 'Minimum size'),
+      h('p', { className: 'lead' }, 'Full logo: 96 px wide on screen, 25 mm in print. Mark alone: 16 px, 6 mm. Smaller than that, use the favicon.'),
+      h('div', { className: 'panel row' },
+        h('div', null, h(O.Logo, { size: 20 }), h('div', { className: 'cap' }, 'Full logo, smallest (20 px mark)')),
+        h('div', null, h(Mark, { size: 16 }), h('div', { className: 'cap' }, 'Mark, 16 px')),
+        h('div', null, h('img', { src: '/_blob/646056bbe7895399677f9e516958189d', width: 32, height: 32, alt: '' }), h('div', { className: 'cap' }, 'favicon-32.png')))),
+    h('section', null,
+      h('h2', null, 'Right and wrong'),
+      h('p', { className: 'lead' }, 'Use the files as supplied. These are the mistakes we see most.'),
+      h('div', { className: 'grid' },
+        Tile('Colour logo on white', h(O.Logo, { size: 30 }), true, { background: '#ffffff' }),
+        Tile('White logo on Oru Indigo', h(O.Logo, { size: 30, tone: 'white' }), true, { background: 'var(--primary)' }),
+        Tile('Don’t recolour', h('span', { style: { filter: 'hue-rotate(150deg)' } }, h(O.Logo, { size: 30 })), false),
+        Tile('Don’t stretch or squash', h('span', { style: { transform: 'scaleX(1.5)', display: 'inline-block' } }, h(O.Logo, { size: 26 })), false),
+        Tile('Don’t rotate', h('span', { style: { transform: 'rotate(-14deg)', display: 'inline-block' } }, h(O.Logo, { size: 28 })), false),
+        Tile('Don’t close the ring or move the dot', closedRing, false),
+        Tile('No shadows or effects', h('span', { style: { filter: 'drop-shadow(3px 4px 2px rgba(0,0,0,.45))' } }, h(O.Logo, { size: 30 })), false),
+        Tile('Don’t put the colour logo on colours', h(O.Logo, { size: 30 }), false, { background: '#c8462f' }),
+        Tile('Don’t retype the name', h('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 8 } }, h(Mark, { size: 30 }), h('span', { style: { fontFamily: 'Georgia, serif', fontSize: 24, fontStyle: 'italic' } }, 'OruSchools')), false),
+        Tile('Don’t box it yourself', h('span', { style: { border: '3px solid var(--primary-text)', borderRadius: 999, padding: 8, display: 'inline-flex' } }, h(Mark, { size: 30 })), false))),
+    h('section', null,
+      h('h2', null, 'App family'),
+      h('p', { className: 'lead' }, 'One mark, five colours, so people can find the right app on a crowded home screen. These colours are for icons and store art only.'),
+      h('div', { className: 'panel icons' }, icons.map(function (i) { return h('figure', { key: i[0] }, h('img', { src: '/_blob/' + i[1], alt: 'OruSchools ' + i[0] + ' app icon' }), i[0]); })))
+  ));
+</script>
+</body>
+</html>

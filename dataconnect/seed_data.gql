@@ -1,0 +1,27 @@
+# Seed data for OruSchools testing and emulator
+mutation @transaction {
+  school_insert(data: {
+    id: "a1b2c3d4-e5f6-4a5b-8c7d-9e0f1a2b3c4d",
+    name: "Springfield Elementary",
+    subDomain: "springfield"
+  })
+
+  user_insertMany(data: [
+    {
+      id: "super-admin-uid-1234",
+      email: "owner@oruschools.com",
+      globalRole: SUPER_ADMIN
+    },
+    {
+      id: "principal-uid-5678",
+      email: "principal@springfield.edu",
+      globalRole: USER
+    }
+  ])
+
+  schoolMember_insert(data: {
+    schoolId: "a1b2c3d4-e5f6-4a5b-8c7d-9e0f1a2b3c4d",
+    userId: "principal-uid-5678",
+    schoolRole: PRINCIPAL
+  })
+}

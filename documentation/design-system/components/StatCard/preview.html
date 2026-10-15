@@ -1,0 +1,14 @@
+<!-- @dsCard group="Data" height=200 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>StatCard — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))',gap:12}}, h(O.StatCard,{icon:'users',label:'Total Students',value:'1,248',trend:12,trendLabel:'vs. last term'}), h(O.StatCard,{icon:'check-circle',tone:'success',label:'Student Attendance',value:'96.3%',trend:1.2,trendLabel:'vs. last week'}), h(O.StatCard,{icon:'payments',tone:'warning',label:'Outstanding Fees',value:'₹28,60,000',trend:-13,trendLabel:'vs. last term'})));
+</script>
+</body>
+</html>

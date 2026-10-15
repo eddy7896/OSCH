@@ -1,0 +1,23 @@
+{
+  "name": "oruschools-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@10.8.2",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "check:drift": "node tools/checks/drift-check.mjs",
+    "eval": "node tools/checks/drift-check.mjs && node --test evals/",
+    "eval:agent": "node evals/grade-answers.mjs"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.34.0",
+    "turbo": "^2.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

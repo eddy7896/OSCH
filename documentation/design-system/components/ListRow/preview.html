@@ -1,0 +1,14 @@
+<!-- @dsCard group="Data" height=270 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ListRow — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {style:{maxWidth:440,borderRadius:16,overflow:'hidden',border:'1px solid var(--border)'}}, h(O.ListRow,{leading:'1',title:'Aarav Mehta',subtitle:'Roll No. 01',trailing:h(O.StatusPill,{status:'present',interactive:true})}), h(O.ListRow,{leading:'2',title:'Ananya Sharma',subtitle:'Roll No. 02',trailing:h(O.StatusPill,{status:'absent',interactive:true})}), h(O.ListRow,{leading:h(O.Avatar,{name:'Anita Joseph'}),title:'Ms. Anita Joseph',subtitle:'Ananya did well in English today.',onClick:function(){}})));
+</script>
+</body>
+</html>

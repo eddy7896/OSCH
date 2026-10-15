@@ -1,0 +1,16 @@
+<!-- @dsCard group="Brand" height=240 subtitle="Mark + outlined wordmark" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Logo — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:32px;align-items:center;} .col{display:flex;flex-direction:column;gap:20px;} .dark{background:var(--primary);padding:16px 20px;border-radius:12px;display:inline-flex;}</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'col'},
+    h('div', {className:'row'}, h(O.Logo, {size:48}), h(O.Logo, {size:40, app:'Teacher'}), h(O.Logo, {variant:'mark', size:40})),
+    h('div', {className:'row'}, h('span', {className:'dark'}, h(O.Logo, {size:32, tone:'white'})), h(O.Logo, {size:24, tone:'ink'}), h(O.Logo, {size:20}))));
+</script>
+</body>
+</html>

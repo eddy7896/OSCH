@@ -1,0 +1,14 @@
+<!-- @dsCard group="Forms" height=150 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Checkbox — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {style:{maxWidth:360}}, h(O.Checkbox,{label:'Submit attendance',description:'Grade 9 B · Due today'}), h(O.Checkbox,{label:'Grade Unit Test',description:'Grade 10 A · 24 submissions',defaultChecked:true})));
+</script>
+</body>
+</html>

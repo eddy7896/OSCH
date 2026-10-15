@@ -1,0 +1,30 @@
+name: drift-and-evals
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 3 * * 1" # weekly, Monday 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Drift check (hallucination / doc-vs-code)
+        run: node tools/checks/drift-check.mjs ${{ github.event_name == 'schedule' && '--strict' || '' }}
+      - name: Spec evals
+        run: node --test evals/
+      - name: Drift report artifact
+        if: always()
+        run: node tools/checks/drift-check.mjs --json > drift-report.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: drift-report
+          path: drift-report.json

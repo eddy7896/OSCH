@@ -1,0 +1,14 @@
+<!-- @dsCard group="Forms" height=260 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>TextField — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'col', style:{maxWidth:360}}, h(O.TextField,{icon:'search',placeholder:'Search students by name or roll number','aria-label':'Search students'}), h(O.TextField,{label:'Reason for leave',placeholder:'e.g. Family function',hint:'Your principal will see this.'}), h(O.TextField,{label:'Marks (out of 50)',defaultValue:'62',error:'Marks cannot be more than 50.',inputMode:'numeric'})));
+</script>
+</body>
+</html>

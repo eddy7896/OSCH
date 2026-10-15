@@ -1,0 +1,118 @@
+/* OruSchools — CSS custom properties generated from tokens.json. Light theme on :root / [data-theme=light], dark on [data-theme=dark]. */
+:root, [data-theme="light"] {
+  --indigo-50: #eef2ff;
+  --indigo-100: #e0e7ff;
+  --indigo-200: #c7d2fe;
+  --indigo-300: #a5b4fc;
+  --indigo-400: #818cf8;
+  --indigo-500: #6366f1;
+  --indigo-600: #4f46e5;
+  --indigo-700: #4338ca;
+  --indigo-800: #3730a3;
+  --indigo-900: #312e81;
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --surface-muted: #f0f2f7;
+  --surface-brand: var(--indigo-50);
+  --border: #e2e5ee;
+  --border-strong: #7c829a;
+  --text: #151838;
+  --text-muted: #565c76;
+  --primary: var(--indigo-600);
+  --primary-hover: var(--indigo-700);
+  --on-primary: #ffffff;
+  --primary-text: var(--indigo-600);
+  --primary-soft: var(--indigo-50);
+  --focus: var(--indigo-600);
+  --success-fg: #157a3c;
+  --success-bg: #e7f6ed;
+  --success-solid: #157a3c;
+  --warning-fg: #a14a06;
+  --warning-bg: #fff3e2;
+  --danger-fg: #c42323;
+  --danger-bg: #fdecec;
+  --danger-solid: #c42323;
+  --info-fg: #1c5bc7;
+  --info-bg: #e8f0fd;
+  --purple-fg: #7a2bc4;
+  --purple-bg: #f4ecfd;
+  --teal-fg: #0d6e86;
+  --teal-bg: #e2f5f9;
+  --chart-1: var(--indigo-600);
+  --chart-2: var(--indigo-200);
+  --app-erp: #312e81;
+  --app-teacher: #4f46e5;
+  --app-staff: #0e7490;
+  --app-parent: #c8462f;
+  --app-driver: #f5b400;
+  --shadow-card: 0 1px 2px rgba(21, 24, 56, 0.06);
+  --shadow-raised: 0 8px 24px rgba(21, 24, 56, 0.10);
+}
+[data-theme="dark"] {
+  --bg: #0f1122;
+  --surface: #181b30;
+  --surface-muted: #20243c;
+  --surface-brand: #23265a;
+  --border: #2c3050;
+  --border-strong: #6e7499;
+  --text: #eceef8;
+  --text-muted: #a8adc8;
+  --primary: var(--indigo-600);
+  --primary-hover: var(--indigo-700);
+  --on-primary: #ffffff;
+  --primary-text: var(--indigo-300);
+  --primary-soft: #272a5e;
+  --focus: var(--indigo-300);
+  --success-fg: #74dc9c;
+  --success-bg: #122d1f;
+  --success-solid: #157a3c;
+  --warning-fg: #f8bb5c;
+  --warning-bg: #352611;
+  --danger-fg: #f9a3a3;
+  --danger-bg: #3b1b1f;
+  --danger-solid: #c42323;
+  --info-fg: #94bdfb;
+  --info-bg: #162846;
+  --purple-fg: #d6b3fb;
+  --purple-bg: #2c1f45;
+  --teal-fg: #6fd2e6;
+  --teal-bg: #0f2f38;
+  --chart-1: var(--indigo-400);
+  --chart-2: #3a3e74;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+  --control-compact: 36px;
+  --control-comfortable: 40px;
+  --control-touch: 48px;
+  --control-driver: 64px;
+  --icon-sm: 16px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+  --font-sans: "Noto Sans", "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.display { font-family: var(--font-sans); font-size: 28px; line-height: 36px; font-weight: 700; letter-spacing: -0.01em; }
+.title { font-family: var(--font-sans); font-size: 22px; line-height: 30px; font-weight: 700; }
+.heading { font-family: var(--font-sans); font-size: 18px; line-height: 26px; font-weight: 600; }
+.subheading { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 600; }
+.body-lg { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 400; }
+.body { font-family: var(--font-sans); font-size: 14px; line-height: 22px; font-weight: 400; }
+.label { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 600; }
+.caption { font-family: var(--font-sans); font-size: 13px; line-height: 18px; font-weight: 400; }
+.stat { font-family: var(--font-sans); font-size: 28px; line-height: 34px; font-weight: 700; }
+.stat-sm { font-family: var(--font-sans); font-size: 20px; line-height: 26px; font-weight: 700; }
+.action-xl { font-family: var(--font-sans); font-size: 20px; line-height: 26px; font-weight: 700; }

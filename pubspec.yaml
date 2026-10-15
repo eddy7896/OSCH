@@ -1,0 +1,28 @@
+name: oruschools_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.13.4
+
+# Dart pub workspace: Melos 7+ discovers packages from here (not from melos.yaml).
+workspace:
+  - apps/mobile-teacher
+  - apps/mobile-staff
+  - apps/mobile-parent
+  - apps/mobile-driver
+  - packages/flutter-core
+
+dev_dependencies:
+  melos: ^8.9.0
+
+melos:
+  name: oruschools_monorepo
+  scripts:
+    analyze:
+      exec: flutter analyze
+      description: Run Dart/Flutter static analysis across all Flutter packages.
+    test:
+      exec: flutter test
+      description: Run Flutter tests across all packages.
+      packageFilters:
+        dirExists: test

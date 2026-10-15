@@ -1,0 +1,138 @@
+# Create a new Academic Year
+mutation CreateAcademicYear($schoolId: UUID!, $name: String!, $startDate: Date!, $endDate: Date!) @auth(level: NO_ACCESS) {
+  academicYear_insert(data: {
+    schoolId: $schoolId,
+    name: $name,
+    startDate: $startDate,
+    endDate: $endDate
+  })
+}
+
+# Seed database
+mutation CreateSchool($id: UUID!, $name: String!, $subDomain: String!) @auth(level: NO_ACCESS) {
+  school_insert(data: { id: $id, name: $name, subDomain: $subDomain })
+}
+
+mutation CreateUser($id: String!, $email: String!, $globalRole: GlobalRole!) @auth(level: NO_ACCESS) {
+  user_insert(data: { id: $id, email: $email, globalRole: $globalRole })
+}
+
+# Create a new Classroom
+mutation CreateClassroom($schoolId: UUID!, $name: String!, $gradeLevel: String!, $capacity: Int!) @auth(level: NO_ACCESS) {
+  classroom_insert(data: {
+    schoolId: $schoolId,
+    name: $name,
+    gradeLevel: $gradeLevel,
+    capacity: $capacity
+  })
+}
+
+# HR: Enroll a Student
+mutation CreateStudent($schoolId: UUID!, $firstName: String!, $lastName: String!, $enrollmentId: String!, $gradeLevel: String!) @auth(level: NO_ACCESS) {
+  student_insert(data: {
+    schoolId: $schoolId,
+    firstName: $firstName,
+    lastName: $lastName,
+    enrollmentId: $enrollmentId,
+    gradeLevel: $gradeLevel
+  })
+}
+
+# HR: Add a User to a School (Role)
+mutation CreateSchoolMember($schoolId: UUID!, $userId: String!, $schoolRole: SchoolRole!) @auth(level: NO_ACCESS) {
+  schoolMember_insert(data: {
+    schoolId: $schoolId,
+    userId: $userId,
+    schoolRole: $schoolRole
+  })
+}
+
+# Finance: Create an Invoice
+# The student must belong to $schoolId or the whole mutation aborts (DB-enforced, audit F4).
+mutation CreateInvoice($schoolId: UUID!, $studentId: UUID!, $amountMinor: Int64!, $dueDate: Date!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+  }
+  invoice_insert(data: {
+    schoolId: $schoolId,
+    studentId: $studentId,
+    amountMinor: $amountMinor,
+    dueDate: $dueDate
+  })
+}
+
+# Finance: Create a Payroll Record
+mutation CreatePayroll($schoolId: UUID!, $userId: String!, $amountMinor: Int64!, $payDate: Date!) @auth(level: NO_ACCESS) {
+  payroll_insert(data: {
+    schoolId: $schoolId,
+    userId: $userId,
+    amountMinor: $amountMinor,
+    payDate: $payDate
+  })
+}
+
+# Academic: Create a Subject
+mutation CreateSubject($schoolId: UUID!, $name: String!, $code: String!) @auth(level: NO_ACCESS) {
+  subject_insert(data: {
+    schoolId: $schoolId,
+    name: $name,
+    code: $code
+  })
+}
+
+# Academic: Create a Class Schedule
+mutation CreateSchedule($schoolId: UUID!, $classroomId: UUID!, $subjectId: UUID!, $teacherId: String!, $dayOfWeek: String!, $startTime: String!, $endTime: String!) @auth(level: NO_ACCESS) {
+  classSchedule_insert(data: {
+    schoolId: $schoolId,
+    classroomId: $classroomId,
+    subjectId: $subjectId,
+    teacherId: $teacherId,
+    dayOfWeek: $dayOfWeek,
+    startTime: $startTime,
+    endTime: $endTime
+  })
+}
+
+# Academic: Create a Leave Request
+mutation CreateLeaveRequest($schoolId: UUID!, $userId: String!, $startDate: Date!, $endDate: Date!, $reason: String) @auth(level: NO_ACCESS) {
+  leaveRequest_insert(data: {
+    schoolId: $schoolId,
+    userId: $userId,
+    startDate: $startDate,
+    endDate: $endDate,
+    reason: $reason
+  })
+}
+
+# Academic: Update Leave Request (Approve/Reject & Substitute)
+# Scoped to the school in the WHERE clause: a leave id from another tenant matches nothing (audit F4).
+mutation UpdateLeaveRequest($schoolId: UUID!, $id: UUID!, $status: LeaveStatus!, $substituteId: String) @auth(level: NO_ACCESS) {
+  leaveRequest_updateMany(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}, data: {
+    status: $status,
+    substituteId: $substituteId
+  })
+}
+
+# Academic: Create an Exam
+mutation CreateExam($schoolId: UUID!, $classroomId: UUID!, $subjectId: UUID!, $title: String!, $examDate: Date!, $maxScore: Int!) @auth(level: NO_ACCESS) {
+  exam_insert(data: {
+    schoolId: $schoolId,
+    classroomId: $classroomId,
+    subjectId: $subjectId,
+    title: $title,
+    examDate: $examDate,
+    maxScore: $maxScore
+  })
+}
+
+# Audit: append one row per mutating gateway request (E-AUD-1). $schoolId is null only for platform-level actions.
+mutation CreateAuditLog($schoolId: UUID, $actorId: String!, $action: String!, $entityType: String!, $entityId: String, $details: Any) @auth(level: NO_ACCESS) {
+  auditLog_insert(data: {
+    schoolId: $schoolId,
+    actorId: $actorId,
+    action: $action,
+    entityType: $entityType,
+    entityId: $entityId,
+    details: $details
+  })
+}

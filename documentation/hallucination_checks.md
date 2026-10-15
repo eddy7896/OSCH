@@ -1,0 +1,43 @@
+# Hallucination Checks & Strict Constraints
+
+This document outlines strict constraints and "ground truths" about the OruSchools platform. It acts as a reference for AI agents to prevent hallucinations or the introduction of incorrect architectural patterns.
+
+## 1. Architectural Truths
+- **Is the project a standard monolithic web app?**
+  **NO.** It is a Two-Pillar architecture. The Web ERP (Next.js) is distinct from the Mobile Ecosystem (Flutter apps).
+- **Does the mobile app make direct synchronous API calls that block the UI?**
+  **NO.** Mobile apps MUST follow an offline-first architecture with optimistic UI updates and a background sync queue.
+- **Are Teachers and Parents using the exact same app?**
+  **NO.** They use completely separate Flutter apps (Teacher Hub vs Parent Portal) optimized for their specific tasks and security scopes.
+
+## 2. Technology Stack Constraints
+- **Frontend (Web):** Next.js / React (TypeScript). Do not suggest Vue, Angular, or standard CRA.
+- **Frontend (Mobile):** Flutter (Dart). Do not suggest React Native or Swift/Kotlin native.
+- **Backend (API):** NestJS (Node.js). Do not suggest Python FastAPI, Django, or raw Express without a framework, despite any earlier outdated references.
+- **Database:** PostgreSQL via **Firebase Data Connect**. Do not suggest MongoDB, Prisma, TypeORM, or direct SQL connections without using the Firebase Data Connect generated SDKs.
+- **Monorepo:** Turborepo for JS/TS, Melos for Dart.
+
+## 3. Fact-Checking Guidelines for Agents
+Before implementing a feature, agents MUST verify:
+- **Offline Compatibility:** Does this mobile feature work if the device is in Airplane mode?
+- **Data Model:** Is this schema compatible with Firebase Data Connect (defined in `.gql` files, utilizing strong typing)?
+- **RBAC Boundaries:** Does this API route restrict access based on the strict Role-Based Access Control matrix (e.g., Academic Admins cannot touch Finance)?
+
+## 4. Design System Truths
+- **Primary colour?** Oru Indigo **600** `#4F46E5` via the `primary` token. Not 500 (`#6366F1`, fails text contrast), not 900 (marketing grounds only).
+- **Fonts?** Noto Sans for product; Poppins only for the logo and marketing headlines. Never Inter/Roboto/Geist (the stock Next scaffold uses Geist — replace it).
+- **Raw colours in code?** Never. Semantic tokens only. App colours (`app-*`) are for icons/store art, never UI.
+- **Flutter icon package?** `lucide_icons_flutter`. `lucide_icons` is stale (2023) even though `design-system/README.md` still names it.
+- **How many primary buttons per screen?** Exactly one. Minimum tap target 48px (Driver 64px); minimum text 13px; no emoji in product UI.
+- **Is `components/bundle.js` production code?** No — a prototype using `window.React`/`window.Oru`. Implement from the component READMEs.
+- **Can a school recolour attendance statuses or surfaces?** No. Mode A may override only `primary`, `primary-hover`, `primary-text`, `primary-soft`, `focus` (≥4.5:1 with white text). Schools may rename status *labels* only.
+- **Does a dark theme exist?** Yes, every colour token has a dark value (whether it ships in v1 is decision DS-1).
+
+## 5. Automated Enforcement
+These truths are not just prose; they are checked by machines (see `eval_plan.md`):
+- `npm run check:drift` — paths cited in docs exist (or are declared planned), banned deps absent, Data Connect ops are `NO_ACCESS` and tenant-scoped, secrets are ignored, stale/contradictory terms flagged, pinned vs installed versions compared, `tokens.css` identical to `tokens.json`, brand guideline mirror identical, raw hex colours in app/package source flagged.
+- `npm run eval` — drift check + invariant evals in `evals/` (incl. WCAG contrast of every token pair in both themes: `evals/design-tokens.test.mjs`).
+- `npm run eval:agent -- answers.json` — grades an agent against `evals/hallucination-golden.json` (includes "trap" questions about things that don't exist yet).
+- Cadence: every PR, weekly CI cron, monthly golden-set run.
+
+When an agent is caught hallucinating, add a golden item and, if mechanical, a drift rule.

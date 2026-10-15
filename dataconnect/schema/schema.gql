@@ -1,0 +1,167 @@
+# OruSchools Multi-Tenant Data Connect Schema
+#
+# Tenancy model (ADR-0001): ONE schema, row-level tenancy. Every tenant table carries a DIRECT `school`
+# reference and every operation filters on it. Operations are @auth(level: NO_ACCESS): only the API gateway
+# (Admin SDK) may call them.
+# Money (ADR-0004 / audit F5): integer MINOR units (paise) in Int64, never Float. Currency/locale live on School.
+
+enum GlobalRole { SUPER_ADMIN USER }
+
+# Must stay in sync with packages/rbac `ROLES` (enforced by evals/spec.test.mjs).
+enum SchoolRole { PRINCIPAL BURSAR ACADEMIC_ADMIN SYSTEM_ADMIN TEACHER STAFF DRIVER PARENT }
+
+enum SubscriptionStatus { ACTIVE TRIAL SUSPENDED }
+enum AcademicYearStatus { ACTIVE ARCHIVED }
+enum InvoiceStatus { PENDING PAID OVERDUE }
+enum PayrollStatus { PENDING PAID }
+enum LeaveStatus { PENDING APPROVED REJECTED }
+
+type School @table {
+  id: UUID! @default(expr: "uuidV4()")
+  name: String!
+  subDomain: String! @unique
+  subscriptionStatus: SubscriptionStatus! @default(value: ACTIVE)
+  currency: String! @default(value: "INR") # ISO 4217; amounts are stored in minor units of this currency
+  locale: String! @default(value: "en-IN") # drives number/date formatting (design system content rules)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# The global User table, keyed by Firebase Auth UID.
+type User @table {
+  id: String!
+  email: String!
+  phoneNumber: String
+  globalRole: GlobalRole! @default(value: USER)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A many-to-many mapping connecting a User to a specific School
+# This also stores their role at that school.
+type SchoolMember @table(key: ["school", "user"]) {
+  school: School!
+  user: User!
+  schoolRole: SchoolRole!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# Student Profile, belonging to a School
+type Student @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  firstName: String!
+  lastName: String!
+  enrollmentId: String!
+  gradeLevel: String!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A join table mapping a User (Parent) to a Student
+type ParentGuardian @table(key: ["student", "user"]) {
+  student: Student!
+  user: User!
+  relationship: String! # "MOTHER", "FATHER", "GUARDIAN"
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ERP: Academic Year
+type AcademicYear @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  name: String! # e.g. "2026-2027"
+  startDate: Date!
+  endDate: Date!
+  status: AcademicYearStatus! @default(value: ACTIVE)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ERP: Classroom
+type Classroom @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  name: String! # e.g. "1A"
+  gradeLevel: String! # e.g. "1st Grade"
+  capacity: Int!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ERP: Invoice
+type Invoice @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School! # direct tenant reference (was only reachable via Student: audit F4)
+  student: Student!
+  amountMinor: Int64! # minor units (paise)
+  dueDate: Date!
+  status: InvoiceStatus! @default(value: PENDING)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ERP: Payroll
+type Payroll @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  user: User!
+  amountMinor: Int64! # minor units (paise)
+  payDate: Date!
+  status: PayrollStatus! @default(value: PENDING)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# Academic: Subject
+type Subject @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  name: String!
+  code: String!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# Academic: Class Schedule (Timetable Entry)
+type ClassSchedule @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  classroom: Classroom!
+  subject: Subject!
+  teacher: User!
+  dayOfWeek: String! # e.g. "MONDAY"
+  startTime: String! # e.g. "09:00"
+  endTime: String! # e.g. "10:00"
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# HR/Academic: Leave Request
+type LeaveRequest @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  user: User! # The person taking leave
+  startDate: Date!
+  endDate: Date!
+  reason: String
+  status: LeaveStatus! @default(value: PENDING)
+  substitute: User # Nullable, assigned if approved
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# Academic: Exam
+type Exam @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  classroom: Classroom!
+  subject: Subject!
+  title: String!
+  examDate: Date!
+  maxScore: Int!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# Append-only audit trail (E-AUD-1): the gateway writes one row per mutating request.
+# `school` is null only for platform-level (SUPER_ADMIN) actions. Rows are never updated or deleted by any operation.
+type AuditLog @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School
+  actor: User!
+  action: String! # e.g. "invoice.create"
+  entityType: String!
+  entityId: String
+  details: Any # request metadata; never secrets or full payloads
+  createdAt: Timestamp! @default(expr: "request.time")
+}

@@ -1,0 +1,14 @@
+<!-- @dsCard group="Navigation" height=470 subtitle="Web ERP, permission-filtered" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>SideNav — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} body{padding:0;}</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(O.SideNav,{school:'Rivermount International School',active:'dashboard',sections:[{title:'Overview',items:[{key:'dashboard',label:'Dashboard',icon:'home'}]},{title:'Academics',items:[{key:'students',label:'Students',icon:'users'},{key:'attendance',label:'Attendance',icon:'check-circle'},{key:'gradebook',label:'Gradebook',icon:'book'}]},{title:'Finance',items:[{key:'fees',label:'Fees',icon:'payments'},{key:'reports',label:'Reports',icon:'chart'}]},{title:'Administration',items:[{key:'approvals',label:'Approvals',icon:'tasks',badge:12}]}]}));
+</script>
+</body>
+</html>

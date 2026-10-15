@@ -1,0 +1,120 @@
+# Get all active Academic Years for a School
+query ListAcademicYears($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  academicYears(where: {schoolId: {eq: $schoolId}}, orderBy: [{startDate: DESC}]) {
+    id
+    name
+    startDate
+    endDate
+    status
+  }
+}
+
+# Get all Classrooms for a School
+query ListClassrooms($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  classrooms(where: {schoolId: {eq: $schoolId}}, orderBy: [{gradeLevel: ASC}, {name: ASC}]) {
+    id
+    name
+    gradeLevel
+    capacity
+  }
+}
+
+# Get all Invoices for a School (Requires joining through Student)
+query ListInvoices($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  invoices(where: {schoolId: {eq: $schoolId}}, orderBy: [{dueDate: ASC}]) {
+    id
+    amountMinor
+    dueDate
+    status
+    student {
+      firstName
+      lastName
+      enrollmentId
+    }
+  }
+}
+
+# HR: Get all Students for a School
+query ListStudents($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  students(where: {schoolId: {eq: $schoolId}}, orderBy: [{lastName: ASC}, {firstName: ASC}]) {
+    id
+    firstName
+    lastName
+    enrollmentId
+    gradeLevel
+  }
+}
+
+# HR: Get all Staff (SchoolMembers) for a School
+query ListStaff($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  schoolMembers(where: {schoolId: {eq: $schoolId}}) {
+    schoolRole
+    user {
+      id
+      email
+      phoneNumber
+      globalRole
+    }
+  }
+}
+
+# Finance: Get Payroll for a School
+query ListPayroll($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  payrolls(where: {schoolId: {eq: $schoolId}}, orderBy: [{payDate: DESC}]) {
+    id
+    amountMinor
+    payDate
+    status
+    user {
+      id
+      email
+    }
+  }
+}
+
+# Academic: Get Subjects
+query ListSubjects($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  subjects(where: {schoolId: {eq: $schoolId}}) {
+    id
+    name
+    code
+  }
+}
+
+# Academic: Get Class Schedules
+query ListSchedules($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  classSchedules(where: {schoolId: {eq: $schoolId}}) {
+    id
+    dayOfWeek
+    startTime
+    endTime
+    classroom { name }
+    subject { name }
+    teacher { email }
+  }
+}
+
+# Academic: Get Leave Requests
+query ListLeaveRequests($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  leaveRequests(where: {schoolId: {eq: $schoolId}}) {
+    id
+    startDate
+    endDate
+    reason
+    status
+    user { email }
+    substitute { email }
+  }
+}
+
+# Academic: Get Exams
+query ListExams($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  exams(where: {schoolId: {eq: $schoolId}}) {
+    id
+    title
+    examDate
+    maxScore
+    classroom { name }
+    subject { name }
+  }
+}

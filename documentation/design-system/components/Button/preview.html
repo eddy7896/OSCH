@@ -1,0 +1,14 @@
+<!-- @dsCard group="Actions" height=230 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Button — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'col'}, h('div',{className:'row'}, h(O.Button,{variant:'primary',icon:'users'},'Take Attendance'), h(O.Button,{variant:'secondary',icon:'check'},'Mark all present'), h(O.Button,{variant:'ghost'},'Cancel'), h(O.Button,{variant:'danger'},'Remove')), h('div',{className:'row'}, h(O.Button,{variant:'primary',size:'compact'},'Export'), h(O.Button,{variant:'secondary',size:'comfortable',icon:'upload'},'Upload now'), h(O.Button,{variant:'primary',disabled:true},'Submit')), h(O.Button,{variant:'primary',size:'driver',icon:'map-pin',block:true},'Start Route')));
+</script>
+</body>
+</html>

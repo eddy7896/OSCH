@@ -1,0 +1,220 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap");
+
+/* OruSchools components. Every value comes from tokens.css; nothing here is a raw colour. */
+.oru-icon { flex: none; display: block; }
+body { font-family: var(--font-sans); color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+:where(.oru-btn, .oru-tile, .oru-seg__opt, .oru-pill--btn, .oru-row--link, .oru-bnav__item, .oru-snav__item, .oru-link, .oru-check input):focus-visible {
+  outline: 2px solid var(--focus); outline-offset: 2px;
+}
+
+/* tones — soft fill + matching ink, shared by pills, badges, banners, icon tiles */
+.oru-tone--success { background: var(--success-bg); color: var(--success-fg); }
+.oru-tone--warning { background: var(--warning-bg); color: var(--warning-fg); }
+.oru-tone--danger  { background: var(--danger-bg);  color: var(--danger-fg); }
+.oru-tone--info    { background: var(--info-bg);    color: var(--info-fg); }
+.oru-tone--purple  { background: var(--purple-bg);  color: var(--purple-fg); }
+.oru-tone--teal    { background: var(--teal-bg);    color: var(--teal-fg); }
+.oru-tone--neutral { background: var(--surface-muted); color: var(--text-muted); }
+.oru-tone--brand   { background: var(--primary-soft); color: var(--primary-text); }
+
+/* Button */
+.oru-btn {
+  font: inherit; font-size: 14px; line-height: 20px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  border-radius: var(--radius-md); border: 1px solid transparent; padding: 0 var(--space-4);
+  cursor: pointer; transition: background-color .15s ease, border-color .15s ease; white-space: nowrap;
+}
+.oru-btn--compact { height: var(--control-compact); padding: 0 var(--space-3); }
+.oru-btn--comfortable { height: var(--control-comfortable); }
+.oru-btn--touch { height: var(--control-touch); font-size: 16px; padding: 0 var(--space-5); }
+.oru-btn--driver { height: var(--control-driver); font-size: 20px; line-height: 26px; font-weight: 700; padding: 0 var(--space-6); border-radius: var(--radius-lg); }
+.oru-btn--block { display: flex; width: 100%; }
+.oru-btn--primary { background: var(--primary); color: var(--on-primary); }
+.oru-btn--primary:hover { background: var(--primary-hover); }
+.oru-btn--secondary { background: var(--primary-soft); color: var(--primary-text); border-color: var(--primary-soft); }
+.oru-btn--secondary:hover { border-color: var(--primary-text); }
+.oru-btn--ghost { background: transparent; color: var(--primary-text); }
+.oru-btn--ghost:hover { background: var(--primary-soft); }
+.oru-btn--danger { background: var(--danger-solid); color: var(--on-primary); }
+.oru-btn:disabled { background: var(--surface-muted); color: var(--text-muted); border-color: var(--border); cursor: not-allowed; }
+
+/* ActionTile */
+.oru-tile {
+  font: inherit; text-align: left; cursor: pointer; border: 1px solid transparent;
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-1);
+  min-height: 112px; padding: var(--space-4); border-radius: var(--radius-xl); width: 100%;
+}
+.oru-tile .oru-icon { margin-bottom: var(--space-2); }
+.oru-tile__title { font-size: 20px; line-height: 26px; font-weight: 700; }
+.oru-tile__desc { font-size: 14px; line-height: 20px; }
+.oru-tile--primary { background: var(--primary-soft); color: var(--primary-text); }
+.oru-tile--success { background: var(--success-bg); color: var(--success-fg); }
+.oru-tile--danger { background: var(--danger-bg); color: var(--danger-fg); }
+.oru-tile--neutral { background: var(--surface); color: var(--text); border-color: var(--border); }
+.oru-tile--solid.oru-tile--primary { background: var(--primary); color: var(--on-primary); }
+.oru-tile--solid.oru-tile--success { background: var(--success-solid); color: var(--on-primary); }
+.oru-tile--solid.oru-tile--danger { background: var(--danger-solid); color: var(--on-primary); }
+
+/* TextField */
+.oru-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.oru-field__label { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--text); }
+.oru-field__box {
+  display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-3);
+  background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-md); color: var(--text-muted);
+}
+.oru-field--compact .oru-field__box { min-height: var(--control-compact); }
+.oru-field--comfortable .oru-field__box { min-height: var(--control-comfortable); }
+.oru-field--touch .oru-field__box { min-height: var(--control-touch); }
+.oru-field__box:focus-within { border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus); }
+.oru-field input, .oru-field textarea {
+  flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text);
+  font: inherit; font-size: 16px; line-height: 24px; padding: var(--space-2) 0;
+}
+.oru-field textarea { min-height: 96px; resize: vertical; }
+.oru-field--compact input, .oru-field--comfortable input { font-size: 14px; line-height: 20px; }
+.oru-field input::placeholder, .oru-field textarea::placeholder { color: var(--text-muted); opacity: 1; }
+.oru-field__msg { margin: 0; display: flex; align-items: center; gap: var(--space-1); font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.oru-field--error .oru-field__box { border-color: var(--danger-fg); }
+.oru-field--error .oru-field__msg { color: var(--danger-fg); }
+
+/* Checkbox */
+.oru-check { display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer; min-height: var(--control-touch); padding: var(--space-3) 0; box-sizing: border-box; }
+.oru-check input { position: absolute; opacity: 0; width: 24px; height: 24px; margin: 0; }
+.oru-check__box {
+  flex: none; width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--border-strong); background: var(--surface);
+  display: grid; place-items: center; color: transparent; box-sizing: border-box;
+}
+.oru-check input:checked + .oru-check__box { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.oru-check input:focus-visible + .oru-check__box { outline: 2px solid var(--focus); outline-offset: 2px; }
+.oru-check__text { display: flex; flex-direction: column; }
+.oru-check__label { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--text); }
+.oru-check__desc { font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.oru-check input:checked ~ .oru-check__text .oru-check__label { color: var(--text-muted); text-decoration: line-through; }
+
+/* SegmentedControl */
+.oru-seg { display: inline-flex; gap: var(--space-1); padding: var(--space-1); background: var(--surface-muted); border-radius: var(--radius-md); }
+.oru-seg__opt {
+  font: inherit; font-size: 14px; line-height: 20px; font-weight: 600; border: 0; cursor: pointer;
+  background: transparent; color: var(--text-muted); border-radius: var(--radius-sm); padding: 0 var(--space-4);
+}
+.oru-seg--compact .oru-seg__opt { height: 28px; }
+.oru-seg--comfortable .oru-seg__opt { height: 32px; }
+.oru-seg--touch .oru-seg__opt { height: 40px; flex: 1; }
+.oru-seg--touch { display: flex; }
+.oru-seg__opt.is-on { background: var(--primary); color: var(--on-primary); }
+
+/* StatusPill */
+.oru-pill {
+  display: inline-flex; align-items: center; gap: var(--space-2); height: 36px; padding: 0 var(--space-3);
+  border-radius: var(--radius-sm); font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap; border: 0; font-family: inherit;
+}
+.oru-pill--btn { cursor: pointer; height: var(--control-touch); min-width: 140px; }
+.oru-pill__chev { margin-left: auto; opacity: .8; }
+
+/* Badge */
+.oru-badge { display: inline-flex; align-items: center; gap: var(--space-1); height: 24px; padding: 0 var(--space-2); border-radius: var(--radius-sm); font-size: 13px; line-height: 18px; font-weight: 600; white-space: nowrap; }
+.oru-badge__dot { width: 8px; height: 8px; border-radius: var(--radius-full); background: currentColor; }
+.oru-count {
+  display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box;
+  border-radius: var(--radius-full); background: var(--danger-solid); color: var(--on-primary); font-size: 12px; line-height: 1; font-weight: 700;
+}
+
+/* SyncStatus */
+.oru-sync { display: inline-flex; align-items: center; gap: var(--space-2); height: 32px; padding: 0 var(--space-3); border-radius: var(--radius-full); font-size: 13px; line-height: 18px; }
+.oru-sync__title { font-weight: 600; }
+.oru-sync__detail { opacity: .9; }
+.oru-syncbar { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); }
+.oru-syncbar__text { flex: 1; display: flex; flex-direction: column; font-size: 13px; line-height: 18px; }
+.oru-syncbar__text strong { font-size: 15px; line-height: 22px; }
+.oru-syncbar .oru-btn { background: var(--surface); }
+@keyframes oru-spin { to { transform: rotate(360deg); } }
+.oru-spin { animation: oru-spin 1.2s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .oru-spin { animation: none; } }
+
+/* Banner */
+.oru-banner { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-lg); }
+.oru-banner__text { flex: 1; display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 20px; }
+.oru-banner__text strong { font-size: 16px; line-height: 24px; }
+.oru-banner__text span { color: var(--text); }
+
+/* Card */
+.oru-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow-card); }
+.oru-card--brand { background: var(--surface-brand); border-color: transparent; }
+.oru-card__head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+.oru-card__titles { flex: 1; min-width: 0; }
+.oru-card__titles h3 { margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--text); }
+.oru-card__titles p { margin: 0; font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.oru-link { font: inherit; display: inline-flex; align-items: center; gap: 2px; background: none; border: 0; padding: var(--space-2) 0; cursor: pointer; color: var(--primary-text); font-size: 14px; line-height: 20px; font-weight: 600; }
+.oru-icontile { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-sm); flex: none; }
+.oru-icontile--lg { width: 48px; height: 48px; border-radius: var(--radius-md); }
+.oru-icontile--xl { width: 64px; height: 64px; border-radius: var(--radius-lg); }
+
+/* StatCard */
+.oru-stat { display: flex; align-items: center; gap: var(--space-4); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow-card); }
+.oru-stat__body { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.oru-stat__label { font-size: 14px; line-height: 20px; color: var(--text-muted); }
+.oru-stat__value { font-size: 28px; line-height: 34px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.oru-stat__sub { font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.oru-stat__trend { display: flex; flex-direction: column; align-items: flex-end; font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.oru-stat__trend .oru-icon, .oru-stat__trend strong { color: inherit; }
+.oru-stat__trend.is-up .oru-icon, .oru-stat__trend.is-up strong { color: var(--success-fg); }
+.oru-stat__trend.is-down .oru-icon, .oru-stat__trend.is-down strong { color: var(--danger-fg); }
+
+/* ListRow */
+.oru-row {
+  font: inherit; text-align: left; width: 100%; display: flex; align-items: center; gap: var(--space-3);
+  background: var(--surface); border: 0; border-bottom: 1px solid var(--border); padding: var(--space-3) var(--space-4); color: var(--text); box-sizing: border-box;
+}
+.oru-row--touch { min-height: 64px; }
+.oru-row--compact { min-height: 44px; padding: var(--space-2) var(--space-3); }
+.oru-row--link { cursor: pointer; }
+.oru-row--link:hover { background: var(--surface-muted); }
+.oru-row__lead { flex: none; color: var(--text-muted); font-size: 14px; min-width: 24px; display: flex; align-items: center; }
+.oru-row__main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.oru-row__title { font-size: 16px; line-height: 24px; font-weight: 600; }
+.oru-row--compact .oru-row__title { font-size: 14px; line-height: 20px; }
+.oru-row__sub { font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.oru-row__trail { flex: none; display: flex; align-items: center; gap: var(--space-2); color: var(--text-muted); font-size: 13px; }
+.oru-row__chev { color: var(--text-muted); }
+
+/* Avatar */
+.oru-avatar { display: inline-grid; place-items: center; flex: none; border-radius: var(--radius-full); overflow: hidden; background: var(--primary-soft); color: var(--primary-text); font-weight: 700; }
+.oru-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* BottomNav */
+.oru-bnav { display: flex; gap: var(--space-1); padding: var(--space-2); background: var(--surface); border-top: 1px solid var(--border); }
+.oru-bnav__item {
+  font: inherit; flex: 1; min-height: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: transparent; border: 0; border-radius: var(--radius-md); cursor: pointer; color: var(--text-muted);
+}
+.oru-bnav__item.is-on { background: var(--primary-soft); color: var(--primary-text); }
+.oru-bnav__icon { position: relative; }
+.oru-bnav__icon .oru-count { position: absolute; top: -6px; left: 14px; }
+.oru-bnav__label { font-size: 13px; line-height: 18px; font-weight: 600; }
+
+/* SideNav */
+.oru-snav { width: 248px; display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4) var(--space-3); background: var(--surface); border-right: 1px solid var(--border); box-sizing: border-box; }
+.oru-snav__brand { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-3); }
+.oru-snav__brand strong { font-size: 18px; line-height: 26px; color: var(--primary-text); }
+.oru-snav__brand span { font-size: 13px; line-height: 18px; color: var(--text-muted); }
+.oru-snav__sec { display: flex; flex-direction: column; gap: 2px; }
+.oru-snav__title { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); padding: var(--space-2) var(--space-3); }
+.oru-snav__item {
+  font: inherit; display: flex; align-items: center; gap: var(--space-3); height: var(--control-comfortable); padding: 0 var(--space-3);
+  border: 0; border-radius: var(--radius-md); background: transparent; color: var(--text); font-size: 14px; line-height: 20px; font-weight: 500; cursor: pointer; text-align: left;
+}
+.oru-snav__item .oru-icon { color: var(--text-muted); }
+.oru-snav__item > span:not(.oru-count) { flex: 1; }
+.oru-snav__item:hover { background: var(--surface-muted); }
+.oru-snav__item.is-on { background: var(--primary-soft); color: var(--primary-text); font-weight: 600; }
+.oru-snav__item.is-on .oru-icon { color: var(--primary-text); }
+
+/* EmptyState */
+.oru-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-8) var(--space-4); }
+.oru-empty h3 { margin: var(--space-2) 0 0; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--text); }
+.oru-empty p { margin: 0 0 var(--space-2); max-width: 320px; font-size: 14px; line-height: 22px; color: var(--text-muted); }
+
+/* Logo */
+.oru-logo { display: inline-flex; align-items: center; line-height: 0; }
+.oru-logo__words { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.oru-logo__app { font-family: var(--font-sans); line-height: 1.2; font-weight: 500; color: var(--text-muted); }

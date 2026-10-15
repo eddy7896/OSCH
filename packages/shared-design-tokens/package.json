@@ -1,0 +1,7 @@
+{
+  "name": "@oruschools/shared-design-tokens",
+  "version": "1.0.0",
+  "description": "JSON definitions of the OruSchools Design System (Colors, Spacing, Typography).",
+  "main": "index.js",
+  "private": true
+}

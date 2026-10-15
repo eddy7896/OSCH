@@ -1,0 +1,14 @@
+<!-- @dsCard group="Status" height=330 subtitle="The shared offline language" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>SyncStatus — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'col', style:{maxWidth:440}}, h('div',{className:'row'}, ['synced','saved','syncing','offline','failed'].map(function(s){return h(O.SyncStatus,{key:s,state:s});})), h(O.SyncStatus,{state:'synced',detail:'2 mins ago'}), h(O.SyncStatus,{variant:'banner',state:'pending',title:'Saved on device · 5 changes pending',detail:'Will sync automatically when you are online.',actionLabel:'Upload now'}), h(O.SyncStatus,{variant:'banner',state:'failed',detail:'We could not reach the school server.',actionLabel:'Retry'})));
+</script>
+</body>
+</html>

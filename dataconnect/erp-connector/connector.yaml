@@ -1,0 +1,9 @@
+connectorId: erp-connector
+generate:
+  javascriptSdk:
+    - outputDir: ../../apps/api-gateway/src/dataconnect-sdk
+      package: "@oruschools/erp-sdk"
+      packageJsonDir: ../../apps/api-gateway
+      react: false
+      angular: false
+      clientCache: {}

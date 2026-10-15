@@ -1,0 +1,58 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OruSchools</title>
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--bg); color:var(--text); font-family:var(--font-sans); overflow:hidden; padding:0; }
+  .cover { position:relative; height:288px; width:960px; overflow:hidden; }
+  .art { position:absolute; top:0; left:480px; width:480px; height:288px; overflow:hidden; }
+  .art svg { display:block; width:480px; height:288px; }
+  .brand { fill:var(--primary); }
+  .tint { fill:var(--primary-soft); }
+  .deep { fill:var(--text); }
+  .ok { fill:var(--success-solid); }
+  .no { fill:var(--danger-solid); }
+  .cut { fill:var(--primary-soft); }
+  .onbrand { fill:var(--primary); }
+  .blk { rx:var(--radius-lg); }
+  .pill { rx:var(--radius-sm); }
+  .words { position:absolute; left:var(--space-6); bottom:var(--space-6); max-width:440px; }
+  .name { margin:0; font-size:72px; line-height:.95; font-weight:700; letter-spacing:-.02em; color:var(--text); }
+  .tag { margin:var(--space-2) 0 0 2px; font-size:14px; line-height:20px; color:var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 288" width="480" height="288">
+<!--
+  blocks      primary 144×248 bled off the top (Oru Indigo, the identity) · primary-soft 136×168 (the calm tint) · text/ink 168×200 bleeding off the right edge · success-solid and danger-solid only as small pills — ≈30% of 960×288
+  arrangement one tall indigo slab with two satellites, bottoms aligned on one line space-12 above the edge, space-4 gutters
+  pattern     status pills, from "exception-based attendance — everyone Present, tap only the exceptions": a column of space-4-tall pills on the ink block, all success but one danger; three primary-soft pills cut into the slab; two primary pills on the tint
+  scales      sides in space-2 multiples; gutters space-4; pill pitch space-8; corners radius-lg on blocks, pills rx radius-sm (half of space-4)
+-->
+<rect class="brand blk" x="16" y="-16" width="144" height="248" rx="16"/>
+<rect class="tint blk" x="176" y="64" width="136" height="168" rx="16"/>
+<rect class="deep blk" x="328" y="32" width="168" height="200" rx="16"/>
+<rect class="cut pill" x="40" y="168" width="80" height="16" rx="8"/>
+<rect class="cut pill" x="40" y="200" width="56" height="16" rx="8"/>
+<rect class="cut pill" x="40" y="136" width="48" height="16" rx="8"/>
+<rect class="onbrand pill" x="200" y="168" width="88" height="16" rx="8"/>
+<rect class="onbrand pill" x="200" y="200" width="56" height="16" rx="8"/>
+<rect class="ok pill" x="352" y="56" width="104" height="16" rx="8"/>
+<rect class="ok pill" x="352" y="88" width="104" height="16" rx="8"/>
+<rect class="no pill" x="352" y="120" width="104" height="16" rx="8"/>
+<rect class="ok pill" x="352" y="152" width="104" height="16" rx="8"/>
+<rect class="ok pill" x="352" y="184" width="104" height="16" rx="8"/>
+</svg>
+</div>
+<div class="words">
+  <h1 class="name">OruSchools</h1>
+  <p class="tag">Schools. People. Progress.</p>
+</div>
+</div>
+</body>
+</html>

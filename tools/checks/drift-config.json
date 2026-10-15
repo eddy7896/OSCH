@@ -1,0 +1,85 @@
+{
+  "plannedPaths": [
+    "apps/teacher-app",
+    "apps/staff-app",
+    "apps/parent-app",
+    "apps/driver-app",
+    "packages/shared-design-tokens/index.js",
+    "apps/api-gateway/src/dataconnect-sdk"
+  ],
+  "pathCheckExemptDocs": [],
+  "bannedDependencies": [
+    "prisma",
+    "@prisma/client",
+    "typeorm",
+    "mongoose",
+    "mongodb",
+    "react-native",
+    "vue",
+    "@angular/core",
+    "react-scripts",
+    "fastapi",
+    "django"
+  ],
+  "tenantScopeExemptOperations": [
+    "CreateUser",
+    "CreateSchool"
+  ],
+  "knownDebt": {
+    "CreateInvoice": "Invoice has no schoolId column; gateway must verify student.schoolId. See audit finding F4",
+    "UpdateLeaveRequest": "gateway must verify leave.schoolId before update. See audit finding F4"
+  },
+  "staleTerms": [
+    {
+      "term": "Auth0",
+      "reason": "ADR-0002: Firebase Auth is the only identity provider",
+      "allowIn": [
+        "documentation/decisions/ADR-0002-auth-provider.md",
+        "documentation/audit_2026-10-15.md"
+      ]
+    },
+    {
+      "term": "separate schemas per tenant|own isolated schema|isolated schemas per school|Schema 1|Schema 2",
+      "reason": "ADR-0001: Data Connect has one schema; isolation is by schoolId scoping enforced in the gateway",
+      "allowIn": [
+        "documentation/decisions/ADR-0001-tenant-isolation.md",
+        "documentation/audit_2026-10-15.md"
+      ]
+    },
+    {
+      "term": "WatermelonDB",
+      "reason": "ADR-0003: Drift (SQLite) is the Flutter local DB",
+      "allowIn": [
+        "documentation/decisions/ADR-0003-mobile-local-db.md",
+        "documentation/audit_2026-10-15.md"
+      ]
+    },
+    {
+      "term": "apps/(teacher|staff|parent|driver)-app",
+      "reason": "Mobile apps live in apps/mobile-* (matches melos.yaml)",
+      "allowIn": [
+        "documentation/audit_2026-10-15.md"
+      ]
+    },
+    {
+      "term": "lucide_icons\\b(?!_)",
+      "reason": "Flutter icon package is lucide_icons_flutter (lucide_icons last published 2023); see design_system_spec \u00a76",
+      "allowIn": [
+        "documentation/design_system_spec.md",
+        "documentation/audit_2026-10-15.md",
+        "documentation/hallucination_checks.md",
+        "documentation/agent_contexts.md",
+        "documentation/implementation_plan.md"
+      ]
+    },
+    {
+      "term": "Primary \\(500\\)",
+      "reason": "Primary is Oru Indigo 600 #4F46E5 (500 fails text contrast); see design-system tokens",
+      "allowIn": [
+        "documentation/design_system_spec.md",
+        "documentation/audit_2026-10-15.md",
+        "documentation/hallucination_checks.md"
+      ]
+    }
+  ]
+}

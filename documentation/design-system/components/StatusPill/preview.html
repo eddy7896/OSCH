@@ -1,0 +1,14 @@
+<!-- @dsCard group="Status" height=160 subtitle="Attendance — always icon + word" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>StatusPill — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'col'}, h('div',{className:'row'}, O.StatusPill.statuses.map(function(s){return h(O.StatusPill,{key:s,status:s});})), h('div',{className:'row'}, h(O.StatusPill,{status:'present',interactive:true}), h(O.StatusPill,{status:'absent',interactive:true}))));
+</script>
+</body>
+</html>

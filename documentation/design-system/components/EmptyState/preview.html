@@ -1,0 +1,14 @@
+<!-- @dsCard group="Layout" height=260 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>EmptyState — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {style:{maxWidth:420,background:'var(--surface)',borderRadius:16,border:'1px solid var(--border)'}}, h(O.EmptyState,{icon:'message',title:'No messages yet',description:"When your child's teachers write to you, their messages will appear here."})));
+</script>
+</body>
+</html>

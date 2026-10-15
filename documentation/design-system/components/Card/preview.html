@@ -1,0 +1,14 @@
+<!-- @dsCard group="Layout" height=250 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Card — preview</title>
+<style>body{margin:0;padding:16px;} .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;} .col{display:flex;flex-direction:column;gap:12px;} </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var O = window.Oru, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {style:{maxWidth:420}}, h(O.Card,{title:"Today's Schedule",icon:'calendar',action:h(O.LinkAction,null,'View all')}, h(O.ListRow,{leading:'10:15',title:'Grade 10 A',subtitle:'Mathematics · Room 203'}), h(O.ListRow,{leading:'11:20',title:'Grade 9 B',subtitle:'Science · Room 105'}))));
+</script>
+</body>
+</html>
