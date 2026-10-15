@@ -17,6 +17,6 @@ if ! grep -q "All emulators ready" "$LOG"; then
   [ -n "${GITHUB_ACTIONS:-}" ] && echo "::error title=gateway-integration::auth emulator did not start: $(tail -8 "$LOG" | tr '\n' '|' | cut -c1-1200)"
   exit 2
 fi
-# The gateway imports @oruschools/database through its built output; a fresh checkout (CI) has none.
-npm run build -w @oruschools/database --silent || exit 1
+# The gateway imports workspace packages (database, rbac, ...) through their built output; a fresh checkout (CI) has none.
+npx turbo run build --filter='api-gateway^...' || exit 1
 npm run test:integration -w api-gateway
