@@ -75,6 +75,8 @@ jobs:
       - name: Schema + connector compile, SDK regenerated
         run: npx firebase dataconnect:compile
       - name: Generated SDK is committed and current
-        run: git diff --exit-code -- apps/api-gateway/src/dataconnect-sdk
+        run: git diff --exit-code -- packages/database/generated
       - name: Cross-tenant isolation tests (PGlite emulator, no Java needed)
         run: npm run test:dataconnect
+      - name: Admin SDK data layer against the emulator
+        run: npm run test:database

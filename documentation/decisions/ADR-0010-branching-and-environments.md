@@ -15,6 +15,7 @@ hotfix/<name>  ->  main, then main -> staging (back-merge)
 - **`staging` = pre-production.** Accepts `app/<app>` branches, `hotfix/*` and a back-merge of `main`. Every merge here deploys to the staging environment (deploy jobs arrive with P1-12; the GitHub environments `staging` and `production` are named for them).
 - **`app/<app>`** is the long-lived branch of one app: `api-gateway`, `web-admin`, `saas-admin`, `landing-page`, `mobile-teacher`, `mobile-staff`, `mobile-parent`, `mobile-driver`, plus **`app/shared`** for everything outside `apps/` (`packages/`, `dataconnect/`, `tools/`, `evals/`, `documentation/`, `.github/`, root files).
 - **Ownership is enforced:** a PR from `app/<x>` into `staging` fails if it changes files owned by another app (lockfiles excepted). A change that spans apps is split: shared first (`app/shared` -> `staging`), then each app.
+- **Cross-cutting exception:** a change that must land in several apps at once (the Admin SDK switch removed the old SDK from the gateway while adding `packages/database`; splitting it would leave `npm ci` broken on staging) goes through `cross/<topic>` → `staging`. Ownership is not enforced on these branches, so each needs a human review; keep them rare and small.
 - Topic branches are `feat|fix|chore/<app>/<topic>` and merge only into their own `app/<app>`.
 - Enforcement: `tools/checks/branch-policy.mjs` (evals E-BRANCH-1..5) run by `.github/workflows/branch-policy.yml` on every PR; the main `ci` workflow runs on `main`, `staging` and `app/**`.
 

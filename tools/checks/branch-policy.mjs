@@ -1,5 +1,7 @@
 // Branch policy (ADR-0010): which branch may merge into which, and which files an app branch may touch.
 //   feat|fix|chore/<app>/<topic> -> app/<app> -> staging -> main (production);  hotfix/* -> main, then main -> staging.
+//   cross/<topic> -> staging is the sanctioned exception for a change that must land in several apps at once (for example
+//   a shared package plus the apps that stop using the old one); ownership is not enforced there, so it needs a human review.
 export const APPS = ["api-gateway", "web-admin", "saas-admin", "landing-page", "mobile-teacher", "mobile-staff", "mobile-parent", "mobile-driver", "shared"];
 
 // Lockfiles change whenever dependencies do, so any app branch may carry them.
@@ -20,7 +22,7 @@ export function checkBranchPolicy({ head, base, changedFiles = [] }) {
     if (head !== "staging" && !/^hotfix\/[\w.-]+$/.test(head)) problems.push(`production (main) only accepts merges from staging or hotfix/*, not "${head}"`);
   } else if (base === "staging") {
     const a = appBranch(head);
-    if (head !== "main" && !/^hotfix\/[\w.-]+$/.test(head) && !a) problems.push(`staging only accepts app/<app> branches, hotfix/* or a back-merge of main, not "${head}"`);
+    if (head !== "main" && !/^(hotfix|cross)\/[\w.-]+$/.test(head) && !a) problems.push(`staging only accepts app/<app> branches, cross/*, hotfix/* or a back-merge of main, not "${head}"`);
     if (a && !known(a)) problems.push(`"${head}" is not a known app branch (known: ${APPS.join(", ")})`);
     if (a && known(a))
       for (const f of changedFiles) {

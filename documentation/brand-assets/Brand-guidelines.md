@@ -107,6 +107,35 @@ All five icons share one construction. A full-bleed square in the app's colour, 
 
 **Mode B: Full white label.** The school's app name, icon and splash screen replace ours completely, and the OruSchools logo doesn't appear in the app. The words *Powered by OruSchools* stay, in plain text, on the About screen.
 
+## Splash screens
+
+Every app opens on its own colour with the white mark in the middle, so the screen continues straight on from the icon the person just tapped. The Driver app uses an Ink mark on yellow. The app name sits at the bottom so people know they opened the right app.
+
+**Layout (all apps):** full-bleed `app-*` colour. The mark is 160 dp, centred on the screen. The app lockup (mark, OruSchools and app name) is 40 dp tall and 48 dp above the bottom edge. No other text, no loading spinner, no tips or adverts.
+
+**Animation (1.3 s, once):**
+
+| Time | What moves | Easing |
+| --- | --- | --- |
+| 0 ms | Nothing. Frame 0 is the native launch screen, so the switch can't be seen. | |
+| 0–170 ms | The dot tucks in to 80%. | ease-in-out |
+| 100–900 ms | The whole mark turns once (360°). | cubic-bezier(.65, 0, .35, 1) |
+| 900–1070 ms | The dot pops to 130%. | ease-in-out |
+| 1070–1270 ms | The dot settles back to 100%. The app's first screen then fades in over 200 ms. | ease-in-out |
+
+**Rules**
+
+- Play it on a **cold start only**. A warm start goes straight into the app.
+- Never hold the screen longer than needed. If the app is ready before 1.3 s, let the animation finish; if it is still loading after it ends, stay on the last frame. Don't loop it, and don't add a spinner. On weak networks, the app opens from cached data (the sync banner tells people the state).
+- With *Reduce motion* or *Remove animations* on, show the static screen only.
+- **White-label Mode A:** use the co-branded splash in Assets › Co-branding (school logo centred, Powered by OruSchools at the bottom), without animation.
+- **Mode B:** the school supplies its own splash. Keep the same layout and timing.
+
+**Building it:**
+
+- **Flutter:** `flutter_native_splash` with `color` = the app colour, `image` = `splash-icon-white.png` (or `-ink` for Driver), `branding` = `splash-branding-<app>.png`, and the same values under `android_12`. Then show `splash-mark-<ink>.lottie.json` with the `lottie` package at 288 × 288 dp, centred on the same colour, and route on its completion.
+- **Web ERP:** the same layout as an HTML loading screen on `app-erp`, using the same timing in CSS. The SplashScreen page in this system shows the reference animation.
+
 ## Imagery
 
 - Real schools, real light: classrooms, corridors, buses, parents at the gate. Natural daylight, people actually doing something, children's faces only with school consent.

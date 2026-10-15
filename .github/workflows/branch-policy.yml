@@ -2,6 +2,8 @@ name: branch-policy
 
 on:
   pull_request:
+    # `edited` fires when the base branch is changed, so retargeting a PR re-runs the policy against the new base
+    types: [opened, synchronize, reopened, edited]
     branches: [main, staging, "app/**"]
 
 jobs:

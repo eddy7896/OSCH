@@ -18,7 +18,8 @@
     "tokens:check": "npm run check --workspace @oruschools/shared-design-tokens --silent",
     "test:dataconnect": "bash tools/tests/dataconnect-tenancy.sh",
     "i18n:build": "npm run generate --workspace @oruschools/i18n",
-    "i18n:check": "npm run check --workspace @oruschools/i18n --silent"
+    "i18n:check": "npm run check --workspace @oruschools/i18n --silent",
+    "test:database": "bash tools/tests/database-admin.sh"
   },
   "devDependencies": {
     "firebase-tools": "^15.34.0",
