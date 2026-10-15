@@ -10,6 +10,7 @@ import { REQUEST_ID_HEADER } from './request-id.js';
 export const ErrorCode = {
   AUTH_REQUIRED: 'AUTH_REQUIRED',
   FORBIDDEN: 'FORBIDDEN',
+  SCHOOL_SUSPENDED: 'SCHOOL_SUSPENDED',
   NOT_FOUND: 'NOT_FOUND',
   INVALID_REQUEST: 'INVALID_REQUEST',
   CONFLICT: 'CONFLICT',
@@ -23,6 +24,7 @@ export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
 const MESSAGES: Record<ErrorCode, string> = {
   AUTH_REQUIRED: 'Sign in to continue.',
   FORBIDDEN: 'You do not have access to this.',
+  SCHOOL_SUSPENDED: 'This school is suspended. Contact the platform administrator.',
   NOT_FOUND: 'Not found.',
   INVALID_REQUEST: 'The request is not valid.',
   CONFLICT: 'This conflicts with existing data.',
