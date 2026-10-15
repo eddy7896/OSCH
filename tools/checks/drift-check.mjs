@@ -91,19 +91,21 @@ const config = JSON.parse(read("tools/checks/drift-config.json"));
     .filter((e) => e.isDirectory() && existsSync(join(ROOT, "dataconnect", e.name, "connector.yaml")))
     .map((e) => `dataconnect/${e.name}`);
   const gqls = connectorDirs.flatMap((d) => walk(d, (f) => f.endsWith(".gql")));
-  const exemptOps = new Set(config.tenantScopeExemptOperations);
+  const { parseOperations, exemptionProblems, auditProblems } = await import("./dc-rules.mjs");
+  const exemptOps = new Set(Object.keys(config.tenantScopeExemptOperations));
+  for (const p of [...exemptionProblems("tenantScopeExemptOperations", config.tenantScopeExemptOperations), ...exemptionProblems("auditExemptOperations", config.auditExemptOperations)]) add("error", "dc-exempt", p, "tools/checks/drift-config.json");
+  const allOps = [];
   for (const f of gqls) {
-    const text = read(f);
-    const ops = text.split(/^(?=(?:query|mutation)\s)/m).filter((b) => /^(query|mutation)\s/.test(b));
-    for (const op of ops) {
-      const head = op.split("{")[0];
-      const name = head.match(/^(?:query|mutation)\s+(\w+)/)?.[1];
+    const ops = parseOperations(read(f));
+    allOps.push(...ops);
+    for (const { head, name } of ops) {
       if (/@auth\(\s*level:\s*PUBLIC/.test(head))
         add("error", "dc-public-auth", `${name} uses @auth(level: PUBLIC); clients must never reach the DB (use NO_ACCESS + Admin SDK)`, f);
       if (!/\$schoolId\b/.test(head) && !exemptOps.has(name))
         add(config.knownDebt[name] ? "warn" : "error", "dc-tenant-scope", `${name} takes no $schoolId; every tenant operation must be school-scoped (or add to tenantScopeExemptOperations with justification)${config.knownDebt[name] ? ` [known debt: ${config.knownDebt[name]}]` : ""}`, f);
     }
   }
+  for (const p of auditProblems(allOps, config.auditExemptOperations ?? {})) add("error", "dc-audit", p, "dataconnect/erp-connector/mutations.gql");
 }
 
 // 5. Secrets hygiene. ---------------------------------------------------------

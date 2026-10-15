@@ -35,9 +35,12 @@ export function mapDataConnectError(error: unknown): DatabaseError {
   if (error instanceof DatabaseError) return error;
   const e = error as { code?: string; httpResponse?: { data?: { errors?: GraphqlErrorLike[] } } } | null;
   const codes = new Set((e?.httpResponse?.data?.errors ?? []).map((g) => g.extensions?.code).filter((c): c is string => typeof c === 'string'));
-  if (codes.has('PERMISSION_DENIED') || codes.has('ABORTED')) return new DatabaseError('FORBIDDEN_REFERENCE', { cause: error });
-  if (codes.has('INVALID_ARGUMENT')) return new DatabaseError('INVALID_ARGUMENT', { cause: error });
+  // Order matters: a rolled-back @transaction adds ABORTED next to the real cause (PERMISSION_DENIED from a failed @check,
+  // ALREADY_EXISTS from a unique violation), so ABORTED alone is the weakest signal and is checked last.
+  if (codes.has('PERMISSION_DENIED')) return new DatabaseError('FORBIDDEN_REFERENCE', { cause: error });
   if (codes.has('ALREADY_EXISTS')) return new DatabaseError('CONFLICT', { cause: error });
+  if (codes.has('INVALID_ARGUMENT')) return new DatabaseError('INVALID_ARGUMENT', { cause: error });
+  if (codes.has('ABORTED')) return new DatabaseError('FORBIDDEN_REFERENCE', { cause: error });
   if (codes.size === 0 && typeof e?.code === 'string' && /^app\/(network-error|invalid-credential)|unavailable|timeout/i.test(e.code)) return new DatabaseError('UNAVAILABLE', { cause: error });
   return new DatabaseError('INTERNAL', { cause: error });
 }

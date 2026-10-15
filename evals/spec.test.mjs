@@ -94,7 +94,8 @@ test("E-AUD-S1 audit log table exists, is append-only (no update/delete operatio
 });
 
 test("E-TEN-S3 every mutation/query takes $schoolId except the platform-level ones", () => {
-  const exempt = new Set(["CreateUser", "CreateSchool", "CreateAuditLog"]); // platform-level / carries optional $schoolId
+  // The single list lives in drift-config.json with a written reason per entry (CreateAuditLog carries an optional $schoolId).
+  const exempt = new Set([...Object.keys(JSON.parse(read("tools/checks/drift-config.json")).tenantScopeExemptOperations), "CreateAuditLog"]);
   for (const f of ["queries.gql", "mutations.gql"])
     for (const b of read(`dataconnect/erp-connector/${f}`).split(/^(?=(?:query|mutation)\s)/m).filter((b) => /^(query|mutation)\s/.test(b))) {
       const head = b.split("{")[0];
