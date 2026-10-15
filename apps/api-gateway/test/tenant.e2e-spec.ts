@@ -5,6 +5,7 @@ import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { CurrentUser, type AuthenticatedUser } from '../src/auth/authenticated-user.js';
 import { Public } from '../src/auth/public.decorator.js';
+import { Granted, Permission, type GrantedPermission } from '../src/permission/permission.decorator.js';
 import { Platform, Tenant, UserScoped, type TenantContext } from '../src/tenant/tenant.decorators.js';
 
 const A = '11111111-1111-4111-8111-111111111111'; // active school
@@ -56,18 +57,21 @@ class Probe {
     return { uid: u.uid };
   }
 
+  @Permission('students', 'read')
   @Get('school-data')
   async read(@Tenant() t: TenantContext, @Query() _q: unknown) {
     await new Promise((r) => setTimeout(r, Math.random() * 15));
     return t;
   }
 
+  @Permission('attendance', 'create')
   @Post('school-data')
   write(@Tenant() t: TenantContext, @Body() _b: unknown) {
     return t;
   }
 
   @Platform()
+  @Permission('platform_schools', 'read')
   @Get('platform/ping')
   ping(@CurrentUser() u: AuthenticatedUser) {
     return { by: u.uid };
@@ -221,7 +225,7 @@ describe('TenantGuard membership cache', () => {
     await hit().expect(200);
     expect(dbCalls).toBe(1);
     await hit('outsider').expect(403);
-    members.set(`${A}:u-outsider`, row('STAFF'));
+    members.set(`${A}:u-outsider`, row('TEACHER'));
     await hit('outsider').expect(200); // a new member is allowed immediately
   });
 });

@@ -3,6 +3,7 @@ import type { INestApplication } from '@nestjs/common';
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CurrentUser, type AuthenticatedUser } from '../src/auth/authenticated-user.js';
 import { Public } from '../src/auth/public.decorator.js';
+import { Permission } from '../src/permission/permission.decorator.js';
 import { Platform, Tenant, UserScoped, type TenantContext } from '../src/tenant/tenant.decorators.js';
 import request from 'supertest';
 
@@ -21,19 +22,21 @@ class ProbeController {
     return user;
   }
 
-  // A tenant route: no decorator needed, that is the default.
+  @Permission('students', 'read')
   @Get('school-data')
   async schoolData(@Tenant() tenant: TenantContext, @Query() _query: unknown) {
     await new Promise((r) => setTimeout(r, Math.random() * 15)); // interleave concurrent requests
     return tenant;
   }
 
+  @Permission('students', 'create')
   @Post('school-data')
   write(@Tenant() tenant: TenantContext, @Body() _body: unknown) {
     return tenant;
   }
 
   @Platform()
+  @Permission('platform_schools', 'read')
   @Get('platform/ping')
   platform(@CurrentUser() user: AuthenticatedUser) {
     return { by: user.uid };
