@@ -4,6 +4,7 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module.js';
+import { PermissionModule } from './permission/permission.module.js';
 import { TenantModule } from './tenant/tenant.module.js';
 import { pinoHttpOptions } from './common/logging.js';
 import { ErrorEnvelopeFilter } from './common/errors.js';
@@ -29,6 +30,7 @@ import { HealthModule } from './health/health.module.js';
     GatewayDatabaseModule,
     AuthModule,
     TenantModule,
+    PermissionModule,
     HealthModule,
   ],
   providers: [
