@@ -27,13 +27,34 @@ Critical path: **RBAC + tenant guard (P0–P1) → data model for people/classes
 | P0-5 | **Schema hardening** (F4–F6, F11): `schoolId` on Invoice/all tenant tables; money → integer minor units; `createdAt` → Timestamp; role set covering Principal, Bursar, Academic Admin, System Admin, Teacher, Driver, Staff, Parent; `AuditLog` table; regenerate SDK; run emulator | M | Flip the 3 `todo` evals to required |
 | P0-6 | `packages/rbac`: roles × modules × actions as data + `can()`; resolve "Principal read-only" vs "approves leave" with an explicit `leave:approve` permission | M | Single source for gateway, web, Flutter codegen |
 | P0-7 | Shared tooling: base tsconfig/eslint/prettier packages, Vitest everywhere (gateway scaffold already uses Vitest + oxlint), real `test` scripts in packages so `turbo test` means something | S | |
-| P0-8 | **Design token pipeline** (tokens already designed: `documentation/design-system/tokens.json`, 60+ tokens × light/dark). `packages/shared-design-tokens` *builds from that file* (no second copy; DS-3) → CSS variables + Tailwind v4 `@theme` + generated Dart `ThemeExtension` in `flutter-core`; add `tokens:check` to CI so outputs never drift | M | Resolve `{alias}` refs; semantic names only |
+| P0-8 | **Design token pipeline** (tokens already designed: `documentation/design-system/tokens.json`, 60+ tokens; dark values exist but are **not built**, ADR-0005). `packages/shared-design-tokens` *builds from that file* (no second copy; DS-3) → CSS variables + Tailwind v4 `@theme` + generated Dart `ThemeExtension` in `flutter-core`; add `tokens:check` to CI so outputs never drift | M | Resolve `{alias}` refs; semantic names only |
 | P0-8a | Fonts: self-host Noto Sans (+ Devanagari + an Arabic-script family for Urdu — verify names) via `next/font`; Poppins only in landing-page; **bundle fonts as Flutter assets** (offline). Replace stock Geist in the 3 Next apps | S | D1, D2 |
 | P0-8b | Brand asset pipeline: copy favicon/OG/logos into apps; strip SVG `<metadata>` for shipped bundles; Flutter launcher icons from `app-icon-*-1024.png` (+ Android adaptive fg/bg layers) | S | D10 |
-| P0-8c | Decide DS-1 (dark theme), DS-2 (languages/RTL), DS-4 (sentence case) in an ADR before Phase 1 UI | S | spec §8 |
+| P0-8c | Decide DS-1 (dark theme), DS-2 (languages/RTL), DS-4 (sentence case) in an ADR before Phase 1 UI | S | spec §8. Done: DS-1/3/4 in ADR-0005, DS-2 in ADR-0006 |
 | P0-9 | `.env.example` per app, env validation approach, secrets policy; rotate R2 keys if exposed | S | |
 
 **Gate:** drift 0 errors; 3 todo evals now required & green; RBAC matrix tests green; CI green; emulator starts with schema.
+
+### Phase 0 status (2026-10-15): implemented; 4 owner items open
+| ID | Status | Evidence / what remains |
+|---|---|---|
+| P0-1 | Done | Root repo created by the owner; nested `.git` (3 apps + `brand-assets/Logos`) backed up and untracked; `.gitignore` fixed; noise untracked. **Changes are uncommitted** |
+| P0-2 | Done | ADR-0001/2/3 accepted (by instruction to implement Phase 0), ADR-0004/0005 added; stale terms removed from docs (drift: 0 stale tech terms) |
+| P0-3 | Done | `firebase-tools` local; Java **not needed** (PGlite emulator verified); Melos via root pub workspace; README. `flutter doctor`: Android toolchain + Xcode **not set up on this machine** |
+| P0-4 | Done | clean reinstall, pins match installed |
+| P0-5 | Done | Enums, `Int64` `*Minor` money, `Timestamp`, `Invoice.school`, `AuditLog`, `School.currency/locale`, DB-enforced school checks; SDK regenerated; 22 emulator checks |
+| P0-6 | Done | `packages/rbac` matrix and tests. The 11 v1 assumed grants were **confirmed by the owner 2026-10-15**; only the grants added with the extended roles (P0-10) await confirmation |
+| P0-7 | Done | `tsconfig.base.json`, Vitest everywhere, oxlint, prettier, turbo `typecheck`; real tests so `turbo test` is meaningful |
+| P0-8 | Done | Token pipeline: CSS, Tailwind v4 theme, TS, Dart; light only; `tokens:check` |
+| P0-8a | Done | Web: `next/font` Noto Sans (+Devanagari), Poppins landing only; Flutter: bundled subset fonts (59 KB/weight Latin). Fonts for all 19 languages now bundled: see P0-11 |
+| P0-8b | Done | favicon/apple icon/OG in Next apps (metadata stripped); launcher icons + adaptive layers + display names + `com.oruschools.<role>` for 4 apps. Not verified in a built APK/IPA |
+| P0-8c | Done | ADR-0005 (no dark mode, one token source, sentence case); DS-2 resolved in ADR-0006 |
+| P0-9 | Partly | Env templates, `environment.md`, validation approach, drift rules done. **Owner action: rotate the R2 keys if `.env.local` ever left this machine**; the root `.env.local` is not read by any app (see `environment.md`) |
+
+| P0-10 | Done | 14 roles incl. HR Manager, Accountant, Admissions Officer, Transport Manager, Operations Manager, Management; multi-scope grants, self-service baseline, `memberships` escalation guard (ADR-0007); `packages/rbac` 46 tests (8 rule-breaking mutations all caught); DB enum verified (63 emulator checks) |
+| P0-11 | Done | 19 languages (English primary; 6 RTL; Hindi and Urdu complete drafts) in `packages/i18n`: registry, ICU catalogs, generated ARB/Dart/TS/CSS/font loaders; 12 bundled font families (4.44 MiB/app, glyph coverage verified per language); Flutter fallback delegates for Kashmiri/Dogri/Sindhi; web `[locale]` routing with `lang`/`dir`; drift rules (RTL-physical, hard-coded strings); 40 `packages/i18n` tests, 47 `flutter-core` tests, 16 app tests (4 per Flutter app), 13 i18n evals and 6 RTL-detector evals (ADR-0006) |
+
+**Owner decisions still open:** (1) confirm the *new* RBAC assumptions (`packages/rbac/README.md`); (2) arrange native-speaker review of the Hindi and Urdu drafts (release gate P6-9) and decide whether Urdu/Kashmiri use Nastaliq (1.89 MiB) or Naskh; (3) commit/push the Phase 0 work; (4) verify CI on GitHub. Next: Phase 1.
 
 ---
 
@@ -56,14 +77,16 @@ Critical path: **RBAC + tenant guard (P0–P1) → data model for people/classes
 |---|---|---|
 | P1-8 | `packages/api-client`: typed client generated from OpenAPI, token injection, error mapping | M |
 | P1-9 | `apps/saas-admin`: login, school list/create/edit, subscription status, owner bootstrap | L |
-| P1-10 | `apps/web-admin` shell: auth, school switcher, `SideNav` built from permissions (omit, never disable; 10 sections per DesignDoc §7), page layout (greeting + ≤5 `StatCard`s + two-column cards), `EmptyState`, light/dark `data-theme` | L |
-| P1-11 | `packages/shared-ui`: implement the **18 components** from `design-system/components/*/README.md` + `index.d.ts` (Icon, Button, ActionTile, TextField, Checkbox, SegmentedControl, StatusPill, Badge, SyncStatus, Banner, Card, StatCard, ListRow, Avatar, BottomNav, SideNav, EmptyState, Logo); density prop; RTL-safe (logical properties); Storybook/preview page compared against `previews/*.png` in light + dark; a11y: 2px focus ring, 13px minimum, icon+word rule. **Do not ship `bundle.js`** (prototype). Add ERP data table + modal + toast (not in the design set yet — design first) | XL |
+| P1-10 | `apps/web-admin` shell: auth, school switcher, `SideNav` built from permissions (omit, never disable; 10 sections per DesignDoc §7), page layout (greeting + ≤5 `StatCard`s + two-column cards), `EmptyState`; light theme only (ADR-0005) | L |
+| P1-11 | `packages/shared-ui`: implement the **18 components** from `design-system/components/*/README.md` + `index.d.ts` (Icon, Button, ActionTile, TextField, Checkbox, SegmentedControl, StatusPill, Badge, SyncStatus, Banner, Card, StatCard, ListRow, Avatar, BottomNav, SideNav, EmptyState, Logo); density prop; RTL-safe (logical properties, mirrored directional icons; `check:drift` rejects physical left/right); Storybook/preview page compared against `previews/*.png` in light mode only (ADR-0005); a11y: 2px focus ring, 13px minimum, icon+word rule. **Do not ship `bundle.js`** (prototype). Add ERP data table + modal + toast (not in the design set yet — design first) | XL |
 
 **Infra**
 | ID | Task | Size |
 |---|---|---|
 | P1-12 | Dockerfiles, Nginx reverse proxy, staging VPS, env/secret handling, deploy script/CI, subdomain routing (`School.subDomain`) | L |
 | P1-13 | R2 presigned-upload endpoint (tenant-prefixed keys, type/size limits) | S |
+| P1-14 | **Language picker + persistence**: user preference (profile) and school default language (`School.locale` already stores formatting locale; add `defaultLanguage`), picker in saas-admin/web-admin (links to `/ur/...`), gateway returns the user's language; localized API error codes (messages client-side) | M |
+| P1-15 | Translation workflow: export/import catalogs for translators (ARB/JSON), CI check that new English keys have descriptions (already enforced), glossary for domain terms (attendance statuses, fee terms) agreed with reviewers | M |
 
 **Gate:** E-TEN-* on every endpoint (A can't read/write B; body `schoolId` ignored); E-RBAC for SUPER_ADMIN vs members; E-AUD-1; suspended school denied; staging deploy reachable; drift clean.
 
@@ -76,7 +99,7 @@ Critical path: **RBAC + tenant guard (P0–P1) → data model for people/classes
 
 | ID | Task | Size |
 |---|---|---|
-| P2-1 | School configuration: academic years (one active), grades/sections, classrooms, subjects, school profile & **branding (Mode A)**: logo upload, one chosen primary colour validated ≥4.5:1 with white text, derived `primary-hover/-text/-soft/focus` incl. dark variants, preview before save; school locale (default `en-IN`) | M |
+| P2-1 | School configuration: academic years (one active), grades/sections, classrooms, subjects, school profile & **branding (Mode A)**: logo upload, one chosen primary colour validated ≥4.5:1 with white text, derived `primary-hover/-text/-soft/focus` preview before save; school locale (default `en-IN`) | M |
 | P2-2 | Students: CRUD, search/filters/pagination, enrolment IDs, class assignment, guardian linking (`ParentGuardian`), photo/docs via R2 | L |
 | P2-3 | Admissions workflow: application → review → admit → auto-create student/guardian invites | M |
 | P2-4 | Staff: profiles, departments, role assignment via memberships, onboarding invites, documents | L |
@@ -120,7 +143,7 @@ Critical path: **RBAC + tenant guard (P0–P1) → data model for people/classes
 
 | ID | Task | Size |
 |---|---|---|
-| P4-1 | `packages/flutter-core`: theme from generated tokens (light/dark), density (`touch` 48 / `driver` 64), the 18 component widgets with identical names/props/wording (`SyncStatus`, `StatusPill`, `ListRow`, `BottomNav`, `ActionTile`…), `lucide_icons_flutter` + name map, bundled fonts, `Directionality`/RTL, auth, API client, error handling | XL |
+| P4-1 | `packages/flutter-core`: theme from generated tokens (light only), density (`touch` 48 / `driver` 64), the 18 component widgets with identical names/props/wording (`SyncStatus`, `StatusPill`, `ListRow`, `BottomNav`, `ActionTile`…), `lucide_icons_flutter` + name map, bundled fonts, `Directionality`/RTL, auth, API client, error handling | XL |
 | P4-2 | **Sync engine** in flutter-core: Drift DB, outbox table (UUID idempotency key, deviceId, baseVersion), connectivity watcher, backoff, partial-failure handling, pull via cursors, migrations; exposes exactly the 6 design states (`synced`, `saved`, `pending`, `syncing`, `offline`, `failed`) driving `SyncStatus` with fixed wording | XL |
 | P4-3 | Auth on device: Firebase login, secure token storage, school selection, biometric/lock option, session expiry offline-safe | M |
 | P4-4 | `apps/mobile-teacher`: **Today** home (next class, to-dos), exception-based attendance ("Mark all present" → toggle exceptions), gradebook fast entry with drafts, classes, leave requests & substitute status | XL |
@@ -164,6 +187,7 @@ Critical path: **RBAC + tenant guard (P0–P1) → data model for people/classes
 | P6-5 | Compliance & privacy: student/minor data policy, retention/deletion, consent, ToS/privacy policy | M |
 | P6-6 | White-label Mode B (app name, icon, splash, package identity per school; OruSchools logo removed, plain-text "Powered by OruSchools" on About) feasibility & build pipeline | L |
 | P6-7 | App store submissions (iOS/Android ×4 apps), store assets | M |
+| P6-9 | **Native-speaker review** of Hindi and Urdu (then flip `reviewed` in `messages/status.json`), visual tuning of per-script line heights with native readers, decide Nastaliq vs Naskh; translate further languages on demand | L |
 | P6-8 | Pilot with one school: onboarding checklist, training material, feedback loop, bug triage | L |
 
 **Gate:** no High findings open; restore drill passed; load targets met; pilot school live for a full term cycle without data-loss incidents.
@@ -183,8 +207,8 @@ Critical path: **RBAC + tenant guard (P0–P1) → data model for people/classes
 |---|---|---|
 | ADR-0001/2/3 acceptance | Phase 0 | `decisions/` |
 | Remove nested `.git`, root repo | Phase 0 | audit F10 |
-| Languages & RTL (Hindi/Urdu implied; Kashmiri?) — DS-2 | **Before Phase 1 UI** | new ADR |
-| Dark theme in v1? — DS-1 | Phase 0 (token build) | new ADR |
+| ~~Languages & RTL — DS-2~~ | Resolved: ADR-0006 (native review of drafts is gate P6-9) | done |
+| ~~Dark theme in v1? — DS-1~~ | Resolved: no (ADR-0005) | done |
 | Payment provider (Razorpay vs Stripe) | Start of Phase 5 | new ADR |
 | Messaging backend (F7) | Start of Phase 5 | new ADR |
 | SMS provider | Phase 3–5 | new ADR |

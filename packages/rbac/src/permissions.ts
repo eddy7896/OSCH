@@ -10,6 +10,8 @@ export const RESOURCES = [
   "dashboard_finance",
   "dashboard_academic",
   "dashboard_system", // system health
+  "dashboard_hr",
+  "dashboard_operations", // transport + operations health
   // Finance silo
   "finance", // fees, invoices, payments, ledger, expenses
   "payroll",
@@ -21,16 +23,21 @@ export const RESOURCES = [
   "attendance", // student attendance
   "substitution", // assigning substitute teachers
   "reports_academic",
+  "admissions", // applications, enquiries, admission decisions
   // People / HR
-  "staff", // staff profiles & memberships
-  "staff_attendance", // a staff member's own check-in/out
-  "leave", // leave requests (approve = Principal)
+  "staff", // staff profiles and HR records
+  "staff_attendance", // staff check-in/out (own scope = self-service; school scope = HR/oversight)
+  "leave", // leave requests (approve = Principal only, guardrail section 4)
+  "recruitment",
+  "reports_hr",
   // Operations
+  "operations", // inventory, assets, procurement, visitors
   "transport",
   "announcements",
   "messages", // 1:1 direct messaging (office hours enforced separately)
   // Administration
-  "settings", // school settings, roles & permissions, integrations
+  "settings", // school settings, integrations
+  "memberships", // who may log in to this school and WITH WHICH ROLE (granting roles is privilege escalation)
   "audit_log",
   // Platform (SUPER_ADMIN only)
   "platform_schools",
@@ -51,8 +58,16 @@ export interface Grant {
   readonly scope: Scope;
 }
 
+/** A role may hold several grants on one resource at different scopes (e.g. read school-wide, create only for itself). */
+export type GrantSet = Grant | readonly Grant[];
+export const grantsOf = (g: GrantSet | undefined): readonly Grant[] => (g === undefined ? [] : Array.isArray(g) ? g : [g as Grant]);
+
+/** Wider scope wins when several grants allow the same action. `linked` and `own` never coexist on one resource. */
+export const SCOPE_RANK: Readonly<Record<Scope, number>> = { own: 0, linked: 1, school: 2 };
+
 /** Resource groups used by isolation rules and tests. */
 export const FINANCE_RESOURCES: readonly Resource[] = ["dashboard_finance", "finance", "payroll", "reports_finance"];
+export const HR_RESOURCES: readonly Resource[] = ["dashboard_hr", "staff", "recruitment", "reports_hr", "payroll"];
 export const ACADEMIC_RESOURCES: readonly Resource[] = [
   "dashboard_academic",
   "students",
@@ -60,5 +75,13 @@ export const ACADEMIC_RESOURCES: readonly Resource[] = [
   "grades",
   "attendance",
   "substitution",
+  "admissions",
   "reports_academic",
 ];
+
+/**
+ * Self-service resources every EMPLOYEE role gets at `own` scope: check in/out and request leave. Defined once
+ * (see SELF_SERVICE in matrix.ts) so no role is forgotten. Principal data stays read-only: these are the only
+ * writes a read-only role may hold, and only on the user's own records.
+ */
+export const SELF_SERVICE_RESOURCES: readonly Resource[] = ["staff_attendance", "leave"];

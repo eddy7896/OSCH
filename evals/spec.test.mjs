@@ -3,7 +3,7 @@
 // When a finding is fixed, remove `todo` so it becomes a hard requirement.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,6 +27,17 @@ function parseTables() {
 const tables = parseTables();
 const GLOBAL_TABLES = new Set(["School", "User"]);
 
+function parseEnums() {
+  const out = {};
+  for (const m of read("dataconnect/schema/schema.gql").matchAll(/^enum (\w+)\s*\{([^}]*)\}/gm)) out[m[1]] = m[2].trim().split(/\s+/);
+  return out;
+}
+const enums = parseEnums();
+const rbacRoles = (file, name) => {
+  const m = read(file).match(new RegExp(`export const ${name} = \\[([\\s\\S]*?)\\] as const`));
+  return [...m[1].matchAll(/"([A-Z_]+)"/g)].map((x) => x[1]);
+};
+
 test("E-DOC-1 drift check reports zero errors", () => {
   execFileSync("node", ["tools/checks/drift-check.mjs"], { cwd: ROOT, stdio: "pipe" });
 });
@@ -41,28 +52,55 @@ test("E-TEN-S1 membership & guardian join tables are tenant-reachable", () => {
   assert.ok(tables.ParentGuardian.student, "ParentGuardian must reference Student");
 });
 
-test("E-TEN-S2 every tenant table has a direct school reference", { todo: "F4: Invoice has none" }, () => {
+test("E-TEN-S2 every tenant table has a direct school reference", () => {
   const missing = Object.entries(tables)
     .filter(([name]) => !GLOBAL_TABLES.has(name))
     .filter(([, f]) => !("school" in f))
     .map(([name]) => name);
-  // ParentGuardian is a pure join to Student; tolerated until it gets its own school column.
+  // ParentGuardian is a pure join to Student (tenant-scoped through it); tolerated until it gets its own school column.
   assert.deepEqual(missing.filter((n) => n !== "ParentGuardian"), []);
 });
 
-test("E-FIN-S1 money fields are not Float", { todo: "F5: Invoice.amount, Payroll.amount are Float" }, () => {
+test("E-FIN-S1 money fields are integer minor units, never Float", () => {
   const bad = [];
   for (const [t, f] of Object.entries(tables))
     for (const [name, type] of Object.entries(f))
-      if (/amount|price|fee|salary|total/i.test(name) && /^Float/.test(type)) bad.push(`${t}.${name}`);
+      if (/amount|price|fee|salary|total/i.test(name) && !/Minor$/.test(name)) bad.push(`${t}.${name} (${type}) must be named *Minor`);
+      else if (/Minor$/.test(name) && !/^Int64/.test(type)) bad.push(`${t}.${name} must be Int64, is ${type}`);
   assert.deepEqual(bad, []);
+  assert.ok(Object.values(tables).some((f) => "amountMinor" in f), "expected amountMinor fields");
+  assert.doesNotMatch(read("dataconnect/schema/schema.gql"), /:\s*Float\b/, "no Float anywhere in the schema");
 });
 
-test("E-RBAC-S1 schema roles cover every role in the RBAC matrix", { todo: "F6: no ACADEMIC_ADMIN / SYSTEM_ADMIN / PARENT" }, () => {
-  const schema = read("dataconnect/schema/schema.gql");
-  const roleComment = schema.match(/schoolRole:[^\n]*#([^\n]*)/)?.[1] ?? "";
-  for (const r of ["PRINCIPAL", "BURSAR", "ACADEMIC_ADMIN", "SYSTEM_ADMIN", "TEACHER", "DRIVER", "STAFF"])
-    assert.match(roleComment, new RegExp(r), `schoolRole comment lacks ${r}`);
+test("E-FIN-S2 timestamps: createdAt is Timestamp, calendar dates stay Date", () => {
+  for (const [t, f] of Object.entries(tables)) if ("createdAt" in f) assert.match(f.createdAt, /^Timestamp!?$/, `${t}.createdAt`);
+});
+
+test("E-RBAC-S1 schema role enums equal packages/rbac roles (exactly)", () => {
+  assert.deepEqual([...enums.SchoolRole].sort(), rbacRoles("packages/rbac/src/roles.ts", "ROLES").sort());
+  assert.deepEqual([...enums.GlobalRole].sort(), rbacRoles("packages/rbac/src/roles.ts", "GLOBAL_ROLES").sort());
+  for (const [t, f] of Object.entries(tables)) for (const [n, type] of Object.entries(f)) if (/role$/i.test(n)) assert.match(type, /Role!?$/, `${t}.${n} must be an enum`);
+});
+
+test("E-RBAC-S2 statuses are enums, not free strings", () => {
+  for (const [t, f] of Object.entries(tables)) if ("status" in f || "subscriptionStatus" in f) assert.ok(!/^String/.test(f.status ?? f.subscriptionStatus), `${t} status must be an enum`);
+});
+
+test("E-AUD-S1 audit log table exists, is append-only (no update/delete operation), and has a school ref", () => {
+  assert.ok(tables.AuditLog && tables.AuditLog.school && tables.AuditLog.actor && tables.AuditLog.createdAt);
+  const ops = read("dataconnect/erp-connector/mutations.gql");
+  assert.match(ops, /mutation CreateAuditLog/);
+  assert.doesNotMatch(ops, /auditLog_(update|delete)/);
+});
+
+test("E-TEN-S3 every mutation/query takes $schoolId except the platform-level ones", () => {
+  const exempt = new Set(["CreateUser", "CreateSchool", "CreateAuditLog"]); // platform-level / carries optional $schoolId
+  for (const f of ["queries.gql", "mutations.gql"])
+    for (const b of read(`dataconnect/erp-connector/${f}`).split(/^(?=(?:query|mutation)\s)/m).filter((b) => /^(query|mutation)\s/.test(b))) {
+      const head = b.split("{")[0];
+      const name = head.match(/^(?:query|mutation)\s+(\w+)/)[1];
+      if (!exempt.has(name)) assert.match(head, /\$schoolId\b/, `${name} must take $schoolId`);
+    }
 });
 
 test("E-DOC-3 every connector operation is NO_ACCESS", () => {
@@ -72,9 +110,11 @@ test("E-DOC-3 every connector operation is NO_ACCESS", () => {
   }
 });
 
-test("E-DOC-4 docs index: ADRs exist and are referenced from CLAUDE.md", () => {
-  for (const a of ["ADR-0001-tenant-isolation", "ADR-0002-auth-provider", "ADR-0003-mobile-local-db"])
-    assert.ok(existsSync(resolve(ROOT, `documentation/decisions/${a}.md`)), a);
+test("E-DOC-4 ADRs 0001-0007 exist, are Accepted, and CLAUDE.md points at the decisions folder", () => {
+  const dir = resolve(ROOT, "documentation/decisions");
+  const files = readdirSync(dir).filter((f) => /^ADR-000[1-7]-.*\.md$/.test(f));
+  assert.equal(files.length, 7, `expected ADR-0001..0007, found ${files.join(", ")}`);
+  for (const f of files) assert.match(readFileSync(resolve(dir, f), "utf8"), /\*\*Status:\*\* Accepted/, `${f} must be Accepted`);
   assert.match(read("CLAUDE.md"), /ADR-\*\.md/);
 });
 

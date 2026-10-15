@@ -38,9 +38,15 @@ export enum PayrollStatus {
 
 export enum SchoolRole {
   PRINCIPAL = "PRINCIPAL",
+  MANAGEMENT = "MANAGEMENT",
   BURSAR = "BURSAR",
   ACADEMIC_ADMIN = "ACADEMIC_ADMIN",
   SYSTEM_ADMIN = "SYSTEM_ADMIN",
+  HR_MANAGER = "HR_MANAGER",
+  ACCOUNTANT = "ACCOUNTANT",
+  ADMISSIONS_OFFICER = "ADMISSIONS_OFFICER",
+  TRANSPORT_MANAGER = "TRANSPORT_MANAGER",
+  OPERATIONS_MANAGER = "OPERATIONS_MANAGER",
   TEACHER = "TEACHER",
   STAFF = "STAFF",
   DRIVER = "DRIVER",
@@ -105,6 +111,14 @@ export interface CreateClassroomVariables {
 }
 
 export interface CreateExamData {
+  query?: {
+    classrooms: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+    subjects: ({
+      id: UUIDString;
+    } & Subject_Key)[];
+  };
   exam_insert: Exam_Key;
 }
 
@@ -134,6 +148,11 @@ export interface CreateInvoiceVariables {
 }
 
 export interface CreateLeaveRequestData {
+  query?: {
+    schoolMembers: ({
+      userId: string;
+    })[];
+  };
   leaveRequest_insert: LeaveRequest_Key;
 }
 
@@ -146,6 +165,11 @@ export interface CreateLeaveRequestVariables {
 }
 
 export interface CreatePayrollData {
+  query?: {
+    schoolMembers: ({
+      userId: string;
+    })[];
+  };
   payroll_insert: Payroll_Key;
 }
 
@@ -157,6 +181,17 @@ export interface CreatePayrollVariables {
 }
 
 export interface CreateScheduleData {
+  query?: {
+    classrooms: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+    subjects: ({
+      id: UUIDString;
+    } & Subject_Key)[];
+    schoolMembers: ({
+      userId: string;
+    })[];
+  };
   classSchedule_insert: ClassSchedule_Key;
 }
 
@@ -435,6 +470,11 @@ export interface Subject_Key {
 }
 
 export interface UpdateLeaveRequestData {
+  query?: {
+    schoolMembers: ({
+      userId: string;
+    })[];
+  };
   leaveRequest_updateMany: number;
 }
 

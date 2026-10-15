@@ -1,6 +1,6 @@
 # ADR-0001: Tenant isolation model
 
-- **Status:** Proposed (2026-10-15) — needs owner sign-off
+- **Status:** Accepted (2026-10-15, on the instruction to implement Phase 0; reverse by superseding this ADR)
 - **Supersedes:** "separate schema per school" wording in `guardrails.md`, `system_memory.md`, `OruSchools SSOT.md` §2
 
 ## Context

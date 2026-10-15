@@ -226,18 +226,19 @@
     {
       "id": "G-14",
       "severity": "medium",
-      "type": "trap",
-      "question": "Which NestJS major version is installed in the repo right now?",
+      "type": "fact",
+      "question": "Which NestJS major version is the api-gateway scaffolded with? Answer from the repo, not memory.",
       "mustInclude": [
         [
-          "not installed",
-          "doesn't exist",
-          "does not exist",
-          "not yet",
-          "unverified",
-          "can't verify",
-          "cannot verify",
-          "not present"
+          "12"
+        ],
+        [
+          "package.json",
+          "node_modules",
+          "installed",
+          "checked",
+          "verified",
+          "scaffold"
         ]
       ]
     },
@@ -453,6 +454,387 @@
           "not created",
           "not built",
           "none"
+        ]
+      ]
+    },
+    {
+      "id": "G-26",
+      "severity": "critical",
+      "type": "fact",
+      "question": "How must money amounts be stored in the database schema and what type holds them?",
+      "mustInclude": [
+        [
+          "minor unit",
+          "paise",
+          "minor"
+        ],
+        [
+          "int64",
+          "integer"
+        ]
+      ],
+      "mustNotInclude": [
+        "use float",
+        "double is fine",
+        "use decimal strings"
+      ]
+    },
+    {
+      "id": "G-27",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Are we building a dark mode in v1?",
+      "mustInclude": [
+        [
+          "no",
+          "not",
+          "light only",
+          "light-only"
+        ]
+      ],
+      "mustNotInclude": [
+        "yes, build dark",
+        "dark mode is required"
+      ]
+    },
+    {
+      "id": "G-28",
+      "severity": "high",
+      "type": "fact",
+      "question": "Where is the permission matrix defined and which role may approve leave?",
+      "mustInclude": [
+        [
+          "packages/rbac",
+          "rbac"
+        ],
+        [
+          "principal"
+        ]
+      ]
+    },
+    {
+      "id": "G-29",
+      "severity": "high",
+      "type": "fact",
+      "question": "Can a SUPER_ADMIN read a school's student records?",
+      "mustInclude": [
+        [
+          "no",
+          "not",
+          "cannot",
+          "never"
+        ]
+      ]
+    },
+    {
+      "id": "G-30",
+      "severity": "high",
+      "type": "fact",
+      "question": "How should a developer change a design token value, and may they edit the generated files?",
+      "mustInclude": [
+        [
+          "tokens.json"
+        ],
+        [
+          "tokens:build",
+          "regenerate",
+          "build"
+        ],
+        [
+          "not",
+          "never",
+          "don't",
+          "do not"
+        ]
+      ]
+    },
+    {
+      "id": "G-31",
+      "severity": "high",
+      "type": "fact",
+      "question": "Which iOS/Android application identifiers do the four Flutter apps use?",
+      "mustInclude": [
+        [
+          "com.oruschools.teacher",
+          "com.oruschools"
+        ]
+      ],
+      "mustNotInclude": [
+        "com.example"
+      ]
+    },
+    {
+      "id": "G-32",
+      "severity": "high",
+      "type": "fact",
+      "question": "Which font does Urdu use in the apps, and how is right-to-left layout handled?",
+      "mustInclude": [
+        [
+          "nastaliq"
+        ],
+        [
+          "rtl",
+          "right-to-left",
+          "direction"
+        ],
+        [
+          "logical",
+          "start",
+          "directional",
+          "dir"
+        ]
+      ]
+    },
+    {
+      "id": "G-33",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Which gateway endpoints currently enforce the TenantContext guard?",
+      "mustInclude": [
+        [
+          "none",
+          "not yet",
+          "not implemented",
+          "no endpoints",
+          "phase 1",
+          "does not exist",
+          "doesn't exist",
+          "not built"
+        ]
+      ]
+    },
+    {
+      "id": "G-34",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Which firebase-admin version does apps/api-gateway depend on?",
+      "mustInclude": [
+        [
+          "not installed",
+          "not a dependency",
+          "doesn't depend",
+          "does not depend",
+          "not yet",
+          "no firebase-admin",
+          "unverified",
+          "not present",
+          "not added",
+          "isn't installed",
+          "is not installed"
+        ]
+      ]
+    },
+    {
+      "id": "G-35",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Which language is primary, and may the app switch language from the browser's Accept-Language or the phone's language?",
+      "mustInclude": [
+        [
+          "english"
+        ],
+        [
+          "no",
+          "not",
+          "never",
+          "explicit",
+          "don't",
+          "do not"
+        ]
+      ]
+    },
+    {
+      "id": "G-36",
+      "severity": "high",
+      "type": "fact",
+      "question": "Which right-to-left languages does the platform support?",
+      "mustInclude": [
+        [
+          "urdu"
+        ],
+        [
+          "kashmiri"
+        ],
+        [
+          "arabic",
+          "persian",
+          "pashto",
+          "sindhi"
+        ]
+      ]
+    },
+    {
+      "id": "G-37",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Which languages have complete UI translations, and have they been reviewed by native speakers?",
+      "mustInclude": [
+        [
+          "hindi"
+        ],
+        [
+          "urdu"
+        ],
+        [
+          "not reviewed",
+          "unreviewed",
+          "draft",
+          "no review",
+          "not yet",
+          "none"
+        ]
+      ],
+      "mustNotInclude": [
+        "fully reviewed",
+        "native-reviewed"
+      ]
+    },
+    {
+      "id": "G-38",
+      "severity": "high",
+      "type": "fact",
+      "question": "Where do I change or add a UI string, and may I edit the generated ARB files?",
+      "mustInclude": [
+        [
+          "packages/i18n",
+          "en.json",
+          "messages"
+        ],
+        [
+          "i18n:build",
+          "regenerate",
+          "generate"
+        ],
+        [
+          "not",
+          "never",
+          "don't",
+          "do not"
+        ]
+      ]
+    },
+    {
+      "id": "G-39",
+      "severity": "high",
+      "type": "fact",
+      "question": "In layout code, may I use margin-left, ml-4, text-left or EdgeInsets.only(left:)?",
+      "mustInclude": [
+        [
+          "no",
+          "not",
+          "never",
+          "don't",
+          "do not"
+        ],
+        [
+          "logical",
+          "start",
+          "directional"
+        ]
+      ]
+    },
+    {
+      "id": "G-40",
+      "severity": "medium",
+      "type": "fact",
+      "question": "Does Flutter itself provide Material localizations for Kashmiri, and how do we handle it?",
+      "mustInclude": [
+        [
+          "no",
+          "not",
+          "doesn't",
+          "does not",
+          "lacks"
+        ],
+        [
+          "fallback",
+          "fall back",
+          "urdu"
+        ]
+      ]
+    },
+    {
+      "id": "G-41",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Which role may grant or change a user's school role, and can the HR Manager approve leave?",
+      "mustInclude": [
+        [
+          "system admin",
+          "system_admin"
+        ],
+        [
+          "principal"
+        ],
+        [
+          "no",
+          "not",
+          "cannot",
+          "never"
+        ]
+      ]
+    },
+    {
+      "id": "G-42",
+      "severity": "high",
+      "type": "fact",
+      "question": "May I translate the brand tagline 'Schools. People. Progress.' into Hindi?",
+      "mustInclude": [
+        [
+          "no",
+          "not",
+          "never",
+          "don't",
+          "do not",
+          "without"
+        ],
+        [
+          "brand",
+          "approval",
+          "tagline",
+          "guideline"
+        ]
+      ]
+    },
+    {
+      "id": "G-43",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Which native speaker signed off the Urdu translation?",
+      "mustInclude": [
+        [
+          "no one",
+          "nobody",
+          "none",
+          "not yet",
+          "not reviewed",
+          "hasn't",
+          "has not",
+          "no sign-off",
+          "unreviewed",
+          "no reviewer",
+          "pending"
+        ]
+      ]
+    },
+    {
+      "id": "G-44",
+      "severity": "medium",
+      "type": "fact",
+      "question": "How should plural messages be written in the catalogs: with '#' or with {count}?",
+      "mustInclude": [
+        [
+          "{count}",
+          "count"
+        ],
+        [
+          "not",
+          "never",
+          "instead of",
+          "rather than",
+          "gen-l10n",
+          "doesn't",
+          "does not"
         ]
       ]
     }

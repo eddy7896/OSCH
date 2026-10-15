@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import "@oruschools/shared-design-tokens/tokens.css";
+@import "@oruschools/shared-design-tokens/theme.css";
+@import "@oruschools/i18n/i18n.css";
+
+/* Light theme only (decision DS-1): no dark-mode styling in v1. */
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* Design system: every interactive element shows a 2px solid focus ring with a 2px offset. */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

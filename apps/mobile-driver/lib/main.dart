@@ -1,16 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_core/flutter_core.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+void main() => runApp(const DriverApp());
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class DriverApp extends StatelessWidget {
+  /// English is the primary language; another language is an explicit choice (ADR-0006), passed here once a language
+  /// picker exists (Phase 4). The device language is not adopted automatically.
+  const DriverApp({super.key, this.locale = const Locale(OruLocales.defaultCode)});
+
+  final Locale locale;
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('Hello World!'))),
+    return MaterialApp(
+      locale: locale,
+      onGenerateTitle: (context) => OruStrings.of(context).appDriver,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: oruLocalizationsDelegates,
+      supportedLocales: oruSupportedLocales,
+      localeResolutionCallback: oruLocaleResolution,
+      theme: OruTheme.light(density: OruDensity.driver),
+      builder: oruAppBuilder(density: OruDensity.driver),
+      home: const _FoundationScreen(),
+    );
+  }
+}
+
+/// Placeholder until the first real screen ships (see documentation/implementation_plan.md).
+class _FoundationScreen extends StatelessWidget {
+  const _FoundationScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    final strings = OruStrings.of(context);
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(OruSpacing.space4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, // "start" follows the text direction (right edge in RTL)
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(strings.appDriver, style: text.titleLarge),
+              const SizedBox(height: OruSpacing.space2),
+              Text(strings.scaffoldNotice, style: text.bodyLarge?.copyWith(color: OruColors.textMuted)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

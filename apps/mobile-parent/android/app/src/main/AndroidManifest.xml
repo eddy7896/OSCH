@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="mobile_parent"
+        android:label="OruSchools Parent"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

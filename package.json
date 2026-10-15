@@ -10,14 +10,30 @@
     "test": "turbo run test",
     "check:drift": "node tools/checks/drift-check.mjs",
     "eval": "node tools/checks/drift-check.mjs && node --test evals/",
-    "eval:agent": "node evals/grade-answers.mjs"
+    "eval:agent": "node evals/grade-answers.mjs",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "tokens:build": "npm run build --workspace @oruschools/shared-design-tokens",
+    "tokens:check": "npm run check --workspace @oruschools/shared-design-tokens --silent",
+    "test:dataconnect": "bash tools/tests/dataconnect-tenancy.sh",
+    "i18n:build": "npm run generate --workspace @oruschools/i18n",
+    "i18n:check": "npm run check --workspace @oruschools/i18n --silent"
   },
   "devDependencies": {
     "firebase-tools": "^15.34.0",
-    "turbo": "^2.0.0"
+    "oxlint": "^1.58.0",
+    "prettier": "^3.4.2",
+    "sharp": "^0.35.5",
+    "turbo": "^2.0.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
   },
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "engines": {
+    "node": ">=20.9"
+  }
 }

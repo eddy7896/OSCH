@@ -47,7 +47,7 @@ graph TD
 
 ## 2. Multi-Tenant Ecosystem
 
-To ensure data privacy and a customized experience, the platform utilizes a single database with isolated schemas per school.
+To ensure data privacy and a customized experience, the platform utilizes a single database and a single schema in which every tenant table is scoped by `schoolId` (row-level tenancy, ADR-0001).
 
 ### 2.1 Ecosystem Hierarchy Diagram
 
@@ -55,8 +55,8 @@ To ensure data privacy and a customized experience, the platform utilizes a sing
 graph TD
     SA{Super Admin SaaS Owner} -->|Manages Subscriptions & Billing| CloudDB[(Unified Cloud DB)]
 
-    CloudDB -->|Schema 1| SchoolA[School A Instance]
-    CloudDB -->|Schema 2| SchoolB[School B Instance]
+    CloudDB -->|rows scoped by schoolId A| SchoolA[School A Instance]
+    CloudDB -->|rows scoped by schoolId B| SchoolB[School B Instance]
 
     SchoolA --> AdminWebA[Web Admin Dashboard]
     SchoolA --> TeacherAppA[Teacher App iOS/Android]
@@ -134,7 +134,7 @@ To support users in regions like Jammu & Kashmir with 2G fallback or network bla
 ```mermaid
 sequenceDiagram
     participant User as Teacher (Flutter App)
-    participant LocalDB as Local SQLite / Isar
+    participant LocalDB as Local SQLite (Drift)
     participant Queue as Background Sync Queue
     participant API as Cloud API Gateway
     participant DB as PostgreSQL DB
@@ -158,7 +158,7 @@ sequenceDiagram
 graph TD
     subgraph Mobile Device
         Input[Teacher Input: Grades/Attendance]
-        LocalDB[(Local SQLite / WatermelonDB)]
+        LocalDB[(Local SQLite (Drift))]
         Queue[Background Sync Queue]
         
         Input -->|Writes instantly| LocalDB
@@ -393,7 +393,7 @@ This diagram maps the chosen technologies across the client, API, data, and exte
 graph TB
     subgraph ClientLayer [Client Layer / Mobile Native]
         Flutter["Flutter (iOS & Android)"]
-        SQLite[("SQLite / WatermelonDB")]
+        SQLite[("SQLite (Drift)")]
         
         Flutter <-->|Writes Instantly / Offline First| SQLite
     end
@@ -413,7 +413,7 @@ graph TB
     end
 
     subgraph ExternalServices [Third-Party Services]
-        Auth["OAuth2 / Auth0"]
+        Auth["Firebase Auth"]
         Comm["FCM (Push) & SMS Gateway"]
         Pay["Stripe / Razorpay"]
     end

@@ -31,11 +31,26 @@ Before implementing a feature, agents MUST verify:
 - **How many primary buttons per screen?** Exactly one. Minimum tap target 48px (Driver 64px); minimum text 13px; no emoji in product UI.
 - **Is `components/bundle.js` production code?** No — a prototype using `window.React`/`window.Oru`. Implement from the component READMEs.
 - **Can a school recolour attendance statuses or surfaces?** No. Mode A may override only `primary`, `primary-hover`, `primary-text`, `primary-soft`, `focus` (≥4.5:1 with white text). Schools may rename status *labels* only.
-- **Does a dark theme exist?** Yes, every colour token has a dark value (whether it ships in v1 is decision DS-1).
+- **Is there a dark mode?** Not in v1 (ADR-0005). `tokens.json` retains dark values for the future, but nothing builds or ships them; never add `prefers-color-scheme: dark`, `data-theme="dark"`, `darkTheme` or `ThemeMode`.
+- **How is money stored?** Integer minor units in `Int64` fields named `*Minor` (ADR-0004). Never `Float`.
+- **Where do permissions live?** `packages/rbac` (deny by default; Principal read-only except `approve`; SUPER_ADMIN has no tenant-data access).
+- **How do I change a colour/size/type token?** Edit `documentation/design-system/tokens.json` (design-owned), run `npm run tokens:build`; never hand-edit generated files.
+- **Glyphs `↑ ✓ ↻`?** Not in Noto Sans: use the Icon component, not text characters.
 
-## 5. Automated Enforcement
+## 5. Languages and Roles Truths
+- **Primary language?** English. Others are an explicit choice (URL on web, explicit locale in Flutter); never `Accept-Language` or device language.
+- **Right-to-left languages supported?** Urdu, Kashmiri, Sindhi, Pashto, Persian, Arabic. Regional LTR: Hindi, Bengali, Assamese, Marathi, Dogri, Gujarati, Punjabi, Odia, Tamil, Telugu, Kannada, Malayalam.
+- **Which translations are complete and reviewed?** Hindi and Urdu are complete **drafts**; **none are reviewed** yet. Everything else shows English per missing key.
+- **How do I add or change a string?** Edit `packages/i18n/messages/en.json` (and `_descriptions.json`), run `npm run i18n:build`. Never edit ARB files or other generated outputs. Plural branches use `{count}`, not `#`.
+- **Physical left/right in layout code?** Never: `ms-`/`me-`/`text-start`, `EdgeInsetsDirectional`, `AlignmentDirectional`, `TextAlign.start`.
+- **Does Flutter support Kashmiri/Dogri/Sindhi?** No Material/Widgets/Cupertino localizations; `oruLocalizationsDelegates` supplies fallbacks and `OruLocales.textDirectionOf` is the authority for direction.
+- **May I translate the brand tagline "Schools. People. Progress."?** No, not without brand approval.
+- **How many school roles and who grants them?** 14 roles (incl. HR_MANAGER, ACCOUNTANT, ADMISSIONS_OFFICER, TRANSPORT_MANAGER, OPERATIONS_MANAGER, MANAGEMENT). Only SYSTEM_ADMIN can grant or change roles; only PRINCIPAL approves anything (HR cannot approve leave).
+
+## 6. Automated Enforcement
 These truths are not just prose; they are checked by machines (see `eval_plan.md`):
-- `npm run check:drift` — paths cited in docs exist (or are declared planned), banned deps absent, Data Connect ops are `NO_ACCESS` and tenant-scoped, secrets are ignored, stale/contradictory terms flagged, pinned vs installed versions compared, `tokens.css` identical to `tokens.json`, brand guideline mirror identical, raw hex colours in app/package source flagged.
+- `npm run i18n:check` / `npm run i18n:build`: language sources validated and generated files (ARB, Dart, TS, CSS, font loaders, pubspec fonts block) verified.
+- `npm run check:drift` — paths cited in docs exist (or are declared planned), banned deps absent, Data Connect ops are `NO_ACCESS` and tenant-scoped, secrets are ignored, stale/contradictory terms flagged, pinned vs installed versions compared, `tokens.css` identical to `tokens.json`, brand guideline mirror identical, raw hex colours in app/package source flagged, generated i18n files current, physical left/right in web and Flutter source rejected, hard-coded UI strings in app shells rejected.
 - `npm run eval` — drift check + invariant evals in `evals/` (incl. WCAG contrast of every token pair in both themes: `evals/design-tokens.test.mjs`).
 - `npm run eval:agent -- answers.json` — grades an agent against `evals/hallucination-golden.json` (includes "trap" questions about things that don't exist yet).
 - Cadence: every PR, weekly CI cron, monthly golden-set run.

@@ -1,6 +1,6 @@
 # ADR-0003: Flutter local database and sync
 
-- **Status:** Proposed (2026-10-15) — needs owner sign-off
+- **Status:** Accepted (2026-10-15, on the instruction to implement Phase 0; reverse by superseding this ADR)
 - **Supersedes:** "SQLite / Isar / WatermelonDB" lists in `agent_contexts.md`, `system_memory.md`, roadmap, SSOT
 
 ## Context

@@ -7,6 +7,8 @@
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, relative, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
+import { dartViolation, webViolation } from "./rtl-patterns.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const args = new Set(process.argv.slice(2));
@@ -41,6 +43,7 @@ const config = JSON.parse(read("tools/checks/drift-config.json"));
     const seen = new Set();
     for (const m of read(doc).matchAll(re)) {
       if (m[1].includes("*") || m[1].endsWith("-")) continue; // globs such as apps/mobile-*
+      if (/\/\.env(\.|$)/.test(m[1])) continue; // local, git-ignored env files are never in a clean checkout
       const p = m[1].replace(/[.,)`]+$/, "").replace(/\/$/, "");
       if (seen.has(p)) continue;
       seen.add(p);
@@ -178,6 +181,67 @@ const config = JSON.parse(read("tools/checks/drift-config.json"));
   const srcFiles = ["apps", "packages"].flatMap((d) => walk(d, (f) => /\/(src|lib)\//.test(f) && /\.(tsx?|css|dart)$/.test(f) && !/\.(d\.ts|g\.dart)$/.test(f) && !/shared-design-tokens/.test(f)));
   const rawHex = srcFiles.filter((f) => /#[0-9a-fA-F]{6}\b|Color\(0x[0-9A-Fa-f]{8}\)/.test(read(f)));
   for (const f of rawHex) add("warn", "raw-hex", "hard-coded colour; use a semantic design token", f);
+}
+
+// 9. Environment templates & generated artefacts. --------------------------------------------------------------
+{
+  // Every key in any local .env* must be documented in the root .env.example (so a new dev can reproduce the setup).
+  const keysOf = (text) => new Set([...text.matchAll(/^\s*([A-Z][A-Z0-9_]*)\s*=/gm)].map((m) => m[1]));
+  if (exists(".env.example")) {
+    const documented = keysOf(read(".env.example"));
+    const localEnvs = [".env.local", ...["apps/api-gateway", "apps/saas-admin", "apps/web-admin", "apps/landing-page"].map((d) => `${d}/.env.local`)].filter(exists);
+    for (const f of localEnvs)
+      for (const k of keysOf(read(f)))
+        if (!documented.has(k)) add("error", "env-example", `${k} is used in ${f} but missing from .env.example`, f);
+    // Public vars must never look like secrets.
+    for (const f of [".env.example", ...localEnvs])
+      for (const k of keysOf(read(f)))
+        if (/^NEXT_PUBLIC_.*(SECRET|PRIVATE|PASSWORD|TOKEN|ACCESS_KEY)/.test(k)) add("error", "env-public-secret", `${k} is NEXT_PUBLIC_ (shipped to browsers) but looks like a secret`, f);
+  }
+  // Generated token outputs must match tokens.json (npm run tokens:build).
+  try {
+    execFileSync("node", ["packages/shared-design-tokens/scripts/build.mjs", "--check"], { cwd: ROOT, stdio: "pipe" });
+  } catch (e) {
+    add("error", "tokens-generated", "generated token files are stale: run `npm run tokens:build` (" + String(e.stderr ?? "").split("\n")[0] + ")", "packages/shared-design-tokens");
+  }
+  // Dark mode is out of scope for v1 (DS-1): no dark rules in app styles.
+  for (const f of ["apps", "packages"].flatMap((d) => walk(d, (x) => /\/src\/.*\.css$/.test(x))))
+    if (/prefers-color-scheme:\s*dark|\[data-theme=.?dark/.test(read(f))) add("error", "no-dark-mode", "dark-mode styles found; v1 is light-only (decision DS-1)", f);
+}
+
+// 10. Tracked files that .gitignore excludes (build output, caches, secrets) must not stay in the index. -------------
+if (existsSync(join(ROOT, ".git"))) {
+  try {
+    const tracked = execFileSync("git", ["ls-files", "-ci", "--exclude-standard"], { cwd: ROOT, encoding: "utf8" }).split("\n").filter(Boolean);
+    if (tracked.length)
+      add("error", "tracked-ignored", `${tracked.length} tracked file(s) match .gitignore (e.g. ${tracked.slice(0, 3).join(", ")}); run: git rm -r --cached <path>`, tracked[0]);
+    const submodules = execFileSync("git", ["ls-files", "-s"], { cwd: ROOT, encoding: "utf8" }).split("\n").filter((l) => l.startsWith("160000"));
+    if (submodules.length) add("error", "gitlink", `${submodules.length} nested repo(s) recorded as submodule pointers without .gitmodules: ${submodules.map((l) => l.split("\t")[1]).join(", ")}`, ".git");
+  } catch { /* git unavailable: skip */ }
+}
+
+// 11. Languages / right-to-left (ADR-0006). ---------------------------------------------------------------------------
+{
+  try {
+    execFileSync("node", ["packages/i18n/scripts/build.mjs", "--check", "--quiet"], { cwd: ROOT, stdio: "pipe" });
+  } catch (e) {
+    add("error", "i18n-generated", "generated i18n files are stale or the language sources are invalid: run `npm run i18n:build` (" + String(e.stderr ?? "").split("\n").find((l) => l.trim()) + ")", "packages/i18n");
+  }
+  // Physical left/right breaks right-to-left layouts (patterns and the paren-aware Dart scanner: tools/checks/rtl-patterns.mjs).
+  const scan = (files, violation, what) => {
+    for (const f of files) {
+      const found = violation(read(f), f);
+      if (found) add("error", "rtl-physical", `${what}: ${found}; physical left/right breaks right-to-left layouts, use the logical equivalent`, f);
+    }
+  };
+  const isSrc = (f) => !/(^|\/)(generated|node_modules|\.next|build|dist)\//.test(f) && !/\.(g|generated)\./.test(f) && !/(^|\/)fonts\.ts$/.test(f);
+  const web = ["apps", "packages"].flatMap((d) => walk(d, (f) => /\/src\/.*\.(tsx|ts|css)$/.test(f) && isSrc(f) && !/\.test\./.test(f)));
+  scan(web, (text, f) => webViolation(text, { css: f.endsWith(".css") }), "web");
+  const dart = ["apps", "packages"].flatMap((d) => walk(d, (f) => /\/(lib|test)\/.*\.dart$/.test(f) && isSrc(f) && !/\/l10n\//.test(f)));
+  scan(dart, dartViolation, "flutter");
+  // No hard-coded user-visible text in the app shells: strings come from the message catalogs.
+  for (const f of walk("apps", (x) => /^apps\/mobile-[^/]+\/lib\/.*\.dart$/.test(x)))
+    if (/\bText\(\s*'/.test(read(f)) || /\bText\(\s*"/.test(read(f))) add("error", "hardcoded-string", "Text('literal'): use OruStrings (packages/i18n catalogs) so the UI can be translated", f);
 }
 
 // Report -----------------------------------------------------------------------

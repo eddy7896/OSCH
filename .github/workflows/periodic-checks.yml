@@ -1,25 +1,38 @@
-name: drift-and-evals
+name: ci
 
 on:
   push:
     branches: [main]
   pull_request:
   schedule:
-    - cron: "0 3 * * 1" # weekly, Monday 03:00 UTC
+    - cron: "0 3 * * 1" # weekly, Monday 03:00 UTC: strict drift check catches slow documentation rot
   workflow_dispatch:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  checks:
+  js:
+    name: JS/TS (build, lint, typecheck, test, drift, evals)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Design tokens are up to date
+        run: npm run tokens:check
+      - name: Languages: sources valid and generated files current
+        run: npm run i18n:check
       - name: Drift check (hallucination / doc-vs-code)
         run: node tools/checks/drift-check.mjs ${{ github.event_name == 'schedule' && '--strict' || '' }}
       - name: Spec evals
         run: node --test evals/
+      - name: Build, lint, typecheck, test (Turborepo)
+        run: npx turbo run build lint typecheck test
       - name: Drift report artifact
         if: always()
         run: node tools/checks/drift-check.mjs --json > drift-report.json || true
@@ -28,3 +41,39 @@ jobs:
         with:
           name: drift-report
           path: drift-report.json
+
+  flutter:
+    name: Flutter (analyze, test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.5
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Generated localization code is current
+        run: |
+          (cd packages/flutter-core && flutter gen-l10n)
+          git diff --exit-code -- packages/flutter-core/lib/src/l10n
+      - run: dart pub global activate melos
+      - run: dart pub global run melos run analyze
+      - run: dart pub global run melos run test
+
+  dataconnect:
+    name: Data Connect (compile, SDK fresh, tenant isolation on emulator)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Schema + connector compile, SDK regenerated
+        run: npx firebase dataconnect:compile
+      - name: Generated SDK is committed and current
+        run: git diff --exit-code -- apps/api-gateway/src/dataconnect-sdk
+      - name: Cross-tenant isolation tests (PGlite emulator, no Java needed)
+        run: npm run test:dataconnect

@@ -1,6 +1,6 @@
 # ADR-0002: Identity provider
 
-- **Status:** Proposed (2026-10-15) — needs owner sign-off
+- **Status:** Accepted (2026-10-15, on the instruction to implement Phase 0; reverse by superseding this ADR)
 - **Supersedes:** "Auth0 or Firebase Auth" in `system_context.md`, "OAuth2 / Auth0" in SSOT §12
 
 ## Context

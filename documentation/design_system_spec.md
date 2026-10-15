@@ -6,7 +6,7 @@
 
 | Layer | File(s) | Owns |
 |---|---|---|
-| Tokens | `design-system/tokens.json` (canonical) → `design-system/tokens.css` (generated, verified identical) | Every colour (light + dark), type style, spacing, radius, control size, shadow |
+| Tokens | `design-system/tokens.json` (canonical) → `design-system/tokens.css` (generated, verified identical) | Every colour (light built; dark values retained but not built, ADR-0005), type style, spacing, radius, control size, shadow |
 | Rules | `design-system/README.md` | Principles, content voice, colour roles, type, density, layout patterns, motion, icons |
 | Components | `design-system/components/<Name>/README.md` + `index.d.ts` + `previews/*.png` | Props contract and usage rules for 18 components. **The READMEs are the spec; `bundle.js` is a throwaway prototype** (global `window.React`, `window.Oru` namespace) and must not be shipped |
 | Brand | `brand-assets/Brand-guidelines.md` (canonical; `design-system/Brand.md` is a mirror and a drift check enforces they are identical) + logo/icon/co-branding/social assets | Logo, brand colour use, voice, app icons, co-branding, imagery |
@@ -22,7 +22,7 @@ Five interfaces sharing one language: **Web ERP** (Next.js) and **Staff, Teacher
 
 - **One brand colour: Oru Indigo 600 `#4F46E5` = `primary`.** *(Old spec called 500 `#6366F1` "Primary" — wrong: 500 is the reference hue, 4.47:1 on white, never used for text or buttons.)* Indigo 900 is reserved for marketing/illustration grounds, not headers (old spec said headers).
 - **Use semantic tokens only** (`primary`, `text`, `surface`, `success-fg/-bg`…). Never raw `indigo-*` steps and never a hex literal in product code.
-- **Every colour token has a dark value.** Dark theme is part of the system, not an extra: components must work in both without knowing which is active. (Old spec had no dark theme.) See decision DS-1.
+- **Every colour token has a dark value in `tokens.json`, but v1 ships light only** (ADR-0005 / DS-1): dark values are not generated and no app has a dark theme. Components still read semantic tokens only, so adding dark later is a token-build change.
 - **Contrast is a tested property**, not a promise: all text pairs ≥ 4.5:1, controls/focus/charts ≥ 3:1, in both themes (`evals/design-tokens.test.mjs`).
 - **App colours** (`app-erp|teacher|staff|parent|driver`) are for app icons and store art only — never inside product UI.
 - **Status tones** are pairs (`-fg` text/icon on `-bg` fill); `*-solid` only for large actions (driver tiles, main submit, destructive confirm).
@@ -56,21 +56,21 @@ Icon, Button, ActionTile, TextField, Checkbox, SegmentedControl, StatusPill, Bad
 
 | Concern | Web (Next.js 16 / Tailwind v4) | Flutter |
 |---|---|---|
-| Token delivery | `packages/shared-design-tokens` builds `tokens.json` → CSS variables + Tailwind `@theme` (semantic names only) | Same build → generated Dart (`ThemeExtension` with light/dark, spacing/radius/size consts) in `packages/flutter-core` |
+| Token delivery | `packages/shared-design-tokens` builds `tokens.json` → CSS variables + Tailwind `@theme` (semantic names only) | Same build → generated Dart (light-only `OruColors`/`OruText`/… consts + `OruTheme.light()`) in `packages/flutter-core` |
 | Components | `packages/shared-ui` implements the 18 component READMEs (React 19, server/client boundaries explicit) | `packages/flutter-core` widgets with the same names, props and wording |
-| Fonts | `next/font` **self-hosted** Noto Sans (+ Devanagari, + Arabic-script font for Urdu); Poppins only in `landing-page` | **Bundled as assets** — apps are offline-first and must not fetch fonts at runtime |
+| Fonts | `next/font` **self-hosted**, one Noto family per script, lazy; Poppins only in `landing-page` (generated `fonts.ts`) | **Bundled as assets** (12 families, 4.44 MiB): apps are offline-first and must not fetch fonts at runtime |
 | Icons | `lucide-react` (Icon component maps our 38 names → Lucide names) | `lucide_icons_flutter` (maintained). **Not** `lucide_icons` — last published 2023-06, which `design-system/README.md` currently recommends |
-| Theming | `data-theme` light/dark; school brand override applied as CSS variables | `ThemeData` + extension; school override via runtime theme |
-| White-label | Mode A: override only `primary`, `primary-hover`, `primary-text`, `primary-soft`, `focus` (derived from one chosen colour, **validated ≥ 4.5:1 with white text**, dark variants derived too). Never override status/surface/text tokens | Same + Mode B build pipeline (app name, icon, splash, package identity) |
+| Theming | Light only (ADR-0005). School brand override applied as CSS variables | `OruTheme.light()` (`OruDensity.touch`/`driver`); school override via runtime theme |
+| White-label | Mode A: override only `primary`, `primary-hover`, `primary-text`, `primary-soft`, `focus` (derived from one chosen colour, **validated ≥ 4.5:1 with white text**, hover/soft/text/focus derived from it). Never override status/surface/text tokens | Same + Mode B build pipeline (app name, icon, splash, package identity) |
 | Brand assets | Favicon/OG from `brand-assets/Logos` & `Social and docs`; strip SVG `<metadata>` (31% of SVG bytes, C2PA provenance) for shipped bundles | Launcher icons from `app-icon-*-1024.png` (RGB, no alpha — store-safe); Android adaptive: foreground = mark, background = `app-*` colour |
 
-## 7. Internationalisation (newly implied — decision DS-2)
-`design-system/README.md` requires text to "survive translation into Hindi and Urdu" with 30% growth room. Consequences not yet reflected elsewhere: Urdu is right-to-left (logical CSS properties, Flutter `Directionality`, mirrored chevrons/arrows incl. "↑ N changes pending"); Noto Sans alone does not contain Devanagari or Arabic-script glyphs (separate script families — verify exact family names on fonts.google.com before bundling); Nastaliq-style Urdu needs more line height than the 18–36px `lineHeight` values above. Currency/number format: content rules hard-code ₹ and Indian grouping — make this the **default locale (`en-IN`)** of a per-school locale setting, not a constant.
+## 7. Languages and right-to-left (ADR-0006, resolves DS-2)
+English is primary; Urdu, Kashmiri, Sindhi, Pashto, Persian and Arabic (right-to-left) and Hindi, Bengali, Assamese, Marathi, Dogri, Gujarati, Punjabi, Odia, Tamil, Telugu, Kannada and Malayalam are supported (19 languages, `packages/i18n/locales.json`). Hindi and Urdu have complete **draft** catalogs; no translation is reviewed yet. The language is in the URL on the web (`/ur`), explicit in Flutter, and never auto-detected. Consequences for design and code: logical properties only (no `ml-4`, `text-left`, `EdgeInsets.only(left:)`; `check:drift` enforces), directional icons mirror, `lang`/`dir` on `<html>`, per-script minimum line heights (Nastaliq 2.0), `↑ ✓ ↻` never as text, Latin digits for numbers in v1, the brand tagline is not translated. Fonts and sizes: 4.44 MiB per Flutter app (Nastaliq 1.89 MiB; switchable to Naskh). Full detail and verification record: `decisions/ADR-0006-languages.md`.
 
 ## 8. Open design decisions
 | ID | Decision | Recommendation | Needed by |
 |---|---|---|---|
-| DS-1 | Ship dark theme in v1? | Build tokens/themes with both from day one (cheap); gate QA on light first, dark before launch | Phase 0 (token build) |
-| DS-2 | Languages in scope (Hindi, Urdu implied; Kashmiri/others?) and RTL | Confirm list; plan RTL from Phase 1 shared-ui, not retrofit | Before Phase 1 UI |
-| DS-3 | Canonical home of tokens: `documentation/design-system/tokens.json` vs `packages/shared-design-tokens` | Keep design-owned file as source; package *builds from it* (no second copy); drift check guards generated outputs | Phase 0 |
-| DS-4 | Sentence vs Title Case | README rule says sentence case; several component READMEs show Title Case ("Take Attendance"). Adopt sentence case, fix examples when design owner next edits | Phase 1 |
+| DS-1 | Ship dark theme in v1? | **Resolved (ADR-0005): NO dark mode in v1.** Dark values stay in `tokens.json` but are not built or shipped; drift check fails on dark styles | done |
+| DS-2 | Languages in scope and RTL | **Resolved (ADR-0006):** English primary; 19 languages incl. 6 RTL; Hindi and Urdu complete drafts; translations need native review before release | done |
+| DS-3 | Canonical home of tokens | **Resolved (ADR-0005):** `documentation/design-system/tokens.json` is the only source; `packages/shared-design-tokens` builds from it; `tokens:check` guards generated outputs | done |
+| DS-4 | Sentence vs Title Case | **Resolved (ADR-0005): sentence case.** Title Case examples in component READMEs are errors there; fix when the design owner next edits | done |

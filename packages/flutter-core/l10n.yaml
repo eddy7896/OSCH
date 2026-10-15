@@ -1,0 +1,9 @@
+# Flutter gen-l10n config. The ARB files in lib/l10n are GENERATED from packages/i18n (messages/*.json + locales.json):
+# edit those and run `npm run i18n:build`, never the ARBs. English is the template; every other language falls back to it per key.
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: oru_strings.dart
+output-class: OruStrings
+output-dir: lib/src/l10n
+synthetic-package: false
+nullable-getter: false

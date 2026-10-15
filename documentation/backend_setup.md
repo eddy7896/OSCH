@@ -1,7 +1,9 @@
 # Backend & Infrastructure Setup
 
 ## 1. Global Environment & Configuration
-We use a global `.env.local` at the monorepo root to pass configurations down to the NestJS API Gateway and the mobile apps during build.
+> **Superseded by `environment.md`.** Secrets belong to the NestJS API Gateway only; web apps get `NEXT_PUBLIC_*` values and Flutter apps get public `--dart-define` values. Never pass these secrets to a mobile build.
+
+Reference set of variables (see `.env.example` for the per-app split):
 
 ```env
 # Firebase Data Connect (PostgreSQL)

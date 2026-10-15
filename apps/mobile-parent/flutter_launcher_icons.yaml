@@ -1,0 +1,11 @@
+# Launcher icons from documentation/brand-assets. Sources are prepared by tools/assets/make-launcher-assets.mjs.
+# Run from this directory:  flutter_launcher_icons -f flutter_launcher_icons.yaml
+# (installed globally: `dart pub global activate flutter_launcher_icons`; it is NOT a workspace dependency because
+#  its cli_util ^0.4 constraint conflicts with melos.)
+flutter_launcher_icons:
+  android: ic_launcher
+  ios: true
+  image_path: assets/icon/app-icon-1024.png
+  remove_alpha_ios: true
+  adaptive_icon_background: "#C8462F"
+  adaptive_icon_foreground: assets/icon/adaptive-foreground.png

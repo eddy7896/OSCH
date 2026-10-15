@@ -6,7 +6,7 @@ Task-level breakdown with sizes and dependencies: `implementation_plan.md`.
 
 Mobile apps live in `apps/mobile-{teacher,staff,parent,driver}` (matches the Melos workspace in the root `pubspec.yaml`).
 
-## Phase 0 — Foundation (current)
+## Phase 0 — Foundation (implemented 2026-10-15; see `implementation_plan.md` for status and open owner items)
 Work: root git repo (decision F10), CLAUDE.md, ADR sign-off, drift check + CI, `.env.example`, install firebase/melos CLIs, fix version pins (F8), resolve F4–F6 in schema, `packages/rbac`.
 **Gate:** drift check 0 errors & warnings triaged; ADR-0001..3 accepted; RBAC matrix is data in `packages/rbac` with tests; CI green.
 

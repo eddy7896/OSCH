@@ -1,0 +1,5 @@
+{
+  "_comment": "Translation review status. NOTHING non-English may ship to schools until `reviewed` is true for that language. hi and ur are machine-quality DRAFTS written to prove the pipeline; they need a native-speaker review (release gate P6-5).",
+  "hi": { "reviewed": false, "reviewer": null, "note": "draft" },
+  "ur": { "reviewed": false, "reviewer": null, "note": "draft" }
+}

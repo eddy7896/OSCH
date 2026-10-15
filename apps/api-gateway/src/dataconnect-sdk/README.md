@@ -2144,6 +2144,11 @@ Recall that executing the `CreatePayroll` mutation returns a `MutationPromise` t
 The `data` property is an object of type `CreatePayrollData`, which is defined in [dataconnect-sdk/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface CreatePayrollData {
+  query?: {
+    schoolMembers: ({
+      userId: string;
+    })[];
+  };
   payroll_insert: Payroll_Key;
 }
 ```
@@ -2171,11 +2176,13 @@ const { data } = await createPayroll({ schoolId: ..., userId: ..., amountMinor: 
 const dataConnect = getDataConnect(connectorConfig);
 const { data } = await createPayroll(dataConnect, createPayrollVars);
 
+console.log(data.query);
 console.log(data.payroll_insert);
 
 // Or, you can use the `Promise` API.
 createPayroll(createPayrollVars).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.payroll_insert);
 });
 ```
@@ -2207,11 +2214,13 @@ const ref = createPayrollRef(dataConnect, createPayrollVars);
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await executeMutation(ref);
 
+console.log(data.query);
 console.log(data.payroll_insert);
 
 // Or, you can use the `Promise` API.
 executeMutation(ref).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.payroll_insert);
 });
 ```
@@ -2380,6 +2389,17 @@ Recall that executing the `CreateSchedule` mutation returns a `MutationPromise` 
 The `data` property is an object of type `CreateScheduleData`, which is defined in [dataconnect-sdk/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface CreateScheduleData {
+  query?: {
+    classrooms: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+    subjects: ({
+      id: UUIDString;
+    } & Subject_Key)[];
+    schoolMembers: ({
+      userId: string;
+    })[];
+  };
   classSchedule_insert: ClassSchedule_Key;
 }
 ```
@@ -2410,11 +2430,13 @@ const { data } = await createSchedule({ schoolId: ..., classroomId: ..., subject
 const dataConnect = getDataConnect(connectorConfig);
 const { data } = await createSchedule(dataConnect, createScheduleVars);
 
+console.log(data.query);
 console.log(data.classSchedule_insert);
 
 // Or, you can use the `Promise` API.
 createSchedule(createScheduleVars).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.classSchedule_insert);
 });
 ```
@@ -2449,11 +2471,13 @@ const ref = createScheduleRef(dataConnect, createScheduleVars);
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await executeMutation(ref);
 
+console.log(data.query);
 console.log(data.classSchedule_insert);
 
 // Or, you can use the `Promise` API.
 executeMutation(ref).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.classSchedule_insert);
 });
 ```
@@ -2505,6 +2529,11 @@ Recall that executing the `CreateLeaveRequest` mutation returns a `MutationPromi
 The `data` property is an object of type `CreateLeaveRequestData`, which is defined in [dataconnect-sdk/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface CreateLeaveRequestData {
+  query?: {
+    schoolMembers: ({
+      userId: string;
+    })[];
+  };
   leaveRequest_insert: LeaveRequest_Key;
 }
 ```
@@ -2533,11 +2562,13 @@ const { data } = await createLeaveRequest({ schoolId: ..., userId: ..., startDat
 const dataConnect = getDataConnect(connectorConfig);
 const { data } = await createLeaveRequest(dataConnect, createLeaveRequestVars);
 
+console.log(data.query);
 console.log(data.leaveRequest_insert);
 
 // Or, you can use the `Promise` API.
 createLeaveRequest(createLeaveRequestVars).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.leaveRequest_insert);
 });
 ```
@@ -2570,11 +2601,13 @@ const ref = createLeaveRequestRef(dataConnect, createLeaveRequestVars);
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await executeMutation(ref);
 
+console.log(data.query);
 console.log(data.leaveRequest_insert);
 
 // Or, you can use the `Promise` API.
 executeMutation(ref).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.leaveRequest_insert);
 });
 ```
@@ -2625,6 +2658,11 @@ Recall that executing the `UpdateLeaveRequest` mutation returns a `MutationPromi
 The `data` property is an object of type `UpdateLeaveRequestData`, which is defined in [dataconnect-sdk/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface UpdateLeaveRequestData {
+  query?: {
+    schoolMembers: ({
+      userId: string;
+    })[];
+  };
   leaveRequest_updateMany: number;
 }
 ```
@@ -2652,11 +2690,13 @@ const { data } = await updateLeaveRequest({ schoolId: ..., id: ..., status: ...,
 const dataConnect = getDataConnect(connectorConfig);
 const { data } = await updateLeaveRequest(dataConnect, updateLeaveRequestVars);
 
+console.log(data.query);
 console.log(data.leaveRequest_updateMany);
 
 // Or, you can use the `Promise` API.
 updateLeaveRequest(updateLeaveRequestVars).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.leaveRequest_updateMany);
 });
 ```
@@ -2688,11 +2728,13 @@ const ref = updateLeaveRequestRef(dataConnect, updateLeaveRequestVars);
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await executeMutation(ref);
 
+console.log(data.query);
 console.log(data.leaveRequest_updateMany);
 
 // Or, you can use the `Promise` API.
 executeMutation(ref).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.leaveRequest_updateMany);
 });
 ```
@@ -2745,6 +2787,14 @@ Recall that executing the `CreateExam` mutation returns a `MutationPromise` that
 The `data` property is an object of type `CreateExamData`, which is defined in [dataconnect-sdk/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface CreateExamData {
+  query?: {
+    classrooms: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+    subjects: ({
+      id: UUIDString;
+    } & Subject_Key)[];
+  };
   exam_insert: Exam_Key;
 }
 ```
@@ -2774,11 +2824,13 @@ const { data } = await createExam({ schoolId: ..., classroomId: ..., subjectId: 
 const dataConnect = getDataConnect(connectorConfig);
 const { data } = await createExam(dataConnect, createExamVars);
 
+console.log(data.query);
 console.log(data.exam_insert);
 
 // Or, you can use the `Promise` API.
 createExam(createExamVars).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.exam_insert);
 });
 ```
@@ -2812,11 +2864,13 @@ const ref = createExamRef(dataConnect, createExamVars);
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await executeMutation(ref);
 
+console.log(data.query);
 console.log(data.exam_insert);
 
 // Or, you can use the `Promise` API.
 executeMutation(ref).then((response) => {
   const data = response.data;
+  console.log(data.query);
   console.log(data.exam_insert);
 });
 ```

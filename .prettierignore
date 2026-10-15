@@ -1,0 +1,13 @@
+node_modules
+.next
+dist
+build
+.turbo
+.dart_tool
+dataconnect/.dataconnect
+apps/api-gateway/src/dataconnect-sdk
+documentation/brand-assets
+documentation/design-system
+package-lock.json
+pubspec.lock
+*.g.dart

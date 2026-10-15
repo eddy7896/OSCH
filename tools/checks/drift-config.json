@@ -4,8 +4,7 @@
     "apps/staff-app",
     "apps/parent-app",
     "apps/driver-app",
-    "packages/shared-design-tokens/index.js",
-    "apps/api-gateway/src/dataconnect-sdk"
+    "packages/shared-design-tokens/index.js"
   ],
   "pathCheckExemptDocs": [],
   "bannedDependencies": [
@@ -25,10 +24,7 @@
     "CreateUser",
     "CreateSchool"
   ],
-  "knownDebt": {
-    "CreateInvoice": "Invoice has no schoolId column; gateway must verify student.schoolId. See audit finding F4",
-    "UpdateLeaveRequest": "gateway must verify leave.schoolId before update. See audit finding F4"
-  },
+  "knownDebt": {},
   "staleTerms": [
     {
       "term": "Auth0",

@@ -7,13 +7,24 @@ export type GlobalRole = (typeof GLOBAL_ROLES)[number];
 
 /** Per-school role stored on SchoolMember. */
 export const ROLES = [
-  "PRINCIPAL",
-  "BURSAR", // "Finance Admin" in the docs
+  // Leadership / oversight
+  "PRINCIPAL", // "Principal / Director": read-only on data, approves requests
+  "MANAGEMENT", // trustees / owners: dashboards and reports only
+  // Administrative silos (SSOT RBAC table)
+  "BURSAR", // "Finance Admin": full finance + payroll
   "ACADEMIC_ADMIN",
-  "SYSTEM_ADMIN", // "IT / System Admin" in the docs
+  "SYSTEM_ADMIN", // "IT / System Admin": settings, access, audit
+  // Functional administrators (DesignDoc: "HR Manager", "Accountant", ERP Transport / Operations / Admission modules)
+  "HR_MANAGER",
+  "ACCOUNTANT",
+  "ADMISSIONS_OFFICER",
+  "TRANSPORT_MANAGER",
+  "OPERATIONS_MANAGER",
+  // Field roles (mobile apps)
   "TEACHER",
-  "STAFF",
+  "STAFF", // generic non-teaching employee: office, lab assistants, support staff
   "DRIVER",
+  // External
   "PARENT",
 ] as const;
 export type Role = (typeof ROLES)[number];

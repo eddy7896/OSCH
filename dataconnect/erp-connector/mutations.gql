@@ -38,7 +38,7 @@ mutation CreateStudent($schoolId: UUID!, $firstName: String!, $lastName: String!
   })
 }
 
-# HR: Add a User to a School (Role)
+# System Admin: add a user to a school with a role. The gateway MUST require `memberships:create` (only SYSTEM_ADMIN holds it, ADR-0007); HR must not be able to call this.
 mutation CreateSchoolMember($schoolId: UUID!, $userId: String!, $schoolRole: SchoolRole!) @auth(level: NO_ACCESS) {
   schoolMember_insert(data: {
     schoolId: $schoolId,
@@ -62,7 +62,11 @@ mutation CreateInvoice($schoolId: UUID!, $studentId: UUID!, $amountMinor: Int64!
 }
 
 # Finance: Create a Payroll Record
-mutation CreatePayroll($schoolId: UUID!, $userId: String!, $amountMinor: Int64!, $payDate: Date!) @auth(level: NO_ACCESS) {
+# The paid user must be a member of $schoolId (DB-enforced; review finding: users are a GLOBAL table).
+mutation CreatePayroll($schoolId: UUID!, $userId: String!, $amountMinor: Int64!, $payDate: Date!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}) @check(expr: "this.size() == 1", message: "user is not a member of this school") { userId }
+  }
   payroll_insert(data: {
     schoolId: $schoolId,
     userId: $userId,
@@ -81,7 +85,13 @@ mutation CreateSubject($schoolId: UUID!, $name: String!, $code: String!) @auth(l
 }
 
 # Academic: Create a Class Schedule
-mutation CreateSchedule($schoolId: UUID!, $classroomId: UUID!, $subjectId: UUID!, $teacherId: String!, $dayOfWeek: String!, $startTime: String!, $endTime: String!) @auth(level: NO_ACCESS) {
+# Classroom, subject and teacher must all belong to $schoolId (DB-enforced; otherwise the List joins would leak another tenant's names/emails).
+mutation CreateSchedule($schoolId: UUID!, $classroomId: UUID!, $subjectId: UUID!, $teacherId: String!, $dayOfWeek: String!, $startTime: String!, $endTime: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    classrooms(where: {id: {eq: $classroomId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "classroom not found in this school") { id }
+    subjects(where: {id: {eq: $subjectId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "subject not found in this school") { id }
+    schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $teacherId}}) @check(expr: "this.size() == 1", message: "teacher is not a member of this school") { userId }
+  }
   classSchedule_insert(data: {
     schoolId: $schoolId,
     classroomId: $classroomId,
@@ -94,7 +104,11 @@ mutation CreateSchedule($schoolId: UUID!, $classroomId: UUID!, $subjectId: UUID!
 }
 
 # Academic: Create a Leave Request
-mutation CreateLeaveRequest($schoolId: UUID!, $userId: String!, $startDate: Date!, $endDate: Date!, $reason: String) @auth(level: NO_ACCESS) {
+# The requester must be a member of $schoolId.
+mutation CreateLeaveRequest($schoolId: UUID!, $userId: String!, $startDate: Date!, $endDate: Date!, $reason: String) @auth(level: NO_ACCESS) @transaction {
+  query {
+    schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}) @check(expr: "this.size() == 1", message: "user is not a member of this school") { userId }
+  }
   leaveRequest_insert(data: {
     schoolId: $schoolId,
     userId: $userId,
@@ -106,7 +120,11 @@ mutation CreateLeaveRequest($schoolId: UUID!, $userId: String!, $startDate: Date
 
 # Academic: Update Leave Request (Approve/Reject & Substitute)
 # Scoped to the school in the WHERE clause: a leave id from another tenant matches nothing (audit F4).
-mutation UpdateLeaveRequest($schoolId: UUID!, $id: UUID!, $status: LeaveStatus!, $substituteId: String) @auth(level: NO_ACCESS) {
+# If a substitute is given they must be a member of $schoolId; the leave row itself is scoped by the WHERE clause.
+mutation UpdateLeaveRequest($schoolId: UUID!, $id: UUID!, $status: LeaveStatus!, $substituteId: String) @auth(level: NO_ACCESS) @transaction {
+  query {
+    schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $substituteId}}) @check(expr: "vars.substituteId == null || this.size() == 1", message: "substitute is not a member of this school") { userId }
+  }
   leaveRequest_updateMany(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}, data: {
     status: $status,
     substituteId: $substituteId
@@ -114,7 +132,12 @@ mutation UpdateLeaveRequest($schoolId: UUID!, $id: UUID!, $status: LeaveStatus!,
 }
 
 # Academic: Create an Exam
-mutation CreateExam($schoolId: UUID!, $classroomId: UUID!, $subjectId: UUID!, $title: String!, $examDate: Date!, $maxScore: Int!) @auth(level: NO_ACCESS) {
+# Classroom and subject must belong to $schoolId (DB-enforced).
+mutation CreateExam($schoolId: UUID!, $classroomId: UUID!, $subjectId: UUID!, $title: String!, $examDate: Date!, $maxScore: Int!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    classrooms(where: {id: {eq: $classroomId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "classroom not found in this school") { id }
+    subjects(where: {id: {eq: $subjectId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "subject not found in this school") { id }
+  }
   exam_insert(data: {
     schoolId: $schoolId,
     classroomId: $classroomId,

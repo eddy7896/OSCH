@@ -69,3 +69,23 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Turborepo / Next.js / build output
+.turbo
+.next
+dist
+build
+*.tsbuildinfo
+
+# Flutter / Dart
+.dart_tool
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+*.iml
+Pods/
+local.properties
+
+# OS / editor
+.DS_Store
+.idea

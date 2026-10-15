@@ -1,7 +1,26 @@
 {
   "name": "@oruschools/shared-design-tokens",
   "version": "1.0.0",
-  "description": "JSON definitions of the OruSchools Design System (Colors, Spacing, Typography).",
-  "main": "index.js",
-  "private": true
+  "description": "Builds the OruSchools design tokens (documentation/design-system/tokens.json) into CSS variables, a Tailwind v4 theme, a TS module and Dart constants. Light theme only (decision DS-1).",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tokens.css": "./generated/tokens.css",
+    "./theme.css": "./generated/theme.css",
+    "./tokens": {
+      "types": "./generated/tokens.d.ts",
+      "default": "./generated/tokens.js"
+    }
+  },
+  "files": ["generated"],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs --check",
+    "test": "vitest run",
+    "lint": "oxlint scripts"
+  },
+  "devDependencies": {
+    "oxlint": "^1.58.0",
+    "vitest": "^4.1.2"
+  }
 }

@@ -1,0 +1,155 @@
+{
+  "@@locale": "en",
+  "appTeacher": "OruSchools Teacher",
+  "@appTeacher": {
+    "description": "App name shown under the logo and on the home screen. Keep the brand name OruSchools in Latin letters."
+  },
+  "appStaff": "OruSchools Staff",
+  "@appStaff": {
+    "description": "App name for non-teaching staff (office, lab assistants, support)."
+  },
+  "appParent": "OruSchools Parent",
+  "@appParent": {
+    "description": "App name for parents and students."
+  },
+  "appDriver": "OruSchools Driver",
+  "@appDriver": {
+    "description": "App name for transport drivers."
+  },
+  "appErp": "OruSchools ERP",
+  "@appErp": {
+    "description": "Name of the web ERP."
+  },
+  "appPlatform": "OruSchools Platform",
+  "@appPlatform": {
+    "description": "Name of the platform administration site (for the SaaS owner)."
+  },
+  "appWebsite": "OruSchools. Schools. People. Progress.",
+  "@appWebsite": {
+    "description": "Title of the public website (browser tab). The tagline 'Schools. People. Progress.' is fixed brand copy: translate it only with approval (brand guidelines)."
+  },
+  "scaffoldNotice": "This app is scaffolded and uses the OruSchools theme. Features arrive in the implementation plan.",
+  "@scaffoldNotice": {
+    "description": "Temporary placeholder text on unfinished screens. Not shown to schools in production."
+  },
+  "greetingMorning": "Good morning, {name}",
+  "@greetingMorning": {
+    "description": "Home screen greeting before 12:00. {name} is the person's first name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "greetingAfternoon": "Good afternoon, {name}",
+  "@greetingAfternoon": {
+    "description": "Home screen greeting 12:00-17:00. {name} is the person's first name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "greetingEvening": "Good evening, {name}",
+  "@greetingEvening": {
+    "description": "Home screen greeting after 17:00. {name} is the person's first name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actionRetry": "Retry",
+  "@actionRetry": {
+    "description": "Button after a failed action."
+  },
+  "actionUploadNow": "Upload now",
+  "@actionUploadNow": {
+    "description": "Button that sends saved offline work immediately."
+  },
+  "actionTakeAttendance": "Take attendance",
+  "@actionTakeAttendance": {
+    "description": "Primary button on the teacher home screen."
+  },
+  "actionMarkAllPresent": "Mark all present",
+  "@actionMarkAllPresent": {
+    "description": "Button that marks every student present; the teacher then changes only the exceptions."
+  },
+  "actionSubmitAttendance": "Submit attendance",
+  "@actionSubmitAttendance": {
+    "description": "Primary button that submits the class attendance."
+  },
+  "actionSave": "Save",
+  "@actionSave": {
+    "description": "Generic save button."
+  },
+  "actionCancel": "Cancel",
+  "@actionCancel": {
+    "description": "Generic cancel button."
+  },
+  "syncSynced": "Synced",
+  "@syncSynced": {
+    "description": "Sync status: all work is on the server."
+  },
+  "syncSavedOnDevice": "Saved on device",
+  "@syncSavedOnDevice": {
+    "description": "Sync status: work is saved on this phone and will upload when online."
+  },
+  "syncChangesPending": "{count, plural, one{{count} change pending} other{{count} changes pending}}",
+  "@syncChangesPending": {
+    "description": "Sync status: number of changes waiting to upload. Use the language's correct plural forms.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncSyncing": "Syncing…",
+  "@syncSyncing": {
+    "description": "Sync status: upload in progress."
+  },
+  "syncOffline": "You’re offline",
+  "@syncOffline": {
+    "description": "Sync status: no connection."
+  },
+  "syncFailed": "Sync failed",
+  "@syncFailed": {
+    "description": "Sync status: the upload did not work."
+  },
+  "statusPresent": "Present",
+  "@statusPresent": {
+    "description": "Attendance status."
+  },
+  "statusAbsent": "Absent",
+  "@statusAbsent": {
+    "description": "Attendance status."
+  },
+  "statusLate": "Late",
+  "@statusLate": {
+    "description": "Attendance status: arrived after the bell."
+  },
+  "statusLeave": "Leave",
+  "@statusLeave": {
+    "description": "Attendance status: on approved leave."
+  },
+  "statusMedical": "Medical",
+  "@statusMedical": {
+    "description": "Attendance status: absent for a medical reason."
+  },
+  "statusHalfDay": "Half day",
+  "@statusHalfDay": {
+    "description": "Attendance status: present for half the day."
+  },
+  "statusExcused": "Excused",
+  "@statusExcused": {
+    "description": "Attendance status: absent with permission."
+  },
+  "errorServerUnreachable": "We could not reach the school server. Your work is saved on this phone.",
+  "@errorServerUnreachable": {
+    "description": "Error message. Reassures the user that nothing is lost; never blames them."
+  },
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {
+    "description": "Label of the language picker."
+  }
+}
