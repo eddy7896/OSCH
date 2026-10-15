@@ -46,7 +46,7 @@ graph TD
 
 ## Getting started
 
-**Prerequisites:** Node 22 recommended (20.9+ works; the Nest CLI declares 22.22+), npm 10, Flutter 3.47+ (Dart 3.13+). Install the Dart tools once: `dart pub global activate melos` and `dart pub global activate flutter_launcher_icons`, and put `~/.pub-cache/bin` on your `PATH`. The Firebase CLI is a local dev dependency (`npx firebase`); **Java is not needed**, the Data Connect emulator runs on PGlite.
+**Prerequisites:** Node 22.22.3 or newer (`nvm use`, see `.nvmrc`; ADR-0008), npm 10, Flutter 3.47+ (Dart 3.13+). Install the Dart tools once: `dart pub global activate melos` and `dart pub global activate flutter_launcher_icons`, and put `~/.pub-cache/bin` on your `PATH`. The Firebase CLI is a local dev dependency (`npx firebase`); **Java is not needed**, the Data Connect emulator runs on PGlite.
 
 ```bash
 npm install            # JS/TS workspaces

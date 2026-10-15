@@ -82,7 +82,7 @@ graph LR
 | ID | Task | Size | Acceptance |
 |---|---|---|---|
 | **P1-0a** NEW | Commit the post-Phase-0 work (font fix, integration tests, workflow fix, validator) and push; confirm CI green | S | GitHub run `success` for all three jobs (read via the public API); any runtime failure fixed (known unknowns: Flutter job on Linux, emulator job) |
-| **P1-0b** NEW | Node 22 floor: `.nvmrc`=22, root `engines.node >=22.22.3`, CI already 22, README; drift rule that CI `node-version` equals `.nvmrc` major; owner runs `nvm install 22` | S | `node -v` ≥ 22.22.3 locally; `npm ci` has no EBADENGINE warnings |
+| **P1-0b** DONE (`.nvmrc`, engines, drift rule `node-version`; owner still runs `nvm install 22`) | Node 22 floor: `.nvmrc`=22, root `engines.node >=22.22.3`, CI already 22, README; drift rule that CI `node-version` equals `.nvmrc` major; owner runs `nvm install 22` | S | `node -v` ≥ 22.22.3 locally; `npm ci` has no EBADENGINE warnings |
 | **P1-0c** NEW | Record the device verification (fonts fix, Driver relaunch) in the audit; add the findings not yet logged (home-screen label truncation is an owner naming decision) | S | audit updated |
 | **P1-0d** NEW | Owner decisions Q1-Q9 (§9); accept ADR-0008/0009 | S | ADRs marked Accepted |
 

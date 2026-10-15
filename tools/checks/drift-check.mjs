@@ -256,6 +256,20 @@ if (existsSync(join(ROOT, ".git"))) {
         add("error", "workflow", problem, `.github/workflows/${f}`);
 }
 
+// 13. Node version: .nvmrc, root engines and every CI node-version must agree (ADR-0008) ------------------------------------
+{
+  const major = exists(".nvmrc") ? read(".nvmrc").trim().replace(/^v/, "").split(".")[0] : null;
+  const engines = (JSON.parse(read("package.json")).engines ?? {}).node ?? "";
+  if (!major) add("error", "node-version", ".nvmrc is missing (ADR-0008 sets Node 22 as the floor)", ".nvmrc");
+  else {
+    if (!engines.includes(major)) add("error", "node-version", `root engines.node "${engines}" does not match .nvmrc major ${major}`, "package.json");
+    if (existsSync(join(ROOT, ".github/workflows")))
+      for (const f of readdirSync(join(ROOT, ".github/workflows")).filter((n) => /\.ya?ml$/.test(n)))
+        for (const m of read(`.github/workflows/${f}`).matchAll(/node-version:\s*["']?(\d+)/g))
+          if (m[1] !== major) add("error", "node-version", `${f} uses Node ${m[1]} but .nvmrc says ${major}`, `.github/workflows/${f}`);
+  }
+}
+
 // Report -----------------------------------------------------------------------
 const errors = findings.filter((f) => f.severity === "error");
 const warns = findings.filter((f) => f.severity === "warn");
