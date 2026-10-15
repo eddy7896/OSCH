@@ -1,5 +1,5 @@
 import { plainToInstance, Transform } from 'class-transformer';
-import { IsIn, IsInt, IsOptional, IsString, Max, Min, MinLength, validateSync } from 'class-validator';
+import { IsIn, IsInt, IsOptional, IsString, Matches, Max, Min, MinLength, validateSync } from 'class-validator';
 
 const LOG_LEVELS = ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'] as const;
 
@@ -25,6 +25,11 @@ export class Env {
   @IsString()
   @MinLength(1)
   FIREBASE_PROJECT_ID?: string;
+
+  /** Local development only: host:port of the Data Connect emulator (no scheme). Refused in production. */
+  @IsOptional()
+  @Matches(/^[\w.-]+:\d{1,5}$/, { message: 'DATA_CONNECT_EMULATOR_HOST must look like host:port (no scheme)' })
+  DATA_CONNECT_EMULATOR_HOST?: string;
 
   @Transform(({ value }) => (value === undefined || value === '' ? 60_000 : Number(value)))
   @IsInt()
@@ -67,6 +72,7 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   if (env.NODE_ENV === 'production') {
     if (origins.length === 0) problems.push('CORS_ORIGINS: must list at least one origin in production');
     if (!env.FIREBASE_PROJECT_ID) problems.push('FIREBASE_PROJECT_ID: required in production');
+    if (env.DATA_CONNECT_EMULATOR_HOST) problems.push('DATA_CONNECT_EMULATOR_HOST: must not be set in production (it would send real data to an emulator)');
   }
   if (problems.length > 0) throw new Error(`Invalid environment configuration:\n${problems.map((p) => `  - ${p}`).join('\n')}`);
   return env;

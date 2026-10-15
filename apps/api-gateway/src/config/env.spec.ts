@@ -39,6 +39,12 @@ describe('validateEnv', () => {
     expect(validateEnv({ NODE_ENV: 'production', CORS_ORIGINS: 'https://app.example.com', FIREBASE_PROJECT_ID: 'p' }).NODE_ENV).toBe('production');
   });
 
+  it('accepts an emulator host in development, rejects a bad shape, and refuses it in production', () => {
+    expect(validateEnv({ DATA_CONNECT_EMULATOR_HOST: '127.0.0.1:9399' }).DATA_CONNECT_EMULATOR_HOST).toBe('127.0.0.1:9399');
+    expect(() => validateEnv({ DATA_CONNECT_EMULATOR_HOST: 'http://127.0.0.1:9399' })).toThrow(/DATA_CONNECT_EMULATOR_HOST/);
+    expect(() => validateEnv({ NODE_ENV: 'production', CORS_ORIGINS: 'https://a.example.com', FIREBASE_PROJECT_ID: 'p', DATA_CONNECT_EMULATOR_HOST: '127.0.0.1:9399' })).toThrow(/must not be set in production/);
+  });
+
   it('rejects ports outside 1-65535', () => {
     expect(() => validateEnv({ PORT: '0' })).toThrow(/PORT/);
     expect(() => validateEnv({ PORT: '70000' })).toThrow(/PORT/);

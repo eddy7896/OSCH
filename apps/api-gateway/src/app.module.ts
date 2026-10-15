@@ -5,6 +5,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 import { pinoHttpOptions } from './common/logging.js';
 import { Env, validateEnv } from './config/env.js';
+import { GatewayDatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
 
 @Module({
@@ -22,6 +23,7 @@ import { HealthModule } from './health/health.module.js';
         { ttl: config.get('THROTTLE_TTL_MS', { infer: true }), limit: config.get('THROTTLE_LIMIT', { infer: true }) },
       ],
     }),
+    GatewayDatabaseModule,
     HealthModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
