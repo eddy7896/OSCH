@@ -13,7 +13,7 @@ Multi-tenant school ERP (SaaS). **Two pillars**: Next.js web ERP (system of reco
 ## Current reality (verify with `npm run check:drift`; update when it changes)
 | Exists | Planned (do not assume it exists) |
 |---|---|
-| **Built in Phase 0:** `packages/rbac` (14 roles, tested matrix), `packages/i18n` (19 languages incl. 6 RTL; Hindi/Urdu draft catalogs; generates ARB/Dart/TS/CSS/font loaders), `packages/shared-design-tokens` (tokens → CSS/Tailwind/TS/Dart, light only), `packages/flutter-core` (tokens, `OruTheme.light`, bundled fonts), hardened `dataconnect/` schema + `erp-connector` (tenancy and role-enum checks on the emulator: `npm run test:dataconnect`), 3 Next apps and 4 Flutter apps as **themed shells with no features**, `apps/api-gateway` (Nest 12 scaffold, no modules/guards yet), env templates, CI. **Placeholders:** `packages/{shared-ui,api-client,database}`. | Gateway guards/modules, `TenantContext`, UI components (`shared-ui`, Flutter widgets), every screen, sync engine, auth |
+| **Built in Phase 0:** `packages/rbac` (14 roles, tested matrix), `packages/i18n` (19 languages incl. 6 RTL; Hindi/Urdu draft catalogs; generates ARB/Dart/TS/CSS/font loaders), `packages/shared-design-tokens` (tokens → CSS/Tailwind/TS/Dart, light only), `packages/flutter-core` (tokens, `OruTheme.light`, bundled fonts), hardened `dataconnect/` schema + `erp-connector` (tenancy and role-enum checks on the emulator: `npm run test:dataconnect`), 3 Next apps and 4 Flutter apps as **themed shells with no features**, `apps/api-gateway` (Nest 12: validated config, helmet, CORS, request-id logging, throttling, `/health`; no auth/guards/modules yet), env templates, CI. `packages/database` (generated Admin SDK + `DatabaseModule` + error mapping, not yet wired into the gateway). **Placeholders:** `packages/{shared-ui,api-client}`. | Gateway guards/modules, `TenantContext`, UI components (`shared-ui`, Flutter widgets), every screen, sync engine, auth |
 
 ## Commands
 - `npm run check:drift` — docs/config/schema vs repo (the periodic hallucination check; must have 0 errors)
@@ -22,6 +22,7 @@ Multi-tenant school ERP (SaaS). **Two pillars**: Next.js web ERP (system of reco
 - `npm run i18n:build | i18n:check` — languages: edit `packages/i18n/locales.json` / `messages/*.json`, never the generated ARB/Dart/TS/CSS/`fonts.ts`/pubspec font block
 - `npm run tokens:build | tokens:check` — design tokens (never hand-edit `*/generated/*` or `tokens.g.dart`)
 - `npm run test:dataconnect` — database-level tenant-isolation tests on the emulator (needs network once to download the emulator)
+- `npm run test:database` — `packages/database` (generated Admin SDK, error mapping) against the emulator
 - `npm run build | lint | typecheck | test` — Turborepo (JS/TS). Dart: `melos run analyze|test` (Melos 8 reads its config from the root `pubspec.yaml` pub workspace; run `flutter pub get` once; put `~/.pub-cache/bin` on PATH or use `dart run melos`)
 - Next.js here is v16 with breaking changes: read `node_modules/next/dist/docs/` before writing Next code (see `apps/*/AGENTS.md`).
 
