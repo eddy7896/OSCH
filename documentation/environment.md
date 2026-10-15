@@ -16,8 +16,8 @@ See the sections of the root `.env.example` (single reference). Per-app template
 | saas-admin, web-admin, landing-page | `apps/<app>/.env.local` | `NEXT_PUBLIC_*` only (Next.js loads env from the app directory, **not** the monorepo root) |
 | Flutter apps | none | `--dart-define` at build time |
 
-## Validation approach (implemented in Phase 1, task P1-1)
-The gateway parses `process.env` once at startup with a schema (zod) in a `ConfigModule`: required keys present, `PORT` numeric, URLs valid, `CORS_ORIGINS` non-empty in production. Boot fails with a message listing every problem (never printing values). No other code reads `process.env` directly. Next apps validate `NEXT_PUBLIC_*` in a single `env.ts` module imported by the root layout.
+## Validation approach (implemented in P1-1, `apps/api-gateway/src/config/env.ts`)
+The gateway validates `process.env` once at startup with a class-validator schema (ADR-0008; zod is not used): `PORT` is 1-65535, `LOG_LEVEL`/`NODE_ENV` are from fixed lists, `CORS_ORIGINS` entries are bare http(s) origins (no paths or wildcards), and in production `CORS_ORIGINS` and `FIREBASE_PROJECT_ID` are required. Boot fails with one message listing every problem by variable name (never printing values). No other code reads `process.env` directly. Next apps validate `NEXT_PUBLIC_*` in a single `env.ts` module imported by the root layout.
 
 ## Local ports
 `api-gateway` 3000, `saas-admin` 3001, `web-admin` 3002, `landing-page` 3003, Data Connect emulator 9399.
