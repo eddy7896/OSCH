@@ -1,5 +1,5 @@
 import { plainToInstance, Transform } from 'class-transformer';
-import { IsIn, IsInt, IsOptional, IsString, Matches, Max, Min, MinLength, validateSync } from 'class-validator';
+import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Matches, Max, Min, MinLength, validateSync } from 'class-validator';
 
 const LOG_LEVELS = ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'] as const;
 
@@ -30,6 +30,20 @@ export class Env {
   @IsOptional()
   @Matches(/^[\w.-]+:\d{1,5}$/, { message: 'DATA_CONNECT_EMULATOR_HOST must look like host:port (no scheme)' })
   DATA_CONNECT_EMULATOR_HOST?: string;
+
+  /**
+   * Local development only: host:port of the Firebase Auth emulator. With it set the Admin SDK does NOT verify token
+   * signatures (verified on 2026-10-15: an unsigned alg=none token naming an existing uid, with a forged
+   * globalRole=SUPER_ADMIN claim, was accepted). Therefore refused in production.
+   */
+  @IsOptional()
+  @Matches(/^[\w.-]+:\d{1,5}$/, { message: 'FIREBASE_AUTH_EMULATOR_HOST must look like host:port (no scheme)' })
+  FIREBASE_AUTH_EMULATOR_HOST?: string;
+
+  /** Also reject tokens of disabled users and tokens issued before a revocation (one extra Firebase lookup per request). */
+  @Transform(({ value }) => (value === undefined || value === '' ? true : value === 'true' || value === true ? true : value === 'false' || value === false ? false : value))
+  @IsBoolean()
+  AUTH_CHECK_REVOKED: boolean = true;
 
   @Transform(({ value }) => (value === undefined || value === '' ? 60_000 : Number(value)))
   @IsInt()
@@ -72,6 +86,7 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   if (env.NODE_ENV === 'production') {
     if (origins.length === 0) problems.push('CORS_ORIGINS: must list at least one origin in production');
     if (!env.FIREBASE_PROJECT_ID) problems.push('FIREBASE_PROJECT_ID: required in production');
+    if (env.FIREBASE_AUTH_EMULATOR_HOST) problems.push('FIREBASE_AUTH_EMULATOR_HOST: must not be set in production (the Auth emulator accepts forged tokens)');
     if (env.DATA_CONNECT_EMULATOR_HOST) problems.push('DATA_CONNECT_EMULATOR_HOST: must not be set in production (it would send real data to an emulator)');
   }
   if (problems.length > 0) throw new Error(`Invalid environment configuration:\n${problems.map((p) => `  - ${p}`).join('\n')}`);
