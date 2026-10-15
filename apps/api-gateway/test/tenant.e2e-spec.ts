@@ -5,7 +5,7 @@ import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { CurrentUser, type AuthenticatedUser } from '../src/auth/authenticated-user.js';
 import { Public } from '../src/auth/public.decorator.js';
-import { Granted, Permission, type GrantedPermission } from '../src/permission/permission.decorator.js';
+import { Permission } from '../src/permission/permission.decorator.js';
 import { Platform, Tenant, UserScoped, type TenantContext } from '../src/tenant/tenant.decorators.js';
 
 const A = '11111111-1111-4111-8111-111111111111'; // active school
