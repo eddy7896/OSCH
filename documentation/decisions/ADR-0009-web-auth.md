@@ -1,6 +1,6 @@
 # ADR-0009: Web authentication and school selection
 
-- **Status:** Proposed (2026-10-15) — awaiting owner acceptance
+- **Status:** Accepted (2026-10-15) — owner accepted all decisions
 - **Builds on:** ADR-0002 (Firebase Auth only), ADR-0006 (locale in the URL), ADR-0008 (gateway)
 
 ## Context

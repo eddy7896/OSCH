@@ -1,6 +1,6 @@
 # ADR-0008: API gateway foundations
 
-- **Status:** Proposed (2026-10-15) — awaiting owner acceptance; the Phase 1 plan assumes these defaults
+- **Status:** Accepted (2026-10-15) — owner accepted all decisions
 - **Builds on:** ADR-0001 (tenancy), ADR-0002 (Firebase Auth), ADR-0004 (money), ADR-0007 (roles)
 
 ## Context
