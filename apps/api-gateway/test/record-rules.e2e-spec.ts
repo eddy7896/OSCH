@@ -1,3 +1,4 @@
+import { NoAudit } from '../src/audit/audit.decorators.js';
 // P1-3d wired into the real pipeline: a handler loads the record, then asks RecordRules before it writes.
 import { Body, Controller, Get, type INestApplication, Inject, Param, Patch } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -16,9 +17,12 @@ const leaves = new Map<string, { schoolId: string; ownerUserId: string; status: 
   ['l-foreign', { schoolId: B, ownerUserId: 'u-other', status: 'PENDING', reason: 'other school' }],
 ]);
 const ROLE_OF: Record<string, string> = { 'u-principal': 'PRINCIPAL', 'u-hr': 'HR_MANAGER', 'u-teacher': 'TEACHER' };
+// Audit rows the fake data layer received (security events).
+const auditRows: unknown[] = [];
 const fakeDb = {
   getMembership: async ({ userId }: { userId: string }) => ({ data: { schoolMembers: ROLE_OF[userId] ? [{ schoolRole: ROLE_OF[userId], status: 'ACTIVE', school: { subscriptionStatus: 'ACTIVE' } }] : [] } }),
   listSchools: async () => ({ data: { schools: [] } }),
+  createAuditLog: async (v: unknown) => ({ data: { auditLog_insert: { id: String((auditRows.push(v), auditRows.length)) } } }),
 };
 const fakeAuth = { verifyIdToken: async (t: string) => { if (!ROLE_OF[`u-${t}`]) throw Object.assign(new Error('x'), { code: 'auth/argument-error' }); return { uid: `u-${t}` }; } };
 
@@ -29,7 +33,7 @@ class LeaveRoutes {
   constructor(@Inject('RECORD_RULES') private readonly rules: RecordRules) {}
 
   // The matrix lets HR "update" and the Principal "approve" at school scope; the rules decide the rest.
-  @Permission('leave', 'update') @Patch(':id') update(@Param('id') id: string, @Body() body: Record<string, unknown>, @Tenant() tenant: TenantContext, @Granted() granted: GrantedPermission) {
+  @NoAudit('test probe route, writes nothing') @Permission('leave', 'update') @Patch(':id') update(@Param('id') id: string, @Body() body: Record<string, unknown>, @Tenant() tenant: TenantContext, @Granted() granted: GrantedPermission) {
     const rec = leaves.get(id);
     if (!rec) return { error: 'missing' };
     this.rules.assert({ tenant, granted, record: { schoolId: rec.schoolId, ownerUserId: rec.ownerUserId }, changes: body });
@@ -42,7 +46,7 @@ class LeaveRoutes {
 class ApproveRoutes {
   constructor(@Inject('RECORD_RULES') private readonly rules: RecordRules) {}
 
-  @Permission('leave', 'approve') @Patch(':id') approve(@Param('id') id: string, @Tenant() tenant: TenantContext, @Granted() granted: GrantedPermission) {
+  @NoAudit('test probe route, writes nothing') @Permission('leave', 'approve') @Patch(':id') approve(@Param('id') id: string, @Tenant() tenant: TenantContext, @Granted() granted: GrantedPermission) {
     const rec = leaves.get(id)!;
     this.rules.assert({ tenant, granted, record: { schoolId: rec.schoolId, ownerUserId: rec.ownerUserId }, changes: { status: 'APPROVED' } });
     rec.status = 'APPROVED';

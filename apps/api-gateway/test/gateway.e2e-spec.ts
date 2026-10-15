@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import type { INestApplication } from '@nestjs/common';
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CurrentUser, type AuthenticatedUser } from '../src/auth/authenticated-user.js';
+import { NoAudit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
 import { Permission } from '../src/permission/permission.decorator.js';
 import { Platform, Tenant, UserScoped, type TenantContext } from '../src/tenant/tenant.decorators.js';
@@ -30,6 +31,7 @@ class ProbeController {
   }
 
   @Permission('students', 'create')
+  @NoAudit('test probe route, writes nothing')
   @Post('school-data')
   write(@Tenant() tenant: TenantContext, @Body() _body: unknown) {
     return tenant;

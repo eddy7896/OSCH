@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
+import { AuditModule } from './audit/audit.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { PermissionModule } from './permission/permission.module.js';
 import { TenantModule } from './tenant/tenant.module.js';
@@ -28,6 +29,7 @@ import { HealthModule } from './health/health.module.js';
       ],
     }),
     GatewayDatabaseModule,
+    AuditModule,
     AuthModule,
     TenantModule,
     PermissionModule,
