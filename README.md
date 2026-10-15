@@ -87,6 +87,10 @@ This project is built with AI coding agents, so it carries automated protection 
 - **Independent reviews:** two multi-agent reviews of Phase 0, each finding verified by a separate skeptic; results in `documentation/audit_2026-10-15.md`.
 - **CI** (`.github/workflows/periodic-checks.yml`): runs everything above on every push and weekly. **It has not run on GitHub yet**; every step was run locally and in a simulated clean clone.
 
+## Branches and releases
+
+`feat|fix|chore/<app>/<topic>` → `app/<app>` → `staging` → `main` (production); urgent fixes go `hotfix/*` → `main`, then back into `staging`. An app branch may change only its own app (shared code goes through `app/shared`). Enforced by CI; see [ADR-0010](documentation/decisions/ADR-0010-branching-and-environments.md).
+
 ## Rules that must not be broken
 
 1. **Tenant isolation:** the school comes from the verified user, never the request body; every database operation takes `$schoolId`.
@@ -111,7 +115,7 @@ The full agent and developer guide is [`CLAUDE.md`](CLAUDE.md).
 |---|---|
 | [`CLAUDE.md`](CLAUDE.md) | Rules, commands, definition of done, anti-hallucination protocol |
 | [`documentation/implementation_plan.md`](documentation/implementation_plan.md), [`phase1_plan.md`](documentation/phase1_plan.md) | Phase-by-phase task plan; the detailed, evidence-backed Phase 1 plan |
-| [`documentation/decisions/`](documentation/decisions) | ADRs 0001-0007: tenancy, auth, mobile database, money, design, languages, roles |
+| [`documentation/decisions/`](documentation/decisions) | ADRs 0001-0010: tenancy, auth, mobile database, money, design, languages, roles, gateway, web auth, branching |
 | [`documentation/system_architecture.md`](documentation/system_architecture.md), [`OruSchools SSOT.md`](documentation/OruSchools%20SSOT.md) | Architecture and product specification |
 | [`documentation/design_system_spec.md`](documentation/design_system_spec.md), [`design-system/`](documentation/design-system), [`brand-assets/`](documentation/brand-assets) | Tokens, 18 component specs, brand |
 | [`documentation/guardrails.md`](documentation/guardrails.md), [`hallucination_checks.md`](documentation/hallucination_checks.md) | Security rules and ground truths for AI agents |

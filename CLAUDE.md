@@ -37,6 +37,9 @@ Multi-tenant school ERP (SaaS). **Two pillars**: Next.js web ERP (system of reco
 9. **Roles (ADR-0007)**: 14 roles in `packages/rbac`; only the Principal approves; only System Admin grants roles; silos hold. Add a role in `ROLES`, the Data Connect `SchoolRole` enum and the matrix together (evals enforce).
 10. **Secrets**: never commit `.env*` (only `.env.example`), never paste credentials into docs, logs, or prompts.
 
+## Branching (ADR-0010)
+Work on `feat|fix|chore/<app>/<topic>` → PR into `app/<app>` → `staging` → `main` (production). Touch only your app's files on an app branch; shared code (`packages/`, `dataconnect/`, `tools/`, `evals/`, `documentation/`, `.github/`) goes through `app/shared`. Never push to `main` or `staging` directly.
+
 ## Anti-hallucination protocol (applies to every agent session)
 - **Verify before asserting**: before citing a file, function, package version, API, CLI flag or Data Connect directive, open/grep/run it. If you can't verify, say "unverified" — don't fill the gap.
 - **Don't invent paths**: only reference paths that exist or are listed as planned in `tools/checks/drift-config.json`.

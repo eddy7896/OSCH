@@ -1,0 +1,16 @@
+name: branch-policy
+
+on:
+  pull_request:
+    branches: [main, staging, "app/**"]
+
+jobs:
+  policy:
+    name: Branch policy (ADR-0010)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Merge flow and app ownership of changed files
+        run: node tools/checks/branch-policy-cli.mjs "${{ github.head_ref }}" "${{ github.base_ref }}"
