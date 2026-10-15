@@ -50,3 +50,8 @@ Phase 1 turns the Nest scaffold into the single enforcement point: authenticate,
 - **Two namespaces, never merged:** tenant routes are authorised with the school role from the verified membership only; platform routes with the global claim only (tested with a spy on `authorize`). A SUPER_ADMIN who is also a TEACHER member of a school gets exactly the TEACHER rights there.
 - **Handlers narrow by scope:** the guard puts `{ resource, action, scope }` on the request (`@Granted()`); `own` and `linked` scopes are applied by each handler's query, which the cross-tenant harness (P1-7) must cover per route.
 - Guard order is now: throttler, `AuthGuard`, `TenantGuard`, `PermissionGuard`.
+
+## Addendum (2026-10-16, P1-3d)
+- **Record-level rules** (`permission/record-rules.ts`, pure functions) cover what the matrix cannot say: (1) nobody approves their own request, whatever their role (a Principal's own leave needs someone else); a leave approval whose owner is unknown is refused; (2) a `status` key in a leave *update* counts as a decision and needs `leave:approve`, so HR can edit details but not decide; (3) on the loaded record, `own` scope requires the caller to own it, `linked` scope requires a guardian link, and a record carrying another school's id is refused (defence in depth against a bad query).
+- **Hook:** handlers call `RecordRules.assert({ tenant, granted, record, changes })` after loading the record and before writing, passing the record they actually loaded, never request values. A violation is the same opaque `403 FORBIDDEN` as a missing permission; the rule name is logged server-side only.
+- Phase 3 leave handlers must call it; P1-7's route matrix should include a self-approval case for every `approve` route.
