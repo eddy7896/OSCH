@@ -1,8 +1,9 @@
 import { Test } from '@nestjs/testing';
 import type { INestApplication } from '@nestjs/common';
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CurrentUser, type AuthenticatedUser } from '../src/auth/authenticated-user.js';
 import { Public } from '../src/auth/public.decorator.js';
+import { Platform, Tenant, UserScoped, type TenantContext } from '../src/tenant/tenant.decorators.js';
 import request from 'supertest';
 
 // A real throttled route does not exist yet; unmatched routes (404) never reach guards.
@@ -14,9 +15,28 @@ class ProbeController {
     return { ok: true };
   }
 
+  @UserScoped()
   @Get('secure')
   secure(@CurrentUser() user: AuthenticatedUser) {
     return user;
+  }
+
+  // A tenant route: no decorator needed, that is the default.
+  @Get('school-data')
+  async schoolData(@Tenant() tenant: TenantContext, @Query() _query: unknown) {
+    await new Promise((r) => setTimeout(r, Math.random() * 15)); // interleave concurrent requests
+    return tenant;
+  }
+
+  @Post('school-data')
+  write(@Tenant() tenant: TenantContext, @Body() _body: unknown) {
+    return tenant;
+  }
+
+  @Platform()
+  @Get('platform/ping')
+  platform(@CurrentUser() user: AuthenticatedUser) {
+    return { by: user.uid };
   }
 }
 

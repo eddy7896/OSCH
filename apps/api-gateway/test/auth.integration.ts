@@ -5,12 +5,14 @@ import { getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import request from 'supertest';
 import { CurrentUser, type AuthenticatedUser } from '../src/auth/authenticated-user.js';
+import { UserScoped } from '../src/tenant/tenant.decorators.js';
 
 const host = process.env.FIREBASE_AUTH_EMULATOR_HOST;
 const identity = `http://${host}/identitytoolkit.googleapis.com/v1/accounts`;
 
 @Controller()
 class WhoAmI {
+  @UserScoped() // signed in, no school: otherwise the tenant guard (default for routes) wants X-School-Id
   @Get('whoami')
   whoami(@CurrentUser() u: AuthenticatedUser) {
     return u;
