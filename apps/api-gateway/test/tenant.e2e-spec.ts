@@ -4,6 +4,7 @@ import { Body, Controller, Get, type INestApplication, Post, Query } from '@nest
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { CurrentUser, type AuthenticatedUser } from '../src/auth/authenticated-user.js';
+import { NoAudit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
 import { Permission } from '../src/permission/permission.decorator.js';
 import { Platform, Tenant, UserScoped, type TenantContext } from '../src/tenant/tenant.decorators.js';
@@ -18,6 +19,8 @@ const members = new Map<string, Row>();
 const row = (schoolRole = 'TEACHER', status = 'ACTIVE', subscriptionStatus = 'ACTIVE'): Row => ({ schoolRole, status, school: { subscriptionStatus } });
 let dbCalls = 0;
 let dbFailure: Error | undefined;
+// Audit rows the fake data layer received (security events).
+const auditRows: unknown[] = [];
 const fakeDb = {
   getMembership: async ({ schoolId, userId }: { schoolId: string; userId: string }) => {
     dbCalls++;
@@ -26,6 +29,7 @@ const fakeDb = {
     return { data: { schoolMembers: r ? [r] : [] } };
   },
   listSchools: async () => ({ data: { schools: [] } }),
+  createAuditLog: async (v: unknown) => ({ data: { auditLog_insert: { id: String((auditRows.push(v), auditRows.length)) } } }),
 };
 
 const USERS: Record<string, { uid: string; globalRole?: string }> = {
@@ -65,6 +69,7 @@ class Probe {
   }
 
   @Permission('attendance', 'create')
+  @NoAudit('test probe route, writes nothing')
   @Post('school-data')
   write(@Tenant() t: TenantContext, @Body() _b: unknown) {
     return t;
