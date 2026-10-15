@@ -45,6 +45,13 @@ export class Env {
   @IsBoolean()
   AUTH_CHECK_REVOKED: boolean = true;
 
+  /** How long an ALLOW decision (active member of an active school) may be reused. 0 turns the cache off. Denials are never cached. */
+  @Transform(({ value }) => (value === undefined || value === '' ? 30_000 : Number(value)))
+  @IsInt()
+  @Min(0)
+  @Max(300_000)
+  TENANT_CACHE_TTL_MS: number = 30_000;
+
   @Transform(({ value }) => (value === undefined || value === '' ? 60_000 : Number(value)))
   @IsInt()
   @Min(1)
