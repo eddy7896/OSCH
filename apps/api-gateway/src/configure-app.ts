@@ -20,6 +20,6 @@ export function configureApp(app: INestApplication): void {
     exposedHeaders: [REQUEST_ID_HEADER],
     maxAge: 600,
   });
-  app.setGlobalPrefix('v1', { exclude: ['health'] });
+  app.setGlobalPrefix('v1', { exclude: ['health', 'health/db'] });
   app.enableShutdownHooks();
 }
