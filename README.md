@@ -73,9 +73,10 @@ Web apps are served in English at `/` and in other languages under the language 
 | `npm run check:drift` | Docs, config, schema and code checked against each other (see below) |
 | `npm run eval` | Drift check plus the spec and invariant evals |
 | `npm run test:dataconnect` | Database-level tenant isolation tests on the emulator |
+| `npm run test:database` | The gateway data layer (Admin SDK) against the emulator |
 | `npm run tokens:build` / `tokens:check` | Regenerate / verify the design-token outputs |
 | `npm run i18n:build` / `i18n:check` | Regenerate / verify language artefacts (also runs `flutter gen-l10n`) |
-| `npx firebase dataconnect:compile` | Compile the schema and regenerate the gateway SDK |
+| `npx firebase dataconnect:compile` | Compile the schema and regenerate the Admin SDK (`packages/database/generated`) |
 
 ## Quality gates
 
