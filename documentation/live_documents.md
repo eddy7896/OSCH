@@ -29,6 +29,6 @@ This file should be continuously updated as the project evolves. Whenever a new 
 
 ## Governance & Quality Docs
 - [CLAUDE.md](../CLAUDE.md) — agent/developer guide and definition of done
-- [Implementation plan (task-level)](implementation_plan.md) · [Project plan & phase gates](project_plan.md) · [Eval plan](eval_plan.md) · [Audit 2026-10-15](audit_2026-10-15.md)
-- Decisions: [ADR-0001 tenancy](decisions/ADR-0001-tenant-isolation.md), [ADR-0002 auth](decisions/ADR-0002-auth-provider.md), [ADR-0003 mobile DB](decisions/ADR-0003-mobile-local-db.md), [ADR-0004 money & time](decisions/ADR-0004-money-and-time.md), [ADR-0005 design foundation](decisions/ADR-0005-design-foundation.md), [ADR-0006 languages & RTL](decisions/ADR-0006-languages.md), [ADR-0007 extended roles](decisions/ADR-0007-roles.md)
+- [**Phase 1 plan**](phase1_plan.md) · [Implementation plan (task-level)](implementation_plan.md) · [Project plan & phase gates](project_plan.md) · [Eval plan](eval_plan.md) · [Audit 2026-10-15](audit_2026-10-15.md)
+- Decisions: [ADR-0001 tenancy](decisions/ADR-0001-tenant-isolation.md), [ADR-0002 auth](decisions/ADR-0002-auth-provider.md), [ADR-0003 mobile DB](decisions/ADR-0003-mobile-local-db.md), [ADR-0004 money & time](decisions/ADR-0004-money-and-time.md), [ADR-0005 design foundation](decisions/ADR-0005-design-foundation.md), [ADR-0006 languages & RTL](decisions/ADR-0006-languages.md), [ADR-0007 extended roles](decisions/ADR-0007-roles.md), [ADR-0008 gateway foundations *(proposed)*](decisions/ADR-0008-gateway-foundations.md), [ADR-0009 web auth *(proposed)*](decisions/ADR-0009-web-auth.md)
 - [Environment & secrets](environment.md)

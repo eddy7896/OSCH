@@ -130,3 +130,19 @@ test("E-I18N-13 tall scripts get minimum line heights that only ever RAISE the d
   }
   assert.equal(registry.scripts.Nastaliq.minLineHeight, 2.0);
 });
+
+test("E-I18N-14 Latin letters come ONLY from Noto Sans: no non-Latin font ships A-Z/a-z (else the brand name inside Urdu text renders in that script's Latin style, e.g. serif Nastaliq)", () => {
+  for (const [family, entry] of Object.entries(provenance.families)) {
+    if (entry.script === "Latin") assert.equal(entry.latinLetterGlyphs, 52, "Noto Sans must carry all 52 Latin letters");
+    else assert.equal(entry.latinLetterGlyphs, 0, `${family} ships ${entry.latinLetterGlyphs} Latin letters`);
+  }
+});
+
+test("E-I18N-15 the fallback order puts Noto Sans first, right after the script font, in the generated web stacks", () => {
+  const css = read("packages/i18n/generated/i18n.css");
+  for (const m of css.matchAll(/html:lang\(\w+\)[^{]*\{\n  font-family: ([^;]+);/g)) {
+    const stack = m[1].split(", ");
+    assert.equal(stack[1], "var(--font-noto-sans)", `second font must be Noto Sans, got ${stack[1]}`);
+  }
+});
+

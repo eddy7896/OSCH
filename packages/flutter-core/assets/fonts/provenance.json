@@ -9,19 +9,20 @@
         "NotoSans-Regular.ttf": {
           "weight": 400,
           "bytes": 60572,
-          "sha256": "584565ff78176e9c7b60ba375bada986c0c79c2b5eaae3c9e605494def072abb"
+          "sha256": "dd29c67af9546e32ac698428073032fc8f0ba849328ea3ce641683cc5f9e6beb"
         },
         "NotoSans-SemiBold.ttf": {
           "weight": 600,
           "bytes": 60644,
-          "sha256": "d0e5960d00ad958e4a588f96c24bc6b4fb0d4a31d756d0be00937a21ae290dce"
+          "sha256": "c541de9210a1a506f84201dfe35502e8133087f69e70626d22f15fe719f40d0f"
         },
         "NotoSans-Bold.ttf": {
           "weight": 700,
           "bytes": 60532,
-          "sha256": "0483ad6b2d5b867a5ee776b0df83c2a505135635afddf1bbad588f36594103ad"
+          "sha256": "20b548eb46bf306774ca1bbb65fdc71e5d9d202d89dd3ee33fc3e57615550d2d"
         }
       },
+      "latinLetterGlyphs": 52,
       "totalBytes": 181748
     },
     "NotoSansDevanagari": {
@@ -30,21 +31,22 @@
       "files": {
         "NotoSansDevanagari-Regular.ttf": {
           "weight": 400,
-          "bytes": 183132,
-          "sha256": "50e392d88b358ae24a2dd4ba53e8203ce6a548043a0f06f76b9e46f60842fb9b"
+          "bytes": 176440,
+          "sha256": "2c273237abd1116bba114ba2e5df49839b675ed85240a36ea061249dc38a33db"
         },
         "NotoSansDevanagari-SemiBold.ttf": {
           "weight": 600,
-          "bytes": 183796,
-          "sha256": "9935b50e53dfdb54e3cbd154350622ac6c4f29c4c1e5a53f5389faed7f4e9820"
+          "bytes": 177112,
+          "sha256": "3fd6c2d03c73e22b66adebc61faa4473f2765ef072fb21b9277553fa2016b026"
         },
         "NotoSansDevanagari-Bold.ttf": {
           "weight": 700,
-          "bytes": 183672,
-          "sha256": "6d696b3d7173a5c19133fd8e6ad6b4b0fe4d7f01dec6d2c4b735666b17aa639d"
+          "bytes": 177004,
+          "sha256": "db1fce0be39fcf7278b3fed66b7411bbd962f6de56c4246e134dbcb17ab4db3d"
         }
       },
-      "totalBytes": 550600
+      "latinLetterGlyphs": 0,
+      "totalBytes": 530556
     },
     "NotoSansBengali": {
       "script": "Bengali",
@@ -52,16 +54,17 @@
       "files": {
         "NotoSansBengali-Regular.ttf": {
           "weight": 400,
-          "bytes": 108248,
-          "sha256": "baa1da5620f9ac537903fee71983981ccc86ff26fbca4226fb3fa054fc00cc0c"
+          "bytes": 101116,
+          "sha256": "7f60638766b8f353822a253c42e71a31bb03a35616424f6fea107b1dafd38a3f"
         },
         "NotoSansBengali-Bold.ttf": {
           "weight": 700,
-          "bytes": 108624,
-          "sha256": "949288056eee852170c8d0589912714e10da0d139fdaa98cd63d8c96683da718"
+          "bytes": 101516,
+          "sha256": "87a66764d24e65bda2b43c5b1365484ac4f6478789b1cdcbc3ca4bfe6ff42f20"
         }
       },
-      "totalBytes": 216872
+      "latinLetterGlyphs": 0,
+      "totalBytes": 202632
     },
     "NotoSansGurmukhi": {
       "script": "Gurmukhi",
@@ -69,16 +72,17 @@
       "files": {
         "NotoSansGurmukhi-Regular.ttf": {
           "weight": 400,
-          "bytes": 34436,
-          "sha256": "fc00fad0e3d176fc3dbf29fb8eb35a30356fa56a8647d5ba0c08408e33938425"
+          "bytes": 28624,
+          "sha256": "1ebafd518054294f378031c0fb8e9f3c4e8c14e5f9521c49d0bf6eb309a8d93c"
         },
         "NotoSansGurmukhi-Bold.ttf": {
           "weight": 700,
-          "bytes": 34448,
-          "sha256": "3f0ebc5c5a26edcb3d00192f4154a74437169f928f2aa9a52ba62ca6ed527d86"
+          "bytes": 28652,
+          "sha256": "f70d53d1789fba0abf6ef899946ccac64a2db6642feeb3588a0e1eda1e0fea85"
         }
       },
-      "totalBytes": 68884
+      "latinLetterGlyphs": 0,
+      "totalBytes": 57276
     },
     "NotoSansGujarati": {
       "script": "Gujarati",
@@ -86,16 +90,17 @@
       "files": {
         "NotoSansGujarati-Regular.ttf": {
           "weight": 400,
-          "bytes": 140000,
-          "sha256": "920569326038c57da8178fac0ec029f97248390a7cd8df09592b305223825408"
+          "bytes": 133184,
+          "sha256": "e2965849458c968e2cd65258103f3270aa399dd4a659625755b622c3d6e12c34"
         },
         "NotoSansGujarati-Bold.ttf": {
           "weight": 700,
-          "bytes": 140112,
-          "sha256": "db99506c255008e2be3bb463c1e38acd136b340928ae715945a78a386ab1ea13"
+          "bytes": 133316,
+          "sha256": "66770119792c4b1796567e6ebca5ec2fb381ecaf882c14bdd8d20646de910c22"
         }
       },
-      "totalBytes": 280112
+      "latinLetterGlyphs": 0,
+      "totalBytes": 266500
     },
     "NotoSansOriya": {
       "script": "Oriya",
@@ -103,16 +108,17 @@
       "files": {
         "NotoSansOriya-Regular.ttf": {
           "weight": 400,
-          "bytes": 143128,
-          "sha256": "da1d09f56b0ebd9ca5817d4b43eaf0d28fbbf71dc20e80fa87b382805b8f7e4e"
+          "bytes": 135600,
+          "sha256": "29adaa4b39173c8e901e1ac600d400f0a41ed7a8eb554fbc41897b593185504d"
         },
         "NotoSansOriya-Bold.ttf": {
           "weight": 700,
-          "bytes": 143368,
-          "sha256": "e489fdf75c0f83a16e2769841e51a04be2f8cd01844e96ce4c57cb26ca11f4f0"
+          "bytes": 135840,
+          "sha256": "bbc89f560ab0e41a1bec38df7a4a1d58ded802290cbcb550d9b659e391a64347"
         }
       },
-      "totalBytes": 286496
+      "latinLetterGlyphs": 0,
+      "totalBytes": 271440
     },
     "NotoSansTamil": {
       "script": "Tamil",
@@ -120,16 +126,17 @@
       "files": {
         "NotoSansTamil-Regular.ttf": {
           "weight": 400,
-          "bytes": 50028,
-          "sha256": "49b1df350b4bab75938ec161316411ccf9be84e9a8fc74b56225cee96559df40"
+          "bytes": 44216,
+          "sha256": "c439f3b410918d524e5ba275e1725ef6cc65a6de86bfa4e1111a61afe5639134"
         },
         "NotoSansTamil-Bold.ttf": {
           "weight": 700,
-          "bytes": 50020,
-          "sha256": "052764f533f336fd90c1baebf473649124a224c65245acc43f35c3a6c655e82a"
+          "bytes": 44228,
+          "sha256": "e37ae0bb2c7d02b5db98d1823e5e71f3b2b4ed9499703e6c32a18bb88684b57b"
         }
       },
-      "totalBytes": 100048
+      "latinLetterGlyphs": 0,
+      "totalBytes": 88444
     },
     "NotoSansTelugu": {
       "script": "Telugu",
@@ -137,16 +144,17 @@
       "files": {
         "NotoSansTelugu-Regular.ttf": {
           "weight": 400,
-          "bytes": 147088,
-          "sha256": "7a44612f9f31bb1a4dbe20abea8cf1a72d11ed98fc5635ad663270487e7db9d2"
+          "bytes": 140116,
+          "sha256": "1301a17038969285ec183dc18fae0f9377e2beb8039f7e368cf37035b1ccb759"
         },
         "NotoSansTelugu-Bold.ttf": {
           "weight": 700,
-          "bytes": 147524,
-          "sha256": "d1b820b0289cbea63321204e9e8761e350c4f8ae35923322d7e0e0c7f0c8720f"
+          "bytes": 140544,
+          "sha256": "e6dbd280231edc25019ac85c03f3d45b13dc4896d7fb661691f06459110b2c08"
         }
       },
-      "totalBytes": 294612
+      "latinLetterGlyphs": 0,
+      "totalBytes": 280660
     },
     "NotoSansKannada": {
       "script": "Kannada",
@@ -154,16 +162,17 @@
       "files": {
         "NotoSansKannada-Regular.ttf": {
           "weight": 400,
-          "bytes": 122288,
-          "sha256": "f7d4f903fcb1bc279f393ec20fad6ff9c1c72933c8f759c9780f8d44601a38cb"
+          "bytes": 116304,
+          "sha256": "8d507524cd4fd3dda28b3ecfd809007d2c54466f0cb5cf486128507fc0f6210f"
         },
         "NotoSansKannada-Bold.ttf": {
           "weight": 700,
-          "bytes": 122424,
-          "sha256": "3d3fecdfaf8ef3173fc46711489487949be16c2fd5d88c8b7f9556e172047a47"
+          "bytes": 116444,
+          "sha256": "166c2f424e2fc84f307df051a36314b8f3b6764a6f57191ebfcfa1a3a164236e"
         }
       },
-      "totalBytes": 244712
+      "latinLetterGlyphs": 0,
+      "totalBytes": 232748
     },
     "NotoSansMalayalam": {
       "script": "Malayalam",
@@ -171,16 +180,17 @@
       "files": {
         "NotoSansMalayalam-Regular.ttf": {
           "weight": 400,
-          "bytes": 79512,
-          "sha256": "ac18da852c4debd5cc21ed5e2063461861318ba127fc3f26689481cd7ed0ab0d"
+          "bytes": 73296,
+          "sha256": "4c9b2db1522837d62ebfd6ecbec0e70d614ca3dd4568afed96950e199f7aa25f"
         },
         "NotoSansMalayalam-Bold.ttf": {
           "weight": 700,
-          "bytes": 79484,
-          "sha256": "cf559e9ecad7c8bd6256187348c3e1d74d251bc7d39b5d0963a5af91e8319109"
+          "bytes": 73276,
+          "sha256": "f411f4458055e179512eccf41cf089ef836339cd8c02c43cc8f9af879c005767"
         }
       },
-      "totalBytes": 158996
+      "latinLetterGlyphs": 0,
+      "totalBytes": 146572
     },
     "NotoNaskhArabic": {
       "script": "Arabic",
@@ -188,16 +198,17 @@
       "files": {
         "NotoNaskhArabic-Regular.ttf": {
           "weight": 400,
-          "bytes": 144752,
-          "sha256": "254f3dc60b60cd29ab08199c7e3086b9a416dee031e6968e7502eaf080879653"
+          "bytes": 133916,
+          "sha256": "af3d4435f86cb7653149d223e43c8f555a4bcd53ed08304b1f350b1d9f4b164d"
         },
         "NotoNaskhArabic-Bold.ttf": {
           "weight": 700,
-          "bytes": 144840,
-          "sha256": "d4080e40a9e3c1ae03bb384853775ab6960d65cd3aa06d7060d44169809511b7"
+          "bytes": 134016,
+          "sha256": "fec1b83e5376e17ee90f871d0202836ccdd507974f9ecbe40d7208aed7b36950"
         }
       },
-      "totalBytes": 289592
+      "latinLetterGlyphs": 0,
+      "totalBytes": 267932
     },
     "NotoNastaliqUrdu": {
       "script": "Nastaliq",
@@ -205,16 +216,17 @@
       "files": {
         "NotoNastaliqUrdu-Regular.ttf": {
           "weight": 400,
-          "bytes": 990056,
-          "sha256": "ce1f990505a955624dac46ac06e3de7304c3d9cd19ecae3ae67c55a2be8c7049"
+          "bytes": 979124,
+          "sha256": "012d98702f0cd68dc455b9a341a1c248809dfb62749996f90b8656e41f3d3f5b"
         },
         "NotoNastaliqUrdu-Bold.ttf": {
           "weight": 700,
-          "bytes": 990996,
-          "sha256": "a793ce3bdca6b623757b4454d90b11bd685635d0f508b165bcc7a72b371cf048"
+          "bytes": 980072,
+          "sha256": "dff4b6d3b4d4ddbb1d32a01d0afb8fb2fdcc8895ec7ff80328b8af0c1a819087"
         }
       },
-      "totalBytes": 1981052
+      "latinLetterGlyphs": 0,
+      "totalBytes": 1959196
     }
   },
   "coverage": {
@@ -314,5 +326,5 @@
       "missing": []
     }
   },
-  "totalBytes": 4653724
+  "totalBytes": 4485704
 }

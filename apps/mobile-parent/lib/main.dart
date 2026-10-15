@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_core/flutter_core.dart';
 
-void main() => runApp(const ParentApp());
+/// Language for development and device testing: `flutter run --dart-define=ORU_LOCALE=ur`. An explicit choice, as ADR-0006
+/// requires; an unsupported code resolves to English. Production builds use English until the language picker ships.
+const _locale = String.fromEnvironment('ORU_LOCALE', defaultValue: OruLocales.defaultCode);
+
+void main() => runApp(const ParentApp(locale: Locale(_locale)));
 
 class ParentApp extends StatelessWidget {
   /// English is the primary language; another language is an explicit choice (ADR-0006), passed here once a language

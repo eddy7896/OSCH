@@ -1,0 +1,23 @@
+# ADR-0008: API gateway foundations
+
+- **Status:** Proposed (2026-10-15) — awaiting owner acceptance; the Phase 1 plan assumes these defaults
+- **Builds on:** ADR-0001 (tenancy), ADR-0002 (Firebase Auth), ADR-0004 (money), ADR-0007 (roles)
+
+## Context
+Phase 1 turns the Nest scaffold into the single enforcement point: authenticate, resolve the school, authorise, audit, then call Data Connect. Several choices depend on facts that were checked against the installed packages and the npm registry on 2026-10-15 (evidence in `documentation/phase1_plan.md` §3).
+
+## Decisions
+1. **Node 22 is the repo floor** (`.nvmrc`, `engines`, CI, Docker). Evidence: `@angular-devkit/core@22` (via the Nest CLI) declares `^22.22.3 || ^24.15 || >=26`; `nestjs-pino@5.3.1` needs `>=22.12`; `@hey-api/openapi-ts@0.99` needs `>=22.18`; `jsdom@30` needs `^22.22.2`. This machine runs 20.20 and must upgrade (`nvm install 22`).
+2. **Data access = the generated *Admin* Node SDK, wrapped in `packages/database`.** The CLI supports `generate.adminNodeSdk` in `connector.yaml` (verified in `firebase-tools@15.34.0` schema and by generating one in a scratch project): typed functions such as `createInvoice(dc, vars)` that call `dc.executeMutation('CreateInvoice', vars)` through `firebase-admin@13.10.0`, with `Int64String`/`UUIDString` types. The Phase 0 *client* SDK (`javascriptSdk`, browser flavour) is dropped from the gateway. `firebase-admin` documents that named operations "run with admin privileges and ignore all auth directives", so `NO_ACCESS` operations stay callable only by the gateway (runtime proof is acceptance criterion of P1-2).
+3. **HTTP stack:** NestJS 12 + `class-validator`/`class-transformer` DTOs, `@nestjs/swagger@12` (OpenAPI), `@nestjs/config@12` with a class-validator schema for env (fail fast), `@nestjs/throttler@6.7`, `@nestjs/terminus@12` (health), `nestjs-pino@5` + `pino@10`, `helmet`. **Rejected:** `nestjs-zod@5.5` (peers `@nestjs/common ^10 || ^11`, no Nest 12 support), `zod`-based DTOs for the same reason.
+4. **Request pipeline (deny by default):** request id → throttle → `AuthGuard` (Bearer ID token, `verifyIdToken`) → `TenantGuard` (explicit `X-School-Id`, validated against an ACTIVE `SchoolMember` of a non-suspended school) → `PermissionGuard` (`@Permission(resource, action)` mapped onto `packages/rbac`) → validation pipe (whitelist; unknown fields such as a body `schoolId` are rejected) → handler → exception filter. A route with neither `@Permission(...)` nor `@Public()` **fails application startup** and fails a test.
+5. **Errors:** one JSON envelope `{ error: { code, message, requestId, details? } }` with a closed registry of machine codes (clients localise the text). Data Connect `ABORTED` from a failed `@check` maps to `403 TENANT_REFERENCE_FORBIDDEN` (never reveals whether the other school's row exists); `INVALID_ARGUMENT` to 400.
+6. **Audit:** state-changing Data Connect mutations write their `AuditLog` row **inside the same `@transaction`** (atomic: no change without an audit row); the gateway's interceptor additionally records security events (auth failures, denials) and request metadata. A drift rule (planned in P1-2c) will require every Phase 1 mutation to contain `auditLog_insert`.
+7. **Platform routes** (`/v1/platform/*`, SUPER_ADMIN only) are a separate namespace with no school context; tenant routes always carry one.
+8. **Tests run against real emulators:** Data Connect emulator (PGlite, no Java) and the Firebase Auth emulator (built in; not in firebase-tools' Java-dependent list). A generated route matrix proves 401/403/404 behaviour for every route.
+
+## Consequences
+- The existing `apps/api-gateway/src/dataconnect-sdk` (client SDK) and its `@oruschools/erp-sdk` dependency are removed; the CI "SDK is current" step moves to the new output path.
+- Money crosses the API as decimal strings (`Int64String`), parsed with `BigInt`.
+- Main risk: every new mutation must remember its audit insert; the planned drift rule turns forgetting into a build failure instead of a review comment.
+- Unverified until built: the exact behaviour of `verifyIdToken` against emulator-issued tokens, and `AsyncLocalStorage` vs request scope for tenant context (spike inside P1-3).

@@ -4,7 +4,17 @@
     "apps/staff-app",
     "apps/parent-app",
     "apps/driver-app",
-    "packages/shared-design-tokens/index.js"
+    "packages/shared-design-tokens/index.js",
+    "apps/api-gateway/src",
+    "apps/api-gateway/test",
+    "apps/api-gateway/openapi.json",
+    "packages/database/src",
+    "packages/database/generated",
+    "packages/api-client/src",
+    "packages/shared-ui/src",
+    "tools/bootstrap-super-admin.mjs",
+    "apps/web-admin/src",
+    "apps/saas-admin/src"
   ],
   "pathCheckExemptDocs": [],
   "bannedDependencies": [

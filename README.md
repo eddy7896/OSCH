@@ -103,14 +103,14 @@ The full agent and developer guide is [`CLAUDE.md`](CLAUDE.md).
 
 **14 roles** (`packages/rbac`): Principal, Management, Bursar (finance admin), Academic Admin, System Admin, HR Manager, Accountant, Admissions Officer, Transport Manager, Operations Manager, Teacher, Staff, Driver, Parent. Every employee can check in and request their own leave. See [ADR-0007](documentation/decisions/ADR-0007-roles.md).
 
-**19 languages** (`packages/i18n`): English (primary); right-to-left Urdu, Kashmiri, Sindhi, Pashto, Persian, Arabic; and Hindi, Bengali, Assamese, Marathi, Dogri, Gujarati, Punjabi, Odia, Tamil, Telugu, Kannada, Malayalam. Hindi and Urdu have complete **draft** translations (not reviewed); the rest show English per missing string. Fonts for every script are bundled (4.44 MiB per Flutter app). To change text, edit `packages/i18n/messages/en.json` and run `npm run i18n:build`. See [ADR-0006](documentation/decisions/ADR-0006-languages.md).
+**19 languages** (`packages/i18n`): English (primary); right-to-left Urdu, Kashmiri, Sindhi, Pashto, Persian, Arabic; and Hindi, Bengali, Assamese, Marathi, Dogri, Gujarati, Punjabi, Odia, Tamil, Telugu, Kannada, Malayalam. Hindi and Urdu have complete **draft** translations (not reviewed); the rest show English per missing string. Fonts for every script are bundled (4.28 MiB per Flutter app). To change text, edit `packages/i18n/messages/en.json` and run `npm run i18n:build`. See [ADR-0006](documentation/decisions/ADR-0006-languages.md).
 
 ## Documentation map
 
 | Read this | For |
 |---|---|
 | [`CLAUDE.md`](CLAUDE.md) | Rules, commands, definition of done, anti-hallucination protocol |
-| [`documentation/implementation_plan.md`](documentation/implementation_plan.md) | Phase-by-phase task plan with sizes and the Phase 0 status |
+| [`documentation/implementation_plan.md`](documentation/implementation_plan.md), [`phase1_plan.md`](documentation/phase1_plan.md) | Phase-by-phase task plan; the detailed, evidence-backed Phase 1 plan |
 | [`documentation/decisions/`](documentation/decisions) | ADRs 0001-0007: tenancy, auth, mobile database, money, design, languages, roles |
 | [`documentation/system_architecture.md`](documentation/system_architecture.md), [`OruSchools SSOT.md`](documentation/OruSchools%20SSOT.md) | Architecture and product specification |
 | [`documentation/design_system_spec.md`](documentation/design_system_spec.md), [`design-system/`](documentation/design-system), [`brand-assets/`](documentation/brand-assets) | Tokens, 18 component specs, brand |
@@ -134,7 +134,7 @@ The full agent and developer guide is [`CLAUDE.md`](CLAUDE.md).
 
 **Built and tested:** the permission model, the database schema and its isolation guarantees, the design-token pipeline, language and right-to-left support, themed app shells, and the checks above.
 
-**Not built yet:** every school feature, the gateway guards and modules, authentication, the UI component library, the sync engine, payments. The Hindi and Urdu translations are unreviewed drafts. Android and iOS builds are unverified (the setup machine has no Android toolchain and an incomplete Xcode), and the CI workflow has not run on GitHub.
+**Not built yet:** every school feature, the gateway guards and modules, authentication, the UI component library, the sync engine, payments. The Hindi and Urdu translations are unreviewed drafts. The Teacher app has been built and run on the iOS 27 simulator; the other three iOS apps and every Android build are not yet verified (Android needs the command-line tools and licenses set up), and the CI workflow has not run on GitHub.
 
 ## Contributing
 

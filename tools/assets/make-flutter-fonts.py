@@ -96,6 +96,9 @@ for name, s in cfg["scripts"].items():
         shipped |= set(TTFont(out / fname).getBestCmap())
         entry["files"][fname] = {"weight": wght, "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
     cmaps[name] = shipped
+    # Latin letters must come from Noto Sans only: a non-Latin font that carries its own A-Z/a-z would render mixed strings
+    # (the brand name "OruSchools" inside Urdu text) in that script's Latin glyph style, e.g. serif in Nastaliq.
+    entry["latinLetterGlyphs"] = len([c for c in shipped if 65 <= c <= 90 or 97 <= c <= 122])
     total = sum(f["bytes"] for f in entry["files"].values())
     entry["totalBytes"] = total
     provenance["families"][family] = entry

@@ -37,7 +37,8 @@ const config = JSON.parse(read("tools/checks/drift-config.json"));
 {
   const docs = [...walk("documentation", (f) => f.endsWith(".md")), "CLAUDE.md"].filter(exists);
   const planned = config.plannedPaths;
-  const re = /\b((?:apps|packages|dataconnect|tools|evals)\/[A-Za-z0-9_.\-\/*]+)/g;
+  // A path must not be preceded by a name character: "firebase-tools/lib/x" is a package path, not our tools/lib/x.
+  const re = /(?<![\w.\/-])((?:apps|packages|dataconnect|tools|evals)\/[A-Za-z0-9_.\-\/*]+)/g;
   for (const doc of docs) {
     if (config.pathCheckExemptDocs.includes(doc)) continue;
     const seen = new Set();
@@ -242,6 +243,17 @@ if (existsSync(join(ROOT, ".git"))) {
   // No hard-coded user-visible text in the app shells: strings come from the message catalogs.
   for (const f of walk("apps", (x) => /^apps\/mobile-[^/]+\/lib\/.*\.dart$/.test(x)))
     if (/\bText\(\s*'/.test(read(f)) || /\bText\(\s*"/.test(read(f))) add("error", "hardcoded-string", "Text('literal'): use OruStrings (packages/i18n catalogs) so the UI can be translated", f);
+}
+
+// 12. CI workflows must be valid: a workflow GitHub rejects runs NO jobs, so every check silently never executes. ---------
+{
+  const { checkWorkflow } = await import("./workflow-check.mjs");
+  const rootScripts = JSON.parse(read("package.json")).scripts ?? {};
+  const turboTasks = Object.keys(JSON.parse(read("turbo.json")).tasks ?? {});
+  if (existsSync(join(ROOT, ".github/workflows")))
+    for (const f of readdirSync(join(ROOT, ".github/workflows")).filter((n) => /\.ya?ml$/.test(n)))
+      for (const problem of checkWorkflow(read(`.github/workflows/${f}`), { rootScripts, turboTasks, exists }))
+        add("error", "workflow", problem, `.github/workflows/${f}`);
 }
 
 // Report -----------------------------------------------------------------------

@@ -134,6 +134,8 @@ void main() {
       expect(s.fontFamilyFallback, containsAll(['$p/NotoSans', '$p/NotoNaskhArabic', '$p/NotoSansDevanagari']));
       expect(s.fontFamilyFallback, isNot(contains('$p/NotoNastaliqUrdu')));
       expect(s.fontFamilyFallback!.every((f) => f.startsWith('$p/')), isTrue, reason: 'every fallback must resolve to the bundled package font');
+      // Latin letters (e.g. the brand name inside Urdu text) must come from Noto Sans, so it is the FIRST fallback.
+      expect(s.fontFamilyFallback!.first, '$p/NotoSans');
     });
 
     test('Devanagari raises only the styles that are too tight (display 1.29 -> 1.5) and keeps the rest', () {
@@ -166,6 +168,13 @@ void main() {
       expect(coverage.keys.toSet(), OruLocales.all.map((l) => l.code).toSet());
       for (final entry in coverage.entries) {
         expect((entry.value as Map)['missing'], isEmpty, reason: '${entry.key} is missing glyphs');
+      }
+    });
+
+    test('Latin letters come only from Noto Sans (no other family ships A-Z/a-z)', () {
+      final families = provenance['families'] as Map<String, dynamic>;
+      for (final f in families.entries) {
+        expect(f.value['latinLetterGlyphs'], f.key == 'NotoSans' ? 52 : 0, reason: f.key);
       }
     });
 

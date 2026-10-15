@@ -12,4 +12,4 @@ flutter pub get            # from the repo root (pub workspace)
 melos run analyze && melos run test
 flutter run -d <device>    # from this directory
 ```
-Android/iOS builds have not been verified on the setup machine (no Android toolchain / incomplete Xcode).
+iOS: built and run on the iOS 27 simulator (`flutter build ios --simulator`, then `xcrun simctl install booted build/ios/iphonesimulator/Runner.app` and `xcrun simctl launch booted com.oruschools.teacher`). Xcode 27 has no `Simulator.app`; open `DeviceHub.app` from `Xcode.app/Contents/Applications` to see the device. Android builds are not verified yet (needs the Android command-line tools and licenses).

@@ -47,18 +47,19 @@ Critical path: **RBAC + tenant guard (P0–P1) → data model for people/classes
 | P0-7 | Done | `tsconfig.base.json`, Vitest everywhere, oxlint, prettier, turbo `typecheck`; real tests so `turbo test` is meaningful |
 | P0-8 | Done | Token pipeline: CSS, Tailwind v4 theme, TS, Dart; light only; `tokens:check` |
 | P0-8a | Done | Web: `next/font` Noto Sans (+Devanagari), Poppins landing only; Flutter: bundled subset fonts (59 KB/weight Latin). Fonts for all 19 languages now bundled: see P0-11 |
-| P0-8b | Done | favicon/apple icon/OG in Next apps (metadata stripped); launcher icons + adaptive layers + display names + `com.oruschools.<role>` for 4 apps. Not verified in a built APK/IPA |
+| P0-8b | Done | favicon/apple icon/OG in Next apps (metadata stripped); launcher icons + adaptive layers + display names + `com.oruschools.<role>` for 4 apps. iOS: the Teacher app is verified on the iOS 27 simulator (identity, icon files, theme); Android and the other three iOS apps are not yet built |
 | P0-8c | Done | ADR-0005 (no dark mode, one token source, sentence case); DS-2 resolved in ADR-0006 |
 | P0-9 | Partly | Env templates, `environment.md`, validation approach, drift rules done. **Owner action: rotate the R2 keys if `.env.local` ever left this machine**; the root `.env.local` is not read by any app (see `environment.md`) |
 
 | P0-10 | Done | 14 roles incl. HR Manager, Accountant, Admissions Officer, Transport Manager, Operations Manager, Management; multi-scope grants, self-service baseline, `memberships` escalation guard (ADR-0007); `packages/rbac` 46 tests (8 rule-breaking mutations all caught); DB enum verified (63 emulator checks) |
-| P0-11 | Done | 19 languages (English primary; 6 RTL; Hindi and Urdu complete drafts) in `packages/i18n`: registry, ICU catalogs, generated ARB/Dart/TS/CSS/font loaders; 12 bundled font families (4.44 MiB/app, glyph coverage verified per language); Flutter fallback delegates for Kashmiri/Dogri/Sindhi; web `[locale]` routing with `lang`/`dir`; drift rules (RTL-physical, hard-coded strings); 40 `packages/i18n` tests, 47 `flutter-core` tests, 16 app tests (4 per Flutter app), 13 i18n evals and 6 RTL-detector evals (ADR-0006) |
+| P0-11 | Done | 19 languages (English primary; 6 RTL; Hindi and Urdu complete drafts) in `packages/i18n`: registry, ICU catalogs, generated ARB/Dart/TS/CSS/font loaders; 12 bundled font families (4.28 MiB/app, glyph coverage verified per language); Flutter fallback delegates for Kashmiri/Dogri/Sindhi; web `[locale]` routing with `lang`/`dir`; drift rules (RTL-physical, hard-coded strings); 40 `packages/i18n` tests, 47 `flutter-core` tests, 16 app tests (4 per Flutter app), 13 i18n evals and 6 RTL-detector evals (ADR-0006) |
 
-**Owner decisions still open:** (1) confirm the *new* RBAC assumptions (`packages/rbac/README.md`); (2) arrange native-speaker review of the Hindi and Urdu drafts (release gate P6-9) and decide whether Urdu/Kashmiri use Nastaliq (1.89 MiB) or Naskh; (3) commit/push the Phase 0 work; (4) verify CI on GitHub. Next: Phase 1.
+**Owner decisions still open:** (1) confirm the *new* RBAC assumptions (`packages/rbac/README.md`); (2) arrange native-speaker review of the Hindi and Urdu drafts (release gate P6-9) and decide whether Urdu/Kashmiri use Nastaliq (1.87 MiB) or Naskh; (3) commit/push the Phase 0 work; (4) verify CI on GitHub. Next: Phase 1.
 
 ---
 
 ## Phase 1 — API Gateway & SaaS Foundation
+> **The detailed plan is `phase1_plan.md`** (verified facts, new/changed tasks P1-0a…P1-16, API surface, evals, risks, owner questions). The table below is the original outline; where they differ, `phase1_plan.md` wins.
 **Goal:** a school can be provisioned and a user can authenticate into exactly one tenant context — with isolation proven.
 
 **Gateway (`apps/api-gateway`, NestJS)**

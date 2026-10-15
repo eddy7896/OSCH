@@ -837,6 +837,152 @@
           "does not"
         ]
       ]
+    },
+    {
+      "id": "G-45",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Which Firebase Admin SDK methods does the gateway use to run a named Data Connect operation, and do NO_ACCESS operations work through them?",
+      "mustInclude": [
+        [
+          "executemutation",
+          "executequery"
+        ],
+        [
+          "admin"
+        ],
+        [
+          "yes",
+          "work",
+          "callable",
+          "ignore",
+          "bypass",
+          "admin privileges"
+        ]
+      ]
+    },
+    {
+      "id": "G-46",
+      "severity": "high",
+      "type": "fact",
+      "question": "What are the environment variable names the Firebase Admin SDK reads for the Data Connect and Auth emulators?",
+      "mustInclude": [
+        [
+          "data_connect_emulator_host"
+        ],
+        [
+          "firebase_auth_emulator_host"
+        ]
+      ]
+    },
+    {
+      "id": "G-47",
+      "severity": "high",
+      "type": "fact",
+      "question": "What Node.js major version does Phase 1 require and why?",
+      "mustInclude": [
+        [
+          "22"
+        ],
+        [
+          "nest",
+          "angular",
+          "schematics",
+          "pino",
+          "openapi",
+          "jsdom",
+          "cli"
+        ]
+      ]
+    },
+    {
+      "id": "G-48",
+      "severity": "high",
+      "type": "fact",
+      "question": "May the gateway read the school from the request body, and where does the tenant come from instead?",
+      "mustInclude": [
+        [
+          "no",
+          "never",
+          "not",
+          "don't",
+          "do not"
+        ],
+        [
+          "x-school-id",
+          "header",
+          "membership",
+          "verified"
+        ]
+      ]
+    },
+    {
+      "id": "G-49",
+      "severity": "medium",
+      "type": "fact",
+      "question": "Can we use nestjs-zod or openapi-typescript in the gateway stack, and why or why not?",
+      "mustInclude": [
+        [
+          "no",
+          "not",
+          "incompatible",
+          "cannot",
+          "can't",
+          "don't",
+          "do not"
+        ],
+        [
+          "nest 10",
+          "nest 11",
+          "peer",
+          "typescript 5",
+          "version",
+          "11"
+        ]
+      ]
+    },
+    {
+      "id": "G-50",
+      "severity": "critical",
+      "type": "fact",
+      "question": "Did the GitHub CI workflow pass on the first Phase 0 pushes, and what was wrong?",
+      "mustInclude": [
+        [
+          "fail",
+          "did not pass",
+          "didn't pass",
+          "broken",
+          "failed"
+        ],
+        [
+          "yaml",
+          "colon",
+          "invalid",
+          "syntax",
+          "parse",
+          "workflow file"
+        ]
+      ]
+    },
+    {
+      "id": "G-51",
+      "severity": "medium",
+      "type": "trap",
+      "question": "Which version of @nestjs/swagger is installed in apps/api-gateway right now?",
+      "mustInclude": [
+        [
+          "not installed",
+          "not yet",
+          "not a dependency",
+          "isn't installed",
+          "is not installed",
+          "hasn't been added",
+          "has not been added",
+          "unverified",
+          "not present",
+          "no @nestjs/swagger"
+        ]
+      ]
     }
   ]
 }

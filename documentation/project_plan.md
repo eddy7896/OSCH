@@ -11,6 +11,7 @@ Work: root git repo (decision F10), CLAUDE.md, ADR sign-off, drift check + CI, `
 **Gate:** drift check 0 errors & warnings triaged; ADR-0001..3 accepted; RBAC matrix is data in `packages/rbac` with tests; CI green.
 
 ## Phase 1 — SaaS foundation & identity
+Detailed, evidence-backed task plan: `phase1_plan.md` (milestones M0-M6, API surface, evals, risks, owner questions). Proposed decisions: ADR-0008, ADR-0009.
 Build: `apps/api-gateway` (NestJS; Firebase token guard → `TenantContext` → `RolesGuard` deny-by-default → audit interceptor), Data Connect Admin SDK wrapper, tenant provisioning, `apps/saas-admin` (school CRUD, subscriptions).
 **Gate:** E-TEN-* (cross-tenant read/write denied on every endpoint), E-RBAC-* for SUPER_ADMIN vs USER, E-AUD-1 (every write audited), emulator-backed integration tests pass.
 

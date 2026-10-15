@@ -47,10 +47,20 @@ Before implementing a feature, agents MUST verify:
 - **May I translate the brand tagline "Schools. People. Progress."?** No, not without brand approval.
 - **How many school roles and who grants them?** 14 roles (incl. HR_MANAGER, ACCOUNTANT, ADMISSIONS_OFFICER, TRANSPORT_MANAGER, OPERATIONS_MANAGER, MANAGEMENT). Only SYSTEM_ADMIN can grant or change roles; only PRINCIPAL approves anything (HR cannot approve leave).
 
-## 6. Automated Enforcement
+## 6. Phase 1 Gateway Truths (verified 2026-10-15; see `phase1_plan.md` §3)
+- **How does the gateway call Data Connect?** Through `firebase-admin` (13.x): `getDataConnect({location, serviceId, connector})` then `executeQuery(name, vars)` / `executeMutation(name, vars)`, ideally via the CLI-generated **Admin** Node SDK (`generate.adminNodeSdk`), not the browser-flavoured client SDK. Without impersonation these run as admin and ignore auth directives, so `NO_ACCESS` operations stay gateway-only.
+- **Emulator env vars for the Admin SDK?** `DATA_CONNECT_EMULATOR_HOST` (host:port, no scheme) and `FIREBASE_AUTH_EMULATOR_HOST`. (The CLI's own variable is `FIREBASE_DATA_CONNECT_EMULATOR_HOST`; `emulators:exec` sets it with a scheme the CLI double-prefixes.)
+- **Does the Auth emulator need Java?** No (only emulators whose binary is `java`, such as Firestore, do). Data Connect uses its own binary.
+- **Node version?** 22 (the Nest CLI's schematics dependency declares `^22.22.3`; several Phase 1 libraries need 22). Node 20 is not supported for Phase 1 work.
+- **Which libraries are NOT usable with Nest 12 / TypeScript 6?** `nestjs-zod` (peers Nest 10/11) and `openapi-typescript` (peer TypeScript 5). Validation = class-validator; client = `@hey-api/openapi-ts`.
+- **Where does web auth live?** Browser Firebase SDK plus a Bearer token to the gateway (ADR-0009, proposed); never a cookie read in a root layout (`cacheComponents`).
+- **Does the gateway trust a `schoolId` in the request body?** Never. The school comes from `X-School-Id`, validated against an ACTIVE membership of a non-suspended school.
+- **A workflow file that GitHub rejects runs no jobs.** `check:drift` parses every workflow; a broken one fails the build (the first two Phase 0 pushes failed this way).
+
+## 7. Automated Enforcement
 These truths are not just prose; they are checked by machines (see `eval_plan.md`):
 - `npm run i18n:check` / `npm run i18n:build`: language sources validated and generated files (ARB, Dart, TS, CSS, font loaders, pubspec fonts block) verified.
-- `npm run check:drift` — paths cited in docs exist (or are declared planned), banned deps absent, Data Connect ops are `NO_ACCESS` and tenant-scoped, secrets are ignored, stale/contradictory terms flagged, pinned vs installed versions compared, `tokens.css` identical to `tokens.json`, brand guideline mirror identical, raw hex colours in app/package source flagged, generated i18n files current, physical left/right in web and Flutter source rejected, hard-coded UI strings in app shells rejected.
+- `npm run check:drift` also validates the GitHub Actions workflows (parse; referenced npm scripts, turbo tasks and files exist), and — paths cited in docs exist (or are declared planned), banned deps absent, Data Connect ops are `NO_ACCESS` and tenant-scoped, secrets are ignored, stale/contradictory terms flagged, pinned vs installed versions compared, `tokens.css` identical to `tokens.json`, brand guideline mirror identical, raw hex colours in app/package source flagged, generated i18n files current, physical left/right in web and Flutter source rejected, hard-coded UI strings in app shells rejected.
 - `npm run eval` — drift check + invariant evals in `evals/` (incl. WCAG contrast of every token pair in both themes: `evals/design-tokens.test.mjs`).
 - `npm run eval:agent -- answers.json` — grades an agent against `evals/hallucination-golden.json` (includes "trap" questions about things that don't exist yet).
 - Cadence: every PR, weekly CI cron, monthly golden-set run.
