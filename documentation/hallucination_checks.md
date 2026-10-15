@@ -66,3 +66,5 @@ These truths are not just prose; they are checked by machines (see `eval_plan.md
 - Cadence: every PR, weekly CI cron, monthly golden-set run.
 
 When an agent is caught hallucinating, add a golden item and, if mechanical, a drift rule.
+
+- **Auth emulator accepts forged tokens (verified 2026-10-15):** with `FIREBASE_AUTH_EMULATOR_HOST` set, the Admin SDK does not check signatures. The gateway refuses to start in production with it set. Do not claim emulator-verified tokens prove production signature handling.
