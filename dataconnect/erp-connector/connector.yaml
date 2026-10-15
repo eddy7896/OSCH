@@ -1,9 +1,7 @@
 connectorId: erp-connector
 generate:
-  javascriptSdk:
-    - outputDir: ../../apps/api-gateway/src/dataconnect-sdk
-      package: "@oruschools/erp-sdk"
-      packageJsonDir: ../../apps/api-gateway
-      react: false
-      angular: false
-      clientCache: {}
+  # Admin Node SDK (ADR-0008): typed wrappers over firebase-admin's Data Connect executeQuery/executeMutation.
+  # Used only by the gateway through packages/database. Never ship this to a browser or mobile app.
+  adminNodeSdk:
+    - outputDir: ../../packages/database/generated/erp-admin-sdk
+      package: "@oruschools/erp-admin-sdk"

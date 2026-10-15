@@ -6,8 +6,5 @@
   },
   "env": {
     "node": true
-  },
-  "ignorePatterns": [
-    "src/dataconnect-sdk/**"
-  ]
+  }
 }
