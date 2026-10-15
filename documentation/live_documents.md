@@ -5,7 +5,7 @@ This document acts as an index for living documentation, API specifications, and
 ## Current Project Status
 - **Phase:** 0 — Foundation implemented; Phase 1 (API gateway & SaaS foundation) next (see `project_plan.md`)
 - **Milestone:** Governance, hardened schema, RBAC package, design-token pipeline, themed app shells. Open owner items: `implementation_plan.md` §Phase 0 status.
-- **Phase 1 progress:** P1-0a/0b, P1-1, P1-2a/b/c, P1-3a/b/c/d done (CI green on all three jobs; Node 22 floor; gateway skeleton on branch `app/api-gateway`). Next: P1-4 audit interceptor, P1-5 validation/OpenAPI, P1-7 cross-tenant harness.
+- **Phase 1 progress:** P1-0a/0b, P1-1, P1-2a/b/c, P1-3a/b/c/d, P1-4 done (CI green on all three jobs; Node 22 floor; gateway skeleton on branch `app/api-gateway`). Next: P1-5 validation/OpenAPI, P1-7 cross-tenant harness, then the P1-6 modules.
 - **Latest audit:** `audit_2026-10-15.md`
 
 ## Living Documentation Links
