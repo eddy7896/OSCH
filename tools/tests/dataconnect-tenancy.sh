@@ -13,12 +13,12 @@ EMU=$!
 cleanup() { kill "$EMU" 2>/dev/null; pkill -f dataconnect-emulator 2>/dev/null; true; }
 trap cleanup EXIT
 
-for _ in $(seq 1 90); do grep -q "All emulators ready" "$LOG" && break; sleep 1; done
+for _ in $(seq 1 240); do grep -q "All emulators ready" "$LOG" && break; sleep 1; done
 grep -q "All emulators ready" "$LOG" || { echo "emulator did not start:"; tail -20 "$LOG"; exit 2; }
 
 M=dataconnect/erp-connector/mutations.gql; Q=dataconnect/erp-connector/queries.gql
 run() { npx firebase dataconnect:execute --project "$PROJECT" --no-debug-details "$@" 2>&1; }
-uid() { uuidgen | tr 'A-Z' 'a-z'; }
+uid() { node -e 'console.log(crypto.randomUUID())'; }   # portable: uuidgen is not installed everywhere
 A=$(uid); B=$(uid); TAG=$(echo "$A" | cut -c1-8)
 PASS=0; FAIL=0
 ok()  { echo "PASS  $1"; PASS=$((PASS+1)); }
@@ -98,4 +98,5 @@ done
 out=$(run "$M" CreateSchoolMember --vars "{\"schoolId\":\"$A\",\"userId\":\"u-$TAG\",\"schoolRole\":\"HR\"}"); check_rejected "unknown role 'HR' is rejected (must be HR_MANAGER)" "$out" "INVALID_ARGUMENT"
 
 echo; echo "RESULT: $PASS passed, $FAIL failed"
+if [ "$FAIL" != "0" ]; then echo "--- emulator log (tail) ---"; tail -40 "$LOG"; fi
 [ "$FAIL" = "0" ]

@@ -252,7 +252,7 @@ if (existsSync(join(ROOT, ".git"))) {
   const turboTasks = Object.keys(JSON.parse(read("turbo.json")).tasks ?? {});
   if (existsSync(join(ROOT, ".github/workflows")))
     for (const f of readdirSync(join(ROOT, ".github/workflows")).filter((n) => /\.ya?ml$/.test(n)))
-      for (const problem of checkWorkflow(read(`.github/workflows/${f}`), { rootScripts, turboTasks, exists }))
+      for (const problem of checkWorkflow(read(`.github/workflows/${f}`), { rootScripts, turboTasks, exists, isDir: (p) => exists(p) && statSync(join(ROOT, p)).isDirectory() }))
         add("error", "workflow", problem, `.github/workflows/${f}`);
 }
 

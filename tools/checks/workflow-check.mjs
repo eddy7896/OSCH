@@ -41,8 +41,10 @@ export function checkWorkflow(text, ctx) {
         if (turbo) for (const t of turbo[1].trim().split(/\s+/)) if (!ctx.turboTasks.includes(t)) problems.push(`${where}: turbo task "${t}" is not defined in turbo.json`);
         const nodeFile = cmd.match(/^node ((?!--)[\w./-]+)/);
         if (nodeFile && !ctx.exists(nodeFile[1])) problems.push(`${where}: \`${nodeFile[1]}\` does not exist`);
-        const nodeTest = cmd.match(/^node --test ([\w./-]+)/);
-        if (nodeTest && !ctx.exists(nodeTest[1])) problems.push(`${where}: \`${nodeTest[1]}\` does not exist`);
+        const nodeTest = cmd.match(/^node --test ([\w./*-]+)/);
+        if (nodeTest && !nodeTest[1].includes("*") && !ctx.exists(nodeTest[1])) problems.push(`${where}: \`${nodeTest[1]}\` does not exist`);
+        // Node 22 treats a directory argument as a module to load (Node 20 recursed into it), so CI failed while local runs passed
+        if (nodeTest && ctx.isDir?.(nodeTest[1].replace(/\/$/, ""))) problems.push(`${where}: \`node --test ${nodeTest[1]}\` passes a directory; Node 22 cannot run that, use a glob such as evals/*.test.mjs`);
         const bash = cmd.match(/^bash ([\w./-]+)/);
         if (bash && !ctx.exists(bash[1])) problems.push(`${where}: \`${bash[1]}\` does not exist`);
       }

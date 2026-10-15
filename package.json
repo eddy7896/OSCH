@@ -9,7 +9,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "check:drift": "node tools/checks/drift-check.mjs",
-    "eval": "node tools/checks/drift-check.mjs && node --test evals/",
+    "eval": "node tools/checks/drift-check.mjs && node --test evals/*.test.mjs",
     "eval:agent": "node evals/grade-answers.mjs",
     "typecheck": "turbo run typecheck",
     "format": "prettier --write .",

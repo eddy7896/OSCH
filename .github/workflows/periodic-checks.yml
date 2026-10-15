@@ -30,7 +30,7 @@ jobs:
       - name: Drift check (hallucination / doc-vs-code)
         run: node tools/checks/drift-check.mjs ${{ github.event_name == 'schedule' && '--strict' || '' }}
       - name: Spec evals
-        run: node --test evals/
+        run: node --test evals/*.test.mjs
       - name: Build, lint, typecheck, test (Turborepo)
         run: npx turbo run build lint typecheck test
       - name: Drift report artifact

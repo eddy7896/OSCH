@@ -11,7 +11,7 @@
 | Phase 0 gate | State | Evidence |
 |---|---|---|
 | Drift check, 0 errors | ✅ | `npm run check:drift`: 0 errors, 1 intentional warning |
-| Known-failing evals now required and green | ✅ | `node --test evals/`: 42/42, 0 todo |
+| Known-failing evals now required and green | ✅ | `node --test evals/*.test.mjs`: 42/42, 0 todo |
 | RBAC matrix is tested data | ✅ | `packages/rbac`: 46 tests (mutation-checked) |
 | Database isolation proven | ✅ | `npm run test:dataconnect`: 63/63 on the emulator |
 | Build/lint/typecheck/test | ✅ | Turborepo 32/32; Flutter analyze 5/5; tests 48 + 16 |
