@@ -2,6 +2,7 @@ import { type CanActivate, type ExecutionContext, Injectable, Logger } from '@ne
 import { Reflector } from '@nestjs/core';
 import { authorize } from '@oruschools/rbac';
 import { IS_PUBLIC } from '../auth/public.decorator.js';
+import type { DeniedRequest } from '../audit/security-events.js';
 import { ApiException, ErrorCode } from '../common/errors.js';
 import { type RouteScope, SCOPE } from '../tenant/tenant.decorators.js';
 import { PERMISSION, type PermissionRequest, type RequiredPermission } from './permission.decorator.js';
@@ -40,7 +41,8 @@ export class PermissionGuard implements CanActivate {
     return true;
   }
 
-  private refuse(req: PermissionRequest, reason: string, required?: RequiredPermission): never {
+  private refuse(req: DeniedRequest, reason: string, required?: RequiredPermission): never {
+    if (required) req.denial = { resource: required.resource, action: required.action }; // for the security event; never sent to the client
     this.logger.warn(
       { uid: req.user?.uid, schoolId: req.tenant?.schoolId, role: req.tenant?.schoolRole ?? req.user?.globalRole, resource: required?.resource, action: required?.action, reason, method: req.method, path: req.path },
       'permission refused',

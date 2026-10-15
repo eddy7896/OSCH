@@ -1,5 +1,6 @@
-import { type ArgumentsHost, Catch, type ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { type ArgumentsHost, Catch, type ExceptionFilter, HttpException, HttpStatus, Inject, Logger, Optional } from '@nestjs/common';
 import { DatabaseError } from '@oruschools/database';
+import { type DeniedRequest, SECURITY_EVENTS, type SecurityEvents } from '../audit/security-events.js';
 import type { Request, Response } from 'express';
 import { REQUEST_ID_HEADER } from './request-id.js';
 
@@ -75,6 +76,8 @@ export interface ErrorEnvelope {
 export class ErrorEnvelopeFilter implements ExceptionFilter {
   private readonly logger = new Logger('Errors');
 
+  constructor(@Optional() @Inject(SECURITY_EVENTS) private readonly audit?: SecurityEvents) {}
+
   catch(exception: unknown, host: ArgumentsHost): void {
     const http = host.switchToHttp();
     const req = http.getRequest<Request>();
@@ -100,6 +103,8 @@ export class ErrorEnvelopeFilter implements ExceptionFilter {
     } else {
       this.logger.error({ requestId, error: describe(exception) }, 'unhandled error');
     }
+
+    if (status === 401 || status === 403) this.audit?.securityEvent(req as DeniedRequest, status, code);
 
     const envelope: ErrorEnvelope = { error: { code, message: MESSAGES[code], ...(requestId ? { requestId } : {}) } };
     res.status(status).json(envelope);

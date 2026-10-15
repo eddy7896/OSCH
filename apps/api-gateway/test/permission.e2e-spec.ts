@@ -2,6 +2,7 @@
 import { Controller, Get, type INestApplication, Post } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
+import { NoAudit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
 import { Granted, Permission, type GrantedPermission } from '../src/permission/permission.decorator.js';
 import { Platform, UserScoped } from '../src/tenant/tenant.decorators.js';
@@ -10,12 +11,15 @@ const A = '11111111-1111-4111-8111-111111111111';
 const roleOf = (name: string) => name.toUpperCase();
 const ROLES_UNDER_TEST = ['principal', 'teacher', 'parent', 'accountant', 'hr_manager', 'system_admin', 'driver'];
 
+// Audit rows the fake data layer received (security events).
+const auditRows: unknown[] = [];
 const fakeDb = {
   getMembership: async ({ userId }: { schoolId: string; userId: string }) => {
     const role = ROLES_UNDER_TEST.find((r) => `u-${r}` === userId);
     return { data: { schoolMembers: role ? [{ schoolRole: roleOf(role), status: 'ACTIVE', school: { subscriptionStatus: 'ACTIVE' } }] : [] } };
   },
   listSchools: async () => ({ data: { schools: [] } }),
+  createAuditLog: async (v: unknown) => ({ data: { auditLog_insert: { id: String((auditRows.push(v), auditRows.length)) } } }),
 };
 const fakeAuth = {
   verifyIdToken: async (token: string) => {
@@ -29,11 +33,11 @@ const fakeAuth = {
 @Controller('t')
 class Routes {
   @Permission('students', 'read') @Get('students') students(@Granted() g: GrantedPermission) { return g; }
-  @Permission('finance', 'create') @Post('invoices') invoices(@Granted() g: GrantedPermission) { return g; }
-  @Permission('memberships', 'create') @Post('members') members(@Granted() g: GrantedPermission) { return g; }
+  @NoAudit('test probe route, writes nothing') @Permission('finance', 'create') @Post('invoices') invoices(@Granted() g: GrantedPermission) { return g; }
+  @NoAudit('test probe route, writes nothing') @Permission('memberships', 'create') @Post('members') members(@Granted() g: GrantedPermission) { return g; }
   @Permission('audit_log', 'read') @Get('audit') audit(@Granted() g: GrantedPermission) { return g; }
-  @Permission('leave', 'approve') @Post('leave') leave(@Granted() g: GrantedPermission) { return g; }
-  @Platform() @Permission('platform_schools', 'create') @Post('platform/schools') schools(@Granted() g: GrantedPermission) { return g; }
+  @NoAudit('test probe route, writes nothing') @Permission('leave', 'approve') @Post('leave') leave(@Granted() g: GrantedPermission) { return g; }
+  @NoAudit('test probe route, writes nothing') @Platform() @Permission('platform_schools', 'create') @Post('platform/schools') schools(@Granted() g: GrantedPermission) { return g; }
   @UserScoped() @Get('me') me() { return { ok: true }; }
   @Public() @Get('open') open() { return { ok: true }; }
 }
