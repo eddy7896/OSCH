@@ -1,7 +1,7 @@
 // P1-4: security events and request auditing through the real pipeline (fake data layer, fake Firebase tokens).
 import { Controller, Get, type INestApplication, Logger, Post } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import request from 'supertest';
+import { agent, serve } from './support/serve.js';
 import { Audit, NoAudit } from '../src/audit/audit.decorators.js';
 import { Permission } from '../src/permission/permission.decorator.js';
 
@@ -45,7 +45,7 @@ async function boot(controllers: unknown[] = [Routes]): Promise<INestApplication
   const moduleRef = await Test.createTestingModule({ imports: [AppModule], controllers: controllers as never[] }).overrideProvider(DATABASE).useValue(fakeDb).overrideProvider(FIREBASE_AUTH).useValue(fakeAuth).compile();
   const app = moduleRef.createNestApplication({ bufferLogs: true });
   configureApp(app);
-  await app.init();
+  await serve(app);
   return app;
 }
 const flush = () => new Promise((r) => setTimeout(r, 25));
@@ -55,7 +55,7 @@ describe('security events and auditing (P1-4)', () => {
   beforeAll(async () => (app = await boot()));
   afterAll(async () => app.close());
   beforeEach(() => { auditRows.length = 0; auditFails = false; });
-  const post = (path: string, who: string, school: string = A) => request(app.getHttpServer()).post(`/v1/m/${path}`).set('Authorization', `Bearer ${who}`).set('X-School-Id', school).send({ password: 'SECRET-BODY' });
+  const post = (path: string, who: string, school: string = A) => agent(app).post(`/v1/m/${path}`).set('Authorization', `Bearer ${who}`).set('X-School-Id', school).send({ password: 'SECRET-BODY' });
 
   it('a role-change attempt by someone who may not is stored as a security event with the required permission and the verified school', async () => {
     await post('members', 'principal').expect(403); // only the System Admin may create memberships
@@ -81,8 +81,8 @@ describe('security events and auditing (P1-4)', () => {
   });
 
   it('an unauthenticated 401 is not stored, an unknown route is not stored, a success is not a security event', async () => {
-    await request(app.getHttpServer()).post('/v1/m/members').expect(401);
-    await request(app.getHttpServer()).get('/v1/nope').set('Authorization', 'Bearer principal').expect(404);
+    await agent(app).post('/v1/m/members').expect(401);
+    await agent(app).get('/v1/nope').set('Authorization', 'Bearer principal').expect(404);
     await post('members', 'sysadmin').expect(201);
     await flush();
     expect(auditRows).toHaveLength(0);
@@ -98,7 +98,7 @@ describe('security events and auditing (P1-4)', () => {
   it('a flood of denied calls from one user stores at most 30 rows a minute', async () => {
     const fresh = await boot(); // the cap is per actor per minute and earlier tests already used some of this app's allowance
     try {
-      for (let i = 0; i < 40; i++) await request(fresh.getHttpServer()).post('/v1/m/members').set('Authorization', 'Bearer principal').set('X-School-Id', A).expect(403);
+      for (let i = 0; i < 40; i++) await agent(fresh).post('/v1/m/members').set('Authorization', 'Bearer principal').set('X-School-Id', A).expect(403);
       await flush();
       expect(auditRows.length).toBe(30);
     } finally {
@@ -122,7 +122,7 @@ describe('security events and auditing (P1-4)', () => {
   it('reads and denied requests are not written as audited-request lines (only requests that reached the handler)', async () => {
     const log = vi.spyOn(Logger.prototype, 'log');
     try {
-      await request(app.getHttpServer()).get('/v1/m/students').set('Authorization', 'Bearer principal').set('X-School-Id', A).expect(200);
+      await agent(app).get('/v1/m/students').set('Authorization', 'Bearer principal').set('X-School-Id', A).expect(200);
       await post('members', 'principal').expect(403);
       expect(log.mock.calls.filter((c) => (c[0] as Record<string, unknown>)?.['event'] === 'request.audited')).toHaveLength(0);
     } finally {

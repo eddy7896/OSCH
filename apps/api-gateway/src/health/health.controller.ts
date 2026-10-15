@@ -7,7 +7,7 @@ import { DatabaseHealthIndicator } from './database.health.js';
 /** Unauthenticated by design and outside /v1 (load balancers call it). `/health` is liveness, `/health/db` is readiness. */
 @Controller('health')
 @Public()
-@SkipThrottle()
+@SkipThrottle({ ip: true, user: true }) // names must match app.module.ts: a bare @SkipThrottle() only skips a throttler called 'default'
 export class HealthController {
   constructor(
     private readonly health: HealthCheckService,
