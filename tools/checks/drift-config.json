@@ -30,10 +30,18 @@
     "fastapi",
     "django"
   ],
-  "tenantScopeExemptOperations": [
-    "CreateUser",
-    "CreateSchool"
-  ],
+  "tenantScopeExemptOperations": {
+    "CreateUser": "Phase 0 seed: users are a global table keyed by Firebase UID",
+    "CreateSchool": "Phase 0 seed/bootstrap: creates the tenant itself, so there is no school yet",
+    "UpsertUser": "identity sync: users are global; the gateway passes the UID from the verified token",
+    "SetUserLanguage": "self-service on the caller's own global user row (ADR-0006)",
+    "ProvisionSchool": "platform (SUPER_ADMIN) creates the tenant itself; routed under /v1/platform",
+    "GetUser": "users are global; read by the verified token's UID",
+    "ListMembershipsForUser": "keyed by user across schools for /me and the school picker; returns only that user's own memberships",
+    "GetSchoolBySubDomain": "public subdomain lookup before any school is known; returns minimal fields only",
+    "ListSchools": "platform (SUPER_ADMIN) listing of all tenants; routed under /v1/platform",
+    "GetInvitationByTokenHash": "invitee knows only the secret token, not the school; lookup is by hash of an unguessable token"
+  },
   "knownDebt": {},
   "staleTerms": [
     {
@@ -87,5 +95,23 @@
         "documentation/hallucination_checks.md"
       ]
     }
-  ]
+  ],
+  "auditExemptOperations": {
+    "CreateUser": "Phase 0 seed operation; replaced by UpsertUser/Phase 2 modules",
+    "CreateSchool": "Phase 0 seed/bootstrap operation; platform provisioning uses the audited ProvisionSchool",
+    "UpsertUser": "the user row is the actor of every audit entry, so it cannot audit its own creation; the gateway records sign-in as a security event",
+    "SetUserLanguage": "self-service preference on the caller's own row; no tenant data and no privilege change",
+    "CreateAuditLog": "writes the audit table itself",
+    "CreateAcademicYear": "Phase 0 operation; audited when the Phase 2 academic module is built",
+    "CreateClassroom": "Phase 0 operation; audited when the Phase 2 module is built",
+    "CreateStudent": "Phase 0 operation; audited when the Phase 2 admissions module is built",
+    "CreateSchoolMember": "Phase 0 seed/bootstrap (first administrator has no actor); use the audited AddMembership",
+    "CreateInvoice": "Phase 0 operation; audited when the Phase 2 finance module is built",
+    "CreatePayroll": "Phase 0 operation; audited when the Phase 2 payroll module is built",
+    "CreateLeaveRequest": "Phase 0 operation; audited when the Phase 3 module is built",
+    "UpdateLeaveRequest": "Phase 0 operation; audited when the Phase 3 module is built",
+    "CreateExam": "Phase 0 operation; audited when the Phase 3 module is built",
+    "CreateSubject": "Phase 0 operation; audited when the Phase 2 module is built",
+    "CreateSchedule": "Phase 0 operation; audited when the Phase 3 timetable module is built"
+  }
 }

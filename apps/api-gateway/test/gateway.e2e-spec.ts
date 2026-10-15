@@ -14,7 +14,7 @@ class ProbeController {
 
 const ENV = { NODE_ENV: 'test', LOG_LEVEL: 'silent', CORS_ORIGINS: 'http://localhost:3002', THROTTLE_LIMIT: '5', THROTTLE_TTL_MS: '60000' };
 
-async function boot(env: Record<string, string> = ENV): Promise<INestApplication> {
+async function boot(env: Record<string, string> = ENV, db: object = { listSchools: async () => ({ data: { schools: [] } }) }): Promise<INestApplication> {
   const saved = { ...process.env };
   Object.assign(process.env, env);
   try {
@@ -22,7 +22,8 @@ async function boot(env: Record<string, string> = ENV): Promise<INestApplication
     vi.resetModules();
     const { AppModule } = await import('../src/app.module.js');
     const { configureApp } = await import('../src/configure-app.js');
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule], controllers: [ProbeController] }).compile();
+    const { DATABASE } = await import('@oruschools/database');
+    const moduleRef = await Test.createTestingModule({ imports: [AppModule], controllers: [ProbeController] }).overrideProvider(DATABASE).useValue(db).compile();
     const app = moduleRef.createNestApplication({ bufferLogs: true });
     configureApp(app);
     await app.init();
@@ -73,6 +74,31 @@ describe('gateway HTTP skeleton (P1-1)', () => {
   it('serves nothing at the old scaffold route and 404s unknown /v1 routes', async () => {
     await request(app.getHttpServer()).get('/').expect(404);
     await request(app.getHttpServer()).get('/v1/nope').expect(404);
+  });
+});
+
+describe('database readiness', () => {
+  it('GET /health/db is 200 when Data Connect answers, and is outside /v1', async () => {
+    const app = await boot();
+    try {
+      const res = await request(app.getHttpServer()).get('/health/db').expect(200);
+      expect(res.body.info.database.status).toBe('up');
+      await request(app.getHttpServer()).get('/v1/health/db').expect(404);
+    } finally {
+      await app.close();
+    }
+  });
+
+  it('GET /health/db is 503 when Data Connect fails, without leaking the cause; liveness stays 200', async () => {
+    const app = await boot(ENV, { listSchools: async () => Promise.reject(new Error('connect ECONNREFUSED 10.1.2.3:9399 secret-detail')) });
+    try {
+      const res = await request(app.getHttpServer()).get('/health/db').expect(503);
+      expect(res.body.error.database.status).toBe('down');
+      expect(JSON.stringify(res.body)).not.toMatch(/ECONNREFUSED|10\.1\.2\.3|secret-detail/);
+      await request(app.getHttpServer()).get('/health').expect(200);
+    } finally {
+      await app.close();
+    }
   });
 });
 

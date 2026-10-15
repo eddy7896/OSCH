@@ -1,8 +1,8 @@
 {
-  "name": "@oruschools/erp-sdk",
-  "version": "1.0.0",
+  "name": "@oruschools/erp-admin-sdk",
+  "version": "0.0.1",
   "author": "Firebase <firebase-support@google.com> (https://firebase.google.com/)",
-  "description": "Generated SDK For erp-connector",
+  "description": "Generated Admin SDK For erp-connector",
   "license": "Apache-2.0",
   "engines": {
     "node": " >=18.0"
@@ -20,6 +20,6 @@
     "./package.json": "./package.json"
   },
   "peerDependencies": {
-    "firebase": "^12.11.0"
+    "firebase-admin": "^13.4.0 || ^14.0.0"
   }
 }

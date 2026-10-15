@@ -5,7 +5,7 @@ build
 .turbo
 .dart_tool
 dataconnect/.dataconnect
-apps/api-gateway/src/dataconnect-sdk
+packages/database/generated
 documentation/brand-assets
 documentation/design-system
 package-lock.json

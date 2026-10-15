@@ -11,7 +11,7 @@ test("E-BRANCH-1 production accepts only staging or hotfix/*", () => {
 });
 
 test("E-BRANCH-2 staging accepts app branches, hotfix and a back-merge of main, nothing else", () => {
-  for (const head of ["app/api-gateway", "app/shared", "hotfix/x", "main"]) assert.deepEqual(c({ head, base: "staging" }), [], head);
+  for (const head of ["app/api-gateway", "app/shared", "hotfix/x", "cross/data-layer", "main"]) assert.deepEqual(c({ head, base: "staging" }), [], head);
   assert.match(c({ head: "feat/web-admin/x", base: "staging" }).join(), /only accepts app/);
   assert.match(c({ head: "app/not-an-app", base: "staging" }).join(), /not a known app branch/);
 });
@@ -35,4 +35,10 @@ test("E-BRANCH-5 every app directory maps to a known app branch; unlisted bases 
   for (const a of APPS.filter((x) => x !== "shared")) assert.equal(ownerOf(`apps/${a}/x`), a);
   assert.equal(ownerOf("packages/a"), "shared");
   assert.deepEqual(c({ head: "whatever", base: "feat/x" }), []);
+});
+
+test("E-BRANCH-6 cross/* may span apps into staging, but never reaches production directly", () => {
+  assert.deepEqual(c({ head: "cross/data-layer", base: "staging", changedFiles: ["apps/api-gateway/package.json", "packages/database/x.ts", "apps/web-admin/y.ts"] }), []);
+  assert.match(c({ head: "cross/data-layer", base: "main" }).join(), /only accepts merges from staging/);
+  assert.match(c({ head: "cross/data-layer", base: "app/shared" }).join(), /only accepts feat/);
 });
