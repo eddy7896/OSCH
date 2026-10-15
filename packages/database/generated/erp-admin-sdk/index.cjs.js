@@ -12,6 +12,13 @@ const GlobalRole = {
 }
 exports.GlobalRole = GlobalRole;
 
+const InvitationStatus = {
+  PENDING: "PENDING",
+  ACCEPTED: "ACCEPTED",
+  REVOKED: "REVOKED",
+}
+exports.InvitationStatus = InvitationStatus;
+
 const InvoiceStatus = {
   PENDING: "PENDING",
   PAID: "PAID",
@@ -25,6 +32,12 @@ const LeaveStatus = {
   REJECTED: "REJECTED",
 }
 exports.LeaveStatus = LeaveStatus;
+
+const MembershipStatus = {
+  ACTIVE: "ACTIVE",
+  SUSPENDED: "SUSPENDED",
+}
+exports.MembershipStatus = MembershipStatus;
 
 const PayrollStatus = {
   PENDING: "PENDING",
@@ -49,6 +62,13 @@ const SchoolRole = {
   PARENT: "PARENT",
 }
 exports.SchoolRole = SchoolRole;
+
+const SubscriptionStatus = {
+  ACTIVE: "ACTIVE",
+  TRIAL: "TRIAL",
+  SUSPENDED: "SUSPENDED",
+}
+exports.SubscriptionStatus = SubscriptionStatus;
 
 const connectorConfig = {
   connector: 'erp-connector',
@@ -155,6 +175,83 @@ function createAuditLog(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.createAuditLog = createAuditLog;
 
+function upsertUser(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpsertUser', inputVars, inputOpts);
+}
+exports.upsertUser = upsertUser;
+
+function setUserLanguage(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetUserLanguage', inputVars, inputOpts);
+}
+exports.setUserLanguage = setUserLanguage;
+
+function provisionSchool(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ProvisionSchool', inputVars, inputOpts);
+}
+exports.provisionSchool = provisionSchool;
+
+function updateSchool(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateSchool', inputVars, inputOpts);
+}
+exports.updateSchool = updateSchool;
+
+function setSubscriptionStatus(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetSubscriptionStatus', inputVars, inputOpts);
+}
+exports.setSubscriptionStatus = setSubscriptionStatus;
+
+function addMembership(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddMembership', inputVars, inputOpts);
+}
+exports.addMembership = addMembership;
+
+function updateMembership(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateMembership', inputVars, inputOpts);
+}
+exports.updateMembership = updateMembership;
+
+function removeMembership(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveMembership', inputVars, inputOpts);
+}
+exports.removeMembership = removeMembership;
+
+function createInvitation(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateInvitation', inputVars, inputOpts);
+}
+exports.createInvitation = createInvitation;
+
+function revokeInvitation(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RevokeInvitation', inputVars, inputOpts);
+}
+exports.revokeInvitation = revokeInvitation;
+
+function acceptInvitation(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AcceptInvitation', inputVars, inputOpts);
+}
+exports.acceptInvitation = acceptInvitation;
+
 function listAcademicYears(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -224,4 +321,74 @@ function listExams(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListExams', inputVars, inputOpts);
 }
 exports.listExams = listExams;
+
+function getUser(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetUser', inputVars, inputOpts);
+}
+exports.getUser = getUser;
+
+function getMembership(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetMembership', inputVars, inputOpts);
+}
+exports.getMembership = getMembership;
+
+function listMembershipsForUser(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListMembershipsForUser', inputVars, inputOpts);
+}
+exports.listMembershipsForUser = listMembershipsForUser;
+
+function getSchool(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetSchool', inputVars, inputOpts);
+}
+exports.getSchool = getSchool;
+
+function getSchoolBySubDomain(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetSchoolBySubDomain', inputVars, inputOpts);
+}
+exports.getSchoolBySubDomain = getSchoolBySubDomain;
+
+function listSchools(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListSchools', inputVars, inputOpts);
+}
+exports.listSchools = listSchools;
+
+function listMemberships(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListMemberships', inputVars, inputOpts);
+}
+exports.listMemberships = listMemberships;
+
+function listInvitations(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListInvitations', inputVars, inputOpts);
+}
+exports.listInvitations = listInvitations;
+
+function getInvitationByTokenHash(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetInvitationByTokenHash', inputVars, inputOpts);
+}
+exports.getInvitationByTokenHash = getInvitationByTokenHash;
+
+function listAuditLog(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListAuditLog', inputVars, inputOpts);
+}
+exports.listAuditLog = listAuditLog;
 

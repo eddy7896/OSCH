@@ -15,6 +15,8 @@ enum AcademicYearStatus { ACTIVE ARCHIVED }
 enum InvoiceStatus { PENDING PAID OVERDUE }
 enum PayrollStatus { PENDING PAID }
 enum LeaveStatus { PENDING APPROVED REJECTED }
+enum MembershipStatus { ACTIVE SUSPENDED }
+enum InvitationStatus { PENDING ACCEPTED REVOKED }
 
 type School @table {
   id: UUID! @default(expr: "uuidV4()")
@@ -23,6 +25,7 @@ type School @table {
   subscriptionStatus: SubscriptionStatus! @default(value: ACTIVE)
   currency: String! @default(value: "INR") # ISO 4217; amounts are stored in minor units of this currency
   locale: String! @default(value: "en-IN") # drives number/date formatting (design system content rules)
+  defaultLanguage: String! @default(value: "en") # a code from packages/i18n; users may choose their own (ADR-0006)
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
@@ -31,6 +34,8 @@ type User @table {
   id: String!
   email: String!
   phoneNumber: String
+  displayName: String
+  language: String # the user's explicit choice (ADR-0006); null means the school default
   globalRole: GlobalRole! @default(value: USER)
   createdAt: Timestamp! @default(expr: "request.time")
 }
@@ -41,6 +46,24 @@ type SchoolMember @table(key: ["school", "user"]) {
   school: School!
   user: User!
   schoolRole: SchoolRole!
+  status: MembershipStatus! @default(value: ACTIVE) # SUSPENDED keeps the row but the gateway denies the user
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# An offer to join a school with a role. Only the SHA-256 hash of the secret token is stored (never the token).
+# Accepting creates the SchoolMember in the same transaction. Rows are never deleted: REVOKED/ACCEPTED are history.
+type Invitation @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  email: String!
+  phoneNumber: String
+  schoolRole: SchoolRole!
+  tokenHash: String! @unique
+  status: InvitationStatus! @default(value: PENDING)
+  expiresAt: Timestamp!
+  createdBy: User!
+  acceptedBy: User
+  acceptedAt: Timestamp
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

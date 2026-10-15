@@ -118,3 +118,72 @@ query ListExams($schoolId: UUID!) @auth(level: NO_ACCESS) {
     subject { name }
   }
 }
+
+# ---- Phase 1: identity, tenancy, platform and audit reads. Gateway-only (NO_ACCESS). ----
+
+# Identity sync / profile. $id is the Firebase UID from the VERIFIED token. Users are global, so this has no school.
+query GetUser($id: String!) @auth(level: NO_ACCESS) {
+  user(key: {id: $id}) { id email phoneNumber displayName language globalRole }
+}
+
+# The membership the TenantGuard checks on every request: ACTIVE, role, and the school's subscription status.
+query GetMembership($schoolId: UUID!, $userId: String!) @auth(level: NO_ACCESS) {
+  schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}) {
+    schoolRole
+    status
+    school { id name subscriptionStatus defaultLanguage }
+  }
+}
+
+# All schools a user belongs to (for /me and the school picker). Keyed by the user, not by a school.
+query ListMembershipsForUser($userId: String!) @auth(level: NO_ACCESS) {
+  schoolMembers(where: {userId: {eq: $userId}}) {
+    schoolRole
+    status
+    school { id name subDomain subscriptionStatus defaultLanguage }
+  }
+}
+
+query GetSchool($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  school(id: $schoolId) { id name subDomain subscriptionStatus currency locale defaultLanguage createdAt }
+}
+
+# Public school lookup for the web apps (minimal fields only; the gateway rate-limits it).
+query GetSchoolBySubDomain($subDomain: String!) @auth(level: NO_ACCESS) {
+  schools(where: {subDomain: {eq: $subDomain}}, limit: 1) { id name subDomain subscriptionStatus defaultLanguage }
+}
+
+# Platform (SUPER_ADMIN) only: every school.
+query ListSchools($limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  schools(orderBy: [{createdAt: DESC}], limit: $limit, offset: $offset) { id name subDomain subscriptionStatus defaultLanguage createdAt }
+}
+
+query ListMemberships($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  schoolMembers(where: {schoolId: {eq: $schoolId}}, orderBy: [{createdAt: ASC}]) {
+    schoolRole
+    status
+    createdAt
+    user { id email displayName phoneNumber }
+  }
+}
+
+query ListInvitations($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  invitations(where: {schoolId: {eq: $schoolId}}, orderBy: [{createdAt: DESC}]) {
+    id email phoneNumber schoolRole status expiresAt createdAt acceptedAt
+    createdBy { id displayName }
+  }
+}
+
+# Accept flow: the invitee does not know the school id, only the secret token. Lookup is by hash.
+query GetInvitationByTokenHash($tokenHash: String!) @auth(level: NO_ACCESS) {
+  invitations(where: {tokenHash: {eq: $tokenHash}}, limit: 1) {
+    id schoolRole status expiresAt email school { id name subscriptionStatus }
+  }
+}
+
+query ListAuditLog($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  auditLogs(where: {schoolId: {eq: $schoolId}}, orderBy: [{createdAt: DESC}], limit: $limit, offset: $offset) {
+    id action entityType entityId details createdAt
+    actor { id email displayName }
+  }
+}

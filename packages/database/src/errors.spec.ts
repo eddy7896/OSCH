@@ -9,6 +9,8 @@ describe('mapDataConnectError', () => {
   it.each([
     [['PERMISSION_DENIED', 'ABORTED'], 'FORBIDDEN_REFERENCE', 403],
     [['ABORTED'], 'FORBIDDEN_REFERENCE', 403],
+    [['ALREADY_EXISTS', 'ABORTED'], 'CONFLICT', 409], // a duplicate inside a rolled-back transaction is a conflict, not a tenant violation
+    [['INVALID_ARGUMENT', 'ABORTED'], 'INVALID_ARGUMENT', 400],
     [['INVALID_ARGUMENT'], 'INVALID_ARGUMENT', 400],
     [['ALREADY_EXISTS'], 'CONFLICT', 409],
     [['SOMETHING_NEW'], 'INTERNAL', 500],

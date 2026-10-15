@@ -159,3 +159,90 @@ mutation CreateAuditLog($schoolId: UUID, $actorId: String!, $action: String!, $e
     details: $details
   })
 }
+
+# ---- Phase 1: identity, tenancy and platform writes (gateway-only). ----
+# Rule (drift rule dc-audit): every state-changing mutation writes its audit row INSIDE its own @transaction, so there
+# is no change without an audit row. Mutations that cannot (identity sync, Phase 0 seed operations) are listed with a
+# reason in tools/checks/drift-config.json `auditExemptOperations`.
+
+# Identity sync: create the global User row the first time a verified Firebase user is seen. The user row is the actor
+# of every later audit entry, so it cannot be audited by itself; the gateway records the sign-in as a security event.
+mutation UpsertUser($id: String!, $email: String!, $displayName: String, $phoneNumber: String) @auth(level: NO_ACCESS) {
+  user_upsert(data: { id: $id, email: $email, displayName: $displayName, phoneNumber: $phoneNumber })
+}
+
+# The user's own explicit language choice (ADR-0006). Self-service on one's own row; no other user's data is touched.
+mutation SetUserLanguage($userId: String!, $language: String) @auth(level: NO_ACCESS) {
+  user_update(key: {id: $userId}, data: { language: $language })
+}
+
+# Platform (SUPER_ADMIN): create a school.
+mutation ProvisionSchool($id: UUID!, $name: String!, $subDomain: String!, $defaultLanguage: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  school_insert(data: { id: $id, name: $name, subDomain: $subDomain, defaultLanguage: $defaultLanguage })
+  auditLog_insert(data: { schoolId: $id, actorId: $actorId, action: "platform.school.create", entityType: "School", entityId_expr: "request.variables.id", details: $details })
+}
+
+# School settings (System Admin via `settings`). The school row is addressed by id only, so it cannot touch another tenant.
+mutation UpdateSchool($schoolId: UUID!, $name: String!, $defaultLanguage: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  school_update(id: $schoolId, data: { name: $name, defaultLanguage: $defaultLanguage })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "school.update", entityType: "School", entityId_expr: "request.variables.schoolId", details: $details })
+}
+
+# Platform: suspend or reactivate a school. A suspended school is denied by the gateway on every tenant route.
+mutation SetSubscriptionStatus($schoolId: UUID!, $status: SubscriptionStatus!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  school_update(id: $schoolId, data: { subscriptionStatus: $status })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "platform.school.status", entityType: "School", entityId_expr: "request.variables.schoolId", details: $details })
+}
+
+# Memberships: only SYSTEM_ADMIN holds `memberships` (ADR-0007). The target user must exist (foreign key); a duplicate is a conflict.
+mutation AddMembership($schoolId: UUID!, $userId: String!, $schoolRole: SchoolRole!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  schoolMember_insert(data: { schoolId: $schoolId, userId: $userId, schoolRole: $schoolRole })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "membership.add", entityType: "SchoolMember", entityId_expr: "request.variables.userId", details: $details })
+}
+
+mutation UpdateMembership($schoolId: UUID!, $userId: String!, $schoolRole: SchoolRole!, $status: MembershipStatus!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    target: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}) @check(expr: "this.size() == 1", message: "membership not found in this school") { userId }
+  }
+  schoolMember_updateMany(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}, data: { schoolRole: $schoolRole, status: $status })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "membership.update", entityType: "SchoolMember", entityId_expr: "request.variables.userId", details: $details })
+}
+
+mutation RemoveMembership($schoolId: UUID!, $userId: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    target: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}) @check(expr: "this.size() == 1", message: "membership not found in this school") { userId }
+  }
+  schoolMember_deleteMany(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}})
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "membership.remove", entityType: "SchoolMember", entityId_expr: "request.variables.userId", details: $details })
+}
+
+# Invitations. The creator must be an active member of the school; only the token HASH is stored.
+mutation CreateInvitation($schoolId: UUID!, $email: String!, $phoneNumber: String, $schoolRole: SchoolRole!, $tokenHash: String!, $expiresAt: Timestamp!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  invitation_insert(data: { schoolId: $schoolId, email: $email, phoneNumber: $phoneNumber, schoolRole: $schoolRole, tokenHash: $tokenHash, expiresAt: $expiresAt, createdById: $actorId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "invitation.create", entityType: "Invitation", details: $details })
+}
+
+mutation RevokeInvitation($schoolId: UUID!, $invitationId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    pending: invitations(where: {id: {eq: $invitationId}, schoolId: {eq: $schoolId}, status: {eq: PENDING}}) @check(expr: "this.size() == 1", message: "no pending invitation with this id in this school") { id }
+  }
+  invitation_updateMany(where: {id: {eq: $invitationId}, schoolId: {eq: $schoolId}}, data: { status: REVOKED })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "invitation.revoke", entityType: "Invitation", entityId_expr: "request.variables.invitationId", details: $details })
+}
+
+# Accepting joins the invitee to the school with the invited role. The invitation must still be PENDING and unexpired in
+# THIS school; the accepting user is the actor of the audit row. The gateway has already matched the invitee's email.
+mutation AcceptInvitation($schoolId: UUID!, $invitationId: UUID!, $userId: String!, $schoolRole: SchoolRole!, $now: Timestamp!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    pending: invitations(where: {id: {eq: $invitationId}, schoolId: {eq: $schoolId}, status: {eq: PENDING}, expiresAt: {gt: $now}, schoolRole: {eq: $schoolRole}}) @check(expr: "this.size() == 1", message: "invitation is not pending, expired, or does not match") { id }
+  }
+  schoolMember_insert(data: { schoolId: $schoolId, userId: $userId, schoolRole: $schoolRole })
+  invitation_updateMany(where: {id: {eq: $invitationId}, schoolId: {eq: $schoolId}}, data: { status: ACCEPTED, acceptedById: $userId, acceptedAt: $now })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $userId, action: "invitation.accept", entityType: "Invitation", entityId_expr: "request.variables.invitationId", details: $details })
+}
