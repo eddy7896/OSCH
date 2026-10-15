@@ -18,7 +18,8 @@ annotate() { [ -n "${GITHUB_ACTIONS:-}" ] && echo "::error title=dataconnect-tes
 grep -q "All emulators ready" "$LOG" || { echo "emulator did not start:"; tail -20 "$LOG"; annotate "emulator did not start: $(tail -12 "$LOG")"; exit 2; }
 
 M=dataconnect/erp-connector/mutations.gql; Q=dataconnect/erp-connector/queries.gql
-run() { npx firebase dataconnect:execute --project "$PROJECT" --no-debug-details "$@" 2>&1; }
+# CI sets FORCE_COLOR, which puts escape codes in the CLI output and breaks the ^Error: / code matching; strip them
+run() { NO_COLOR=1 FORCE_COLOR=0 npx firebase dataconnect:execute --project "$PROJECT" --no-debug-details "$@" 2>&1 | sed $'s/\x1b\\[[0-9;]*m//g'; }
 uid() { node -e 'console.log(crypto.randomUUID())'; }   # portable: uuidgen is not installed everywhere
 A=$(uid); B=$(uid); TAG=$(echo "$A" | cut -c1-8)
 PASS=0; FAIL=0
