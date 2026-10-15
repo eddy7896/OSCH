@@ -14,7 +14,8 @@ cleanup() { kill "$EMU" 2>/dev/null; pkill -f dataconnect-emulator 2>/dev/null; 
 trap cleanup EXIT
 
 for _ in $(seq 1 240); do grep -q "All emulators ready" "$LOG" && break; sleep 1; done
-grep -q "All emulators ready" "$LOG" || { echo "emulator did not start:"; tail -20 "$LOG"; exit 2; }
+annotate() { [ -n "${GITHUB_ACTIONS:-}" ] && echo "::error title=dataconnect-test::$(printf '%s' "$1" | tr '\n' '|' | cut -c1-1500)"; true; }   # readable via the check-runs API without admin rights
+grep -q "All emulators ready" "$LOG" || { echo "emulator did not start:"; tail -20 "$LOG"; annotate "emulator did not start: $(tail -12 "$LOG")"; exit 2; }
 
 M=dataconnect/erp-connector/mutations.gql; Q=dataconnect/erp-connector/queries.gql
 run() { npx firebase dataconnect:execute --project "$PROJECT" --no-debug-details "$@" 2>&1; }
@@ -22,7 +23,7 @@ uid() { node -e 'console.log(crypto.randomUUID())'; }   # portable: uuidgen is n
 A=$(uid); B=$(uid); TAG=$(echo "$A" | cut -c1-8)
 PASS=0; FAIL=0
 ok()  { echo "PASS  $1"; PASS=$((PASS+1)); }
-bad() { echo "FAIL  $1"; FAIL=$((FAIL+1)); }
+bad() { echo "FAIL  $1"; FAIL=$((FAIL+1)); [ "$FAIL" -le 3 ] && annotate "FAIL $1"; true; }
 succeeded() { ! grep -q -E '^Error:' <<<"$1"; }                       # CLI prints "Error: ..." when ANY error occurred
 check_ok()  { if succeeded "$2"; then ok "$1"; else bad "$1 :: $(grep -m1 -E '"message"|^Error' <<<"$2" | cut -c1-160)"; fi; }
 check_rejected() { if ! succeeded "$2" && grep -q -E "$3" <<<"$2"; then ok "$1"; else bad "$1 :: expected rejection matching /$3/ got: $(tr '\n' ' ' <<<"$2" | cut -c1-200)"; fi; }
@@ -98,5 +99,5 @@ done
 out=$(run "$M" CreateSchoolMember --vars "{\"schoolId\":\"$A\",\"userId\":\"u-$TAG\",\"schoolRole\":\"HR\"}"); check_rejected "unknown role 'HR' is rejected (must be HR_MANAGER)" "$out" "INVALID_ARGUMENT"
 
 echo; echo "RESULT: $PASS passed, $FAIL failed"
-if [ "$FAIL" != "0" ]; then echo "--- emulator log (tail) ---"; tail -40 "$LOG"; fi
+if [ "$FAIL" != "0" ]; then echo "--- emulator log (tail) ---"; tail -40 "$LOG"; annotate "emulator log: $(tail -8 "$LOG")"; fi
 [ "$FAIL" = "0" ]
