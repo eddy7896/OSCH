@@ -74,7 +74,7 @@ graph LR
 | F12 | All 38 design icons map to real Lucide exports in `lucide-react@1.57.0` (e.g. `home→House`, `alert→TriangleAlert`, `check-circle→CircleCheck`, `tasks→ListChecks`) | node script over the installed package: 38 mapped, 0 missing |
 | F13 | React 19-compatible test libs: `@testing-library/react@16.3.3` (peers React 18/19), `happy-dom@21` (Node ≥20), `jsdom@30` (Node ≥22.22); Storybook `@storybook/nextjs@10.6` lists Next 16 | `npm view` |
 
-**Not verified (do not assume; each has a spike):** `verifyIdToken` against emulator-issued tokens (P1-3a spike); `AsyncLocalStorage` vs request scope for tenant context (P1-3b); that `NO_ACCESS` operations execute through the Admin SDK against the emulator (P1-2b); Next `output: 'standalone'` in this monorepo, Docker layout, Nginx wildcard TLS (P1-12 spike); `@aws-sdk` presigner for R2 (P1-13 spike); the data-residency question in §9 (Q8).
+**Not verified (do not assume; each has a spike):** `AsyncLocalStorage` vs request scope for tenant context (P1-3b); that `NO_ACCESS` operations execute through the Admin SDK against the emulator (P1-2b); Next `output: 'standalone'` in this monorepo, Docker layout, Nginx wildcard TLS (P1-12 spike); `@aws-sdk` presigner for R2 (P1-13 spike); the data-residency question in §9 (Q8).
 
 ## 4. Workstreams and tasks
 
@@ -97,7 +97,7 @@ graph LR
 ### M2: Identity, tenancy, authorisation, audit (the security core)
 | ID | Task | Size | Depends | Acceptance / tests |
 |---|---|---|---|---|
-| **P1-3a** | `AuthGuard`: parse Bearer, `verifyIdToken`, `AuthenticatedUser`; `@Public()` opt-out; 401 envelope | M | P1-2b | spike proves behaviour against Auth-emulator tokens; expired/garbage/missing token → 401 `AUTH_REQUIRED` |
+| **P1-3a** DONE (branch app/api-gateway; 49 unit + 18 e2e + 5 real Auth-emulator tests, 5 mutants killed; emulator run via `npm run test:gateway`) | `AuthGuard`: parse Bearer, `verifyIdToken`, `AuthenticatedUser`; `@Public()` opt-out; 401 envelope | M | P1-2b | spike proves behaviour against Auth-emulator tokens; expired/garbage/missing token → 401 `AUTH_REQUIRED` |
 | **P1-3b** | `TenantGuard`: `X-School-Id` UUID → ACTIVE `SchoolMember` of a non-suspended school (membership cached ≤30 s, invalidated on role change); uniform 403 so a school's existence is not revealed; spike AsyncLocalStorage vs request scope | L | P1-3a, P1-2c | non-member/suspended/unknown id → identical 403; `schoolId` in body/query never read (test) |
 | **P1-3c** | `PermissionGuard` + `@Permission(resource, action)` mapped to `packages/rbac` `authorize()`; global deny-by-default; **startup fails** for a route without a decision | M | P1-3b | route-enumeration test fails if any route lacks `@Permission`/`@Public`; SUPER_ADMIN reaches only `/platform/*` |
 | **P1-3d** NEW | Record-level rules the matrix cannot express: a Principal may not approve their own leave; HR `leave:update` may not change `status` (Phase 3 uses them; the guard hooks and tests land now) | S | P1-3c | unit tests for both rules |

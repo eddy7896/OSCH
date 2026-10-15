@@ -80,3 +80,5 @@ jobs:
         run: npm run test:dataconnect
       - name: Admin SDK data layer against the emulator
         run: npm run test:database
+      - name: Gateway against the Auth emulator
+        run: npm run test:gateway
