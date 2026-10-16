@@ -2,7 +2,8 @@
 // covered in auth.integration.ts).
 import { Body, Controller, Get, type INestApplication, Post, Query } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import request from 'supertest';
+import { IsOptional, IsString } from 'class-validator';
+import { agent, serve } from './support/serve.js';
 import { CurrentUser, type AuthenticatedUser } from '../src/auth/authenticated-user.js';
 import { NoAudit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
@@ -47,6 +48,10 @@ const fakeAuth = {
   },
 };
 
+class EmptyDto {
+  @IsOptional() @IsString() note?: string;
+}
+
 @Controller()
 class Probe {
   @Public()
@@ -63,7 +68,7 @@ class Probe {
 
   @Permission('students', 'read')
   @Get('school-data')
-  async read(@Tenant() t: TenantContext, @Query() _q: unknown) {
+  async read(@Tenant() t: TenantContext, @Query() _q: EmptyDto) {
     await new Promise((r) => setTimeout(r, Math.random() * 15));
     return t;
   }
@@ -71,7 +76,7 @@ class Probe {
   @Permission('attendance', 'create')
   @NoAudit('test probe route, writes nothing')
   @Post('school-data')
-  write(@Tenant() t: TenantContext, @Body() _b: unknown) {
+  write(@Tenant() t: TenantContext, @Body() _b: EmptyDto) {
     return t;
   }
 
@@ -94,14 +99,14 @@ async function boot(ttl = '30000'): Promise<INestApplication> {
   const moduleRef = await Test.createTestingModule({ imports: [AppModule], controllers: [Probe] }).overrideProvider(DATABASE).useValue(fakeDb).overrideProvider(FIREBASE_AUTH).useValue(fakeAuth).compile();
   const app = moduleRef.createNestApplication({ bufferLogs: true });
   configureApp(app);
-  await app.init();
+  await serve(app);
   return app;
 }
 
 describe('TenantGuard (P1-3b)', () => {
   let app: INestApplication;
   const get = (path: string, user?: string, school?: string) => {
-    const r = request(app.getHttpServer()).get(path);
+    const r = agent(app).get(path);
     if (user) r.set('Authorization', `Bearer ${user}`);
     if (school) r.set('X-School-Id', school);
     return r;
@@ -157,15 +162,18 @@ describe('TenantGuard (P1-3b)', () => {
     expect((await get('/v1/school-data', 'outsider', S).expect(403)).body.error.code).toBe('FORBIDDEN');
   });
 
-  it('never reads a school id from the query or the body: the header-verified school wins', async () => {
-    const q = await get(`/v1/school-data?schoolId=${B}&school=${B}`, 'teacher', A).expect(200);
-    expect(q.body.schoolId).toBe(A);
-    const b = await request(app.getHttpServer()).post('/v1/school-data').set('Authorization', 'Bearer teacher').set('X-School-Id', A).send({ schoolId: B, tenant: { schoolId: B } }).expect(201);
-    expect(b.body).toMatchObject({ schoolId: A, userId: 'u-teacher' });
+  it('a school id in the query or the body is rejected outright (400) and never read; the header-verified school is the only one', async () => {
+    const q = await get(`/v1/school-data?schoolId=${B}&school=${B}`, 'teacher', A).expect(400);
+    expect(q.body.error.code).toBe('INVALID_REQUEST');
+    const b = await agent(app).post('/v1/school-data').set('Authorization', 'Bearer teacher').set('X-School-Id', A).send({ schoolId: B, tenant: { schoolId: B } }).expect(400);
+    expect(b.body.error.details).toEqual(expect.arrayContaining([{ field: 'schoolId', rule: 'whitelistValidation' }]));
+    expect(JSON.stringify(b.body)).not.toContain(B); // the submitted value is never echoed
+    const ok = await agent(app).post('/v1/school-data').set('Authorization', 'Bearer teacher').set('X-School-Id', A).send({}).expect(201);
+    expect(ok.body).toMatchObject({ schoolId: A, userId: 'u-teacher' });
   });
 
   it('a school id only in the body or query (no header) is not enough', async () => {
-    await request(app.getHttpServer()).post('/v1/school-data').set('Authorization', 'Bearer teacher').send({ schoolId: A }).expect(400);
+    await agent(app).post('/v1/school-data').set('Authorization', 'Bearer teacher').send({ schoolId: A }).expect(400);
     await get(`/v1/school-data?schoolId=${A}`, 'teacher').expect(400);
   });
 
@@ -206,9 +214,7 @@ describe('TenantGuard (P1-3b)', () => {
 
   it('keeps concurrent requests of different users and schools apart (no context leaks between requests)', async () => {
     const plan = Array.from({ length: 60 }, (_v, i) => (i % 2 === 0 ? { user: 'teacher', school: A, uid: 'u-teacher', role: 'TEACHER' } : { user: 'other', school: B, uid: 'u-other', role: 'PRINCIPAL' }));
-    await app.listen(0); // one real listener; supertest would open a server per call and reset under this load
-    const url = await app.getUrl();
-    const results = await Promise.all(plan.map((p) => request(url).get('/v1/school-data').set('Authorization', `Bearer ${p.user}`).set('X-School-Id', p.school)));
+    const results = await Promise.all(plan.map((p) => agent(app).get('/v1/school-data').set('Authorization', `Bearer ${p.user}`).set('X-School-Id', p.school)));
     results.forEach((res, i) => expect(res.body).toEqual({ schoolId: plan[i]!.school, userId: plan[i]!.uid, schoolRole: plan[i]!.role }));
   });
 });
@@ -223,7 +229,7 @@ describe('TenantGuard membership cache', () => {
     dbFailure = undefined;
     members.set(`${A}:u-teacher`, row('TEACHER'));
   });
-  const hit = (user = 'teacher', school = A) => request(app.getHttpServer()).get('/v1/school-data').set('Authorization', `Bearer ${user}`).set('X-School-Id', school);
+  const hit = (user = 'teacher', school = A) => agent(app).get('/v1/school-data').set('Authorization', `Bearer ${user}`).set('X-School-Id', school);
 
   it('asks the database once for repeated allowed requests, and never caches a denial', async () => {
     await hit().expect(200);

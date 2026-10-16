@@ -24,10 +24,19 @@ export class RecordRules {
       action: granted.action,
       scope: granted.scope,
       record: input.record,
-      changes: input.changes,
+      changes: input.changes && definedOnly(input.changes),
     });
     if (decision.allowed) return;
     this.logger.warn({ uid: tenant.userId, schoolId: tenant.schoolId, role: tenant.schoolRole, resource: granted.resource, action: granted.action, rule: decision.rule }, 'record rule refused');
     throw new ApiException(ErrorCode.FORBIDDEN, 403);
   }
+}
+
+/**
+ * A DTO instance carries a key for every declared optional property, set to undefined when the client did not send it
+ * (JSON has no undefined). Those keys mean "not touched" and must not trip rules such as "HR may not change status".
+ * A key the client DID send, including null, stays.
+ */
+function definedOnly(changes: Readonly<Record<string, unknown>>): Record<string, unknown> {
+  return Object.fromEntries(Object.entries(changes).filter(([, v]) => v !== undefined));
 }
