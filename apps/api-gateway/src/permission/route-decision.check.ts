@@ -4,12 +4,19 @@ import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
 import { authorize, ROLES } from '@oruschools/rbac';
 import { IS_PUBLIC } from '../auth/public.decorator.js';
 import { type RouteScope, SCOPE } from '../tenant/tenant.decorators.js';
+import { AUDIT, type AuditDecl, NO_AUDIT } from '../audit/audit.decorators.js';
 import { PERMISSION, type RequiredPermission } from './permission.decorator.js';
 
 const METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'ALL', 'OPTIONS', 'HEAD', 'SEARCH'];
 
+const MUTATING = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
 export interface RouteFacts {
   label: string;
+  /** HTTP method; routes without one are treated as reads. */
+  method?: string;
+  audit?: AuditDecl;
+  noAuditReason?: string;
   isPublic: boolean;
   scope?: RouteScope;
   permission?: RequiredPermission;
@@ -20,6 +27,10 @@ export function routeProblems(routes: readonly RouteFacts[]): string[] {
   const problems: string[] = [];
   for (const r of routes) {
     const p = r.permission;
+    if (MUTATING.has(r.method ?? '')) {
+      if (!r.audit && !r.noAuditReason) problems.push(`${r.label}: state-changing route needs @Audit({ action, operation }) or @NoAudit('reason')`);
+      else if (r.audit && r.noAuditReason) problems.push(`${r.label}: @Audit and @NoAudit contradict each other`);
+    } else if (r.audit) problems.push(`${r.label}: @Audit only belongs on a state-changing route (POST/PUT/PATCH/DELETE)`);
     if (r.isPublic) {
       if (p || r.scope) problems.push(`${r.label}: @Public() cannot be combined with @Permission/@UserScoped/@Platform`);
     } else if (r.scope === 'user') {
@@ -66,6 +77,9 @@ export class RouteDecisionCheck implements OnApplicationBootstrap {
         const path = (Reflect.getMetadata(PATH_METADATA, handler) as string | string[] | undefined) ?? '';
         const targets = [handler, metatype];
         routes.push({
+          method: METHODS[method],
+          audit: this.reflector.getAllAndOverride<AuditDecl | undefined>(AUDIT, targets),
+          noAuditReason: this.reflector.getAllAndOverride<string | undefined>(NO_AUDIT, targets),
           label: `${METHODS[method] ?? 'ROUTE'} /${[base, path].flat().join('/')} (${metatype.name}.${name})`.replace(/\/+/g, '/'),
           isPublic: this.reflector.getAllAndOverride<boolean>(IS_PUBLIC, targets) === true,
           scope: this.reflector.getAllAndOverride<RouteScope | undefined>(SCOPE, targets),
