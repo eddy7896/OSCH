@@ -43,6 +43,16 @@
         },
         "description": "Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which."
       },
+      "Error404": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorEnvelope"
+            }
+          }
+        },
+        "description": "Not found (also what an unusable public name or another school's record looks like)."
+      },
       "Error429": {
         "content": {
           "application/json": {
@@ -1672,6 +1682,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2001,6 +2014,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2072,6 +2088,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
           },
           "429": {
             "$ref": "#/components/responses/Error429"
@@ -2256,6 +2275,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2318,6 +2340,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
           },
           "429": {
             "$ref": "#/components/responses/Error429"
@@ -2388,6 +2413,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2457,6 +2485,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2510,6 +2541,9 @@
           },
           "400": {
             "$ref": "#/components/responses/Error400"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
           },
           "429": {
             "$ref": "#/components/responses/Error429"

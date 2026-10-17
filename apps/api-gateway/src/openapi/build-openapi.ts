@@ -10,6 +10,7 @@ const ERROR_RESPONSES: Record<string, string> = {
   '400': 'The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).',
   '401': 'No valid sign-in.',
   '403': 'Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.',
+  '404': 'Not found (also what an unusable public name or another school\'s record looks like).',
   '429': 'Too many requests.',
   '500': 'Something went wrong on the server.',
 };
@@ -68,7 +69,7 @@ export function buildOpenApi(app: INestApplication, routes: readonly RouteFacts[
       const own: Json[] = Array.isArray(op.parameters) ? op.parameters : [];
       if (kind === 'tenant') op.parameters = [{ $ref: '#/components/parameters/SchoolId' }, ...own];
 
-      const wanted = [...(facts.skipsThrottle ? [] : ['429']), '500', ...(kind === 'public' ? [] : ['401', '403']), ...(kind === 'tenant' || op.requestBody || (op.parameters ?? []).length ? ['400'] : [])];
+      const wanted = [...(facts.skipsThrottle ? [] : ['429']), '500', ...(kind === 'public' ? [] : ['401', '403']), ...(kind === 'tenant' || op.requestBody || (op.parameters ?? []).length ? ['400'] : []), ...((op.parameters ?? []).some((p: Json) => p.in === 'path') ? ['404'] : [])];
       op.responses = { ...op.responses };
       for (const status of wanted) op.responses[status] ??= { $ref: `#/components/responses/Error${status}` };
     }
