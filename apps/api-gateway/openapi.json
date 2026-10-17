@@ -740,6 +740,29 @@
         ],
         "type": "object"
       },
+      "PublicSchoolDto": {
+        "properties": {
+          "defaultLanguage": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "subDomain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "subDomain",
+          "defaultLanguage"
+        ],
+        "type": "object"
+      },
       "SchoolDto": {
         "properties": {
           "createdAt": {
@@ -2458,6 +2481,48 @@
           "action": "update",
           "resource": "platform_schools"
         }
+      }
+    },
+    "/v1/public/schools/by-subdomain/{sub}": {
+      "get": {
+        "operationId": "PublicSchools_bySubdomain",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sub",
+            "required": true,
+            "schema": {
+              "maxLength": 253,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSchoolDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [],
+        "tags": [
+          "PublicSchools"
+        ],
+        "x-access": "public"
       }
     }
   },

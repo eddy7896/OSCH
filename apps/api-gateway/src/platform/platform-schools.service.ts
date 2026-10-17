@@ -4,6 +4,7 @@ import { DATABASE, type Database } from '@oruschools/database';
 import type { AuthenticatedUser } from '../auth/authenticated-user.js';
 import { ApiException, ErrorCode } from '../common/errors.js';
 import { dashed } from '../common/uuid.js';
+import { PublicSchoolsService } from '../public/public-schools.service.js';
 import { MembershipService } from '../tenant/membership.service.js';
 import { UserSyncService } from '../users/user-sync.service.js';
 import type { CreateSchoolDto } from './dto/create-school.dto.js';
@@ -24,6 +25,7 @@ export class PlatformSchoolsService {
     @Inject(DATABASE) private readonly db: Database,
     private readonly users: UserSyncService,
     private readonly memberships: MembershipService,
+    private readonly publicSchools: PublicSchoolsService,
   ) {}
 
   async list(limit = 25, offset = 0): Promise<SchoolPageDto> {
@@ -56,6 +58,7 @@ export class PlatformSchoolsService {
       actorId: actor.uid,
       details: { ...(dto.name !== undefined && { name: dto.name }), ...(dto.defaultLanguage !== undefined && { defaultLanguage: dto.defaultLanguage }) },
     });
+    this.publicSchools.invalidate(current.subDomain); // the public login page shows the new name at once on this instance
     return this.get(id);
   }
 
@@ -66,6 +69,7 @@ export class PlatformSchoolsService {
     await this.users.sync(actor);
     await this.db.setSubscriptionStatus({ schoolId: id, status: status as never, actorId: actor.uid, details: { status, from: current.status, ...(reason && { reason }) } });
     this.memberships.invalidateSchool(id); // this instance stops honouring cached allows at once; other instances within TENANT_CACHE_TTL_MS
+    this.publicSchools.invalidate(current.subDomain); // a suspended school disappears from the public lookup at once (here; other instances within 60 s)
     return this.get(id);
   }
 }
