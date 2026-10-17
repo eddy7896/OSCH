@@ -1,4 +1,4 @@
-import { BadRequestException, NotFoundException, type ArgumentsHost } from '@nestjs/common';
+import { BadRequestException, Logger, NotFoundException, type ArgumentsHost } from '@nestjs/common';
 import { DatabaseError } from '@oruschools/database';
 import { ApiException, ErrorCode, ErrorEnvelopeFilter } from './errors.js';
 
@@ -15,6 +15,9 @@ function run(exception: unknown, path = '/v1/x', requestId: string | null = 'req
 }
 
 describe('ErrorEnvelopeFilter', () => {
+  beforeEach(() => { vi.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined); });
+  afterEach(() => vi.restoreAllMocks());
+
   it('wraps a named ApiException in the envelope with the request id', () => {
     expect(run(new ApiException(ErrorCode.AUTH_REQUIRED, 401))).toEqual({ status: 401, body: { error: { code: 'AUTH_REQUIRED', message: 'Sign in to continue.', requestId: 'req-12345678' } } });
   });

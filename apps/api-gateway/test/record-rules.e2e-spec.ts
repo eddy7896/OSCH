@@ -2,7 +2,8 @@ import { NoAudit } from '../src/audit/audit.decorators.js';
 // P1-3d wired into the real pipeline: a handler loads the record, then asks RecordRules before it writes.
 import { Body, Controller, Get, type INestApplication, Inject, Param, Patch } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import request from 'supertest';
+import { IsOptional, IsString } from 'class-validator';
+import { agent, serve } from './support/serve.js';
 import { Granted, Permission, type GrantedPermission } from '../src/permission/permission.decorator.js';
 import type { RecordRules } from '../src/permission/record-rules.service.js';
 import { Tenant, type TenantContext } from '../src/tenant/tenant.decorators.js';
@@ -28,16 +29,21 @@ const fakeAuth = { verifyIdToken: async (t: string) => { if (!ROLE_OF[`u-${t}`])
 
 let RecordRulesToken: typeof RecordRules;
 
+class LeaveUpdateDto {
+  @IsOptional() @IsString() reason?: string;
+  @IsOptional() @IsString() status?: string;
+}
+
 @Controller('leave')
 class LeaveRoutes {
   constructor(@Inject('RECORD_RULES') private readonly rules: RecordRules) {}
 
   // The matrix lets HR "update" and the Principal "approve" at school scope; the rules decide the rest.
-  @NoAudit('test probe route, writes nothing') @Permission('leave', 'update') @Patch(':id') update(@Param('id') id: string, @Body() body: Record<string, unknown>, @Tenant() tenant: TenantContext, @Granted() granted: GrantedPermission) {
+  @NoAudit('test probe route, writes nothing') @Permission('leave', 'update') @Patch(':id') update(@Param('id') id: string, @Body() body: LeaveUpdateDto, @Tenant() tenant: TenantContext, @Granted() granted: GrantedPermission) {
     const rec = leaves.get(id);
     if (!rec) return { error: 'missing' };
-    this.rules.assert({ tenant, granted, record: { schoolId: rec.schoolId, ownerUserId: rec.ownerUserId }, changes: body });
-    Object.assign(rec, body);
+    this.rules.assert({ tenant, granted, record: { schoolId: rec.schoolId, ownerUserId: rec.ownerUserId }, changes: Object.fromEntries(Object.entries(body)) });
+    Object.assign(rec, Object.fromEntries(Object.entries(body).filter(([, v]) => v !== undefined))); // a DTO has a key for every optional property
     return rec;
   }
 }
@@ -80,12 +86,12 @@ describe('record rules in the pipeline (P1-3d)', () => {
       .overrideProvider(DATABASE).useValue(fakeDb).overrideProvider(FIREBASE_AUTH).useValue(fakeAuth).compile();
     app = moduleRef.createNestApplication({ bufferLogs: true });
     configureApp(app);
-    await app.init();
+    await serve(app);
   });
   afterAll(async () => app.close());
   beforeEach(() => { for (const r of leaves.values()) r.status = 'PENDING'; });
-  const patch = (path: string, who: string, body: object = {}) => request(app.getHttpServer()).patch(`/v1/${path}`).set('Authorization', `Bearer ${who}`).set('X-School-Id', A).send(body);
-  const get = (path: string, who: string) => request(app.getHttpServer()).get(`/v1/${path}`).set('Authorization', `Bearer ${who}`).set('X-School-Id', A);
+  const patch = (path: string, who: string, body: object = {}) => agent(app).patch(`/v1/${path}`).set('Authorization', `Bearer ${who}`).set('X-School-Id', A).send(body);
+  const get = (path: string, who: string) => agent(app).get(`/v1/${path}`).set('Authorization', `Bearer ${who}`).set('X-School-Id', A);
 
   it('the Principal approves a teacher\'s leave', async () => {
     expect((await patch('leave-approve/l-teacher', 'principal').expect(200)).body.status).toBe('APPROVED');

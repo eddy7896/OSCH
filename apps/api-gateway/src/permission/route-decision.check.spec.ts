@@ -71,3 +71,16 @@ describe('routeProblems: audit declarations on state-changing routes', () => {
     expect(routeProblems([{ label: 'POST /open', isPublic: true, method: 'POST' }]).join()).toMatch(/needs @Audit/);
   });
 });
+
+describe('routeProblems: inputs must be typed with a DTO class', () => {
+  const ok = { permission: { resource: 'students', action: 'read' } as const };
+  it('refuses an untyped @Body or @Query (the validation pipe would skip it)', () => {
+    const p = routeProblems([{ label: 'GET /x (C.x)', isPublic: false, ...ok, untypedInputs: ['@Body() parameter 1', '@Query() parameter 2'] }]).join('\n');
+    expect(p).toMatch(/@Body\(\) parameter 1 is not typed with a DTO class/);
+    expect(p).toMatch(/@Query\(\) parameter 2/);
+  });
+
+  it('passes when there are none', () => {
+    expect(routeProblems([{ label: 'GET /x (C.x)', isPublic: false, ...ok, untypedInputs: [] }])).toEqual([]);
+  });
+});

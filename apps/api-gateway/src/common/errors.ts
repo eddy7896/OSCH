@@ -12,6 +12,7 @@ export const ErrorCode = {
   AUTH_REQUIRED: 'AUTH_REQUIRED',
   FORBIDDEN: 'FORBIDDEN',
   SCHOOL_SUSPENDED: 'SCHOOL_SUSPENDED',
+  CANNOT_CHANGE_OWN_MEMBERSHIP: 'CANNOT_CHANGE_OWN_MEMBERSHIP',
   NOT_FOUND: 'NOT_FOUND',
   INVALID_REQUEST: 'INVALID_REQUEST',
   CONFLICT: 'CONFLICT',
@@ -26,6 +27,7 @@ const MESSAGES: Record<ErrorCode, string> = {
   AUTH_REQUIRED: 'Sign in to continue.',
   FORBIDDEN: 'You do not have access to this.',
   SCHOOL_SUSPENDED: 'This school is suspended. Contact the platform administrator.',
+  CANNOT_CHANGE_OWN_MEMBERSHIP: 'You cannot change your own role or access. Ask another System Admin.',
   NOT_FOUND: 'Not found.',
   INVALID_REQUEST: 'The request is not valid.',
   CONFLICT: 'This conflicts with existing data.',
@@ -58,13 +60,20 @@ export class ApiException extends HttpException {
   constructor(
     readonly code: ErrorCode,
     status: number,
+    /** Field-level reasons for INVALID_REQUEST: field path and rule name only, never the submitted value. */
+    readonly details?: ErrorDetail[],
   ) {
     super({ code }, status);
   }
 }
 
+export interface ErrorDetail {
+  field: string;
+  rule: string;
+}
+
 export interface ErrorEnvelope {
-  error: { code: ErrorCode; message: string; requestId?: string };
+  error: { code: ErrorCode; message: string; requestId?: string; details?: ErrorDetail[] };
 }
 
 /**
@@ -86,6 +95,7 @@ export class ErrorEnvelopeFilter implements ExceptionFilter {
 
     let status: number = HttpStatus.INTERNAL_SERVER_ERROR;
     let code: ErrorCode = ErrorCode.INTERNAL;
+    let details: ErrorDetail[] | undefined;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -93,6 +103,7 @@ export class ErrorEnvelopeFilter implements ExceptionFilter {
         res.status(status).json(exception.getResponse());
         return;
       }
+      if (exception instanceof ApiException) details = exception.details;
       const body = exception.getResponse();
       const named = typeof body === 'object' && body !== null ? (body as { code?: unknown }).code : undefined;
       code = typeof named === 'string' && named in ErrorCode ? (named as ErrorCode) : (STATUS_CODE[status] ?? (status >= 500 ? ErrorCode.INTERNAL : ErrorCode.INVALID_REQUEST));
@@ -106,7 +117,7 @@ export class ErrorEnvelopeFilter implements ExceptionFilter {
 
     if (status === 401 || status === 403) this.audit?.securityEvent(req as DeniedRequest, status, code);
 
-    const envelope: ErrorEnvelope = { error: { code, message: MESSAGES[code], ...(requestId ? { requestId } : {}) } };
+    const envelope: ErrorEnvelope = { error: { code, message: MESSAGES[code], ...(requestId ? { requestId } : {}), ...(details?.length ? { details } : {}) } };
     res.status(status).json(envelope);
   }
 }

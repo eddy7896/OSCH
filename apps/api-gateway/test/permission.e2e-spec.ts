@@ -1,7 +1,7 @@
 // P1-3c: authorisation through the real pipeline, plus the startup refusal. Fake data layer and fake Firebase tokens.
 import { Controller, Get, type INestApplication, Post } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import request from 'supertest';
+import { agent, serve } from './support/serve.js';
 import { NoAudit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
 import { Granted, Permission, type GrantedPermission } from '../src/permission/permission.decorator.js';
@@ -53,7 +53,7 @@ async function boot(controllers: unknown[] = [Routes]): Promise<INestApplication
   const moduleRef = await Test.createTestingModule({ imports: [AppModule], controllers: controllers as never[] }).overrideProvider(DATABASE).useValue(fakeDb).overrideProvider(FIREBASE_AUTH).useValue(fakeAuth).compile();
   const app = moduleRef.createNestApplication({ bufferLogs: true });
   configureApp(app);
-  await app.init();
+  await serve(app);
   return app;
 }
 
@@ -61,7 +61,7 @@ describe('PermissionGuard through the pipeline (P1-3c)', () => {
   let app: INestApplication;
   beforeAll(async () => (app = await boot()));
   afterAll(async () => app.close());
-  const call = (method: 'get' | 'post', path: string, token: string) => request(app.getHttpServer())[method](`/v1/t/${path}`).set('Authorization', `Bearer ${token}`).set('X-School-Id', A);
+  const call = (method: 'get' | 'post', path: string, token: string) => agent(app)[method](`/v1/t/${path}`).set('Authorization', `Bearer ${token}`).set('X-School-Id', A);
 
   // [route, role, expected status, expected scope]
   it.each([
@@ -101,13 +101,13 @@ describe('PermissionGuard through the pipeline (P1-3c)', () => {
   });
 
   it('platform routes: SUPER_ADMIN only; a Principal of a school cannot create schools', async () => {
-    await request(app.getHttpServer()).post('/v1/t/platform/schools').set('Authorization', 'Bearer superadmin').expect(201);
-    await request(app.getHttpServer()).post('/v1/t/platform/schools').set('Authorization', 'Bearer principal').set('X-School-Id', A).expect(403);
+    await agent(app).post('/v1/t/platform/schools').set('Authorization', 'Bearer superadmin').expect(201);
+    await agent(app).post('/v1/t/platform/schools').set('Authorization', 'Bearer principal').set('X-School-Id', A).expect(403);
   });
 
   it('user-scoped and public routes need no permission', async () => {
-    await request(app.getHttpServer()).get('/v1/t/me').set('Authorization', 'Bearer plain').expect(200);
-    await request(app.getHttpServer()).get('/v1/t/open').expect(200);
+    await agent(app).get('/v1/t/me').set('Authorization', 'Bearer plain').expect(200);
+    await agent(app).get('/v1/t/open').expect(200);
   });
 
   it('a refused request does not leak the permission or role in the response', async () => {
@@ -150,7 +150,7 @@ describe('startup refusal (deny by default)', () => {
     }
     const app = await boot([OpenClass]);
     try {
-      await request(app.getHttpServer()).get('/v1/openclass/a').expect(200);
+      await agent(app).get('/v1/openclass/a').expect(200);
     } finally {
       await app.close();
     }

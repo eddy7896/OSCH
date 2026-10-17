@@ -5,7 +5,7 @@ This document acts as an index for living documentation, API specifications, and
 ## Current Project Status
 - **Phase:** 0 — Foundation implemented; Phase 1 (API gateway & SaaS foundation) next (see `project_plan.md`)
 - **Milestone:** Governance, hardened schema, RBAC package, design-token pipeline, themed app shells. Open owner items: `implementation_plan.md` §Phase 0 status.
-- **Phase 1 progress:** P1-0a/0b, P1-1, P1-2a/b/c, P1-3a/b/c/d, P1-4, P1-5, P1-6a, P1-6b, P1-6c, P1-7 done (CI green on all three jobs; Node 22 floor; gateway skeleton on branch `app/api-gateway`). Next: P1-6d invitations, P1-6e public school lookup.
+- **Phase 1 progress:** P1-0a/0b, P1-1, P1-2a/b/c, P1-3a/b/c/d, P1-4, P1-5, P1-6a, P1-6b, P1-6c, P1-6d, P1-7 done (CI green on all three jobs; Node 22 floor; gateway skeleton on branch `app/api-gateway`). Next: P1-6e public school lookup, then P1-13/P1-14 and the clients (P1-8..P1-11).
 - **Web fonts:** self-hosted WOFF2 (`next/font/local`), see ADR-0006 addendum; replaces `next/font/google`, which made CI builds fail at random.
 - **Latest audit:** `audit_2026-10-15.md`
 
