@@ -21,3 +21,13 @@ The web apps use `cacheComponents` and next-intl URL locales. The bundled Next 1
 - Authenticated pages are client-rendered islands in a static shell; first paint of user data waits for a gateway call.
 - The gateway must accept Bearer tokens only in Phase 1; adding cookies later is additive.
 - Testing authenticated UI uses the Auth emulator (no real credentials).
+
+## Addendum (2026-10-17): the public school lookup is built
+`GET /v1/public/schools/by-subdomain/:sub` (`@Public()`, the only unauthenticated read in the API) lets a school's login page learn which school an address is, before anyone signs in.
+- **Returns exactly `{ id, name, subDomain, defaultLanguage }`.** No status, dates, currency, counts or contact details (tested). Credentials sent with the request are ignored: the route is public, not "optional auth".
+- **One 404 for everything unusable:** a malformed name, a reserved name (`www`, `api`, `admin`, ...), an unknown school and a **suspended** school give byte-identical bodies, so the endpoint cannot be used to explore beyond what a school's public address already says, nor to learn which schools are suspended. Consequence: a suspended school's login page shows "not found"; its members learn the reason from `403 SCHOOL_SUSPENDED` once signed in.
+- **Cheap and bounded:** answers are cached in memory (hits 60 s, misses 10 s, at most 5000 names, oldest dropped), so spraying random names reaches the database at most once per name per 10 s and cannot grow memory. A platform rename, suspension or reactivation clears that school's entry at once on the instance that handled it (other instances within 60 s). Browsers may cache a hit for 60 s (`Cache-Control: public, max-age=60`).
+- **Rate limit:** the general per-IP limit (default 120 a minute per IP). Many parents behind one school network each load the login page once, so a stricter limit would lock the school out; raise `THROTTLE_LIMIT` if a pilot school's network proves busier.
+- The web apps resolve the school from the request host, call this once per visit, then send `X-School-Id` from the id it returns (the gateway still verifies membership on every request and never trusts the subdomain itself).
+- OpenAPI now documents `404` on every operation with a path parameter.
+
