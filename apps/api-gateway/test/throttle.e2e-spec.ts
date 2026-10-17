@@ -3,6 +3,7 @@ import { Controller, Get, type INestApplication } from '@nestjs/common';
 import { Public } from '../src/auth/public.decorator.js';
 import { Permission } from '../src/permission/permission.decorator.js';
 import { UserScoped } from '../src/tenant/tenant.decorators.js';
+import { Strict } from '../src/common/throttle.guards.js';
 import { bootApp } from './support/boot.js';
 import { agent } from './support/serve.js';
 
@@ -59,5 +60,25 @@ describe('per-IP limit', () => {
   it('applies to a public route as well', async () => {
     for (let i = 0; i < 4; i++) await agent(app).get('/v1/lim/open').expect(200);
     await agent(app).get('/v1/lim/open').expect(429);
+  });
+});
+
+@Controller('strict')
+class StrictRoutes {
+  @UserScoped() @Strict() @Get('guarded') guarded() { return { ok: true }; }
+  @UserScoped() @Get('plain') plain() { return { ok: true }; }
+}
+
+describe('strict limit (@Strict routes)', () => {
+  let app: INestApplication;
+  beforeAll(async () => (app = await bootApp({ controllers: [StrictRoutes], env: { THROTTLE_STRICT_LIMIT: '3' } })));
+  afterAll(async () => app.close());
+  const guarded = (who: string) => agent(app).get('/v1/strict/guarded').set('Authorization', `Bearer ${who}`);
+
+  it('stops a user after the strict limit on a marked route only, and spares other users', async () => {
+    for (let i = 0; i < 3; i++) await guarded('mallory').expect(200);
+    expect((await guarded('mallory').expect(429)).body.error.code).toBe('RATE_LIMITED');
+    await guarded('trent').expect(200);
+    for (let i = 0; i < 10; i++) await agent(app).get('/v1/strict/plain').set('Authorization', 'Bearer mallory').expect(200); // unmarked routes ignore the strict limit
   });
 });

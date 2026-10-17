@@ -65,6 +65,44 @@
       }
     },
     "schemas": {
+      "AcceptInvitationDto": {
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "type": "object"
+      },
+      "AcceptedInvitationDto": {
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "school": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "school",
+          "role"
+        ],
+        "type": "object"
+      },
       "AccessDto": {
         "properties": {
           "navigation": {
@@ -164,6 +202,48 @@
         ],
         "type": "object"
       },
+      "CreateInvitationDto": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "maxLength": 254,
+            "type": "string"
+          },
+          "expiresInDays": {
+            "maximum": 30,
+            "minimum": 1,
+            "type": "number"
+          },
+          "phoneNumber": {
+            "pattern": "^\\+[1-9][0-9]{6,14}$",
+            "type": "string"
+          },
+          "schoolRole": {
+            "enum": [
+              "PRINCIPAL",
+              "MANAGEMENT",
+              "BURSAR",
+              "ACADEMIC_ADMIN",
+              "SYSTEM_ADMIN",
+              "HR_MANAGER",
+              "ACCOUNTANT",
+              "ADMISSIONS_OFFICER",
+              "TRANSPORT_MANAGER",
+              "OPERATIONS_MANAGER",
+              "TEACHER",
+              "STAFF",
+              "DRIVER",
+              "PARENT"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "schoolRole"
+        ],
+        "type": "object"
+      },
       "CreateSchoolDto": {
         "properties": {
           "defaultLanguage": {
@@ -206,6 +286,68 @@
         ],
         "type": "object"
       },
+      "CreatedInvitationDto": {
+        "properties": {
+          "acceptedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "properties": {
+              "displayName": {
+                "nullable": true,
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "displayName"
+            ],
+            "type": "object"
+          },
+          "email": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "nullable": true,
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "phoneNumber",
+          "role",
+          "status",
+          "expiresAt",
+          "createdAt",
+          "acceptedAt",
+          "createdBy",
+          "token"
+        ],
+        "type": "object"
+      },
       "ErrorEnvelope": {
         "properties": {
           "error": {
@@ -217,6 +359,8 @@
                   "FORBIDDEN",
                   "SCHOOL_SUSPENDED",
                   "CANNOT_CHANGE_OWN_MEMBERSHIP",
+                  "INVITATION_INVALID",
+                  "EMAIL_NOT_VERIFIED",
                   "NOT_FOUND",
                   "INVALID_REQUEST",
                   "CONFLICT",
@@ -263,6 +407,78 @@
         },
         "required": [
           "error"
+        ],
+        "type": "object"
+      },
+      "InvitationDto": {
+        "properties": {
+          "acceptedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "properties": {
+              "displayName": {
+                "nullable": true,
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "displayName"
+            ],
+            "type": "object"
+          },
+          "email": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "nullable": true,
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "phoneNumber",
+          "role",
+          "status",
+          "expiresAt",
+          "createdAt",
+          "acceptedAt",
+          "createdBy"
+        ],
+        "type": "object"
+      },
+      "InvitationListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InvitationDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -1139,6 +1355,237 @@
           "Health"
         ],
         "x-access": "public"
+      }
+    },
+    "/v1/invitations": {
+      "get": {
+        "operationId": "Invitations_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invitations"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "memberships"
+        }
+      },
+      "post": {
+        "operationId": "Invitations_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInvitationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedInvitationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invitations"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "invitation.create",
+          "operation": "CreateInvitation"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "memberships"
+        }
+      }
+    },
+    "/v1/invitations/accept": {
+      "post": {
+        "operationId": "Invitations_accept",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptInvitationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptedInvitationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invitations"
+        ],
+        "x-access": "user",
+        "x-audit": {
+          "action": "invitation.accept",
+          "operation": "AcceptInvitation"
+        }
+      }
+    },
+    "/v1/invitations/{id}/revoke": {
+      "post": {
+        "operationId": "Invitations_revoke",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invitations"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "invitation.revoke",
+          "operation": "RevokeInvitation"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "memberships"
+        }
       }
     },
     "/v1/me": {

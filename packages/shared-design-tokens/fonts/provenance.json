@@ -1,0 +1,27 @@
+{
+  "generator": "tools/assets/make-web-fonts.py",
+  "upstream": "https://github.com/google/fonts",
+  "upstreamCommit": "b7c8331cf620346575487ef8db0e2c729f014675",
+  "subset": "Latin ranges of packages/i18n/locales.json",
+  "families": {
+    "Poppins": {
+      "files": {
+        "Poppins-Medium.woff2": {
+          "weight": 500,
+          "bytes": 10832,
+          "sha256": "f12b487ff9a7038bed0faba7c152ce6d416c624550e6a37ab146f6d3ef2e9ced",
+          "upstreamFile": "Poppins-Medium.ttf",
+          "upstreamSha256": "90373e7d838d32468438fc3e152dca0bdb12edcab99ea639f158790b1ba1fd05"
+        },
+        "Poppins-Bold.woff2": {
+          "weight": 700,
+          "bytes": 10876,
+          "sha256": "3132493bd250f382a84bab007d54922aac9e9bb8d4aa24caad74667277e08c55",
+          "upstreamFile": "Poppins-Bold.ttf",
+          "upstreamSha256": "983676516167748b74de6f4771fb384c664fd913acb8b471122ecacf5da5ea6c"
+        }
+      },
+      "totalBytes": 21708
+    }
+  }
+}
