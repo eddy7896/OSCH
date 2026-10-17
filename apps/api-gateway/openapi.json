@@ -65,6 +65,72 @@
       }
     },
     "schemas": {
+      "AccessDto": {
+        "properties": {
+          "navigation": {
+            "items": {
+              "$ref": "#/components/schemas/NavSectionDto"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "enum": [
+                  "school",
+                  "linked",
+                  "own"
+                ],
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "permissions",
+          "navigation"
+        ],
+        "type": "object"
+      },
+      "ActiveSchoolDto": {
+        "properties": {
+          "navigation": {
+            "items": {
+              "$ref": "#/components/schemas/NavSectionDto"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "enum": [
+                  "school",
+                  "linked",
+                  "own"
+                ],
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "object"
+          },
+          "role": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "permissions",
+          "schoolId",
+          "role",
+          "navigation"
+        ],
+        "type": "object"
+      },
       "ErrorEnvelope": {
         "properties": {
           "error": {
@@ -121,6 +187,204 @@
         },
         "required": [
           "error"
+        ],
+        "type": "object"
+      },
+      "MeLanguageDto": {
+        "properties": {
+          "chosen": {
+            "nullable": true,
+            "type": "string"
+          },
+          "effective": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "chosen",
+          "effective"
+        ],
+        "type": "object"
+      },
+      "MeMembershipDto": {
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "school": {
+            "$ref": "#/components/schemas/MeSchoolDto"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "school",
+          "role",
+          "status"
+        ],
+        "type": "object"
+      },
+      "MeResponseDto": {
+        "properties": {
+          "activeSchool": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ActiveSchoolDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "language": {
+            "$ref": "#/components/schemas/MeLanguageDto"
+          },
+          "memberships": {
+            "items": {
+              "$ref": "#/components/schemas/MeMembershipDto"
+            },
+            "type": "array"
+          },
+          "platform": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccessDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "user": {
+            "$ref": "#/components/schemas/MeUserDto"
+          }
+        },
+        "required": [
+          "user",
+          "memberships",
+          "activeSchool",
+          "platform",
+          "language"
+        ],
+        "type": "object"
+      },
+      "MeSchoolDto": {
+        "properties": {
+          "defaultLanguage": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "subDomain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "subDomain",
+          "defaultLanguage",
+          "status"
+        ],
+        "type": "object"
+      },
+      "MeUserDto": {
+        "properties": {
+          "displayName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "globalRole": {
+            "enum": [
+              "SUPER_ADMIN",
+              "USER"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "displayName",
+          "globalRole"
+        ],
+        "type": "object"
+      },
+      "NavItemDto": {
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "label"
+        ],
+        "type": "object"
+      },
+      "NavSectionDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NavItemDto"
+            },
+            "type": "array"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "items"
+        ],
+        "type": "object"
+      },
+      "UpdatePreferencesDto": {
+        "properties": {
+          "language": {
+            "enum": [
+              "en",
+              "hi",
+              "ur",
+              "ks",
+              "sd",
+              "ps",
+              "fa",
+              "ar",
+              "bn",
+              "as",
+              "mr",
+              "doi",
+              "gu",
+              "pa",
+              "or",
+              "ta",
+              "te",
+              "kn",
+              "ml"
+            ],
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "language"
         ],
         "type": "object"
       }
@@ -621,6 +885,102 @@
           "Health"
         ],
         "x-access": "public"
+      }
+    },
+    "/v1/me": {
+      "get": {
+        "operationId": "Me_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-school-id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Me"
+        ],
+        "x-access": "user"
+      }
+    },
+    "/v1/me/preferences": {
+      "patch": {
+        "operationId": "Me_preferences",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePreferencesDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Me"
+        ],
+        "x-access": "user"
       }
     }
   },

@@ -23,6 +23,11 @@ export interface RouteFacts {
   method?: string;
   audit?: AuditDecl;
   noAuditReason?: string;
+  /** The route reads a validated request body / query (DTO), so smuggled fields can be tested. */
+  hasBody?: boolean;
+  hasQuery?: boolean;
+  /** HTTP path as registered, without the global prefix. */
+  path?: string;
   /** Exempt from both rate limits (health checks): the contract must not promise a 429 there. */
   skipsThrottle?: boolean;
   /** `@Body()`/`@Query()` parameters whose type is not a DTO class (so the validation pipe would skip them). */
@@ -74,6 +79,11 @@ export class RouteDecisionCheck implements OnApplicationBootstrap {
     if (problems.length > 0) throw new Error(`Refusing to start: ${problems.length} route(s) without a valid access decision:\n${problems.map((p) => `  - ${p}`).join('\n')}`);
   }
 
+  private hasInput(metatype: Function, name: string, kind: number): boolean {
+    const args = (Reflect.getMetadata(ROUTE_ARGS_METADATA, metatype, name) ?? {}) as Record<string, unknown>;
+    return Object.keys(args).some((k) => Number(k.split(':')[0]) === kind);
+  }
+
   /** Body and query inputs must be DTO classes: an `Object`, array or primitive type bypasses `whitelist/forbidNonWhitelisted`. */
   private untypedInputs(metatype: Function, proto: Record<string, unknown>, name: string): string[] {
     const args = (Reflect.getMetadata(ROUTE_ARGS_METADATA, metatype, name) ?? {}) as Record<string, { index: number }>;
@@ -103,6 +113,9 @@ export class RouteDecisionCheck implements OnApplicationBootstrap {
         const targets = [handler, metatype];
         routes.push({
           operationKey: operationKey(metatype.name, name),
+          hasBody: this.hasInput(metatype, name, RouteParamtypes.BODY),
+          hasQuery: this.hasInput(metatype, name, RouteParamtypes.QUERY),
+          path: `/${[base, path].flat().join('/')}`.replace(/\/+/g, '/').replace(/(.)\/$/, '$1'),
           skipsThrottle: this.reflector.getAllAndOverride<boolean>(`${THROTTLER_SKIP}ip`, targets) === true && this.reflector.getAllAndOverride<boolean>(`${THROTTLER_SKIP}user`, targets) === true,
           untypedInputs: this.untypedInputs(metatype, proto, name),
           method: METHODS[method],
