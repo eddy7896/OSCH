@@ -192,3 +192,7 @@ Email/SMS delivery of invitations (copy-link only), phone-OTP login, parent/driv
 | 6 | Staging host and domain | **Skip staging for now** | P1-12 (Dockerfiles, Nginx, deploy) is deferred; the Phase 1 gate item "staging reachable" is waived by the owner for now. CI and the emulator-backed harness remain the integration environment. |
 | 8 | Region | **Mumbai, `asia-south1`** | `dataconnect/dataconnect.yaml` and the generated SDK are switched. `asia-south1` is in the Data Connect location list shipped with firebase-tools; availability and pricing are not verified until the service is created. |
 | 9 | New RBAC grants, iOS label | Still open | - |
+
+### Update 2026-10-17: staff and driver accounts (ADR-0011)
+Owner decision: staff and drivers get accounts created by the System Admin (phone-only: one-time code; email: a set-password link, chosen over an emailed generated password). Built as `POST /v1/memberships/accounts`: 310 unit + 121 e2e + 486 real-emulator tests, 6 mutants killed. Follow-ups: the web clients send the Firebase set-password email (P1-9/10); invitation by phone before the parent app.
+
