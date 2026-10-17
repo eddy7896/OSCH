@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { IpThrottlerGuard } from './common/throttle.guards.js';
+import { IpThrottlerGuard, STRICT } from './common/throttle.guards.js';
 import { LoggerModule } from 'nestjs-pino';
 import { AuditModule } from './audit/audit.module.js';
 import { AuthModule } from './auth/auth.module.js';
+import { InvitationsModule } from './invitations/invitations.module.js';
 import { MembershipsModule } from './memberships/memberships.module.js';
 import { MeModule } from './me/me.module.js';
 import { PermissionModule } from './permission/permission.module.js';
@@ -32,6 +33,8 @@ import { HealthModule } from './health/health.module.js';
       useFactory: (config: ConfigService<Env, true>) => [
         { name: 'ip', ttl: config.get('THROTTLE_TTL_MS', { infer: true }), limit: config.get('THROTTLE_LIMIT', { infer: true }) },
         { name: 'user', ttl: config.get('THROTTLE_TTL_MS', { infer: true }), limit: config.get('THROTTLE_USER_LIMIT', { infer: true }) },
+        // Counts only routes marked @Strict(); every other route skips it.
+        { name: 'strict', ttl: config.get('THROTTLE_TTL_MS', { infer: true }), limit: config.get('THROTTLE_STRICT_LIMIT', { infer: true }), skipIf: (ctx) => !Reflect.getMetadata(STRICT, ctx.getHandler()) },
       ],
     }),
     GatewayDatabaseModule,
@@ -43,6 +46,7 @@ import { HealthModule } from './health/health.module.js';
     HealthModule,
     MeModule,
     MembershipsModule,
+    InvitationsModule,
     PlatformModule,
   ],
   providers: [

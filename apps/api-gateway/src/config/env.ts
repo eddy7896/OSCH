@@ -57,6 +57,12 @@ export class Env {
   @Min(1)
   THROTTLE_TTL_MS: number = 60_000;
 
+  /** Requests per window for routes marked @Strict() (invitation acceptance), per signed-in user. */
+  @Transform(({ value }) => (value === undefined || value === '' ? 10 : Number(value)))
+  @IsInt()
+  @Min(1)
+  THROTTLE_STRICT_LIMIT: number = 10;
+
   /** Requests per window per signed-in user per route (THROTTLE_LIMIT is the per-IP limit). */
   @Transform(({ value }) => (value === undefined || value === '' ? 240 : Number(value)))
   @IsInt()

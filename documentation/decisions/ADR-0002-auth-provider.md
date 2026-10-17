@@ -12,3 +12,5 @@ Docs list Auth0 and Firebase Auth as alternatives. The repo already uses Firebas
 ## Consequences
 - One provider, no Auth0 dependency. Phone/OTP login for parents/drivers available via Firebase.
 - Multi-school users: token identifies the user; the active school is chosen explicitly and checked against membership.
+
+See ADR-0011 for how staff and driver accounts are created (admin-created, set-password link or phone code); it supersedes the invitation-only onboarding for those roles.

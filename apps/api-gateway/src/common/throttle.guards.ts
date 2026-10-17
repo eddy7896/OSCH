@@ -1,4 +1,4 @@
-import { type ExecutionContext, Injectable } from '@nestjs/common';
+import { type ExecutionContext, Injectable, SetMetadata } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import type { ThrottlerRequest } from '@nestjs/throttler/dist/throttler.guard.interface.js';
 
@@ -21,6 +21,10 @@ export class IpThrottlerGuard extends NamedThrottlerGuard {
   protected readonly throttlerName = 'ip';
 }
 
+/** Marks a route as sensitive (token guessing, credential-like secrets): it also counts against the tighter `strict` limit. */
+export const STRICT = 'oru:strict';
+export const Strict = () => SetMetadata(STRICT, true);
+
 @Injectable()
 export class UserThrottlerGuard extends NamedThrottlerGuard {
   protected readonly throttlerName = 'user';
@@ -32,5 +36,16 @@ export class UserThrottlerGuard extends NamedThrottlerGuard {
 
   protected override async getTracker(req: Record<string, any>): Promise<string> {
     return `user:${(req['user'] as { uid: string }).uid}`;
+  }
+}
+
+/** The `strict` limit, for routes marked `@Strict()`: per signed-in user (or per IP if anonymous), tighter than the general limits. */
+@Injectable()
+export class StrictThrottlerGuard extends NamedThrottlerGuard {
+  protected readonly throttlerName = 'strict';
+
+  protected override async getTracker(req: Record<string, any>): Promise<string> {
+    const uid = (req['user'] as { uid?: string } | undefined)?.uid;
+    return uid ? `strict-user:${uid}` : super.getTracker(req);
   }
 }
