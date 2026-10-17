@@ -93,6 +93,11 @@ export class ErrorEnvelopeFilter implements ExceptionFilter {
 
   constructor(@Optional() @Inject(SECURITY_EVENTS) private readonly audit?: SecurityEvents) {}
 
+  private standardRetryAfter(res: Response): void {
+    const wait = longestRetryAfter((n) => res.getHeader(n));
+    if (wait !== undefined) res.setHeader('Retry-After', String(wait));
+  }
+
   catch(exception: unknown, host: ArgumentsHost): void {
     const http = host.switchToHttp();
     const req = http.getRequest<Request>();
@@ -123,9 +128,17 @@ export class ErrorEnvelopeFilter implements ExceptionFilter {
 
     if (status === 401 || status === 403) this.audit?.securityEvent(req as DeniedRequest, status, code);
 
+    if (status === 429) this.standardRetryAfter(res);
+
     const envelope: ErrorEnvelope = { error: { code, message: MESSAGES[code], ...(requestId ? { requestId } : {}), ...(details?.length ? { details } : {}) } };
     res.status(status).json(envelope);
   }
+}
+
+/** The throttler writes `Retry-After-<limit name>` for named limits; clients and browsers look for the standard header. */
+export function longestRetryAfter(read: (name: string) => unknown): number | undefined {
+  const seconds = ['ip', 'user', 'strict'].map((n) => Number(read(`Retry-After-${n}`))).filter((n) => Number.isFinite(n) && n > 0);
+  return seconds.length ? Math.max(...seconds) : undefined;
 }
 
 function describe(e: unknown): string {

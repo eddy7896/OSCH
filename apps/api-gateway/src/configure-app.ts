@@ -18,7 +18,7 @@ export function configureApp(app: INestApplication): void {
     origin: origins,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type', 'X-School-Id', 'X-Request-Id'],
-    exposedHeaders: [REQUEST_ID_HEADER],
+    exposedHeaders: [REQUEST_ID_HEADER, 'Retry-After'],
     maxAge: 600,
   });
   app.setGlobalPrefix('v1', { exclude: ['health', 'health/db'] });

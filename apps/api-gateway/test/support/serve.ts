@@ -15,3 +15,6 @@ export async function serve(app: INestApplication): Promise<INestApplication> {
 }
 
 export const agent = (app: INestApplication) => request((app as unknown as { __base: string }).__base);
+
+/** The loopback origin the app listens on (for real clients such as @oruschools/api-client). */
+export const baseUrl = (app: INestApplication): string => (app as unknown as { __base: string }).__base;
