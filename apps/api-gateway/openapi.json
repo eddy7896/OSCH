@@ -286,6 +286,47 @@
         ],
         "type": "object"
       },
+      "CreateStaffAccountDto": {
+        "properties": {
+          "displayName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "email": {
+            "format": "email",
+            "maxLength": 254,
+            "type": "string"
+          },
+          "phoneNumber": {
+            "pattern": "^\\+[1-9][0-9]{6,14}$",
+            "type": "string"
+          },
+          "schoolRole": {
+            "enum": [
+              "PRINCIPAL",
+              "MANAGEMENT",
+              "BURSAR",
+              "ACADEMIC_ADMIN",
+              "SYSTEM_ADMIN",
+              "HR_MANAGER",
+              "ACCOUNTANT",
+              "ADMISSIONS_OFFICER",
+              "TRANSPORT_MANAGER",
+              "OPERATIONS_MANAGER",
+              "TEACHER",
+              "STAFF",
+              "DRIVER"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "displayName",
+          "schoolRole"
+        ],
+        "type": "object"
+      },
       "CreatedInvitationDto": {
         "properties": {
           "acceptedAt": {
@@ -360,6 +401,7 @@
                   "SCHOOL_SUSPENDED",
                   "CANNOT_CHANGE_OWN_MEMBERSHIP",
                   "INVITATION_INVALID",
+                  "ACCOUNT_EXISTS",
                   "EMAIL_NOT_VERIFIED",
                   "NOT_FOUND",
                   "INVALID_REQUEST",
@@ -758,6 +800,51 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "StaffAccountDto": {
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "email": {
+            "nullable": true,
+            "type": "string"
+          },
+          "nextStep": {
+            "enum": [
+              "SEND_SET_PASSWORD_EMAIL",
+              "NONE"
+            ],
+            "type": "string"
+          },
+          "phoneNumber": {
+            "nullable": true,
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "signIn": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "displayName",
+          "email",
+          "phoneNumber",
+          "role",
+          "status",
+          "signIn",
+          "nextStep"
+        ],
         "type": "object"
       },
       "UpdateMembershipDto": {
@@ -1784,6 +1871,70 @@
         ],
         "tags": [
           "Memberships"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "membership.add",
+          "operation": "AddMembership"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "memberships"
+        }
+      }
+    },
+    "/v1/memberships/accounts": {
+      "post": {
+        "operationId": "Accounts_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStaffAccountDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffAccountDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Accounts"
         ],
         "x-access": "tenant",
         "x-audit": {
