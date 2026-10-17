@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import type { Env } from '../config/env.js';
 import { DEV_PROJECT_ID } from '../database/database.module.js';
-import { UserThrottlerGuard } from '../common/throttle.guards.js';
+import { StrictThrottlerGuard, UserThrottlerGuard } from '../common/throttle.guards.js';
 import { AuthGuard } from './auth.guard.js';
 import { createFirebaseAuth, FIREBASE_AUTH } from './firebase-auth.js';
 
@@ -19,6 +19,7 @@ import { createFirebaseAuth, FIREBASE_AUTH } from './firebase-auth.js';
     { provide: APP_GUARD, useClass: AuthGuard },
     // Per-user limit needs the verified uid, so it runs right after authentication.
     { provide: APP_GUARD, useClass: UserThrottlerGuard },
+    { provide: APP_GUARD, useClass: StrictThrottlerGuard },
   ],
   exports: [FIREBASE_AUTH],
 })
