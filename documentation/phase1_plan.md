@@ -119,7 +119,7 @@ graph LR
 ### M4: Contract and client
 | ID | Task | Size | Depends | Acceptance |
 |---|---|---|---|---|
-| P1-8 CHANGED | `packages/api-client` generated with `@hey-api/openapi-ts`: async token provider, `X-School-Id` injection, typed `ApiError` (machine code), BigInt-safe `Int64String`, abort/timeout | M | P1-5 (skeleton spec) | contract test: client types compile against the committed spec; error mapping tests |
+| P1-8 DONE (`cross/api-client`; 39 client unit tests + 8 real-stack tests; 8 mutants killed) | `packages/api-client` generated with `@hey-api/openapi-ts`: async token provider, `X-School-Id` injection, typed `ApiError` (machine code), BigInt-safe `Int64String`, abort/timeout | M | P1-5 (skeleton spec) | contract test: client types compile against the committed spec; error mapping tests |
 
 ### M5: Frontends (starts after the P1-5 spec skeleton exists; runs parallel to M3)
 | ID | Task | Size | Depends |

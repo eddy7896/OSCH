@@ -1,5 +1,5 @@
 // P1-5: the OpenAPI document is generated from the same decorators the guards enforce.
-import { Body, Controller, Get, type INestApplication, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, type INestApplication, Param, Post } from '@nestjs/common';
 import { IsString } from 'class-validator';
 import { Audit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
@@ -13,6 +13,7 @@ class MemberDto { @IsString() userId!: string; }
 class Contract {
   @Public() @Get('open') open() { return 1; }
   @UserScoped() @Get('me') me() { return 1; }
+  @UserScoped() @Get('me-with-school') meWithSchool(@Headers('x-school-id') _school?: string) { return 1; }
   @Platform() @Permission('platform_schools', 'read') @Get('platform/schools') schools() { return 1; }
   @Permission('students', 'read') @Get('students') students() { return 1; }
   @Permission('students', 'read') @Get('students/:id') one(@Param('id') _id: string) { return 1; }
@@ -54,6 +55,12 @@ describe('OpenAPI contract (P1-5)', () => {
     expect(hasSchool(op('post', '/v1/c/members'))).toBe(true);
     for (const [m, p] of [['get', '/v1/c/open'], ['get', '/v1/c/me'], ['get', '/v1/c/platform/schools']]) expect(hasSchool(op(m!, p!))).toBe(false);
     expect(doc.components.parameters.SchoolId).toMatchObject({ name: 'X-School-Id', in: 'header', required: true, schema: { type: 'string', format: 'uuid' } });
+  });
+
+  it('a user route that reads X-School-Id itself documents it once, as OPTIONAL (never as a required lowercase parameter)', () => {
+    const params = op('get', '/v1/c/me-with-school').parameters;
+    expect(params).toEqual([{ $ref: '#/components/parameters/ActiveSchoolId' }]);
+    expect(doc.components.parameters.ActiveSchoolId).toMatchObject({ name: 'X-School-Id', in: 'header', required: false });
   });
 
   it('states the access class, the permission and the audit action on each operation', () => {

@@ -53,7 +53,7 @@ export function buildOpenApi(app: INestApplication, routes: readonly RouteFacts[
   components['responses'] = Object.fromEntries(
     Object.entries(ERROR_RESPONSES).map(([status, description]) => [`Error${status}`, { description, content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorEnvelope' } } } }]),
   );
-  components['parameters'] = { SchoolId: { name: 'X-School-Id', in: 'header', required: true, description: 'The school the request acts in. Checked against the caller\'s active membership; never trusted on its own.', schema: { type: 'string', format: 'uuid' } } };
+  components['parameters'] = { ActiveSchoolId: { name: 'X-School-Id', in: 'header', required: false, description: 'Optional: names the school whose permissions and navigation to include. Anything the caller is not an active member of is ignored without a hint.', schema: { type: 'string', format: 'uuid' } }, SchoolId: { name: 'X-School-Id', in: 'header', required: true, description: 'The school the request acts in. Checked against the caller\'s active membership; never trusted on its own.', schema: { type: 'string', format: 'uuid' } } };
 
   for (const [path, item] of Object.entries(doc.paths as Json)) {
     for (const [method, op] of Object.entries(item as Json)) {
@@ -66,7 +66,10 @@ export function buildOpenApi(app: INestApplication, routes: readonly RouteFacts[
       if (facts.permission) op['x-permission'] = { resource: facts.permission.resource, action: facts.permission.action };
       if (facts.audit) op['x-audit'] = { action: facts.audit.action, operation: facts.audit.operation };
       op.security = kind === 'public' ? [] : [{ bearer: [] }];
-      const own: Json[] = Array.isArray(op.parameters) ? op.parameters : [];
+      // A handler that reads the header itself (@Headers) shows up as a required lowercase parameter; the contract states it once, by access class.
+      const own: Json[] = (Array.isArray(op.parameters) ? (op.parameters as Json[]) : []).filter((p) => !(p.in === 'header' && String(p.name).toLowerCase() === 'x-school-id'));
+      if (kind === 'user' && (Array.isArray(op.parameters) ? (op.parameters as Json[]) : []).some((p) => p.in === 'header' && String(p.name).toLowerCase() === 'x-school-id')) own.unshift({ $ref: '#/components/parameters/ActiveSchoolId' });
+      op.parameters = own;
       if (kind === 'tenant') op.parameters = [{ $ref: '#/components/parameters/SchoolId' }, ...own];
 
       const wanted = [...(facts.skipsThrottle ? [] : ['429']), '500', ...(kind === 'public' ? [] : ['401', '403']), ...(kind === 'tenant' || op.requestBody || (op.parameters ?? []).length ? ['400'] : []), ...((op.parameters ?? []).some((p: Json) => p.in === 'path') ? ['404'] : [])];

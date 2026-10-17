@@ -11,3 +11,4 @@ documentation/design-system
 package-lock.json
 pubspec.lock
 *.g.dart
+packages/api-client/src/generated
