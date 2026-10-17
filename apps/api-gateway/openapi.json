@@ -43,6 +43,16 @@
         },
         "description": "Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which."
       },
+      "Error404": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorEnvelope"
+            }
+          }
+        },
+        "description": "Not found (also what an unusable public name or another school's record looks like)."
+      },
       "Error429": {
         "content": {
           "application/json": {
@@ -737,6 +747,29 @@
         "required": [
           "title",
           "items"
+        ],
+        "type": "object"
+      },
+      "PublicSchoolDto": {
+        "properties": {
+          "defaultLanguage": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "subDomain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "subDomain",
+          "defaultLanguage"
         ],
         "type": "object"
       },
@@ -1649,6 +1682,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -1978,6 +2014,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2049,6 +2088,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
           },
           "429": {
             "$ref": "#/components/responses/Error429"
@@ -2233,6 +2275,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2295,6 +2340,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
           },
           "429": {
             "$ref": "#/components/responses/Error429"
@@ -2365,6 +2413,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2434,6 +2485,9 @@
           "403": {
             "$ref": "#/components/responses/Error403"
           },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
           "429": {
             "$ref": "#/components/responses/Error429"
           },
@@ -2458,6 +2512,51 @@
           "action": "update",
           "resource": "platform_schools"
         }
+      }
+    },
+    "/v1/public/schools/by-subdomain/{sub}": {
+      "get": {
+        "operationId": "PublicSchools_bySubdomain",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sub",
+            "required": true,
+            "schema": {
+              "maxLength": 253,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSchoolDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [],
+        "tags": [
+          "PublicSchools"
+        ],
+        "x-access": "public"
       }
     }
   },

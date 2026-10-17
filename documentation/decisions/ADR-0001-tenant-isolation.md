@@ -17,3 +17,7 @@ Shared schema, **row-level tenancy by `schoolId`**, enforced in layers:
 - Isolation depends on code discipline → the evals and drift checks are mandatory, not optional.
 - Cheap migrations, one generated SDK.
 - Revisit (schema-per-tenant or DB-per-tenant) only if a customer requires physical isolation.
+
+## Addendum (2026-10-17): database region
+Owner decision: the production database is in **Mumbai (`asia-south1`)**, for latency to Indian schools and to keep student records of minors in India. `dataconnect/dataconnect.yaml` and the generated SDK carry the location; the emulator ignores it. Not covered by this decision and to check before promising "data stays in India": Firebase Authentication (user emails and phone numbers) and Cloudflare R2 object storage have their own locations, and a legal review of the India DPDP Act obligations for minors' data is still needed.
+

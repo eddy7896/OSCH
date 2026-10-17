@@ -21,3 +21,14 @@ The gateway validates `process.env` once at startup with a class-validator schem
 
 ## Local ports
 `api-gateway` 3000, `saas-admin` 3001, `web-admin` 3002, `landing-page` 3003, Data Connect emulator 9399.
+
+## Creating the first platform owner (SUPER_ADMIN)
+Run once, on the owner's machine, after the owner has signed in once to the project (so the account exists):
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json     # stays on this machine, never committed
+node tools/bootstrap-super-admin.mjs --email you@example.com --project <firebase-project-id>           # dry run
+node tools/bootstrap-super-admin.mjs --email you@example.com --project <firebase-project-id> --apply   # grant
+```
+`--revoke` removes the role. Sign out and in again afterwards (the role is carried in the ID token). Against the emulators set `FIREBASE_AUTH_EMULATOR_HOST` and `DATA_CONNECT_EMULATOR_HOST` instead of credentials. The script never creates accounts and is never exposed over HTTP.
+

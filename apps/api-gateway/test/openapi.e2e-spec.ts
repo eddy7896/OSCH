@@ -1,5 +1,5 @@
 // P1-5: the OpenAPI document is generated from the same decorators the guards enforce.
-import { Body, Controller, Get, type INestApplication, Post } from '@nestjs/common';
+import { Body, Controller, Get, type INestApplication, Param, Post } from '@nestjs/common';
 import { IsString } from 'class-validator';
 import { Audit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
@@ -15,6 +15,7 @@ class Contract {
   @UserScoped() @Get('me') me() { return 1; }
   @Platform() @Permission('platform_schools', 'read') @Get('platform/schools') schools() { return 1; }
   @Permission('students', 'read') @Get('students') students() { return 1; }
+  @Permission('students', 'read') @Get('students/:id') one(@Param('id') _id: string) { return 1; }
   @Permission('memberships', 'create') @Audit({ action: 'membership.add', operation: 'AddMembership' }) @Post('members') add(@Body() _b: MemberDto) { return 1; }
 }
 
@@ -68,6 +69,7 @@ describe('OpenAPI contract (P1-5)', () => {
     expect(statuses(op('get', '/v1/c/open'))).toEqual(['429', '500']);
     expect(statuses(op('get', '/v1/c/me'))).toEqual(['401', '403', '429', '500']);
     expect(statuses(op('get', '/v1/c/students'))).toEqual(['400', '401', '403', '429', '500']);
+    expect(statuses(op('get', '/v1/c/students/{id}'))).toEqual(['400', '401', '403', '404', '429', '500']); // a path parameter means a record can be missing
     expect(op('post', '/v1/c/members').responses['400']).toEqual({ $ref: '#/components/responses/Error400' });
     expect(doc.components.responses.Error403.content['application/json'].schema).toEqual({ $ref: '#/components/schemas/ErrorEnvelope' });
   });

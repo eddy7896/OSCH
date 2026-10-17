@@ -11,6 +11,7 @@ import { InvitationsModule } from './invitations/invitations.module.js';
 import { MembershipsModule } from './memberships/memberships.module.js';
 import { MeModule } from './me/me.module.js';
 import { PermissionModule } from './permission/permission.module.js';
+import { PublicModule } from './public/public.module.js';
 import { PlatformModule } from './platform/platform.module.js';
 import { UsersModule } from './users/users.module.js';
 import { TenantModule } from './tenant/tenant.module.js';
@@ -50,6 +51,7 @@ import { HealthModule } from './health/health.module.js';
     AccountsModule,
     InvitationsModule,
     PlatformModule,
+    PublicModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: IpThrottlerGuard },

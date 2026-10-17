@@ -12,3 +12,8 @@ Docs list Auth0 and Firebase Auth as alternatives. The repo already uses Firebas
 ## Consequences
 - One provider, no Auth0 dependency. Phone/OTP login for parents/drivers available via Firebase.
 - Multi-school users: token identifies the user; the active school is chosen explicitly and checked against membership.
+
+## Addendum (2026-10-17): Phase 1 sign-in methods
+Owner decision: email + password, Google, and phone one-time code, all through Firebase Authentication. The gateway verifies only the Firebase ID token and treats `email` and `email_verified` as optional facts about it. Consequences: invitations are accepted only by a signed-in user with a **verified** email equal to the invited address (Google sign-in is verified by Google; password sign-up must verify the email first); a phone-only account has no email and cannot accept an email invitation (invitation by phone is future work before the parent and driver apps); the SUPER_ADMIN role is granted only by `tools/bootstrap-super-admin.mjs`, never by the API.
+
+See ADR-0011 for how staff and driver accounts are created (admin-created, set-password link or phone code); it supersedes the invitation-only onboarding for those roles.

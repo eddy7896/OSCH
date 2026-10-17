@@ -181,3 +181,18 @@ Email/SMS delivery of invitations (copy-link only), phone-OTP login, parent/driv
 7. **Audit atomicity**: transactional audit inside each mutation (recommended) vs a separate write by the gateway (simpler but can lose an audit row)?
 8. **Region**: Data Connect is configured for `us-east4`; for schools in India, do you want an India-region database (latency, data residency for minors' records) before Cloud SQL is provisioned?
 9. The new RBAC grants listed in `packages/rbac/README.md` still await confirmation, and the iOS home-screen label ("OruSchools Teacher" truncates) needs a naming decision.
+
+### Owner answers (2026-10-17)
+| # | Question | Answer | Consequence |
+|---|---|---|---|
+| 1, 2 | Accept ADR-0008 / ADR-0009 | Accepted (earlier) | - |
+| 3 | Sign-in methods | **Email + password, Google, and phone one-time code** | Email and Google users have a verified email, so they can accept invitations. A phone-only user has no email: `User.email` gets a reserved `<uid>@no-email.invalid` placeholder and they **cannot accept an email invitation** (`EMAIL_NOT_VERIFIED`). Parents and drivers who only have a phone need invitation-by-phone (the number is stored on the invitation but unused today) before their apps (Phase 5). Firebase phone sign-in needs the paid plan and costs per SMS, plus app-attestation setup on mobile (not verified here; check Firebase pricing and docs when enabling). The web apps must send the verification email after password sign-up. |
+| 4 | Invitations by copy-link | Accepted in practice (built that way); email/SMS delivery is a later decision | - |
+| 5 | First SUPER_ADMIN | **The project owner.** `tools/bootstrap-super-admin.mjs` is written and tested end to end on the emulators | Needs the owner's sign-in email and the real Firebase project id (`.firebaserc` is still empty) and a service-account key kept on the owner's machine. Dry run by default; `--apply` does it; `--revoke` removes it. |
+| 6 | Staging host and domain | **Skip staging for now** | P1-12 (Dockerfiles, Nginx, deploy) is deferred; the Phase 1 gate item "staging reachable" is waived by the owner for now. CI and the emulator-backed harness remain the integration environment. |
+| 8 | Region | **Mumbai, `asia-south1`** | `dataconnect/dataconnect.yaml` and the generated SDK are switched. `asia-south1` is in the Data Connect location list shipped with firebase-tools; availability and pricing are not verified until the service is created. |
+| 9 | New RBAC grants, iOS label | Still open | - |
+
+### Update 2026-10-17: staff and driver accounts (ADR-0011)
+Owner decision: staff and drivers get accounts created by the System Admin (phone-only: one-time code; email: a set-password link, chosen over an emailed generated password). Built as `POST /v1/memberships/accounts`: 310 unit + 121 e2e + 486 real-emulator tests, 6 mutants killed. Follow-ups: the web clients send the Firebase set-password email (P1-9/10); invitation by phone before the parent app.
+
