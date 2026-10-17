@@ -7,7 +7,6 @@ import { bootRealApp } from './app.js';
 import { requireEmulatorsOrSkip } from './emulators.js';
 import { buildWorld, type World } from './fixtures.js';
 import { SAMPLES } from './samples.js';
-import { urlFor } from './matrix.js';
 
 const ready = requireEmulatorsOrSkip();
 let app: INestApplication | undefined;
@@ -31,30 +30,35 @@ describe.skipIf(!ready)('E-AUD-1 runtime: every audited write adds its audit row
     expect(Object.keys(SAMPLES).filter((k) => !audited.some((r) => key(r) === k)), 'sample for a route that no longer exists').toEqual([]);
   });
 
+  const send = (route: RouteFacts, token: string, school: string | undefined, ctx: Record<string, string>, body: object) => {
+    const url = (route.path!.startsWith('/health') ? route.path! : `/v1${route.path}`).replace(/:([A-Za-z]+)/g, (_m, name: string) => ctx[name] ?? '99999999-9999-4999-8999-999999999999');
+    const method = (route.method ?? 'POST').toLowerCase() as 'post' | 'patch' | 'put' | 'delete';
+    let req = agent(app!)[method](url).set('Authorization', `Bearer ${token}`);
+    if (school) req = req.set('X-School-Id', school);
+    return req.send(body);
+  };
+
   describe.each(audited.map((r) => [key(r), r] as const))('%s', (_k, route) => {
     it('a successful call writes exactly one audit row: declared action, verified actor, the right school', async () => {
       const sample = SAMPLES[key(route)]!;
       const ctx = sample.prepare ? await sample.prepare(w!) : {};
-      const path = urlFor(route).replace(/[0-9a-f-]{36}/i, ctx['id'] ?? '');
-      const method = (route.method ?? 'POST').toLowerCase() as 'post' | 'patch' | 'put' | 'delete';
-      // The path contains a placeholder uuid only when the route has a parameter.
-      const url = route.path!.includes(':') ? path : urlFor(route);
-      const countBefore = async (school: string) => (await rows(school.replaceAll('-', ''), route.audit!.action)).filter((a) => a.actor.id === sample.actor(w!)).length;
-      const before = ctx['id'] ? await countBefore(ctx['id']) : 0; // prepare() may already have written rows of the same action
-      const res = await agent(app!)[method](url).set('Authorization', `Bearer ${sample.token(w!)}`).send(sample.body?.(w!, ctx) ?? {});
+      const count = async (school: string) => (await rows(school.replaceAll('-', ''), route.audit!.action)).filter((a) => a.actor.id === sample.actor(w!)).length;
+      const school = sample.auditSchool(w!, ctx, {});
+      const before = school ? await count(school) : 0; // prepare() may already have written rows of the same action
+      const res = await send(route, sample.token(w!), sample.school?.(w!), ctx, sample.body?.(w!, ctx) ?? {});
       expect(res.status, JSON.stringify(res.body)).toBeLessThan(300);
-      expect(await countBefore(sample.auditSchool(ctx, res.body))).toBe(before + 1);
+      expect(await count(sample.auditSchool(w!, ctx, res.body))).toBe((school ? before : 0) + 1);
     });
 
-    it('a refused call (not a platform admin) writes no row of this action', async () => {
+    it('a refused call (a Principal: no such permission) writes no row of this action', async () => {
       const sample = SAMPLES[key(route)]!;
       const ctx = sample.prepare ? await sample.prepare(w!) : {};
-      const url = route.path!.includes(':') ? urlFor(route).replace(/[0-9a-f-]{36}/i, ctx['id'] ?? '') : urlFor(route);
-      const method = (route.method ?? 'POST').toLowerCase() as 'post' | 'patch' | 'put' | 'delete';
-      const before = ctx['id'] ? (await rows(ctx['id'].replaceAll('-', ''), route.audit!.action)).length : 0;
-      const res = await agent(app!)[method](url).set('Authorization', `Bearer ${w!.roles.A.PRINCIPAL.token}`).set('X-School-Id', w!.schools.A).send(sample.body?.(w!, ctx) ?? {});
+      const school = sample.auditSchool(w!, ctx, {});
+      const count = async () => (school ? (await rows(school.replaceAll('-', ''), route.audit!.action)).length : 0);
+      const before = await count();
+      const res = await send(route, w!.roles.A.PRINCIPAL.token, w!.schools.A, ctx, sample.body?.(w!, ctx) ?? {});
       expect(res.status).toBe(403);
-      if (ctx['id']) expect((await rows(ctx['id'].replaceAll('-', ''), route.audit!.action)).length).toBe(before);
+      expect(await count()).toBe(before);
     });
   });
 });

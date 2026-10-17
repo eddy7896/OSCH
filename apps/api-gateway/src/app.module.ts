@@ -6,6 +6,7 @@ import { IpThrottlerGuard } from './common/throttle.guards.js';
 import { LoggerModule } from 'nestjs-pino';
 import { AuditModule } from './audit/audit.module.js';
 import { AuthModule } from './auth/auth.module.js';
+import { MembershipsModule } from './memberships/memberships.module.js';
 import { MeModule } from './me/me.module.js';
 import { PermissionModule } from './permission/permission.module.js';
 import { PlatformModule } from './platform/platform.module.js';
@@ -41,6 +42,7 @@ import { HealthModule } from './health/health.module.js';
     PermissionModule,
     HealthModule,
     MeModule,
+    MembershipsModule,
     PlatformModule,
   ],
   providers: [

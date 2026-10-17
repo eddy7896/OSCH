@@ -131,6 +131,39 @@
         ],
         "type": "object"
       },
+      "AddMembershipDto": {
+        "properties": {
+          "schoolRole": {
+            "enum": [
+              "PRINCIPAL",
+              "MANAGEMENT",
+              "BURSAR",
+              "ACADEMIC_ADMIN",
+              "SYSTEM_ADMIN",
+              "HR_MANAGER",
+              "ACCOUNTANT",
+              "ADMISSIONS_OFFICER",
+              "TRANSPORT_MANAGER",
+              "OPERATIONS_MANAGER",
+              "TEACHER",
+              "STAFF",
+              "DRIVER",
+              "PARENT"
+            ],
+            "type": "string"
+          },
+          "userId": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "schoolRole"
+        ],
+        "type": "object"
+      },
       "CreateSchoolDto": {
         "properties": {
           "defaultLanguage": {
@@ -183,6 +216,7 @@
                   "AUTH_REQUIRED",
                   "FORBIDDEN",
                   "SCHOOL_SUSPENDED",
+                  "CANNOT_CHANGE_OWN_MEMBERSHIP",
                   "NOT_FOUND",
                   "INVALID_REQUEST",
                   "CONFLICT",
@@ -364,6 +398,57 @@
         ],
         "type": "object"
       },
+      "MembershipDto": {
+        "properties": {
+          "displayName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "nullable": true,
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "since": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "email",
+          "displayName",
+          "phoneNumber",
+          "role",
+          "status",
+          "since"
+        ],
+        "type": "object"
+      },
+      "MembershipListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MembershipDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "NavItemDto": {
         "properties": {
           "key": {
@@ -454,6 +539,37 @@
         "properties": {
           "reason": {
             "maxLength": 500,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateMembershipDto": {
+        "properties": {
+          "schoolRole": {
+            "enum": [
+              "PRINCIPAL",
+              "MANAGEMENT",
+              "BURSAR",
+              "ACADEMIC_ADMIN",
+              "SYSTEM_ADMIN",
+              "HR_MANAGER",
+              "ACCOUNTANT",
+              "ADMISSIONS_OFFICER",
+              "TRANSPORT_MANAGER",
+              "OPERATIONS_MANAGER",
+              "TEACHER",
+              "STAFF",
+              "DRIVER",
+              "PARENT"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "SUSPENDED"
+            ],
             "type": "string"
           }
         },
@@ -1119,6 +1235,247 @@
           "Me"
         ],
         "x-access": "user"
+      }
+    },
+    "/v1/memberships": {
+      "get": {
+        "operationId": "Memberships_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MembershipListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Memberships"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "memberships"
+        }
+      },
+      "post": {
+        "operationId": "Memberships_add",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMembershipDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MembershipDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Memberships"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "membership.add",
+          "operation": "AddMembership"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "memberships"
+        }
+      }
+    },
+    "/v1/memberships/{userId}": {
+      "delete": {
+        "operationId": "Memberships_remove",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Memberships"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "membership.remove",
+          "operation": "RemoveMembership"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "memberships"
+        }
+      },
+      "patch": {
+        "operationId": "Memberships_update",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMembershipDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MembershipDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Memberships"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "membership.update",
+          "operation": "UpdateMembership"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "memberships"
+        }
       }
     },
     "/v1/platform/schools": {
