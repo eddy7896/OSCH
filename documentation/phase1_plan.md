@@ -181,3 +181,7 @@ Email/SMS delivery of invitations (copy-link only), phone-OTP login, parent/driv
 7. **Audit atomicity**: transactional audit inside each mutation (recommended) vs a separate write by the gateway (simpler but can lose an audit row)?
 8. **Region**: Data Connect is configured for `us-east4`; for schools in India, do you want an India-region database (latency, data residency for minors' records) before Cloud SQL is provisioned?
 9. The new RBAC grants listed in `packages/rbac/README.md` still await confirmation, and the iOS home-screen label ("OruSchools Teacher" truncates) needs a naming decision.
+
+### Update 2026-10-17: staff and driver accounts (ADR-0011)
+Owner decision: staff and drivers get accounts created by the System Admin (phone-only: one-time code; email: a set-password link, chosen over an emailed generated password). Built as `POST /v1/memberships/accounts`: 310 unit + 121 e2e + 486 real-emulator tests, 6 mutants killed. Follow-ups: the web clients send the Firebase set-password email (P1-9/10); invitation by phone before the parent app.
+
