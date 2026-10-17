@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { icuVars, usesPound, patchPubspec, toArb, toDartLocales, toFontsTs, toI18nCss, toPubspecFontsBlock, validate } from "./lib.mjs";
+import { icuVars, usesPound, patchPubspec, toArb, toDartLocales, toFontsTs, toI18nCss, toPubspecFontsBlock, validate, WEB_FONT_DIR, WEIGHT_NAMES, webUnicodeRange } from "./lib.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const registry = JSON.parse(readFileSync(resolve(here, "../locales.json"), "utf8"));
@@ -112,11 +112,24 @@ describe("outputs", () => {
     expect(dart).toMatch(/code: 'ur'[^\n]*fontFamily: 'NotoNastaliqUrdu'[^\n]*minLineHeight: 2/);
   });
 
-  it("web fonts: one loader per script, non-Latin lazy (preload off), Latin explicit weights", () => {
+  it("web fonts: one local loader per script, committed WOFF2 paths, non-Latin lazy with their own unicode-range, never Google", () => {
     const ts = toFontsTs(registry);
-    for (const s of Object.values(registry.scripts)) expect(ts).toContain(`${s.google}({ variable: "${s.webVar}"`);
+    expect(ts).not.toMatch(/from\s*["']next\/font\/google["']/); // the header comment may mention it; an import may not
+    expect(ts).toContain('import localFont from "next/font/local"');
+    for (const s of Object.values(registry.scripts)) {
+      expect(ts).toContain(`variable: "${s.webVar}"`);
+      for (const w of s.weights) expect(ts).toContain(`${WEB_FONT_DIR}/${s.flutterFamily}-${WEIGHT_NAMES[w]}.woff2", weight: "${w}"`);
+    }
     expect(ts.match(/preload: false/g)).toHaveLength(Object.keys(registry.scripts).length - 1);
-    expect(ts).toMatch(/Noto_Sans\(\{[^}]*weight: \["400","600","700"\]/);
+    expect(ts.match(/prop: "unicode-range"/g)).toHaveLength(Object.keys(registry.scripts).length - 1); // Latin has none
+  });
+
+  it("web unicode-range keeps a script's own blocks and drops the shared ASCII / punctuation ranges", () => {
+    const dev = webUnicodeRange(registry.scripts.Devanagari.ranges);
+    expect(dev).toContain("U+0900-097F");
+    expect(dev).toContain("U+20B9");
+    expect(dev).not.toMatch(/U\+0020|U\+00A0|U\+2000/); // digits, space, nbsp, general punctuation come from Noto Sans
+    expect(webUnicodeRange([[32, 64], 160, [8192, 8303], [2304, 2431]])).toBe("U+0900-097F");
   });
 
   it("CSS: RTL scripts get their primary font and generous line heights; Latin gets no override", () => {
