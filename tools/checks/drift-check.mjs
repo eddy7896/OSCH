@@ -272,6 +272,14 @@ if (existsSync(join(ROOT, ".git"))) {
   }
 }
 
+// 14. Web fonts are self-hosted: no next/font/google in any app (it fetches from Google on every build and flaked CI). -----
+{
+  const { googleFontImportLines } = await import("./web-font-rule.mjs");
+  for (const f of walk("apps", (n) => /\.(ts|tsx|js|jsx|mjs)$/.test(n)).filter((n) => !n.includes("/node_modules/") && !n.includes("/.next/") && !n.includes("/dist/")))
+    for (const line of googleFontImportLines(read(f)))
+      add("error", "web-fonts-local", `${f}:${line} imports next/font/google; use next/font/local with the committed WOFF2 files (packages/i18n/fonts, packages/shared-design-tokens/fonts)`, f);
+}
+
 // Report -----------------------------------------------------------------------
 const errors = findings.filter((f) => f.severity === "error");
 const warns = findings.filter((f) => f.severity === "warn");

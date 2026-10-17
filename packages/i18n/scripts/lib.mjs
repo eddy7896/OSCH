@@ -255,21 +255,38 @@ export function toI18nCss(registry, textStyles) {
   return L.join("\n") + "\n";
 }
 
+/** Where the committed web fonts live, relative to apps/<app>/src/app/fonts.ts (next/font/local needs literal relative paths). */
+export const WEB_FONT_DIR = "../../../../packages/i18n/fonts";
+
+/**
+ * unicode-range for a non-Latin web font: the script's own blocks only, WITHOUT the shared ASCII/General Punctuation
+ * ranges the font keeps for mixed text. That keeps the browser from downloading every script's font to find out it
+ * lacks a glyph (a face without unicode-range is fetched whenever its family appears in the stack), and lets digits and
+ * punctuation come from Noto Sans, as the Google-hosted subsets did.
+ */
+export function webUnicodeRange(ranges) {
+  const common = (r) => (Array.isArray(r) ? r[1] <= 255 || (r[0] === 8192 && r[1] === 8303) : r <= 255);
+  const hex = (n) => n.toString(16).toUpperCase().padStart(4, "0");
+  return ranges
+    .filter((r) => !common(r))
+    .map((r) => (Array.isArray(r) ? `U+${hex(r[0])}-${hex(r[1])}` : `U+${hex(r)}`))
+    .join(", ");
+}
+
 export function toFontsTs(registry) {
   const entries = Object.entries(registry.scripts);
-  const imports = entries.map(([, s]) => s.google).join(", ");
   const consts = entries.map(([name, s]) => {
     const varName = s.flutterFamily.charAt(0).toLowerCase() + s.flutterFamily.slice(1);
-    const subsets = JSON.stringify(s.webSubsets);
-    const weight = name === "Latin" ? `weight: ${JSON.stringify(s.weights.map(String))}, ` : ""; // all other Noto script fonts are variable fonts
-    const preload = name === "Latin" ? "" : ", preload: false"; // only fetched when that script is actually rendered
-    return `const ${varName} = ${s.google}({ variable: ${JSON.stringify(s.webVar)}, subsets: ${subsets}, ${weight}display: "swap"${preload} });`;
+    const src = s.weights.map((w) => `{ path: "${WEB_FONT_DIR}/${s.flutterFamily}-${WEIGHT_NAMES[w]}.woff2", weight: "${w}", style: "normal" }`).join(", ");
+    const lazy = name === "Latin" ? "" : `, preload: false, declarations: [{ prop: "unicode-range", value: "${webUnicodeRange(s.ranges)}" }]`; // only fetched when that script is actually rendered
+    return `const ${varName} = localFont({ variable: ${JSON.stringify(s.webVar)}, display: "swap", src: [${src}]${lazy} });`;
   });
   const vars = entries.map(([, s]) => `${s.flutterFamily.charAt(0).toLowerCase() + s.flutterFamily.slice(1)}.variable`);
   return `// ${HEADER("next/font loaders").replace(/\n/g, "\n// ")}
-// Self-hosted at build time by next/font (no request to Google at runtime). Non-Latin fonts are lazy: the browser only
-// downloads a script's font when text in that script is rendered (unicode-range) and \`preload\` is off.
-import { ${imports} } from "next/font/google";
+// Self-hosted: the WOFF2 files are committed (packages/i18n/fonts, built by tools/assets/make-web-fonts.py from the same
+// TTFs the Flutter apps bundle), so a build needs no network. Never use next/font/google (drift rule web-fonts-local).
+// Non-Latin fonts are lazy: unicode-range limits each face to its script and \`preload\` is off.
+import localFont from "next/font/local";
 
 ${consts.join("\n")}
 

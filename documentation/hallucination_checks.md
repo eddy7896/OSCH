@@ -68,3 +68,5 @@ These truths are not just prose; they are checked by machines (see `eval_plan.md
 When an agent is caught hallucinating, add a golden item and, if mechanical, a drift rule.
 
 - **Auth emulator accepts forged tokens (verified 2026-10-15):** with `FIREBASE_AUTH_EMULATOR_HOST` set, the Admin SDK does not check signatures. The gateway refuses to start in production with it set. Do not claim emulator-verified tokens prove production signature handling.
+
+- **Web fonts are not downloaded at build time (since 2026-10-16):** the apps use `next/font/local` with the committed WOFF2 files in `packages/i18n/fonts` and `packages/shared-design-tokens/fonts`. Do not reintroduce `next/font/google`: it fetched from Google on every build and failed CI at random.
