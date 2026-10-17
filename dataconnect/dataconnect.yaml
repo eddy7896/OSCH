@@ -1,6 +1,6 @@
 specVersion: "v1"
 serviceId: "oruschools"
-location: "us-east4"
+location: "asia-south1"
 schemas:
   - source: "./schema"
     datasource:

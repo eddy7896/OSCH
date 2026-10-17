@@ -64,7 +64,7 @@ export const SubscriptionStatus = {
 export const connectorConfig = {
   connector: 'erp-connector',
   serviceId: 'oruschools',
-  location: 'us-east4'
+  location: 'asia-south1'
 };
 
 export function createAcademicYear(dcOrVarsOrOptions, varsOrOptions, options) {
