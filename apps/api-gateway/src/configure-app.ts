@@ -2,6 +2,7 @@ import type { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
+import { createValidationPipe } from './common/validation.js';
 import { REQUEST_ID_HEADER } from './common/request-id.js';
 import { Env, parseOrigins } from './config/env.js';
 
@@ -21,5 +22,6 @@ export function configureApp(app: INestApplication): void {
     maxAge: 600,
   });
   app.setGlobalPrefix('v1', { exclude: ['health', 'health/db'] });
+  app.useGlobalPipes(createValidationPipe());
   app.enableShutdownHooks();
 }

@@ -6,9 +6,15 @@ import { NoAudit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
 import { Permission } from '../src/permission/permission.decorator.js';
 import { Platform, Tenant, UserScoped, type TenantContext } from '../src/tenant/tenant.decorators.js';
-import request from 'supertest';
+import { IsOptional, IsString } from 'class-validator';
+import { agent, serve } from './support/serve.js';
 
 // A real throttled route does not exist yet; unmatched routes (404) never reach guards.
+/** One optional property: anything else sent is a 400 (whitelist + forbidNonWhitelisted). A DTO with no decorators at all is itself rejected (forbidUnknownValues). */
+class EmptyDto {
+  @IsOptional() @IsString() note?: string;
+}
+
 @Controller()
 class ProbeController {
   @Public()
@@ -25,7 +31,7 @@ class ProbeController {
 
   @Permission('students', 'read')
   @Get('school-data')
-  async schoolData(@Tenant() tenant: TenantContext, @Query() _query: unknown) {
+  async schoolData(@Tenant() tenant: TenantContext, @Query() _query: EmptyDto) {
     await new Promise((r) => setTimeout(r, Math.random() * 15)); // interleave concurrent requests
     return tenant;
   }
@@ -33,7 +39,7 @@ class ProbeController {
   @Permission('students', 'create')
   @NoAudit('test probe route, writes nothing')
   @Post('school-data')
-  write(@Tenant() tenant: TenantContext, @Body() _body: unknown) {
+  write(@Tenant() tenant: TenantContext, @Body() _body: EmptyDto) {
     return tenant;
   }
 
@@ -69,7 +75,7 @@ async function boot(env: Record<string, string> = ENV, db: object = { listSchool
     const moduleRef = await Test.createTestingModule({ imports: [AppModule], controllers: [ProbeController] }).overrideProvider(DATABASE).useValue(db).overrideProvider(FIREBASE_AUTH).useValue(fakeAuth).compile();
     const app = moduleRef.createNestApplication({ bufferLogs: true });
     configureApp(app);
-    await app.init();
+    await serve(app);
     return app;
   } finally {
     for (const k of Object.keys(env)) if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k];
@@ -82,41 +88,41 @@ describe('gateway HTTP skeleton (P1-1)', () => {
   afterAll(async () => app.close());
 
   it('GET /health is 200 and unauthenticated', async () => {
-    const res = await request(app.getHttpServer()).get('/health').expect(200);
+    const res = await agent(app).get('/health').expect(200);
     expect(res.body.status).toBe('ok');
   });
 
   it('echoes a safe X-Request-Id and generates one otherwise', async () => {
-    const a = await request(app.getHttpServer()).get('/health').set('X-Request-Id', 'client-id-12345').expect(200);
+    const a = await agent(app).get('/health').set('X-Request-Id', 'client-id-12345').expect(200);
     expect(a.headers['x-request-id']).toBe('client-id-12345');
-    const b = await request(app.getHttpServer()).get('/health').expect(200);
+    const b = await agent(app).get('/health').expect(200);
     expect(b.headers['x-request-id']).toMatch(/^[0-9a-f-]{36}$/);
   });
 
   it('sets helmet security headers and hides the framework', async () => {
-    const res = await request(app.getHttpServer()).get('/health');
+    const res = await agent(app).get('/health');
     expect(res.headers['x-content-type-options']).toBe('nosniff');
     expect(res.headers['strict-transport-security']).toBeDefined();
     expect(res.headers['x-powered-by']).toBeUndefined();
   });
 
   it('allows a listed origin and refuses an unlisted one (CORS)', async () => {
-    const ok = await request(app.getHttpServer()).get('/health').set('Origin', 'http://localhost:3002');
+    const ok = await agent(app).get('/health').set('Origin', 'http://localhost:3002');
     expect(ok.headers['access-control-allow-origin']).toBe('http://localhost:3002');
     expect(ok.headers['access-control-expose-headers']).toContain('x-request-id');
-    const bad = await request(app.getHttpServer()).get('/health').set('Origin', 'https://evil.example.com');
+    const bad = await agent(app).get('/health').set('Origin', 'https://evil.example.com');
     expect(bad.headers['access-control-allow-origin']).toBeUndefined();
   });
 
   it('answers a CORS preflight with the allowed headers including X-School-Id', async () => {
-    const res = await request(app.getHttpServer()).options('/v1/anything').set('Origin', 'http://localhost:3002').set('Access-Control-Request-Method', 'POST').set('Access-Control-Request-Headers', 'authorization,x-school-id');
+    const res = await agent(app).options('/v1/anything').set('Origin', 'http://localhost:3002').set('Access-Control-Request-Method', 'POST').set('Access-Control-Request-Headers', 'authorization,x-school-id');
     expect(res.status).toBeLessThan(300);
     expect(res.headers['access-control-allow-headers']?.toLowerCase()).toContain('x-school-id');
   });
 
   it('serves nothing at the old scaffold route and 404s unknown /v1 routes with the error envelope', async () => {
-    await request(app.getHttpServer()).get('/').expect(404);
-    const res = await request(app.getHttpServer()).get('/v1/nope').expect(404); // guards only run on matched routes
+    await agent(app).get('/').expect(404);
+    const res = await agent(app).get('/v1/nope').expect(404); // guards only run on matched routes
     expect(res.body.error).toMatchObject({ code: 'NOT_FOUND', message: 'Not found.' });
     expect(res.body.error.requestId).toMatch(/^[0-9a-f-]{36}$/);
   });
@@ -126,7 +132,7 @@ describe('authentication (P1-3a)', () => {
   let app: INestApplication;
   beforeAll(async () => (app = await boot({ ...ENV, THROTTLE_LIMIT: '1000' })));
   afterAll(async () => app.close());
-  const secure = () => request(app.getHttpServer()).get('/v1/secure');
+  const secure = () => agent(app).get('/v1/secure');
 
   it('rejects a request with no token: 401 AUTH_REQUIRED in the error envelope with the request id', async () => {
     const res = await secure().set('X-Request-Id', 'req-auth-0001').expect(401);
@@ -148,13 +154,13 @@ describe('authentication (P1-3a)', () => {
   });
 
   it('a public route and the health endpoints need no token', async () => {
-    await request(app.getHttpServer()).get('/v1/probe').expect(200);
-    await request(app.getHttpServer()).get('/health').expect(200);
-    await request(app.getHttpServer()).get('/health/db').expect(200);
+    await agent(app).get('/v1/probe').expect(200);
+    await agent(app).get('/health').expect(200);
+    await agent(app).get('/health/db').expect(200);
   });
 
   it('a request-body or query schoolId or role never changes who the caller is', async () => {
-    const res = await request(app.getHttpServer()).get('/v1/secure?globalRole=SUPER_ADMIN&uid=u-2').set('Authorization', 'Bearer good-user').set('X-Globalrole', 'SUPER_ADMIN').expect(200);
+    const res = await agent(app).get('/v1/secure?globalRole=SUPER_ADMIN&uid=u-2').set('Authorization', 'Bearer good-user').set('X-Globalrole', 'SUPER_ADMIN').expect(200);
     expect(res.body).toMatchObject({ uid: 'u-1', globalRole: 'USER' });
   });
 });
@@ -163,9 +169,9 @@ describe('database readiness', () => {
   it('GET /health/db is 200 when Data Connect answers, and is outside /v1', async () => {
     const app = await boot();
     try {
-      const res = await request(app.getHttpServer()).get('/health/db').expect(200);
+      const res = await agent(app).get('/health/db').expect(200);
       expect(res.body.info.database.status).toBe('up');
-      await request(app.getHttpServer()).get('/v1/health/db').expect(404);
+      await agent(app).get('/v1/health/db').expect(404);
     } finally {
       await app.close();
     }
@@ -174,10 +180,10 @@ describe('database readiness', () => {
   it('GET /health/db is 503 when Data Connect fails, without leaking the cause; liveness stays 200', async () => {
     const app = await boot(ENV, { listSchools: async () => Promise.reject(new Error('connect ECONNREFUSED 10.1.2.3:9399 secret-detail')) });
     try {
-      const res = await request(app.getHttpServer()).get('/health/db').expect(503);
+      const res = await agent(app).get('/health/db').expect(503);
       expect(res.body.error.database.status).toBe('down');
       expect(JSON.stringify(res.body)).not.toMatch(/ECONNREFUSED|10\.1\.2\.3|secret-detail/);
-      await request(app.getHttpServer()).get('/health').expect(200);
+      await agent(app).get('/health').expect(200);
     } finally {
       await app.close();
     }
@@ -188,14 +194,14 @@ describe('throttling', () => {
   it('returns 429 after the configured number of requests, but never for /health', async () => {
     const app = await boot();
     try {
-      for (let i = 0; i < 20; i++) await request(app.getHttpServer()).get('/health').expect(200);
+      for (let i = 0; i < 20; i++) await agent(app).get('/health').expect(200);
       // Rate limiting runs before authentication: a flood of unauthenticated calls is throttled, not just rejected.
-      for (let i = 0; i < 5; i++) await request(app.getHttpServer()).get('/v1/secure').expect(401);
-      await request(app.getHttpServer()).get('/v1/secure').expect(429);
-      await request(app.getHttpServer()).get('/v1/secure').expect(429);
-      for (let i = 0; i < 5; i++) await request(app.getHttpServer()).get('/v1/probe').expect(200);
-      await request(app.getHttpServer()).get('/v1/probe').expect(429);
-      await request(app.getHttpServer()).get('/health').expect(200);
+      for (let i = 0; i < 5; i++) await agent(app).get('/v1/secure').expect(401);
+      await agent(app).get('/v1/secure').expect(429);
+      await agent(app).get('/v1/secure').expect(429);
+      for (let i = 0; i < 5; i++) await agent(app).get('/v1/probe').expect(200);
+      await agent(app).get('/v1/probe').expect(429);
+      await agent(app).get('/health').expect(200);
     } finally {
       await app.close();
     }

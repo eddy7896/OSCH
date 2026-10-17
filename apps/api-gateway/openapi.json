@@ -1,0 +1,989 @@
+{
+  "components": {
+    "parameters": {
+      "SchoolId": {
+        "description": "The school the request acts in. Checked against the caller's active membership; never trusted on its own.",
+        "in": "header",
+        "name": "X-School-Id",
+        "required": true,
+        "schema": {
+          "format": "uuid",
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "Error400": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorEnvelope"
+            }
+          }
+        },
+        "description": "The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id)."
+      },
+      "Error401": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorEnvelope"
+            }
+          }
+        },
+        "description": "No valid sign-in."
+      },
+      "Error403": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorEnvelope"
+            }
+          }
+        },
+        "description": "Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which."
+      },
+      "Error429": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorEnvelope"
+            }
+          }
+        },
+        "description": "Too many requests."
+      },
+      "Error500": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorEnvelope"
+            }
+          }
+        },
+        "description": "Something went wrong on the server."
+      }
+    },
+    "schemas": {
+      "AccessDto": {
+        "properties": {
+          "navigation": {
+            "items": {
+              "$ref": "#/components/schemas/NavSectionDto"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "enum": [
+                  "school",
+                  "linked",
+                  "own"
+                ],
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "permissions",
+          "navigation"
+        ],
+        "type": "object"
+      },
+      "ActiveSchoolDto": {
+        "properties": {
+          "navigation": {
+            "items": {
+              "$ref": "#/components/schemas/NavSectionDto"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "enum": [
+                  "school",
+                  "linked",
+                  "own"
+                ],
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "object"
+          },
+          "role": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "permissions",
+          "schoolId",
+          "role",
+          "navigation"
+        ],
+        "type": "object"
+      },
+      "ErrorEnvelope": {
+        "properties": {
+          "error": {
+            "properties": {
+              "code": {
+                "description": "Machine-readable; clients localise the text from it.",
+                "enum": [
+                  "AUTH_REQUIRED",
+                  "FORBIDDEN",
+                  "SCHOOL_SUSPENDED",
+                  "NOT_FOUND",
+                  "INVALID_REQUEST",
+                  "CONFLICT",
+                  "RATE_LIMITED",
+                  "TENANT_REFERENCE_FORBIDDEN",
+                  "UPSTREAM_UNAVAILABLE",
+                  "INTERNAL"
+                ],
+                "type": "string"
+              },
+              "details": {
+                "description": "Field and rule names only, never the submitted values.",
+                "items": {
+                  "properties": {
+                    "field": {
+                      "type": "string"
+                    },
+                    "rule": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "rule"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "message": {
+                "description": "English fallback text.",
+                "type": "string"
+              },
+              "requestId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "type": "object"
+      },
+      "MeLanguageDto": {
+        "properties": {
+          "chosen": {
+            "nullable": true,
+            "type": "string"
+          },
+          "effective": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "chosen",
+          "effective"
+        ],
+        "type": "object"
+      },
+      "MeMembershipDto": {
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "school": {
+            "$ref": "#/components/schemas/MeSchoolDto"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "school",
+          "role",
+          "status"
+        ],
+        "type": "object"
+      },
+      "MeResponseDto": {
+        "properties": {
+          "activeSchool": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ActiveSchoolDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "language": {
+            "$ref": "#/components/schemas/MeLanguageDto"
+          },
+          "memberships": {
+            "items": {
+              "$ref": "#/components/schemas/MeMembershipDto"
+            },
+            "type": "array"
+          },
+          "platform": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccessDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "user": {
+            "$ref": "#/components/schemas/MeUserDto"
+          }
+        },
+        "required": [
+          "user",
+          "memberships",
+          "activeSchool",
+          "platform",
+          "language"
+        ],
+        "type": "object"
+      },
+      "MeSchoolDto": {
+        "properties": {
+          "defaultLanguage": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "subDomain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "subDomain",
+          "defaultLanguage",
+          "status"
+        ],
+        "type": "object"
+      },
+      "MeUserDto": {
+        "properties": {
+          "displayName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "globalRole": {
+            "enum": [
+              "SUPER_ADMIN",
+              "USER"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "displayName",
+          "globalRole"
+        ],
+        "type": "object"
+      },
+      "NavItemDto": {
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "label"
+        ],
+        "type": "object"
+      },
+      "NavSectionDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NavItemDto"
+            },
+            "type": "array"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "items"
+        ],
+        "type": "object"
+      },
+      "UpdatePreferencesDto": {
+        "properties": {
+          "language": {
+            "enum": [
+              "en",
+              "hi",
+              "ur",
+              "ks",
+              "sd",
+              "ps",
+              "fa",
+              "ar",
+              "bn",
+              "as",
+              "mr",
+              "doi",
+              "gu",
+              "pa",
+              "or",
+              "ta",
+              "te",
+              "kn",
+              "ml"
+            ],
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "language"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "bearerFormat": "Firebase ID token",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "Multi-tenant school ERP gateway. Every route except the public ones needs a Firebase ID token; school routes also need X-School-Id.",
+    "title": "OruSchools API",
+    "version": "1"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "Health_check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "details": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "database": {
+                          "responseTime": 12,
+                          "status": "up"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "error": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {},
+                      "nullable": true,
+                      "type": "object"
+                    },
+                    "info": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "database": {
+                          "responseTime": 12,
+                          "status": "up"
+                        }
+                      },
+                      "nullable": true,
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [
+                        "ok",
+                        "degraded"
+                      ],
+                      "example": "ok",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The Health Check is successful"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "details": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "database": {
+                          "responseTime": 12,
+                          "status": "up"
+                        },
+                        "redis": {
+                          "message": "Could not connect",
+                          "responseTime": 3005,
+                          "status": "down"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "error": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "redis": {
+                          "message": "Could not connect",
+                          "responseTime": 3005,
+                          "status": "down"
+                        }
+                      },
+                      "nullable": true,
+                      "type": "object"
+                    },
+                    "info": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "database": {
+                          "responseTime": 12,
+                          "status": "up"
+                        }
+                      },
+                      "nullable": true,
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [
+                        "error",
+                        "shutting_down"
+                      ],
+                      "example": "error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The Health Check is not successful"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Health"
+        ],
+        "x-access": "public"
+      }
+    },
+    "/health/db": {
+      "get": {
+        "operationId": "Health_checkDb",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "details": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "database": {
+                          "responseTime": 12,
+                          "status": "up"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "error": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {},
+                      "nullable": true,
+                      "type": "object"
+                    },
+                    "info": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "database": {
+                          "responseTime": 12,
+                          "status": "up"
+                        }
+                      },
+                      "nullable": true,
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [
+                        "ok",
+                        "degraded"
+                      ],
+                      "example": "ok",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The Health Check is successful"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "details": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "database": {
+                          "responseTime": 12,
+                          "status": "up"
+                        },
+                        "redis": {
+                          "message": "Could not connect",
+                          "responseTime": 3005,
+                          "status": "down"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "error": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "redis": {
+                          "message": "Could not connect",
+                          "responseTime": 3005,
+                          "status": "down"
+                        }
+                      },
+                      "nullable": true,
+                      "type": "object"
+                    },
+                    "info": {
+                      "additionalProperties": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "responseTime": {
+                            "description": "Time the health indicator took to respond, in ms",
+                            "type": "number"
+                          },
+                          "status": {
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "status"
+                        ],
+                        "type": "object"
+                      },
+                      "example": {
+                        "database": {
+                          "responseTime": 12,
+                          "status": "up"
+                        }
+                      },
+                      "nullable": true,
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [
+                        "error",
+                        "shutting_down"
+                      ],
+                      "example": "error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The Health Check is not successful"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Health"
+        ],
+        "x-access": "public"
+      }
+    },
+    "/v1/me": {
+      "get": {
+        "operationId": "Me_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-school-id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Me"
+        ],
+        "x-access": "user"
+      }
+    },
+    "/v1/me/preferences": {
+      "patch": {
+        "operationId": "Me_preferences",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePreferencesDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Me"
+        ],
+        "x-access": "user"
+      }
+    }
+  },
+  "servers": [],
+  "tags": []
+}
