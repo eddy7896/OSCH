@@ -42,10 +42,10 @@ describe.skipIf(!ready)('E-AUD-1 runtime: every audited write adds its audit row
     it('a successful call writes exactly one audit row: declared action, verified actor, the right school', async () => {
       const sample = SAMPLES[key(route)]!;
       const ctx = sample.prepare ? await sample.prepare(w!) : {};
-      const count = async (school: string) => (await rows(school.replaceAll('-', ''), route.audit!.action)).filter((a) => a.actor.id === sample.actor(w!)).length;
+      const count = async (school: string) => (await rows(school.replaceAll('-', ''), route.audit!.action)).filter((a) => a.actor.id === sample.actor(w!, ctx)).length;
       const school = sample.auditSchool(w!, ctx, {});
       const before = school ? await count(school) : 0; // prepare() may already have written rows of the same action
-      const res = await send(route, sample.token(w!), sample.school?.(w!), ctx, sample.body?.(w!, ctx) ?? {});
+      const res = await send(route, sample.token(w!, ctx), sample.school?.(w!), ctx, sample.body?.(w!, ctx) ?? {});
       expect(res.status, JSON.stringify(res.body)).toBeLessThan(300);
       expect(await count(sample.auditSchool(w!, ctx, res.body))).toBe((school ? before : 0) + 1);
     });

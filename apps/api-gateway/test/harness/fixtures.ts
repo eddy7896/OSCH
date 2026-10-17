@@ -14,7 +14,7 @@ export interface Person {
   token: string;
 }
 
-async function signUp(email: string): Promise<{ uid: string; token: string }> {
+export async function signUp(email: string): Promise<{ uid: string; token: string }> {
   const res = await fetch(`${identity()}:signUp?key=fake`, { method: 'POST', headers: JSON_HEADERS, body: JSON.stringify({ email, password: 'pw123456', returnSecureToken: true }) });
   const body = (await res.json()) as { localId: string; idToken: string };
   return { uid: body.localId, token: body.idToken };
@@ -80,4 +80,12 @@ export async function buildWorld(): Promise<World> {
   await db.setSubscriptionStatus({ schoolId: schools.SUSPENDED, status: 'SUSPENDED' as never, actorId: superAdmin.uid });
 
   return { db, tag, schools, roles, superAdmin, outsider, suspendedMember, memberOfSuspendedSchool };
+}
+
+/** A real Auth user whose email is VERIFIED (invitation acceptance requires it) and who has NO User row yet: first sign-in, as in life. */
+export async function verifiedNewcomer(label: string): Promise<Person> {
+  const email = `${label}-${randomUUID().slice(0, 8)}@example.com`;
+  const { uid } = await signUp(email);
+  await getAuth(getApps().find((a) => a.name === FIREBASE_APP_NAME)).updateUser(uid, { emailVerified: true });
+  return { uid, email, token: await signIn(email) };
 }
