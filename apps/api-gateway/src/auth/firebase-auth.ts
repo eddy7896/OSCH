@@ -4,7 +4,7 @@ import { FIREBASE_APP_NAME } from '@oruschools/database';
 
 /** Injection token for the Firebase Admin `Auth` (tests replace it with a fake). */
 export const FIREBASE_AUTH = Symbol('FIREBASE_AUTH');
-export type FirebaseAuth = Pick<Auth, 'verifyIdToken'>;
+export type FirebaseAuth = Pick<Auth, 'verifyIdToken' | 'createUser' | 'deleteUser'>;
 
 /** Shares the named Firebase app with the data layer, whichever initialises first. */
 export function createFirebaseAuth(projectId: string): Auth {

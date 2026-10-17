@@ -4,6 +4,7 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { IpThrottlerGuard, STRICT } from './common/throttle.guards.js';
 import { LoggerModule } from 'nestjs-pino';
+import { AccountsModule } from './accounts/accounts.module.js';
 import { AuditModule } from './audit/audit.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { InvitationsModule } from './invitations/invitations.module.js';
@@ -46,6 +47,7 @@ import { HealthModule } from './health/health.module.js';
     HealthModule,
     MeModule,
     MembershipsModule,
+    AccountsModule,
     InvitationsModule,
     PlatformModule,
   ],

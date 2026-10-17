@@ -65,6 +65,7 @@ export const SAMPLES: Record<string, Sample> = {
     auditSchool: (_w, ctx) => ctx['id']!,
   },
   'POST /memberships': { ...systemAdminOfA, prepare: async (w) => ({ userId: await freshUser(w) }), body: (_w, ctx) => ({ userId: ctx['userId'], schoolRole: 'STAFF' }) },
+  'POST /memberships/accounts': { ...systemAdminOfA, body: () => ({ displayName: 'Audit Sample', schoolRole: 'STAFF', email: `account-${randomUUID().slice(0, 10)}@example.com` }) },
   'PATCH /memberships/:userId': { ...systemAdminOfA, prepare: memberOfA, body: () => ({ status: 'SUSPENDED' }) },
   'DELETE /memberships/:userId': { ...systemAdminOfA, prepare: memberOfA },
   'POST /invitations': { ...systemAdminOfA, prepare: async () => ({ email: `invitee-${randomUUID().slice(0, 8)}@example.com` }), body: (_w, ctx) => ({ email: ctx['email'], schoolRole: 'TEACHER' }) },
