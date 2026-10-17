@@ -109,7 +109,7 @@ graph LR
 | ID | Task | Size | Depends |
 |---|---|---|---|
 | P1-6a DONE (branch app/api-gateway; `/v1/me` + `PATCH /v1/me/preferences`; 177 unit + 120 e2e + 9 real-emulator tests) | `GET /me` (+ `PATCH /me/preferences`): profile, memberships, active school, permissions, navigation via `navigationFor` | M | P1-3c |
-| P1-6b | Platform schools: list/create/get/update, suspend/activate (suspended school ⇒ every tenant route 403 `SCHOOL_SUSPENDED`), audit | L | P1-7 |
+| P1-6b DONE (branch app/api-gateway, stacked on /me; 220 unit + 120 e2e + 218 real-emulator tests; 6 mutants killed) | Platform schools: list/create/get/update, suspend/activate (suspended school ⇒ every tenant route 403 `SCHOOL_SUSPENDED`), audit | L | P1-7 |
 | P1-6c | Memberships: list, add existing user, change role/status, remove; **only `memberships` holders**; protected rules (cannot remove the last Principal or System Admin) | L | P1-6b |
 | P1-6d | Invitations: create (email/phone + role + expiry), list, revoke, accept (single-use, token hashed, expiry, rate limited); Phase 1 delivers the link by copy (no email/SMS provider yet) | L | P1-6c |
 | P1-6e | `GET /public/schools/by-subdomain/:sub` (minimal fields, throttled) | S | P1-6b |
