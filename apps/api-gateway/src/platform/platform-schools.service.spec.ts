@@ -6,7 +6,7 @@ const actor = { uid: 'u-admin', email: 'admin@example.com', emailVerified: true,
 function setup(initial?: { status?: string }) {
   const rows = new Map<string, { id: string; name: string; subDomain: string; subscriptionStatus: string; defaultLanguage: string; createdAt: string }>();
   if (initial) rows.set(ID.replaceAll('-', ''), { id: ID.replaceAll('-', ''), name: 'Old', subDomain: 'old', subscriptionStatus: initial.status ?? 'ACTIVE', defaultLanguage: 'en', createdAt: '2026-10-17T00:00:00Z' });
-  const calls = { provision: [] as any[], update: [] as any[], status: [] as any[], sync: 0, invalidated: [] as string[] };
+  const calls = { provision: [] as any[], update: [] as any[], status: [] as any[], sync: 0, invalidated: [] as string[], publicInvalidated: [] as string[] };
   const db = {
     getSchool: async ({ schoolId }: { schoolId: string }) => ({ data: { school: rows.get(schoolId.replaceAll('-', '')) ?? null } }),
     listSchools: async () => ({ data: { schools: [...rows.values()] } }),
@@ -16,7 +16,8 @@ function setup(initial?: { status?: string }) {
   };
   const users = { sync: async () => { calls.sync++; } };
   const memberships = { invalidateSchool: (id: string) => calls.invalidated.push(id) };
-  return { svc: new PlatformSchoolsService(db as never, users as never, memberships as never), calls };
+  const publicSchools = { invalidate: (sub: string) => calls.publicInvalidated.push(sub) };
+  return { svc: new PlatformSchoolsService(db as never, users as never, memberships as never, publicSchools as never), calls };
 }
 
 describe('PlatformSchoolsService', () => {
@@ -40,6 +41,7 @@ describe('PlatformSchoolsService', () => {
     const out = await svc.update(actor, ID, { name: 'Renamed' });
     expect(calls.update[0]).toMatchObject({ schoolId: ID, name: 'Renamed', defaultLanguage: 'en', actorId: 'u-admin', details: { name: 'Renamed' } });
     expect(out.name).toBe('Renamed');
+    expect(calls.publicInvalidated).toEqual(['old']);
   });
 
   it('update with nothing to change is a 400, and an unknown school a 404, before anything is written', async () => {
@@ -54,6 +56,7 @@ describe('PlatformSchoolsService', () => {
     const out = await svc.setStatus(actor, ID, 'SUSPENDED', 'unpaid invoice');
     expect(calls.status[0]).toMatchObject({ schoolId: ID, status: 'SUSPENDED', actorId: 'u-admin', details: { status: 'SUSPENDED', from: 'ACTIVE', reason: 'unpaid invoice' } });
     expect(calls.invalidated).toEqual([ID]);
+    expect(calls.publicInvalidated).toEqual(['old']); // the public school lookup forgets it at once
     expect(out.status).toBe('SUSPENDED');
   });
 
