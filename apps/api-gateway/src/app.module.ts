@@ -8,6 +8,8 @@ import { AuditModule } from './audit/audit.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { MeModule } from './me/me.module.js';
 import { PermissionModule } from './permission/permission.module.js';
+import { PlatformModule } from './platform/platform.module.js';
+import { UsersModule } from './users/users.module.js';
 import { TenantModule } from './tenant/tenant.module.js';
 import { pinoHttpOptions } from './common/logging.js';
 import { ErrorEnvelopeFilter } from './common/errors.js';
@@ -32,12 +34,14 @@ import { HealthModule } from './health/health.module.js';
       ],
     }),
     GatewayDatabaseModule,
+    UsersModule,
     AuditModule,
     AuthModule,
     TenantModule,
     PermissionModule,
     HealthModule,
     MeModule,
+    PlatformModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: IpThrottlerGuard },

@@ -131,6 +131,48 @@
         ],
         "type": "object"
       },
+      "CreateSchoolDto": {
+        "properties": {
+          "defaultLanguage": {
+            "enum": [
+              "en",
+              "hi",
+              "ur",
+              "ks",
+              "sd",
+              "ps",
+              "fa",
+              "ar",
+              "bn",
+              "as",
+              "mr",
+              "doi",
+              "gu",
+              "pa",
+              "or",
+              "ta",
+              "te",
+              "kn",
+              "ml"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 2,
+            "type": "string"
+          },
+          "subDomain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "subDomain",
+          "defaultLanguage"
+        ],
+        "type": "object"
+      },
       "ErrorEnvelope": {
         "properties": {
           "error": {
@@ -355,6 +397,68 @@
         ],
         "type": "object"
       },
+      "SchoolDto": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "defaultLanguage": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "subDomain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "subDomain",
+          "status",
+          "defaultLanguage",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "SchoolPageDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SchoolDto"
+            },
+            "type": "array"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "offset": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "limit",
+          "offset"
+        ],
+        "type": "object"
+      },
+      "SchoolStatusDto": {
+        "properties": {
+          "reason": {
+            "maxLength": 500,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "UpdatePreferencesDto": {
         "properties": {
           "language": {
@@ -386,6 +490,40 @@
         "required": [
           "language"
         ],
+        "type": "object"
+      },
+      "UpdateSchoolDto": {
+        "properties": {
+          "defaultLanguage": {
+            "enum": [
+              "en",
+              "hi",
+              "ur",
+              "ks",
+              "sd",
+              "ps",
+              "fa",
+              "ar",
+              "bn",
+              "as",
+              "mr",
+              "doi",
+              "gu",
+              "pa",
+              "or",
+              "ta",
+              "te",
+              "kn",
+              "ml"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
         "type": "object"
       }
     },
@@ -981,6 +1119,390 @@
           "Me"
         ],
         "x-access": "user"
+      }
+    },
+    "/v1/platform/schools": {
+      "get": {
+        "operationId": "PlatformSchools_list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "PlatformSchools"
+        ],
+        "x-access": "platform",
+        "x-permission": {
+          "action": "read",
+          "resource": "platform_schools"
+        }
+      },
+      "post": {
+        "operationId": "PlatformSchools_create",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSchoolDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "PlatformSchools"
+        ],
+        "x-access": "platform",
+        "x-audit": {
+          "action": "platform.school.create",
+          "operation": "ProvisionSchool"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "platform_schools"
+        }
+      }
+    },
+    "/v1/platform/schools/{id}": {
+      "get": {
+        "operationId": "PlatformSchools_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "PlatformSchools"
+        ],
+        "x-access": "platform",
+        "x-permission": {
+          "action": "read",
+          "resource": "platform_schools"
+        }
+      },
+      "patch": {
+        "operationId": "PlatformSchools_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSchoolDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "PlatformSchools"
+        ],
+        "x-access": "platform",
+        "x-audit": {
+          "action": "school.update",
+          "operation": "UpdateSchool"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "platform_schools"
+        }
+      }
+    },
+    "/v1/platform/schools/{id}/activate": {
+      "post": {
+        "operationId": "PlatformSchools_activate",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchoolStatusDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "PlatformSchools"
+        ],
+        "x-access": "platform",
+        "x-audit": {
+          "action": "platform.school.status",
+          "operation": "SetSubscriptionStatus"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "platform_schools"
+        }
+      }
+    },
+    "/v1/platform/schools/{id}/suspend": {
+      "post": {
+        "operationId": "PlatformSchools_suspend",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchoolStatusDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "PlatformSchools"
+        ],
+        "x-access": "platform",
+        "x-audit": {
+          "action": "platform.school.status",
+          "operation": "SetSubscriptionStatus"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "platform_schools"
+        }
       }
     }
   },

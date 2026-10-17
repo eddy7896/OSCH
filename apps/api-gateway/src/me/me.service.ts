@@ -3,6 +3,7 @@ import { DATABASE, type Database } from '@oruschools/database';
 import { DEFAULT_LOCALE } from '@oruschools/i18n';
 import { isRole, navigationFor, permissionsOf, type Subject } from '@oruschools/rbac';
 import type { AuthenticatedUser } from '../auth/authenticated-user.js';
+import { UserSyncService } from '../users/user-sync.service.js';
 import type { AccessDto, MeResponseDto } from './dto/me-response.dto.js';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -16,19 +17,13 @@ function accessFor(subject: Subject): AccessDto {
 
 @Injectable()
 export class MeService {
-  constructor(@Inject(DATABASE) private readonly db: Database) {}
-
-  /** Creates or refreshes the global User row from the VERIFIED token (first sign-in, or the email changed in Firebase). */
-  private async syncUser(user: AuthenticatedUser) {
-    const email = user.email ?? `${user.uid}@no-email.invalid`; // phone-only sign-in has no email; User.email is required; .invalid is reserved (RFC 2606)
-    const row = (await this.db.getUser({ id: user.uid })).data.user;
-    if (row && row.email === email) return row;
-    await this.db.upsertUser({ id: user.uid, email });
-    return (await this.db.getUser({ id: user.uid })).data.user!;
-  }
+  constructor(
+    @Inject(DATABASE) private readonly db: Database,
+    private readonly users: UserSyncService,
+  ) {}
 
   async me(user: AuthenticatedUser, claimedSchoolId: string | undefined): Promise<MeResponseDto> {
-    const row = await this.syncUser(user);
+    const row = await this.users.sync(user);
     const memberships = (await this.db.listMembershipsForUser({ userId: user.uid })).data.schoolMembers;
 
     const mapped = memberships.map((m) => ({
@@ -58,7 +53,7 @@ export class MeService {
   }
 
   async setLanguage(user: AuthenticatedUser, language: string | null): Promise<{ language: string | null }> {
-    await this.syncUser(user); // the row must exist before it can be updated
+    await this.users.sync(user); // the row must exist before it can be updated
     await this.db.setUserLanguage({ userId: user.uid, language });
     return { language };
   }

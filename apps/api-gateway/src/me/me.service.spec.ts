@@ -1,3 +1,4 @@
+import { UserSyncService } from '../users/user-sync.service.js';
 import { MeService } from './me.service.js';
 
 const S1 = '11111111-1111-4111-8111-111111111111';
@@ -18,7 +19,7 @@ function setup(opts: { user?: Row; memberships?: Array<{ id: string; role: strin
     }),
     setUserLanguage: async (v: Record<string, unknown>) => { calls.setLanguage.push(v); return {}; },
   };
-  return { svc: new MeService(db as never), calls };
+  return { svc: new MeService(db as never, new UserSyncService(db as never)), calls };
 }
 const user = (over: Record<string, unknown> = {}) => ({ uid: 'u1', email: 'a@example.com', emailVerified: true, globalRole: 'USER' as const, ...over });
 
