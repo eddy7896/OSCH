@@ -73,7 +73,7 @@ exports.SubscriptionStatus = SubscriptionStatus;
 const connectorConfig = {
   connector: 'erp-connector',
   serviceId: 'oruschools',
-  location: 'us-east4'
+  location: 'asia-south1'
 };
 exports.connectorConfig = connectorConfig;
 

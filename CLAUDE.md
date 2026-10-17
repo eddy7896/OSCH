@@ -23,6 +23,7 @@ Multi-tenant school ERP (SaaS). **Two pillars**: Next.js web ERP (system of reco
 - `npm run tokens:build | tokens:check` — design tokens (never hand-edit `*/generated/*` or `tokens.g.dart`)
 - `npm run test:dataconnect` — database-level tenant-isolation tests on the emulator (needs network once to download the emulator)
 - `npm run test:gateway` — the gateway against the REAL Auth and Data Connect emulators: real tokens, and the cross-tenant / RBAC route matrix generated from every registered route (a new route is covered automatically)
+- `node tools/bootstrap-super-admin.mjs --email <e> --project <id> [--apply|--revoke]` — the only way to create/remove the platform owner (SUPER_ADMIN); dry run by default; see documentation/environment.md
 - `npm run test:database` — `packages/database` (generated Admin SDK, error mapping) against the emulator
 - `npm run openapi:generate -w api-gateway` — regenerate `apps/api-gateway/openapi.json` after changing a route or DTO (`npm test` fails if it is stale)
 - `npm run build | lint | typecheck | test` — Turborepo (JS/TS). Dart: `melos run analyze|test` (Melos 8 reads its config from the root `pubspec.yaml` pub workspace; run `flutter pub get` once; put `~/.pub-cache/bin` on PATH or use `dart run melos`)
