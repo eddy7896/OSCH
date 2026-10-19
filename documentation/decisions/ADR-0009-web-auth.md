@@ -31,3 +31,13 @@ The web apps use `cacheComponents` and next-intl URL locales. The bundled Next 1
 - The web apps resolve the school from the request host, call this once per visit, then send `X-School-Id` from the id it returns (the gateway still verifies membership on every request and never trusts the subdomain itself).
 - OpenAPI now documents `404` on every operation with a path parameter.
 
+## Addendum (2026-10-17): the typed client (P1-8)
+`packages/api-client` is generated from the committed `apps/api-gateway/openapi.json` (`@hey-api/openapi-ts`; CI fails if `src/generated` is stale) and wrapped by a hand-written transport (`createApi`). The web apps use only this client.
+- **Credentials live in the transport, not in screens:** `getToken({ forceRefresh })` and `getSchoolId()` are callbacks. Public routes carry neither token nor school; platform routes the token only; user routes the token and, if any, the school; school routes require a school (no request is sent without one: `SCHOOL_REQUIRED`). Headers a screen adds are overwritten. The generated types do not mention `X-School-Id`.
+- **One retry on 401** with a freshly requested token (only if it differs); never on 403. Tokens never appear in messages.
+- **Every failure is an `ApiError`** with a closed `code` (the gateway's list plus `NETWORK_ERROR`, `TIMEOUT`, `ABORTED`, `SCHOOL_REQUIRED`, `UNEXPECTED_RESPONSE`), `status`, `requestId`, field `details` and `retryAfterSeconds`. The code list is checked exhaustively at compile time against the contract. Screens switch on `code` and translate it (ADR-0006).
+- **Money** helpers (`parseInt64`, `formatMinor`, ...) go through BigInt, exact above 2^53 (ADR-0004).
+- **Contract fixes found while building it:** `/v1/me` documented its optional school header as required (now `ActiveSchoolId`, optional); the throttler's `Retry-After-<limit>` headers are now exposed as the standard `Retry-After` (also in CORS `exposedHeaders`) so a browser can read it.
+- Proven against the real gateway and emulators (`api-client.integration.ts`): create school, public lookup, role refusals, cross-tenant, suspended school, validation details, a real expired-token retry, invitations, rate limiting.
+- Browser support note: `AbortSignal.timeout`/`any` exist in current browsers and Node 22; the transport falls back to a manual timer on older engines.
+

@@ -1,6 +1,6 @@
-import { BadRequestException, Logger, NotFoundException, type ArgumentsHost } from '@nestjs/common';
+import { BadRequestException, HttpException, Logger, NotFoundException, type ArgumentsHost } from '@nestjs/common';
 import { DatabaseError } from '@oruschools/database';
-import { ApiException, ErrorCode, ErrorEnvelopeFilter } from './errors.js';
+import { ApiException, ErrorCode, ErrorEnvelopeFilter, longestRetryAfter } from './errors.js';
 
 function run(exception: unknown, path = '/v1/x', requestId: string | null = 'req-12345678') {
   let sent: { status?: number; body?: unknown } = {};
@@ -13,6 +13,26 @@ function run(exception: unknown, path = '/v1/x', requestId: string | null = 'req
   new ErrorEnvelopeFilter().catch(exception, host);
   return sent;
 }
+
+describe('Retry-After on 429', () => {
+  it('the standard header is the longest of the throttler\'s named ones', () => {
+    expect(longestRetryAfter((n) => ({ 'Retry-After-ip': '12', 'Retry-After-user': '40', 'Retry-After-strict': undefined })[n])).toBe(40);
+    expect(longestRetryAfter(() => undefined)).toBeUndefined();
+    expect(longestRetryAfter(() => 'soon')).toBeUndefined();
+    expect(longestRetryAfter((n) => (n === 'Retry-After-strict' ? '0' : undefined))).toBeUndefined();
+  });
+
+  it('the filter sets Retry-After on a throttled answer and not on other errors', () => {
+    const headers: Record<string, string> = { 'Retry-After-ip': '17' };
+    const res = { getHeader: (n: string) => headers[n], setHeader: (n: string, v: string) => { headers[n] = v; }, status() { return this; }, json() { /* sink */ } };
+    const host = { switchToHttp: () => ({ getRequest: () => ({ path: '/v1/x' }), getResponse: () => res }) } as unknown as ArgumentsHost;
+    new ErrorEnvelopeFilter().catch(new HttpException('Too Many Requests', 429), host);
+    expect(headers['Retry-After']).toBe('17');
+    delete headers['Retry-After'];
+    new ErrorEnvelopeFilter().catch(new NotFoundException(), host);
+    expect(headers['Retry-After']).toBeUndefined();
+  });
+});
 
 describe('ErrorEnvelopeFilter', () => {
   beforeEach(() => { vi.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined); });

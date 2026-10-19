@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "typescript/no-explicit-any": "error",
+    "no-unused-vars": "error"
+  },
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "ignorePatterns": [
+    "src/generated/**"
+  ]
+}
