@@ -83,7 +83,7 @@ graph LR
 |---|---|---|---|
 | **P1-0a** NEW | Commit the post-Phase-0 work (font fix, integration tests, workflow fix, validator) and push; confirm CI green | S | GitHub run `success` for all three jobs (read via the public API); any runtime failure fixed (known unknowns: Flutter job on Linux, emulator job) |
 | **P1-0b** DONE (`.nvmrc`, engines, drift rule `node-version`; owner still runs `nvm install 22`) | Node 22 floor: `.nvmrc`=22, root `engines.node >=22.22.3`, CI already 22, README; drift rule that CI `node-version` equals `.nvmrc` major; owner runs `nvm install 22` | S | `node -v` ≥ 22.22.3 locally; `npm ci` has no EBADENGINE warnings |
-| **P1-0c** PARTLY DONE (audit updated with what was observed; Android, the other iOS apps and the Driver relaunch still need the owner's devices) | Record the device verification (fonts fix, Driver relaunch) in the audit; add the findings not yet logged (home-screen label truncation is an owner naming decision) | S | audit updated |
+| **P1-0c** DONE (2026-10-22: audit updated; all four apps built, installed and launched on the iOS simulator and the Android emulator, see `documentation/device_verification_2026-10-22.md`; home-screen names decided and applied: Oru Teacher, Oru Staff, Oru Parent, Oru Driver. Real phones and Urdu right-to-left on a device move to P4-7 and the pilot, they are not part of this task) | Record the device verification (fonts fix, Driver relaunch) in the audit; add the findings not yet logged (home-screen label truncation is an owner naming decision) | S | audit updated |
 | **P1-0d** NEW | Owner decisions Q1-Q9 (§9); accept ADR-0008/0009 | S | ADRs marked Accepted |
 
 ### M1: Gateway skeleton and data access
