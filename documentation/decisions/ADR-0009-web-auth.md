@@ -41,3 +41,9 @@ The web apps use `cacheComponents` and next-intl URL locales. The bundled Next 1
 - Proven against the real gateway and emulators (`api-client.integration.ts`): create school, public lookup, role refusals, cross-tenant, suspended school, validation details, a real expired-token retry, invitations, rate limiting.
 - Browser support note: `AbortSignal.timeout`/`any` exist in current browsers and Node 22; the transport falls back to a manual timer on older engines.
 
+
+## Addendum (2026-10-21): saas-admin sign-in is built (P1-9)
+- Firebase Auth web SDK (v13), created in an effect so nothing runs while prerendering; methods: email and password, Google popup, and a code sent by SMS (invisible reCAPTCHA).
+- `isOwner` comes from the `globalRole` claim of the verified ID token. A signed-in person without it sees a "no access" screen and no gateway call is made; the gateway still refuses every platform route to anyone else.
+- Sign-in failures are reduced to a closed list (`AuthFailure`), and a wrong password and an unknown email are the same message. Screens show translated text from the error code, never Firebase's or the gateway's.
+- Not yet exercised: a real sign-in against the live project and the live gateway (the app tests use a fake sign-in service and a fake client; the typed client itself is proven against the real stack in `api-client.integration.ts`).

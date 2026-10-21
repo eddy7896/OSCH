@@ -151,5 +151,267 @@
   "settingsLanguage": "Language",
   "@settingsLanguage": {
     "description": "Label of the language picker."
+  },
+  "saasSignInTitle": "Sign in to the platform",
+  "@saasSignInTitle": {
+    "description": "Heading of the platform owner's sign-in screen."
+  },
+  "saasSignInIntro": "This area is for the OruSchools platform owner.",
+  "@saasSignInIntro": {
+    "description": "One line under the sign-in heading. Schools sign in elsewhere."
+  },
+  "authEmailLabel": "Email address",
+  "@authEmailLabel": {
+    "description": "Label of the email field on sign-in."
+  },
+  "authPasswordLabel": "Password",
+  "@authPasswordLabel": {
+    "description": "Label of the password field on sign-in."
+  },
+  "actionSignIn": "Sign in",
+  "@actionSignIn": {
+    "description": "Button that signs a person in."
+  },
+  "actionSignInGoogle": "Continue with Google",
+  "@actionSignInGoogle": {
+    "description": "Button for Google sign-in. Keep the word Google in Latin letters."
+  },
+  "actionSignInPhone": "Use a mobile number instead",
+  "@actionSignInPhone": {
+    "description": "Link that switches sign-in to a one-time code sent by SMS."
+  },
+  "actionSignInEmail": "Use email instead",
+  "@actionSignInEmail": {
+    "description": "Link that switches sign-in back to email and password."
+  },
+  "authPhoneLabel": "Mobile number",
+  "@authPhoneLabel": {
+    "description": "Label of the phone number field."
+  },
+  "authPhoneHint": "Include the country code, for example +91 98765 43210",
+  "@authPhoneHint": {
+    "description": "Hint under the phone field. Keep the example number as it is."
+  },
+  "actionSendCode": "Send code",
+  "@actionSendCode": {
+    "description": "Button that sends a one-time code by SMS."
+  },
+  "authCodeLabel": "6-digit code",
+  "@authCodeLabel": {
+    "description": "Label of the field where the SMS code is typed."
+  },
+  "actionVerifyCode": "Verify code",
+  "@actionVerifyCode": {
+    "description": "Button that checks the SMS code."
+  },
+  "authOr": "or",
+  "@authOr": {
+    "description": "Small word between two sign-in options."
+  },
+  "actionSignOut": "Sign out",
+  "@actionSignOut": {
+    "description": "Button that signs the person out."
+  },
+  "authSigningIn": "Signing in…",
+  "@authSigningIn": {
+    "description": "Shown on the button while sign-in is in progress."
+  },
+  "authErrorCredentials": "The email or password is not correct.",
+  "@authErrorCredentials": {
+    "description": "Error after a wrong email or password. Do not say which one is wrong."
+  },
+  "authErrorTooMany": "Too many attempts. Try again in a few minutes.",
+  "@authErrorTooMany": {
+    "description": "Error when sign-in is temporarily blocked."
+  },
+  "authErrorNetwork": "We could not reach the sign-in service. Check your connection.",
+  "@authErrorNetwork": {
+    "description": "Error when the device is offline during sign-in."
+  },
+  "authErrorPopupClosed": "The Google window was closed before sign-in finished.",
+  "@authErrorPopupClosed": {
+    "description": "Error when the person closes the Google sign-in window."
+  },
+  "authErrorCode": "That code is not correct or has expired.",
+  "@authErrorCode": {
+    "description": "Error after a wrong or expired SMS code."
+  },
+  "authErrorPhone": "Enter the number with its country code.",
+  "@authErrorPhone": {
+    "description": "Error for a phone number that is not valid."
+  },
+  "authErrorGeneric": "We could not sign you in. Try again.",
+  "@authErrorGeneric": {
+    "description": "Fallback sign-in error."
+  },
+  "saasNoAccessTitle": "This account cannot use the platform area",
+  "@saasNoAccessTitle": {
+    "description": "Heading shown to a signed-in person who is not the platform owner."
+  },
+  "saasNoAccessBody": "Sign in with the platform owner account. Schools sign in at their own address.",
+  "@saasNoAccessBody": {
+    "description": "Explains the previous heading and what to do."
+  },
+  "saasNavLabel": "Platform sections",
+  "@saasNavLabel": {
+    "description": "Screen reader name of the side navigation."
+  },
+  "saasNavSchools": "Schools",
+  "@saasNavSchools": {
+    "description": "Side navigation item for the list of schools."
+  },
+  "saasSchoolsTitle": "Schools",
+  "@saasSchoolsTitle": {
+    "description": "Heading of the schools screen."
+  },
+  "saasSchoolsCount": "{count, plural, one{{count} school} other{{count} schools}}",
+  "@saasSchoolsCount": {
+    "description": "Number of schools under the heading.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "saasSchoolsEmptyTitle": "No schools yet",
+  "@saasSchoolsEmptyTitle": {
+    "description": "Empty state heading on the schools screen."
+  },
+  "saasSchoolsEmptyBody": "Create the first school so its team can sign in.",
+  "@saasSchoolsEmptyBody": {
+    "description": "Empty state explanation."
+  },
+  "actionCreateSchool": "Create school",
+  "@actionCreateSchool": {
+    "description": "Button that opens the create school form and submits it."
+  },
+  "saasSchoolCreateTitle": "Create a school",
+  "@saasSchoolCreateTitle": {
+    "description": "Heading of the create school form."
+  },
+  "saasSchoolName": "School name",
+  "@saasSchoolName": {
+    "description": "Label of the school name field."
+  },
+  "saasSchoolSubdomain": "Web address",
+  "@saasSchoolSubdomain": {
+    "description": "Label of the school's web address field (its subdomain)."
+  },
+  "saasSchoolSubdomainHint": "Letters, numbers and hyphens, for example greenfield. It cannot be changed later.",
+  "@saasSchoolSubdomainHint": {
+    "description": "Hint under the web address field. Keep the example as it is."
+  },
+  "saasSchoolLanguage": "Default language",
+  "@saasSchoolLanguage": {
+    "description": "Label of the school's default language choice."
+  },
+  "actionEdit": "Edit",
+  "@actionEdit": {
+    "description": "Button that opens a form to change something."
+  },
+  "saasSchoolEditTitle": "Edit school",
+  "@saasSchoolEditTitle": {
+    "description": "Heading of the edit school form."
+  },
+  "actionSuspend": "Suspend",
+  "@actionSuspend": {
+    "description": "Button that suspends a school."
+  },
+  "actionReactivate": "Reactivate",
+  "@actionReactivate": {
+    "description": "Button that reactivates a suspended school."
+  },
+  "saasSuspendTitle": "Suspend {name}?",
+  "@saasSuspendTitle": {
+    "description": "Heading of the suspend confirmation. {name} is the school name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "saasSuspendBody": "Nobody at this school can sign in until you reactivate it.",
+  "@saasSuspendBody": {
+    "description": "Explains what suspending does."
+  },
+  "saasSuspendReason": "Reason (optional)",
+  "@saasSuspendReason": {
+    "description": "Label of the optional reason for suspending."
+  },
+  "statusActive": "Active",
+  "@statusActive": {
+    "description": "Status of a school that is running."
+  },
+  "statusSuspended": "Suspended",
+  "@statusSuspended": {
+    "description": "Status of a school that is suspended."
+  },
+  "saasCreated": "School created",
+  "@saasCreated": {
+    "description": "Confirmation after creating a school."
+  },
+  "saasSaved": "Changes saved",
+  "@saasSaved": {
+    "description": "Confirmation after editing a school."
+  },
+  "saasSuspendedDone": "School suspended",
+  "@saasSuspendedDone": {
+    "description": "Confirmation after suspending."
+  },
+  "saasReactivatedDone": "School reactivated",
+  "@saasReactivatedDone": {
+    "description": "Confirmation after reactivating."
+  },
+  "saasLoadFailed": "We could not load the schools",
+  "@saasLoadFailed": {
+    "description": "Heading of the error when the list fails to load."
+  },
+  "actionLoadMore": "Show more",
+  "@actionLoadMore": {
+    "description": "Button that loads the next page of a list."
+  },
+  "errorAuthRequired": "Please sign in again.",
+  "@errorAuthRequired": {
+    "description": "Error when the session has ended."
+  },
+  "errorForbidden": "You do not have permission to do this.",
+  "@errorForbidden": {
+    "description": "Error when the action is not allowed."
+  },
+  "errorNotFound": "We could not find that.",
+  "@errorNotFound": {
+    "description": "Error when something no longer exists."
+  },
+  "errorInvalidRequest": "Some details are not valid. Check the fields and try again.",
+  "@errorInvalidRequest": {
+    "description": "Error when the server rejects the form."
+  },
+  "errorConflict": "That already exists. Choose a different name or address.",
+  "@errorConflict": {
+    "description": "Error when a name or web address is already taken."
+  },
+  "errorRateLimited": "Too many requests. Wait a moment and try again.",
+  "@errorRateLimited": {
+    "description": "Error when the person is sending requests too fast."
+  },
+  "errorUpstream": "The server is busy. Try again shortly.",
+  "@errorUpstream": {
+    "description": "Error when a back-end service is unavailable."
+  },
+  "errorInternal": "Something went wrong on our side. Try again.",
+  "@errorInternal": {
+    "description": "Fallback server error."
+  },
+  "errorNetwork": "We could not reach the server. Check your connection.",
+  "@errorNetwork": {
+    "description": "Error when the device is offline."
+  },
+  "errorTimeout": "The server took too long to answer. Try again.",
+  "@errorTimeout": {
+    "description": "Error when a request times out."
+  },
+  "statusLoading": "Loading…",
+  "@statusLoading": {
+    "description": "Shown while a screen or list is loading."
   }
 }

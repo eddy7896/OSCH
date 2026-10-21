@@ -123,4 +123,216 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get settingsLanguage => 'भाषा';
+
+  @override
+  String get saasSignInTitle => 'प्लेटफ़ॉर्म में साइन इन करें';
+
+  @override
+  String get saasSignInIntro =>
+      'यह क्षेत्र केवल OruSchools प्लेटफ़ॉर्म के स्वामी के लिए है।';
+
+  @override
+  String get authEmailLabel => 'ईमेल पता';
+
+  @override
+  String get authPasswordLabel => 'पासवर्ड';
+
+  @override
+  String get actionSignIn => 'साइन इन करें';
+
+  @override
+  String get actionSignInGoogle => 'Google से जारी रखें';
+
+  @override
+  String get actionSignInPhone => 'इसके बजाय मोबाइल नंबर का उपयोग करें';
+
+  @override
+  String get actionSignInEmail => 'इसके बजाय ईमेल का उपयोग करें';
+
+  @override
+  String get authPhoneLabel => 'मोबाइल नंबर';
+
+  @override
+  String get authPhoneHint => 'देश कोड के साथ लिखें, जैसे +91 98765 43210';
+
+  @override
+  String get actionSendCode => 'कोड भेजें';
+
+  @override
+  String get authCodeLabel => '6 अंकों का कोड';
+
+  @override
+  String get actionVerifyCode => 'कोड सत्यापित करें';
+
+  @override
+  String get authOr => 'या';
+
+  @override
+  String get actionSignOut => 'साइन आउट करें';
+
+  @override
+  String get authSigningIn => 'साइन इन हो रहा है…';
+
+  @override
+  String get authErrorCredentials => 'ईमेल या पासवर्ड सही नहीं है।';
+
+  @override
+  String get authErrorTooMany =>
+      'बहुत अधिक प्रयास हुए। कुछ मिनट बाद फिर कोशिश करें।';
+
+  @override
+  String get authErrorNetwork =>
+      'हम साइन-इन सेवा तक नहीं पहुँच सके। अपना कनेक्शन जाँचें।';
+
+  @override
+  String get authErrorPopupClosed =>
+      'साइन इन पूरा होने से पहले Google की विंडो बंद हो गई।';
+
+  @override
+  String get authErrorCode => 'वह कोड सही नहीं है या समाप्त हो चुका है।';
+
+  @override
+  String get authErrorPhone => 'नंबर देश कोड के साथ लिखें।';
+
+  @override
+  String get authErrorGeneric => 'हम आपको साइन इन नहीं कर सके। फिर कोशिश करें।';
+
+  @override
+  String get saasNoAccessTitle =>
+      'यह खाता प्लेटफ़ॉर्म क्षेत्र का उपयोग नहीं कर सकता';
+
+  @override
+  String get saasNoAccessBody =>
+      'प्लेटफ़ॉर्म स्वामी के खाते से साइन इन करें। स्कूल अपने पते पर साइन इन करते हैं।';
+
+  @override
+  String get saasNavLabel => 'प्लेटफ़ॉर्म अनुभाग';
+
+  @override
+  String get saasNavSchools => 'स्कूल';
+
+  @override
+  String get saasSchoolsTitle => 'स्कूल';
+
+  @override
+  String saasSchoolsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count स्कूल',
+      one: '$count स्कूल',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get saasSchoolsEmptyTitle => 'अभी कोई स्कूल नहीं';
+
+  @override
+  String get saasSchoolsEmptyBody =>
+      'पहला स्कूल बनाएँ ताकि उसकी टीम साइन इन कर सके।';
+
+  @override
+  String get actionCreateSchool => 'स्कूल बनाएँ';
+
+  @override
+  String get saasSchoolCreateTitle => 'स्कूल बनाएँ';
+
+  @override
+  String get saasSchoolName => 'स्कूल का नाम';
+
+  @override
+  String get saasSchoolSubdomain => 'वेब पता';
+
+  @override
+  String get saasSchoolSubdomainHint =>
+      'अक्षर, अंक और हाइफ़न, जैसे greenfield। इसे बाद में बदला नहीं जा सकता।';
+
+  @override
+  String get saasSchoolLanguage => 'डिफ़ॉल्ट भाषा';
+
+  @override
+  String get actionEdit => 'बदलें';
+
+  @override
+  String get saasSchoolEditTitle => 'स्कूल बदलें';
+
+  @override
+  String get actionSuspend => 'निलंबित करें';
+
+  @override
+  String get actionReactivate => 'फिर से चालू करें';
+
+  @override
+  String saasSuspendTitle(String name) {
+    return '$name को निलंबित करें?';
+  }
+
+  @override
+  String get saasSuspendBody =>
+      'जब तक आप इसे फिर से चालू नहीं करते, इस स्कूल में कोई साइन इन नहीं कर सकेगा।';
+
+  @override
+  String get saasSuspendReason => 'कारण (वैकल्पिक)';
+
+  @override
+  String get statusActive => 'चालू';
+
+  @override
+  String get statusSuspended => 'निलंबित';
+
+  @override
+  String get saasCreated => 'स्कूल बन गया';
+
+  @override
+  String get saasSaved => 'बदलाव सहेजे गए';
+
+  @override
+  String get saasSuspendedDone => 'स्कूल निलंबित हुआ';
+
+  @override
+  String get saasReactivatedDone => 'स्कूल फिर से चालू हुआ';
+
+  @override
+  String get saasLoadFailed => 'हम स्कूल लोड नहीं कर सके';
+
+  @override
+  String get actionLoadMore => 'और दिखाएँ';
+
+  @override
+  String get errorAuthRequired => 'कृपया फिर से साइन इन करें।';
+
+  @override
+  String get errorForbidden => 'आपको यह करने की अनुमति नहीं है।';
+
+  @override
+  String get errorNotFound => 'हमें वह नहीं मिला।';
+
+  @override
+  String get errorInvalidRequest =>
+      'कुछ विवरण सही नहीं हैं। खाने जाँचकर फिर कोशिश करें।';
+
+  @override
+  String get errorConflict =>
+      'यह पहले से मौजूद है। कोई दूसरा नाम या पता चुनें।';
+
+  @override
+  String get errorRateLimited =>
+      'बहुत अधिक अनुरोध। थोड़ा रुककर फिर कोशिश करें।';
+
+  @override
+  String get errorUpstream => 'सर्वर व्यस्त है। थोड़ी देर में फिर कोशिश करें।';
+
+  @override
+  String get errorInternal => 'हमारी ओर से कुछ गड़बड़ हुई। फिर कोशिश करें।';
+
+  @override
+  String get errorNetwork => 'हम सर्वर तक नहीं पहुँच सके। अपना कनेक्शन जाँचें।';
+
+  @override
+  String get errorTimeout =>
+      'सर्वर ने जवाब देने में बहुत देर की। फिर कोशिश करें।';
+
+  @override
+  String get statusLoading => 'लोड हो रहा है…';
 }

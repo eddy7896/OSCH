@@ -329,6 +329,384 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Language'**
   String get settingsLanguage;
+
+  /// Heading of the platform owner's sign-in screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to the platform'**
+  String get saasSignInTitle;
+
+  /// One line under the sign-in heading. Schools sign in elsewhere.
+  ///
+  /// In en, this message translates to:
+  /// **'This area is for the OruSchools platform owner.'**
+  String get saasSignInIntro;
+
+  /// Label of the email field on sign-in.
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get authEmailLabel;
+
+  /// Label of the password field on sign-in.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get authPasswordLabel;
+
+  /// Button that signs a person in.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get actionSignIn;
+
+  /// Button for Google sign-in. Keep the word Google in Latin letters.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get actionSignInGoogle;
+
+  /// Link that switches sign-in to a one-time code sent by SMS.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a mobile number instead'**
+  String get actionSignInPhone;
+
+  /// Link that switches sign-in back to email and password.
+  ///
+  /// In en, this message translates to:
+  /// **'Use email instead'**
+  String get actionSignInEmail;
+
+  /// Label of the phone number field.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get authPhoneLabel;
+
+  /// Hint under the phone field. Keep the example number as it is.
+  ///
+  /// In en, this message translates to:
+  /// **'Include the country code, for example +91 98765 43210'**
+  String get authPhoneHint;
+
+  /// Button that sends a one-time code by SMS.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get actionSendCode;
+
+  /// Label of the field where the SMS code is typed.
+  ///
+  /// In en, this message translates to:
+  /// **'6-digit code'**
+  String get authCodeLabel;
+
+  /// Button that checks the SMS code.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify code'**
+  String get actionVerifyCode;
+
+  /// Small word between two sign-in options.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get authOr;
+
+  /// Button that signs the person out.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get actionSignOut;
+
+  /// Shown on the button while sign-in is in progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in…'**
+  String get authSigningIn;
+
+  /// Error after a wrong email or password. Do not say which one is wrong.
+  ///
+  /// In en, this message translates to:
+  /// **'The email or password is not correct.'**
+  String get authErrorCredentials;
+
+  /// Error when sign-in is temporarily blocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Try again in a few minutes.'**
+  String get authErrorTooMany;
+
+  /// Error when the device is offline during sign-in.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not reach the sign-in service. Check your connection.'**
+  String get authErrorNetwork;
+
+  /// Error when the person closes the Google sign-in window.
+  ///
+  /// In en, this message translates to:
+  /// **'The Google window was closed before sign-in finished.'**
+  String get authErrorPopupClosed;
+
+  /// Error after a wrong or expired SMS code.
+  ///
+  /// In en, this message translates to:
+  /// **'That code is not correct or has expired.'**
+  String get authErrorCode;
+
+  /// Error for a phone number that is not valid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the number with its country code.'**
+  String get authErrorPhone;
+
+  /// Fallback sign-in error.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not sign you in. Try again.'**
+  String get authErrorGeneric;
+
+  /// Heading shown to a signed-in person who is not the platform owner.
+  ///
+  /// In en, this message translates to:
+  /// **'This account cannot use the platform area'**
+  String get saasNoAccessTitle;
+
+  /// Explains the previous heading and what to do.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with the platform owner account. Schools sign in at their own address.'**
+  String get saasNoAccessBody;
+
+  /// Screen reader name of the side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform sections'**
+  String get saasNavLabel;
+
+  /// Side navigation item for the list of schools.
+  ///
+  /// In en, this message translates to:
+  /// **'Schools'**
+  String get saasNavSchools;
+
+  /// Heading of the schools screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Schools'**
+  String get saasSchoolsTitle;
+
+  /// Number of schools under the heading.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} school} other{{count} schools}}'**
+  String saasSchoolsCount(int count);
+
+  /// Empty state heading on the schools screen.
+  ///
+  /// In en, this message translates to:
+  /// **'No schools yet'**
+  String get saasSchoolsEmptyTitle;
+
+  /// Empty state explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Create the first school so its team can sign in.'**
+  String get saasSchoolsEmptyBody;
+
+  /// Button that opens the create school form and submits it.
+  ///
+  /// In en, this message translates to:
+  /// **'Create school'**
+  String get actionCreateSchool;
+
+  /// Heading of the create school form.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a school'**
+  String get saasSchoolCreateTitle;
+
+  /// Label of the school name field.
+  ///
+  /// In en, this message translates to:
+  /// **'School name'**
+  String get saasSchoolName;
+
+  /// Label of the school's web address field (its subdomain).
+  ///
+  /// In en, this message translates to:
+  /// **'Web address'**
+  String get saasSchoolSubdomain;
+
+  /// Hint under the web address field. Keep the example as it is.
+  ///
+  /// In en, this message translates to:
+  /// **'Letters, numbers and hyphens, for example greenfield. It cannot be changed later.'**
+  String get saasSchoolSubdomainHint;
+
+  /// Label of the school's default language choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Default language'**
+  String get saasSchoolLanguage;
+
+  /// Button that opens a form to change something.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get actionEdit;
+
+  /// Heading of the edit school form.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit school'**
+  String get saasSchoolEditTitle;
+
+  /// Button that suspends a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend'**
+  String get actionSuspend;
+
+  /// Button that reactivates a suspended school.
+  ///
+  /// In en, this message translates to:
+  /// **'Reactivate'**
+  String get actionReactivate;
+
+  /// Heading of the suspend confirmation. {name} is the school name.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend {name}?'**
+  String saasSuspendTitle(String name);
+
+  /// Explains what suspending does.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody at this school can sign in until you reactivate it.'**
+  String get saasSuspendBody;
+
+  /// Label of the optional reason for suspending.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get saasSuspendReason;
+
+  /// Status of a school that is running.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get statusActive;
+
+  /// Status of a school that is suspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get statusSuspended;
+
+  /// Confirmation after creating a school.
+  ///
+  /// In en, this message translates to:
+  /// **'School created'**
+  String get saasCreated;
+
+  /// Confirmation after editing a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved'**
+  String get saasSaved;
+
+  /// Confirmation after suspending.
+  ///
+  /// In en, this message translates to:
+  /// **'School suspended'**
+  String get saasSuspendedDone;
+
+  /// Confirmation after reactivating.
+  ///
+  /// In en, this message translates to:
+  /// **'School reactivated'**
+  String get saasReactivatedDone;
+
+  /// Heading of the error when the list fails to load.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load the schools'**
+  String get saasLoadFailed;
+
+  /// Button that loads the next page of a list.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get actionLoadMore;
+
+  /// Error when the session has ended.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in again.'**
+  String get errorAuthRequired;
+
+  /// Error when the action is not allowed.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to do this.'**
+  String get errorForbidden;
+
+  /// Error when something no longer exists.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not find that.'**
+  String get errorNotFound;
+
+  /// Error when the server rejects the form.
+  ///
+  /// In en, this message translates to:
+  /// **'Some details are not valid. Check the fields and try again.'**
+  String get errorInvalidRequest;
+
+  /// Error when a name or web address is already taken.
+  ///
+  /// In en, this message translates to:
+  /// **'That already exists. Choose a different name or address.'**
+  String get errorConflict;
+
+  /// Error when the person is sending requests too fast.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many requests. Wait a moment and try again.'**
+  String get errorRateLimited;
+
+  /// Error when a back-end service is unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The server is busy. Try again shortly.'**
+  String get errorUpstream;
+
+  /// Fallback server error.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong on our side. Try again.'**
+  String get errorInternal;
+
+  /// Error when the device is offline.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not reach the server. Check your connection.'**
+  String get errorNetwork;
+
+  /// Error when a request times out.
+  ///
+  /// In en, this message translates to:
+  /// **'The server took too long to answer. Try again.'**
+  String get errorTimeout;
+
+  /// Shown while a screen or list is loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading…'**
+  String get statusLoading;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {
