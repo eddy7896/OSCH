@@ -9,3 +9,8 @@ export { Banner, type BannerProps, type BannerTone } from './Banner.js';
 export { EmptyState, type EmptyStateProps } from './EmptyState.js';
 export { ATTENDANCE_STATUSES, StatusPill, type AttendanceStatus, type StatusPillProps } from './StatusPill.js';
 export { SyncStatus, type SyncState, type SyncStatusProps } from './SyncStatus.js';
+export { ActionTile, type ActionTileProps } from './ActionTile.js';
+export { Card, type CardProps } from './Card.js';
+export { LinkAction, type LinkActionProps } from './LinkAction.js';
+export { ListRow, type ListRowProps } from './ListRow.js';
+export { StatCard, type StatCardProps } from './StatCard.js';
