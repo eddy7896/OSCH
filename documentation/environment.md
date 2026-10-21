@@ -40,3 +40,5 @@ node tools/bootstrap-super-admin.mjs --email you@example.com --project <firebase
 `NEXT_PUBLIC_BASE_DOMAIN` (public): the domain schools live under. In development `localhost`, and a school is opened at `http://<school>.localhost:3002` (browsers resolve `*.localhost` to this machine). `CORS_ORIGINS` then needs `http://*.localhost:3002`.
 
 R2 uploads: see `documentation/r2-setup.md` (bucket, token, public address, `tools/r2-setup.mjs` for CORS, `tools/r2-smoke.mjs` for a real round trip). Leaving the four R2 keys empty is fine: uploads answer 503.
+
+Running the gateway in development: `npm run start:dev -w api-gateway`, one copy only (a second copy on the same port fails to start). The build no longer deletes `dist` while watching (`deleteOutDir: false`) and does not use incremental build info, because a watcher that deleted `dist` while another process was starting left `Cannot find module .../dist/main`. `npm run build` still starts from an empty `dist`.
