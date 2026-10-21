@@ -36,3 +36,5 @@ node tools/bootstrap-super-admin.mjs --email you@example.com --project <firebase
 
 ## Master file and Next apps (fix, 2026-10-21)
 `loadEnvConfig` in each `next.config.ts` must be called with `forceReload: true`: Next has already read the app's own folder, and without it the call returns that cached result, so the root `.env.local` was never loaded. Next also inlines only `NEXT_PUBLIC_*` values it saw before the config ran, so an app that needs public values lists them in `env` in its `next.config.ts` (saas-admin does; public values only).
+
+`NEXT_PUBLIC_BASE_DOMAIN` (public): the domain schools live under. In development `localhost`, and a school is opened at `http://<school>.localhost:3002` (browsers resolve `*.localhost` to this machine). `CORS_ORIGINS` then needs `http://*.localhost:3002`.

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Button, SideNav } from "@oruschools/shared-ui";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { useSession } from "./AuthProvider";
+import { useSession } from "@oruschools/web-auth";
 
 /** The platform area's frame: side navigation, language, and who is signed in. */
 export function Shell({ children }: { children: ReactNode }) {

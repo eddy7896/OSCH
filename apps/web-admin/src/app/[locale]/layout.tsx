@@ -4,6 +4,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { directionOf } from "@oruschools/i18n";
 import { routing } from "@/i18n/routing";
+import { Providers } from "@/components/Providers";
 import { fontVariables } from "../fonts";
 import "../globals.css";
 
@@ -26,7 +27,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     // lang drives the per-language fonts and line heights (generated i18n.css); dir flips the whole layout for RTL.
     <html lang={locale} dir={directionOf(locale)} className={`${fontVariables} h-full antialiased`}>
       <body className="min-h-full flex flex-col text-body">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <Providers>{children}</Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

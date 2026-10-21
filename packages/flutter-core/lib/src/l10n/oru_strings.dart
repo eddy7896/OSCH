@@ -791,6 +791,384 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'No administrator yet'**
   String get saasNoAdmin;
+
+  /// Heading of a school's sign-in screen. {name} is the school's name.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to {name}'**
+  String webSignInTitle(String name);
+
+  /// One line under the school sign-in heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the account your school gave you.'**
+  String get webSignInIntro;
+
+  /// Heading when the web address does not belong to an active school.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not find this school'**
+  String get webSchoolNotFoundTitle;
+
+  /// Explains the previous heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the address, or ask your school for its web address.'**
+  String get webSchoolNotFoundBody;
+
+  /// Heading when the app is opened without a school's own web address.
+  ///
+  /// In en, this message translates to:
+  /// **'Open your school\'s address'**
+  String get webNoSchoolTitle;
+
+  /// Explains that people reach the app at their school's own address. Keep the example as it is.
+  ///
+  /// In en, this message translates to:
+  /// **'Each school has its own web address, for example greenfield.oruschools.com.'**
+  String get webNoSchoolBody;
+
+  /// Heading shown to a signed-in person who is not a member of this school. {name} is the school's name.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have access to {name}'**
+  String webNoAccessTitle(String name);
+
+  /// Explains what to do about no access.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask your school\'s administrator to add you, then sign in again.'**
+  String get webNoAccessBody;
+
+  /// Heading of the error when the person's account details fail to load after sign-in.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load your account'**
+  String get webLoadFailed;
+
+  /// Screen reader name of the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'School sections'**
+  String get webNavLabel;
+
+  /// Heading of the empty dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to show yet'**
+  String get webDashboardEmptyTitle;
+
+  /// Explains the empty dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbers and tasks will appear here as your school\'s modules are set up.'**
+  String get webDashboardEmptyBody;
+
+  /// Heading shown for a navigation item whose screen is not built yet.
+  ///
+  /// In en, this message translates to:
+  /// **'This module is not ready yet'**
+  String get webComingTitle;
+
+  /// Explains the previous heading.
+  ///
+  /// In en, this message translates to:
+  /// **'It will appear here when it is built.'**
+  String get webComingBody;
+
+  /// Line on the dashboard that names the person's role in the school. {role} is the role name.
+  ///
+  /// In en, this message translates to:
+  /// **'Your role: {role}'**
+  String webYourRole(String role);
+
+  /// Heading of the page-level error screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong on this page'**
+  String get errorPageTitle;
+
+  /// Button that retries after an error.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get actionTryAgain;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get sectionOverview;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Academics'**
+  String get sectionAcademics;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get sectionPeople;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'HR'**
+  String get sectionHr;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get sectionFinance;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Communication'**
+  String get sectionCommunication;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get sectionTransport;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get sectionOperations;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get sectionReports;
+
+  /// Heading of a group in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Administration'**
+  String get sectionAdministration;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get navDashboard;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get navStudents;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes and subjects'**
+  String get navClasses;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance'**
+  String get navAttendance;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Gradebook'**
+  String get navGradebook;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Substitutions'**
+  String get navSubstitution;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Admissions'**
+  String get navAdmissions;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get navStaff;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff attendance'**
+  String get navStaffAttendance;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get navLeave;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Payroll'**
+  String get navPayroll;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Recruitment'**
+  String get navRecruitment;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Fees and payments'**
+  String get navFees;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get navAnnouncements;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get navTransport;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get navOperations;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic reports'**
+  String get navReportsAcademic;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial reports'**
+  String get navReportsFinance;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'HR reports'**
+  String get navReportsHr;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'School settings'**
+  String get navSettings;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Users and roles'**
+  String get navMemberships;
+
+  /// Item in the school's side navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Audit log'**
+  String get navAudit;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Principal'**
+  String get rolePrincipal;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Management'**
+  String get roleManagement;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Bursar'**
+  String get roleBursar;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic administrator'**
+  String get roleAcademicAdmin;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'System administrator'**
+  String get roleSystemAdmin;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'HR manager'**
+  String get roleHrManager;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Accountant'**
+  String get roleAccountant;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Admissions officer'**
+  String get roleAdmissionsOfficer;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport manager'**
+  String get roleTransportManager;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations manager'**
+  String get roleOperationsManager;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher'**
+  String get roleTeacher;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get roleStaff;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get roleDriver;
+
+  /// Name of a role a person has in a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent'**
+  String get roleParent;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

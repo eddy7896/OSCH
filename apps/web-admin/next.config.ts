@@ -9,7 +9,12 @@ loadEnvConfig(path.resolve(import.meta.dirname, "../.."), process.env.NODE_ENV !
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
+// Next only inlines NEXT_PUBLIC_* values it saw before this file ran, and the master file is read here, so the
+// public values are handed over explicitly. Public by design: nothing secret belongs in this list.
+const PUBLIC_ENV = ["NEXT_PUBLIC_API_URL", "NEXT_PUBLIC_FIREBASE_API_KEY", "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN", "NEXT_PUBLIC_FIREBASE_PROJECT_ID", "NEXT_PUBLIC_BASE_DOMAIN"] as const;
+
 const nextConfig: NextConfig = {
+  env: Object.fromEntries(PUBLIC_ENV.flatMap((name) => (process.env[name] ? [[name, process.env[name]]] : []))),
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,

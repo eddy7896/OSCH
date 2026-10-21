@@ -10,8 +10,8 @@ export interface EmptyStateProps {
   icon?: IconName;
   /** One `Button`, only if the person can actually create the thing. */
   action?: ReactNode;
-  /** The heading level that fits the page outline. Default 3. */
-  headingLevel?: 2 | 3 | 4;
+  /** The heading level that fits the page outline (1 when the empty state is the whole page). Default 3. */
+  headingLevel?: 1 | 2 | 3 | 4;
   className?: string;
 }
 

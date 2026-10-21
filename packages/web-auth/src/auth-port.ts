@@ -1,4 +1,4 @@
-import { FirebaseError, getApp, getApps, initializeApp } from "firebase/app";
+import { FirebaseError, getApp, getApps, initializeApp, type FirebaseOptions } from "firebase/app";
 import {
   GoogleAuthProvider,
   RecaptchaVerifier,
@@ -10,7 +10,6 @@ import {
   signInWithPopup,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import { config } from "./config";
 
 export interface AuthUser {
   uid: string;
@@ -81,8 +80,8 @@ const fail = (e: unknown): never => {
   throw new AuthFailure(e instanceof FirebaseError ? mapFirebaseAuthError(e.code) : "GENERIC");
 };
 
-export function createFirebaseAuthPort(): AuthPort {
-  const app = getApps().length ? getApp() : initializeApp(config.firebase);
+export function createFirebaseAuthPort(firebase: FirebaseOptions): AuthPort {
+  const app = getApps().length ? getApp() : initializeApp(firebase);
   const auth = getAuth(app);
 
   return {

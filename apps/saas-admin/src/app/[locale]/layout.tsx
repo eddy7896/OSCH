@@ -4,7 +4,8 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { directionOf } from "@oruschools/i18n";
 import { routing } from "@/i18n/routing";
-import { AuthProvider } from "@/components/AuthProvider";
+import { AuthProvider } from "@oruschools/web-auth";
+import { config } from "@/lib/config";
 import { fontVariables } from "../fonts";
 import "../globals.css";
 
@@ -28,7 +29,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     <html lang={locale} dir={directionOf(locale)} className={`${fontVariables} h-full antialiased`}>
       <body className="min-h-full flex flex-col text-body">
         <NextIntlClientProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider firebase={config.firebase} apiUrl={config.apiUrl}>{children}</AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

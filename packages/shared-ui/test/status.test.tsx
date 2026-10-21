@@ -40,8 +40,10 @@ describe('EmptyState', () => {
     expect(screen.queryByRole('button')).toBeNull();
   });
   it('the heading level follows the page outline', () => {
-    render(<EmptyState title="Nothing" headingLevel={2} />);
+    const { rerender } = render(<EmptyState title="Nothing" headingLevel={2} />);
     expect(screen.getByRole('heading', { level: 2 })).toBeTruthy();
+    rerender(<EmptyState title="Nothing" headingLevel={1} />);
+    expect(screen.getByRole('heading', { level: 1 })).toBeTruthy();
   });
   it('renders the single action', () => {
     render(<EmptyState title="No students yet" action={<Button variant="primary">Add student</Button>} />);

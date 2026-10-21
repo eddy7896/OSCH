@@ -4,18 +4,18 @@ import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { createValidationPipe } from './common/validation.js';
 import { REQUEST_ID_HEADER } from './common/request-id.js';
-import { Env, parseOrigins } from './config/env.js';
+import { Env, originAllowed, parseOrigins } from './config/env.js';
 
 /** Shared by main.ts and the e2e tests so tests exercise the real HTTP setup. */
 export function configureApp(app: INestApplication): void {
   const config = app.get<ConfigService<Env, true>>(ConfigService);
-  const { origins } = parseOrigins(config.get('CORS_ORIGINS', { infer: true }));
+  const { origins, patterns } = parseOrigins(config.get('CORS_ORIGINS', { infer: true }));
 
   app.useLogger(app.get(Logger));
   app.use(helmet());
-  // Exact-match allow list; Bearer tokens, not cookies, so no credentials mode.
+  // Exact entries, plus `https://*.domain` entries for school subdomains (one label deep). Bearer tokens, not cookies, so no credentials mode.
   app.enableCors({
-    origin: origins,
+    origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => callback(null, origin === undefined ? false : originAllowed(origin, origins, patterns)),
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type', 'X-School-Id', 'X-Request-Id'],
     exposedHeaders: [REQUEST_ID_HEADER, 'Retry-After'],

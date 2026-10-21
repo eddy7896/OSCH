@@ -3,14 +3,21 @@
 import { useRef, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { Banner, Button, TextField } from "@oruschools/shared-ui";
-import type { PhoneChallenge } from "@/lib/auth-port";
-import { errorKey } from "@/lib/errors";
-import { useSession } from "./AuthProvider";
+import type { PhoneChallenge } from "./auth-port.js";
+import { errorKey } from "./errors.js";
+import { useSession } from "./AuthProvider.js";
 
 type Mode = "email" | "phone" | "code";
 
 /** Email and password, Google, or a code sent by SMS (the owner's chosen methods, phase 1 questions). */
-export function SignIn() {
+export interface SignInProps {
+  /** The heading, already translated ("Sign in to the platform", "Sign in to Greenfield School"). */
+  title: string;
+  /** One line under the heading. */
+  intro?: string;
+}
+
+export function SignIn({ title, intro }: SignInProps) {
   const t = useTranslations();
   const { port } = useSession();
   const [mode, setMode] = useState<Mode>("email");
@@ -72,8 +79,8 @@ export function SignIn() {
   return (
     <main className="flex flex-1 items-center justify-center p-4">
       <section className="w-full max-w-md rounded-lg border border-border bg-surface p-6 shadow-card">
-        <h1 className="text-title">{t("saasSignInTitle")}</h1>
-        <p className="mt-2 text-body text-text-muted">{t("saasSignInIntro")}</p>
+        <h1 className="text-title">{title}</h1>
+        {intro && <p className="mt-2 text-body text-text-muted">{intro}</p>}
 
         <form ref={emailField} className="mt-6 flex flex-col gap-4" onSubmit={submit} noValidate>
           {error && <Banner tone="danger" title={t(error)} />}

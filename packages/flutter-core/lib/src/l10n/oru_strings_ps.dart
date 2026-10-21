@@ -386,4 +386,203 @@ class OruStringsPs extends OruStrings {
 
   @override
   String get saasNoAdmin => 'No administrator yet';
+
+  @override
+  String webSignInTitle(String name) {
+    return 'Sign in to $name';
+  }
+
+  @override
+  String get webSignInIntro => 'Use the account your school gave you.';
+
+  @override
+  String get webSchoolNotFoundTitle => 'We could not find this school';
+
+  @override
+  String get webSchoolNotFoundBody =>
+      'Check the address, or ask your school for its web address.';
+
+  @override
+  String get webNoSchoolTitle => 'Open your school\'s address';
+
+  @override
+  String get webNoSchoolBody =>
+      'Each school has its own web address, for example greenfield.oruschools.com.';
+
+  @override
+  String webNoAccessTitle(String name) {
+    return 'You do not have access to $name';
+  }
+
+  @override
+  String get webNoAccessBody =>
+      'Ask your school\'s administrator to add you, then sign in again.';
+
+  @override
+  String get webLoadFailed => 'We could not load your account';
+
+  @override
+  String get webNavLabel => 'School sections';
+
+  @override
+  String get webDashboardEmptyTitle => 'Nothing to show yet';
+
+  @override
+  String get webDashboardEmptyBody =>
+      'Numbers and tasks will appear here as your school\'s modules are set up.';
+
+  @override
+  String get webComingTitle => 'This module is not ready yet';
+
+  @override
+  String get webComingBody => 'It will appear here when it is built.';
+
+  @override
+  String webYourRole(String role) {
+    return 'Your role: $role';
+  }
+
+  @override
+  String get errorPageTitle => 'Something went wrong on this page';
+
+  @override
+  String get actionTryAgain => 'Try again';
+
+  @override
+  String get sectionOverview => 'Overview';
+
+  @override
+  String get sectionAcademics => 'Academics';
+
+  @override
+  String get sectionPeople => 'People';
+
+  @override
+  String get sectionHr => 'HR';
+
+  @override
+  String get sectionFinance => 'Finance';
+
+  @override
+  String get sectionCommunication => 'Communication';
+
+  @override
+  String get sectionTransport => 'Transport';
+
+  @override
+  String get sectionOperations => 'Operations';
+
+  @override
+  String get sectionReports => 'Reports';
+
+  @override
+  String get sectionAdministration => 'Administration';
+
+  @override
+  String get navDashboard => 'Dashboard';
+
+  @override
+  String get navStudents => 'Students';
+
+  @override
+  String get navClasses => 'Classes and subjects';
+
+  @override
+  String get navAttendance => 'Attendance';
+
+  @override
+  String get navGradebook => 'Gradebook';
+
+  @override
+  String get navSubstitution => 'Substitutions';
+
+  @override
+  String get navAdmissions => 'Admissions';
+
+  @override
+  String get navStaff => 'Staff';
+
+  @override
+  String get navStaffAttendance => 'Staff attendance';
+
+  @override
+  String get navLeave => 'Leave';
+
+  @override
+  String get navPayroll => 'Payroll';
+
+  @override
+  String get navRecruitment => 'Recruitment';
+
+  @override
+  String get navFees => 'Fees and payments';
+
+  @override
+  String get navAnnouncements => 'Announcements';
+
+  @override
+  String get navTransport => 'Transport';
+
+  @override
+  String get navOperations => 'Operations';
+
+  @override
+  String get navReportsAcademic => 'Academic reports';
+
+  @override
+  String get navReportsFinance => 'Financial reports';
+
+  @override
+  String get navReportsHr => 'HR reports';
+
+  @override
+  String get navSettings => 'School settings';
+
+  @override
+  String get navMemberships => 'Users and roles';
+
+  @override
+  String get navAudit => 'Audit log';
+
+  @override
+  String get rolePrincipal => 'Principal';
+
+  @override
+  String get roleManagement => 'Management';
+
+  @override
+  String get roleBursar => 'Bursar';
+
+  @override
+  String get roleAcademicAdmin => 'Academic administrator';
+
+  @override
+  String get roleSystemAdmin => 'System administrator';
+
+  @override
+  String get roleHrManager => 'HR manager';
+
+  @override
+  String get roleAccountant => 'Accountant';
+
+  @override
+  String get roleAdmissionsOfficer => 'Admissions officer';
+
+  @override
+  String get roleTransportManager => 'Transport manager';
+
+  @override
+  String get roleOperationsManager => 'Operations manager';
+
+  @override
+  String get roleTeacher => 'Teacher';
+
+  @override
+  String get roleStaff => 'Staff';
+
+  @override
+  String get roleDriver => 'Driver';
+
+  @override
+  String get roleParent => 'Parent';
 }

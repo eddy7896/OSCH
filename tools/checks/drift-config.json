@@ -12,6 +12,7 @@
     "packages/database/generated",
     "packages/api-client/src",
     "packages/shared-ui/src",
+    "packages/web-auth/src",
     "tools/bootstrap-super-admin.mjs",
     "apps/web-admin/src",
     "apps/saas-admin/src"
