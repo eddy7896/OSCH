@@ -79,7 +79,7 @@
 .oru-check__text { display: flex; flex-direction: column; text-align: start; }
 .oru-check__label { font-size: 16px; line-height: max(24px, calc(16px * var(--oru-min-lh, 1))); font-weight: 600; color: var(--text); }
 .oru-check__desc { font-size: 13px; line-height: max(18px, calc(13px * var(--oru-min-lh, 1))); color: var(--text-muted); }
-.oru-check input:checked ~ .oru-check__text .oru-check__label { color: var(--text-muted); text-decoration: line-through; }
+.oru-check--task input:checked ~ .oru-check__text .oru-check__label { color: var(--text-muted); text-decoration: line-through; }
 .oru-check input:focus-visible + .oru-check__box { outline: 2px solid var(--focus); outline-offset: 2px; }
 
 /* SegmentedControl */

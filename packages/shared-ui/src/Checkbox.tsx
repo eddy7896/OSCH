@@ -11,16 +11,18 @@ export interface CheckboxProps {
   disabled?: boolean;
   name?: string;
   value?: string;
+  /** For to-do lists: a ticked item is muted and struck through. Off by default, because a struck-through "Remember me" reads as the opposite of what was chosen. */
+  strikeWhenChecked?: boolean;
   className?: string;
 }
 
-/** A tick box with a label; the whole row is the tap target (48px tall). Done items are struck through and muted. */
-export function Checkbox({ label, description, className, ...input }: CheckboxProps) {
+/** A tick box with a label; the whole row is the tap target (48px tall). */
+export function Checkbox({ label, description, strikeWhenChecked, className, ...input }: CheckboxProps) {
   const id = useId();
   const labelId = `${id}-label`;
   const descId = `${id}-desc`;
   return (
-    <label className={cx('oru-check', className)}>
+    <label className={cx('oru-check', strikeWhenChecked && 'oru-check--task', className)}>
       {/* Named by the label text alone; the description is read after it (not part of the name). */}
       <input type="checkbox" {...input} aria-labelledby={labelId} aria-describedby={description ? descId : undefined} />
       <span className="oru-check__box" aria-hidden="true">
