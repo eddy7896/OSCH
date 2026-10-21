@@ -73,6 +73,40 @@ export class Env {
   @IsInt()
   @Min(1)
   THROTTLE_LIMIT: number = 120;
+
+  /** Cloudflare R2 (S3 compatible), used only to hand out time-limited upload URLs. All four of the first group, or none. */
+  @IsOptional() @IsString() R2_ACCOUNT_ID?: string;
+  @IsOptional() @IsString() R2_ACCESS_KEY?: string;
+  @IsOptional() @IsString() R2_SECRET_KEY?: string;
+  @IsOptional() @IsString() R2_BUCKET_NAME?: string;
+  /** Public base address of the bucket (a custom domain or r2.dev), used to form the address of an uploaded file. */
+  @IsOptional() @IsString() R2_PUBLIC_URL?: string;
+}
+
+export interface R2Config {
+  accountId: string;
+  accessKey: string;
+  secretKey: string;
+  bucket: string;
+  /** No trailing slash; undefined when not configured. */
+  publicUrl?: string;
+}
+
+/**
+ * The 32-character hex account id, from either the bare id or the S3 endpoint address Cloudflare shows
+ * (`https://<id>.r2.cloudflarestorage.com`), so pasting the wrong one of the two still works.
+ */
+export function r2AccountId(raw: string | undefined): string | undefined {
+  const value = (raw ?? '').trim().toLowerCase();
+  const m = /^(?:https?:\/\/)?([a-f0-9]{32})(?:\.r2\.cloudflarestorage\.com)?\/?$/.exec(value);
+  return m?.[1];
+}
+
+/** The R2 settings, or null when none are set. (validateEnv has already refused a half-set or malformed group.) */
+export function r2Config(env: Pick<Env, 'R2_ACCOUNT_ID' | 'R2_ACCESS_KEY' | 'R2_SECRET_KEY' | 'R2_BUCKET_NAME' | 'R2_PUBLIC_URL'>): R2Config | null {
+  const accountId = r2AccountId(env.R2_ACCOUNT_ID);
+  if (!accountId || !env.R2_ACCESS_KEY || !env.R2_SECRET_KEY || !env.R2_BUCKET_NAME) return null;
+  return { accountId, accessKey: env.R2_ACCESS_KEY, secretKey: env.R2_SECRET_KEY, bucket: env.R2_BUCKET_NAME, publicUrl: env.R2_PUBLIC_URL?.trim().replace(/\/+$/, '') || undefined };
 }
 
 /** A school's own address: `https://*.example.com` allows `https://greenfield.example.com` but not `https://a.b.example.com` or the bare domain. */
@@ -147,6 +181,12 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   );
   const { origins, patterns, invalid } = parseOrigins(env.CORS_ORIGINS ?? '');
   if (invalid.length > 0) problems.push(`CORS_ORIGINS: ${invalid.length} entr${invalid.length === 1 ? 'y is' : 'ies are'} not a bare http(s) origin such as https://app.example.com (or a school wildcard such as https://*.example.com)`);
+  const r2Set = [env.R2_ACCOUNT_ID, env.R2_ACCESS_KEY, env.R2_SECRET_KEY, env.R2_BUCKET_NAME].filter((v) => v !== undefined && v !== '');
+  // A half-filled group (for example a developer's template with empty keys) just means storage is off: uploads answer 503.
+  // In production it is a mistake worth refusing to start for.
+  if (env.NODE_ENV === 'production' && r2Set.length > 0 && r2Set.length < 4) problems.push('R2_ACCOUNT_ID, R2_ACCESS_KEY, R2_SECRET_KEY, R2_BUCKET_NAME: set all four or none');
+  else if (r2Set.length === 4 && !r2AccountId(env.R2_ACCOUNT_ID)) problems.push('R2_ACCOUNT_ID: must be the 32-character account id (or the https://<id>.r2.cloudflarestorage.com address)');
+  if (env.R2_PUBLIC_URL && !/^https?:\/\/[^\s/]+(\/\S*)?$/.test(env.R2_PUBLIC_URL.trim())) problems.push('R2_PUBLIC_URL: must be an http(s) address');
   if (env.NODE_ENV === 'production') {
     if (origins.length + patterns.length === 0) problems.push('CORS_ORIGINS: must list at least one origin in production');
     if (patterns.some((p) => p.scheme !== 'https:')) problems.push('CORS_ORIGINS: wildcard entries must be https in production');

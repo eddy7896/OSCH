@@ -28,6 +28,7 @@ export const bindApi = (client: Client) => ({
   platformSchoolsSuspend: async (options: Opts<typeof sdk.platformSchoolsSuspend<true>>): Out<typeof sdk.platformSchoolsSuspend<true>> => (await sdk.platformSchoolsSuspend<true>({ ...options, client, throwOnError: true } as never)).data,
   platformSchoolsUpdate: async (options: Opts<typeof sdk.platformSchoolsUpdate<true>>): Out<typeof sdk.platformSchoolsUpdate<true>> => (await sdk.platformSchoolsUpdate<true>({ ...options, client, throwOnError: true } as never)).data,
   publicSchoolsBySubdomain: async (options: Opts<typeof sdk.publicSchoolsBySubdomain<true>>): Out<typeof sdk.publicSchoolsBySubdomain<true>> => (await sdk.publicSchoolsBySubdomain<true>({ ...options, client, throwOnError: true } as never)).data,
+  uploadsSchoolLogo: async (options: Opts<typeof sdk.uploadsSchoolLogo<true>>): Out<typeof sdk.uploadsSchoolLogo<true>> => (await sdk.uploadsSchoolLogo<true>({ ...options, client, throwOnError: true } as never)).data,
 });
 
 export type Api = ReturnType<typeof bindApi>;

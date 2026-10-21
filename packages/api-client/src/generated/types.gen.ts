@@ -198,6 +198,11 @@ export type SchoolDto = {
     subDomain: string;
 };
 
+export type SchoolLogoUploadDto = {
+    contentType: 'image/png' | 'image/jpeg' | 'image/webp';
+    sizeBytes: number;
+};
+
 export type SchoolPageDto = {
     items: Array<SchoolDto>;
     limit: number;
@@ -231,6 +236,17 @@ export type UpdatePreferencesDto = {
 export type UpdateSchoolDto = {
     defaultLanguage?: 'en' | 'hi' | 'ur' | 'ks' | 'sd' | 'ps' | 'fa' | 'ar' | 'bn' | 'as' | 'mr' | 'doi' | 'gu' | 'pa' | 'or' | 'ta' | 'te' | 'kn' | 'ml';
     name?: string;
+};
+
+export type UploadTicketDto = {
+    expiresInSeconds: number;
+    headers: {
+        [key: string]: string;
+    };
+    key: string;
+    method: 'PUT';
+    publicUrl: string | null;
+    uploadUrl: string;
 };
 
 export type HealthCheckData = {
@@ -1187,3 +1203,41 @@ export type PublicSchoolsBySubdomainResponses = {
 };
 
 export type PublicSchoolsBySubdomainResponse = PublicSchoolsBySubdomainResponses[keyof PublicSchoolsBySubdomainResponses];
+
+export type UploadsSchoolLogoData = {
+    body: SchoolLogoUploadDto;
+    path?: never;
+    query?: never;
+    url: '/v1/uploads/school-logo';
+};
+
+export type UploadsSchoolLogoErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type UploadsSchoolLogoError = UploadsSchoolLogoErrors[keyof UploadsSchoolLogoErrors];
+
+export type UploadsSchoolLogoResponses = {
+    200: UploadTicketDto;
+};
+
+export type UploadsSchoolLogoResponse = UploadsSchoolLogoResponses[keyof UploadsSchoolLogoResponses];

@@ -840,6 +840,28 @@
         ],
         "type": "object"
       },
+      "SchoolLogoUploadDto": {
+        "properties": {
+          "contentType": {
+            "enum": [
+              "image/png",
+              "image/jpeg",
+              "image/webp"
+            ],
+            "type": "string"
+          },
+          "sizeBytes": {
+            "maximum": 2097152,
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "contentType",
+          "sizeBytes"
+        ],
+        "type": "object"
+      },
       "SchoolPageDto": {
         "properties": {
           "items": {
@@ -1012,6 +1034,44 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "UploadTicketDto": {
+        "properties": {
+          "expiresInSeconds": {
+            "type": "number"
+          },
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "key": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "PUT"
+            ],
+            "type": "string"
+          },
+          "publicUrl": {
+            "nullable": true,
+            "type": "string"
+          },
+          "uploadUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "uploadUrl",
+          "method",
+          "headers",
+          "key",
+          "publicUrl",
+          "expiresInSeconds"
+        ],
         "type": "object"
       }
     },
@@ -2660,6 +2720,66 @@
           "PublicSchools"
         ],
         "x-access": "public"
+      }
+    },
+    "/v1/uploads/school-logo": {
+      "post": {
+        "operationId": "Uploads_schoolLogo",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchoolLogoUploadDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadTicketDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Uploads"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "update",
+          "resource": "settings"
+        }
       }
     }
   },

@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { Banner, Button, Card } from "@oruschools/shared-ui";
 import { SignIn, useSession } from "@oruschools/web-auth";
+import { ApplyLanguage, rememberedLanguage } from "./ApplyLanguage";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { SchoolsScreen } from "./SchoolsScreen";
 import { Shell } from "./Shell";
 
@@ -17,7 +19,16 @@ export function PlatformApp() {
         <Banner tone="info" title={t("statusLoading")} />
       </main>
     );
-  if (state.status === "out") return <SignIn title={t("saasSignInTitle")} intro={t("saasSignInIntro")} />;
+  if (state.status === "out")
+    return (
+      <>
+        <ApplyLanguage target={rememberedLanguage()} />
+        <div className="flex justify-end p-4">
+          <LanguageSwitcher />
+        </div>
+        <SignIn title={t("saasSignInTitle")} intro={t("saasSignInIntro")} />
+      </>
+    );
   if (!state.isOwner)
     return (
       <main className="flex flex-1 items-center justify-center p-4">
@@ -33,6 +44,7 @@ export function PlatformApp() {
     );
   return (
     <Shell>
+      <ApplyLanguage target={rememberedLanguage()} />
       <SchoolsScreen />
     </Shell>
   );
