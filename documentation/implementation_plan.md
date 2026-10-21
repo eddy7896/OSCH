@@ -150,7 +150,7 @@ Critical path: **RBAC + tenant guard (P0–P1) → data model for people/classes
 | P4-4 | `apps/mobile-teacher`: **Today** home (next class, to-dos), exception-based attendance ("Mark all present" → toggle exceptions), gradebook fast entry with drafts, classes, leave requests & substitute status | XL |
 | P4-5 | `apps/mobile-staff`: Home/Attendance/Tasks/More; geo-fenced check-in/out (permission flows, spoof/mock-location handling policy), leave, announcements | L |
 | P4-6 | Push registration & handling; notification inbox offline-cached | M |
-| P4-7 | Real-world testing: 2G throttling, airplane mode, low-end Android, app kill mid-sync, clock skew | L |
+| P4-7 | Real-world testing on **physical phones** (carried over from P1-0c: the four apps' first screens, Urdu right-to-left, the Driver app's 64 px targets): 2G throttling, airplane mode, low-end Android, app kill mid-sync, clock skew | L |
 | P4-8 | Release pipeline: flavors, signing, Fastlane/CI, Crashlytics, TestFlight/internal track; per-app launcher icons & lockups from `brand-assets`; white-label Mode A (school logo on `surface-brand` tile + validated colour override, "Powered by OruSchools" visible on splash/login) | L |
 
 **Gate:** E-SYNC-* (offline attendance syncs once; replay idempotent; two-device conflict deterministic; queue survives kill; failure of one item doesn't block queue); `melos run analyze|test` green; every screen usable with no spinner on core flows; 48px touch targets verified.
