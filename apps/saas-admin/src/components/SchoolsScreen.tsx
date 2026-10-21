@@ -6,8 +6,8 @@ import { LOCALES } from "@oruschools/i18n";
 import type { SchoolDto } from "@oruschools/api-client";
 import { Badge, Banner, Button, Card, EmptyState, ListRow, TextField } from "@oruschools/shared-ui";
 import { ApiError, type StaffAccountDto } from "@oruschools/api-client";
-import { errorKey, invalidFields } from "@/lib/errors";
-import { useSession } from "./AuthProvider";
+import { errorKey, invalidFields, useSession } from "@oruschools/web-auth";
+
 
 const PAGE = 50;
 type Language = (typeof LOCALES)[number]["code"];

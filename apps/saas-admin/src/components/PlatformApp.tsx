@@ -2,10 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import { Banner, Button, Card } from "@oruschools/shared-ui";
-import { useSession } from "./AuthProvider";
+import { SignIn, useSession } from "@oruschools/web-auth";
 import { SchoolsScreen } from "./SchoolsScreen";
 import { Shell } from "./Shell";
-import { SignIn } from "./SignIn";
 
 /** Signed out: the sign-in screen. Signed in but not the platform owner: a clear "no access". Owner: the platform area. */
 export function PlatformApp() {
@@ -18,7 +17,7 @@ export function PlatformApp() {
         <Banner tone="info" title={t("statusLoading")} />
       </main>
     );
-  if (state.status === "out") return <SignIn />;
+  if (state.status === "out") return <SignIn title={t("saasSignInTitle")} intro={t("saasSignInIntro")} />;
   if (!state.isOwner)
     return (
       <main className="flex flex-1 items-center justify-center p-4">

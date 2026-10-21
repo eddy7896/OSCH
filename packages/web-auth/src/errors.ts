@@ -1,5 +1,5 @@
 import { ApiError, type ApiErrorCode } from "@oruschools/api-client";
-import { AuthFailure, type AuthFailureCode } from "./auth-port";
+import { AuthFailure, type AuthFailureCode } from "./auth-port.js";
 
 /** The message key for every error the gateway or the client can produce. A new code in the contract fails the build here. */
 const API_ERROR_KEY: Record<ApiErrorCode, string> = {

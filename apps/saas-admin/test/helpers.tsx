@@ -4,8 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { vi } from "vitest";
 import { getMessages } from "@oruschools/i18n";
 import type { Api } from "@oruschools/api-client";
-import { AuthProvider } from "@/components/AuthProvider";
-import type { AuthPort, AuthState, PhoneChallenge } from "@/lib/auth-port";
+import { AuthProvider, type AuthPort, type AuthState, type PhoneChallenge } from "@oruschools/web-auth";
 
 export const OWNER: AuthState = { status: "in", user: { uid: "u1", email: "owner@example.com", displayName: "Owner" }, isOwner: true };
 

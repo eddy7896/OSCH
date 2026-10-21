@@ -26,12 +26,12 @@ vi.mock("firebase/auth", () => ({
 }));
 
 import { FirebaseError } from "firebase/app";
-import { AuthFailure, createFirebaseAuthPort, type AuthState } from "@/lib/auth-port";
+import { AuthFailure, createFirebaseAuthPort, type AuthState } from "../src/auth-port.js";
 
 const user = (claims: Record<string, unknown>) => ({ uid: "u1", email: "a@b.co", displayName: null, getIdTokenResult: async () => ({ claims }) });
 
 async function stateFor(u: unknown): Promise<AuthState> {
-  const port = createFirebaseAuthPort();
+  const port = createFirebaseAuthPort({ apiKey: 'k' });
   let last: AuthState = { status: "loading" };
   port.subscribe((s) => (last = s));
   await state.listener!(u);
@@ -54,7 +54,7 @@ describe("Firebase port", () => {
     expect(await stateFor(user({}))).toMatchObject({ status: "in", isOwner: false });
   });
   it("sign-in failures become closed codes, never Firebase's text", async () => {
-    const port = createFirebaseAuthPort();
+    const port = createFirebaseAuthPort({ apiKey: 'k' });
     state.signIn.mockRejectedValueOnce(new FirebaseError("auth/invalid-credential", "x"));
     await expect(port.signInWithEmail("a@b.co", "x")).rejects.toMatchObject({ code: "CREDENTIALS" });
     state.signIn.mockRejectedValueOnce(new Error("weird"));
@@ -62,12 +62,12 @@ describe("Firebase port", () => {
   });
   it("the token comes from the signed-in user and can be force-refreshed", async () => {
     state.token.mockResolvedValue("abc");
-    const port = createFirebaseAuthPort();
+    const port = createFirebaseAuthPort({ apiKey: 'k' });
     expect(await port.getToken(true)).toBe("abc");
     expect(state.token).toHaveBeenCalledWith(true);
   });
   it("sends the set-password email through Firebase, and a failure becomes a closed code", async () => {
-    const port = createFirebaseAuthPort();
+    const port = createFirebaseAuthPort({ apiKey: 'k' });
     state.reset.mockResolvedValueOnce(undefined);
     await port.sendPasswordReset("a@b.co");
     expect(state.reset).toHaveBeenCalledWith(expect.anything(), "a@b.co");
