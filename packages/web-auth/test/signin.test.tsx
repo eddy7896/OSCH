@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import axe from "axe-core";
 import { SignIn } from "../src/SignIn.js";
 import { AuthFailure } from "../src/auth-port.js";
-import { fakePort, renderApp } from "./helpers";
+import { fakePort, renderApp } from "./helpers.js";
 
 const type = (label: RegExp | string, value: string) => fireEvent.change(screen.getByLabelText(label), { target: { value } });
 
