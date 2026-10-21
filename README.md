@@ -39,7 +39,8 @@ graph TD
 | `packages/i18n` | 19 languages: registry, message catalogs, generates Flutter/web/CSS/font artefacts |
 | `packages/shared-design-tokens` | Builds the design tokens into CSS, a Tailwind v4 theme, TypeScript and Dart |
 | `packages/flutter-core` | Dart tokens, theme, localization layer and 12 bundled font families |
-| `packages/shared-ui`, `api-client`, `database` | Placeholders for Phases 1 and 2 |
+| `packages/shared-ui` | React component library (batch 1 of 4 built); styles in `styles.css` |
+| `packages/api-client`, `database` | Typed gateway client; generated Data Connect Admin SDK |
 | `dataconnect/` | Schema and the `erp-connector` operations |
 | `documentation/` | Architecture, decisions (ADRs), design system, brand assets, plans, audit |
 | `evals/`, `tools/` | Spec evals, the drift check, emulator tests, asset scripts |

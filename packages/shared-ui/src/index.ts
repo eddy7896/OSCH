@@ -1,2 +1,20 @@
-// Placeholder: implemented in a later phase (see documentation/implementation_plan.md).
-export {};
+export { Avatar, initialsOf, type AvatarProps } from './Avatar.js';
+export { Badge, type BadgeProps, type CountBadgeProps, type TextBadgeProps, type Tone } from './Badge.js';
+export { Button, type ButtonProps, type Density } from './Button.js';
+export { Checkbox, type CheckboxProps } from './Checkbox.js';
+export { ICON_NAMES, Icon, type IconName, type IconProps } from './Icon.js';
+export { SegmentedControl, type SegmentedControlProps, type SegmentedOption } from './SegmentedControl.js';
+export { TextField, type TextFieldProps } from './TextField.js';
+export { Banner, type BannerProps, type BannerTone } from './Banner.js';
+export { EmptyState, type EmptyStateProps } from './EmptyState.js';
+export { ATTENDANCE_STATUSES, StatusPill, type AttendanceStatus, type StatusPillProps } from './StatusPill.js';
+export { SyncStatus, type SyncState, type SyncStatusProps } from './SyncStatus.js';
+export { ActionTile, type ActionTileProps } from './ActionTile.js';
+export { Card, type CardProps } from './Card.js';
+export { LinkAction, type LinkActionProps } from './LinkAction.js';
+export { ListRow, type ListRowProps } from './ListRow.js';
+export { StatCard, type StatCardProps } from './StatCard.js';
+export { BottomNav, type BottomNavProps } from './BottomNav.js';
+export { Logo, type LogoProps, type LogoTone } from './Logo.js';
+export type { NavItem } from './NavItem.js';
+export { SideNav, type SideNavProps, type SideNavSection } from './SideNav.js';
