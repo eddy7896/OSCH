@@ -23,6 +23,8 @@ try {
   process.exit(2);
 }
 
+// Master env file at the repo root (missing file is fine).
+try { process.loadEnvFile(new URL('../.env.local', import.meta.url)); } catch {}
 const emulator = Boolean(process.env.FIREBASE_AUTH_EMULATOR_HOST);
 if (!emulator && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   console.error("error: no credentials. Set GOOGLE_APPLICATION_CREDENTIALS to a service-account key for this project (or use the emulators).");

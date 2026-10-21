@@ -23,7 +23,8 @@ import { HealthModule } from './health/health.module.js';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, cache: true, envFilePath: ['.env.local', '.env'], validate: validateEnv }),
+    ConfigModule.forRoot({ isGlobal: true, cache: true, // The single master file lives at the repo root (cwd is apps/api-gateway under npm workspaces, the root when run from there).
+      envFilePath: ['../../.env.local', '.env.local'], validate: validateEnv }),
     LoggerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService<Env, true>) => ({
