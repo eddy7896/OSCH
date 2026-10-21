@@ -196,6 +196,13 @@ function provisionSchool(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.provisionSchool = provisionSchool;
 
+function provisionSchoolAdmin(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ProvisionSchoolAdmin', inputVars, inputOpts);
+}
+exports.provisionSchoolAdmin = provisionSchoolAdmin;
+
 function updateSchool(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);

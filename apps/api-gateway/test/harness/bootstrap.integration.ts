@@ -77,7 +77,8 @@ describe.skipIf(!ready)('tools/bootstrap-super-admin.mjs against the real emulat
 
   it('refuses to run against a real project without credentials', () => {
     const { FIREBASE_AUTH_EMULATOR_HOST: _a, DATA_CONNECT_EMULATOR_HOST: _b, GOOGLE_APPLICATION_CREDENTIALS: _c, ...clean } = process.env;
-    const res = run(['--email', 'owner@example.com', '--project', 'my-school-prod', '--apply'], clean);
+    // Set but empty (not absent): the tool reads the master .env.local without overriding what is already set, and a developer's file may hold real credentials.
+    const res = run(['--email', 'owner@example.com', '--project', 'my-school-prod', '--apply'], { ...clean, GOOGLE_APPLICATION_CREDENTIALS: '', FIREBASE_AUTH_EMULATOR_HOST: '', DATA_CONNECT_EMULATOR_HOST: '' });
     expect(res.status).toBe(2);
     expect(res.stderr).toMatch(/no credentials/);
   });

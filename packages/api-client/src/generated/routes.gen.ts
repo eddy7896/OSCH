@@ -88,6 +88,12 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "POST",
+    "path": "/v1/platform/schools/{id}/admins",
+    "access": "platform",
+    "operationId": "PlatformSchools_createAdmin"
+  },
+  {
+    "method": "POST",
     "path": "/v1/platform/schools/{id}/suspend",
     "access": "platform",
     "operationId": "PlatformSchools_suspend"

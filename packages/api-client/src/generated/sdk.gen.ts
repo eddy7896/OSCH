@@ -2,7 +2,7 @@
 
 import { client } from './client.gen.js';
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client/index.js';
-import type { AccountsCreateData, AccountsCreateErrors, AccountsCreateResponses, HealthCheckData, HealthCheckDbData, HealthCheckDbErrors, HealthCheckDbResponses, HealthCheckErrors, HealthCheckResponses, InvitationsAcceptData, InvitationsAcceptErrors, InvitationsAcceptResponses, InvitationsCreateData, InvitationsCreateErrors, InvitationsCreateResponses, InvitationsListData, InvitationsListErrors, InvitationsListResponses, InvitationsRevokeData, InvitationsRevokeErrors, InvitationsRevokeResponses, MeGetData, MeGetErrors, MeGetResponses, MembershipsAddData, MembershipsAddErrors, MembershipsAddResponses, MembershipsListData, MembershipsListErrors, MembershipsListResponses, MembershipsRemoveData, MembershipsRemoveErrors, MembershipsRemoveResponses, MembershipsUpdateData, MembershipsUpdateErrors, MembershipsUpdateResponses, MePreferencesData, MePreferencesErrors, MePreferencesResponses, PlatformSchoolsActivateData, PlatformSchoolsActivateErrors, PlatformSchoolsActivateResponses, PlatformSchoolsCreateData, PlatformSchoolsCreateErrors, PlatformSchoolsCreateResponses, PlatformSchoolsGetData, PlatformSchoolsGetErrors, PlatformSchoolsGetResponses, PlatformSchoolsListData, PlatformSchoolsListErrors, PlatformSchoolsListResponses, PlatformSchoolsSuspendData, PlatformSchoolsSuspendErrors, PlatformSchoolsSuspendResponses, PlatformSchoolsUpdateData, PlatformSchoolsUpdateErrors, PlatformSchoolsUpdateResponses, PublicSchoolsBySubdomainData, PublicSchoolsBySubdomainErrors, PublicSchoolsBySubdomainResponses } from './types.gen.js';
+import type { AccountsCreateData, AccountsCreateErrors, AccountsCreateResponses, HealthCheckData, HealthCheckDbData, HealthCheckDbErrors, HealthCheckDbResponses, HealthCheckErrors, HealthCheckResponses, InvitationsAcceptData, InvitationsAcceptErrors, InvitationsAcceptResponses, InvitationsCreateData, InvitationsCreateErrors, InvitationsCreateResponses, InvitationsListData, InvitationsListErrors, InvitationsListResponses, InvitationsRevokeData, InvitationsRevokeErrors, InvitationsRevokeResponses, MeGetData, MeGetErrors, MeGetResponses, MembershipsAddData, MembershipsAddErrors, MembershipsAddResponses, MembershipsListData, MembershipsListErrors, MembershipsListResponses, MembershipsRemoveData, MembershipsRemoveErrors, MembershipsRemoveResponses, MembershipsUpdateData, MembershipsUpdateErrors, MembershipsUpdateResponses, MePreferencesData, MePreferencesErrors, MePreferencesResponses, PlatformSchoolsActivateData, PlatformSchoolsActivateErrors, PlatformSchoolsActivateResponses, PlatformSchoolsCreateAdminData, PlatformSchoolsCreateAdminErrors, PlatformSchoolsCreateAdminResponses, PlatformSchoolsCreateData, PlatformSchoolsCreateErrors, PlatformSchoolsCreateResponses, PlatformSchoolsGetData, PlatformSchoolsGetErrors, PlatformSchoolsGetResponses, PlatformSchoolsListData, PlatformSchoolsListErrors, PlatformSchoolsListResponses, PlatformSchoolsSuspendData, PlatformSchoolsSuspendErrors, PlatformSchoolsSuspendResponses, PlatformSchoolsUpdateData, PlatformSchoolsUpdateErrors, PlatformSchoolsUpdateResponses, PublicSchoolsBySubdomainData, PublicSchoolsBySubdomainErrors, PublicSchoolsBySubdomainResponses } from './types.gen.js';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -147,6 +147,16 @@ export const platformSchoolsUpdate = <ThrowOnError extends boolean = false>(opti
 export const platformSchoolsActivate = <ThrowOnError extends boolean = false>(options: Options<PlatformSchoolsActivateData, ThrowOnError>): RequestResult<PlatformSchoolsActivateResponses, PlatformSchoolsActivateErrors, ThrowOnError> => (options.client ?? client).post<PlatformSchoolsActivateResponses, PlatformSchoolsActivateErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/v1/platform/schools/{id}/activate',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const platformSchoolsCreateAdmin = <ThrowOnError extends boolean = false>(options: Options<PlatformSchoolsCreateAdminData, ThrowOnError>): RequestResult<PlatformSchoolsCreateAdminResponses, PlatformSchoolsCreateAdminErrors, ThrowOnError> => (options.client ?? client).post<PlatformSchoolsCreateAdminResponses, PlatformSchoolsCreateAdminErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/platform/schools/{id}/admins',
     ...options,
     headers: {
         'Content-Type': 'application/json',
