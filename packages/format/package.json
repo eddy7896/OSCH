@@ -1,0 +1,32 @@
+{
+  "name": "@oruschools/format",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Money, date and time formatting and arithmetic shared by the gateway, the web apps and (as a Dart mirror in flutter-core) the mobile apps. Tested against one set of vectors (vectors.json).",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./vectors.json": "./vectors.json"
+  },
+  "files": [
+    "dist",
+    "vectors.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "oxlint src test",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "oxlint": "^1.58.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}

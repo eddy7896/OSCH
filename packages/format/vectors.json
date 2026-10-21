@@ -1,0 +1,692 @@
+{
+ "_comment": "Shared test vectors for the money and format library. Expected values were produced by an independent Python implementation, not by the code under test. Run by packages/format (TypeScript) and packages/flutter-core (Dart); both must produce identical results.",
+ "money": {
+  "format": [
+   {
+    "minor": "1824000000",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹1,82,40,000"
+   },
+   {
+    "minor": "125050",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹1,250.50"
+   },
+   {
+    "minor": "125000",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹1,250"
+   },
+   {
+    "minor": "5",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹0.05"
+   },
+   {
+    "minor": "0",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹0"
+   },
+   {
+    "minor": "-50000",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "-₹500"
+   },
+   {
+    "minor": "-5",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "-₹0.05"
+   },
+   {
+    "minor": "99999",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹999.99"
+   },
+   {
+    "minor": "100000",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹1,000"
+   },
+   {
+    "minor": "10000000",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹1,00,000"
+   },
+   {
+    "minor": "9007199254740993",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹9,00,71,99,25,47,409.93"
+   },
+   {
+    "minor": "9223372036854775807",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹92,23,37,20,36,85,47,758.07"
+   },
+   {
+    "minor": "-9223372036854775808",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "-₹92,23,37,20,36,85,47,758.08"
+   },
+   {
+    "minor": "1234567890123",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "auto",
+    "expected": "₹12,34,56,78,901.23"
+   },
+   {
+    "minor": "125000",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "always",
+    "expected": "₹1,250.00"
+   },
+   {
+    "minor": "0",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "always",
+    "expected": "₹0.00"
+   },
+   {
+    "minor": "5",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "always",
+    "expected": "₹0.05"
+   },
+   {
+    "minor": "-250000",
+    "currency": "INR",
+    "locale": "en-IN",
+    "decimals": "always",
+    "expected": "-₹2,500.00"
+   },
+   {
+    "minor": "10000000",
+    "currency": "INR",
+    "locale": "hi-IN",
+    "decimals": "auto",
+    "expected": "₹1,00,000"
+   },
+   {
+    "minor": "10000000",
+    "currency": "INR",
+    "locale": "hi",
+    "decimals": "auto",
+    "expected": "₹1,00,000"
+   },
+   {
+    "minor": "10000000",
+    "currency": "INR",
+    "locale": "ur-PK",
+    "decimals": "auto",
+    "expected": "₹1,00,000"
+   },
+   {
+    "minor": "10000000",
+    "currency": "INR",
+    "locale": "bn-BD",
+    "decimals": "auto",
+    "expected": "₹1,00,000"
+   },
+   {
+    "minor": "10000000",
+    "currency": "INR",
+    "locale": "ta",
+    "decimals": "auto",
+    "expected": "₹1,00,000"
+   },
+   {
+    "minor": "123456700",
+    "currency": "USD",
+    "locale": "en-US",
+    "decimals": "auto",
+    "expected": "$1,234,567"
+   },
+   {
+    "minor": "123456700",
+    "currency": "USD",
+    "locale": "en",
+    "decimals": "auto",
+    "expected": "$1,234,567"
+   },
+   {
+    "minor": "100000",
+    "currency": "AED",
+    "locale": "ar-AE",
+    "decimals": "auto",
+    "expected": "AED 1,000"
+   },
+   {
+    "minor": "100000",
+    "currency": "AED",
+    "locale": "ar",
+    "decimals": "auto",
+    "expected": "AED 1,000"
+   },
+   {
+    "minor": "1500",
+    "currency": "JPY",
+    "locale": "ja-JP",
+    "decimals": "auto",
+    "expected": "JPY 1,500"
+   },
+   {
+    "minor": "1234567",
+    "currency": "KWD",
+    "locale": "ar-KW",
+    "decimals": "auto",
+    "expected": "KWD 1,234.567"
+   },
+   {
+    "minor": "123456789",
+    "currency": "GBP",
+    "locale": "en-GB",
+    "decimals": "auto",
+    "expected": "£1,234,567.89"
+   },
+   {
+    "minor": "10000000",
+    "currency": "INR",
+    "locale": "en-US",
+    "decimals": "auto",
+    "expected": "₹100,000"
+   },
+   {
+    "minor": "1234000",
+    "currency": "KWD",
+    "locale": "ar-KW",
+    "decimals": "auto",
+    "expected": "KWD 1,234"
+   },
+   {
+    "minor": "1234000",
+    "currency": "KWD",
+    "locale": "ar-KW",
+    "decimals": "always",
+    "expected": "KWD 1,234.000"
+   },
+   {
+    "minor": "1000000",
+    "currency": "USD",
+    "locale": "en-US",
+    "decimals": "auto",
+    "expected": "$10,000"
+   },
+   {
+    "minor": "1500",
+    "currency": "JPY",
+    "locale": "ja-JP",
+    "decimals": "always",
+    "expected": "JPY 1,500"
+   }
+  ],
+  "parse": [
+   {
+    "text": "1,250.5",
+    "minor": "125050"
+   },
+   {
+    "text": "₹1250",
+    "minor": "125000"
+   },
+   {
+    "text": "1,82,40,000",
+    "minor": "1824000000"
+   },
+   {
+    "text": "0.05",
+    "minor": "5"
+   },
+   {
+    "text": "-₹500",
+    "minor": "-50000"
+   },
+   {
+    "text": " 12 ",
+    "minor": "1200"
+   },
+   {
+    "text": "10.00",
+    "minor": "1000"
+   },
+   {
+    "text": "0",
+    "minor": "0"
+   },
+   {
+    "text": "007",
+    "minor": "700"
+   },
+   {
+    "text": "1,250.50",
+    "minor": "125050"
+   },
+   {
+    "text": "-0.01",
+    "minor": "-1"
+   }
+  ],
+  "parseInvalid": [
+   "",
+   "abc",
+   "1.234",
+   "1e3",
+   "₹",
+   "--5",
+   ".5",
+   "1.",
+   "1.2.3",
+   "12 34",
+   "$100",
+   "5%",
+   "+5",
+   "1,2,3.4.5"
+  ],
+  "mulDivRound": [
+   {
+    "amount": "1",
+    "num": "1",
+    "den": "2",
+    "expected": "1"
+   },
+   {
+    "amount": "-1",
+    "num": "1",
+    "den": "2",
+    "expected": "-1"
+   },
+   {
+    "amount": "5",
+    "num": "1",
+    "den": "3",
+    "expected": "2"
+   },
+   {
+    "amount": "4",
+    "num": "1",
+    "den": "3",
+    "expected": "1"
+   },
+   {
+    "amount": "100",
+    "num": "1",
+    "den": "3",
+    "expected": "33"
+   },
+   {
+    "amount": "200",
+    "num": "1",
+    "den": "3",
+    "expected": "67"
+   },
+   {
+    "amount": "-200",
+    "num": "1",
+    "den": "3",
+    "expected": "-67"
+   },
+   {
+    "amount": "1",
+    "num": "-1",
+    "den": "2",
+    "expected": "-1"
+   },
+   {
+    "amount": "0",
+    "num": "5",
+    "den": "7",
+    "expected": "0"
+   },
+   {
+    "amount": "123456789",
+    "num": "12",
+    "den": "100",
+    "expected": "14814815"
+   },
+   {
+    "amount": "9007199254740993",
+    "num": "3",
+    "den": "7",
+    "expected": "3860228252031854"
+   },
+   {
+    "amount": "-7",
+    "num": "1",
+    "den": "2",
+    "expected": "-4"
+   },
+   {
+    "amount": "7",
+    "num": "1",
+    "den": "2",
+    "expected": "4"
+   },
+   {
+    "amount": "3",
+    "num": "1",
+    "den": "2",
+    "expected": "2"
+   },
+   {
+    "amount": "2",
+    "num": "1",
+    "den": "2",
+    "expected": "1"
+   }
+  ],
+  "percentOf": [
+   {
+    "minor": "1500000",
+    "bp": 1250,
+    "expected": "187500"
+   },
+   {
+    "minor": "999",
+    "bp": 1000,
+    "expected": "100"
+   },
+   {
+    "minor": "5",
+    "bp": 5000,
+    "expected": "3"
+   },
+   {
+    "minor": "-5",
+    "bp": 5000,
+    "expected": "-3"
+   },
+   {
+    "minor": "12345",
+    "bp": 1,
+    "expected": "1"
+   },
+   {
+    "minor": "100000",
+    "bp": 10000,
+    "expected": "100000"
+   },
+   {
+    "minor": "100000",
+    "bp": 0,
+    "expected": "0"
+   },
+   {
+    "minor": "333",
+    "bp": 3333,
+    "expected": "111"
+   },
+   {
+    "minor": "1",
+    "bp": 5000,
+    "expected": "1"
+   },
+   {
+    "minor": "1",
+    "bp": 4999,
+    "expected": "0"
+   }
+  ],
+  "splitEvenly": [
+   {
+    "total": "10000",
+    "parts": 3,
+    "expected": [
+     "3334",
+     "3333",
+     "3333"
+    ]
+   },
+   {
+    "total": "10",
+    "parts": 3,
+    "expected": [
+     "4",
+     "3",
+     "3"
+    ]
+   },
+   {
+    "total": "0",
+    "parts": 4,
+    "expected": [
+     "0",
+     "0",
+     "0",
+     "0"
+    ]
+   },
+   {
+    "total": "7",
+    "parts": 7,
+    "expected": [
+     "1",
+     "1",
+     "1",
+     "1",
+     "1",
+     "1",
+     "1"
+    ]
+   },
+   {
+    "total": "1",
+    "parts": 3,
+    "expected": [
+     "1",
+     "0",
+     "0"
+    ]
+   },
+   {
+    "total": "-10",
+    "parts": 3,
+    "expected": [
+     "-4",
+     "-3",
+     "-3"
+    ]
+   },
+   {
+    "total": "100",
+    "parts": 1,
+    "expected": [
+     "100"
+    ]
+   },
+   {
+    "total": "1",
+    "parts": 1,
+    "expected": [
+     "1"
+    ]
+   },
+   {
+    "total": "99",
+    "parts": 10,
+    "expected": [
+     "10",
+     "10",
+     "10",
+     "10",
+     "10",
+     "10",
+     "10",
+     "10",
+     "10",
+     "9"
+    ]
+   },
+   {
+    "total": "123456789",
+    "parts": 12,
+    "expected": [
+     "10288066",
+     "10288066",
+     "10288066",
+     "10288066",
+     "10288066",
+     "10288066",
+     "10288066",
+     "10288066",
+     "10288066",
+     "10288065",
+     "10288065",
+     "10288065"
+    ]
+   }
+  ],
+  "splitInvalid": [
+   0,
+   -1
+  ]
+ },
+ "dates": {
+  "format": [
+   {
+    "date": "2026-06-24",
+    "locale": "en-IN",
+    "withYear": false,
+    "expected": "Wed, 24 Jun"
+   },
+   {
+    "date": "2026-06-24",
+    "locale": "en-IN",
+    "withYear": true,
+    "expected": "Wed, 24 Jun 2026"
+   },
+   {
+    "date": "2024-02-29",
+    "locale": "en-IN",
+    "withYear": false,
+    "expected": "Thu, 29 Feb"
+   },
+   {
+    "date": "2026-01-01",
+    "locale": "en-IN",
+    "withYear": true,
+    "expected": "Thu, 1 Jan 2026"
+   },
+   {
+    "date": "2026-12-31",
+    "locale": "en",
+    "withYear": false,
+    "expected": "Thu, 31 Dec"
+   },
+   {
+    "date": "2025-06-24",
+    "locale": "en-GB",
+    "withYear": false,
+    "expected": "Tue, 24 Jun"
+   },
+   {
+    "date": "2000-03-05",
+    "locale": "en-US",
+    "withYear": true,
+    "expected": "Sun, 5 Mar 2000"
+   },
+   {
+    "date": "2026-04-01",
+    "locale": "en-IN",
+    "withYear": false,
+    "expected": "Wed, 1 Apr"
+   }
+  ],
+  "invalid": [
+   "2026-02-30",
+   "2026-13-01",
+   "26-06-24",
+   "2026-6-4",
+   "",
+   "2026-04-31",
+   "2025-02-29",
+   "abc"
+  ]
+ },
+ "times": {
+  "format": [
+   {
+    "time": "00:00",
+    "locale": "en-IN",
+    "expected": "12:00 AM"
+   },
+   {
+    "time": "00:05",
+    "locale": "en-IN",
+    "expected": "12:05 AM"
+   },
+   {
+    "time": "08:45",
+    "locale": "en-IN",
+    "expected": "8:45 AM"
+   },
+   {
+    "time": "11:59",
+    "locale": "en-IN",
+    "expected": "11:59 AM"
+   },
+   {
+    "time": "12:00",
+    "locale": "en-IN",
+    "expected": "12:00 PM"
+   },
+   {
+    "time": "12:30",
+    "locale": "en-IN",
+    "expected": "12:30 PM"
+   },
+   {
+    "time": "13:07",
+    "locale": "en-IN",
+    "expected": "1:07 PM"
+   },
+   {
+    "time": "23:59",
+    "locale": "en-IN",
+    "expected": "11:59 PM"
+   },
+   {
+    "time": "09:00",
+    "locale": "en-IN",
+    "expected": "9:00 AM"
+   }
+  ],
+  "invalid": [
+   "24:00",
+   "8:45",
+   "08:60",
+   "",
+   "0845",
+   "08:5",
+   "ab:cd",
+   "23:59:00"
+  ]
+ }
+}
