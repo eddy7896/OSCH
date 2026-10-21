@@ -26,13 +26,15 @@ describe("messages", () => {
 
 describe("errorKey", () => {
   it("maps every gateway and client error code to an existing message", () => {
-    const codes = ["AUTH_REQUIRED", "FORBIDDEN", "SCHOOL_SUSPENDED", "CANNOT_CHANGE_OWN_MEMBERSHIP", "INVITATION_INVALID", "ACCOUNT_EXISTS", "EMAIL_NOT_VERIFIED", "NOT_FOUND", "INVALID_REQUEST", "CONFLICT", "RATE_LIMITED", "TENANT_REFERENCE_FORBIDDEN", "UPSTREAM_UNAVAILABLE", "INTERNAL", "NETWORK_ERROR", "TIMEOUT", "ABORTED", "SCHOOL_REQUIRED", "UNEXPECTED_RESPONSE"] as const;
+    const codes = ["AUTH_REQUIRED", "FORBIDDEN", "SCHOOL_SUSPENDED", "CANNOT_CHANGE_OWN_MEMBERSHIP", "INVITATION_INVALID", "ACCOUNT_EXISTS", "EMAIL_NOT_VERIFIED", "NOT_FOUND", "INVALID_REQUEST", "CONFLICT", "RATE_LIMITED", "TENANT_REFERENCE_FORBIDDEN", "UPSTREAM_UNAVAILABLE", "INTERNAL", "NETWORK_ERROR", "TIMEOUT", "ABORTED", "SCHOOL_REQUIRED", "UNEXPECTED_RESPONSE", "UPLOAD_INVALID", "UPLOAD_FAILED"] as const;
     for (const code of codes) expect(EN[errorKey(new ApiError(code, 0, "x"))], code).toBeTruthy();
   });
   it("says the right thing for the common ones", () => {
     expect(errorKey(new ApiError("CONFLICT", 409, "x"))).toBe("errorConflict");
     expect(errorKey(new ApiError("NETWORK_ERROR", 0, "x"))).toBe("errorNetwork");
     expect(errorKey(new ApiError("RATE_LIMITED", 429, "x"))).toBe("errorRateLimited");
+    expect(errorKey(new ApiError("UPLOAD_INVALID", 0, "x"))).toBe("errorUploadInvalid");
+    expect(errorKey(new ApiError("UPLOAD_FAILED", 403, "x"))).toBe("errorUploadFailed");
   });
   it("never leaks the raw text of an unknown error", () => {
     expect(errorKey(new Error("secret internals"))).toBe("errorInternal");

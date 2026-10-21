@@ -172,5 +172,7 @@
   "roleTeacher": "استاد",
   "roleStaff": "عملہ",
   "roleDriver": "ڈرائیور",
-  "roleParent": "والدین"
+  "roleParent": "والدین",
+  "errorUploadInvalid": "PNG، JPEG یا WebP تصویر منتخب کریں، زیادہ سے زیادہ 2 MB۔",
+  "errorUploadFailed": "فائل اپ لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔"
 }

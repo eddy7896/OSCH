@@ -587,4 +587,11 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get roleParent => 'والدین';
+
+  @override
+  String get errorUploadInvalid =>
+      'PNG، JPEG یا WebP تصویر منتخب کریں، زیادہ سے زیادہ 2 MB۔';
+
+  @override
+  String get errorUploadFailed => 'فائل اپ لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔';
 }

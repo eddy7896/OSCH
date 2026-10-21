@@ -5,7 +5,9 @@ import { useTranslations } from "next-intl";
 import type { MeResponseDto } from "@oruschools/api-client";
 import { Banner, Button, Card, EmptyState } from "@oruschools/shared-ui";
 import { errorKey, SignIn, useSession } from "@oruschools/web-auth";
+import { ApplyLanguage, rememberedLanguage } from "./ApplyLanguage";
 import { ErpShell } from "./ErpShell";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useSchool } from "./SchoolProvider";
 
 const Centered = ({ children }: { children: React.ReactNode }) => <main className="flex flex-1 items-center justify-center p-4"><div className="w-full max-w-md">{children}</div></main>;
@@ -58,7 +60,14 @@ function Account({ schoolId, schoolName }: { schoolId: string; schoolName: strin
         </Card>
       </Centered>
     );
-  return <ErpShell me={me.me} active={active} school={{ id: schoolId, name: schoolName, subDomain: "", defaultLanguage: me.me.language.effective }} />;
+  // Account choice first, then this device's choice, then the school's default (which is what `effective` is when nothing was chosen).
+  const language = me.me.language.chosen ?? rememberedLanguage() ?? me.me.language.effective;
+  return (
+    <>
+      <ApplyLanguage target={language} />
+      <ErpShell me={me.me} active={active} school={{ id: schoolId, name: schoolName, subDomain: "", defaultLanguage: me.me.language.effective }} />
+    </>
+  );
 }
 
 /** Address -> school -> sign-in -> account -> the school's area. */
@@ -80,6 +89,15 @@ export function WebAdminApp() {
     );
 
   if (state.status === "loading") return <Centered><Banner tone="info" title={t("statusLoading")} /></Centered>;
-  if (state.status === "out") return <SignIn title={t("webSignInTitle", { name: school.school.name })} intro={t("webSignInIntro")} />;
+  if (state.status === "out")
+    return (
+      <>
+        <ApplyLanguage target={rememberedLanguage() ?? school.school.defaultLanguage} />
+        <div className="flex justify-end p-4">
+          <LanguageSwitcher />
+        </div>
+        <SignIn title={t("webSignInTitle", { name: school.school.name })} intro={t("webSignInIntro")} />
+      </>
+    );
   return <Account schoolId={school.school.id} schoolName={school.school.name} />;
 }

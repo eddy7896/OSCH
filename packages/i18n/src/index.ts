@@ -27,6 +27,28 @@ export function matchLanguageTag(tag: string | null | undefined): LocaleCode | u
   return isLocale(language) ? language : undefined;
 }
 
+/** The language stored in a `Cookie` header / `document.cookie` string, if it is a supported one. */
+export function readLocaleCookie(cookieString: string | null | undefined): LocaleCode | undefined {
+  if (!cookieString) return undefined;
+  for (const part of cookieString.split(";")) {
+    const eq = part.indexOf("=");
+    if (eq > 0 && part.slice(0, eq).trim() === LOCALE_COOKIE) {
+      const raw = part.slice(eq + 1).trim();
+      try {
+        return matchLanguageTag(decodeURIComponent(raw));
+      } catch {
+        return undefined; // a malformed escape is not a choice
+      }
+    }
+  }
+  return undefined;
+}
+
+/** The `document.cookie` assignment that remembers a language choice on this device for a year. */
+export function serializeLocaleCookie(code: LocaleCode, { secure = false }: { secure?: boolean } = {}): string {
+  return `${LOCALE_COOKIE}=${code}; Path=/; Max-Age=31536000; SameSite=Lax${secure ? "; Secure" : ""}`;
+}
+
 export interface NegotiationInput {
   /** Value of the ORU_LOCALE cookie (the user's explicit choice). */
   readonly cookie?: string | null;

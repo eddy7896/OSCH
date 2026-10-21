@@ -585,4 +585,10 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get roleParent => 'अभिभावक';
+
+  @override
+  String get errorUploadInvalid => 'PNG, JPEG या WebP छवि चुनें, अधिकतम 2 MB।';
+
+  @override
+  String get errorUploadFailed => 'फ़ाइल अपलोड नहीं हो सकी। फिर कोशिश करें।';
 }

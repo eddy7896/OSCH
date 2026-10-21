@@ -1,4 +1,4 @@
-import { originAllowed, parseOrigins, validateEnv } from './env.js';
+import { originAllowed, parseOrigins, r2AccountId, r2Config, validateEnv } from './env.js';
 
 describe('validateEnv', () => {
   it('accepts an empty development environment and applies defaults', () => {
@@ -107,5 +107,37 @@ describe('school wildcard origins', () => {
   it('production accepts patterns as the only origin but only over https', () => {
     expect(validateEnv({ NODE_ENV: 'production', CORS_ORIGINS: 'https://*.oruschools.com', FIREBASE_PROJECT_ID: 'p' }).NODE_ENV).toBe('production');
     expect(() => validateEnv({ NODE_ENV: 'production', CORS_ORIGINS: 'http://*.oruschools.com', FIREBASE_PROJECT_ID: 'p' })).toThrow(/wildcard entries must be https/);
+  });
+});
+
+describe('R2 storage settings', () => {
+  const full = { R2_ACCOUNT_ID: 'a'.repeat(32), R2_ACCESS_KEY: 'k', R2_SECRET_KEY: 's', R2_BUCKET_NAME: 'b' };
+
+  it('none set is fine (storage simply is not configured); all four is fine', () => {
+    expect(r2Config(validateEnv({}))).toBeNull();
+    expect(r2Config(validateEnv(full))).toEqual({ accountId: 'a'.repeat(32), accessKey: 'k', secretKey: 's', bucket: 'b', publicUrl: undefined });
+  });
+
+  it('a half-set group means storage is off in development (a template with empty keys must not stop the gateway), and is refused in production', () => {
+    const half = { R2_ACCOUNT_ID: 'a'.repeat(32), R2_SECRET_KEY: 'topsecret', R2_ACCESS_KEY: '' };
+    expect(r2Config(validateEnv(half))).toBeNull();
+    const prod = { NODE_ENV: 'production', CORS_ORIGINS: 'https://app.example.com', FIREBASE_PROJECT_ID: 'p', ...half };
+    expect(() => validateEnv(prod)).toThrow(/set all four or none/);
+    try { validateEnv(prod); } catch (e) { expect(String(e)).not.toContain('topsecret'); }
+  });
+
+  it('accepts the account id or the endpoint address Cloudflare shows; anything else is refused', () => {
+    const id = 'abcdef0123456789abcdef0123456789';
+    expect(r2AccountId(id)).toBe(id);
+    expect(r2AccountId(`https://${id}.r2.cloudflarestorage.com`)).toBe(id);
+    expect(r2AccountId(` HTTPS://${id.toUpperCase()}.R2.CLOUDFLARESTORAGE.COM/ `)).toBe(id);
+    for (const bad of ['', 'short', `${id}z`, `https://evil.com/${id}`, `https://${id}.evil.com`]) expect(r2AccountId(bad), bad).toBeUndefined();
+    expect(() => validateEnv({ ...full, R2_ACCOUNT_ID: 'not-an-id' })).toThrow(/R2_ACCOUNT_ID: must be the 32-character account id/);
+    expect(r2Config(validateEnv({ ...full, R2_ACCOUNT_ID: `https://${id}.r2.cloudflarestorage.com` }))?.accountId).toBe(id);
+  });
+
+  it('the public address must be http(s); a trailing slash is dropped', () => {
+    expect(() => validateEnv({ ...full, R2_PUBLIC_URL: 'ftp://x' })).toThrow(/R2_PUBLIC_URL/);
+    expect(r2Config(validateEnv({ ...full, R2_PUBLIC_URL: 'https://files.example.com/' }))?.publicUrl).toBe('https://files.example.com');
   });
 });

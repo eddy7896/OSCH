@@ -72,6 +72,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # The Data Connect and Auth emulators are downloaded by the Firebase CLI on first use (minutes); keep them between runs.
+      - name: Cache the Firebase emulators
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/firebase/emulators
+          key: firebase-emulators-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: firebase-emulators-${{ runner.os }}-
       - name: Schema + connector compile, SDK regenerated
         run: npx firebase dataconnect:compile
       - name: Generated SDK is committed and current

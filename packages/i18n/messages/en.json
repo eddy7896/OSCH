@@ -171,5 +171,7 @@
   "roleTeacher": "Teacher",
   "roleStaff": "Staff",
   "roleDriver": "Driver",
-  "roleParent": "Parent"
+  "roleParent": "Parent",
+  "errorUploadInvalid": "Choose a PNG, JPEG or WebP image up to 2 MB.",
+  "errorUploadFailed": "The file could not be uploaded. Try again."
 }
