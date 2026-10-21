@@ -13,6 +13,7 @@ import { MeModule } from './me/me.module.js';
 import { PermissionModule } from './permission/permission.module.js';
 import { PublicModule } from './public/public.module.js';
 import { PlatformModule } from './platform/platform.module.js';
+import { UploadsModule } from './uploads/uploads.module.js';
 import { UsersModule } from './users/users.module.js';
 import { TenantModule } from './tenant/tenant.module.js';
 import { pinoHttpOptions } from './common/logging.js';
@@ -48,6 +49,7 @@ import { HealthModule } from './health/health.module.js';
     PermissionModule,
     HealthModule,
     MeModule,
+    UploadsModule,
     MembershipsModule,
     AccountsModule,
     InvitationsModule,

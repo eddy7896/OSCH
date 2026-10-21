@@ -113,8 +113,8 @@ graph LR
 | P1-6c DONE (branch app/api-gateway, stacked; 236 unit + 120 e2e + 343 real-emulator tests; 4 mutants killed) | Memberships: list, add existing user, change role/status, remove; **only `memberships` holders**; protected rules (cannot remove the last Principal or System Admin) | L | P1-6b |
 | P1-6d DONE (branch app/api-gateway; 282 unit + 121 e2e + 448 real-emulator tests; 6 mutants killed) | Invitations: create (email/phone + role + expiry), list, revoke, accept (single-use, token hashed, expiry, rate limited); Phase 1 delivers the link by copy (no email/SMS provider yet) | L | P1-6c |
 | P1-6e DONE (branch app/api-gateway; 331 unit + 121 e2e + 499 real-emulator tests; 6 mutants killed) | `GET /public/schools/by-subdomain/:sub` (minimal fields, throttled) | S | P1-6b |
-| P1-13 | R2 presigned upload (school logo; tenant-prefixed key, content-type + size limits) | S | P1-6a (spike first) |
-| P1-14 | Language preference: user + school default; gateway returns it; picker links `/ur/...` | M | P1-6a |
+| P1-13 BUILT (cross/phase1-finish; 570 real-stack tests; 5 of 6 mutants killed, 1 equivalent; no real upload to R2 yet) | R2 presigned upload (school logo; tenant-prefixed key, content-type + size limits) | S | P1-6a (spike first) |
+| P1-14 BUILT (cross/phase1-finish; web-admin 50 + saas-admin 33 tests; 7 mutants, 1 equivalent) | Language preference: user + school default; gateway returns it; picker links `/ur/...` | M | P1-6a |
 
 ### M4: Contract and client
 | ID | Task | Size | Depends | Acceptance |

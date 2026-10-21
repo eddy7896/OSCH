@@ -127,5 +127,11 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/public/schools/by-subdomain/{sub}",
     "access": "public",
     "operationId": "PublicSchools_bySubdomain"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/uploads/school-logo",
+    "access": "tenant",
+    "operationId": "Uploads_schoolLogo"
   }
 ];
