@@ -19,6 +19,12 @@ html:lang(mr) .text-display,
 html:lang(doi) .text-display {
   letter-spacing: 0;
 }
+/* Devanagari: components' minimum line height = 1.5 x font size */
+html:lang(hi),
+html:lang(mr),
+html:lang(doi) {
+  --oru-min-lh: 1.5;
+}
 /* min line height 1.5x font size (design: max(design px, ceil(min x size))) */
 html:lang(hi) .text-display,
 html:lang(mr) .text-display,
@@ -70,6 +76,11 @@ html:lang(ks) {
 html:lang(ur) .text-display,
 html:lang(ks) .text-display {
   letter-spacing: 0;
+}
+/* Nastaliq: components' minimum line height = 2 x font size */
+html:lang(ur),
+html:lang(ks) {
+  --oru-min-lh: 2;
 }
 /* min line height 2x font size (design: max(design px, ceil(min x size))) */
 html:lang(ur) .text-display,
@@ -130,6 +141,13 @@ html:lang(ps) .text-display,
 html:lang(fa) .text-display,
 html:lang(ar) .text-display {
   letter-spacing: 0;
+}
+/* Arabic: components' minimum line height = 1.7 x font size */
+html:lang(sd),
+html:lang(ps),
+html:lang(fa),
+html:lang(ar) {
+  --oru-min-lh: 1.7;
 }
 /* min line height 1.7x font size (design: max(design px, ceil(min x size))) */
 html:lang(sd) .text-display,
@@ -209,6 +227,11 @@ html:lang(bn) .text-display,
 html:lang(as) .text-display {
   letter-spacing: 0;
 }
+/* Bengali: components' minimum line height = 1.55 x font size */
+html:lang(bn),
+html:lang(as) {
+  --oru-min-lh: 1.55;
+}
 /* min line height 1.55x font size (design: max(design px, ceil(min x size))) */
 html:lang(bn) .text-display,
 html:lang(as) .text-display {
@@ -259,6 +282,10 @@ html:lang(gu) {
 html:lang(gu) .text-display {
   letter-spacing: 0;
 }
+/* Gujarati: components' minimum line height = 1.5 x font size */
+html:lang(gu) {
+  --oru-min-lh: 1.5;
+}
 /* min line height 1.5x font size (design: max(design px, ceil(min x size))) */
 html:lang(gu) .text-display {
   line-height: 42px;
@@ -293,6 +320,10 @@ html:lang(pa) {
 html:lang(pa) .text-display {
   letter-spacing: 0;
 }
+/* Gurmukhi: components' minimum line height = 1.5 x font size */
+html:lang(pa) {
+  --oru-min-lh: 1.5;
+}
 /* min line height 1.5x font size (design: max(design px, ceil(min x size))) */
 html:lang(pa) .text-display {
   line-height: 42px;
@@ -326,6 +357,10 @@ html:lang(or) {
 /* Latin tracking (design: display -0.01em) breaks joined and conjunct scripts: none for any non-Latin language. */
 html:lang(or) .text-display {
   letter-spacing: 0;
+}
+/* Oriya: components' minimum line height = 1.6 x font size */
+html:lang(or) {
+  --oru-min-lh: 1.6;
 }
 /* min line height 1.6x font size (design: max(design px, ceil(min x size))) */
 html:lang(or) .text-display {
@@ -370,6 +405,10 @@ html:lang(ta) {
 html:lang(ta) .text-display {
   letter-spacing: 0;
 }
+/* Tamil: components' minimum line height = 1.5 x font size */
+html:lang(ta) {
+  --oru-min-lh: 1.5;
+}
 /* min line height 1.5x font size (design: max(design px, ceil(min x size))) */
 html:lang(ta) .text-display {
   line-height: 42px;
@@ -403,6 +442,10 @@ html:lang(te) {
 /* Latin tracking (design: display -0.01em) breaks joined and conjunct scripts: none for any non-Latin language. */
 html:lang(te) .text-display {
   letter-spacing: 0;
+}
+/* Telugu: components' minimum line height = 1.7 x font size */
+html:lang(te) {
+  --oru-min-lh: 1.7;
 }
 /* min line height 1.7x font size (design: max(design px, ceil(min x size))) */
 html:lang(te) .text-display {
@@ -447,6 +490,10 @@ html:lang(kn) {
 html:lang(kn) .text-display {
   letter-spacing: 0;
 }
+/* Kannada: components' minimum line height = 1.7 x font size */
+html:lang(kn) {
+  --oru-min-lh: 1.7;
+}
 /* min line height 1.7x font size (design: max(design px, ceil(min x size))) */
 html:lang(kn) .text-display {
   line-height: 48px;
@@ -489,6 +536,10 @@ html:lang(ml) {
 /* Latin tracking (design: display -0.01em) breaks joined and conjunct scripts: none for any non-Latin language. */
 html:lang(ml) .text-display {
   letter-spacing: 0;
+}
+/* Malayalam: components' minimum line height = 1.7 x font size */
+html:lang(ml) {
+  --oru-min-lh: 1.7;
 }
 /* min line height 1.7x font size (design: max(design px, ceil(min x size))) */
 html:lang(ml) .text-display {

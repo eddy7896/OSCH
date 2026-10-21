@@ -1,0 +1,109 @@
+/*
+ * OruSchools components (light theme only, ADR-0005). Every value is a design token (var(--...)) from
+ * @oruschools/shared-design-tokens/generated/tokens.css; nothing here is a raw colour.
+ * Written with LOGICAL properties only (inline/block, start/end) so the same file lays out right-to-left languages
+ * (Urdu, Kashmiri, Sindhi, Pashto, Persian, Arabic) correctly when <html dir="rtl">. Do not use left/right.
+ * Ported from documentation/design-system/components/bundle.css; change the component there first, then here.
+ */
+
+.oru-icon { flex: none; display: block; }
+/* Icons that point somewhere (next, back, send) face the other way in right-to-left layouts. */
+[dir="rtl"] .oru-icon--directional { transform: scaleX(-1); }
+
+:where(.oru-btn, .oru-seg__opt, .oru-check input):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Tones: soft fill + matching ink, shared by badges, pills and banners. Colour never carries meaning alone (a word always does). */
+.oru-tone--success { background: var(--success-bg); color: var(--success-fg); }
+.oru-tone--warning { background: var(--warning-bg); color: var(--warning-fg); }
+.oru-tone--danger  { background: var(--danger-bg);  color: var(--danger-fg); }
+.oru-tone--info    { background: var(--info-bg);    color: var(--info-fg); }
+.oru-tone--purple  { background: var(--purple-bg);  color: var(--purple-fg); }
+.oru-tone--teal    { background: var(--teal-bg);    color: var(--teal-fg); }
+.oru-tone--neutral { background: var(--surface-muted); color: var(--text-muted); }
+.oru-tone--brand   { background: var(--primary-soft); color: var(--primary-text); }
+
+/* Button */
+.oru-btn {
+  font: inherit; font-size: 14px; line-height: max(20px, calc(14px * var(--oru-min-lh, 1))); font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  border-radius: var(--radius-md); border: 1px solid transparent; padding-block: 0; padding-inline: var(--space-4);
+  cursor: pointer; transition: background-color .15s ease, border-color .15s ease; white-space: nowrap;
+}
+.oru-btn--compact { block-size: var(--control-compact); padding-inline: var(--space-3); }
+.oru-btn--comfortable { block-size: var(--control-comfortable); }
+.oru-btn--touch { block-size: var(--control-touch); font-size: 16px; padding-inline: var(--space-5); }
+.oru-btn--driver { block-size: var(--control-driver); font-size: 20px; line-height: max(26px, calc(20px * var(--oru-min-lh, 1))); font-weight: 700; padding-inline: var(--space-6); border-radius: var(--radius-lg); }
+.oru-btn--block { display: flex; inline-size: 100%; }
+.oru-btn--primary { background: var(--primary); color: var(--on-primary); }
+.oru-btn--primary:hover { background: var(--primary-hover); }
+.oru-btn--secondary { background: var(--primary-soft); color: var(--primary-text); border-color: var(--primary-soft); }
+.oru-btn--secondary:hover { border-color: var(--primary-text); }
+.oru-btn--ghost { background: transparent; color: var(--primary-text); }
+.oru-btn--ghost:hover { background: var(--primary-soft); }
+.oru-btn--danger { background: var(--danger-solid); color: var(--on-primary); }
+.oru-btn:disabled { background: var(--surface-muted); color: var(--text-muted); border-color: var(--border); cursor: not-allowed; }
+
+/* TextField */
+.oru-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.oru-field__label { font-size: 14px; line-height: max(20px, calc(14px * var(--oru-min-lh, 1))); font-weight: 600; color: var(--text); }
+.oru-field__box {
+  display: flex; align-items: center; gap: var(--space-2); padding-block: 0; padding-inline: var(--space-3);
+  background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-md); color: var(--text-muted);
+}
+.oru-field--compact .oru-field__box { min-block-size: var(--control-compact); }
+.oru-field--comfortable .oru-field__box { min-block-size: var(--control-comfortable); }
+.oru-field--touch .oru-field__box { min-block-size: var(--control-touch); }
+.oru-field__box:focus-within { border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus); }
+.oru-field input, .oru-field textarea {
+  flex: 1; min-inline-size: 0; border: 0; outline: 0; background: transparent; color: var(--text); text-align: start;
+  font: inherit; font-size: 16px; line-height: max(24px, calc(16px * var(--oru-min-lh, 1))); padding-block: var(--space-2); padding-inline: 0;
+}
+.oru-field textarea { min-block-size: 96px; resize: vertical; }
+.oru-field--compact input, .oru-field--comfortable input { font-size: 14px; line-height: max(20px, calc(14px * var(--oru-min-lh, 1))); }
+.oru-field input::placeholder, .oru-field textarea::placeholder { color: var(--text-muted); opacity: 1; }
+.oru-field input:disabled, .oru-field textarea:disabled { cursor: not-allowed; }
+.oru-field__msg { margin: 0; display: flex; align-items: center; gap: var(--space-1); font-size: 13px; line-height: max(18px, calc(13px * var(--oru-min-lh, 1))); color: var(--text-muted); }
+.oru-field--error .oru-field__box { border-color: var(--danger-fg); }
+.oru-field--error .oru-field__msg { color: var(--danger-fg); }
+
+/* Checkbox */
+.oru-check { position: relative; display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer; min-block-size: var(--control-touch); padding-block: var(--space-3); padding-inline: 0; box-sizing: border-box; }
+.oru-check input { position: absolute; inset-inline-start: 0; inset-block-start: var(--space-3); opacity: 0; inline-size: 24px; block-size: 24px; margin: 0; }
+.oru-check__box {
+  flex: none; inline-size: 24px; block-size: 24px; border-radius: 6px; border: 2px solid var(--border-strong); background: var(--surface);
+  display: grid; place-items: center; color: transparent; box-sizing: border-box;
+}
+.oru-check input:checked + .oru-check__box { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.oru-check input:disabled + .oru-check__box { border-color: var(--border); background: var(--surface-muted); }
+.oru-check input:disabled ~ .oru-check__text { color: var(--text-muted); }
+.oru-check__text { display: flex; flex-direction: column; text-align: start; }
+.oru-check__label { font-size: 16px; line-height: max(24px, calc(16px * var(--oru-min-lh, 1))); font-weight: 600; color: var(--text); }
+.oru-check__desc { font-size: 13px; line-height: max(18px, calc(13px * var(--oru-min-lh, 1))); color: var(--text-muted); }
+.oru-check input:checked ~ .oru-check__text .oru-check__label { color: var(--text-muted); text-decoration: line-through; }
+.oru-check input:focus-visible + .oru-check__box { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* SegmentedControl */
+.oru-seg { display: inline-flex; gap: var(--space-1); padding: var(--space-1); background: var(--surface-muted); border-radius: var(--radius-md); }
+.oru-seg__opt {
+  font: inherit; font-size: 14px; line-height: max(20px, calc(14px * var(--oru-min-lh, 1))); font-weight: 600; border: 0; cursor: pointer;
+  background: transparent; color: var(--text-muted); border-radius: var(--radius-sm); padding-block: 0; padding-inline: var(--space-4);
+}
+.oru-seg--compact .oru-seg__opt { block-size: 28px; }
+.oru-seg--comfortable .oru-seg__opt { block-size: 32px; }
+.oru-seg--touch .oru-seg__opt { block-size: 40px; flex: 1; }
+.oru-seg--touch { display: flex; }
+.oru-seg__opt.is-on { background: var(--primary); color: var(--on-primary); }
+
+/* Badge */
+.oru-badge { display: inline-flex; align-items: center; gap: var(--space-1); block-size: 24px; padding-block: 0; padding-inline: var(--space-2); border-radius: var(--radius-sm); font-size: 13px; line-height: max(18px, calc(13px * var(--oru-min-lh, 1))); font-weight: 600; white-space: nowrap; }
+.oru-badge__dot { inline-size: 8px; block-size: 8px; border-radius: var(--radius-full); background: currentColor; }
+.oru-count {
+  display: inline-grid; place-items: center; min-inline-size: 20px; block-size: 20px; padding-block: 0; padding-inline: 6px; box-sizing: border-box;
+  border-radius: var(--radius-full); background: var(--danger-solid); color: var(--on-primary); font-size: 12px; line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+
+/* Avatar */
+.oru-avatar { display: inline-grid; place-items: center; flex: none; border-radius: var(--radius-full); overflow: hidden; background: var(--primary-soft); color: var(--primary-text); font-weight: 700; }
+.oru-avatar img { inline-size: 100%; block-size: 100%; object-fit: cover; }
+
+@media (prefers-reduced-motion: reduce) { .oru-btn { transition: none; } }

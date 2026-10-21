@@ -119,12 +119,12 @@ graph LR
 ### M4: Contract and client
 | ID | Task | Size | Depends | Acceptance |
 |---|---|---|---|---|
-| P1-8 CHANGED | `packages/api-client` generated with `@hey-api/openapi-ts`: async token provider, `X-School-Id` injection, typed `ApiError` (machine code), BigInt-safe `Int64String`, abort/timeout | M | P1-5 (skeleton spec) | contract test: client types compile against the committed spec; error mapping tests |
+| P1-8 DONE (`cross/api-client`; 39 client unit tests + 8 real-stack tests; 8 mutants killed) | `packages/api-client` generated with `@hey-api/openapi-ts`: async token provider, `X-School-Id` injection, typed `ApiError` (machine code), BigInt-safe `Int64String`, abort/timeout | M | P1-5 (skeleton spec) | contract test: client types compile against the committed spec; error mapping tests |
 
 ### M5: Frontends (starts after the P1-5 spec skeleton exists; runs parallel to M3)
 | ID | Task | Size | Depends |
 |---|---|---|---|
-| P1-11 CHANGED | `packages/shared-ui` in four batches: **B1** Icon, Button, Badge, Avatar, Checkbox, TextField, SegmentedControl; **B2** Banner, EmptyState, StatusPill, SyncStatus; **B3** Card, StatCard, ListRow, ActionTile; **B4** SideNav, BottomNav, Logo. Tests: Vitest + Testing Library + jsdom (Node 22), `axe-core` assertions, RTL (`dir=rtl`) and density variants; dev-only catalogue route in web-admin (Storybook is heavier and deferred) | XL | P1-0b |
+| P1-11 CHANGED (B1 built: 7 components, 60 tests incl. axe + RTL) | `packages/shared-ui` in four batches: **B1** Icon, Button, Badge, Avatar, Checkbox, TextField, SegmentedControl; **B2** Banner, EmptyState, StatusPill, SyncStatus; **B3** Card, StatCard, ListRow, ActionTile; **B4** SideNav, BottomNav, Logo. Tests: Vitest + Testing Library + jsdom (Node 22), `axe-core` assertions, RTL (`dir=rtl`) and density variants; dev-only catalogue route in web-admin (Storybook is heavier and deferred) | XL | P1-0b |
 | P1-9 | `saas-admin`: Firebase web SDK login, client route protection, school list/create/edit/suspend, language switcher, **bootstrap script** `tools/bootstrap-super-admin.mjs` (Admin SDK, sets the claim + `User` row; never an HTTP endpoint) | L | P1-8, P1-6b, P1-11 B1-B2 |
 | P1-10 | `web-admin` shell: login, school from subdomain (public endpoint), `GET /me` → `SideNav`, page layout (greeting + ≤5 `StatCard`s), `EmptyState`, error boundary for envelope codes | L | P1-9, P1-11 B3-B4, P1-6a |
 

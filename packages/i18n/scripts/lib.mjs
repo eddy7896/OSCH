@@ -243,6 +243,8 @@ export function toI18nCss(registry, textStyles) {
     if (tracked.length)
       L.push("/* Latin tracking (design: display -0.01em) breaks joined and conjunct scripts: none for any non-Latin language. */",
         ...tracked.map((s) => `${codes.map((c) => `html:lang(${c}) .text-${s.name}`).join(",\n")} {\n  letter-spacing: 0;\n}`));
+    // Components (packages/shared-ui) size every line as max(design px, font-size x --oru-min-lh): tall scripts get room automatically.
+    if (script.minLineHeight) L.push(`/* ${font}: components' minimum line height = ${script.minLineHeight} x font size */`, `${sel()} {\n  --oru-min-lh: ${script.minLineHeight};\n}`);
     if (script.minLineHeight) {
       const rules = [];
       for (const s of textStyles) {
