@@ -11,7 +11,7 @@ enum GlobalRole { SUPER_ADMIN USER }
 enum SchoolRole { PRINCIPAL MANAGEMENT BURSAR ACADEMIC_ADMIN SYSTEM_ADMIN HR_MANAGER ACCOUNTANT ADMISSIONS_OFFICER TRANSPORT_MANAGER OPERATIONS_MANAGER TEACHER STAFF DRIVER PARENT }
 
 enum SubscriptionStatus { ACTIVE TRIAL SUSPENDED }
-enum AcademicYearStatus { ACTIVE ARCHIVED }
+enum AcademicYearStatus { PLANNED ACTIVE ARCHIVED }
 enum InvoiceStatus { PENDING PAID OVERDUE }
 enum PayrollStatus { PENDING PAID }
 enum LeaveStatus { PENDING APPROVED REJECTED }
@@ -26,6 +26,14 @@ type School @table {
   currency: String! @default(value: "INR") # ISO 4217; amounts are stored in minor units of this currency
   locale: String! @default(value: "en-IN") # drives number/date formatting (design system content rules)
   defaultLanguage: String! @default(value: "en") # a code from packages/i18n; users may choose their own (ADR-0006)
+  # The ONE active academic year, by construction (a pointer cannot name two years). AcademicYear.status mirrors it.
+  activeAcademicYear: AcademicYear
+  # Profile and branding (P2-1). The colour is a validated #rrggbb (white text on it is at least 4.5:1); the logo key lives under schools/<id>/logo/.
+  address: String
+  contactPhone: String
+  contactEmail: String
+  primaryColor: String
+  logoKey: String
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
@@ -93,16 +101,26 @@ type AcademicYear @table {
   name: String! # e.g. "2026-2027"
   startDate: Date!
   endDate: Date!
-  status: AcademicYearStatus! @default(value: ACTIVE)
+  status: AcademicYearStatus! @default(value: PLANNED)
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
-# ERP: Classroom
-type Classroom @table {
+# A class level a school teaches (Nursery, LKG, UKG, 1 to 12 by default; ADR-0012). Ordinary rows: rename, reorder, delete.
+type GradeLevel @table @unique(fields: ["school", "name"]) {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
-  name: String! # e.g. "1A"
-  gradeLevel: String! # e.g. "1st Grade"
+  name: String!
+  position: Int! # order in lists
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ERP: Classroom = a class group, one section of a grade level ("5 B"). `name` is the display name the gateway builds.
+type Classroom @table @unique(fields: ["gradeLevel", "section"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  gradeLevel: GradeLevel!
+  section: String! # "B"
+  name: String! # "5 B"
   capacity: Int!
   createdAt: Timestamp! @default(expr: "request.time")
 }
@@ -130,7 +148,7 @@ type Payroll @table {
 }
 
 # Academic: Subject
-type Subject @table {
+type Subject @table @unique(fields: ["school", "code"]) {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
   name: String!

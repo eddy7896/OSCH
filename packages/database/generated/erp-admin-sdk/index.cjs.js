@@ -1,6 +1,7 @@
 const { validateAdminArgs } = require('firebase-admin/data-connect');
 
 const AcademicYearStatus = {
+  PLANNED: "PLANNED",
   ACTIVE: "ACTIVE",
   ARCHIVED: "ARCHIVED",
 }
@@ -77,13 +78,6 @@ const connectorConfig = {
 };
 exports.connectorConfig = connectorConfig;
 
-function createAcademicYear(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateAcademicYear', inputVars, inputOpts);
-}
-exports.createAcademicYear = createAcademicYear;
-
 function createSchool(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -97,13 +91,6 @@ function createUser(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('CreateUser', inputVars, inputOpts);
 }
 exports.createUser = createUser;
-
-function createClassroom(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateClassroom', inputVars, inputOpts);
-}
-exports.createClassroom = createClassroom;
 
 function createStudent(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -132,13 +119,6 @@ function createPayroll(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('CreatePayroll', inputVars, inputOpts);
 }
 exports.createPayroll = createPayroll;
-
-function createSubject(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateSubject', inputVars, inputOpts);
-}
-exports.createSubject = createSubject;
 
 function createSchedule(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -259,19 +239,110 @@ function acceptInvitation(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.acceptInvitation = acceptInvitation;
 
-function listAcademicYears(dcOrVarsOrOptions, varsOrOptions, options) {
+function updateSchoolProfile(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListAcademicYears', inputVars, inputOpts);
+  return dcInstance.executeMutation('UpdateSchoolProfile', inputVars, inputOpts);
 }
-exports.listAcademicYears = listAcademicYears;
+exports.updateSchoolProfile = updateSchoolProfile;
 
-function listClassrooms(dcOrVarsOrOptions, varsOrOptions, options) {
+function setSchoolLogo(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListClassrooms', inputVars, inputOpts);
+  return dcInstance.executeMutation('SetSchoolLogo', inputVars, inputOpts);
 }
-exports.listClassrooms = listClassrooms;
+exports.setSchoolLogo = setSchoolLogo;
+
+function createGradeLevel(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateGradeLevel', inputVars, inputOpts);
+}
+exports.createGradeLevel = createGradeLevel;
+
+function updateGradeLevel(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateGradeLevel', inputVars, inputOpts);
+}
+exports.updateGradeLevel = updateGradeLevel;
+
+function deleteGradeLevel(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteGradeLevel', inputVars, inputOpts);
+}
+exports.deleteGradeLevel = deleteGradeLevel;
+
+function createClassroom(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateClassroom', inputVars, inputOpts);
+}
+exports.createClassroom = createClassroom;
+
+function updateClassroom(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateClassroom', inputVars, inputOpts);
+}
+exports.updateClassroom = updateClassroom;
+
+function deleteClassroom(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteClassroom', inputVars, inputOpts);
+}
+exports.deleteClassroom = deleteClassroom;
+
+function createSubject(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateSubject', inputVars, inputOpts);
+}
+exports.createSubject = createSubject;
+
+function updateSubject(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateSubject', inputVars, inputOpts);
+}
+exports.updateSubject = updateSubject;
+
+function deleteSubject(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteSubject', inputVars, inputOpts);
+}
+exports.deleteSubject = deleteSubject;
+
+function createAcademicYear(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateAcademicYear', inputVars, inputOpts);
+}
+exports.createAcademicYear = createAcademicYear;
+
+function updateAcademicYear(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateAcademicYear', inputVars, inputOpts);
+}
+exports.updateAcademicYear = updateAcademicYear;
+
+function activateAcademicYear(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ActivateAcademicYear', inputVars, inputOpts);
+}
+exports.activateAcademicYear = activateAcademicYear;
+
+function deleteAcademicYear(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteAcademicYear', inputVars, inputOpts);
+}
+exports.deleteAcademicYear = deleteAcademicYear;
 
 function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -300,13 +371,6 @@ function listPayroll(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListPayroll', inputVars, inputOpts);
 }
 exports.listPayroll = listPayroll;
-
-function listSubjects(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListSubjects', inputVars, inputOpts);
-}
-exports.listSubjects = listSubjects;
 
 function listSchedules(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -398,4 +462,39 @@ function listAuditLog(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListAuditLog', inputVars, inputOpts);
 }
 exports.listAuditLog = listAuditLog;
+
+function getSchoolProfile(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetSchoolProfile', inputVars, inputOpts);
+}
+exports.getSchoolProfile = getSchoolProfile;
+
+function listGradeLevels(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListGradeLevels', inputVars, inputOpts);
+}
+exports.listGradeLevels = listGradeLevels;
+
+function listClassrooms(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListClassrooms', inputVars, inputOpts);
+}
+exports.listClassrooms = listClassrooms;
+
+function listSubjects(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListSubjects', inputVars, inputOpts);
+}
+exports.listSubjects = listSubjects;
+
+function listAcademicYears(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListAcademicYears', inputVars, inputOpts);
+}
+exports.listAcademicYears = listAcademicYears;
 

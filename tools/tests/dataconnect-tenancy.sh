@@ -63,12 +63,13 @@ out=$(run "$M" CreateSchoolMember --vars "{\"schoolId\":\"$A\",\"userId\":\"u-$T
 UB="ub-$TAG"
 out=$(run "$M" CreateUser --vars "{\"id\":\"$UB\",\"email\":\"ub$TAG@example.com\",\"globalRole\":\"USER\"}"); check_ok "create user that belongs to school B only" "$out"
 out=$(run "$M" CreateSchoolMember --vars "{\"schoolId\":\"$B\",\"userId\":\"$UB\",\"schoolRole\":\"TEACHER\"}"); check_ok "make that user a member of B" "$out"
-out=$(run "$M" CreateClassroom --vars "{\"schoolId\":\"$A\",\"name\":\"ClassA-$TAG\",\"gradeLevel\":\"10\",\"capacity\":30}"); check_ok "classroom in A" "$out"
-out=$(run "$M" CreateClassroom --vars "{\"schoolId\":\"$B\",\"name\":\"ClassB-$TAG\",\"gradeLevel\":\"10\",\"capacity\":30}"); check_ok "classroom in B" "$out"
-out=$(run "$M" CreateSubject --vars "{\"schoolId\":\"$A\",\"name\":\"SubjA-$TAG\",\"code\":\"SA\"}"); check_ok "subject in A" "$out"
-out=$(run "$M" CreateSubject --vars "{\"schoolId\":\"$B\",\"name\":\"SubjB-$TAG\",\"code\":\"SB\"}"); check_ok "subject in B" "$out"
-CA=$(first_id "$(run "$Q" ListClassrooms --vars "{\"schoolId\":\"$A\"}")"); CB=$(first_id "$(run "$Q" ListClassrooms --vars "{\"schoolId\":\"$B\"}")")
-SA=$(first_id "$(run "$Q" ListSubjects --vars "{\"schoolId\":\"$A\"}")");   SB=$(first_id "$(run "$Q" ListSubjects --vars "{\"schoolId\":\"$B\"}")")
+GLA=$(uid); GLB=$(uid)
+out=$(run "$M" CreateGradeLevel --vars "{\"schoolId\":\"$A\",\"id\":\"$GLA\",\"name\":\"10-$TAG\",\"position\":10,\"actorId\":\"u-$TAG\"}"); check_ok "class level in A" "$out"
+out=$(run "$M" CreateGradeLevel --vars "{\"schoolId\":\"$B\",\"id\":\"$GLB\",\"name\":\"10-$TAG\",\"position\":10,\"actorId\":\"$UB\"}"); check_ok "class level in B" "$out"
+CA=$(uid); out=$(run "$M" CreateClassroom --vars "{\"schoolId\":\"$A\",\"id\":\"$CA\",\"gradeLevelId\":\"$GLA\",\"section\":\"A\",\"name\":\"ClassA-$TAG\",\"capacity\":30,\"actorId\":\"u-$TAG\"}"); check_ok "classroom in A" "$out"
+CB=$(uid); out=$(run "$M" CreateClassroom --vars "{\"schoolId\":\"$B\",\"id\":\"$CB\",\"gradeLevelId\":\"$GLB\",\"section\":\"A\",\"name\":\"ClassB-$TAG\",\"capacity\":30,\"actorId\":\"$UB\"}"); check_ok "classroom in B" "$out"
+SA=$(uid); out=$(run "$M" CreateSubject --vars "{\"schoolId\":\"$A\",\"id\":\"$SA\",\"name\":\"SubjA-$TAG\",\"code\":\"SA\",\"actorId\":\"u-$TAG\"}"); check_ok "subject in A" "$out"
+SB=$(uid); out=$(run "$M" CreateSubject --vars "{\"schoolId\":\"$B\",\"id\":\"$SB\",\"name\":\"SubjB-$TAG\",\"code\":\"SB\",\"actorId\":\"$UB\"}"); check_ok "subject in B" "$out"
 sched() { run "$M" CreateSchedule --vars "{\"schoolId\":\"$A\",\"classroomId\":\"$1\",\"subjectId\":\"$2\",\"teacherId\":\"$3\",\"dayOfWeek\":\"MONDAY\",\"startTime\":\"09:00\",\"endTime\":\"10:00\"}"; }
 exam()  { run "$M" CreateExam --vars "{\"schoolId\":\"$A\",\"classroomId\":\"$1\",\"subjectId\":\"$2\",\"title\":\"T\",\"examDate\":\"2026-12-01\",\"maxScore\":50}"; }
 check_ok       "schedule with A's classroom, A's subject, A's teacher" "$(sched "$CA" "$SA" "u-$TAG")"

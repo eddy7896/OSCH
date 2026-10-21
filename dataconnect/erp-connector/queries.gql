@@ -1,24 +1,3 @@
-# Get all active Academic Years for a School
-query ListAcademicYears($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  academicYears(where: {schoolId: {eq: $schoolId}}, orderBy: [{startDate: DESC}]) {
-    id
-    name
-    startDate
-    endDate
-    status
-  }
-}
-
-# Get all Classrooms for a School
-query ListClassrooms($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  classrooms(where: {schoolId: {eq: $schoolId}}, orderBy: [{gradeLevel: ASC}, {name: ASC}]) {
-    id
-    name
-    gradeLevel
-    capacity
-  }
-}
-
 # Get all Invoices for a School (Requires joining through Student)
 query ListInvoices($schoolId: UUID!) @auth(level: NO_ACCESS) {
   invoices(where: {schoolId: {eq: $schoolId}}, orderBy: [{dueDate: ASC}]) {
@@ -69,15 +48,6 @@ query ListPayroll($schoolId: UUID!) @auth(level: NO_ACCESS) {
       id
       email
     }
-  }
-}
-
-# Academic: Get Subjects
-query ListSubjects($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  subjects(where: {schoolId: {eq: $schoolId}}) {
-    id
-    name
-    code
   }
 }
 
@@ -186,4 +156,28 @@ query ListAuditLog($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(level: N
     id action entityType entityId details createdAt
     actor { id email displayName }
   }
+}
+
+# School setup (P2-1). Every read is scoped by $schoolId.
+query GetSchoolProfile($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  school(id: $schoolId) { id name subDomain defaultLanguage currency locale address contactPhone contactEmail primaryColor logoKey activeAcademicYear { id name } }
+}
+
+query ListGradeLevels($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  gradeLevels(where: {schoolId: {eq: $schoolId}}, orderBy: [{position: ASC}, {name: ASC}]) {
+    id name position
+    classrooms: classrooms_on_gradeLevel(orderBy: [{section: ASC}]) { id section name capacity }
+  }
+}
+
+query ListClassrooms($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  classrooms(where: {schoolId: {eq: $schoolId}}, orderBy: [{name: ASC}]) { id name section capacity gradeLevel { id name position } }
+}
+
+query ListSubjects($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  subjects(where: {schoolId: {eq: $schoolId}}, orderBy: [{name: ASC}]) { id name code }
+}
+
+query ListAcademicYears($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  academicYears(where: {schoolId: {eq: $schoolId}}, orderBy: [{startDate: DESC}]) { id name startDate endDate status }
 }
