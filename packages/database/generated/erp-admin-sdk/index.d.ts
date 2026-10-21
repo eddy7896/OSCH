@@ -695,6 +695,26 @@ export interface Payroll_Key {
   __typename?: 'Payroll_Key';
 }
 
+export interface ProvisionSchoolAdminData {
+  query?: {
+    school: ({
+      id: UUIDString;
+    } & School_Key)[];
+    admins: ({
+      userId: string;
+    })[];
+  };
+  schoolMember_insert: SchoolMember_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ProvisionSchoolAdminVariables {
+  schoolId: UUIDString;
+  userId: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface ProvisionSchoolData {
   school_insert: School_Key;
   auditLog_insert: AuditLog_Key;
@@ -933,6 +953,11 @@ export function setUserLanguage(vars: SetUserLanguageVariables, options?: Operat
 export function provisionSchool(dc: DataConnect, vars: ProvisionSchoolVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ProvisionSchoolData>>;
 /** Generated Node Admin SDK operation action function for the 'ProvisionSchool' Mutation. Allow users to pass in custom DataConnect instances. */
 export function provisionSchool(vars: ProvisionSchoolVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ProvisionSchoolData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ProvisionSchoolAdmin' Mutation. Allow users to execute without passing in DataConnect. */
+export function provisionSchoolAdmin(dc: DataConnect, vars: ProvisionSchoolAdminVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ProvisionSchoolAdminData>>;
+/** Generated Node Admin SDK operation action function for the 'ProvisionSchoolAdmin' Mutation. Allow users to pass in custom DataConnect instances. */
+export function provisionSchoolAdmin(vars: ProvisionSchoolAdminVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ProvisionSchoolAdminData>>;
 
 /** Generated Node Admin SDK operation action function for the 'UpdateSchool' Mutation. Allow users to execute without passing in DataConnect. */
 export function updateSchool(dc: DataConnect, vars: UpdateSchoolVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateSchoolData>>;

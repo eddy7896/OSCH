@@ -48,6 +48,12 @@ export type CreateInvitationDto = {
     schoolRole: 'PRINCIPAL' | 'MANAGEMENT' | 'BURSAR' | 'ACADEMIC_ADMIN' | 'SYSTEM_ADMIN' | 'HR_MANAGER' | 'ACCOUNTANT' | 'ADMISSIONS_OFFICER' | 'TRANSPORT_MANAGER' | 'OPERATIONS_MANAGER' | 'TEACHER' | 'STAFF' | 'DRIVER' | 'PARENT';
 };
 
+export type CreateSchoolAdminDto = {
+    displayName: string;
+    email?: string;
+    phoneNumber?: string;
+};
+
 export type CreateSchoolDto = {
     defaultLanguage: 'en' | 'hi' | 'ur' | 'ks' | 'sd' | 'ps' | 'fa' | 'ar' | 'bn' | 'as' | 'mr' | 'doi' | 'gu' | 'pa' | 'or' | 'ta' | 'te' | 'kn' | 'ml';
     name: string;
@@ -1056,6 +1062,50 @@ export type PlatformSchoolsActivateResponses = {
 };
 
 export type PlatformSchoolsActivateResponse = PlatformSchoolsActivateResponses[keyof PlatformSchoolsActivateResponses];
+
+export type PlatformSchoolsCreateAdminData = {
+    body: CreateSchoolAdminDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/platform/schools/{id}/admins';
+};
+
+export type PlatformSchoolsCreateAdminErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PlatformSchoolsCreateAdminError = PlatformSchoolsCreateAdminErrors[keyof PlatformSchoolsCreateAdminErrors];
+
+export type PlatformSchoolsCreateAdminResponses = {
+    201: StaffAccountDto;
+};
+
+export type PlatformSchoolsCreateAdminResponse = PlatformSchoolsCreateAdminResponses[keyof PlatformSchoolsCreateAdminResponses];
 
 export type PlatformSchoolsSuspendData = {
     body: SchoolStatusDto;

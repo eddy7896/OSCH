@@ -264,6 +264,28 @@
         ],
         "type": "object"
       },
+      "CreateSchoolAdminDto": {
+        "properties": {
+          "displayName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "email": {
+            "format": "email",
+            "maxLength": 254,
+            "type": "string"
+          },
+          "phoneNumber": {
+            "pattern": "^\\+[1-9][0-9]{6,14}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "displayName"
+        ],
+        "type": "object"
+      },
       "CreateSchoolDto": {
         "properties": {
           "defaultLanguage": {
@@ -2440,6 +2462,78 @@
         "x-audit": {
           "action": "platform.school.status",
           "operation": "SetSubscriptionStatus"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "platform_schools"
+        }
+      }
+    },
+    "/v1/platform/schools/{id}/admins": {
+      "post": {
+        "operationId": "PlatformSchools_createAdmin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSchoolAdminDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffAccountDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "PlatformSchools"
+        ],
+        "x-access": "platform",
+        "x-audit": {
+          "action": "platform.school.admin.create",
+          "operation": "ProvisionSchoolAdmin"
         },
         "x-permission": {
           "action": "update",

@@ -19,3 +19,11 @@ Invitations (P1-6d) bring in a person who proves, with a verified email, that th
 - The web client (P1-9/P1-10) must, after a `SEND_SET_PASSWORD_EMAIL` response, call Firebase's `sendPasswordResetEmail(auth, email)`, and offer the same call as "resend". The email comes from Firebase's template and sender; deliverability, branding and quotas are not verified and need a test on a real project before launch.
 - The Auth emulator reproduces both sign-in paths with its own endpoints (password reset via oobCode, phone via verification code); `accounts.integration.ts` proves them end to end.
 - Invitations remain for people who already have, or should create, their own account (including a person at a second school).
+
+## Addendum (2026-10-21): the platform owner creates a school's first System Admin
+A new school has nobody who can sign in, and the platform owner has no tenant powers (ADR-0007: only a System Admin grants roles). So the one exception is narrow and owner-decided:
+- `POST /v1/platform/schools/{id}/admins` (`@Platform()`, `platform_schools` update, `@Strict()`, audited as `platform.school.admin.create`): creates the Firebase account (same rules as staff accounts: unknown random password, set-password link sent by the client, existing address is a 409, a failure after creation deletes the account) and an ACTIVE `SYSTEM_ADMIN` membership in one audited Data Connect transaction (`ProvisionSchoolAdmin`).
+- The role is not a field: it is `SYSTEM_ADMIN` in the mutation. The body cannot carry a role or school.
+- **Only while the school has no active System Admin** (409 `CONFLICT` otherwise), checked in the gateway for a clean error and again inside the transaction. After that the school's own System Admin grants roles; the platform owner cannot add more. If a school loses its only admin, that is a support case (not built).
+- Who the caller is rests on the verified `globalRole` claim: the `User` row keeps `globalRole USER`, so the database cannot check it. The database guards what it can see (school exists, no active System Admin).
+- Contact details never go into the audit row.

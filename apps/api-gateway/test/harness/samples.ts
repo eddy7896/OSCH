@@ -64,6 +64,7 @@ export const SAMPLES: Record<string, Sample> = {
     body: () => ({}),
     auditSchool: (_w, ctx) => ctx['id']!,
   },
+  'POST /platform/schools/:id/admins': { ...platform, prepare: freshSchool, body: () => ({ displayName: 'Audit Admin', email: `school-admin-${randomUUID().slice(0, 10)}@example.com` }), auditSchool: (_w, ctx) => ctx['id']! },
   'POST /memberships': { ...systemAdminOfA, prepare: async (w) => ({ userId: await freshUser(w) }), body: (_w, ctx) => ({ userId: ctx['userId'], schoolRole: 'STAFF' }) },
   'POST /memberships/accounts': { ...systemAdminOfA, body: () => ({ displayName: 'Audit Sample', schoolRole: 'STAFF', email: `account-${randomUUID().slice(0, 10)}@example.com` }) },
   'PATCH /memberships/:userId': { ...systemAdminOfA, prepare: memberOfA, body: () => ({ status: 'SUSPENDED' }) },
