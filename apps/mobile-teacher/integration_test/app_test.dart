@@ -32,7 +32,7 @@ void main() {
     await boot(tester, 'ur');
     final ctx = tester.element(find.byType(Scaffold));
     expect(Directionality.of(ctx), TextDirection.rtl);
-    expect(find.text('OruSchools اُستاد'), findsOneWidget);
+    expect(find.text('OruSchools استاد'), findsOneWidget);
     expect(Theme.of(ctx).textTheme.bodyLarge!.fontFamily, contains('NotoNastaliqUrdu'));
     expect(tester.getSize(find.byType(Scaffold)).width, greaterThan(0));
     expect(tester.takeException(), isNull);

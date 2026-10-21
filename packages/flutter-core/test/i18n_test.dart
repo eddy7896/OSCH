@@ -89,7 +89,7 @@ void main() {
       expect(hi.appTeacher, 'OruSchools शिक्षक');
       expect(hi.statusPresent, 'उपस्थित');
       final ur = await load(tester, 'ur');
-      expect(ur.appTeacher, 'OruSchools اُستاد');
+      expect(ur.appTeacher, 'OruSchools استاد');
       expect(ur.statusPresent, 'حاضر');
       expect(ur.greetingMorning('عائشہ'), 'صبح بخیر، عائشہ');
     });
@@ -109,8 +109,8 @@ void main() {
       final hi = await load(tester, 'hi');
       expect(hi.syncChangesPending(5), '5 बदलाव लंबित');
       final ur = await load(tester, 'ur');
-      expect(ur.syncChangesPending(1), '1 تبدیلی باقی ہے');
-      expect(ur.syncChangesPending(5), '5 تبدیلیاں باقی ہیں');
+      expect(ur.syncChangesPending(1), '1 تبدیلی زیر التوا ہے');
+      expect(ur.syncChangesPending(5), '5 تبدیلیاں زیر التوا ہیں');
     });
 
     test('English is the default: device language is not adopted automatically (ADR-0006)', () {
