@@ -11,6 +11,8 @@ import {
   localeInfo,
   matchLanguageTag,
   negotiateLocale,
+  readLocaleCookie,
+  serializeLocaleCookie,
 } from "./index.js";
 
 describe("registry", () => {
@@ -115,5 +117,25 @@ describe("messages", () => {
 
   it("the brand tagline is NOT translated (brand guidelines: do not rewrite it)", () => {
     for (const code of ["hi", "ur"] as const) expect(MESSAGES[code].appWebsite).toBe(en.appWebsite);
+  });
+});
+
+describe("the language cookie", () => {
+  it("reads the explicit choice out of a cookie string, ignoring other cookies and unsupported values", () => {
+    expect(readLocaleCookie("a=1; ORU_LOCALE=ur; b=2")).toBe("ur");
+    expect(readLocaleCookie("ORU_LOCALE=hi")).toBe("hi");
+    expect(readLocaleCookie("ORU_LOCALE=ur-PK")).toBe("ur");
+    expect(readLocaleCookie("ORU_LOCALE=xx")).toBeUndefined();
+    expect(readLocaleCookie("XORU_LOCALE=ur; ORU_LOCALE_OLD=hi")).toBeUndefined();
+    expect(readLocaleCookie("")).toBeUndefined();
+    expect(readLocaleCookie(null)).toBeUndefined();
+    expect(readLocaleCookie("ORU_LOCALE=%E0%A4")).toBeUndefined(); // malformed escapes must not throw
+  });
+  it("writes a year-long, site-wide, same-site cookie; Secure only when asked", () => {
+    expect(serializeLocaleCookie("ur")).toBe("ORU_LOCALE=ur; Path=/; Max-Age=31536000; SameSite=Lax");
+    expect(serializeLocaleCookie("hi", { secure: true })).toMatch(/; Secure$/);
+  });
+  it("what is written can be read back", () => {
+    expect(readLocaleCookie(serializeLocaleCookie("ks").split(";")[0])).toBe("ks");
   });
 });
