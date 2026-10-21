@@ -387,6 +387,9 @@ export interface GetSchoolData {
     locale: string;
     defaultLanguage: string;
     createdAt: TimestampString;
+    administrators: ({
+      userId: string;
+    })[];
   } & School_Key;
 }
 
@@ -634,6 +637,9 @@ export interface ListSchoolsData {
     subscriptionStatus: SubscriptionStatus;
     defaultLanguage: string;
     createdAt: TimestampString;
+    administrators: ({
+      userId: string;
+    })[];
   } & School_Key)[];
 }
 

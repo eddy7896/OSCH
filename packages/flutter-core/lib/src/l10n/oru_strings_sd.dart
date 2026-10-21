@@ -380,4 +380,10 @@ class OruStringsSd extends OruStrings {
 
   @override
   String get authResetNeedsEmail => 'Enter your email address first.';
+
+  @override
+  String get saasHasAdmin => 'Administrator added';
+
+  @override
+  String get saasNoAdmin => 'No administrator yet';
 }

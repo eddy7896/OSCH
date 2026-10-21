@@ -112,7 +112,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "errorAccountExists": "An account with this email or number already exists.",
     "authForgot": "Forgot password?",
     "authResetSent": "If an account exists for that address, an email to set a new password is on its way.",
-    "authResetNeedsEmail": "Enter your email address first."
+    "authResetNeedsEmail": "Enter your email address first.",
+    "saasHasAdmin": "Administrator added",
+    "saasNoAdmin": "No administrator yet"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -222,7 +224,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "errorAccountExists": "इस ईमेल या नंबर का खाता पहले से मौजूद है।",
     "authForgot": "पासवर्ड भूल गए?",
     "authResetSent": "यदि उस पते का कोई खाता है, तो नया पासवर्ड बनाने का ईमेल भेजा जा रहा है।",
-    "authResetNeedsEmail": "पहले अपना ईमेल पता लिखें।"
+    "authResetNeedsEmail": "पहले अपना ईमेल पता लिखें।",
+    "saasHasAdmin": "एडमिनिस्ट्रेटर जोड़ा गया",
+    "saasNoAdmin": "अभी कोई एडमिनिस्ट्रेटर नहीं"
   },
   "ur": {
     "appTeacher": "OruSchools اُستاد",
@@ -332,7 +336,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "errorAccountExists": "اس ای میل یا نمبر کا اکاؤنٹ پہلے سے موجود ہے۔",
     "authForgot": "پاس ورڈ بھول گئے؟",
     "authResetSent": "اگر اس پتے کا کوئی اکاؤنٹ ہے تو نیا پاس ورڈ بنانے کی ای میل بھیجی جا رہی ہے۔",
-    "authResetNeedsEmail": "پہلے اپنا ای میل پتہ لکھیں۔"
+    "authResetNeedsEmail": "پہلے اپنا ای میل پتہ لکھیں۔",
+    "saasHasAdmin": "منتظم شامل ہو چکا",
+    "saasNoAdmin": "ابھی کوئی منتظم نہیں"
   },
   "ks": {},
   "sd": {},

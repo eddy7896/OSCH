@@ -106,5 +106,7 @@
   "errorAccountExists": "An account with this email or number already exists.",
   "authForgot": "Forgot password?",
   "authResetSent": "If an account exists for that address, an email to set a new password is on its way.",
-  "authResetNeedsEmail": "Enter your email address first."
+  "authResetNeedsEmail": "Enter your email address first.",
+  "saasHasAdmin": "Administrator added",
+  "saasNoAdmin": "No administrator yet"
 }

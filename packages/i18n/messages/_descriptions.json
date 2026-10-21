@@ -107,5 +107,7 @@
   "errorAccountExists": "Error when an email or phone number already has an account.",
   "authForgot": "Link on sign-in that sends an email to set a new password.",
   "authResetSent": "Shown after asking for a password email. Does not reveal whether the address has an account.",
-  "authResetNeedsEmail": "Shown when 'Forgot password?' is pressed with the email field empty."
+  "authResetNeedsEmail": "Shown when 'Forgot password?' is pressed with the email field empty.",
+  "saasHasAdmin": "Badge on a school that already has an administrator.",
+  "saasNoAdmin": "Badge on a school that has no administrator yet, so nobody can sign in to it."
 }

@@ -167,6 +167,7 @@ export function SchoolsScreen() {
     setBusy(false);
     setView({ kind: "list" });
     setNotice(notice);
+    reload(); // the list then shows the school as having an administrator
   }
 
   const fieldError = (name: string) => (badFields.has(name) ? t("errorInvalidRequest") : undefined);
@@ -281,9 +282,12 @@ export function SchoolsScreen() {
                   <Button size="comfortable" variant="ghost" aria-label={`${t("actionEdit")}: ${school.name}`} onClick={() => open({ kind: "edit", school })}>
                     {t("actionEdit")}
                   </Button>
-                  <Button size="comfortable" variant="ghost" aria-label={`${t("actionAddAdmin")}: ${school.name}`} onClick={() => open({ kind: "admin", school })}>
-                    {t("actionAddAdmin")}
-                  </Button>
+                  <Badge tone={school.hasAdministrator ? "info" : "warning"}>{school.hasAdministrator ? t("saasHasAdmin") : t("saasNoAdmin")}</Badge>
+                  {!school.hasAdministrator && (
+                    <Button size="comfortable" variant="ghost" aria-label={`${t("actionAddAdmin")}: ${school.name}`} onClick={() => open({ kind: "admin", school })}>
+                      {t("actionAddAdmin")}
+                    </Button>
+                  )}
                   {school.status === "ACTIVE" ? (
                     <Button size="comfortable" variant="ghost" aria-label={`${t("actionSuspend")}: ${school.name}`} onClick={() => open({ kind: "suspend", school })}>
                       {t("actionSuspend")}

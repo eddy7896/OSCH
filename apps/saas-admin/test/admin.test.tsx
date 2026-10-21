@@ -107,3 +107,33 @@ describe("Add the first administrator of a school", () => {
     expect(api.platformSchoolsCreateAdmin).not.toHaveBeenCalled();
   });
 });
+
+describe("Who already has an administrator", () => {
+  it("a school with none says so and offers Add administrator", async () => {
+    renderApp(<PlatformApp />, { port: fakePort(OWNER).port, api: withSchool() });
+    expect(await screen.findByText("No administrator yet")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Add administrator: Greenfield School" })).toBeTruthy();
+    expect(screen.queryByText("Administrator added")).toBeNull();
+  });
+
+  it("a school that has one says so and does not offer the button", async () => {
+    const api = fakeApi({ platformSchoolsList: vi.fn(async () => ({ items: [school({ hasAdministrator: true })], limit: 50, offset: 0 })) });
+    renderApp(<PlatformApp />, { port: fakePort(OWNER).port, api });
+    expect(await screen.findByText("Administrator added")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /Add administrator/ })).toBeNull();
+    expect(screen.queryByText("No administrator yet")).toBeNull();
+  });
+
+  it("after adding one the list is reloaded and the school shows as having an administrator", async () => {
+    const list = vi.fn().mockResolvedValueOnce({ items: [school()], limit: 50, offset: 0 }).mockResolvedValue({ items: [school({ hasAdministrator: true })], limit: 50, offset: 0 });
+    const api = fakeApi({ platformSchoolsList: list, platformSchoolsCreateAdmin: vi.fn(async () => created()) });
+    renderApp(<PlatformApp />, { port: fakePort(OWNER).port, api });
+    await open();
+    type("Full name", "Asha");
+    type("Email address", "asha@example.com");
+    submit();
+    expect(await screen.findByText("Administrator added")).toBeTruthy();
+    await waitFor(() => expect(screen.queryByRole("button", { name: /Add administrator/ })).toBeNull());
+    expect(list).toHaveBeenCalledTimes(2);
+  });
+});

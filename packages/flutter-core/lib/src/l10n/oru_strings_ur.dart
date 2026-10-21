@@ -381,4 +381,10 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get authResetNeedsEmail => 'پہلے اپنا ای میل پتہ لکھیں۔';
+
+  @override
+  String get saasHasAdmin => 'منتظم شامل ہو چکا';
+
+  @override
+  String get saasNoAdmin => 'ابھی کوئی منتظم نہیں';
 }

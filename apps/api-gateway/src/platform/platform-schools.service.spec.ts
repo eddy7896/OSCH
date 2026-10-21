@@ -3,14 +3,14 @@ import { PlatformSchoolsService } from './platform-schools.service.js';
 const ID = '11111111-1111-4111-8111-111111111111';
 const actor = { uid: 'u-admin', email: 'admin@example.com', emailVerified: true, globalRole: 'SUPER_ADMIN' as const };
 
-function setup(initial?: { status?: string }) {
-  const rows = new Map<string, { id: string; name: string; subDomain: string; subscriptionStatus: string; defaultLanguage: string; createdAt: string }>();
-  if (initial) rows.set(ID.replaceAll('-', ''), { id: ID.replaceAll('-', ''), name: 'Old', subDomain: 'old', subscriptionStatus: initial.status ?? 'ACTIVE', defaultLanguage: 'en', createdAt: '2026-10-17T00:00:00Z' });
+function setup(initial?: { status?: string; admins?: number }) {
+  const rows = new Map<string, { id: string; name: string; subDomain: string; subscriptionStatus: string; defaultLanguage: string; createdAt: string; administrators: { userId: string }[] }>();
+  if (initial) rows.set(ID.replaceAll('-', ''), { id: ID.replaceAll('-', ''), name: 'Old', subDomain: 'old', subscriptionStatus: initial.status ?? 'ACTIVE', defaultLanguage: 'en', createdAt: '2026-10-17T00:00:00Z', administrators: Array.from({ length: initial.admins ?? 0 }, (_, i) => ({ userId: `a${i}` })) });
   const calls = { provision: [] as any[], update: [] as any[], status: [] as any[], sync: 0, invalidated: [] as string[], publicInvalidated: [] as string[] };
   const db = {
     getSchool: async ({ schoolId }: { schoolId: string }) => ({ data: { school: rows.get(schoolId.replaceAll('-', '')) ?? null } }),
     listSchools: async () => ({ data: { schools: [...rows.values()] } }),
-    provisionSchool: async (v: any) => { calls.provision.push(v); rows.set(v.id.replaceAll('-', ''), { id: v.id.replaceAll('-', ''), name: v.name, subDomain: v.subDomain, subscriptionStatus: 'ACTIVE', defaultLanguage: v.defaultLanguage, createdAt: 'now' }); return {}; },
+    provisionSchool: async (v: any) => { calls.provision.push(v); rows.set(v.id.replaceAll('-', ''), { id: v.id.replaceAll('-', ''), name: v.name, subDomain: v.subDomain, subscriptionStatus: 'ACTIVE', defaultLanguage: v.defaultLanguage, createdAt: 'now', administrators: [] }); return {}; },
     updateSchool: async (v: any) => { calls.update.push(v); const r = rows.get(v.schoolId.replaceAll('-', ''))!; r.name = v.name; r.defaultLanguage = v.defaultLanguage; return {}; },
     setSubscriptionStatus: async (v: any) => { calls.status.push(v); rows.get(v.schoolId.replaceAll('-', ''))!.subscriptionStatus = v.status; return {}; },
   };
@@ -28,6 +28,14 @@ describe('PlatformSchoolsService', () => {
     expect(calls.provision[0]).toMatchObject({ name: 'Green', subDomain: 'green', defaultLanguage: 'hi', actorId: 'u-admin', details: { name: 'Green', subDomain: 'green', defaultLanguage: 'hi' } });
     expect(calls.provision[0].id).toMatch(/^[0-9a-f-]{36}$/);
     expect(out).toMatchObject({ id: calls.provision[0].id, name: 'Green', status: 'ACTIVE' });
+  });
+
+  it('hasAdministrator follows the active System Admins of the school, in get and in the list', async () => {
+    expect((await setup({}).svc.get(ID)).hasAdministrator).toBe(false);
+    const withAdmin = setup({ admins: 1 }).svc;
+    expect((await withAdmin.get(ID)).hasAdministrator).toBe(true);
+    expect((await withAdmin.list(10, 0)).items.map((i) => i.hasAdministrator)).toEqual([true]);
+    expect((await setup().svc.create(actor, { name: 'Green', subDomain: 'green', defaultLanguage: 'hi' })).hasAdministrator).toBe(false);
   });
 
   it('get: canonical uuid, and 404 for an unknown school', async () => {

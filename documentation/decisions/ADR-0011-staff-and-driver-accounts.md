@@ -28,3 +28,4 @@ A new school has nobody who can sign in, and the platform owner has no tenant po
 - Who the caller is rests on the verified `globalRole` claim: the `User` row keeps `globalRole USER`, so the database cannot check it. The database guards what it can see (school exists, no active System Admin).
 - Contact details never go into the audit row.
 - saas-admin shows an Add administrator action per school. After the gateway answers `nextStep: SEND_SET_PASSWORD_EMAIL`, the browser asks Firebase (`sendPasswordResetEmail`) to send the link; if that fails the owner is told to have the person use Forgot password on the sign-in page (which exists for this reason).
+- Schools carry `hasAdministrator` (an active System Admin exists), read from the same query as the school, so the list shows who still needs one and hides the Add administrator action for those that have one. A suspended administrator does not count.

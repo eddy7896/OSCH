@@ -379,4 +379,10 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get authResetNeedsEmail => 'पहले अपना ईमेल पता लिखें।';
+
+  @override
+  String get saasHasAdmin => 'एडमिनिस्ट्रेटर जोड़ा गया';
+
+  @override
+  String get saasNoAdmin => 'अभी कोई एडमिनिस्ट्रेटर नहीं';
 }

@@ -779,6 +779,18 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Enter your email address first.'**
   String get authResetNeedsEmail;
+
+  /// Badge on a school that already has an administrator.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator added'**
+  String get saasHasAdmin;
+
+  /// Badge on a school that has no administrator yet, so nobody can sign in to it.
+  ///
+  /// In en, this message translates to:
+  /// **'No administrator yet'**
+  String get saasNoAdmin;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

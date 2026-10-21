@@ -471,5 +471,13 @@
   "authResetNeedsEmail": "Enter your email address first.",
   "@authResetNeedsEmail": {
     "description": "Shown when 'Forgot password?' is pressed with the email field empty."
+  },
+  "saasHasAdmin": "Administrator added",
+  "@saasHasAdmin": {
+    "description": "Badge on a school that already has an administrator."
+  },
+  "saasNoAdmin": "No administrator yet",
+  "@saasNoAdmin": {
+    "description": "Badge on a school that has no administrator yet, so nobody can sign in to it."
   }
 }

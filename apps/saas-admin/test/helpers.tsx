@@ -51,12 +51,13 @@ export function renderApp(ui: ReactElement, opts: { port?: AuthPort; api?: Api; 
   );
 }
 
-export const school = (over: Partial<{ id: string; name: string; subDomain: string; status: string; defaultLanguage: string }> = {}) => ({
+export const school = (over: Partial<{ id: string; name: string; subDomain: string; status: string; defaultLanguage: string; hasAdministrator: boolean }> = {}) => ({
   id: "11111111-1111-4111-8111-111111111111",
   name: "Greenfield School",
   subDomain: "greenfield",
   status: "ACTIVE",
   defaultLanguage: "en",
+  hasAdministrator: false,
   createdAt: "2026-10-01T00:00:00.000Z",
   ...over,
 });
