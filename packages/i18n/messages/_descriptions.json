@@ -172,5 +172,7 @@
   "roleTeacher": "Name of a role a person has in a school.",
   "roleStaff": "Name of a role a person has in a school.",
   "roleDriver": "Name of a role a person has in a school.",
-  "roleParent": "Name of a role a person has in a school."
+  "roleParent": "Name of a role a person has in a school.",
+  "errorUploadInvalid": "Error when the chosen picture is not an accepted type or is too big.",
+  "errorUploadFailed": "Error when sending a file to storage failed."
 }

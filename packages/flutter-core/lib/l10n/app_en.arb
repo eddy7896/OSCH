@@ -746,5 +746,13 @@
   "roleParent": "Parent",
   "@roleParent": {
     "description": "Name of a role a person has in a school."
+  },
+  "errorUploadInvalid": "Choose a PNG, JPEG or WebP image up to 2 MB.",
+  "@errorUploadInvalid": {
+    "description": "Error when the chosen picture is not an accepted type or is too big."
+  },
+  "errorUploadFailed": "The file could not be uploaded. Try again.",
+  "@errorUploadFailed": {
+    "description": "Error when sending a file to storage failed."
   }
 }

@@ -177,7 +177,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "roleTeacher": "Teacher",
     "roleStaff": "Staff",
     "roleDriver": "Driver",
-    "roleParent": "Parent"
+    "roleParent": "Parent",
+    "errorUploadInvalid": "Choose a PNG, JPEG or WebP image up to 2 MB.",
+    "errorUploadFailed": "The file could not be uploaded. Try again."
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -352,7 +354,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "roleTeacher": "शिक्षक",
     "roleStaff": "स्टाफ़",
     "roleDriver": "ड्राइवर",
-    "roleParent": "अभिभावक"
+    "roleParent": "अभिभावक",
+    "errorUploadInvalid": "PNG, JPEG या WebP छवि चुनें, अधिकतम 2 MB।",
+    "errorUploadFailed": "फ़ाइल अपलोड नहीं हो सकी। फिर कोशिश करें।"
   },
   "ur": {
     "appTeacher": "OruSchools اُستاد",
@@ -527,7 +531,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "roleTeacher": "استاد",
     "roleStaff": "عملہ",
     "roleDriver": "ڈرائیور",
-    "roleParent": "والدین"
+    "roleParent": "والدین",
+    "errorUploadInvalid": "PNG، JPEG یا WebP تصویر منتخب کریں، زیادہ سے زیادہ 2 MB۔",
+    "errorUploadFailed": "فائل اپ لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔"
   },
   "ks": {},
   "sd": {},
