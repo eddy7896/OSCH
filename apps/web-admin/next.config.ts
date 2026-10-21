@@ -1,6 +1,10 @@
 import path from "node:path";
+import { loadEnvConfig } from "@next/env";
 import createNextIntlPlugin from "next-intl/plugin";
 import type { NextConfig } from "next";
+
+// One master env file at the repo root (.env.local) serves every app.
+loadEnvConfig(path.resolve(import.meta.dirname, "../.."));
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
