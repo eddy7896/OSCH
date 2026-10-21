@@ -132,7 +132,7 @@ graph LR
 | ID | Task | Size | Notes |
 |---|---|---|---|
 | P1-12 | Staging: Dockerfiles (gateway, web), Nginx wildcard subdomains, deploy workflow, health checks, env/secret handling (secrets only in the gateway) | L | **Spike first** (Next standalone in this monorepo, `turbo prune`, wildcard TLS): none of this is verified yet. Start after M2 so staging finds integration problems early |
-| P1-15 | Translation workflow (export/import, glossary) | M | owner-driven; needs the Hindi/Urdu reviewers |
+| P1-15 BUILT (review page + tools/translations.mjs; glossary of 123 terms, evals E-TR-1..7 and E-GL-1..7; reviewers not chosen yet, so no language is marked reviewed) | Translation workflow (export/import, glossary) | M | owner-driven; needs the Hindi/Urdu reviewers |
 | **P1-16** DONE (CI already ran the emulator gateway suite, SDK freshness and the OpenAPI check; emulators are now cached between runs) | CI: emulator-backed gateway job (cached emulators), OpenAPI drift step, `actionlint`-style workflow validation (done: `workflow-check`) | S | with P1-7 |
 
 ## 5. Order and parallelism
