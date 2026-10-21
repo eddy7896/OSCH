@@ -4,6 +4,13 @@ import { Checkbox, SegmentedControl, TextField } from '../src/index.js';
 import { expectAccessible } from './axe.js';
 
 describe('Checkbox', () => {
+  it('is not struck through when ticked unless it is a to-do item', () => {
+    const { container, rerender } = render(<Checkbox label="Remember this device" defaultChecked />);
+    expect(container.querySelector('label')!.className).not.toContain('oru-check--task');
+    rerender(<Checkbox label="Collect forms" defaultChecked strikeWhenChecked />);
+    expect(container.querySelector('label')!.className).toContain('oru-check--task');
+  });
+
   it('the label is the accessible name and the whole row toggles it', () => {
     const onChange = vi.fn();
     render(<Checkbox label="Collect forms" onChange={onChange} />);

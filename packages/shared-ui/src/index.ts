@@ -14,3 +14,7 @@ export { Card, type CardProps } from './Card.js';
 export { LinkAction, type LinkActionProps } from './LinkAction.js';
 export { ListRow, type ListRowProps } from './ListRow.js';
 export { StatCard, type StatCardProps } from './StatCard.js';
+export { BottomNav, type BottomNavProps } from './BottomNav.js';
+export { Logo, type LogoProps, type LogoTone } from './Logo.js';
+export type { NavItem } from './NavItem.js';
+export { SideNav, type SideNavProps, type SideNavSection } from './SideNav.js';
