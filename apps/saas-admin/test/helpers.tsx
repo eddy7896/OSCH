@@ -22,7 +22,7 @@ export function fakePort(initial: AuthState = { status: "out" }) {
     signInWithEmail: vi.fn(async () => undefined),
     signInWithGoogle: vi.fn(async () => undefined),
     startPhoneSignIn: vi.fn(async () => challenge),
-    sendPasswordReset: vi.fn(async (_email: string) => undefined),
+    sendPasswordReset: vi.fn<(email: string) => Promise<void>>(async () => undefined),
     signOut: vi.fn(async () => undefined),
     getToken: vi.fn(async () => "token"),
   } satisfies AuthPort;
