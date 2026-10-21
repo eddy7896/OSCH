@@ -2,6 +2,7 @@
 @import "@oruschools/shared-design-tokens/tokens.css";
 @import "@oruschools/shared-design-tokens/theme.css";
 @import "@oruschools/i18n/i18n.css";
+@import "@oruschools/shared-ui/styles.css";
 
 /* Light theme only (decision DS-1): no dark-mode styling in v1. */
 @layer base {

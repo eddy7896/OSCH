@@ -479,5 +479,272 @@
   "saasNoAdmin": "No administrator yet",
   "@saasNoAdmin": {
     "description": "Badge on a school that has no administrator yet, so nobody can sign in to it."
+  },
+  "webSignInTitle": "Sign in to {name}",
+  "@webSignInTitle": {
+    "description": "Heading of a school's sign-in screen. {name} is the school's name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "webSignInIntro": "Use the account your school gave you.",
+  "@webSignInIntro": {
+    "description": "One line under the school sign-in heading."
+  },
+  "webSchoolNotFoundTitle": "We could not find this school",
+  "@webSchoolNotFoundTitle": {
+    "description": "Heading when the web address does not belong to an active school."
+  },
+  "webSchoolNotFoundBody": "Check the address, or ask your school for its web address.",
+  "@webSchoolNotFoundBody": {
+    "description": "Explains the previous heading."
+  },
+  "webNoSchoolTitle": "Open your school's address",
+  "@webNoSchoolTitle": {
+    "description": "Heading when the app is opened without a school's own web address."
+  },
+  "webNoSchoolBody": "Each school has its own web address, for example greenfield.oruschools.com.",
+  "@webNoSchoolBody": {
+    "description": "Explains that people reach the app at their school's own address. Keep the example as it is."
+  },
+  "webNoAccessTitle": "You do not have access to {name}",
+  "@webNoAccessTitle": {
+    "description": "Heading shown to a signed-in person who is not a member of this school. {name} is the school's name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "webNoAccessBody": "Ask your school's administrator to add you, then sign in again.",
+  "@webNoAccessBody": {
+    "description": "Explains what to do about no access."
+  },
+  "webLoadFailed": "We could not load your account",
+  "@webLoadFailed": {
+    "description": "Heading of the error when the person's account details fail to load after sign-in."
+  },
+  "webNavLabel": "School sections",
+  "@webNavLabel": {
+    "description": "Screen reader name of the school's side navigation."
+  },
+  "webDashboardEmptyTitle": "Nothing to show yet",
+  "@webDashboardEmptyTitle": {
+    "description": "Heading of the empty dashboard."
+  },
+  "webDashboardEmptyBody": "Numbers and tasks will appear here as your school's modules are set up.",
+  "@webDashboardEmptyBody": {
+    "description": "Explains the empty dashboard."
+  },
+  "webComingTitle": "This module is not ready yet",
+  "@webComingTitle": {
+    "description": "Heading shown for a navigation item whose screen is not built yet."
+  },
+  "webComingBody": "It will appear here when it is built.",
+  "@webComingBody": {
+    "description": "Explains the previous heading."
+  },
+  "webYourRole": "Your role: {role}",
+  "@webYourRole": {
+    "description": "Line on the dashboard that names the person's role in the school. {role} is the role name.",
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPageTitle": "Something went wrong on this page",
+  "@errorPageTitle": {
+    "description": "Heading of the page-level error screen."
+  },
+  "actionTryAgain": "Try again",
+  "@actionTryAgain": {
+    "description": "Button that retries after an error."
+  },
+  "sectionOverview": "Overview",
+  "@sectionOverview": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionAcademics": "Academics",
+  "@sectionAcademics": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionPeople": "People",
+  "@sectionPeople": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionHr": "HR",
+  "@sectionHr": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionFinance": "Finance",
+  "@sectionFinance": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionCommunication": "Communication",
+  "@sectionCommunication": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionTransport": "Transport",
+  "@sectionTransport": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionOperations": "Operations",
+  "@sectionOperations": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionReports": "Reports",
+  "@sectionReports": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "sectionAdministration": "Administration",
+  "@sectionAdministration": {
+    "description": "Heading of a group in the school's side navigation."
+  },
+  "navDashboard": "Dashboard",
+  "@navDashboard": {
+    "description": "Item in the school's side navigation."
+  },
+  "navStudents": "Students",
+  "@navStudents": {
+    "description": "Item in the school's side navigation."
+  },
+  "navClasses": "Classes and subjects",
+  "@navClasses": {
+    "description": "Item in the school's side navigation."
+  },
+  "navAttendance": "Attendance",
+  "@navAttendance": {
+    "description": "Item in the school's side navigation."
+  },
+  "navGradebook": "Gradebook",
+  "@navGradebook": {
+    "description": "Item in the school's side navigation."
+  },
+  "navSubstitution": "Substitutions",
+  "@navSubstitution": {
+    "description": "Item in the school's side navigation."
+  },
+  "navAdmissions": "Admissions",
+  "@navAdmissions": {
+    "description": "Item in the school's side navigation."
+  },
+  "navStaff": "Staff",
+  "@navStaff": {
+    "description": "Item in the school's side navigation."
+  },
+  "navStaffAttendance": "Staff attendance",
+  "@navStaffAttendance": {
+    "description": "Item in the school's side navigation."
+  },
+  "navLeave": "Leave",
+  "@navLeave": {
+    "description": "Item in the school's side navigation."
+  },
+  "navPayroll": "Payroll",
+  "@navPayroll": {
+    "description": "Item in the school's side navigation."
+  },
+  "navRecruitment": "Recruitment",
+  "@navRecruitment": {
+    "description": "Item in the school's side navigation."
+  },
+  "navFees": "Fees and payments",
+  "@navFees": {
+    "description": "Item in the school's side navigation."
+  },
+  "navAnnouncements": "Announcements",
+  "@navAnnouncements": {
+    "description": "Item in the school's side navigation."
+  },
+  "navTransport": "Transport",
+  "@navTransport": {
+    "description": "Item in the school's side navigation."
+  },
+  "navOperations": "Operations",
+  "@navOperations": {
+    "description": "Item in the school's side navigation."
+  },
+  "navReportsAcademic": "Academic reports",
+  "@navReportsAcademic": {
+    "description": "Item in the school's side navigation."
+  },
+  "navReportsFinance": "Financial reports",
+  "@navReportsFinance": {
+    "description": "Item in the school's side navigation."
+  },
+  "navReportsHr": "HR reports",
+  "@navReportsHr": {
+    "description": "Item in the school's side navigation."
+  },
+  "navSettings": "School settings",
+  "@navSettings": {
+    "description": "Item in the school's side navigation."
+  },
+  "navMemberships": "Users and roles",
+  "@navMemberships": {
+    "description": "Item in the school's side navigation."
+  },
+  "navAudit": "Audit log",
+  "@navAudit": {
+    "description": "Item in the school's side navigation."
+  },
+  "rolePrincipal": "Principal",
+  "@rolePrincipal": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleManagement": "Management",
+  "@roleManagement": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleBursar": "Bursar",
+  "@roleBursar": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleAcademicAdmin": "Academic administrator",
+  "@roleAcademicAdmin": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleSystemAdmin": "System administrator",
+  "@roleSystemAdmin": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleHrManager": "HR manager",
+  "@roleHrManager": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleAccountant": "Accountant",
+  "@roleAccountant": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleAdmissionsOfficer": "Admissions officer",
+  "@roleAdmissionsOfficer": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleTransportManager": "Transport manager",
+  "@roleTransportManager": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleOperationsManager": "Operations manager",
+  "@roleOperationsManager": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleTeacher": "Teacher",
+  "@roleTeacher": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleStaff": "Staff",
+  "@roleStaff": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleDriver": "Driver",
+  "@roleDriver": {
+    "description": "Name of a role a person has in a school."
+  },
+  "roleParent": "Parent",
+  "@roleParent": {
+    "description": "Name of a role a person has in a school."
   }
 }

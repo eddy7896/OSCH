@@ -387,4 +387,204 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get saasNoAdmin => 'ابھی کوئی منتظم نہیں';
+
+  @override
+  String webSignInTitle(String name) {
+    return '$name میں سائن اِن کریں';
+  }
+
+  @override
+  String get webSignInIntro =>
+      'وہ اکاؤنٹ استعمال کریں جو آپ کے اسکول نے دیا ہے۔';
+
+  @override
+  String get webSchoolNotFoundTitle => 'ہمیں یہ اسکول نہیں ملا';
+
+  @override
+  String get webSchoolNotFoundBody =>
+      'پتہ چیک کریں، یا اپنے اسکول سے اس کا ویب پتہ پوچھیں۔';
+
+  @override
+  String get webNoSchoolTitle => 'اپنے اسکول کا پتہ کھولیں';
+
+  @override
+  String get webNoSchoolBody =>
+      'ہر اسکول کا اپنا ویب پتہ ہوتا ہے، مثلاً greenfield.oruschools.com۔';
+
+  @override
+  String webNoAccessTitle(String name) {
+    return 'آپ کو $name استعمال کرنے کی اجازت نہیں ہے';
+  }
+
+  @override
+  String get webNoAccessBody =>
+      'اپنے اسکول کے منتظم سے آپ کو شامل کرنے کو کہیں، پھر دوبارہ سائن اِن کریں۔';
+
+  @override
+  String get webLoadFailed => 'ہم آپ کا اکاؤنٹ لوڈ نہیں کر سکے';
+
+  @override
+  String get webNavLabel => 'اسکول کے حصے';
+
+  @override
+  String get webDashboardEmptyTitle => 'ابھی دکھانے کے لیے کچھ نہیں';
+
+  @override
+  String get webDashboardEmptyBody =>
+      'جیسے جیسے آپ کے اسکول کے ماڈیول تیار ہوں گے، اعداد و شمار اور کام یہاں نظر آئیں گے۔';
+
+  @override
+  String get webComingTitle => 'یہ ماڈیول ابھی تیار نہیں ہے';
+
+  @override
+  String get webComingBody => 'تیار ہوتے ہی یہ یہاں نظر آئے گا۔';
+
+  @override
+  String webYourRole(String role) {
+    return 'آپ کا کردار: $role';
+  }
+
+  @override
+  String get errorPageTitle => 'اس صفحے پر کچھ خرابی ہوئی';
+
+  @override
+  String get actionTryAgain => 'دوبارہ کوشش کریں';
+
+  @override
+  String get sectionOverview => 'جائزہ';
+
+  @override
+  String get sectionAcademics => 'تعلیمات';
+
+  @override
+  String get sectionPeople => 'افراد';
+
+  @override
+  String get sectionHr => 'انسانی وسائل';
+
+  @override
+  String get sectionFinance => 'مالیات';
+
+  @override
+  String get sectionCommunication => 'رابطہ';
+
+  @override
+  String get sectionTransport => 'ٹرانسپورٹ';
+
+  @override
+  String get sectionOperations => 'آپریشنز';
+
+  @override
+  String get sectionReports => 'رپورٹس';
+
+  @override
+  String get sectionAdministration => 'انتظامیہ';
+
+  @override
+  String get navDashboard => 'ڈیش بورڈ';
+
+  @override
+  String get navStudents => 'طلبہ';
+
+  @override
+  String get navClasses => 'جماعتیں اور مضامین';
+
+  @override
+  String get navAttendance => 'حاضری';
+
+  @override
+  String get navGradebook => 'گریڈ بک';
+
+  @override
+  String get navSubstitution => 'متبادل اساتذہ';
+
+  @override
+  String get navAdmissions => 'داخلے';
+
+  @override
+  String get navStaff => 'عملہ';
+
+  @override
+  String get navStaffAttendance => 'عملے کی حاضری';
+
+  @override
+  String get navLeave => 'رخصت';
+
+  @override
+  String get navPayroll => 'تنخواہ';
+
+  @override
+  String get navRecruitment => 'بھرتی';
+
+  @override
+  String get navFees => 'فیس اور ادائیگیاں';
+
+  @override
+  String get navAnnouncements => 'اعلانات';
+
+  @override
+  String get navTransport => 'ٹرانسپورٹ';
+
+  @override
+  String get navOperations => 'آپریشنز';
+
+  @override
+  String get navReportsAcademic => 'تعلیمی رپورٹس';
+
+  @override
+  String get navReportsFinance => 'مالی رپورٹس';
+
+  @override
+  String get navReportsHr => 'ایچ آر رپورٹس';
+
+  @override
+  String get navSettings => 'اسکول کی ترتیبات';
+
+  @override
+  String get navMemberships => 'صارفین اور کردار';
+
+  @override
+  String get navAudit => 'آڈٹ لاگ';
+
+  @override
+  String get rolePrincipal => 'پرنسپل';
+
+  @override
+  String get roleManagement => 'انتظامیہ';
+
+  @override
+  String get roleBursar => 'برسر';
+
+  @override
+  String get roleAcademicAdmin => 'تعلیمی منتظم';
+
+  @override
+  String get roleSystemAdmin => 'سسٹم منتظم';
+
+  @override
+  String get roleHrManager => 'ایچ آر مینیجر';
+
+  @override
+  String get roleAccountant => 'اکاؤنٹنٹ';
+
+  @override
+  String get roleAdmissionsOfficer => 'داخلہ افسر';
+
+  @override
+  String get roleTransportManager => 'ٹرانسپورٹ مینیجر';
+
+  @override
+  String get roleOperationsManager => 'آپریشنز مینیجر';
+
+  @override
+  String get roleTeacher => 'استاد';
+
+  @override
+  String get roleStaff => 'عملہ';
+
+  @override
+  String get roleDriver => 'ڈرائیور';
+
+  @override
+  String get roleParent => 'والدین';
 }

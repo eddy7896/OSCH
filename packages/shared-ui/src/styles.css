@@ -139,7 +139,7 @@
 .oru-icontile--lg { inline-size: 48px; block-size: 48px; border-radius: var(--radius-md); }
 .oru-icontile--xl { inline-size: 64px; block-size: 64px; border-radius: var(--radius-lg); }
 .oru-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding-block: var(--space-8); padding-inline: var(--space-4); }
-.oru-empty h2, .oru-empty h3, .oru-empty h4 { margin: var(--space-2) 0 0; font-size: 18px; line-height: max(26px, calc(18px * var(--oru-min-lh, 1))); font-weight: 600; color: var(--text); }
+.oru-empty h1, .oru-empty h2, .oru-empty h3, .oru-empty h4 { margin: var(--space-2) 0 0; font-size: 18px; line-height: max(26px, calc(18px * var(--oru-min-lh, 1))); font-weight: 600; color: var(--text); }
 .oru-empty p { margin: 0 0 var(--space-2); max-inline-size: 320px; font-size: 14px; line-height: max(22px, calc(14px * var(--oru-min-lh, 1))); color: var(--text-muted); }
 
 /* ActionTile */
