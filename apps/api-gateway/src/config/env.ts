@@ -75,20 +75,65 @@ export class Env {
   THROTTLE_LIMIT: number = 120;
 }
 
-/** Origins must be bare http(s) origins; a path or wildcard would silently never match. */
-export function parseOrigins(raw: string): { origins: string[]; invalid: string[] } {
+/** A school's own address: `https://*.example.com` allows `https://greenfield.example.com` but not `https://a.b.example.com` or the bare domain. */
+export interface OriginPattern {
+  scheme: 'http:' | 'https:';
+  /** Everything after `*.`, host and optional port, lower case. */
+  suffix: string;
+}
+
+const LABEL = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/;
+
+/** Wildcards are only for the leftmost label, and never for a bare public suffix like `*.com` (the suffix needs a dot, or is `localhost`). */
+function parsePattern(item: string): OriginPattern | undefined {
+  const m = /^(https?:)\/\/\*\.([^/*]+)$/.exec(item);
+  if (!m) return undefined;
+  const [, scheme, suffix] = m as unknown as ['', 'http:' | 'https:', string];
+  const host = suffix.replace(/:\d{1,5}$/, '');
+  if (!host.split('.').every((l) => LABEL.test(l))) return undefined;
+  if (!host.includes('.') && host !== 'localhost') return undefined;
+  return { scheme, suffix: suffix.toLowerCase() };
+}
+
+/** Origins must be bare http(s) origins; a wildcard is allowed only as `scheme://*.domain[:port]` (one label deep). */
+export function parseOrigins(raw: string): { origins: string[]; patterns: OriginPattern[]; invalid: string[] } {
   const origins: string[] = [];
+  const patterns: OriginPattern[] = [];
   const invalid: string[] = [];
   for (const item of raw.split(',').map((s) => s.trim()).filter(Boolean)) {
+    if (item.includes('*')) {
+      const pattern = parsePattern(item);
+      if (pattern) patterns.push(pattern);
+      else invalid.push(item);
+      continue;
+    }
     try {
       const u = new URL(item);
-      if ((u.protocol === 'http:' || u.protocol === 'https:') && u.origin === item && !item.includes('*')) origins.push(item);
+      if ((u.protocol === 'http:' || u.protocol === 'https:') && u.origin === item) origins.push(item);
       else invalid.push(item);
     } catch {
       invalid.push(item);
     }
   }
-  return { origins, invalid };
+  return { origins, patterns, invalid };
+}
+
+/** True if the browser origin is listed exactly, or is exactly one label in front of a wildcard entry's domain. */
+export function originAllowed(origin: string, origins: readonly string[], patterns: readonly OriginPattern[]): boolean {
+  if (origins.includes(origin)) return true;
+  let u: URL;
+  try {
+    u = new URL(origin);
+  } catch {
+    return false;
+  }
+  if (u.origin !== origin) return false;
+  return patterns.some((p) => {
+    if (u.protocol !== p.scheme) return false;
+    const host = u.host.toLowerCase();
+    if (!host.endsWith(`.${p.suffix}`)) return false;
+    return LABEL.test(host.slice(0, host.length - p.suffix.length - 1));
+  });
 }
 
 /**
@@ -100,10 +145,11 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   const problems = validateSync(env, { whitelist: false, forbidUnknownValues: false }).map(
     (e) => `${e.property}: ${Object.values(e.constraints ?? {}).join('; ')}`,
   );
-  const { origins, invalid } = parseOrigins(env.CORS_ORIGINS ?? '');
-  if (invalid.length > 0) problems.push(`CORS_ORIGINS: ${invalid.length} entr${invalid.length === 1 ? 'y is' : 'ies are'} not a bare http(s) origin such as https://app.example.com`);
+  const { origins, patterns, invalid } = parseOrigins(env.CORS_ORIGINS ?? '');
+  if (invalid.length > 0) problems.push(`CORS_ORIGINS: ${invalid.length} entr${invalid.length === 1 ? 'y is' : 'ies are'} not a bare http(s) origin such as https://app.example.com (or a school wildcard such as https://*.example.com)`);
   if (env.NODE_ENV === 'production') {
-    if (origins.length === 0) problems.push('CORS_ORIGINS: must list at least one origin in production');
+    if (origins.length + patterns.length === 0) problems.push('CORS_ORIGINS: must list at least one origin in production');
+    if (patterns.some((p) => p.scheme !== 'https:')) problems.push('CORS_ORIGINS: wildcard entries must be https in production');
     if (!env.FIREBASE_PROJECT_ID) problems.push('FIREBASE_PROJECT_ID: required in production');
     if (env.FIREBASE_AUTH_EMULATOR_HOST) problems.push('FIREBASE_AUTH_EMULATOR_HOST: must not be set in production (the Auth emulator accepts forged tokens)');
     if (env.DATA_CONNECT_EMULATOR_HOST) problems.push('DATA_CONNECT_EMULATOR_HOST: must not be set in production (it would send real data to an emulator)');

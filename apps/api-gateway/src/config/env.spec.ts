@@ -1,4 +1,4 @@
-import { parseOrigins, validateEnv } from './env.js';
+import { originAllowed, parseOrigins, validateEnv } from './env.js';
 
 describe('validateEnv', () => {
   it('accepts an empty development environment and applies defaults', () => {
@@ -65,9 +65,47 @@ describe('validateEnv', () => {
 });
 
 describe('parseOrigins', () => {
-  it('keeps bare http(s) origins and flags paths, wildcards and other schemes', () => {
-    const r = parseOrigins('http://localhost:3001, https://a.example.com ,https://b.example.com/path,*,ftp://x.com,https://*.example.com');
+  it('keeps bare http(s) origins and flags paths, loose wildcards and other schemes', () => {
+    const r = parseOrigins('http://localhost:3001, https://a.example.com ,https://b.example.com/path,*,ftp://x.com,https://*.com');
     expect(r.origins).toEqual(['http://localhost:3001', 'https://a.example.com']);
     expect(r.invalid).toHaveLength(4);
+  });
+});
+
+describe('school wildcard origins', () => {
+  const parse = (raw: string) => parseOrigins(raw);
+  const allowed = (origin: string, raw: string) => { const { origins, patterns } = parse(raw); return originAllowed(origin, origins, patterns); };
+
+  it('accepts scheme://*.domain[:port] and nothing looser', () => {
+    expect(parse('https://*.oruschools.com,http://*.localhost:3002').invalid).toEqual([]);
+    expect(parse('https://*.oruschools.com').patterns).toEqual([{ scheme: 'https:', suffix: 'oruschools.com' }]);
+    for (const bad of ['https://*', 'https://*.com', 'https://school.*.com', 'https://*.*.com', 'https://a*.example.com', 'https://*.example.com/path', 'ftp://*.example.com', '*.example.com', 'https://*.exa mple.com', 'https://*.-bad.com']) expect(parse(bad).invalid, bad).toEqual([bad]);
+  });
+
+  it('matches exactly one label in front of the domain, with the same scheme and port', () => {
+    const raw = 'https://*.oruschools.com';
+    expect(allowed('https://greenfield.oruschools.com', raw)).toBe(true);
+    expect(allowed('https://Green-Field2.oruschools.com', raw)).toBe(false); // origins arrive lower case from browsers; anything else is not trusted
+    expect(allowed('https://oruschools.com', raw)).toBe(false); // the bare domain is not a school
+    expect(allowed('https://a.b.oruschools.com', raw)).toBe(false);
+    expect(allowed('http://greenfield.oruschools.com', raw)).toBe(false);
+    expect(allowed('https://greenfield.oruschools.com:8443', raw)).toBe(false);
+    expect(allowed('https://greenfield.oruschools.com.evil.com', raw)).toBe(false);
+    expect(allowed('https://evil-oruschools.com', raw)).toBe(false);
+    expect(allowed('https://greenfield.oruschools.com/', raw)).toBe(false); // not a bare origin
+    expect(allowed('null', raw)).toBe(false);
+  });
+
+  it('keeps exact entries working beside patterns, and dev ports must match', () => {
+    const raw = 'http://localhost:3001,http://*.localhost:3002';
+    expect(allowed('http://localhost:3001', raw)).toBe(true);
+    expect(allowed('http://greenfield.localhost:3002', raw)).toBe(true);
+    expect(allowed('http://greenfield.localhost:3003', raw)).toBe(false);
+    expect(allowed('http://localhost:3002', raw)).toBe(false);
+  });
+
+  it('production accepts patterns as the only origin but only over https', () => {
+    expect(validateEnv({ NODE_ENV: 'production', CORS_ORIGINS: 'https://*.oruschools.com', FIREBASE_PROJECT_ID: 'p' }).NODE_ENV).toBe('production');
+    expect(() => validateEnv({ NODE_ENV: 'production', CORS_ORIGINS: 'http://*.oruschools.com', FIREBASE_PROJECT_ID: 'p' })).toThrow(/wildcard entries must be https/);
   });
 });

@@ -114,6 +114,22 @@ describe('gateway HTTP skeleton (P1-1)', () => {
     expect(bad.headers['access-control-allow-origin']).toBeUndefined();
   });
 
+  it('a school wildcard entry allows exactly one label in front of the domain, over the real HTTP stack', async () => {
+    const wild = await boot({ ...ENV, CORS_ORIGINS: 'http://localhost:3002,http://*.localhost:3002' });
+    try {
+      const get = (origin: string) => agent(wild).get('/health').set('Origin', origin).then((r) => r.headers['access-control-allow-origin']);
+      expect(await get('http://greenfield.localhost:3002')).toBe('http://greenfield.localhost:3002');
+      expect(await get('http://localhost:3002')).toBe('http://localhost:3002');
+      expect(await get('http://a.b.localhost:3002')).toBeUndefined();
+      expect(await get('http://greenfield.localhost:3003')).toBeUndefined();
+      expect(await get('http://greenfield.localhost.evil.com:3002')).toBeUndefined();
+      const preflight = await agent(wild).options('/v1/me').set('Origin', 'http://greenfield.localhost:3002').set('Access-Control-Request-Method', 'GET').set('Access-Control-Request-Headers', 'authorization,x-school-id');
+      expect(preflight.headers['access-control-allow-origin']).toBe('http://greenfield.localhost:3002');
+    } finally {
+      await wild.close();
+    }
+  });
+
   it('answers a CORS preflight with the allowed headers including X-School-Id', async () => {
     const res = await agent(app).options('/v1/anything').set('Origin', 'http://localhost:3002').set('Access-Control-Request-Method', 'POST').set('Access-Control-Request-Headers', 'authorization,x-school-id');
     expect(res.status).toBeLessThan(300);
