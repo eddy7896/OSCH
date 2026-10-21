@@ -1,0 +1,3 @@
+type Counter @table(key: ["school", "kind"]) { school: UUID!, kind: String!, next: Int! }
+type Receipt @table(key: ["school", "number"]) { school: UUID!, number: Int!, amountMinor: Int64!, createdAt: Timestamp! @default(expr: "request.time") }
+type Row @table { school: UUID!, amountMinor: Int64!, n: Int! }

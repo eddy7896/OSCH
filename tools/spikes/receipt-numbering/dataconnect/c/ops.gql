@@ -1,0 +1,10 @@
+mutation SeedCounter($school: UUID!) @auth(level: NO_ACCESS) { counter_upsert(data: { school: $school, kind: "receipt", next: 1 }) }
+mutation NextReceipt($school: UUID!, $amountMinor: Int64!) @auth(level: NO_ACCESS) @transaction {
+  query { seq: counter(key: {school: $school, kind: "receipt"}) @check(expr: "this != null", message: "no counter") { next } }
+  receipt_insert(data: { school: $school, number_expr: "response.query.seq.next", amountMinor: $amountMinor })
+  counter_update(key: {school: $school, kind: "receipt"}, data: { next_update: { inc: 1 } })
+}
+mutation AddRow($school: UUID!, $amountMinor: Int64!, $n: Int!) @auth(level: NO_ACCESS) { row_insert(data: { school: $school, amountMinor: $amountMinor, n: $n }) }
+query Receipts($school: UUID!) @auth(level: NO_ACCESS) { receipts(where: {school: {eq: $school}}, orderBy: [{number: ASC}]) { number amountMinor } }
+query Page($school: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) { rows(where: {school: {eq: $school}}, orderBy: [{n: ASC}], limit: $limit, offset: $offset) { n amountMinor } }
+query Totals($school: UUID!) @auth(level: NO_ACCESS) { rows(where: {school: {eq: $school}}) { _count amountMinor_sum amountMinor_max } }

@@ -38,9 +38,9 @@ graph TD
 | ID | Task | Size | Acceptance |
 |---|---|---|---|
 | P2-6 BUILT (`packages/format` + Dart twin `OruFormat` in flutter-core; 133 TypeScript tests and the same vectors in Dart, expected values from an independent Python implementation; 11 of 11 mutants killed) | **Money and format library** (TypeScript + Dart from one set of test vectors): integer minor units, rounding (half-up to the minor unit, never `Number`), currency and locale from the school, Indian grouping (`₹1,82,40,000`), dates (`Tue, 24 Jun`), times (`8:45 AM`), in all 19 languages' number formats where the platform supports them | S | `packages/format/vectors.json` is run by both the TypeScript tests and the Dart tests with identical results; mutation-checked |
-| P2-0a NEW | **Spike: receipt numbers and invoice uniqueness** under concurrent writes (counter row in a transaction, unique keys, retry) on the emulator | S | 100 parallel payments give unique, gap-free numbers per school and year; duplicate invoice generation creates nothing |
-| P2-0b NEW | **Spike: PDF with Hindi and Urdu text** (candidate: PDFKit with fontkit; the bundled Noto fonts) | S | a receipt PDF with Devanagari and Nastaliq text renders with correct shaping (inspected); otherwise the decision in ADR-0012 applies |
-| P2-0c NEW | **Spike: Data Connect aggregates and pagination** (sum of `*Minor` as Int64, counts, filtered lists with limit and offset, N+1 behaviour) | S | numbers equal an independent sum; list of 5,000 rows pages correctly |
+| P2-0a DONE (mechanism works; real concurrency NOT proven, see `phase2_spikes.md`) | **Spike: receipt numbers and invoice uniqueness** under concurrent writes (counter row in a transaction, unique keys, retry) on the emulator | S | 100 parallel payments give unique, gap-free numbers per school and year; duplicate invoice generation creates nothing |
+| P2-0b DONE (PDFKit rejected, skia-canvas chosen) | **Spike: PDF with Hindi and Urdu text** (candidate: PDFKit with fontkit; the bundled Noto fonts) | S | a receipt PDF with Devanagari and Nastaliq text renders with correct shaping (inspected); otherwise the decision in ADR-0012 applies |
+| P2-0c DONE (exact Int64 sums and paging work) | **Spike: Data Connect aggregates and pagination** (sum of `*Minor` as Int64, counts, filtered lists with limit and offset, N+1 behaviour) | S | numbers equal an independent sum; list of 5,000 rows pages correctly |
 
 ### M1 School setup
 | ID | Task | Size |
