@@ -191,6 +191,7 @@ export type PublicSchoolDto = {
 export type SchoolDto = {
     createdAt: string;
     defaultLanguage: string;
+    hasAdministrator: boolean;
     id: string;
     name: string;
     status: string;

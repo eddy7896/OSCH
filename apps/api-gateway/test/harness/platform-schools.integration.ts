@@ -135,6 +135,9 @@ describe.skipIf(!ready)('the first System Admin of a school (/v1/platform/school
     expect(JSON.stringify(res.body)).not.toMatch(/"password"|oobCode|resetLink|resetUrl/i);
 
     expect((await members(id)).map((m) => [m.user.id, m.schoolRole, m.status])).toEqual([[res.body.userId, 'SYSTEM_ADMIN', 'ACTIVE']]);
+    const listed = (await agent(app!).get('/v1/platform/schools?limit=100').set('Authorization', `Bearer ${owner()}`).expect(200)).body.items.find((s: { id: string }) => s.id === id);
+    expect(listed.hasAdministrator).toBe(true);
+    expect((await agent(app!).get(`/v1/platform/schools/${id}`).set('Authorization', `Bearer ${owner()}`).expect(200)).body.hasAdministrator).toBe(true);
     const rows = (await w!.db.listAuditLog({ schoolId: id.replaceAll('-', ''), limit: 50, offset: 0 })).data.auditLogs.filter((a) => a.action === 'platform.school.admin.create');
     expect(rows).toHaveLength(1);
     expect(rows[0]!.actor.id).toBe(w!.superAdmin.uid);
@@ -146,6 +149,17 @@ describe.skipIf(!ready)('the first System Admin of a school (/v1/platform/school
     const token = await signIn(address);
     const me = (await agent(app!).get('/v1/me').set('Authorization', `Bearer ${token}`).set('X-School-Id', id).expect(200)).body;
     expect(me.activeSchool).toMatchObject({ schoolId: id, role: 'SYSTEM_ADMIN' });
+  });
+
+  it('a school with no administrator says so, and a suspended administrator does not count', async () => {
+    const id = await newSchool();
+    expect((await agent(app!).get(`/v1/platform/schools/${id}`).set('Authorization', `Bearer ${owner()}`).expect(200)).body.hasAdministrator).toBe(false);
+    const user = `susp-${randomUUID()}`;
+    await w!.db.upsertUser({ id: user, email: `${user}@example.com` });
+    await w!.db.provisionSchoolAdmin({ schoolId: id, userId: user, actorId: w!.superAdmin.uid });
+    expect((await agent(app!).get(`/v1/platform/schools/${id}`).set('Authorization', `Bearer ${owner()}`).expect(200)).body.hasAdministrator).toBe(true);
+    await w!.db.updateMembership({ schoolId: id, userId: user, schoolRole: 'SYSTEM_ADMIN' as never, status: 'SUSPENDED' as never, actorId: w!.superAdmin.uid });
+    expect((await agent(app!).get(`/v1/platform/schools/${id}`).set('Authorization', `Bearer ${owner()}`).expect(200)).body.hasAdministrator).toBe(false);
   });
 
   it('a second one is refused (409) and creates no account: after that the school grants roles itself', async () => {

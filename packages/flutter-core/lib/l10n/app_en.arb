@@ -413,5 +413,71 @@
   "statusLoading": "Loading…",
   "@statusLoading": {
     "description": "Shown while a screen or list is loading."
+  },
+  "actionAddAdmin": "Add administrator",
+  "@actionAddAdmin": {
+    "description": "Button that adds the first administrator of a school."
+  },
+  "saasAdminTitle": "Add the administrator of {name}",
+  "@saasAdminTitle": {
+    "description": "Heading of the form that adds a school's first administrator. {name} is the school name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "saasAdminIntro": "They get an email to set their own password. You can add one administrator here; after that the school manages its own people.",
+  "@saasAdminIntro": {
+    "description": "Explains the add administrator form: the person sets their own password, and only the first administrator is added by the platform owner."
+  },
+  "saasAdminName": "Full name",
+  "@saasAdminName": {
+    "description": "Label of the administrator's name field."
+  },
+  "saasAdminAdded": "Administrator added. An email to set their password was sent to {email}.",
+  "@saasAdminAdded": {
+    "description": "Confirmation after adding an administrator who signs in with email. {email} is their address.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "saasAdminAddedNoEmail": "Administrator added. They can sign in with a code sent to their phone.",
+  "@saasAdminAddedNoEmail": {
+    "description": "Confirmation after adding an administrator who signs in by phone code only."
+  },
+  "saasAdminEmailFailed": "Administrator added, but the email could not be sent. Ask them to use “Forgot password” on the sign-in page.",
+  "@saasAdminEmailFailed": {
+    "description": "Warning when the account was created but the password email failed. Keep the quoted button name the same as the 'Forgot password?' text."
+  },
+  "saasAdminExists": "This school already has an administrator.",
+  "@saasAdminExists": {
+    "description": "Error when the platform owner tries to add a second first-administrator."
+  },
+  "errorAccountExists": "An account with this email or number already exists.",
+  "@errorAccountExists": {
+    "description": "Error when an email or phone number already has an account."
+  },
+  "authForgot": "Forgot password?",
+  "@authForgot": {
+    "description": "Link on sign-in that sends an email to set a new password."
+  },
+  "authResetSent": "If an account exists for that address, an email to set a new password is on its way.",
+  "@authResetSent": {
+    "description": "Shown after asking for a password email. Does not reveal whether the address has an account."
+  },
+  "authResetNeedsEmail": "Enter your email address first.",
+  "@authResetNeedsEmail": {
+    "description": "Shown when 'Forgot password?' is pressed with the email field empty."
+  },
+  "saasHasAdmin": "Administrator added",
+  "@saasHasAdmin": {
+    "description": "Badge on a school that already has an administrator."
+  },
+  "saasNoAdmin": "No administrator yet",
+  "@saasNoAdmin": {
+    "description": "Badge on a school that has no administrator yet, so nobody can sign in to it."
   }
 }

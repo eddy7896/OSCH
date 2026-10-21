@@ -336,4 +336,55 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get statusLoading => 'لوڈ ہو رہا ہے…';
+
+  @override
+  String get actionAddAdmin => 'منتظم شامل کریں';
+
+  @override
+  String saasAdminTitle(String name) {
+    return '$name کا منتظم شامل کریں';
+  }
+
+  @override
+  String get saasAdminIntro =>
+      'انہیں اپنا پاس ورڈ بنانے کے لیے ای میل ملے گی۔ آپ یہاں ایک منتظم شامل کر سکتے ہیں؛ اس کے بعد اسکول اپنے لوگوں کو خود سنبھالتا ہے۔';
+
+  @override
+  String get saasAdminName => 'پورا نام';
+
+  @override
+  String saasAdminAdded(String email) {
+    return 'منتظم شامل ہو گیا۔ پاس ورڈ بنانے کی ای میل $email پر بھیجی گئی۔';
+  }
+
+  @override
+  String get saasAdminAddedNoEmail =>
+      'منتظم شامل ہو گیا۔ وہ اپنے فون پر آنے والے کوڈ سے سائن اِن کر سکتے ہیں۔';
+
+  @override
+  String get saasAdminEmailFailed =>
+      'منتظم شامل ہو گیا، لیکن ای میل بھیجی نہیں جا سکی۔ ان سے سائن اِن صفحے پر “پاس ورڈ بھول گئے؟” استعمال کرنے کو کہیں۔';
+
+  @override
+  String get saasAdminExists => 'اس اسکول میں پہلے سے ایک منتظم ہے۔';
+
+  @override
+  String get errorAccountExists =>
+      'اس ای میل یا نمبر کا اکاؤنٹ پہلے سے موجود ہے۔';
+
+  @override
+  String get authForgot => 'پاس ورڈ بھول گئے؟';
+
+  @override
+  String get authResetSent =>
+      'اگر اس پتے کا کوئی اکاؤنٹ ہے تو نیا پاس ورڈ بنانے کی ای میل بھیجی جا رہی ہے۔';
+
+  @override
+  String get authResetNeedsEmail => 'پہلے اپنا ای میل پتہ لکھیں۔';
+
+  @override
+  String get saasHasAdmin => 'منتظم شامل ہو چکا';
+
+  @override
+  String get saasNoAdmin => 'ابھی کوئی منتظم نہیں';
 }

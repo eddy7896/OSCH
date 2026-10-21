@@ -145,7 +145,7 @@ query ListMembershipsForUser($userId: String!) @auth(level: NO_ACCESS) {
 }
 
 query GetSchool($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  school(id: $schoolId) { id name subDomain subscriptionStatus currency locale defaultLanguage createdAt }
+  school(id: $schoolId) { id name subDomain subscriptionStatus currency locale defaultLanguage createdAt administrators: schoolMembers_on_school(where: {schoolRole: {eq: SYSTEM_ADMIN}, status: {eq: ACTIVE}}) { userId } }
 }
 
 # Public school lookup for the web apps (minimal fields only; the gateway rate-limits it).
@@ -155,7 +155,7 @@ query GetSchoolBySubDomain($subDomain: String!) @auth(level: NO_ACCESS) {
 
 # Platform (SUPER_ADMIN) only: every school.
 query ListSchools($limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
-  schools(orderBy: [{createdAt: DESC}], limit: $limit, offset: $offset) { id name subDomain subscriptionStatus defaultLanguage createdAt }
+  schools(orderBy: [{createdAt: DESC}], limit: $limit, offset: $offset) { id name subDomain subscriptionStatus defaultLanguage createdAt administrators: schoolMembers_on_school(where: {schoolRole: {eq: SYSTEM_ADMIN}, status: {eq: ACTIVE}}) { userId } }
 }
 
 query ListMemberships($schoolId: UUID!) @auth(level: NO_ACCESS) {

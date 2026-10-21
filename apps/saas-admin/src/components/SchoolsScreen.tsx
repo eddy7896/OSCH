@@ -5,13 +5,15 @@ import { useTranslations } from "next-intl";
 import { LOCALES } from "@oruschools/i18n";
 import type { SchoolDto } from "@oruschools/api-client";
 import { Badge, Banner, Button, Card, EmptyState, ListRow, TextField } from "@oruschools/shared-ui";
+import { ApiError, type StaffAccountDto } from "@oruschools/api-client";
 import { errorKey, invalidFields } from "@/lib/errors";
 import { useSession } from "./AuthProvider";
 
 const PAGE = 50;
 type Language = (typeof LOCALES)[number]["code"];
 
-type View = { kind: "list" } | { kind: "create" } | { kind: "edit"; school: SchoolDto } | { kind: "suspend"; school: SchoolDto };
+type View = { kind: "list" } | { kind: "create" } | { kind: "edit"; school: SchoolDto } | { kind: "suspend"; school: SchoolDto } | { kind: "admin"; school: SchoolDto };
+type Notice = { key: string; values?: Record<string, string>; tone: "success" | "warning" };
 
 function LanguageSelect({ value, onChange, label }: { value: string; onChange: (code: Language) => void; label: string }) {
   return (
@@ -31,13 +33,13 @@ function LanguageSelect({ value, onChange, label }: { value: string; onChange: (
 /** The platform owner's schools: list, create, rename, suspend and reactivate. The gateway decides who may; this only asks. */
 export function SchoolsScreen() {
   const t = useTranslations();
-  const { api } = useSession();
+  const { api, port } = useSession();
   const [schools, setSchools] = useState<SchoolDto[]>([]);
   const [more, setMore] = useState(false);
   const [phase, setPhase] = useState<"loading" | "ready" | "error">("loading");
   const [loadError, setLoadError] = useState("errorInternal");
   const [view, setView] = useState<View>({ kind: "list" });
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<Notice | null>(null);
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [badFields, setBadFields] = useState<ReadonlySet<string>>(new Set());
@@ -96,7 +98,7 @@ export function SchoolsScreen() {
     try {
       await action();
       setView({ kind: "list" });
-      setNotice(doneKey);
+      setNotice({ key: doneKey, tone: "success" });
       reload();
     } catch (e) {
       setFormError(errorKey(e));
@@ -133,6 +135,41 @@ export function SchoolsScreen() {
     void act(() => api.platformSchoolsSuspend({ path: { id: school.id }, body: reason ? { reason } : {} }), "saasSuspendedDone");
   }
 
+  async function submitAdmin(event: FormEvent<HTMLFormElement>, school: SchoolDto) {
+    event.preventDefault();
+    if (!api) return;
+    const data = new FormData(event.currentTarget);
+    const email = text(data, "email").toLowerCase();
+    const phone = text(data, "phoneNumber").replace(/[\s-]/g, "");
+    const body = { displayName: text(data, "displayName"), ...(email ? { email } : {}), ...(phone ? { phoneNumber: phone } : {}) };
+    setBusy(true);
+    setFormError(null);
+    setBadFields(new Set());
+    let created: StaffAccountDto;
+    try {
+      created = await api.platformSchoolsCreateAdmin({ path: { id: school.id }, body });
+    } catch (e) {
+      setFormError(e instanceof ApiError && e.code === "CONFLICT" ? "saasAdminExists" : errorKey(e));
+      setBadFields(invalidFields(e));
+      setBusy(false);
+      return;
+    }
+    // The gateway never handles the password link: the browser asks Firebase to email it (ADR-0011).
+    let notice: Notice = { key: "saasAdminAddedNoEmail", tone: "success" };
+    if (created.nextStep === "SEND_SET_PASSWORD_EMAIL" && created.email) {
+      try {
+        await port?.sendPasswordReset(created.email);
+        notice = { key: "saasAdminAdded", values: { email: created.email }, tone: "success" };
+      } catch {
+        notice = { key: "saasAdminEmailFailed", tone: "warning" };
+      }
+    }
+    setBusy(false);
+    setView({ kind: "list" });
+    setNotice(notice);
+    reload(); // the list then shows the school as having an administrator
+  }
+
   const fieldError = (name: string) => (badFields.has(name) ? t("errorInvalidRequest") : undefined);
 
   if (view.kind === "create" || view.kind === "edit") {
@@ -156,6 +193,29 @@ export function SchoolsScreen() {
           <div className="flex flex-wrap gap-3">
             <Button type="submit" variant="primary" disabled={busy}>
               {editing ? t("actionSave") : t("actionCreateSchool")}
+            </Button>
+            <Button variant="ghost" disabled={busy} onClick={() => open({ kind: "list" })}>
+              {t("actionCancel")}
+            </Button>
+          </div>
+        </form>
+      </Card>
+    );
+  }
+
+  if (view.kind === "admin") {
+    const school = view.school;
+    return (
+      <Card title={t("saasAdminTitle", { name: school.name })} headingLevel={2}>
+        <form className="flex flex-col gap-4" onSubmit={(e) => void submitAdmin(e, school)} noValidate>
+          {formError && <Banner tone="danger" title={t(formError)} />}
+          <p className="text-body text-text-muted">{t("saasAdminIntro")}</p>
+          <TextField name="displayName" label={t("saasAdminName")} error={fieldError("displayName")} autoComplete="off" required />
+          <TextField name="email" type="email" label={t("authEmailLabel")} error={fieldError("email")} autoComplete="off" />
+          <TextField name="phoneNumber" type="tel" label={t("authPhoneLabel")} hint={t("authPhoneHint")} error={fieldError("phoneNumber")} autoComplete="off" />
+          <div className="flex flex-wrap gap-3">
+            <Button type="submit" variant="primary" disabled={busy}>
+              {t("actionAddAdmin")}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={() => open({ kind: "list" })}>
               {t("actionCancel")}
@@ -199,7 +259,7 @@ export function SchoolsScreen() {
         </Button>
       </div>
 
-      {notice && <Banner tone="success" title={t(notice)} />}
+      {notice && <Banner tone={notice.tone} title={t(notice.key, notice.values)} />}
       {phase === "error" && <Banner tone="danger" title={t("saasLoadFailed")} action={<Button size="comfortable" icon="refresh" onClick={() => { setPhase("loading"); reload(); }}>{t("actionRetry")}</Button>}>{t(loadError)}</Banner>}
       {phase === "loading" && <Banner tone="info" title={t("statusLoading")} />}
       {phase === "ready" && schools.length === 0 && (
@@ -222,6 +282,12 @@ export function SchoolsScreen() {
                   <Button size="comfortable" variant="ghost" aria-label={`${t("actionEdit")}: ${school.name}`} onClick={() => open({ kind: "edit", school })}>
                     {t("actionEdit")}
                   </Button>
+                  <Badge tone={school.hasAdministrator ? "info" : "warning"}>{school.hasAdministrator ? t("saasHasAdmin") : t("saasNoAdmin")}</Badge>
+                  {!school.hasAdministrator && (
+                    <Button size="comfortable" variant="ghost" aria-label={`${t("actionAddAdmin")}: ${school.name}`} onClick={() => open({ kind: "admin", school })}>
+                      {t("actionAddAdmin")}
+                    </Button>
+                  )}
                   {school.status === "ACTIVE" ? (
                     <Button size="comfortable" variant="ghost" aria-label={`${t("actionSuspend")}: ${school.name}`} onClick={() => open({ kind: "suspend", school })}>
                       {t("actionSuspend")}

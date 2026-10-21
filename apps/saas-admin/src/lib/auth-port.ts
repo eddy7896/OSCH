@@ -4,6 +4,7 @@ import {
   RecaptchaVerifier,
   getAuth,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPhoneNumber,
   signInWithPopup,
@@ -70,6 +71,8 @@ export interface AuthPort {
   signInWithGoogle(): Promise<void>;
   /** Sends a code by SMS. `container` hosts the invisible reCAPTCHA check. */
   startPhoneSignIn(phoneNumber: string, container: HTMLElement): Promise<PhoneChallenge>;
+  /** Asks Firebase to email a link to set a new password. Used for "forgot password" and after an account is created for someone (ADR-0011: the gateway never handles the link). */
+  sendPasswordReset(email: string): Promise<void>;
   signOut(): Promise<void>;
   getToken(forceRefresh: boolean): Promise<string | null>;
 }
@@ -121,6 +124,13 @@ export function createFirebaseAuthPort(): AuthPort {
       } catch (e) {
         verifier.clear();
         return fail(e);
+      }
+    },
+    async sendPasswordReset(email) {
+      try {
+        await sendPasswordResetEmail(auth, email);
+      } catch (e) {
+        fail(e);
       }
     },
     signOut: () => firebaseSignOut(auth),

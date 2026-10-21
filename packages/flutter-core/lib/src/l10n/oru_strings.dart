@@ -707,6 +707,90 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Loading…'**
   String get statusLoading;
+
+  /// Button that adds the first administrator of a school.
+  ///
+  /// In en, this message translates to:
+  /// **'Add administrator'**
+  String get actionAddAdmin;
+
+  /// Heading of the form that adds a school's first administrator. {name} is the school name.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the administrator of {name}'**
+  String saasAdminTitle(String name);
+
+  /// Explains the add administrator form: the person sets their own password, and only the first administrator is added by the platform owner.
+  ///
+  /// In en, this message translates to:
+  /// **'They get an email to set their own password. You can add one administrator here; after that the school manages its own people.'**
+  String get saasAdminIntro;
+
+  /// Label of the administrator's name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get saasAdminName;
+
+  /// Confirmation after adding an administrator who signs in with email. {email} is their address.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator added. An email to set their password was sent to {email}.'**
+  String saasAdminAdded(String email);
+
+  /// Confirmation after adding an administrator who signs in by phone code only.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator added. They can sign in with a code sent to their phone.'**
+  String get saasAdminAddedNoEmail;
+
+  /// Warning when the account was created but the password email failed. Keep the quoted button name the same as the 'Forgot password?' text.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator added, but the email could not be sent. Ask them to use “Forgot password” on the sign-in page.'**
+  String get saasAdminEmailFailed;
+
+  /// Error when the platform owner tries to add a second first-administrator.
+  ///
+  /// In en, this message translates to:
+  /// **'This school already has an administrator.'**
+  String get saasAdminExists;
+
+  /// Error when an email or phone number already has an account.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email or number already exists.'**
+  String get errorAccountExists;
+
+  /// Link on sign-in that sends an email to set a new password.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get authForgot;
+
+  /// Shown after asking for a password email. Does not reveal whether the address has an account.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for that address, an email to set a new password is on its way.'**
+  String get authResetSent;
+
+  /// Shown when 'Forgot password?' is pressed with the email field empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address first.'**
+  String get authResetNeedsEmail;
+
+  /// Badge on a school that already has an administrator.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator added'**
+  String get saasHasAdmin;
+
+  /// Badge on a school that has no administrator yet, so nobody can sign in to it.
+  ///
+  /// In en, this message translates to:
+  /// **'No administrator yet'**
+  String get saasNoAdmin;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

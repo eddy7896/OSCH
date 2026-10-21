@@ -11,8 +11,8 @@ import type { CreateSchoolDto } from './dto/create-school.dto.js';
 import type { SchoolDto, SchoolPageDto } from './dto/school.dto.js';
 import type { UpdateSchoolDto } from './dto/update-school.dto.js';
 
-type Row = { id: string; name: string; subDomain: string; subscriptionStatus: string; defaultLanguage: string; createdAt: string };
-const view = (r: Row): SchoolDto => ({ id: dashed(r.id), name: r.name, subDomain: r.subDomain, status: r.subscriptionStatus, defaultLanguage: r.defaultLanguage, createdAt: r.createdAt });
+type Row = { id: string; name: string; subDomain: string; subscriptionStatus: string; defaultLanguage: string; createdAt: string; administrators: { userId: string }[] };
+const view = (r: Row): SchoolDto => ({ id: dashed(r.id), name: r.name, subDomain: r.subDomain, status: r.subscriptionStatus, defaultLanguage: r.defaultLanguage, createdAt: r.createdAt, hasAdministrator: r.administrators.length > 0 });
 
 /**
  * Platform-level school management (SUPER_ADMIN, `/v1/platform/schools`). Every state change is one audited Data Connect
