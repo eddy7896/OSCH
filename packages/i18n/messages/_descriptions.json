@@ -95,5 +95,17 @@
   "errorInternal": "Fallback server error.",
   "errorNetwork": "Error when the device is offline.",
   "errorTimeout": "Error when a request times out.",
-  "statusLoading": "Shown while a screen or list is loading."
+  "statusLoading": "Shown while a screen or list is loading.",
+  "actionAddAdmin": "Button that adds the first administrator of a school.",
+  "saasAdminTitle": "Heading of the form that adds a school's first administrator. {name} is the school name.",
+  "saasAdminIntro": "Explains the add administrator form: the person sets their own password, and only the first administrator is added by the platform owner.",
+  "saasAdminName": "Label of the administrator's name field.",
+  "saasAdminAdded": "Confirmation after adding an administrator who signs in with email. {email} is their address.",
+  "saasAdminAddedNoEmail": "Confirmation after adding an administrator who signs in by phone code only.",
+  "saasAdminEmailFailed": "Warning when the account was created but the password email failed. Keep the quoted button name the same as the 'Forgot password?' text.",
+  "saasAdminExists": "Error when the platform owner tries to add a second first-administrator.",
+  "errorAccountExists": "Error when an email or phone number already has an account.",
+  "authForgot": "Link on sign-in that sends an email to set a new password.",
+  "authResetSent": "Shown after asking for a password email. Does not reveal whether the address has an account.",
+  "authResetNeedsEmail": "Shown when 'Forgot password?' is pressed with the email field empty."
 }

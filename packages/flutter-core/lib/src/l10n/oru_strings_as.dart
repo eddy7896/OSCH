@@ -335,4 +335,49 @@ class OruStringsAs extends OruStrings {
 
   @override
   String get statusLoading => 'Loading…';
+
+  @override
+  String get actionAddAdmin => 'Add administrator';
+
+  @override
+  String saasAdminTitle(String name) {
+    return 'Add the administrator of $name';
+  }
+
+  @override
+  String get saasAdminIntro =>
+      'They get an email to set their own password. You can add one administrator here; after that the school manages its own people.';
+
+  @override
+  String get saasAdminName => 'Full name';
+
+  @override
+  String saasAdminAdded(String email) {
+    return 'Administrator added. An email to set their password was sent to $email.';
+  }
+
+  @override
+  String get saasAdminAddedNoEmail =>
+      'Administrator added. They can sign in with a code sent to their phone.';
+
+  @override
+  String get saasAdminEmailFailed =>
+      'Administrator added, but the email could not be sent. Ask them to use “Forgot password” on the sign-in page.';
+
+  @override
+  String get saasAdminExists => 'This school already has an administrator.';
+
+  @override
+  String get errorAccountExists =>
+      'An account with this email or number already exists.';
+
+  @override
+  String get authForgot => 'Forgot password?';
+
+  @override
+  String get authResetSent =>
+      'If an account exists for that address, an email to set a new password is on its way.';
+
+  @override
+  String get authResetNeedsEmail => 'Enter your email address first.';
 }

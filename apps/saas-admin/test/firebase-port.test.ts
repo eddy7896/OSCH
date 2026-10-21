@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const state = vi.hoisted(() => ({ listener: null as null | ((u: unknown) => Promise<void> | void), claims: {} as Record<string, unknown>, signIn: vi.fn(), token: vi.fn() }));
+const state = vi.hoisted(() => ({ listener: null as null | ((u: unknown) => Promise<void> | void), claims: {} as Record<string, unknown>, signIn: vi.fn(), token: vi.fn(), reset: vi.fn() }));
 
 vi.mock("firebase/app", () => {
   class FirebaseError extends Error {
@@ -19,6 +19,7 @@ vi.mock("firebase/auth", () => ({
   signInWithEmailAndPassword: (...args: unknown[]) => state.signIn(...args),
   signInWithPopup: vi.fn(),
   signInWithPhoneNumber: vi.fn(),
+  sendPasswordResetEmail: (...args: unknown[]) => state.reset(...args),
   signOut: vi.fn(),
   GoogleAuthProvider: class {},
   RecaptchaVerifier: class {},
@@ -40,6 +41,7 @@ async function stateFor(u: unknown): Promise<AuthState> {
 beforeEach(() => {
   state.signIn.mockReset();
   state.token.mockReset();
+  state.reset.mockReset();
 });
 
 describe("Firebase port", () => {
@@ -63,5 +65,13 @@ describe("Firebase port", () => {
     const port = createFirebaseAuthPort();
     expect(await port.getToken(true)).toBe("abc");
     expect(state.token).toHaveBeenCalledWith(true);
+  });
+  it("sends the set-password email through Firebase, and a failure becomes a closed code", async () => {
+    const port = createFirebaseAuthPort();
+    state.reset.mockResolvedValueOnce(undefined);
+    await port.sendPasswordReset("a@b.co");
+    expect(state.reset).toHaveBeenCalledWith(expect.anything(), "a@b.co");
+    state.reset.mockRejectedValueOnce(new FirebaseError("auth/network-request-failed", "x"));
+    await expect(port.sendPasswordReset("a@b.co")).rejects.toMatchObject({ code: "NETWORK" });
   });
 });

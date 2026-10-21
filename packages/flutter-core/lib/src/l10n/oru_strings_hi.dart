@@ -335,4 +335,48 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get statusLoading => 'लोड हो रहा है…';
+
+  @override
+  String get actionAddAdmin => 'एडमिनिस्ट्रेटर जोड़ें';
+
+  @override
+  String saasAdminTitle(String name) {
+    return '$name का एडमिनिस्ट्रेटर जोड़ें';
+  }
+
+  @override
+  String get saasAdminIntro =>
+      'उन्हें अपना पासवर्ड बनाने के लिए एक ईमेल मिलेगा। आप यहाँ एक एडमिनिस्ट्रेटर जोड़ सकते हैं; इसके बाद स्कूल अपने लोगों को खुद संभालता है।';
+
+  @override
+  String get saasAdminName => 'पूरा नाम';
+
+  @override
+  String saasAdminAdded(String email) {
+    return 'एडमिनिस्ट्रेटर जोड़ा गया। पासवर्ड बनाने का ईमेल $email पर भेजा गया।';
+  }
+
+  @override
+  String get saasAdminAddedNoEmail =>
+      'एडमिनिस्ट्रेटर जोड़ा गया। वे अपने फ़ोन पर आए कोड से साइन इन कर सकते हैं।';
+
+  @override
+  String get saasAdminEmailFailed =>
+      'एडमिनिस्ट्रेटर जोड़ा गया, लेकिन ईमेल भेजा नहीं जा सका। उनसे साइन-इन पेज पर “पासवर्ड भूल गए?” का उपयोग करने को कहें।';
+
+  @override
+  String get saasAdminExists => 'इस स्कूल में पहले से एक एडमिनिस्ट्रेटर है।';
+
+  @override
+  String get errorAccountExists => 'इस ईमेल या नंबर का खाता पहले से मौजूद है।';
+
+  @override
+  String get authForgot => 'पासवर्ड भूल गए?';
+
+  @override
+  String get authResetSent =>
+      'यदि उस पते का कोई खाता है, तो नया पासवर्ड बनाने का ईमेल भेजा जा रहा है।';
+
+  @override
+  String get authResetNeedsEmail => 'पहले अपना ईमेल पता लिखें।';
 }

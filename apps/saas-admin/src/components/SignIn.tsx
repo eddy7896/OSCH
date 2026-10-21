@@ -17,17 +17,37 @@ export function SignIn() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [challenge, setChallenge] = useState<PhoneChallenge | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
+  const emailField = useRef<HTMLFormElement>(null);
   const recaptcha = useRef<HTMLDivElement>(null);
 
   async function run(action: () => Promise<void>) {
     setBusy(true);
     setError(null);
+    setInfo(null);
     try {
       await action();
     } catch (e) {
       setError(errorKey(e));
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function forgot() {
+    if (!port) return;
+    const email = String(new FormData(emailField.current ?? undefined).get("email") ?? "").trim();
+    setInfo(null);
+    if (!email) return setError("authResetNeedsEmail");
+    setError(null);
+    try {
+      await port.sendPasswordReset(email);
+      setInfo("authResetSent");
+    } catch (e) {
+      // Whether the address has an account is never revealed; only a failure to reach the service is.
+      const key = errorKey(e);
+      if (key === "authErrorNetwork" || key === "authErrorTooMany") setError(key);
+      else setInfo("authResetSent");
     }
   }
 
@@ -55,13 +75,19 @@ export function SignIn() {
         <h1 className="text-title">{t("saasSignInTitle")}</h1>
         <p className="mt-2 text-body text-text-muted">{t("saasSignInIntro")}</p>
 
-        <form className="mt-6 flex flex-col gap-4" onSubmit={submit} noValidate>
+        <form ref={emailField} className="mt-6 flex flex-col gap-4" onSubmit={submit} noValidate>
           {error && <Banner tone="danger" title={t(error)} />}
+          {info && <Banner tone="success" title={t(info)} />}
 
           {mode === "email" && (
             <>
               <TextField name="email" type="email" label={t("authEmailLabel")} autoComplete="username" required />
               <TextField name="password" type="password" label={t("authPasswordLabel")} autoComplete="current-password" required />
+              <div>
+                <Button variant="ghost" size="comfortable" disabled={busy || !port} onClick={() => void forgot()}>
+                  {t("authForgot")}
+                </Button>
+              </div>
             </>
           )}
           {mode === "phone" && <TextField name="phone" type="tel" label={t("authPhoneLabel")} hint={t("authPhoneHint")} autoComplete="tel" required />}

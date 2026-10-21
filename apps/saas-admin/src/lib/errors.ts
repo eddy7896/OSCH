@@ -8,7 +8,7 @@ const API_ERROR_KEY: Record<ApiErrorCode, string> = {
   SCHOOL_SUSPENDED: "errorForbidden",
   CANNOT_CHANGE_OWN_MEMBERSHIP: "errorForbidden",
   INVITATION_INVALID: "errorInternal",
-  ACCOUNT_EXISTS: "errorConflict",
+  ACCOUNT_EXISTS: "errorAccountExists",
   EMAIL_NOT_VERIFIED: "errorForbidden",
   NOT_FOUND: "errorNotFound",
   INVALID_REQUEST: "errorInvalidRequest",

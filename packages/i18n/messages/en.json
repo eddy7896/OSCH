@@ -94,5 +94,17 @@
   "errorInternal": "Something went wrong on our side. Try again.",
   "errorNetwork": "We could not reach the server. Check your connection.",
   "errorTimeout": "The server took too long to answer. Try again.",
-  "statusLoading": "Loading…"
+  "statusLoading": "Loading…",
+  "actionAddAdmin": "Add administrator",
+  "saasAdminTitle": "Add the administrator of {name}",
+  "saasAdminIntro": "They get an email to set their own password. You can add one administrator here; after that the school manages its own people.",
+  "saasAdminName": "Full name",
+  "saasAdminAdded": "Administrator added. An email to set their password was sent to {email}.",
+  "saasAdminAddedNoEmail": "Administrator added. They can sign in with a code sent to their phone.",
+  "saasAdminEmailFailed": "Administrator added, but the email could not be sent. Ask them to use “Forgot password” on the sign-in page.",
+  "saasAdminExists": "This school already has an administrator.",
+  "errorAccountExists": "An account with this email or number already exists.",
+  "authForgot": "Forgot password?",
+  "authResetSent": "If an account exists for that address, an email to set a new password is on its way.",
+  "authResetNeedsEmail": "Enter your email address first."
 }

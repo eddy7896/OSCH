@@ -81,3 +81,41 @@ describe("SignIn", () => {
     expect(document.body.textContent).not.toMatch(/saasSignInTitle|authEmailLabel/);
   });
 });
+
+describe("SignIn: forgot password", () => {
+  it("asks Firebase to email a link to the typed address and says so without revealing whether it has an account", async () => {
+    const { port } = fakePort();
+    renderApp(<SignIn />, { port });
+    type("Email address", " Owner@Example.com ");
+    fireEvent.click(screen.getByRole("button", { name: "Forgot password?" }));
+    await waitFor(() => expect(port.sendPasswordReset).toHaveBeenCalledWith("Owner@Example.com"));
+    expect(await screen.findByText(/If an account exists for that address/)).toBeTruthy();
+  });
+
+  it("an unknown address looks the same as a known one", async () => {
+    const { port } = fakePort();
+    port.sendPasswordReset.mockRejectedValueOnce(new AuthFailure("CREDENTIALS"));
+    renderApp(<SignIn />, { port });
+    type("Email address", "nobody@example.com");
+    fireEvent.click(screen.getByRole("button", { name: "Forgot password?" }));
+    expect(await screen.findByText(/If an account exists for that address/)).toBeTruthy();
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("a network failure is reported, because then nothing was sent", async () => {
+    const { port } = fakePort();
+    port.sendPasswordReset.mockRejectedValueOnce(new AuthFailure("NETWORK"));
+    renderApp(<SignIn />, { port });
+    type("Email address", "a@b.co");
+    fireEvent.click(screen.getByRole("button", { name: "Forgot password?" }));
+    expect((await screen.findByRole("alert")).textContent).toContain("could not reach the sign-in service");
+  });
+
+  it("with no address typed it asks for one and sends nothing", () => {
+    const { port } = fakePort();
+    renderApp(<SignIn />, { port });
+    fireEvent.click(screen.getByRole("button", { name: "Forgot password?" }));
+    expect(screen.getByRole("alert").textContent).toContain("Enter your email address first");
+    expect(port.sendPasswordReset).not.toHaveBeenCalled();
+  });
+});
