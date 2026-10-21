@@ -45,7 +45,7 @@ graph TD
 ### M1 School setup
 | ID | Task | Size |
 |---|---|---|
-| P2-1 | School configuration: **grade levels** (seeded Nursery, LKG, UKG, 1 to 12; editable), **sections**, classrooms, subjects, **academic years (exactly one active)**, school profile and **branding Mode A** (logo through the R2 upload address, one primary colour checked at 4.5:1 with white text, derived hover/text/soft/focus preview before save), locale default `en-IN` | M |
+| P2-1 BUILT (backend; gateway `/v1/school/profile|logo` and `/v1/academics/{levels,classes,subjects,years}`, 20 DB-level tests and an end-to-end suite on the real emulators, audit samples for all 15 write routes; the colour-derivation preview and the screens are P2-10) | School configuration: **grade levels** (seeded Nursery, LKG, UKG, 1 to 12; editable), **sections**, classrooms, subjects, **academic years (exactly one active)**, school profile and **branding Mode A** (logo through the R2 upload address, one primary colour checked at 4.5:1 with white text, derived hover/text/soft/focus preview before save), locale default `en-IN` | M |
 
 ### M2 People
 | ID | Task | Size |

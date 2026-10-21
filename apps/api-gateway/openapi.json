@@ -85,6 +85,47 @@
       }
     },
     "schemas": {
+      "AcademicYearDto": {
+        "properties": {
+          "endDate": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "startDate",
+          "endDate",
+          "status"
+        ],
+        "type": "object"
+      },
+      "AcademicYearListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AcademicYearDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "AcceptInvitationDto": {
         "properties": {
           "token": {
@@ -219,6 +260,145 @@
         "required": [
           "userId",
           "schoolRole"
+        ],
+        "type": "object"
+      },
+      "ClassDto": {
+        "properties": {
+          "capacity": {
+            "type": "number"
+          },
+          "gradeLevel": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "section",
+          "capacity",
+          "gradeLevel"
+        ],
+        "type": "object"
+      },
+      "ClassListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ClassDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "ClassSectionDto": {
+        "properties": {
+          "capacity": {
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "section",
+          "name",
+          "capacity"
+        ],
+        "type": "object"
+      },
+      "CreateAcademicYearDto": {
+        "properties": {
+          "endDate": {
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "startDate",
+          "endDate"
+        ],
+        "type": "object"
+      },
+      "CreateClassDto": {
+        "properties": {
+          "capacity": {
+            "maximum": 500,
+            "minimum": 1,
+            "type": "number"
+          },
+          "gradeLevelId": {
+            "type": "string"
+          },
+          "section": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "gradeLevelId",
+          "section",
+          "capacity"
+        ],
+        "type": "object"
+      },
+      "CreateGradeLevelDto": {
+        "properties": {
+          "name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          },
+          "position": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "position"
         ],
         "type": "object"
       },
@@ -369,6 +549,24 @@
         ],
         "type": "object"
       },
+      "CreateSubjectDto": {
+        "properties": {
+          "code": {
+            "pattern": "^[A-Z0-9_-]{1,12}$",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "code"
+        ],
+        "type": "object"
+      },
       "CreatedInvitationDto": {
         "properties": {
           "acceptedAt": {
@@ -491,6 +689,46 @@
         },
         "required": [
           "error"
+        ],
+        "type": "object"
+      },
+      "GradeLevelDto": {
+        "properties": {
+          "classes": {
+            "items": {
+              "$ref": "#/components/schemas/ClassSectionDto"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "position",
+          "classes"
+        ],
+        "type": "object"
+      },
+      "GradeLevelListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/GradeLevelDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -884,6 +1122,78 @@
         ],
         "type": "object"
       },
+      "SchoolProfileDto": {
+        "properties": {
+          "activeAcademicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "address": {
+            "nullable": true,
+            "type": "string"
+          },
+          "contactEmail": {
+            "nullable": true,
+            "type": "string"
+          },
+          "contactPhone": {
+            "nullable": true,
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "defaultLanguage": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "locale": {
+            "type": "string"
+          },
+          "logoKey": {
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "primaryColor": {
+            "nullable": true,
+            "type": "string"
+          },
+          "subDomain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "subDomain",
+          "defaultLanguage",
+          "currency",
+          "locale",
+          "address",
+          "contactPhone",
+          "contactEmail",
+          "primaryColor",
+          "logoKey",
+          "activeAcademicYear"
+        ],
+        "type": "object"
+      },
       "SchoolStatusDto": {
         "properties": {
           "reason": {
@@ -891,6 +1201,18 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "SetSchoolLogoDto": {
+        "properties": {
+          "key": {
+            "maxLength": 300,
+            "type": "string"
+          }
+        },
+        "required": [
+          "key"
+        ],
         "type": "object"
       },
       "StaffAccountDto": {
@@ -936,6 +1258,85 @@
           "signIn",
           "nextStep"
         ],
+        "type": "object"
+      },
+      "SubjectDto": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "code"
+        ],
+        "type": "object"
+      },
+      "SubjectListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "UpdateAcademicYearDto": {
+        "properties": {
+          "endDate": {
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateClassDto": {
+        "properties": {
+          "capacity": {
+            "maximum": 500,
+            "minimum": 1,
+            "type": "number"
+          },
+          "section": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateGradeLevelDto": {
+        "properties": {
+          "name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          },
+          "position": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
         "type": "object"
       },
       "UpdateMembershipDto": {
@@ -1031,6 +1432,71 @@
           "name": {
             "maxLength": 120,
             "minLength": 2,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateSchoolProfileDto": {
+        "properties": {
+          "address": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "contactEmail": {
+            "format": "email",
+            "maxLength": 254,
+            "type": "string"
+          },
+          "contactPhone": {
+            "pattern": "^\\+[1-9][0-9]{6,14}$",
+            "type": "string"
+          },
+          "defaultLanguage": {
+            "enum": [
+              "en",
+              "hi",
+              "ur",
+              "ks",
+              "sd",
+              "ps",
+              "fa",
+              "ar",
+              "bn",
+              "as",
+              "mr",
+              "doi",
+              "gu",
+              "pa",
+              "or",
+              "ta",
+              "te",
+              "kn",
+              "ml"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 2,
+            "type": "string"
+          },
+          "primaryColor": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateSubjectDto": {
+        "properties": {
+          "code": {
+            "pattern": "^[A-Z0-9_-]{1,12}$",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -1571,6 +2037,1043 @@
           "Health"
         ],
         "x-access": "public"
+      }
+    },
+    "/v1/academics/classes": {
+      "get": {
+        "operationId": "Academics_classes",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      },
+      "post": {
+        "operationId": "Academics_createClass",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClassDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.class.create",
+          "operation": "CreateClassroom"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/classes/{id}": {
+      "delete": {
+        "operationId": "Academics_deleteClass",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.class.delete",
+          "operation": "DeleteClassroom"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      },
+      "patch": {
+        "operationId": "Academics_updateClass",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClassDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.class.update",
+          "operation": "UpdateClassroom"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/levels": {
+      "get": {
+        "operationId": "Academics_levels",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GradeLevelListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      },
+      "post": {
+        "operationId": "Academics_createLevel",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGradeLevelDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GradeLevelDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.gradelevel.create",
+          "operation": "CreateGradeLevel"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/levels/{id}": {
+      "delete": {
+        "operationId": "Academics_deleteLevel",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.gradelevel.delete",
+          "operation": "DeleteGradeLevel"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      },
+      "patch": {
+        "operationId": "Academics_updateLevel",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGradeLevelDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GradeLevelDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.gradelevel.update",
+          "operation": "UpdateGradeLevel"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/subjects": {
+      "get": {
+        "operationId": "Academics_subjects",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      },
+      "post": {
+        "operationId": "Academics_createSubject",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubjectDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.subject.create",
+          "operation": "CreateSubject"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/subjects/{id}": {
+      "delete": {
+        "operationId": "Academics_deleteSubject",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.subject.delete",
+          "operation": "DeleteSubject"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      },
+      "patch": {
+        "operationId": "Academics_updateSubject",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubjectDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.subject.update",
+          "operation": "UpdateSubject"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/years": {
+      "get": {
+        "operationId": "Academics_years",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcademicYearListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      },
+      "post": {
+        "operationId": "Academics_createYear",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAcademicYearDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcademicYearDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.year.create",
+          "operation": "CreateAcademicYear"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/years/{id}": {
+      "delete": {
+        "operationId": "Academics_deleteYear",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.year.delete",
+          "operation": "DeleteAcademicYear"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      },
+      "patch": {
+        "operationId": "Academics_updateYear",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcademicYearDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcademicYearDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.year.update",
+          "operation": "UpdateAcademicYear"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/years/{id}/activate": {
+      "post": {
+        "operationId": "Academics_activateYear",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcademicYearDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Academics"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.year.activate",
+          "operation": "ActivateAcademicYear"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
       }
     },
     "/v1/invitations": {
@@ -2720,6 +4223,182 @@
           "PublicSchools"
         ],
         "x-access": "public"
+      }
+    },
+    "/v1/school/logo": {
+      "put": {
+        "operationId": "School_setLogo",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetSchoolLogoDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolProfileDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "School"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "school.logo.set",
+          "operation": "SetSchoolLogo"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "settings"
+        }
+      }
+    },
+    "/v1/school/profile": {
+      "get": {
+        "operationId": "School_profile",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolProfileDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "School"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "settings"
+        }
+      },
+      "patch": {
+        "operationId": "School_update",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSchoolProfileDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolProfileDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "School"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "school.profile.update",
+          "operation": "UpdateSchoolProfile"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "settings"
+        }
       }
     },
     "/v1/uploads/school-logo": {

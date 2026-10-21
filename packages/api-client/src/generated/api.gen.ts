@@ -7,6 +7,23 @@ type Out<F extends (...args: never[]) => Promise<{ data: unknown }>> = Promise<A
 
 /** Every operation of the gateway as a method that returns the typed payload and throws on failure. */
 export const bindApi = (client: Client) => ({
+  academicsActivateYear: async (options: Opts<typeof sdk.academicsActivateYear<true>>): Out<typeof sdk.academicsActivateYear<true>> => (await sdk.academicsActivateYear<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsClasses: async (options: Opts<typeof sdk.academicsClasses<true>> = {}): Out<typeof sdk.academicsClasses<true>> => (await sdk.academicsClasses<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsCreateClass: async (options: Opts<typeof sdk.academicsCreateClass<true>>): Out<typeof sdk.academicsCreateClass<true>> => (await sdk.academicsCreateClass<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsCreateLevel: async (options: Opts<typeof sdk.academicsCreateLevel<true>>): Out<typeof sdk.academicsCreateLevel<true>> => (await sdk.academicsCreateLevel<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsCreateSubject: async (options: Opts<typeof sdk.academicsCreateSubject<true>>): Out<typeof sdk.academicsCreateSubject<true>> => (await sdk.academicsCreateSubject<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsCreateYear: async (options: Opts<typeof sdk.academicsCreateYear<true>>): Out<typeof sdk.academicsCreateYear<true>> => (await sdk.academicsCreateYear<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsDeleteClass: async (options: Opts<typeof sdk.academicsDeleteClass<true>>): Out<typeof sdk.academicsDeleteClass<true>> => (await sdk.academicsDeleteClass<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsDeleteLevel: async (options: Opts<typeof sdk.academicsDeleteLevel<true>>): Out<typeof sdk.academicsDeleteLevel<true>> => (await sdk.academicsDeleteLevel<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsDeleteSubject: async (options: Opts<typeof sdk.academicsDeleteSubject<true>>): Out<typeof sdk.academicsDeleteSubject<true>> => (await sdk.academicsDeleteSubject<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsDeleteYear: async (options: Opts<typeof sdk.academicsDeleteYear<true>>): Out<typeof sdk.academicsDeleteYear<true>> => (await sdk.academicsDeleteYear<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsLevels: async (options: Opts<typeof sdk.academicsLevels<true>> = {}): Out<typeof sdk.academicsLevels<true>> => (await sdk.academicsLevels<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsSubjects: async (options: Opts<typeof sdk.academicsSubjects<true>> = {}): Out<typeof sdk.academicsSubjects<true>> => (await sdk.academicsSubjects<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsUpdateClass: async (options: Opts<typeof sdk.academicsUpdateClass<true>>): Out<typeof sdk.academicsUpdateClass<true>> => (await sdk.academicsUpdateClass<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsUpdateLevel: async (options: Opts<typeof sdk.academicsUpdateLevel<true>>): Out<typeof sdk.academicsUpdateLevel<true>> => (await sdk.academicsUpdateLevel<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsUpdateSubject: async (options: Opts<typeof sdk.academicsUpdateSubject<true>>): Out<typeof sdk.academicsUpdateSubject<true>> => (await sdk.academicsUpdateSubject<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsUpdateYear: async (options: Opts<typeof sdk.academicsUpdateYear<true>>): Out<typeof sdk.academicsUpdateYear<true>> => (await sdk.academicsUpdateYear<true>({ ...options, client, throwOnError: true } as never)).data,
+  academicsYears: async (options: Opts<typeof sdk.academicsYears<true>> = {}): Out<typeof sdk.academicsYears<true>> => (await sdk.academicsYears<true>({ ...options, client, throwOnError: true } as never)).data,
   accountsCreate: async (options: Opts<typeof sdk.accountsCreate<true>>): Out<typeof sdk.accountsCreate<true>> => (await sdk.accountsCreate<true>({ ...options, client, throwOnError: true } as never)).data,
   healthCheck: async (options: Opts<typeof sdk.healthCheck<true>> = {}): Out<typeof sdk.healthCheck<true>> => (await sdk.healthCheck<true>({ ...options, client, throwOnError: true } as never)).data,
   healthCheckDb: async (options: Opts<typeof sdk.healthCheckDb<true>> = {}): Out<typeof sdk.healthCheckDb<true>> => (await sdk.healthCheckDb<true>({ ...options, client, throwOnError: true } as never)).data,
@@ -28,6 +45,9 @@ export const bindApi = (client: Client) => ({
   platformSchoolsSuspend: async (options: Opts<typeof sdk.platformSchoolsSuspend<true>>): Out<typeof sdk.platformSchoolsSuspend<true>> => (await sdk.platformSchoolsSuspend<true>({ ...options, client, throwOnError: true } as never)).data,
   platformSchoolsUpdate: async (options: Opts<typeof sdk.platformSchoolsUpdate<true>>): Out<typeof sdk.platformSchoolsUpdate<true>> => (await sdk.platformSchoolsUpdate<true>({ ...options, client, throwOnError: true } as never)).data,
   publicSchoolsBySubdomain: async (options: Opts<typeof sdk.publicSchoolsBySubdomain<true>>): Out<typeof sdk.publicSchoolsBySubdomain<true>> => (await sdk.publicSchoolsBySubdomain<true>({ ...options, client, throwOnError: true } as never)).data,
+  schoolProfile: async (options: Opts<typeof sdk.schoolProfile<true>> = {}): Out<typeof sdk.schoolProfile<true>> => (await sdk.schoolProfile<true>({ ...options, client, throwOnError: true } as never)).data,
+  schoolSetLogo: async (options: Opts<typeof sdk.schoolSetLogo<true>>): Out<typeof sdk.schoolSetLogo<true>> => (await sdk.schoolSetLogo<true>({ ...options, client, throwOnError: true } as never)).data,
+  schoolUpdate: async (options: Opts<typeof sdk.schoolUpdate<true>>): Out<typeof sdk.schoolUpdate<true>> => (await sdk.schoolUpdate<true>({ ...options, client, throwOnError: true } as never)).data,
   uploadsSchoolLogo: async (options: Opts<typeof sdk.uploadsSchoolLogo<true>>): Out<typeof sdk.uploadsSchoolLogo<true>> => (await sdk.uploadsSchoolLogo<true>({ ...options, client, throwOnError: true } as never)).data,
 });
 
