@@ -1,0 +1,2139 @@
+{
+ "_comment": "Fixed vocabulary for translators (P1-15). Hindi and Urdu suggestions are DRAFTS by the assistant and need a native speaker to confirm or replace them; once confirmed, the review page and tools/translations.mjs use this list to catch inconsistency. Keep entries in categories; `match` lists the English forms a message may contain; `keep` means do not translate.",
+ "terms": [
+  {
+   "term": "OruSchools",
+   "category": "Brand",
+   "definition": "The product's name. Always written in Latin letters, in every language.",
+   "hi": null,
+   "ur": null,
+   "note": "Never translate or transliterate.",
+   "keep": true
+  },
+  {
+   "term": "Schools. People. Progress.",
+   "category": "Brand",
+   "definition": "The brand tagline.",
+   "hi": null,
+   "ur": null,
+   "note": "Fixed brand copy: do not translate without written approval from the brand owner.",
+   "match": [
+    "schools. people. progress."
+   ],
+   "keep": true
+  },
+  {
+   "term": "Google",
+   "category": "Brand",
+   "definition": "The sign-in provider named on a button.",
+   "hi": null,
+   "ur": null,
+   "note": "Keep in Latin letters.",
+   "keep": true
+  },
+  {
+   "term": "ERP",
+   "category": "Brand",
+   "definition": "The web application for school offices (Enterprise Resource Planning).",
+   "hi": null,
+   "ur": null,
+   "note": "Keep as the three letters; it is part of the app name.",
+   "keep": true
+  },
+  {
+   "term": "School",
+   "category": "People",
+   "definition": "An institution that uses the product.",
+   "hi": {
+    "preferred": "स्कूल",
+    "alternatives": [
+     "विद्यालय"
+    ]
+   },
+   "ur": {
+    "preferred": "اسکول",
+    "alternatives": []
+   },
+   "match": [
+    "school",
+    "schools"
+   ]
+  },
+  {
+   "term": "Student",
+   "category": "People",
+   "definition": "A child or young person enrolled at a school.",
+   "hi": {
+    "preferred": "छात्र",
+    "alternatives": [
+     "विद्यार्थी",
+     "छात्रों"
+    ]
+   },
+   "ur": {
+    "preferred": "طالب علم",
+    "alternatives": [
+     "طلبہ",
+     "طلباء",
+     "طالب"
+    ]
+   },
+   "note": "The plural 'Students' is used as a menu title.",
+   "match": [
+    "student",
+    "students"
+   ]
+  },
+  {
+   "term": "Teacher",
+   "category": "People",
+   "definition": "A member of staff who teaches classes.",
+   "hi": {
+    "preferred": "शिक्षक",
+    "alternatives": [
+     "शिक्षकों"
+    ]
+   },
+   "ur": {
+    "preferred": "استاد",
+    "alternatives": [
+     "اساتذہ"
+    ]
+   },
+   "match": [
+    "teacher",
+    "teachers"
+   ]
+  },
+  {
+   "term": "Parent",
+   "category": "People",
+   "definition": "A student's parent or guardian who uses the Parent app.",
+   "hi": {
+    "preferred": "अभिभावक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "والدین",
+    "alternatives": [
+     "والد"
+    ]
+   },
+   "note": "In the product the Parent role means a parent or guardian, so the plural/general word is used.",
+   "match": [
+    "parent",
+    "parents"
+   ]
+  },
+  {
+   "term": "Guardian",
+   "category": "People",
+   "definition": "An adult responsible for a student who is not a parent.",
+   "hi": {
+    "preferred": "अभिभावक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "سرپرست",
+    "alternatives": []
+   },
+   "match": [
+    "guardian",
+    "guardians"
+   ]
+  },
+  {
+   "term": "Staff",
+   "category": "People",
+   "definition": "Everyone who works at the school and is not a teacher (office, lab, support).",
+   "hi": {
+    "preferred": "स्टाफ़",
+    "alternatives": [
+     "स्टाफ"
+    ]
+   },
+   "ur": {
+    "preferred": "عملہ",
+    "alternatives": []
+   },
+   "note": "Also the name of a role.",
+   "match": [
+    "staff"
+   ]
+  },
+  {
+   "term": "Driver",
+   "category": "People",
+   "definition": "A school bus driver who uses the Driver app.",
+   "hi": {
+    "preferred": "ड्राइवर",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ڈرائیور",
+    "alternatives": []
+   },
+   "match": [
+    "driver",
+    "drivers"
+   ]
+  },
+  {
+   "term": "User",
+   "category": "People",
+   "definition": "A person with an account.",
+   "hi": {
+    "preferred": "उपयोगकर्ता",
+    "alternatives": [
+     "उपयोगकर्ताओं"
+    ]
+   },
+   "ur": {
+    "preferred": "صارف",
+    "alternatives": [
+     "صارفین"
+    ]
+   },
+   "match": [
+    "user",
+    "users"
+   ]
+  },
+  {
+   "term": "People",
+   "category": "People",
+   "definition": "The people side of the school: students, staff and applicants (a menu group).",
+   "hi": {
+    "preferred": "लोग",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "افراد",
+    "alternatives": []
+   },
+   "note": "As a menu title only (the glossary checks it only when the whole message is this word); for individuals use Student, Teacher, Staff.",
+   "match": [
+    "people"
+   ],
+   "exactOnly": true
+  },
+  {
+   "term": "Role",
+   "category": "People",
+   "definition": "What a person is allowed to do in a school (for example Teacher or Bursar).",
+   "hi": {
+    "preferred": "भूमिका",
+    "alternatives": [
+     "भूमिकाएँ"
+    ]
+   },
+   "ur": {
+    "preferred": "کردار",
+    "alternatives": []
+   },
+   "match": [
+    "role",
+    "roles"
+   ]
+  },
+  {
+   "term": "Principal",
+   "category": "Roles",
+   "definition": "The head of the school. The only role that approves leave.",
+   "hi": {
+    "preferred": "प्रिंसिपल",
+    "alternatives": [
+     "प्राचार्य"
+    ]
+   },
+   "ur": {
+    "preferred": "پرنسپل",
+    "alternatives": []
+   },
+   "note": "Keep the English loan word: it is what schools call the role.",
+   "match": [
+    "principal"
+   ]
+  },
+  {
+   "term": "Management",
+   "category": "Roles",
+   "definition": "The school's governing body or owners (read-only views).",
+   "hi": {
+    "preferred": "प्रबंधन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "انتظامیہ",
+    "alternatives": []
+   },
+   "note": "Do not use the same Urdu word for 'Administration'; see that entry.",
+   "match": [
+    "management"
+   ]
+  },
+  {
+   "term": "Bursar",
+   "category": "Roles",
+   "definition": "The school's finance officer who runs fees and payments.",
+   "hi": {
+    "preferred": "बर्सर",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "برسر",
+    "alternatives": []
+   },
+   "note": "Keep the English loan word; it is used in Indian schools.",
+   "match": [
+    "bursar"
+   ]
+  },
+  {
+   "term": "Accountant",
+   "category": "Roles",
+   "definition": "A person who records fees, payments and payroll.",
+   "hi": {
+    "preferred": "लेखाकार",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "اکاؤنٹنٹ",
+    "alternatives": []
+   },
+   "match": [
+    "accountant"
+   ]
+  },
+  {
+   "term": "Academic administrator",
+   "category": "Roles",
+   "definition": "Runs timetables, attendance and exams.",
+   "hi": {
+    "preferred": "शैक्षणिक प्रशासक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "تعلیمی منتظم",
+    "alternatives": []
+   },
+   "match": [
+    "academic administrator"
+   ]
+  },
+  {
+   "term": "System administrator",
+   "category": "Roles",
+   "definition": "Looks after the school's settings and decides who has which role.",
+   "hi": {
+    "preferred": "सिस्टम एडमिनिस्ट्रेटर",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "سسٹم منتظم",
+    "alternatives": []
+   },
+   "match": [
+    "system administrator"
+   ]
+  },
+  {
+   "term": "Administrator",
+   "category": "Roles",
+   "definition": "A person who administers something (here, a school's first administrator).",
+   "hi": {
+    "preferred": "एडमिनिस्ट्रेटर",
+    "alternatives": [
+     "प्रशासक"
+    ]
+   },
+   "ur": {
+    "preferred": "منتظم",
+    "alternatives": []
+   },
+   "match": [
+    "administrator",
+    "administrators"
+   ]
+  },
+  {
+   "term": "HR manager",
+   "category": "Roles",
+   "definition": "Looks after staff records, leave and recruitment.",
+   "hi": {
+    "preferred": "एचआर प्रबंधक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ایچ آر مینیجر",
+    "alternatives": []
+   },
+   "match": [
+    "hr manager"
+   ]
+  },
+  {
+   "term": "Admissions officer",
+   "category": "Roles",
+   "definition": "Handles applications from new students.",
+   "hi": {
+    "preferred": "प्रवेश अधिकारी",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "داخلہ افسر",
+    "alternatives": []
+   },
+   "match": [
+    "admissions officer"
+   ]
+  },
+  {
+   "term": "Transport manager",
+   "category": "Roles",
+   "definition": "Plans routes, vehicles and drivers.",
+   "hi": {
+    "preferred": "परिवहन प्रबंधक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ٹرانسپورٹ مینیجر",
+    "alternatives": []
+   },
+   "match": [
+    "transport manager"
+   ]
+  },
+  {
+   "term": "Operations manager",
+   "category": "Roles",
+   "definition": "Looks after the school's day-to-day running.",
+   "hi": {
+    "preferred": "संचालन प्रबंधक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "آپریشنز مینیجر",
+    "alternatives": []
+   },
+   "match": [
+    "operations manager"
+   ]
+  },
+  {
+   "term": "Platform",
+   "category": "Platform",
+   "definition": "The OruSchools service that all schools use, run by the platform owner.",
+   "hi": {
+    "preferred": "प्लेटफ़ॉर्म",
+    "alternatives": [
+     "प्लेटफॉर्म"
+    ]
+   },
+   "ur": {
+    "preferred": "پلیٹ فارم",
+    "alternatives": []
+   },
+   "match": [
+    "platform"
+   ]
+  },
+  {
+   "term": "Platform owner",
+   "category": "Platform",
+   "definition": "The person who runs OruSchools and creates schools.",
+   "hi": {
+    "preferred": "प्लेटफ़ॉर्म स्वामी",
+    "alternatives": [
+     "प्लेटफ़ॉर्म के स्वामी",
+     "प्लेटफॉर्म के स्वामी",
+     "प्लेटफॉर्म स्वामी"
+    ]
+   },
+   "ur": {
+    "preferred": "پلیٹ فارم کا مالک",
+    "alternatives": [
+     "پلیٹ فارم کے مالک"
+    ]
+   },
+   "match": [
+    "platform owner"
+   ]
+  },
+  {
+   "term": "Attendance",
+   "category": "Academics",
+   "definition": "Whether a student (or staff member) was there on a day.",
+   "hi": {
+    "preferred": "उपस्थिति",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "حاضری",
+    "alternatives": []
+   },
+   "match": [
+    "attendance"
+   ]
+  },
+  {
+   "term": "Present",
+   "category": "Academics",
+   "definition": "Attendance status: the student was there.",
+   "hi": {
+    "preferred": "उपस्थित",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "حاضر",
+    "alternatives": []
+   },
+   "note": "A status word on a button, not the English 'present' (gift or now).",
+   "match": [
+    "present"
+   ]
+  },
+  {
+   "term": "Absent",
+   "category": "Academics",
+   "definition": "Attendance status: the student was not there.",
+   "hi": {
+    "preferred": "अनुपस्थित",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "غیر حاضر",
+    "alternatives": []
+   },
+   "match": [
+    "absent"
+   ]
+  },
+  {
+   "term": "Late",
+   "category": "Academics",
+   "definition": "Attendance status: the student arrived after the start.",
+   "hi": {
+    "preferred": "देर से",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "دیر سے",
+    "alternatives": []
+   },
+   "match": [
+    "late"
+   ]
+  },
+  {
+   "term": "Leave",
+   "category": "Academics",
+   "definition": "Time away that was asked for and approved; also an attendance status.",
+   "hi": {
+    "preferred": "छुट्टी",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رخصت",
+    "alternatives": []
+   },
+   "note": "In Urdu use رخصت for leave and تعطیل for a holiday; they are different things.",
+   "match": [
+    "leave"
+   ]
+  },
+  {
+   "term": "Medical",
+   "category": "Academics",
+   "definition": "Attendance status: away for health reasons.",
+   "hi": {
+    "preferred": "चिकित्सा",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "طبی",
+    "alternatives": []
+   },
+   "match": [
+    "medical"
+   ]
+  },
+  {
+   "term": "Half day",
+   "category": "Academics",
+   "definition": "Attendance status: present for only part of the day.",
+   "hi": {
+    "preferred": "आधा दिन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "آدھا دن",
+    "alternatives": []
+   },
+   "match": [
+    "half day"
+   ]
+  },
+  {
+   "term": "Excused",
+   "category": "Academics",
+   "definition": "Attendance status: absent with an accepted reason.",
+   "hi": {
+    "preferred": "छूट प्राप्त",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "معافی",
+    "alternatives": [
+     "معاف"
+    ]
+   },
+   "match": [
+    "excused"
+   ]
+  },
+  {
+   "term": "Holiday",
+   "category": "Academics",
+   "definition": "A day the school is closed for everyone.",
+   "hi": {
+    "preferred": "अवकाश",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "تعطیل",
+    "alternatives": []
+   },
+   "note": "Not the same as Leave.",
+   "match": [
+    "holiday",
+    "holidays"
+   ]
+  },
+  {
+   "term": "Class",
+   "category": "Academics",
+   "definition": "A group of students taught together (for example 5B), or the year level.",
+   "hi": {
+    "preferred": "कक्षा",
+    "alternatives": [
+     "कक्षाएँ"
+    ]
+   },
+   "ur": {
+    "preferred": "جماعت",
+    "alternatives": [
+     "جماعتیں"
+    ]
+   },
+   "match": [
+    "class",
+    "classes"
+   ]
+  },
+  {
+   "term": "Section",
+   "category": "Academics",
+   "definition": "A division of a class, such as the B in 5B.",
+   "hi": {
+    "preferred": "सेक्शन",
+    "alternatives": [
+     "अनुभाग"
+    ]
+   },
+   "ur": {
+    "preferred": "سیکشن",
+    "alternatives": []
+   },
+   "match": [
+    "section"
+   ]
+  },
+  {
+   "term": "Grade (class level)",
+   "category": "Academics",
+   "definition": "The year a student is in (for example Grade 5).",
+   "hi": {
+    "preferred": "कक्षा",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "جماعت",
+    "alternatives": []
+   },
+   "note": "Use the same word as Class.",
+   "match": [
+    "grade level"
+   ]
+  },
+  {
+   "term": "Grade (result)",
+   "category": "Academics",
+   "definition": "A letter or band awarded for marks (for example A or B+).",
+   "hi": {
+    "preferred": "ग्रेड",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "گریڈ",
+    "alternatives": []
+   },
+   "match": [
+    "grades"
+   ]
+  },
+  {
+   "term": "Subject",
+   "category": "Academics",
+   "definition": "A course of study, such as Mathematics.",
+   "hi": {
+    "preferred": "विषय",
+    "alternatives": [
+     "विषयों"
+    ]
+   },
+   "ur": {
+    "preferred": "مضمون",
+    "alternatives": [
+     "مضامین"
+    ]
+   },
+   "match": [
+    "subject",
+    "subjects"
+   ]
+  },
+  {
+   "term": "Classroom",
+   "category": "Academics",
+   "definition": "The room where a class is taught.",
+   "hi": {
+    "preferred": "कक्षा-कक्ष",
+    "alternatives": [
+     "क्लासरूम"
+    ]
+   },
+   "ur": {
+    "preferred": "کمرۂ جماعت",
+    "alternatives": [
+     "کلاس روم"
+    ]
+   },
+   "match": [
+    "classroom",
+    "classrooms"
+   ]
+  },
+  {
+   "term": "Timetable",
+   "category": "Academics",
+   "definition": "Which class has which subject at which time.",
+   "hi": {
+    "preferred": "समय-सारणी",
+    "alternatives": [
+     "टाइमटेबल"
+    ]
+   },
+   "ur": {
+    "preferred": "ٹائم ٹیبل",
+    "alternatives": []
+   },
+   "match": [
+    "timetable",
+    "timetables"
+   ]
+  },
+  {
+   "term": "Period",
+   "category": "Academics",
+   "definition": "One teaching slot in the day's timetable.",
+   "hi": {
+    "preferred": "कालांश",
+    "alternatives": [
+     "पीरियड"
+    ]
+   },
+   "ur": {
+    "preferred": "پیریڈ",
+    "alternatives": []
+   },
+   "match": [
+    "period",
+    "periods"
+   ]
+  },
+  {
+   "term": "Exam",
+   "category": "Academics",
+   "definition": "A test of what students have learnt.",
+   "hi": {
+    "preferred": "परीक्षा",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "امتحان",
+    "alternatives": []
+   },
+   "match": [
+    "exam",
+    "exams"
+   ]
+  },
+  {
+   "term": "Assessment",
+   "category": "Academics",
+   "definition": "Any way of measuring a student's learning (a test, an assignment).",
+   "hi": {
+    "preferred": "मूल्यांकन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "تشخیص",
+    "alternatives": [
+     "جانچ"
+    ]
+   },
+   "match": [
+    "assessment",
+    "assessments"
+   ]
+  },
+  {
+   "term": "Marks",
+   "category": "Academics",
+   "definition": "The score a student gets.",
+   "hi": {
+    "preferred": "अंक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "نمبر",
+    "alternatives": []
+   },
+   "match": [
+    "marks"
+   ]
+  },
+  {
+   "term": "Gradebook",
+   "category": "Academics",
+   "definition": "Where a teacher records marks and grades.",
+   "hi": {
+    "preferred": "ग्रेडबुक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "گریڈ بک",
+    "alternatives": []
+   },
+   "match": [
+    "gradebook"
+   ]
+  },
+  {
+   "term": "Report card",
+   "category": "Academics",
+   "definition": "The document that shows a student's results.",
+   "hi": {
+    "preferred": "रिपोर्ट कार्ड",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رپورٹ کارڈ",
+    "alternatives": []
+   },
+   "match": [
+    "report card"
+   ]
+  },
+  {
+   "term": "Academic year",
+   "category": "Academics",
+   "definition": "The school's year, usually April to March.",
+   "hi": {
+    "preferred": "शैक्षणिक वर्ष",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "تعلیمی سال",
+    "alternatives": []
+   },
+   "match": [
+    "academic year"
+   ]
+  },
+  {
+   "term": "Term",
+   "category": "Academics",
+   "definition": "A part of the academic year.",
+   "hi": {
+    "preferred": "सत्र",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ٹرم",
+    "alternatives": []
+   },
+   "match": [
+    "term",
+    "terms"
+   ]
+  },
+  {
+   "term": "Academics",
+   "category": "Academics",
+   "definition": "The teaching and learning side of the school (a menu group).",
+   "hi": {
+    "preferred": "शिक्षा",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "تعلیمات",
+    "alternatives": []
+   },
+   "match": [
+    "academics"
+   ]
+  },
+  {
+   "term": "Substitution",
+   "category": "Academics",
+   "definition": "Another teacher covering a class when the usual teacher is away.",
+   "hi": {
+    "preferred": "स्थानापन्न शिक्षक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "متبادل اساتذہ",
+    "alternatives": [
+     "متبادل استاد"
+    ]
+   },
+   "match": [
+    "substitution",
+    "substitutions",
+    "substitute"
+   ]
+  },
+  {
+   "term": "Admission",
+   "category": "Academics",
+   "definition": "A new student joining the school.",
+   "hi": {
+    "preferred": "प्रवेश",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "داخلہ",
+    "alternatives": [
+     "داخلے"
+    ]
+   },
+   "match": [
+    "admission",
+    "admissions"
+   ]
+  },
+  {
+   "term": "Application",
+   "category": "Academics",
+   "definition": "A request to join the school, before it is accepted.",
+   "hi": {
+    "preferred": "आवेदन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "درخواست",
+    "alternatives": []
+   },
+   "match": [
+    "application",
+    "applications"
+   ]
+  },
+  {
+   "term": "Enrolment",
+   "category": "Academics",
+   "definition": "A student's place at the school once admitted.",
+   "hi": {
+    "preferred": "नामांकन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "اندراج",
+    "alternatives": []
+   },
+   "match": [
+    "enrolment",
+    "enrollment"
+   ]
+  },
+  {
+   "term": "Roll number",
+   "category": "Academics",
+   "definition": "A student's number in the class register.",
+   "hi": {
+    "preferred": "रोल नंबर",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رول نمبر",
+    "alternatives": []
+   },
+   "match": [
+    "roll number"
+   ]
+  },
+  {
+   "term": "Fees",
+   "category": "Finance",
+   "definition": "The money a school charges for a student.",
+   "hi": {
+    "preferred": "फ़ीस",
+    "alternatives": [
+     "फीस",
+     "शुल्क"
+    ]
+   },
+   "ur": {
+    "preferred": "فیس",
+    "alternatives": [
+     "فیسیں"
+    ]
+   },
+   "match": [
+    "fees",
+    "fee"
+   ]
+  },
+  {
+   "term": "Payment",
+   "category": "Finance",
+   "definition": "Money paid.",
+   "hi": {
+    "preferred": "भुगतान",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ادائیگی",
+    "alternatives": [
+     "ادائیگیاں"
+    ]
+   },
+   "match": [
+    "payment",
+    "payments"
+   ]
+  },
+  {
+   "term": "Invoice",
+   "category": "Finance",
+   "definition": "A bill sent to a parent for fees.",
+   "hi": {
+    "preferred": "इनवॉइस",
+    "alternatives": [
+     "बिल"
+    ]
+   },
+   "ur": {
+    "preferred": "انوائس",
+    "alternatives": [
+     "بل"
+    ]
+   },
+   "match": [
+    "invoice",
+    "invoices"
+   ]
+  },
+  {
+   "term": "Receipt",
+   "category": "Finance",
+   "definition": "Proof that a payment was received.",
+   "hi": {
+    "preferred": "रसीद",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رسید",
+    "alternatives": []
+   },
+   "match": [
+    "receipt",
+    "receipts"
+   ]
+  },
+  {
+   "term": "Concession",
+   "category": "Finance",
+   "definition": "A reduction in fees for a student.",
+   "hi": {
+    "preferred": "रियायत",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رعایت",
+    "alternatives": []
+   },
+   "match": [
+    "concession",
+    "concessions"
+   ]
+  },
+  {
+   "term": "Outstanding",
+   "category": "Finance",
+   "definition": "Money still owed (dues).",
+   "hi": {
+    "preferred": "बकाया",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "بقایا",
+    "alternatives": []
+   },
+   "match": [
+    "outstanding",
+    "dues"
+   ]
+  },
+  {
+   "term": "Refund",
+   "category": "Finance",
+   "definition": "Money paid back.",
+   "hi": {
+    "preferred": "रिफ़ंड",
+    "alternatives": [
+     "रिफंड",
+     "धनवापसी"
+    ]
+   },
+   "ur": {
+    "preferred": "رقم کی واپسی",
+    "alternatives": [
+     "ریفنڈ"
+    ]
+   },
+   "match": [
+    "refund",
+    "refunds"
+   ]
+  },
+  {
+   "term": "Payroll",
+   "category": "Finance",
+   "definition": "Paying staff their salaries each month.",
+   "hi": {
+    "preferred": "वेतन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "تنخواہ",
+    "alternatives": []
+   },
+   "note": "Same word as Salary.",
+   "match": [
+    "payroll"
+   ]
+  },
+  {
+   "term": "Salary",
+   "category": "Finance",
+   "definition": "What a staff member is paid.",
+   "hi": {
+    "preferred": "वेतन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "تنخواہ",
+    "alternatives": []
+   },
+   "match": [
+    "salary"
+   ]
+  },
+  {
+   "term": "Payslip",
+   "category": "Finance",
+   "definition": "The monthly statement of a salary.",
+   "hi": {
+    "preferred": "वेतन पर्ची",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "تنخواہ کی پرچی",
+    "alternatives": []
+   },
+   "match": [
+    "payslip",
+    "payslips"
+   ]
+  },
+  {
+   "term": "Deduction",
+   "category": "Finance",
+   "definition": "An amount taken off a salary.",
+   "hi": {
+    "preferred": "कटौती",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "کٹوتی",
+    "alternatives": []
+   },
+   "match": [
+    "deduction",
+    "deductions"
+   ]
+  },
+  {
+   "term": "Ledger",
+   "category": "Finance",
+   "definition": "The record of all money coming in and going out.",
+   "hi": {
+    "preferred": "बही-खाता",
+    "alternatives": [
+     "खाता-बही"
+    ]
+   },
+   "ur": {
+    "preferred": "لیجر",
+    "alternatives": []
+   },
+   "match": [
+    "ledger"
+   ]
+  },
+  {
+   "term": "Finance",
+   "category": "Finance",
+   "definition": "The money side of the school (a menu group).",
+   "hi": {
+    "preferred": "वित्त",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "مالیات",
+    "alternatives": []
+   },
+   "match": [
+    "finance"
+   ]
+  },
+  {
+   "term": "Leave request",
+   "category": "People operations",
+   "definition": "A request for time away, waiting for approval.",
+   "hi": {
+    "preferred": "छुट्टी का अनुरोध",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رخصت کی درخواست",
+    "alternatives": []
+   },
+   "match": [
+    "leave request"
+   ]
+  },
+  {
+   "term": "Approve",
+   "category": "People operations",
+   "definition": "To accept a request.",
+   "hi": {
+    "preferred": "स्वीकृत करें",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "منظور کریں",
+    "alternatives": []
+   },
+   "match": [
+    "approve"
+   ]
+  },
+  {
+   "term": "Reject",
+   "category": "People operations",
+   "definition": "To refuse a request.",
+   "hi": {
+    "preferred": "अस्वीकार करें",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "مسترد کریں",
+    "alternatives": []
+   },
+   "match": [
+    "reject"
+   ]
+  },
+  {
+   "term": "Recruitment",
+   "category": "People operations",
+   "definition": "Hiring new staff.",
+   "hi": {
+    "preferred": "भर्ती",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "بھرتی",
+    "alternatives": []
+   },
+   "match": [
+    "recruitment"
+   ]
+  },
+  {
+   "term": "Staff attendance",
+   "category": "People operations",
+   "definition": "Whether staff members were at work.",
+   "hi": {
+    "preferred": "स्टाफ़ उपस्थिति",
+    "alternatives": [
+     "स्टाफ उपस्थिति"
+    ]
+   },
+   "ur": {
+    "preferred": "عملے کی حاضری",
+    "alternatives": []
+   },
+   "match": [
+    "staff attendance"
+   ]
+  },
+  {
+   "term": "HR",
+   "category": "People operations",
+   "definition": "Human resources: looking after the people who work at the school.",
+   "hi": {
+    "preferred": "एचआर",
+    "alternatives": [
+     "मानव संसाधन"
+    ]
+   },
+   "ur": {
+    "preferred": "ایچ آر",
+    "alternatives": [
+     "انسانی وسائل"
+    ]
+   },
+   "note": "Keep the letters HR in menus; the long form is for explanations.",
+   "match": [
+    "hr"
+   ]
+  },
+  {
+   "term": "Transport",
+   "category": "Transport",
+   "definition": "The school's buses and routes.",
+   "hi": {
+    "preferred": "परिवहन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ٹرانسپورٹ",
+    "alternatives": []
+   },
+   "match": [
+    "transport"
+   ]
+  },
+  {
+   "term": "Route",
+   "category": "Transport",
+   "definition": "The path a bus takes with its stops.",
+   "hi": {
+    "preferred": "मार्ग",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "روٹ",
+    "alternatives": []
+   },
+   "match": [
+    "route",
+    "routes"
+   ]
+  },
+  {
+   "term": "Stop",
+   "category": "Transport",
+   "definition": "A place on a route where students get on or off.",
+   "hi": {
+    "preferred": "स्टॉप",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "اسٹاپ",
+    "alternatives": []
+   },
+   "match": [
+    "stop",
+    "stops"
+   ]
+  },
+  {
+   "term": "Vehicle",
+   "category": "Transport",
+   "definition": "A bus or other school vehicle.",
+   "hi": {
+    "preferred": "वाहन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "گاڑی",
+    "alternatives": []
+   },
+   "match": [
+    "vehicle",
+    "vehicles"
+   ]
+  },
+  {
+   "term": "Bus",
+   "category": "Transport",
+   "definition": "A school bus.",
+   "hi": {
+    "preferred": "बस",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "بس",
+    "alternatives": []
+   },
+   "match": [
+    "bus",
+    "buses"
+   ]
+  },
+  {
+   "term": "Boarding",
+   "category": "Transport",
+   "definition": "A student getting on the bus.",
+   "hi": {
+    "preferred": "सवार होना",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "سوار ہونا",
+    "alternatives": []
+   },
+   "note": "A button for the driver.",
+   "match": [
+    "boarding"
+   ]
+  },
+  {
+   "term": "Drop-off",
+   "category": "Transport",
+   "definition": "A student getting off the bus at their stop.",
+   "hi": {
+    "preferred": "उतारना",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "اتارنا",
+    "alternatives": []
+   },
+   "note": "A button for the driver.",
+   "match": [
+    "drop-off"
+   ]
+  },
+  {
+   "term": "Trip",
+   "category": "Transport",
+   "definition": "One run of a bus on a route.",
+   "hi": {
+    "preferred": "यात्रा",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "سفر",
+    "alternatives": []
+   },
+   "match": [
+    "trip",
+    "trips"
+   ]
+  },
+  {
+   "term": "Announcement",
+   "category": "Communication",
+   "definition": "A message from the school to many people.",
+   "hi": {
+    "preferred": "घोषणा",
+    "alternatives": [
+     "घोषणाएँ"
+    ]
+   },
+   "ur": {
+    "preferred": "اعلان",
+    "alternatives": [
+     "اعلانات"
+    ]
+   },
+   "match": [
+    "announcement",
+    "announcements"
+   ]
+  },
+  {
+   "term": "Message",
+   "category": "Communication",
+   "definition": "A message between a parent and a teacher.",
+   "hi": {
+    "preferred": "संदेश",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "پیغام",
+    "alternatives": []
+   },
+   "match": [
+    "message",
+    "messages"
+   ]
+  },
+  {
+   "term": "Notification",
+   "category": "Communication",
+   "definition": "A short alert on the phone.",
+   "hi": {
+    "preferred": "सूचना",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "اطلاع",
+    "alternatives": []
+   },
+   "match": [
+    "notification",
+    "notifications"
+   ]
+  },
+  {
+   "term": "Communication",
+   "category": "Communication",
+   "definition": "The messaging side of the school (a menu group).",
+   "hi": {
+    "preferred": "संचार",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رابطہ",
+    "alternatives": []
+   },
+   "match": [
+    "communication"
+   ]
+  },
+  {
+   "term": "Office hours",
+   "category": "Communication",
+   "definition": "The times when teachers may be messaged.",
+   "hi": {
+    "preferred": "कार्यालय समय",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "دفتری اوقات",
+    "alternatives": []
+   },
+   "match": [
+    "office hours"
+   ]
+  },
+  {
+   "term": "Dashboard",
+   "category": "Product",
+   "definition": "The home screen with the most important numbers.",
+   "hi": {
+    "preferred": "डैशबोर्ड",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ڈیش بورڈ",
+    "alternatives": []
+   },
+   "match": [
+    "dashboard"
+   ]
+  },
+  {
+   "term": "Overview",
+   "category": "Product",
+   "definition": "A summary page (a menu group).",
+   "hi": {
+    "preferred": "जायज़ा",
+    "alternatives": [
+     "अवलोकन"
+    ]
+   },
+   "ur": {
+    "preferred": "جائزہ",
+    "alternatives": []
+   },
+   "match": [
+    "overview"
+   ]
+  },
+  {
+   "term": "Reports",
+   "category": "Product",
+   "definition": "Summaries a person can view or download.",
+   "hi": {
+    "preferred": "रिपोर्ट",
+    "alternatives": [
+     "रिपोर्टें"
+    ]
+   },
+   "ur": {
+    "preferred": "رپورٹس",
+    "alternatives": [
+     "رپورٹ"
+    ]
+   },
+   "match": [
+    "reports",
+    "report"
+   ]
+  },
+  {
+   "term": "Settings",
+   "category": "Product",
+   "definition": "Where a school changes how the product works for it.",
+   "hi": {
+    "preferred": "सेटिंग",
+    "alternatives": [
+     "सेटिंग्स"
+    ]
+   },
+   "ur": {
+    "preferred": "ترتیبات",
+    "alternatives": []
+   },
+   "match": [
+    "settings"
+   ]
+  },
+  {
+   "term": "Administration",
+   "category": "Product",
+   "definition": "Running and controlling the system (a menu group).",
+   "hi": {
+    "preferred": "प्रशासन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "نظم و نسق",
+    "alternatives": []
+   },
+   "note": "Not the same word as Management (the governing body).",
+   "match": [
+    "administration"
+   ]
+  },
+  {
+   "term": "Operations",
+   "category": "Product",
+   "definition": "The school's day-to-day running (a menu group).",
+   "hi": {
+    "preferred": "संचालन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "آپریشنز",
+    "alternatives": []
+   },
+   "match": [
+    "operations"
+   ]
+  },
+  {
+   "term": "Audit log",
+   "category": "Product",
+   "definition": "The record of who did what and when.",
+   "hi": {
+    "preferred": "ऑडिट लॉग",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "آڈٹ لاگ",
+    "alternatives": []
+   },
+   "match": [
+    "audit log"
+   ]
+  },
+  {
+   "term": "Membership",
+   "category": "Product",
+   "definition": "A person's place in a school with a role.",
+   "hi": {
+    "preferred": "सदस्यता",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رکنیت",
+    "alternatives": []
+   },
+   "match": [
+    "membership",
+    "memberships"
+   ]
+  },
+  {
+   "term": "Invitation",
+   "category": "Product",
+   "definition": "An offer to join a school with a role.",
+   "hi": {
+    "preferred": "आमंत्रण",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "دعوت نامہ",
+    "alternatives": []
+   },
+   "match": [
+    "invitation",
+    "invitations"
+   ]
+  },
+  {
+   "term": "Permission",
+   "category": "Product",
+   "definition": "Whether a person may do something.",
+   "hi": {
+    "preferred": "अनुमति",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "اجازت",
+    "alternatives": []
+   },
+   "match": [
+    "permission",
+    "permissions",
+    "access"
+   ]
+  },
+  {
+   "term": "Account",
+   "category": "Product",
+   "definition": "A person's sign-in.",
+   "hi": {
+    "preferred": "खाता",
+    "alternatives": [
+     "खाते"
+    ]
+   },
+   "ur": {
+    "preferred": "اکاؤنٹ",
+    "alternatives": []
+   },
+   "match": [
+    "account",
+    "accounts"
+   ]
+  },
+  {
+   "term": "Server",
+   "category": "Product",
+   "definition": "The computer that holds the school's data.",
+   "hi": {
+    "preferred": "सर्वर",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "سرور",
+    "alternatives": []
+   },
+   "match": [
+    "server"
+   ]
+  },
+  {
+   "term": "Connection",
+   "category": "Product",
+   "definition": "The phone or computer's link to the internet.",
+   "hi": {
+    "preferred": "कनेक्शन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "کنکشن",
+    "alternatives": []
+   },
+   "match": [
+    "connection"
+   ]
+  },
+  {
+   "term": "Language",
+   "category": "Product",
+   "definition": "The language the screens are shown in.",
+   "hi": {
+    "preferred": "भाषा",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "زبان",
+    "alternatives": []
+   },
+   "match": [
+    "language"
+   ]
+  },
+  {
+   "term": "Web address",
+   "category": "Product",
+   "definition": "The internet address of a school's own site (for example greenfield.oruschools.com).",
+   "hi": {
+    "preferred": "वेब पता",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ویب پتہ",
+    "alternatives": []
+   },
+   "note": "Keep example addresses exactly as written.",
+   "match": [
+    "web address"
+   ]
+  },
+  {
+   "term": "Logo",
+   "category": "Product",
+   "definition": "A school's picture mark.",
+   "hi": {
+    "preferred": "लोगो",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "لوگو",
+    "alternatives": []
+   },
+   "match": [
+    "logo"
+   ]
+  },
+  {
+   "term": "Sync",
+   "category": "Sync and states",
+   "definition": "Sending changes saved on the phone to the school's server.",
+   "hi": {
+    "preferred": "सिंक",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "سنک",
+    "alternatives": []
+   },
+   "note": "Never replaced by 'update'. Synced = सिंक हो गया / سنک ہو گیا.",
+   "match": [
+    "sync",
+    "synced",
+    "syncing"
+   ]
+  },
+  {
+   "term": "Offline",
+   "category": "Sync and states",
+   "definition": "Not connected to the internet.",
+   "hi": {
+    "preferred": "ऑफ़लाइन",
+    "alternatives": [
+     "ऑफलाइन"
+    ]
+   },
+   "ur": {
+    "preferred": "آف لائن",
+    "alternatives": []
+   },
+   "match": [
+    "offline"
+   ]
+  },
+  {
+   "term": "Pending",
+   "category": "Sync and states",
+   "definition": "Waiting (to be sent, or to be decided).",
+   "hi": {
+    "preferred": "लंबित",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "زیر التوا",
+    "alternatives": []
+   },
+   "match": [
+    "pending"
+   ]
+  },
+  {
+   "term": "Saved on device",
+   "category": "Sync and states",
+   "definition": "Stored on the phone and not yet sent to the server.",
+   "hi": {
+    "preferred": "फ़ोन में सहेजा गया",
+    "alternatives": [
+     "फ़ोन में सहेजा"
+    ]
+   },
+   "ur": {
+    "preferred": "فون میں محفوظ",
+    "alternatives": []
+   },
+   "note": "Saving on the phone counts as success: the wording must be calm, not an error.",
+   "match": [
+    "saved on device"
+   ]
+  },
+  {
+   "term": "Active",
+   "category": "Sync and states",
+   "definition": "Running; not suspended.",
+   "hi": {
+    "preferred": "चालू",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "فعال",
+    "alternatives": []
+   },
+   "match": [
+    "active"
+   ]
+  },
+  {
+   "term": "Suspended",
+   "category": "Sync and states",
+   "definition": "Switched off for now, for example an unpaid school.",
+   "hi": {
+    "preferred": "निलंबित",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "معطل",
+    "alternatives": []
+   },
+   "match": [
+    "suspended",
+    "suspend"
+   ]
+  },
+  {
+   "term": "Reactivate",
+   "category": "Sync and states",
+   "definition": "To switch something suspended back on.",
+   "hi": {
+    "preferred": "फिर से चालू करें",
+    "alternatives": [
+     "फिर से चालू"
+    ]
+   },
+   "ur": {
+    "preferred": "دوبارہ فعال کریں",
+    "alternatives": [
+     "دوبارہ فعال"
+    ]
+   },
+   "match": [
+    "reactivate"
+   ]
+  },
+  {
+   "term": "Sign in",
+   "category": "Actions",
+   "definition": "To enter your account.",
+   "hi": {
+    "preferred": "साइन इन",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "سائن اِن",
+    "alternatives": [
+     "سائن ان"
+    ]
+   },
+   "match": [
+    "sign in",
+    "signing in"
+   ]
+  },
+  {
+   "term": "Sign out",
+   "category": "Actions",
+   "definition": "To leave your account.",
+   "hi": {
+    "preferred": "साइन आउट",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "سائن آؤٹ",
+    "alternatives": []
+   },
+   "match": [
+    "sign out"
+   ]
+  },
+  {
+   "term": "Password",
+   "category": "Actions",
+   "definition": "The secret word used to sign in.",
+   "hi": {
+    "preferred": "पासवर्ड",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "پاس ورڈ",
+    "alternatives": []
+   },
+   "match": [
+    "password"
+   ]
+  },
+  {
+   "term": "Email address",
+   "category": "Actions",
+   "definition": "Where a person receives email.",
+   "hi": {
+    "preferred": "ईमेल",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "ای میل",
+    "alternatives": []
+   },
+   "match": [
+    "email address",
+    "email"
+   ]
+  },
+  {
+   "term": "Mobile number",
+   "category": "Actions",
+   "definition": "A phone number.",
+   "hi": {
+    "preferred": "मोबाइल नंबर",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "موبائل نمبر",
+    "alternatives": []
+   },
+   "match": [
+    "mobile number"
+   ]
+  },
+  {
+   "term": "Code",
+   "category": "Actions",
+   "definition": "A short number sent by SMS to prove it is you.",
+   "hi": {
+    "preferred": "कोड",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "کوڈ",
+    "alternatives": []
+   },
+   "match": [
+    "code"
+   ]
+  },
+  {
+   "term": "Save",
+   "category": "Actions",
+   "definition": "To keep changes.",
+   "hi": {
+    "preferred": "सहेजें",
+    "alternatives": [
+     "सहेजा",
+     "सहेजे"
+    ]
+   },
+   "ur": {
+    "preferred": "محفوظ کریں",
+    "alternatives": [
+     "محفوظ"
+    ]
+   },
+   "match": [
+    "save",
+    "saved"
+   ]
+  },
+  {
+   "term": "Cancel",
+   "category": "Actions",
+   "definition": "To stop without changing anything.",
+   "hi": {
+    "preferred": "रद्द करें",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "منسوخ کریں",
+    "alternatives": []
+   },
+   "match": [
+    "cancel"
+   ]
+  },
+  {
+   "term": "Retry",
+   "category": "Actions",
+   "definition": "To try again after a failure.",
+   "hi": {
+    "preferred": "फिर कोशिश करें",
+    "alternatives": [
+     "फिर से कोशिश करें"
+    ]
+   },
+   "ur": {
+    "preferred": "دوبارہ کوشش کریں",
+    "alternatives": []
+   },
+   "match": [
+    "retry",
+    "try again"
+   ]
+  },
+  {
+   "term": "Edit",
+   "category": "Actions",
+   "definition": "To change something that exists.",
+   "hi": {
+    "preferred": "बदलें",
+    "alternatives": [
+     "संपादित करें"
+    ]
+   },
+   "ur": {
+    "preferred": "ترمیم کریں",
+    "alternatives": []
+   },
+   "match": [
+    "edit"
+   ]
+  },
+  {
+   "term": "Upload",
+   "category": "Actions",
+   "definition": "To send a file or saved changes to the server.",
+   "hi": {
+    "preferred": "अपलोड",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "اپ لوڈ",
+    "alternatives": []
+   },
+   "match": [
+    "upload"
+   ]
+  }
+ ]
+}

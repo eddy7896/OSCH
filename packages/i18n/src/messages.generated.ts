@@ -355,7 +355,7 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "roleParent": "अभिभावक"
   },
   "ur": {
-    "appTeacher": "OruSchools اُستاد",
+    "appTeacher": "OruSchools استاد",
     "appStaff": "OruSchools عملہ",
     "appParent": "OruSchools والدین",
     "appDriver": "OruSchools ڈرائیور",
@@ -375,7 +375,7 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "actionCancel": "منسوخ کریں",
     "syncSynced": "سنک ہو گیا",
     "syncSavedOnDevice": "فون میں محفوظ ہو گیا",
-    "syncChangesPending": "{count, plural, one{{count} تبدیلی باقی ہے} other{{count} تبدیلیاں باقی ہیں}}",
+    "syncChangesPending": "{count, plural, one{{count} تبدیلی زیر التوا ہے} other{{count} تبدیلیاں زیر التوا ہیں}}",
     "syncSyncing": "سنک ہو رہا ہے…",
     "syncOffline": "آپ آف لائن ہیں",
     "syncFailed": "سنک ناکام رہا",
@@ -491,7 +491,7 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "sectionTransport": "ٹرانسپورٹ",
     "sectionOperations": "آپریشنز",
     "sectionReports": "رپورٹس",
-    "sectionAdministration": "انتظامیہ",
+    "sectionAdministration": "نظم و نسق",
     "navDashboard": "ڈیش بورڈ",
     "navStudents": "طلبہ",
     "navClasses": "جماعتیں اور مضامین",

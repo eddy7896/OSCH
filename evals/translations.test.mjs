@@ -23,7 +23,8 @@ test("E-TR-1 a translation must keep English's placeholders, be valid and plain"
 test("E-TR-2 the bundle for a language carries each English message, its context, its draft and its placeholders", () => {
   const b = bundleFor({ lang: "hi", en, descriptions: { hello: "Greeting", plain: "Button" }, catalog: { hello: "नमस्ते, {name}" } });
   assert.deepEqual(b.items.map((i) => i.key), ["hello", "count", "plain"]);
-  assert.deepEqual(b.items[0], { key: "hello", en: "Hello, {name}", description: "Greeting", draft: "नमस्ते, {name}", vars: ["name"] });
+  assert.deepEqual(b.items[0], { key: "hello", en: "Hello, {name}", description: "Greeting", draft: "नमस्ते, {name}", vars: ["name"], terms: [] });
+  assert.deepEqual(b.glossary, []);
   assert.equal(b.items[1].draft, null);
   assert.equal(b.items[1].description, "");
   assert.deepEqual(b.items[1].vars, ["count"]);
@@ -69,4 +70,12 @@ test("E-TR-6 applying updates keeps English's key order and drops nothing", () =
   assert.deepEqual(Object.keys(next), ["hello", "count", "plain"]);
   assert.equal(next.count, "c");
   assert.equal(next.plain, "p");
+});
+
+test("E-TR-7 the bundle carries the glossary for the language and the terms each message contains", () => {
+  const glossary = [{ term: "Attendance", category: "Academics", definition: "d", hi: { preferred: "उपस्थिति", alternatives: ["हाज़िरी"] }, ur: { preferred: "حاضری", alternatives: [] }, match: ["attendance"] }, { term: "OruSchools", category: "Brand", definition: "d", keep: true, match: ["oruschools"] }];
+  const b = bundleFor({ lang: "hi", en: { take: "Take attendance", app: "OruSchools" }, descriptions: {}, catalog: {}, glossary });
+  assert.deepEqual(b.items[0].terms, [{ term: "Attendance", use: ["उपस्थिति", "हाज़िरी"] }]);
+  assert.deepEqual(b.items[1].terms, [{ term: "OruSchools", use: ["OruSchools"] }]);
+  assert.deepEqual(b.glossary.map((g) => [g.term, g.use]), [["Attendance", ["उपस्थिति", "हाज़िरी"]], ["OruSchools", ["OruSchools"]]]);
 });

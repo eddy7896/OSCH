@@ -10,7 +10,7 @@ class OruStringsUr extends OruStrings {
   OruStringsUr([String locale = 'ur']) : super(locale);
 
   @override
-  String get appTeacher => 'OruSchools اُستاد';
+  String get appTeacher => 'OruSchools استاد';
 
   @override
   String get appStaff => 'OruSchools عملہ';
@@ -81,8 +81,8 @@ class OruStringsUr extends OruStrings {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count تبدیلیاں باقی ہیں',
-      one: '$count تبدیلی باقی ہے',
+      other: '$count تبدیلیاں زیر التوا ہیں',
+      one: '$count تبدیلی زیر التوا ہے',
     );
     return '$_temp0';
   }
@@ -478,7 +478,7 @@ class OruStringsUr extends OruStrings {
   String get sectionReports => 'رپورٹس';
 
   @override
-  String get sectionAdministration => 'انتظامیہ';
+  String get sectionAdministration => 'نظم و نسق';
 
   @override
   String get navDashboard => 'ڈیش بورڈ';

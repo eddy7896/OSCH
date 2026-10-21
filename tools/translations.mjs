@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // The translation review workflow (P1-15). Reviewers work on the review page; this tool moves their decisions into the repo.
 //   node tools/translations.mjs status
+//   node tools/translations.mjs glossary-check --lang ur                        messages whose words differ from the glossary
+//   node tools/translations.mjs glossary-md                                      prints documentation/glossary.md
 //   node tools/translations.mjs export --lang ur [--out bundle.json]         what the review page is filled from
 //   node tools/translations.mjs import --lang ur --from <dir> [--apply]       approved edits into messages/ur.json (dry run unless --apply)
 //   node tools/translations.mjs mark-reviewed --lang ur --reviewer "Name" --from <dir> --confirm-native-speaker [--apply]
@@ -9,7 +11,7 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { applyUpdates, bundleFor, canMarkReviewed, planImport, readReviews } from "./translations/lib.mjs";
+import { applyUpdates, bundleFor, canMarkReviewed, glossaryMarkdown, glossaryProblems, glossaryWarnings, planImport, readReviews } from "./translations/lib.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MESSAGES = join(ROOT, "packages/i18n/messages");
@@ -23,6 +25,7 @@ const fail = (msg, code = 2) => { console.error(`error: ${msg}`); process.exit(c
 const en = json(join(MESSAGES, "en.json"));
 const descriptions = json(join(MESSAGES, "_descriptions.json"));
 const status = json(join(MESSAGES, "status.json"));
+const glossary = json(join(ROOT, "packages/i18n/glossary.json")).terms;
 const languages = () => Object.keys(status).filter((k) => !k.startsWith("_"));
 const catalogOf = (lang) => json(join(MESSAGES, `${lang}.json`));
 
@@ -53,9 +56,18 @@ if (command === "status") {
     const missing = Object.keys(en).filter((k) => !(k in cat)).length;
     console.log(`${lang}  ${Object.keys(en).length - missing}/${Object.keys(en).length} translated   reviewed: ${status[lang].reviewed ? `yes (${status[lang].reviewer})` : "NO"}   ${status[lang].note ?? ""}`);
   }
+} else if (command === "glossary-md") {
+  const problems = glossaryProblems(glossary);
+  if (problems.length) fail(`the glossary has problems:\n  ${problems.join("\n  ")}`, 1);
+  process.stdout.write(glossaryMarkdown(glossary) + "\n");
+} else if (command === "glossary-check") {
+  const lang = need(value("lang"));
+  const warnings = glossaryWarnings({ en, texts: catalogOf(lang), glossary, lang });
+  for (const w of warnings) console.log(`${w.key}: "${w.term}" is usually ${w.expected.join(" / ")}`);
+  console.log(`\n${lang}: ${warnings.length} message${warnings.length === 1 ? "" : "s"} to look at (a prompt for the reviewer, not an error)`);
 } else if (command === "export") {
   const lang = need(value("lang"));
-  const bundle = bundleFor({ lang, en, descriptions, catalog: catalogOf(lang) });
+  const bundle = bundleFor({ lang, en, descriptions, catalog: catalogOf(lang), glossary });
   const out = value("out");
   if (out) { writeFileSync(out, JSON.stringify(bundle, null, 2)); console.log(`wrote ${bundle.items.length} messages to ${out}`); } else console.log(JSON.stringify(bundle, null, 2));
 } else if (command === "import" || command === "mark-reviewed") {
