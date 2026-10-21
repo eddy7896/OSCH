@@ -585,4 +585,11 @@ class OruStringsAr extends OruStrings {
 
   @override
   String get roleParent => 'Parent';
+
+  @override
+  String get errorUploadInvalid =>
+      'Choose a PNG, JPEG or WebP image up to 2 MB.';
+
+  @override
+  String get errorUploadFailed => 'The file could not be uploaded. Try again.';
 }

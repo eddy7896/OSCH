@@ -22,6 +22,8 @@ const API_ERROR_KEY: Record<ApiErrorCode, string> = {
   ABORTED: "errorInternal",
   SCHOOL_REQUIRED: "errorInternal",
   UNEXPECTED_RESPONSE: "errorInternal",
+  UPLOAD_INVALID: "errorUploadInvalid",
+  UPLOAD_FAILED: "errorUploadFailed",
 };
 
 const AUTH_FAILURE_KEY: Record<AuthFailureCode, string> = {

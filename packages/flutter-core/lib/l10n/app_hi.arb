@@ -172,5 +172,7 @@
   "roleTeacher": "शिक्षक",
   "roleStaff": "स्टाफ़",
   "roleDriver": "ड्राइवर",
-  "roleParent": "अभिभावक"
+  "roleParent": "अभिभावक",
+  "errorUploadInvalid": "PNG, JPEG या WebP छवि चुनें, अधिकतम 2 MB।",
+  "errorUploadFailed": "फ़ाइल अपलोड नहीं हो सकी। फिर कोशिश करें।"
 }

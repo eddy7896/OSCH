@@ -1169,6 +1169,18 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Parent'**
   String get roleParent;
+
+  /// Error when the chosen picture is not an accepted type or is too big.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a PNG, JPEG or WebP image up to 2 MB.'**
+  String get errorUploadInvalid;
+
+  /// Error when sending a file to storage failed.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be uploaded. Try again.'**
+  String get errorUploadFailed;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

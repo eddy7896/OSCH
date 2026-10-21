@@ -7,7 +7,9 @@ export type ClientErrorCode =
   | 'TIMEOUT' // no answer within the time limit
   | 'ABORTED' // the caller cancelled
   | 'SCHOOL_REQUIRED' // a school route was called with no active school; nothing was sent
-  | 'UNEXPECTED_RESPONSE'; // an error status without the gateway's JSON envelope (for example a proxy page)
+  | 'UNEXPECTED_RESPONSE' // an error status without the gateway's JSON envelope (for example a proxy page)
+  | 'UPLOAD_INVALID' // the file is not an accepted type or size; nothing was sent
+  | 'UPLOAD_FAILED'; // storage refused the file or the upload broke off
 export type ApiErrorCode = GatewayErrorCode | ClientErrorCode;
 
 export interface FieldProblem {

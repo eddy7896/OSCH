@@ -38,3 +38,5 @@ node tools/bootstrap-super-admin.mjs --email you@example.com --project <firebase
 `loadEnvConfig` in each `next.config.ts` must be called with `forceReload: true`: Next has already read the app's own folder, and without it the call returns that cached result, so the root `.env.local` was never loaded. Next also inlines only `NEXT_PUBLIC_*` values it saw before the config ran, so an app that needs public values lists them in `env` in its `next.config.ts` (saas-admin does; public values only).
 
 `NEXT_PUBLIC_BASE_DOMAIN` (public): the domain schools live under. In development `localhost`, and a school is opened at `http://<school>.localhost:3002` (browsers resolve `*.localhost` to this machine). `CORS_ORIGINS` then needs `http://*.localhost:3002`.
+
+R2 uploads: see `documentation/r2-setup.md` (bucket, token, public address, `tools/r2-setup.mjs` for CORS, `tools/r2-smoke.mjs` for a real round trip). Leaving the four R2 keys empty is fine: uploads answer 503.

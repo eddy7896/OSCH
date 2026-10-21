@@ -6,6 +6,7 @@ import { createTransport, type TransportOptions } from './transport.js';
 export { ApiError, type ApiErrorCode, type ClientErrorCode, type FieldProblem, type GatewayErrorCode } from './api-error.js';
 export { formatMinor, minorToDecimal, parseInt64, toInt64String } from './money.js';
 export { matchRoute, type TokenRequest, type TransportOptions } from './transport.js';
+export { LOGO_MAX_BYTES, LOGO_TYPES, uploadSchoolLogo, type UploadedFile, type UploadOptions } from './upload.js';
 export { ROUTES, type Access, type RouteInfo } from './generated/routes.gen.js';
 export type * from './generated/types.gen.js';
 export type { Api };
