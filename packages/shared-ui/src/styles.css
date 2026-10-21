@@ -10,7 +10,7 @@
 /* Icons that point somewhere (next, back, send) face the other way in right-to-left layouts. */
 [dir="rtl"] .oru-icon--directional { transform: scaleX(-1); }
 
-:where(.oru-btn, .oru-seg__opt, .oru-check input):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+:where(.oru-btn, .oru-seg__opt, .oru-pill--btn, .oru-check input):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
 /* Tones: soft fill + matching ink, shared by badges, pills and banners. Colour never carries meaning alone (a word always does). */
 .oru-tone--success { background: var(--success-bg); color: var(--success-fg); }
@@ -107,3 +107,36 @@
 .oru-avatar img { inline-size: 100%; block-size: 100%; object-fit: cover; }
 
 @media (prefers-reduced-motion: reduce) { .oru-btn { transition: none; } }
+
+/* StatusPill: icon + word. The word wraps rather than clips in tall scripts, so the height is a minimum. */
+.oru-pill {
+  display: inline-flex; align-items: center; gap: var(--space-2); min-block-size: 36px; padding-block: 0; padding-inline: var(--space-3);
+  border-radius: var(--radius-sm); font-size: 14px; line-height: max(20px, calc(14px * var(--oru-min-lh, 1))); font-weight: 600; white-space: nowrap; border: 0; font-family: inherit;
+}
+.oru-pill--btn { cursor: pointer; min-block-size: var(--control-touch); min-inline-size: 140px; }
+.oru-pill__chev { margin-inline-start: auto; opacity: .8; }
+
+/* SyncStatus */
+.oru-sync { display: inline-flex; align-items: center; gap: var(--space-2); min-block-size: 32px; padding-block: 0; padding-inline: var(--space-3); border-radius: var(--radius-full); font-size: 13px; line-height: max(18px, calc(13px * var(--oru-min-lh, 1))); }
+.oru-sync__title { font-weight: 600; }
+.oru-sync__detail { opacity: .9; }
+.oru-syncbar { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-3); padding-inline: var(--space-4); border-radius: var(--radius-lg); }
+.oru-syncbar__text { flex: 1; display: flex; flex-direction: column; font-size: 13px; line-height: max(18px, calc(13px * var(--oru-min-lh, 1))); }
+.oru-syncbar__text strong { font-size: 15px; line-height: max(22px, calc(15px * var(--oru-min-lh, 1))); }
+.oru-syncbar .oru-btn { background: var(--surface); }
+@keyframes oru-spin { to { transform: rotate(360deg); } }
+.oru-spin { animation: oru-spin 1.2s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .oru-spin { animation: none; } }
+
+/* Banner */
+.oru-banner { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-lg); }
+.oru-banner__text { flex: 1; display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: max(20px, calc(14px * var(--oru-min-lh, 1))); }
+.oru-banner__text strong { font-size: 16px; line-height: max(24px, calc(16px * var(--oru-min-lh, 1))); }
+.oru-banner__text span { color: var(--text); }
+
+/* EmptyState */
+.oru-icontile { display: inline-grid; place-items: center; inline-size: 36px; block-size: 36px; border-radius: var(--radius-sm); flex: none; }
+.oru-icontile--xl { inline-size: 64px; block-size: 64px; border-radius: var(--radius-lg); }
+.oru-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding-block: var(--space-8); padding-inline: var(--space-4); }
+.oru-empty h2, .oru-empty h3, .oru-empty h4 { margin: var(--space-2) 0 0; font-size: 18px; line-height: max(26px, calc(18px * var(--oru-min-lh, 1))); font-weight: 600; color: var(--text); }
+.oru-empty p { margin: 0 0 var(--space-2); max-inline-size: 320px; font-size: 14px; line-height: max(22px, calc(14px * var(--oru-min-lh, 1))); color: var(--text-muted); }
