@@ -20,10 +20,12 @@ const pause = (attempt: number) => new Promise((r) => setTimeout(r, Math.random(
 /** LIKE pattern for "contains this text": the text is escaped so a typed % or _ matches itself. */
 export const likeContains = (text: string): string => `%${text.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
 
-type Row = {
+export type Row = {
   id: string; firstName: string; lastName: string; enrollmentId: string; status: string; gender?: string | null; dateOfBirth?: string | null;
   admissionDate?: string | null; address?: string | null;
   placements: Array<{ academicYear: { id: string; name: string }; classroom: { id: string; name: string } }>;
+  photoKey?: string | null;
+  documents?: Array<{ id: string; kind: string; fileKey?: string; fileName: string; contentType: string; sizeBytes: number; createdAt: string }>;
   guardians?: Array<{ id: string; name: string; relationship: string; phone?: string | null; email?: string | null; isPrimary: boolean }>;
 };
 const place = (p: Row['placements'][number]): PlacementDto => ({ academicYear: { id: dashed(p.academicYear.id), name: p.academicYear.name }, classroom: { id: dashed(p.classroom.id), name: p.classroom.name } });
@@ -52,13 +54,14 @@ export class StudentsService {
     return { items: (rows.data.students as Row[]).map(summary), total: Number(count.data.students[0]?._count ?? 0), page, pageSize };
   }
 
-  private async row(t: TenantContext, id: string): Promise<Row> {
+  /** The raw student row for the verified school (used by the files service too). */
+  async row(t: TenantContext, id: string): Promise<Row> {
     const r = (await this.db.getStudent({ schoolId: t.schoolId, id })).data.students[0];
     if (!r) throw notFound(); // a student of another school looks exactly like one that does not exist
     return r as Row;
   }
   private full(r: Row): StudentDto {
-    return { ...summary(r), admissionDate: r.admissionDate ?? null, address: r.address ?? null, placements: r.placements.map(place), guardians: (r.guardians ?? []).map(guardian) };
+    return { ...summary(r), hasPhoto: !!r.photoKey, documents: (r.documents ?? []).map((d) => ({ id: dashed(d.id), kind: d.kind, fileName: d.fileName, contentType: d.contentType, sizeBytes: d.sizeBytes, createdAt: d.createdAt })), admissionDate: r.admissionDate ?? null, address: r.address ?? null, placements: r.placements.map(place), guardians: (r.guardians ?? []).map(guardian) };
   }
   async get(t: TenantContext, id: string): Promise<StudentDto> {
     return this.full(await this.row(t, id));

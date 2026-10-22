@@ -99,6 +99,32 @@ const guardianOfA = async (w: World): Promise<Record<string, string>> => {
 };
 const roomOfA = async (w: World): Promise<string> => dash((await w.db.listClassrooms({ schoolId: w.schools.A })).data.classrooms[0]!.id);
 
+/** An in-memory private store the sample (and the integration tests) share: the gateway code under test is real, only the bucket is fake. */
+export const sampleStore = (() => {
+  const objects = new Map<string, { sizeBytes: number; contentType: string }>();
+  return {
+    objects,
+    store: {
+      presignPut: async (i: { key: string }) => `https://private.example/put/${i.key}`,
+      presignGet: async (i: { key: string }) => `https://private.example/get/${i.key}`,
+      head: async (key: string) => objects.get(key) ?? null,
+      remove: async (key: string) => void objects.delete(key),
+    },
+  };
+})();
+const uploadedKey = (w: World, studentId: string, area: 'photo' | 'documents', ext = 'png', type = 'image/png'): string => {
+  const key = `schools/${w.schools.A}/students/${studentId}/${area}/${randomUUID()}.${ext}`;
+  sampleStore.objects.set(key, { sizeBytes: 1234, contentType: type });
+  return key;
+};
+const studentWithDocument = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await studentOfA(w);
+  const key = uploadedKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf');
+  const docId = randomUUID();
+  await w.db.addStudentDocument({ schoolId: w.schools.A, id: docId, studentId: ctx['id']!, kind: 'ID_PROOF' as never, fileKey: key, fileName: 'id.pdf', contentType: 'application/pdf', sizeBytes: 1234, actorId: actorA(w) });
+  return { ...ctx, documentId: dash(docId) };
+};
+
 export const SAMPLES: Record<string, Sample> = {
   'POST /platform/schools': { ...platform, body: () => ({ name: 'Audit sample school', subDomain: `a${randomUUID().slice(0, 12)}`, defaultLanguage: 'en' }), auditSchool: (_w, _c, res) => res['id'] },
   'PATCH /platform/schools/:id': { ...platform, prepare: freshSchool, body: () => ({ name: 'Renamed by the audit sample' }), auditSchool: (_w, ctx) => ctx['id']! },
@@ -158,4 +184,7 @@ export const SAMPLES: Record<string, Sample> = {
   'POST /students/:id/guardians': { ...academicAdminOfA, prepare: studentOfA, body: () => ({ name: 'Audit Guardian', relationship: 'FATHER', phone: '+919876543211' }) },
   'PATCH /students/:id/guardians/:guardianId': { ...academicAdminOfA, prepare: guardianOfA, body: () => ({ name: 'Renamed Guardian' }) },
   'DELETE /students/:id/guardians/:guardianId': { ...academicAdminOfA, prepare: guardianOfA },
+  'PUT /students/:id/photo': { ...academicAdminOfA, prepare: studentOfA, body: (w, ctx) => ({ key: uploadedKey(w, ctx['id']!, 'photo') }) },
+  'POST /students/:id/documents': { ...academicAdminOfA, prepare: studentOfA, body: (w, ctx) => ({ key: uploadedKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf'), kind: 'BIRTH_CERTIFICATE', fileName: 'birth certificate.pdf' }) },
+  'DELETE /students/:id/documents/:documentId': { ...academicAdminOfA, prepare: studentWithDocument },
 };

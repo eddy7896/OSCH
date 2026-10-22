@@ -230,6 +230,36 @@
         ],
         "type": "object"
       },
+      "AddDocumentDto": {
+        "properties": {
+          "fileName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "key": {
+            "maxLength": 300,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "BIRTH_CERTIFICATE",
+              "TRANSFER_CERTIFICATE",
+              "REPORT_CARD",
+              "ID_PROOF",
+              "MEDICAL",
+              "OTHER"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "kind",
+          "fileName"
+        ],
+        "type": "object"
+      },
       "AddMembershipDto": {
         "properties": {
           "schoolRole": {
@@ -707,6 +737,29 @@
         ],
         "type": "object"
       },
+      "DocumentUploadRequestDto": {
+        "properties": {
+          "contentType": {
+            "enum": [
+              "image/png",
+              "image/jpeg",
+              "image/webp",
+              "application/pdf"
+            ],
+            "type": "string"
+          },
+          "sizeBytes": {
+            "maximum": 5242880,
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "contentType",
+          "sizeBytes"
+        ],
+        "type": "object"
+      },
       "ErrorEnvelope": {
         "properties": {
           "error": {
@@ -767,6 +820,39 @@
         },
         "required": [
           "error"
+        ],
+        "type": "object"
+      },
+      "FileUploadTicketDto": {
+        "properties": {
+          "expiresInSeconds": {
+            "type": "number"
+          },
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "key": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "PUT"
+            ],
+            "type": "string"
+          },
+          "uploadUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "uploadUrl",
+          "method",
+          "headers",
+          "key",
+          "expiresInSeconds"
         ],
         "type": "object"
       },
@@ -1131,6 +1217,28 @@
         ],
         "type": "object"
       },
+      "PhotoUploadRequestDto": {
+        "properties": {
+          "contentType": {
+            "enum": [
+              "image/png",
+              "image/jpeg",
+              "image/webp"
+            ],
+            "type": "string"
+          },
+          "sizeBytes": {
+            "maximum": 2097152,
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "contentType",
+          "sizeBytes"
+        ],
+        "type": "object"
+      },
       "PlacementDto": {
         "properties": {
           "academicYear": {
@@ -1367,6 +1475,18 @@
         },
         "type": "object"
       },
+      "SetPhotoDto": {
+        "properties": {
+          "key": {
+            "maxLength": 300,
+            "type": "string"
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "type": "object"
+      },
       "SetSchoolLogoDto": {
         "properties": {
           "key": {
@@ -1376,6 +1496,21 @@
         },
         "required": [
           "key"
+        ],
+        "type": "object"
+      },
+      "SignedReadDto": {
+        "properties": {
+          "expiresInSeconds": {
+            "type": "number"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "expiresInSeconds"
         ],
         "type": "object"
       },
@@ -1424,6 +1559,37 @@
         ],
         "type": "object"
       },
+      "StudentDocumentDto": {
+        "properties": {
+          "contentType": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "sizeBytes": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "fileName",
+          "contentType",
+          "sizeBytes",
+          "createdAt"
+        ],
+        "type": "object"
+      },
       "StudentDto": {
         "properties": {
           "address": {
@@ -1437,6 +1603,12 @@
           "dateOfBirth": {
             "nullable": true,
             "type": "string"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/StudentDocumentDto"
+            },
+            "type": "array"
           },
           "enrollmentId": {
             "type": "string"
@@ -1453,6 +1625,9 @@
               "$ref": "#/components/schemas/GuardianDto"
             },
             "type": "array"
+          },
+          "hasPhoto": {
+            "type": "boolean"
           },
           "id": {
             "type": "string"
@@ -1488,6 +1663,8 @@
           "gender",
           "dateOfBirth",
           "placement",
+          "hasPhoto",
+          "documents",
           "admissionDate",
           "address",
           "placements",
@@ -5070,6 +5247,287 @@
         }
       }
     },
+    "/v1/students/{id}/documents": {
+      "post": {
+        "operationId": "StudentFiles_addDocument",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddDocumentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentFiles"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "student.document.add",
+          "operation": "AddStudentDocument"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/students/{id}/documents/upload-url": {
+      "post": {
+        "operationId": "StudentFiles_documentTicket",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentUploadRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadTicketDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentFiles"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/students/{id}/documents/{documentId}": {
+      "delete": {
+        "operationId": "StudentFiles_removeDocument",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "documentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentFiles"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "student.document.remove",
+          "operation": "RemoveStudentDocument"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/students/{id}/documents/{documentId}/url": {
+      "get": {
+        "operationId": "StudentFiles_documentUrl",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "documentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignedReadDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentFiles"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "students"
+        }
+      }
+    },
     "/v1/students/{id}/guardians": {
       "post": {
         "operationId": "Students_addGuardian",
@@ -5286,6 +5744,211 @@
           "action": "student.guardian.update",
           "operation": "UpdateGuardian"
         },
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/students/{id}/photo": {
+      "get": {
+        "operationId": "StudentFiles_photo",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignedReadDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentFiles"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "students"
+        }
+      },
+      "put": {
+        "operationId": "StudentFiles_setPhoto",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetPhotoDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentFiles"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "student.photo.set",
+          "operation": "SetStudentPhoto"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/students/{id}/photo/upload-url": {
+      "post": {
+        "operationId": "StudentFiles_photoTicket",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhotoUploadRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadTicketDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentFiles"
+        ],
+        "x-access": "tenant",
         "x-permission": {
           "action": "update",
           "resource": "students"

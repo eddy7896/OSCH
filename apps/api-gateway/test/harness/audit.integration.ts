@@ -6,14 +6,15 @@ import { agent } from '../support/serve.js';
 import { bootRealApp } from './app.js';
 import { requireEmulatorsOrSkip } from './emulators.js';
 import { buildWorld, type World } from './fixtures.js';
-import { SAMPLES } from './samples.js';
+import { PRIVATE_STORE } from '../../src/files/private-store.js';
+import { SAMPLES, sampleStore } from './samples.js';
 
 const ready = requireEmulatorsOrSkip();
 let app: INestApplication | undefined;
 let w: World | undefined;
 let audited: RouteFacts[] = [];
 if (ready) {
-  app = await bootRealApp();
+  app = await bootRealApp([], {}, [[PRIVATE_STORE, sampleStore.store]]);
   w = await buildWorld();
   audited = app.get(RouteDecisionCheck).collect().filter((r) => r.audit);
 }

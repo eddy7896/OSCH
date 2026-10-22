@@ -442,3 +442,30 @@ mutation RemoveGuardian($schoolId: UUID!, $id: UUID!, $actorId: String!, $detail
   guardian_delete(id: $id)
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.guardian.remove", entityType: "Guardian", entityId_expr: "request.variables.id", details: $details })
 }
+
+mutation SetStudentPhoto($schoolId: UUID!, $studentId: UUID!, $photoKey: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+  }
+  student_update(id: $studentId, data: { photoKey: $photoKey })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.photo.set", entityType: "Student", entityId_expr: "request.variables.studentId", details: $details })
+}
+
+mutation AddStudentDocument($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $kind: StudentDocumentKind!, $fileKey: String!, $fileName: String!, $contentType: String!, $sizeBytes: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+  }
+  studentDocument_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, kind: $kind, fileKey: $fileKey, fileName: $fileName, contentType: $contentType, sizeBytes: $sizeBytes })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.document.add", entityType: "StudentDocument", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation RemoveStudentDocument($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    doc: studentDocuments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "document not found in this school") { id }
+  }
+  studentDocument_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.document.remove", entityType: "StudentDocument", entityId_expr: "request.variables.id", details: $details })
+}

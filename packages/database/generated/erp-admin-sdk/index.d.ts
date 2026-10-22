@@ -60,6 +60,14 @@ export enum SchoolRole {
   DRIVER = "DRIVER",
   PARENT = "PARENT",
 }
+export enum StudentDocumentKind {
+  BIRTH_CERTIFICATE = "BIRTH_CERTIFICATE",
+  TRANSFER_CERTIFICATE = "TRANSFER_CERTIFICATE",
+  REPORT_CARD = "REPORT_CARD",
+  ID_PROOF = "ID_PROOF",
+  MEDICAL = "MEDICAL",
+  OTHER = "OTHER",
+}
 export enum StudentStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
@@ -158,6 +166,32 @@ export interface AddMembershipVariables {
   schoolId: UUIDString;
   userId: string;
   schoolRole: SchoolRole;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface AddStudentDocumentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+  };
+  studentDocument_insert: StudentDocument_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddStudentDocumentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  kind: StudentDocumentKind;
+  fileKey: string;
+  fileName: string;
+  contentType: string;
+  sizeBytes: number;
   actorId: string;
   details?: unknown | null;
 }
@@ -677,6 +711,15 @@ export interface GetStudentData {
       email?: string | null;
       isPrimary: boolean;
     } & Guardian_Key)[];
+    documents: ({
+      id: UUIDString;
+      kind: StudentDocumentKind;
+      fileKey: string;
+      fileName: string;
+      contentType: string;
+      sizeBytes: number;
+      createdAt: TimestampString;
+    } & StudentDocument_Key)[];
   } & Student_Key)[];
 }
 
@@ -1181,6 +1224,26 @@ export interface RemoveMembershipVariables {
   details?: unknown | null;
 }
 
+export interface RemoveStudentDocumentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    doc: ({
+      id: UUIDString;
+    } & StudentDocument_Key)[];
+  };
+  studentDocument_delete?: StudentDocument_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveStudentDocumentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface RevokeInvitationData {
   query?: {
     pending: ({
@@ -1238,6 +1301,27 @@ export interface SetSchoolLogoVariables {
   details?: unknown | null;
 }
 
+export interface SetStudentPhotoData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+  };
+  student_update?: Student_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetStudentPhotoVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  photoKey: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface SetSubscriptionStatusData {
   school_update?: School_Key | null;
   auditLog_insert: AuditLog_Key;
@@ -1257,6 +1341,11 @@ export interface SetUserLanguageData {
 export interface SetUserLanguageVariables {
   userId: string;
   language?: string | null;
+}
+
+export interface StudentDocument_Key {
+  id: UUIDString;
+  __typename?: 'StudentDocument_Key';
 }
 
 export interface StudentEnrollment_Key {
@@ -1721,6 +1810,21 @@ export function updateGuardian(vars: UpdateGuardianVariables, options?: Operatio
 export function removeGuardian(dc: DataConnect, vars: RemoveGuardianVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveGuardianData>>;
 /** Generated Node Admin SDK operation action function for the 'RemoveGuardian' Mutation. Allow users to pass in custom DataConnect instances. */
 export function removeGuardian(vars: RemoveGuardianVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveGuardianData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetStudentPhoto' Mutation. Allow users to execute without passing in DataConnect. */
+export function setStudentPhoto(dc: DataConnect, vars: SetStudentPhotoVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetStudentPhotoData>>;
+/** Generated Node Admin SDK operation action function for the 'SetStudentPhoto' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setStudentPhoto(vars: SetStudentPhotoVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetStudentPhotoData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddStudentDocument' Mutation. Allow users to execute without passing in DataConnect. */
+export function addStudentDocument(dc: DataConnect, vars: AddStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddStudentDocumentData>>;
+/** Generated Node Admin SDK operation action function for the 'AddStudentDocument' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addStudentDocument(vars: AddStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddStudentDocumentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveStudentDocument' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeStudentDocument(dc: DataConnect, vars: RemoveStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStudentDocumentData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveStudentDocument' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeStudentDocument(vars: RemoveStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStudentDocumentData>>;
 
 /** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to execute without passing in DataConnect. */
 export function listInvoices(dc: DataConnect, vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;

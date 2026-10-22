@@ -195,5 +195,6 @@ query GetStudent($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
     id firstName lastName enrollmentId serial status gender dateOfBirth admissionDate address photoKey createdAt
     placements: studentEnrollments_on_student(orderBy: [{createdAt: DESC}]) { academicYear { id name } classroom { id name } }
     guardians: guardians_on_student(orderBy: [{isPrimary: DESC}, {createdAt: ASC}]) { id name relationship phone email isPrimary }
+    documents: studentDocuments_on_student(orderBy: [{createdAt: DESC}]) { id kind fileKey fileName contentType sizeBytes createdAt }
   }
 }

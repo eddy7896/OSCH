@@ -48,6 +48,12 @@ export type ActiveSchoolDto = {
     schoolId: string;
 };
 
+export type AddDocumentDto = {
+    fileName: string;
+    key: string;
+    kind: 'BIRTH_CERTIFICATE' | 'TRANSFER_CERTIFICATE' | 'REPORT_CARD' | 'ID_PROOF' | 'MEDICAL' | 'OTHER';
+};
+
 export type AddMembershipDto = {
     schoolRole: 'PRINCIPAL' | 'MANAGEMENT' | 'BURSAR' | 'ACADEMIC_ADMIN' | 'SYSTEM_ADMIN' | 'HR_MANAGER' | 'ACCOUNTANT' | 'ADMISSIONS_OFFICER' | 'TRANSPORT_MANAGER' | 'OPERATIONS_MANAGER' | 'TEACHER' | 'STAFF' | 'DRIVER' | 'PARENT';
     userId: string;
@@ -158,6 +164,11 @@ export type CreatedInvitationDto = {
     token: string;
 };
 
+export type DocumentUploadRequestDto = {
+    contentType: 'image/png' | 'image/jpeg' | 'image/webp' | 'application/pdf';
+    sizeBytes: number;
+};
+
 export type ErrorEnvelope = {
     error: {
         /**
@@ -177,6 +188,16 @@ export type ErrorEnvelope = {
         message: string;
         requestId?: string;
     };
+};
+
+export type FileUploadTicketDto = {
+    expiresInSeconds: number;
+    headers: {
+        [key: string]: string;
+    };
+    key: string;
+    method: 'PUT';
+    uploadUrl: string;
 };
 
 export type GradeLevelDto = {
@@ -276,6 +297,11 @@ export type NavSectionDto = {
     title: string;
 };
 
+export type PhotoUploadRequestDto = {
+    contentType: 'image/png' | 'image/jpeg' | 'image/webp';
+    sizeBytes: number;
+};
+
 export type PlacementDto = {
     academicYear: {
         id: string;
@@ -342,8 +368,17 @@ export type SchoolStatusDto = {
     reason?: string;
 };
 
+export type SetPhotoDto = {
+    key: string;
+};
+
 export type SetSchoolLogoDto = {
     key: string;
+};
+
+export type SignedReadDto = {
+    expiresInSeconds: number;
+    url: string;
 };
 
 export type StaffAccountDto = {
@@ -357,14 +392,25 @@ export type StaffAccountDto = {
     userId: string;
 };
 
+export type StudentDocumentDto = {
+    contentType: string;
+    createdAt: string;
+    fileName: string;
+    id: string;
+    kind: string;
+    sizeBytes: number;
+};
+
 export type StudentDto = {
     address: string | null;
     admissionDate: string | null;
     dateOfBirth: string | null;
+    documents: Array<StudentDocumentDto>;
     enrollmentId: string;
     firstName: string;
     gender: string | null;
     guardians: Array<GuardianDto>;
+    hasPhoto: boolean;
     id: string;
     lastName: string;
     placement: PlacementDto | null;
@@ -2411,6 +2457,184 @@ export type StudentsUpdateResponses = {
 
 export type StudentsUpdateResponse = StudentsUpdateResponses[keyof StudentsUpdateResponses];
 
+export type StudentFilesAddDocumentData = {
+    body: AddDocumentDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/documents';
+};
+
+export type StudentFilesAddDocumentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StudentFilesAddDocumentError = StudentFilesAddDocumentErrors[keyof StudentFilesAddDocumentErrors];
+
+export type StudentFilesAddDocumentResponses = {
+    201: StudentDto;
+};
+
+export type StudentFilesAddDocumentResponse = StudentFilesAddDocumentResponses[keyof StudentFilesAddDocumentResponses];
+
+export type StudentFilesDocumentTicketData = {
+    body: DocumentUploadRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/documents/upload-url';
+};
+
+export type StudentFilesDocumentTicketErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StudentFilesDocumentTicketError = StudentFilesDocumentTicketErrors[keyof StudentFilesDocumentTicketErrors];
+
+export type StudentFilesDocumentTicketResponses = {
+    200: FileUploadTicketDto;
+};
+
+export type StudentFilesDocumentTicketResponse = StudentFilesDocumentTicketResponses[keyof StudentFilesDocumentTicketResponses];
+
+export type StudentFilesRemoveDocumentData = {
+    body?: never;
+    path: {
+        id: string;
+        documentId: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/documents/{documentId}';
+};
+
+export type StudentFilesRemoveDocumentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StudentFilesRemoveDocumentError = StudentFilesRemoveDocumentErrors[keyof StudentFilesRemoveDocumentErrors];
+
+export type StudentFilesRemoveDocumentResponses = {
+    204: void;
+};
+
+export type StudentFilesRemoveDocumentResponse = StudentFilesRemoveDocumentResponses[keyof StudentFilesRemoveDocumentResponses];
+
+export type StudentFilesDocumentUrlData = {
+    body?: never;
+    path: {
+        id: string;
+        documentId: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/documents/{documentId}/url';
+};
+
+export type StudentFilesDocumentUrlErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StudentFilesDocumentUrlError = StudentFilesDocumentUrlErrors[keyof StudentFilesDocumentUrlErrors];
+
+export type StudentFilesDocumentUrlResponses = {
+    200: SignedReadDto;
+};
+
+export type StudentFilesDocumentUrlResponse = StudentFilesDocumentUrlResponses[keyof StudentFilesDocumentUrlResponses];
+
 export type StudentsAddGuardianData = {
     body: CreateGuardianDto;
     path: {
@@ -2544,6 +2768,138 @@ export type StudentsUpdateGuardianResponses = {
 };
 
 export type StudentsUpdateGuardianResponse = StudentsUpdateGuardianResponses[keyof StudentsUpdateGuardianResponses];
+
+export type StudentFilesPhotoData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/photo';
+};
+
+export type StudentFilesPhotoErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StudentFilesPhotoError = StudentFilesPhotoErrors[keyof StudentFilesPhotoErrors];
+
+export type StudentFilesPhotoResponses = {
+    200: SignedReadDto;
+};
+
+export type StudentFilesPhotoResponse = StudentFilesPhotoResponses[keyof StudentFilesPhotoResponses];
+
+export type StudentFilesSetPhotoData = {
+    body: SetPhotoDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/photo';
+};
+
+export type StudentFilesSetPhotoErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StudentFilesSetPhotoError = StudentFilesSetPhotoErrors[keyof StudentFilesSetPhotoErrors];
+
+export type StudentFilesSetPhotoResponses = {
+    200: StudentDto;
+};
+
+export type StudentFilesSetPhotoResponse = StudentFilesSetPhotoResponses[keyof StudentFilesSetPhotoResponses];
+
+export type StudentFilesPhotoTicketData = {
+    body: PhotoUploadRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/photo/upload-url';
+};
+
+export type StudentFilesPhotoTicketErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StudentFilesPhotoTicketError = StudentFilesPhotoTicketErrors[keyof StudentFilesPhotoTicketErrors];
+
+export type StudentFilesPhotoTicketResponses = {
+    200: FileUploadTicketDto;
+};
+
+export type StudentFilesPhotoTicketResponse = StudentFilesPhotoTicketResponses[keyof StudentFilesPhotoTicketResponses];
 
 export type StudentsMoveData = {
     body: PlacementRequestDto;

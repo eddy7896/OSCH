@@ -135,6 +135,24 @@ describe.skipIf(!host)('Student operations (P2-2)', () => {
     expect(left).toEqual([expect.objectContaining({ name: 'Meera', phone: '+919000000000' })]);
   });
 
+  it('photo and documents: recorded for the school only, listed without crossing schools, removed; refused ones leave nothing', async () => {
+    const id = await admit(A, adminA, 'Kavi', 'Filed');
+    await db.setStudentPhoto({ schoolId: A, studentId: id, photoKey: `schools/${A}/students/${id}/photo/p.png`, actorId: adminA });
+    await expect(db.setStudentPhoto({ schoolId: B, studentId: id, photoKey: 'x', actorId: adminB })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    const d1 = randomUUID();
+    await db.addStudentDocument({ schoolId: A, id: d1, studentId: id, kind: 'ID_PROOF' as never, fileKey: `schools/${A}/students/${id}/documents/${d1}.pdf`, fileName: 'id.pdf', contentType: 'application/pdf', sizeBytes: 100, actorId: adminA });
+    await expect(db.addStudentDocument({ schoolId: B, id: randomUUID(), studentId: id, kind: 'OTHER' as never, fileKey: 'k', fileName: 'f', contentType: 'image/png', sizeBytes: 1, actorId: adminB })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    await expect(db.addStudentDocument({ schoolId: A, id: randomUUID(), studentId: id, kind: 'OTHER' as never, fileKey: `schools/${A}/students/${id}/documents/${d1}.pdf`, fileName: 'again', contentType: 'application/pdf', sizeBytes: 1, actorId: adminA })).rejects.toMatchObject({ kind: 'CONFLICT' }); // one file, one record
+    const s = (await db.getStudent({ schoolId: A, id })).data.students[0]!;
+    expect(s.photoKey).toContain('/photo/p.png');
+    expect(s.documents).toEqual([expect.objectContaining({ fileName: 'id.pdf', sizeBytes: 100, kind: 'ID_PROOF' })]);
+    expect((await db.getStudent({ schoolId: B, id })).data.students).toEqual([]);
+    await expect(db.removeStudentDocument({ schoolId: B, id: d1, actorId: adminB })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    await db.removeStudentDocument({ schoolId: A, id: d1, actorId: adminA });
+    expect((await db.getStudent({ schoolId: A, id })).data.students[0]!.documents).toEqual([]);
+    for (const a of ['student.photo.set', 'student.document.add', 'student.document.remove']) expect((await audit(A, a)).length, a).toBeGreaterThan(0);
+  });
+
   it('every change left its audit row and refused ones left none', async () => {
     const actions = (await audit(A)).map((r) => r.action);
     for (const a of ['student.create', 'student.update', 'student.place', 'student.move', 'student.guardian.add', 'student.guardian.update', 'student.guardian.remove']) expect(actions, a).toContain(a);

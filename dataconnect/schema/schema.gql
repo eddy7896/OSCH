@@ -80,6 +80,7 @@ type Invitation @table {
 # Student Profile, belonging to a School
 enum StudentStatus { ACTIVE INACTIVE LEFT }
 enum Gender { FEMALE MALE OTHER }
+enum StudentDocumentKind { BIRTH_CERTIFICATE TRANSFER_CERTIFICATE REPORT_CARD ID_PROOF MEDICAL OTHER }
 
 # ERP: Student. `serial` is the school's running student number (1, 2, 3 ...); the gateway builds `enrollmentId` from the school
 # prefix and the serial. Both are unique per school, so two admissions racing for the same number cannot both succeed.
@@ -106,6 +107,19 @@ type StudentEnrollment @table @unique(fields: ["student", "academicYear"]) {
   student: Student!
   academicYear: AcademicYear!
   classroom: Classroom!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A file kept for a student (private bucket, key under schools/<school>/students/<student>/documents/). Only the metadata lives here.
+type StudentDocument @table @unique(fields: ["school", "fileKey"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  student: Student!
+  kind: StudentDocumentKind!
+  fileKey: String!
+  fileName: String!
+  contentType: String!
+  sizeBytes: Int!
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

@@ -62,6 +62,15 @@ export const SchoolRole = {
   PARENT: "PARENT",
 }
 
+export const StudentDocumentKind = {
+  BIRTH_CERTIFICATE: "BIRTH_CERTIFICATE",
+  TRANSFER_CERTIFICATE: "TRANSFER_CERTIFICATE",
+  REPORT_CARD: "REPORT_CARD",
+  ID_PROOF: "ID_PROOF",
+  MEDICAL: "MEDICAL",
+  OTHER: "OTHER",
+}
+
 export const StudentStatus = {
   ACTIVE: "ACTIVE",
   INACTIVE: "INACTIVE",
@@ -342,6 +351,24 @@ export function removeGuardian(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeMutation('RemoveGuardian', inputVars, inputOpts);
+}
+
+export function setStudentPhoto(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetStudentPhoto', inputVars, inputOpts);
+}
+
+export function addStudentDocument(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddStudentDocument', inputVars, inputOpts);
+}
+
+export function removeStudentDocument(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveStudentDocument', inputVars, inputOpts);
 }
 
 export function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {

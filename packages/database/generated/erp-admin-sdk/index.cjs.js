@@ -71,6 +71,16 @@ const SchoolRole = {
 }
 exports.SchoolRole = SchoolRole;
 
+const StudentDocumentKind = {
+  BIRTH_CERTIFICATE: "BIRTH_CERTIFICATE",
+  TRANSFER_CERTIFICATE: "TRANSFER_CERTIFICATE",
+  REPORT_CARD: "REPORT_CARD",
+  ID_PROOF: "ID_PROOF",
+  MEDICAL: "MEDICAL",
+  OTHER: "OTHER",
+}
+exports.StudentDocumentKind = StudentDocumentKind;
+
 const StudentStatus = {
   ACTIVE: "ACTIVE",
   INACTIVE: "INACTIVE",
@@ -399,6 +409,27 @@ function removeGuardian(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('RemoveGuardian', inputVars, inputOpts);
 }
 exports.removeGuardian = removeGuardian;
+
+function setStudentPhoto(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetStudentPhoto', inputVars, inputOpts);
+}
+exports.setStudentPhoto = setStudentPhoto;
+
+function addStudentDocument(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddStudentDocument', inputVars, inputOpts);
+}
+exports.addStudentDocument = addStudentDocument;
+
+function removeStudentDocument(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveStudentDocument', inputVars, inputOpts);
+}
+exports.removeStudentDocument = removeStudentDocument;
 
 function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
