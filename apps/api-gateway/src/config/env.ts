@@ -81,6 +81,8 @@ export class Env {
   @IsOptional() @IsString() R2_BUCKET_NAME?: string;
   /** Public base address of the bucket (a custom domain or r2.dev), used to form the address of an uploaded file. */
   @IsOptional() @IsString() R2_PUBLIC_URL?: string;
+  /** The PRIVATE bucket for student photos and documents: no public address, read only through short-lived signed addresses. Uses the same account and keys, so the API token must cover this bucket too. */
+  @IsOptional() @IsString() R2_PRIVATE_BUCKET_NAME?: string;
 }
 
 export interface R2Config {

@@ -32,6 +32,14 @@ node tools/r2-smoke.mjs --apply    # writes ONE 70-byte image under smoke/ and d
 ```
 It must print four `PASS` lines: a body of a different length is refused, the signed type and length is accepted, a different content type is refused, and the public address serves the same bytes. A `FAIL` on the first or third line means the size and type lock is not working: do not ship uploads until it is.
 
+## 5. The private bucket (student photos and documents)
+Student files must never share the public bucket. Make a second one:
+1. **Create bucket**, for example `oschools-private`, same location hint. **Do not** enable the r2.dev address and **do not** connect a custom domain: with no public address the only way to read a file is a short-lived signed address the gateway issues after checking who is asking.
+2. **Same token, both buckets.** R2, Manage API tokens, edit the existing token, and add the new bucket (Object Read & Write). Keep it scoped to these two buckets only. The keys stay the same, so nothing to re-paste.
+3. In `.env.local`: `R2_PRIVATE_BUCKET_NAME=oschools-private`. Restart the gateway.
+4. **CORS** on the private bucket: the same rule as the public one (the browser PUTs the file straight to the bucket). Paste it in the bucket's Settings, CORS Policy.
+5. Check there is no public access: bucket Settings, Public access shows "Not allowed" / r2.dev disabled.
+
 ## Things to know
 - **Everything in a bucket with a public address is readable by anyone who knows the file's address.** Keys contain a random UUID, so they cannot be guessed, but treat this bucket as holding only things meant to be public (school logos). Student documents, photos and anything private need a **separate private bucket** with presigned *read* addresses (a later phase). Do not put them here.
 - The keys never reach a browser or a mobile app. The upload address contains a signature, not the key, and expires after five minutes.
