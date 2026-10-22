@@ -50,6 +50,32 @@ const openInvitation = async (w: World): Promise<Record<string, string>> => {
 const platform = { token: (w: World) => w.superAdmin.token, actor: (w: World) => w.superAdmin.uid };
 const systemAdminOfA = { token: (w: World) => w.roles.A.SYSTEM_ADMIN.token, actor: (w: World) => w.roles.A.SYSTEM_ADMIN.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
 
+const academicAdminOfA = { token: (w: World) => w.roles.A.ACADEMIC_ADMIN.token, actor: (w: World) => w.roles.A.ACADEMIC_ADMIN.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+const actorA = (w: World) => w.roles.A.ACADEMIC_ADMIN.uid;
+const dash = (id: string) => id.replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, '$1-$2-$3-$4-$5');
+/** A class level, a class under it, a subject and a planned academic year of school A, made through the real operations. */
+const levelOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  await w.db.createGradeLevel({ schoolId: w.schools.A, id, name: `L-${id.slice(0, 8)}`, position: 500, actorId: actorA(w) });
+  return { id };
+};
+const classOfA = async (w: World): Promise<Record<string, string>> => {
+  const { id: levelId } = await levelOfA(w);
+  const id = randomUUID();
+  await w.db.createClassroom({ schoolId: w.schools.A, id, gradeLevelId: levelId, section: 'Z', name: 'Sample Z', capacity: 30, actorId: actorA(w) });
+  return { id, levelId };
+};
+const subjectOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  await w.db.createSubject({ schoolId: w.schools.A, id, name: `Subject ${id.slice(0, 6)}`, code: id.slice(0, 8).toUpperCase(), actorId: actorA(w) });
+  return { id };
+};
+const yearOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  await w.db.createAcademicYear({ schoolId: w.schools.A, id, name: `Y-${id.slice(0, 6)}`, startDate: '2040-04-01', endDate: '2041-03-31', actorId: actorA(w) });
+  return { id };
+};
+
 export const SAMPLES: Record<string, Sample> = {
   'POST /platform/schools': { ...platform, body: () => ({ name: 'Audit sample school', subDomain: `a${randomUUID().slice(0, 12)}`, defaultLanguage: 'en' }), auditSchool: (_w, _c, res) => res['id'] },
   'PATCH /platform/schools/:id': { ...platform, prepare: freshSchool, body: () => ({ name: 'Renamed by the audit sample' }), auditSchool: (_w, ctx) => ctx['id']! },
@@ -78,4 +104,19 @@ export const SAMPLES: Record<string, Sample> = {
     body: (_w, ctx) => ({ token: ctx['token'] }),
     auditSchool: (w) => w.schools.A,
   },
+  'PATCH /school/profile': { ...systemAdminOfA, body: () => ({ address: '1 Sample Road' }) },
+  'PUT /school/logo': { ...systemAdminOfA, body: (w) => ({ key: `schools/${w.schools.A}/logo/${randomUUID()}.png` }) },
+  'POST /academics/levels': { ...academicAdminOfA, body: () => ({ name: `Level ${randomUUID().slice(0, 8)}`, position: 600 }) },
+  'PATCH /academics/levels/:id': { ...academicAdminOfA, prepare: levelOfA, body: () => ({ position: 501 }) },
+  'DELETE /academics/levels/:id': { ...academicAdminOfA, prepare: levelOfA },
+  'POST /academics/classes': { ...academicAdminOfA, prepare: async (w) => ({ levelId: dash((await levelOfA(w))['id']!) }), body: (_w, ctx) => ({ gradeLevelId: ctx['levelId'], section: 'Y', capacity: 35 }) },
+  'PATCH /academics/classes/:id': { ...academicAdminOfA, prepare: classOfA, body: () => ({ capacity: 31 }) },
+  'DELETE /academics/classes/:id': { ...academicAdminOfA, prepare: classOfA },
+  'POST /academics/subjects': { ...academicAdminOfA, body: () => ({ name: 'Sample subject', code: randomUUID().slice(0, 8).toUpperCase() }) },
+  'PATCH /academics/subjects/:id': { ...academicAdminOfA, prepare: subjectOfA, body: () => ({ name: 'Renamed subject' }) },
+  'DELETE /academics/subjects/:id': { ...academicAdminOfA, prepare: subjectOfA },
+  'POST /academics/years': { ...academicAdminOfA, body: () => ({ name: `Year ${randomUUID().slice(0, 6)}`, startDate: '2042-04-01', endDate: '2043-03-31' }) },
+  'PATCH /academics/years/:id': { ...academicAdminOfA, prepare: yearOfA, body: () => ({ name: 'Renamed year' }) },
+  'POST /academics/years/:id/activate': { ...academicAdminOfA, prepare: yearOfA, body: () => ({}) },
+  'DELETE /academics/years/:id': { ...academicAdminOfA, prepare: yearOfA },
 };

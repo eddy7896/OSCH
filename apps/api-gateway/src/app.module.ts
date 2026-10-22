@@ -13,6 +13,7 @@ import { MeModule } from './me/me.module.js';
 import { PermissionModule } from './permission/permission.module.js';
 import { PublicModule } from './public/public.module.js';
 import { PlatformModule } from './platform/platform.module.js';
+import { SchoolModule } from './school/school.module.js';
 import { UploadsModule } from './uploads/uploads.module.js';
 import { UsersModule } from './users/users.module.js';
 import { TenantModule } from './tenant/tenant.module.js';
@@ -51,6 +52,7 @@ import { HealthModule } from './health/health.module.js';
     MeModule,
     UploadsModule,
     MembershipsModule,
+    SchoolModule,
     AccountsModule,
     InvitationsModule,
     PlatformModule,

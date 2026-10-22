@@ -15,6 +15,108 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Health_check"
   },
   {
+    "method": "DELETE",
+    "path": "/v1/academics/classes/{id}",
+    "access": "tenant",
+    "operationId": "Academics_deleteClass"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/academics/classes/{id}",
+    "access": "tenant",
+    "operationId": "Academics_updateClass"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/classes",
+    "access": "tenant",
+    "operationId": "Academics_classes"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/academics/classes",
+    "access": "tenant",
+    "operationId": "Academics_createClass"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/academics/levels/{id}",
+    "access": "tenant",
+    "operationId": "Academics_deleteLevel"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/academics/levels/{id}",
+    "access": "tenant",
+    "operationId": "Academics_updateLevel"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/levels",
+    "access": "tenant",
+    "operationId": "Academics_levels"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/academics/levels",
+    "access": "tenant",
+    "operationId": "Academics_createLevel"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/academics/subjects/{id}",
+    "access": "tenant",
+    "operationId": "Academics_deleteSubject"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/academics/subjects/{id}",
+    "access": "tenant",
+    "operationId": "Academics_updateSubject"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/subjects",
+    "access": "tenant",
+    "operationId": "Academics_subjects"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/academics/subjects",
+    "access": "tenant",
+    "operationId": "Academics_createSubject"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/academics/years/{id}/activate",
+    "access": "tenant",
+    "operationId": "Academics_activateYear"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/academics/years/{id}",
+    "access": "tenant",
+    "operationId": "Academics_deleteYear"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/academics/years/{id}",
+    "access": "tenant",
+    "operationId": "Academics_updateYear"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/years",
+    "access": "tenant",
+    "operationId": "Academics_years"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/academics/years",
+    "access": "tenant",
+    "operationId": "Academics_createYear"
+  },
+  {
     "method": "POST",
     "path": "/v1/invitations/{id}/revoke",
     "access": "tenant",
@@ -127,6 +229,24 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/public/schools/by-subdomain/{sub}",
     "access": "public",
     "operationId": "PublicSchools_bySubdomain"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/school/logo",
+    "access": "tenant",
+    "operationId": "School_setLogo"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/school/profile",
+    "access": "tenant",
+    "operationId": "School_profile"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/school/profile",
+    "access": "tenant",
+    "operationId": "School_update"
   },
   {
     "method": "POST",
