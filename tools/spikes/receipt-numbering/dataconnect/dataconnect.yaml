@@ -1,0 +1,11 @@
+specVersion: "v1"
+serviceId: "spike"
+location: "asia-south1"
+schemas:
+  - source: "./schema"
+    datasource:
+      postgresql:
+        database: "spikedb"
+        cloudSql:
+          instanceId: "spike-fdc"
+connectorDirs: ["./c"]

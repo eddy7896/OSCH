@@ -1,0 +1,1 @@
+{ "dataconnect": { "source": "dataconnect" }, "emulators": { "dataconnect": { "port": 9499, "dataDir": "pg" }, "ui": { "enabled": false } } }
