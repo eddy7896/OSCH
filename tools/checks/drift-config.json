@@ -103,7 +103,6 @@
     "UpsertUser": "the user row is the actor of every audit entry, so it cannot audit its own creation; the gateway records sign-in as a security event",
     "SetUserLanguage": "self-service preference on the caller's own row; no tenant data and no privilege change",
     "CreateAuditLog": "writes the audit table itself",
-    "CreateStudent": "Phase 0 operation; audited when the Phase 2 admissions module is built",
     "CreateSchoolMember": "Phase 0 seed/bootstrap (first administrator has no actor); use the audited AddMembership",
     "CreateInvoice": "Phase 0 operation; audited when the Phase 2 finance module is built",
     "CreatePayroll": "Phase 0 operation; audited when the Phase 2 payroll module is built",

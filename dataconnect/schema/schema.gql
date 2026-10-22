@@ -28,6 +28,8 @@ type School @table {
   defaultLanguage: String! @default(value: "en") # a code from packages/i18n; users may choose their own (ADR-0006)
   # The ONE active academic year, by construction (a pointer cannot name two years). AcademicYear.status mirrors it.
   activeAcademicYear: AcademicYear
+  enrollmentPrefix: String! @default(value: "S") # first letters of enrolment ids
+  studentSeq: Int! @default(value: 0) # last student serial handed out
   # Profile and branding (P2-1). The colour is a validated #rrggbb (white text on it is at least 4.5:1); the logo key lives under schools/<id>/logo/.
   address: String
   contactPhone: String
@@ -76,13 +78,48 @@ type Invitation @table {
 }
 
 # Student Profile, belonging to a School
-type Student @table {
+enum StudentStatus { ACTIVE INACTIVE LEFT }
+enum Gender { FEMALE MALE OTHER }
+
+# ERP: Student. `serial` is the school's running student number (1, 2, 3 ...); the gateway builds `enrollmentId` from the school
+# prefix and the serial. Both are unique per school, so two admissions racing for the same number cannot both succeed.
+type Student @table @unique(fields: ["school", "enrollmentId"]) @unique(fields: ["school", "serial"]) {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
   firstName: String!
   lastName: String!
   enrollmentId: String!
-  gradeLevel: String!
+  serial: Int!
+  dateOfBirth: Date
+  gender: Gender
+  status: StudentStatus! @default(value: ACTIVE)
+  admissionDate: Date
+  address: String
+  photoKey: String # private bucket key (P2-2b)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A student's place in a class for one academic year. One placement per student per year.
+type StudentEnrollment @table @unique(fields: ["student", "academicYear"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  student: Student!
+  academicYear: AcademicYear!
+  classroom: Classroom!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A parent or guardian CONTACT recorded against a student. It is not an account: the person is invited separately (a guardian is
+# never auto-created with a password) and ParentGuardian links the account once they accept.
+type Guardian @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  student: Student!
+  name: String!
+  relationship: String! # MOTHER, FATHER, GUARDIAN, OTHER
+  phone: String
+  email: String
+  isPrimary: Boolean! @default(value: false)
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

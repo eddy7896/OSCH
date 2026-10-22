@@ -7,17 +7,6 @@ mutation CreateUser($id: String!, $email: String!, $globalRole: GlobalRole!) @au
   user_insert(data: { id: $id, email: $email, globalRole: $globalRole })
 }
 
-# HR: Enroll a Student
-mutation CreateStudent($schoolId: UUID!, $firstName: String!, $lastName: String!, $enrollmentId: String!, $gradeLevel: String!) @auth(level: NO_ACCESS) {
-  student_insert(data: {
-    schoolId: $schoolId,
-    firstName: $firstName,
-    lastName: $lastName,
-    enrollmentId: $enrollmentId,
-    gradeLevel: $gradeLevel
-  })
-}
-
 # System Admin: add a user to a school with a role. The gateway MUST require `memberships:create` (only SYSTEM_ADMIN holds it, ADR-0007); HR must not be able to call this.
 mutation CreateSchoolMember($schoolId: UUID!, $userId: String!, $schoolRole: SchoolRole!) @auth(level: NO_ACCESS) {
   schoolMember_insert(data: {
@@ -382,4 +371,74 @@ mutation DeleteAcademicYear($schoolId: UUID!, $id: UUID!, $actorId: String!, $de
   }
   academicYear_delete(id: $id)
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.year.delete", entityType: "AcademicYear", entityId_expr: "request.variables.id", details: $details })
+}
+
+# ---- Students (P2-2). The serial is handed out by comparing the school's counter with the value the gateway read: if another
+# admission took that number first, the check fails (ABORTED) and the gateway reads again and retries. Nothing is written then.
+mutation CreateStudent($schoolId: UUID!, $id: UUID!, $expectedSeq: Int!, $enrollmentId: String!, $firstName: String!, $lastName: String!, $dateOfBirth: Date, $gender: Gender, $admissionDate: Date, $address: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    counter: schools(where: {id: {eq: $schoolId}, studentSeq: {eq: $expectedSeq}}) @check(expr: "this.size() == 1", message: "student number was taken, retry") { id }
+  }
+  school_update(id: $schoolId, data: { studentSeq_update: { inc: 1 } })
+  student_insert(data: { id: $id, schoolId: $schoolId, serial_expr: "request.variables.expectedSeq + 1", enrollmentId: $enrollmentId, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, admissionDate: $admissionDate, address: $address })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.create", entityType: "Student", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateStudent($schoolId: UUID!, $id: UUID!, $firstName: String, $lastName: String, $dateOfBirth: Date, $gender: Gender, $admissionDate: Date, $address: String, $status: StudentStatus, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+  }
+  student_update(id: $id, data: { firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, admissionDate: $admissionDate, address: $address, status: $status })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.update", entityType: "Student", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation PlaceStudent($schoolId: UUID!, $studentId: UUID!, $academicYearId: UUID!, $classroomId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+    year: academicYears(where: {id: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "academic year not found in this school") { id }
+    room: classrooms(where: {id: {eq: $classroomId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "class not found in this school") { id }
+  }
+  studentEnrollment_insert(data: { schoolId: $schoolId, studentId: $studentId, academicYearId: $academicYearId, classroomId: $classroomId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.place", entityType: "Student", entityId_expr: "request.variables.studentId", details: $details })
+}
+
+mutation MoveStudent($schoolId: UUID!, $studentId: UUID!, $academicYearId: UUID!, $classroomId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+    room: classrooms(where: {id: {eq: $classroomId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "class not found in this school") { id }
+    placement: studentEnrollments(where: {studentId: {eq: $studentId}, academicYearId: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student has no placement in that year") { id }
+  }
+  studentEnrollment_updateMany(where: {studentId: {eq: $studentId}, academicYearId: {eq: $academicYearId}, schoolId: {eq: $schoolId}}, data: { classroomId: $classroomId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.move", entityType: "Student", entityId_expr: "request.variables.studentId", details: $details })
+}
+
+mutation AddGuardian($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $name: String!, $relationship: String!, $phone: String, $email: String, $isPrimary: Boolean!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+  }
+  guardian_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, name: $name, relationship: $relationship, phone: $phone, email: $email, isPrimary: $isPrimary })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.guardian.add", entityType: "Guardian", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateGuardian($schoolId: UUID!, $id: UUID!, $name: String, $relationship: String, $phone: String, $email: String, $isPrimary: Boolean, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    guardian: guardians(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "guardian not found in this school") { id }
+  }
+  guardian_update(id: $id, data: { name: $name, relationship: $relationship, phone: $phone, email: $email, isPrimary: $isPrimary })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.guardian.update", entityType: "Guardian", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation RemoveGuardian($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    guardian: guardians(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "guardian not found in this school") { id }
+  }
+  guardian_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.guardian.remove", entityType: "Guardian", entityId_expr: "request.variables.id", details: $details })
 }

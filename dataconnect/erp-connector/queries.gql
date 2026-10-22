@@ -13,17 +13,6 @@ query ListInvoices($schoolId: UUID!) @auth(level: NO_ACCESS) {
   }
 }
 
-# HR: Get all Students for a School
-query ListStudents($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  students(where: {schoolId: {eq: $schoolId}}, orderBy: [{lastName: ASC}, {firstName: ASC}]) {
-    id
-    firstName
-    lastName
-    enrollmentId
-    gradeLevel
-  }
-}
-
 # HR: Get all Staff (SchoolMembers) for a School
 query ListStaff($schoolId: UUID!) @auth(level: NO_ACCESS) {
   schoolMembers(where: {schoolId: {eq: $schoolId}}) {
@@ -180,4 +169,31 @@ query ListSubjects($schoolId: UUID!) @auth(level: NO_ACCESS) {
 
 query ListAcademicYears($schoolId: UUID!) @auth(level: NO_ACCESS) {
   academicYears(where: {schoolId: {eq: $schoolId}}, orderBy: [{startDate: DESC}]) { id name startDate endDate status }
+}
+
+# ---- Students (P2-2). `search` is a LIKE pattern the gateway builds (%text%) matched against name or enrolment id; a null filter is skipped.
+query SchoolSeq($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  school(id: $schoolId) { id studentSeq enrollmentPrefix }
+}
+
+query ListStudents($schoolId: UUID!, $search: String, $status: StudentStatus, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  students(
+    where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: $status}}, {_or: [{firstName: {pattern: {like: $search, ignoreCase: true}}}, {lastName: {pattern: {like: $search, ignoreCase: true}}}, {enrollmentId: {pattern: {like: $search, ignoreCase: true}}}]}]}
+    orderBy: [{lastName: ASC}, {firstName: ASC}, {serial: ASC}], limit: $limit, offset: $offset
+  ) {
+    id firstName lastName enrollmentId serial status gender dateOfBirth
+    placements: studentEnrollments_on_student(orderBy: [{createdAt: DESC}], limit: 1) { academicYear { id name } classroom { id name } }
+  }
+}
+
+query CountStudents($schoolId: UUID!, $search: String, $status: StudentStatus) @auth(level: NO_ACCESS) {
+  students(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: $status}}, {_or: [{firstName: {pattern: {like: $search, ignoreCase: true}}}, {lastName: {pattern: {like: $search, ignoreCase: true}}}, {enrollmentId: {pattern: {like: $search, ignoreCase: true}}}]}]}) { _count }
+}
+
+query GetStudent($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  students(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id firstName lastName enrollmentId serial status gender dateOfBirth admissionDate address photoKey createdAt
+    placements: studentEnrollments_on_student(orderBy: [{createdAt: DESC}]) { academicYear { id name } classroom { id name } }
+    guardians: guardians_on_student(orderBy: [{isPrimary: DESC}, {createdAt: ASC}]) { id name relationship phone email isPrimary }
+  }
 }
