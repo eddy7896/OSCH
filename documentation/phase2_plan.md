@@ -50,7 +50,7 @@ graph TD
 ### M2 People
 | ID | Task | Size |
 |---|---|---|
-| P2-2 | Students: create, edit, list with search, filters and pagination, enrolment ids (school prefix plus a race-free sequence), class placement per academic year, guardians through `ParentGuardian` (a guardian is invited, never auto-created with a password), photo and documents in a **private** bucket | L |
+| P2-2 PARTLY BUILT (students, enrolment ids, class placement per year and guardian contacts: `/v1/students`; 51 database tests and an end-to-end suite on the real emulators; NOT yet: photo and documents in a private bucket (needs the private R2 bucket from the owner), inviting a guardian to an account (arrives with admissions, P2-3), own/linked scopes for teachers and parents (they get an empty list)) | Students: create, edit, list with search, filters and pagination, enrolment ids (school prefix plus a race-free sequence), class placement per academic year, guardians through `ParentGuardian` (a guardian is invited, never auto-created with a password), photo and documents in a **private** bucket | L |
 | P2-4 | Staff: profile, department, role through memberships (only a System Admin grants roles), onboarding through the existing account flow, documents (private bucket) | L |
 | P2-3 | Admissions: application, review, admit (Principal or Admissions Officer rules from the matrix), admitting creates the student and sends guardian invitations; every step audited | M |
 | P2-5 | CSV import (students, staff, guardians): a **dry run that never writes** reports every problem by row and column; the real import is one audited batch | M |

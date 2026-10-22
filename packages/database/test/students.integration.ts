@@ -15,10 +15,10 @@ describe.skipIf(!host)('Student operations (P2-2)', () => {
   let year: string;
   let roomA: string;
   const audit = async (s: string, action?: string) => (await db.listAuditLog({ schoolId: s, limit: 300, offset: 0 })).data.auditLogs.filter((a) => !action || a.action === action);
-  const list = async (s: string, o: { search?: string; status?: 'ACTIVE' | 'INACTIVE' | 'LEFT' } = {}) =>
-    (await db.listStudents({ schoolId: s, limit: 100, offset: 0, ...o })).data.students;
-  const count = async (s: string, o: { search?: string; status?: 'ACTIVE' | 'INACTIVE' | 'LEFT' } = {}) =>
-    (await db.countStudents({ schoolId: s, ...o })).data.students[0]?._count ?? 0;
+  const list = async (s: string, o: { search?: string | undefined; status?: 'ACTIVE' | 'INACTIVE' | 'LEFT' | undefined } = {}) =>
+    (await db.listStudents({ schoolId: s, limit: 100, offset: 0, ...(o.search ? { search: o.search } : {}), ...(o.status ? { status: o.status as never } : {}) })).data.students;
+  const count = async (s: string, o: { search?: string | undefined; status?: 'ACTIVE' | 'INACTIVE' | 'LEFT' | undefined } = {}) =>
+    (await db.countStudents({ schoolId: s, ...(o.search ? { search: o.search } : {}), ...(o.status ? { status: o.status as never } : {}) })).data.students[0]?._count ?? 0;
   /** What the gateway does: read the counter, build the number, create. */
   const admit = async (s: string, actor: string, first: string, last: string, extra: Record<string, unknown> = {}) => {
     const { school } = (await db.schoolSeq({ schoolId: s })).data;

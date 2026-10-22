@@ -249,6 +249,60 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "School_update"
   },
   {
+    "method": "DELETE",
+    "path": "/v1/students/{id}/guardians/{guardianId}",
+    "access": "tenant",
+    "operationId": "Students_removeGuardian"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/students/{id}/guardians/{guardianId}",
+    "access": "tenant",
+    "operationId": "Students_updateGuardian"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students/{id}/guardians",
+    "access": "tenant",
+    "operationId": "Students_addGuardian"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/students/{id}/placement",
+    "access": "tenant",
+    "operationId": "Students_move"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students/{id}/placement",
+    "access": "tenant",
+    "operationId": "Students_place"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/students/{id}",
+    "access": "tenant",
+    "operationId": "Students_get"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/students/{id}",
+    "access": "tenant",
+    "operationId": "Students_update"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/students",
+    "access": "tenant",
+    "operationId": "Students_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students",
+    "access": "tenant",
+    "operationId": "Students_create"
+  },
+  {
     "method": "POST",
     "path": "/v1/uploads/school-logo",
     "access": "tenant",
