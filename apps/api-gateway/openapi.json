@@ -293,6 +293,36 @@
         ],
         "type": "object"
       },
+      "AddStaffDocumentDto": {
+        "properties": {
+          "fileName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "key": {
+            "maxLength": 300,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "APPOINTMENT_LETTER",
+              "ID_PROOF",
+              "QUALIFICATION",
+              "EXPERIENCE",
+              "MEDICAL",
+              "OTHER"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "kind",
+          "fileName"
+        ],
+        "type": "object"
+      },
       "ClassDto": {
         "properties": {
           "capacity": {
@@ -611,6 +641,69 @@
         "required": [
           "displayName",
           "schoolRole"
+        ],
+        "type": "object"
+      },
+      "CreateStaffDto": {
+        "properties": {
+          "address": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "dateOfJoining": {
+            "type": "string"
+          },
+          "department": {
+            "maxLength": 60,
+            "minLength": 1,
+            "type": "string"
+          },
+          "designation": {
+            "maxLength": 60,
+            "minLength": 1,
+            "type": "string"
+          },
+          "email": {
+            "maxLength": 254,
+            "minLength": 3,
+            "type": "string"
+          },
+          "emergencyContactName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "emergencyContactPhone": {
+            "type": "string"
+          },
+          "firstName": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "gender": {
+            "enum": [
+              "FEMALE",
+              "MALE",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "lastName": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName"
         ],
         "type": "object"
       },
@@ -998,6 +1091,20 @@
         },
         "required": [
           "items"
+        ],
+        "type": "object"
+      },
+      "LinkStaffAccountDto": {
+        "properties": {
+          "userId": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
         ],
         "type": "object"
       },
@@ -1559,6 +1666,272 @@
         ],
         "type": "object"
       },
+      "StaffDepartmentsDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "StaffDocumentDto": {
+        "properties": {
+          "contentType": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "sizeBytes": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "fileName",
+          "contentType",
+          "sizeBytes",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "StaffDocumentUploadRequestDto": {
+        "properties": {
+          "contentType": {
+            "enum": [
+              "image/png",
+              "image/jpeg",
+              "image/webp",
+              "application/pdf"
+            ],
+            "type": "string"
+          },
+          "sizeBytes": {
+            "maximum": 5242880,
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "contentType",
+          "sizeBytes"
+        ],
+        "type": "object"
+      },
+      "StaffDto": {
+        "properties": {
+          "address": {
+            "nullable": true,
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "nullable": true,
+            "type": "string"
+          },
+          "dateOfJoining": {
+            "nullable": true,
+            "type": "string"
+          },
+          "department": {
+            "nullable": true,
+            "type": "string"
+          },
+          "designation": {
+            "nullable": true,
+            "type": "string"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/StaffDocumentDto"
+            },
+            "type": "array"
+          },
+          "email": {
+            "nullable": true,
+            "type": "string"
+          },
+          "emergencyContactName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "emergencyContactPhone": {
+            "nullable": true,
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "gender": {
+            "nullable": true,
+            "type": "string"
+          },
+          "hasAccount": {
+            "type": "boolean"
+          },
+          "hasPhoto": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "userId": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "firstName",
+          "lastName",
+          "department",
+          "designation",
+          "status",
+          "hasAccount",
+          "userId",
+          "phone",
+          "email",
+          "dateOfBirth",
+          "gender",
+          "dateOfJoining",
+          "address",
+          "emergencyContactName",
+          "emergencyContactPhone",
+          "hasPhoto",
+          "documents"
+        ],
+        "type": "object"
+      },
+      "StaffListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StaffSummaryDto"
+            },
+            "type": "array"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize"
+        ],
+        "type": "object"
+      },
+      "StaffPhotoUploadRequestDto": {
+        "properties": {
+          "contentType": {
+            "enum": [
+              "image/png",
+              "image/jpeg",
+              "image/webp"
+            ],
+            "type": "string"
+          },
+          "sizeBytes": {
+            "maximum": 2097152,
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "contentType",
+          "sizeBytes"
+        ],
+        "type": "object"
+      },
+      "StaffSetPhotoDto": {
+        "properties": {
+          "key": {
+            "maxLength": 300,
+            "type": "string"
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "type": "object"
+      },
+      "StaffSummaryDto": {
+        "properties": {
+          "department": {
+            "nullable": true,
+            "type": "string"
+          },
+          "designation": {
+            "nullable": true,
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "hasAccount": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "firstName",
+          "lastName",
+          "department",
+          "designation",
+          "status",
+          "hasAccount"
+        ],
+        "type": "object"
+      },
       "StudentDocumentDto": {
         "properties": {
           "contentType": {
@@ -1999,6 +2372,73 @@
             "type": "string"
           },
           "primaryColor": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateStaffDto": {
+        "properties": {
+          "address": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "dateOfJoining": {
+            "type": "string"
+          },
+          "department": {
+            "maxLength": 60,
+            "minLength": 1,
+            "type": "string"
+          },
+          "designation": {
+            "maxLength": 60,
+            "minLength": 1,
+            "type": "string"
+          },
+          "email": {
+            "maxLength": 254,
+            "minLength": 3,
+            "type": "string"
+          },
+          "emergencyContactName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "emergencyContactPhone": {
+            "type": "string"
+          },
+          "firstName": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "gender": {
+            "enum": [
+              "FEMALE",
+              "MALE",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "lastName": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "LEFT"
+            ],
             "type": "string"
           }
         },
@@ -4955,6 +5395,916 @@
         "x-permission": {
           "action": "update",
           "resource": "settings"
+        }
+      }
+    },
+    "/v1/staff": {
+      "get": {
+        "operationId": "Staff_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "maxLength": 80,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "enum": [
+                "ACTIVE",
+                "INACTIVE",
+                "LEFT"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "department",
+            "required": false,
+            "schema": {
+              "maxLength": 60,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "staff"
+        }
+      },
+      "post": {
+        "operationId": "Staff_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStaffDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "staff.create",
+          "operation": "CreateStaff"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/departments": {
+      "get": {
+        "operationId": "Staff_departments",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDepartmentsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/{id}": {
+      "get": {
+        "operationId": "Staff_get",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "staff"
+        }
+      },
+      "patch": {
+        "operationId": "Staff_update",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStaffDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "staff.update",
+          "operation": "UpdateStaff"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/{id}/account": {
+      "put": {
+        "operationId": "Staff_link",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkStaffAccountDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "staff.account.link",
+          "operation": "LinkStaffAccount"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/{id}/documents": {
+      "post": {
+        "operationId": "Staff_addDocument",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddStaffDocumentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "staff.document.add",
+          "operation": "AddStaffDocument"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/{id}/documents/upload-url": {
+      "post": {
+        "operationId": "Staff_documentTicket",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaffDocumentUploadRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadTicketDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "update",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/{id}/documents/{documentId}": {
+      "delete": {
+        "operationId": "Staff_removeDocument",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "documentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "staff.document.remove",
+          "operation": "RemoveStaffDocument"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/{id}/documents/{documentId}/url": {
+      "get": {
+        "operationId": "Staff_documentUrl",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "documentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignedReadDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/{id}/photo": {
+      "get": {
+        "operationId": "Staff_photo",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignedReadDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "staff"
+        }
+      },
+      "put": {
+        "operationId": "Staff_setPhoto",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaffSetPhotoDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "staff.photo.set",
+          "operation": "SetStaffPhoto"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/staff/{id}/photo/upload-url": {
+      "post": {
+        "operationId": "Staff_photoTicket",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaffPhotoUploadRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadTicketDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Staff"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "update",
+          "resource": "staff"
         }
       }
     },

@@ -2,7 +2,7 @@
 
 import { client } from './client.gen.js';
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client/index.js';
-import type { AcademicsActivateYearData, AcademicsActivateYearErrors, AcademicsActivateYearResponses, AcademicsClassesData, AcademicsClassesErrors, AcademicsClassesResponses, AcademicsCreateClassData, AcademicsCreateClassErrors, AcademicsCreateClassResponses, AcademicsCreateLevelData, AcademicsCreateLevelErrors, AcademicsCreateLevelResponses, AcademicsCreateSubjectData, AcademicsCreateSubjectErrors, AcademicsCreateSubjectResponses, AcademicsCreateYearData, AcademicsCreateYearErrors, AcademicsCreateYearResponses, AcademicsDeleteClassData, AcademicsDeleteClassErrors, AcademicsDeleteClassResponses, AcademicsDeleteLevelData, AcademicsDeleteLevelErrors, AcademicsDeleteLevelResponses, AcademicsDeleteSubjectData, AcademicsDeleteSubjectErrors, AcademicsDeleteSubjectResponses, AcademicsDeleteYearData, AcademicsDeleteYearErrors, AcademicsDeleteYearResponses, AcademicsLevelsData, AcademicsLevelsErrors, AcademicsLevelsResponses, AcademicsSubjectsData, AcademicsSubjectsErrors, AcademicsSubjectsResponses, AcademicsUpdateClassData, AcademicsUpdateClassErrors, AcademicsUpdateClassResponses, AcademicsUpdateLevelData, AcademicsUpdateLevelErrors, AcademicsUpdateLevelResponses, AcademicsUpdateSubjectData, AcademicsUpdateSubjectErrors, AcademicsUpdateSubjectResponses, AcademicsUpdateYearData, AcademicsUpdateYearErrors, AcademicsUpdateYearResponses, AcademicsYearsData, AcademicsYearsErrors, AcademicsYearsResponses, AccountsCreateData, AccountsCreateErrors, AccountsCreateResponses, HealthCheckData, HealthCheckDbData, HealthCheckDbErrors, HealthCheckDbResponses, HealthCheckErrors, HealthCheckResponses, InvitationsAcceptData, InvitationsAcceptErrors, InvitationsAcceptResponses, InvitationsCreateData, InvitationsCreateErrors, InvitationsCreateResponses, InvitationsListData, InvitationsListErrors, InvitationsListResponses, InvitationsRevokeData, InvitationsRevokeErrors, InvitationsRevokeResponses, MeGetData, MeGetErrors, MeGetResponses, MembershipsAddData, MembershipsAddErrors, MembershipsAddResponses, MembershipsListData, MembershipsListErrors, MembershipsListResponses, MembershipsRemoveData, MembershipsRemoveErrors, MembershipsRemoveResponses, MembershipsUpdateData, MembershipsUpdateErrors, MembershipsUpdateResponses, MePreferencesData, MePreferencesErrors, MePreferencesResponses, PlatformSchoolsActivateData, PlatformSchoolsActivateErrors, PlatformSchoolsActivateResponses, PlatformSchoolsCreateAdminData, PlatformSchoolsCreateAdminErrors, PlatformSchoolsCreateAdminResponses, PlatformSchoolsCreateData, PlatformSchoolsCreateErrors, PlatformSchoolsCreateResponses, PlatformSchoolsGetData, PlatformSchoolsGetErrors, PlatformSchoolsGetResponses, PlatformSchoolsListData, PlatformSchoolsListErrors, PlatformSchoolsListResponses, PlatformSchoolsSuspendData, PlatformSchoolsSuspendErrors, PlatformSchoolsSuspendResponses, PlatformSchoolsUpdateData, PlatformSchoolsUpdateErrors, PlatformSchoolsUpdateResponses, PublicSchoolsBySubdomainData, PublicSchoolsBySubdomainErrors, PublicSchoolsBySubdomainResponses, SchoolProfileData, SchoolProfileErrors, SchoolProfileResponses, SchoolSetLogoData, SchoolSetLogoErrors, SchoolSetLogoResponses, SchoolUpdateData, SchoolUpdateErrors, SchoolUpdateResponses, StudentFilesAddDocumentData, StudentFilesAddDocumentErrors, StudentFilesAddDocumentResponses, StudentFilesDocumentTicketData, StudentFilesDocumentTicketErrors, StudentFilesDocumentTicketResponses, StudentFilesDocumentUrlData, StudentFilesDocumentUrlErrors, StudentFilesDocumentUrlResponses, StudentFilesPhotoData, StudentFilesPhotoErrors, StudentFilesPhotoResponses, StudentFilesPhotoTicketData, StudentFilesPhotoTicketErrors, StudentFilesPhotoTicketResponses, StudentFilesRemoveDocumentData, StudentFilesRemoveDocumentErrors, StudentFilesRemoveDocumentResponses, StudentFilesSetPhotoData, StudentFilesSetPhotoErrors, StudentFilesSetPhotoResponses, StudentsAddGuardianData, StudentsAddGuardianErrors, StudentsAddGuardianResponses, StudentsCreateData, StudentsCreateErrors, StudentsCreateResponses, StudentsGetData, StudentsGetErrors, StudentsGetResponses, StudentsListData, StudentsListErrors, StudentsListResponses, StudentsMoveData, StudentsMoveErrors, StudentsMoveResponses, StudentsPlaceData, StudentsPlaceErrors, StudentsPlaceResponses, StudentsRemoveGuardianData, StudentsRemoveGuardianErrors, StudentsRemoveGuardianResponses, StudentsUpdateData, StudentsUpdateErrors, StudentsUpdateGuardianData, StudentsUpdateGuardianErrors, StudentsUpdateGuardianResponses, StudentsUpdateResponses, UploadsSchoolLogoData, UploadsSchoolLogoErrors, UploadsSchoolLogoResponses } from './types.gen.js';
+import type { AcademicsActivateYearData, AcademicsActivateYearErrors, AcademicsActivateYearResponses, AcademicsClassesData, AcademicsClassesErrors, AcademicsClassesResponses, AcademicsCreateClassData, AcademicsCreateClassErrors, AcademicsCreateClassResponses, AcademicsCreateLevelData, AcademicsCreateLevelErrors, AcademicsCreateLevelResponses, AcademicsCreateSubjectData, AcademicsCreateSubjectErrors, AcademicsCreateSubjectResponses, AcademicsCreateYearData, AcademicsCreateYearErrors, AcademicsCreateYearResponses, AcademicsDeleteClassData, AcademicsDeleteClassErrors, AcademicsDeleteClassResponses, AcademicsDeleteLevelData, AcademicsDeleteLevelErrors, AcademicsDeleteLevelResponses, AcademicsDeleteSubjectData, AcademicsDeleteSubjectErrors, AcademicsDeleteSubjectResponses, AcademicsDeleteYearData, AcademicsDeleteYearErrors, AcademicsDeleteYearResponses, AcademicsLevelsData, AcademicsLevelsErrors, AcademicsLevelsResponses, AcademicsSubjectsData, AcademicsSubjectsErrors, AcademicsSubjectsResponses, AcademicsUpdateClassData, AcademicsUpdateClassErrors, AcademicsUpdateClassResponses, AcademicsUpdateLevelData, AcademicsUpdateLevelErrors, AcademicsUpdateLevelResponses, AcademicsUpdateSubjectData, AcademicsUpdateSubjectErrors, AcademicsUpdateSubjectResponses, AcademicsUpdateYearData, AcademicsUpdateYearErrors, AcademicsUpdateYearResponses, AcademicsYearsData, AcademicsYearsErrors, AcademicsYearsResponses, AccountsCreateData, AccountsCreateErrors, AccountsCreateResponses, HealthCheckData, HealthCheckDbData, HealthCheckDbErrors, HealthCheckDbResponses, HealthCheckErrors, HealthCheckResponses, InvitationsAcceptData, InvitationsAcceptErrors, InvitationsAcceptResponses, InvitationsCreateData, InvitationsCreateErrors, InvitationsCreateResponses, InvitationsListData, InvitationsListErrors, InvitationsListResponses, InvitationsRevokeData, InvitationsRevokeErrors, InvitationsRevokeResponses, MeGetData, MeGetErrors, MeGetResponses, MembershipsAddData, MembershipsAddErrors, MembershipsAddResponses, MembershipsListData, MembershipsListErrors, MembershipsListResponses, MembershipsRemoveData, MembershipsRemoveErrors, MembershipsRemoveResponses, MembershipsUpdateData, MembershipsUpdateErrors, MembershipsUpdateResponses, MePreferencesData, MePreferencesErrors, MePreferencesResponses, PlatformSchoolsActivateData, PlatformSchoolsActivateErrors, PlatformSchoolsActivateResponses, PlatformSchoolsCreateAdminData, PlatformSchoolsCreateAdminErrors, PlatformSchoolsCreateAdminResponses, PlatformSchoolsCreateData, PlatformSchoolsCreateErrors, PlatformSchoolsCreateResponses, PlatformSchoolsGetData, PlatformSchoolsGetErrors, PlatformSchoolsGetResponses, PlatformSchoolsListData, PlatformSchoolsListErrors, PlatformSchoolsListResponses, PlatformSchoolsSuspendData, PlatformSchoolsSuspendErrors, PlatformSchoolsSuspendResponses, PlatformSchoolsUpdateData, PlatformSchoolsUpdateErrors, PlatformSchoolsUpdateResponses, PublicSchoolsBySubdomainData, PublicSchoolsBySubdomainErrors, PublicSchoolsBySubdomainResponses, SchoolProfileData, SchoolProfileErrors, SchoolProfileResponses, SchoolSetLogoData, SchoolSetLogoErrors, SchoolSetLogoResponses, SchoolUpdateData, SchoolUpdateErrors, SchoolUpdateResponses, StaffAddDocumentData, StaffAddDocumentErrors, StaffAddDocumentResponses, StaffCreateData, StaffCreateErrors, StaffCreateResponses, StaffDepartmentsData, StaffDepartmentsErrors, StaffDepartmentsResponses, StaffDocumentTicketData, StaffDocumentTicketErrors, StaffDocumentTicketResponses, StaffDocumentUrlData, StaffDocumentUrlErrors, StaffDocumentUrlResponses, StaffGetData, StaffGetErrors, StaffGetResponses, StaffLinkData, StaffLinkErrors, StaffLinkResponses, StaffListData, StaffListErrors, StaffListResponses, StaffPhotoData, StaffPhotoErrors, StaffPhotoResponses, StaffPhotoTicketData, StaffPhotoTicketErrors, StaffPhotoTicketResponses, StaffRemoveDocumentData, StaffRemoveDocumentErrors, StaffRemoveDocumentResponses, StaffSetPhotoData, StaffSetPhotoErrors, StaffSetPhotoResponses, StaffUpdateData, StaffUpdateErrors, StaffUpdateResponses, StudentFilesAddDocumentData, StudentFilesAddDocumentErrors, StudentFilesAddDocumentResponses, StudentFilesDocumentTicketData, StudentFilesDocumentTicketErrors, StudentFilesDocumentTicketResponses, StudentFilesDocumentUrlData, StudentFilesDocumentUrlErrors, StudentFilesDocumentUrlResponses, StudentFilesPhotoData, StudentFilesPhotoErrors, StudentFilesPhotoResponses, StudentFilesPhotoTicketData, StudentFilesPhotoTicketErrors, StudentFilesPhotoTicketResponses, StudentFilesRemoveDocumentData, StudentFilesRemoveDocumentErrors, StudentFilesRemoveDocumentResponses, StudentFilesSetPhotoData, StudentFilesSetPhotoErrors, StudentFilesSetPhotoResponses, StudentsAddGuardianData, StudentsAddGuardianErrors, StudentsAddGuardianResponses, StudentsCreateData, StudentsCreateErrors, StudentsCreateResponses, StudentsGetData, StudentsGetErrors, StudentsGetResponses, StudentsListData, StudentsListErrors, StudentsListResponses, StudentsMoveData, StudentsMoveErrors, StudentsMoveResponses, StudentsPlaceData, StudentsPlaceErrors, StudentsPlaceResponses, StudentsRemoveGuardianData, StudentsRemoveGuardianErrors, StudentsRemoveGuardianResponses, StudentsUpdateData, StudentsUpdateErrors, StudentsUpdateGuardianData, StudentsUpdateGuardianErrors, StudentsUpdateGuardianResponses, StudentsUpdateResponses, UploadsSchoolLogoData, UploadsSchoolLogoErrors, UploadsSchoolLogoResponses } from './types.gen.js';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -329,6 +329,112 @@ export const schoolProfile = <ThrowOnError extends boolean = false>(options?: Op
 export const schoolUpdate = <ThrowOnError extends boolean = false>(options: Options<SchoolUpdateData, ThrowOnError>): RequestResult<SchoolUpdateResponses, SchoolUpdateErrors, ThrowOnError> => (options.client ?? client).patch<SchoolUpdateResponses, SchoolUpdateErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/v1/school/profile',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const staffList = <ThrowOnError extends boolean = false>(options?: Options<StaffListData, ThrowOnError>): RequestResult<StaffListResponses, StaffListErrors, ThrowOnError> => (options?.client ?? client).get<StaffListResponses, StaffListErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff',
+    ...options
+});
+
+export const staffCreate = <ThrowOnError extends boolean = false>(options: Options<StaffCreateData, ThrowOnError>): RequestResult<StaffCreateResponses, StaffCreateErrors, ThrowOnError> => (options.client ?? client).post<StaffCreateResponses, StaffCreateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const staffDepartments = <ThrowOnError extends boolean = false>(options?: Options<StaffDepartmentsData, ThrowOnError>): RequestResult<StaffDepartmentsResponses, StaffDepartmentsErrors, ThrowOnError> => (options?.client ?? client).get<StaffDepartmentsResponses, StaffDepartmentsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/departments',
+    ...options
+});
+
+export const staffGet = <ThrowOnError extends boolean = false>(options: Options<StaffGetData, ThrowOnError>): RequestResult<StaffGetResponses, StaffGetErrors, ThrowOnError> => (options.client ?? client).get<StaffGetResponses, StaffGetErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}',
+    ...options
+});
+
+export const staffUpdate = <ThrowOnError extends boolean = false>(options: Options<StaffUpdateData, ThrowOnError>): RequestResult<StaffUpdateResponses, StaffUpdateErrors, ThrowOnError> => (options.client ?? client).patch<StaffUpdateResponses, StaffUpdateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const staffLink = <ThrowOnError extends boolean = false>(options: Options<StaffLinkData, ThrowOnError>): RequestResult<StaffLinkResponses, StaffLinkErrors, ThrowOnError> => (options.client ?? client).put<StaffLinkResponses, StaffLinkErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}/account',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const staffAddDocument = <ThrowOnError extends boolean = false>(options: Options<StaffAddDocumentData, ThrowOnError>): RequestResult<StaffAddDocumentResponses, StaffAddDocumentErrors, ThrowOnError> => (options.client ?? client).post<StaffAddDocumentResponses, StaffAddDocumentErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}/documents',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const staffDocumentTicket = <ThrowOnError extends boolean = false>(options: Options<StaffDocumentTicketData, ThrowOnError>): RequestResult<StaffDocumentTicketResponses, StaffDocumentTicketErrors, ThrowOnError> => (options.client ?? client).post<StaffDocumentTicketResponses, StaffDocumentTicketErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}/documents/upload-url',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const staffRemoveDocument = <ThrowOnError extends boolean = false>(options: Options<StaffRemoveDocumentData, ThrowOnError>): RequestResult<StaffRemoveDocumentResponses, StaffRemoveDocumentErrors, ThrowOnError> => (options.client ?? client).delete<StaffRemoveDocumentResponses, StaffRemoveDocumentErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}/documents/{documentId}',
+    ...options
+});
+
+export const staffDocumentUrl = <ThrowOnError extends boolean = false>(options: Options<StaffDocumentUrlData, ThrowOnError>): RequestResult<StaffDocumentUrlResponses, StaffDocumentUrlErrors, ThrowOnError> => (options.client ?? client).get<StaffDocumentUrlResponses, StaffDocumentUrlErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}/documents/{documentId}/url',
+    ...options
+});
+
+export const staffPhoto = <ThrowOnError extends boolean = false>(options: Options<StaffPhotoData, ThrowOnError>): RequestResult<StaffPhotoResponses, StaffPhotoErrors, ThrowOnError> => (options.client ?? client).get<StaffPhotoResponses, StaffPhotoErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}/photo',
+    ...options
+});
+
+export const staffSetPhoto = <ThrowOnError extends boolean = false>(options: Options<StaffSetPhotoData, ThrowOnError>): RequestResult<StaffSetPhotoResponses, StaffSetPhotoErrors, ThrowOnError> => (options.client ?? client).put<StaffSetPhotoResponses, StaffSetPhotoErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}/photo',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const staffPhotoTicket = <ThrowOnError extends boolean = false>(options: Options<StaffPhotoTicketData, ThrowOnError>): RequestResult<StaffPhotoTicketResponses, StaffPhotoTicketErrors, ThrowOnError> => (options.client ?? client).post<StaffPhotoTicketResponses, StaffPhotoTicketErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/staff/{id}/photo/upload-url',
     ...options,
     headers: {
         'Content-Type': 'application/json',
