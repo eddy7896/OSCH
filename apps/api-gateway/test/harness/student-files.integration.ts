@@ -106,11 +106,13 @@ describe.skipIf(!ready)('student photo and documents against the real emulators 
 
   it('documents: at most 30 per student, unknown kind refused, a key used for the photo cannot be a document', async () => {
     const s = await admit();
-    for (let i = 0; i < 30; i++) {
-      const k = (await call('post', `/students/${s.id}/documents/upload-url`).send({ contentType: 'image/png', sizeBytes: 5 }).expect(200)).body.key;
-      upload(k, 'image/png', 5);
-      await call('post', `/students/${s.id}/documents`).send({ key: k, kind: 'OTHER', fileName: `d${i}.png` }).expect(201);
+    // 29 documents are recorded straight through the database operation (fast); the 30th goes through the API, the 31st is refused.
+    for (let i = 0; i < 29; i++) {
+      await w!.db.addStudentDocument({ schoolId: A().replaceAll('-', ''), id: randomUUID(), studentId: s.id, kind: 'OTHER' as never, fileKey: `schools/${A()}/students/${s.id}/documents/${randomUUID()}.png`, fileName: `d${i}.png`, contentType: 'image/png', sizeBytes: 5, actorId: acad().uid });
     }
+    const last = (await call('post', `/students/${s.id}/documents/upload-url`).send({ contentType: 'image/png', sizeBytes: 5 }).expect(200)).body.key;
+    upload(last, 'image/png', 5);
+    await call('post', `/students/${s.id}/documents`).send({ key: last, kind: 'OTHER', fileName: 'last.png' }).expect(201);
     await call('post', `/students/${s.id}/documents/upload-url`).send({ contentType: 'image/png', sizeBytes: 5 }).expect(409);
     const s2 = await admit();
     const k2 = (await call('post', `/students/${s2.id}/documents/upload-url`).send({ contentType: 'image/png', sizeBytes: 5 }).expect(200)).body.key;
