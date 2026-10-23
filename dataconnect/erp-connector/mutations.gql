@@ -527,3 +527,52 @@ mutation RemoveStaffDocument($schoolId: UUID!, $id: UUID!, $actorId: String!, $d
   staffDocument_delete(id: $id)
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "staff.document.remove", entityType: "StaffDocument", entityId_expr: "request.variables.id", details: $details })
 }
+
+# ---- Admissions (P2-3). The application number comes from a per-school counter exactly like student numbers.
+mutation CreateApplication($schoolId: UUID!, $id: UUID!, $expectedSeq: Int!, $applicationNo: String!, $firstName: String!, $lastName: String!, $dateOfBirth: Date, $gender: Gender, $address: String, $gradeLevelId: UUID!, $academicYearId: UUID!, $guardianName: String!, $guardianRelationship: String!, $guardianPhone: String, $guardianEmail: String, $previousSchool: String, $notes: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    counter: schools(where: {id: {eq: $schoolId}, applicationSeq: {eq: $expectedSeq}}) @check(expr: "this.size() == 1", message: "application number was taken, retry") { id }
+    level: gradeLevels(where: {id: {eq: $gradeLevelId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "class level not found in this school") { id }
+    year: academicYears(where: {id: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "academic year not found in this school") { id }
+  }
+  school_update(id: $schoolId, data: { applicationSeq_update: { inc: 1 } })
+  application_insert(data: { id: $id, schoolId: $schoolId, serial_expr: "request.variables.expectedSeq + 1", applicationNo: $applicationNo, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, address: $address, gradeLevelId: $gradeLevelId, academicYearId: $academicYearId, guardianName: $guardianName, guardianRelationship: $guardianRelationship, guardianPhone: $guardianPhone, guardianEmail: $guardianEmail, previousSchool: $previousSchool, notes: $notes })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "admission.application.create", entityType: "Application", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Only an application still being worked on (SUBMITTED or UNDER_REVIEW) can be edited.
+mutation UpdateApplication($schoolId: UUID!, $id: UUID!, $firstName: String, $lastName: String, $dateOfBirth: Date, $gender: Gender, $address: String, $gradeLevelId: UUID, $guardianName: String, $guardianRelationship: String, $guardianPhone: String, $guardianEmail: String, $previousSchool: String, $notes: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    app: applications(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {in: [SUBMITTED, UNDER_REVIEW]}}) @check(expr: "this.size() == 1", message: "application not found in this school or already decided") { id }
+  }
+  application_update(id: $id, data: { firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, address: $address, gradeLevelId: $gradeLevelId, guardianName: $guardianName, guardianRelationship: $guardianRelationship, guardianPhone: $guardianPhone, guardianEmail: $guardianEmail, previousSchool: $previousSchool, notes: $notes })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "admission.application.update", entityType: "Application", entityId_expr: "request.variables.id", details: $details })
+}
+
+# A step in the review. `fromStatus` is the status the caller saw: if it changed meanwhile the check fails and nothing is written.
+mutation DecideApplication($schoolId: UUID!, $id: UUID!, $fromStatus: ApplicationStatus!, $toStatus: ApplicationStatus!, $decisionNote: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    app: applications(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: $fromStatus}}) @check(expr: "this.size() == 1", message: "application not found in this school or its status changed") { id }
+  }
+  application_update(id: $id, data: { status: $toStatus, decisionNote: $decisionNote })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "admission.application.decide", entityType: "Application", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Admit an ACCEPTED application: the student, the class placement, the guardian contact and the application's new status are ONE transaction.
+mutation AdmitApplication($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $expectedSeq: Int!, $enrollmentId: String!, $academicYearId: UUID!, $classroomId: UUID!, $firstName: String!, $lastName: String!, $dateOfBirth: Date, $gender: Gender, $address: String, $admissionDate: Date, $guardianId: UUID!, $guardianName: String!, $guardianRelationship: String!, $guardianPhone: String, $guardianEmail: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    app: applications(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: ACCEPTED}, academicYearId: {eq: $academicYearId}}) @check(expr: "this.size() == 1", message: "application not found in this school or not accepted") { id }
+    counter: schools(where: {id: {eq: $schoolId}, studentSeq: {eq: $expectedSeq}}) @check(expr: "this.size() == 1", message: "student number was taken, retry") { id }
+    room: classrooms(where: {id: {eq: $classroomId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "class not found in this school") { id }
+  }
+  school_update(id: $schoolId, data: { studentSeq_update: { inc: 1 } })
+  student_insert(data: { id: $studentId, schoolId: $schoolId, serial_expr: "request.variables.expectedSeq + 1", enrollmentId: $enrollmentId, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, admissionDate: $admissionDate, address: $address })
+  studentEnrollment_insert(data: { schoolId: $schoolId, studentId: $studentId, academicYearId: $academicYearId, classroomId: $classroomId })
+  guardian_insert(data: { id: $guardianId, schoolId: $schoolId, studentId: $studentId, name: $guardianName, relationship: $guardianRelationship, phone: $guardianPhone, email: $guardianEmail, isPrimary: true })
+  application_update(id: $id, data: { status: ADMITTED, studentId: $studentId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "admission.admit", entityType: "Application", entityId_expr: "request.variables.id", details: $details })
+}

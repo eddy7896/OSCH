@@ -224,3 +224,28 @@ query GetStaffProfile($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
 query ListStaffDepartments($schoolId: UUID!) @auth(level: NO_ACCESS) {
   staffProfiles(where: {schoolId: {eq: $schoolId}, department: {isNull: false}}, orderBy: [{department: ASC}]) { department }
 }
+
+# ---- Admissions (P2-3). `search` is a LIKE pattern the gateway builds; a null filter is skipped.
+query ApplicationSeqInfo($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  school(id: $schoolId) { id applicationSeq studentSeq enrollmentPrefix }
+}
+
+query ListApplications($schoolId: UUID!, $search: String, $status: ApplicationStatus, $academicYearId: UUID, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  applications(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: $status}}, {academicYearId: {eq: $academicYearId}}, {_or: [{firstName: {pattern: {like: $search, ignoreCase: true}}}, {lastName: {pattern: {like: $search, ignoreCase: true}}}, {applicationNo: {pattern: {like: $search, ignoreCase: true}}}, {guardianName: {pattern: {like: $search, ignoreCase: true}}}]}]}, orderBy: [{createdAt: DESC}, {serial: DESC}], limit: $limit, offset: $offset) {
+    id applicationNo status firstName lastName guardianName createdAt
+    gradeLevel { id name }
+    academicYear { id name }
+  }
+}
+
+query CountApplications($schoolId: UUID!, $search: String, $status: ApplicationStatus, $academicYearId: UUID) @auth(level: NO_ACCESS) {
+  applications(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: $status}}, {academicYearId: {eq: $academicYearId}}, {_or: [{firstName: {pattern: {like: $search, ignoreCase: true}}}, {lastName: {pattern: {like: $search, ignoreCase: true}}}, {applicationNo: {pattern: {like: $search, ignoreCase: true}}}, {guardianName: {pattern: {like: $search, ignoreCase: true}}}]}]}) { _count }
+}
+
+query GetApplication($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  applications(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id applicationNo status firstName lastName dateOfBirth gender address guardianName guardianRelationship guardianPhone guardianEmail previousSchool notes decisionNote createdAt studentId
+    gradeLevel { id name }
+    academicYear { id name }
+  }
+}

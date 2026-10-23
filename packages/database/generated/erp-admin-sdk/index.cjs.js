@@ -7,6 +7,16 @@ const AcademicYearStatus = {
 }
 exports.AcademicYearStatus = AcademicYearStatus;
 
+const ApplicationStatus = {
+  SUBMITTED: "SUBMITTED",
+  UNDER_REVIEW: "UNDER_REVIEW",
+  ACCEPTED: "ACCEPTED",
+  REJECTED: "REJECTED",
+  WITHDRAWN: "WITHDRAWN",
+  ADMITTED: "ADMITTED",
+}
+exports.ApplicationStatus = ApplicationStatus;
+
 const Gender = {
   FEMALE: "FEMALE",
   MALE: "MALE",
@@ -490,6 +500,34 @@ function removeStaffDocument(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.removeStaffDocument = removeStaffDocument;
 
+function createApplication(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateApplication', inputVars, inputOpts);
+}
+exports.createApplication = createApplication;
+
+function updateApplication(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateApplication', inputVars, inputOpts);
+}
+exports.updateApplication = updateApplication;
+
+function decideApplication(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DecideApplication', inputVars, inputOpts);
+}
+exports.decideApplication = decideApplication;
+
+function admitApplication(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AdmitApplication', inputVars, inputOpts);
+}
+exports.admitApplication = admitApplication;
+
 function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -699,4 +737,32 @@ function listStaffDepartments(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListStaffDepartments', inputVars, inputOpts);
 }
 exports.listStaffDepartments = listStaffDepartments;
+
+function applicationSeqInfo(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ApplicationSeqInfo', inputVars, inputOpts);
+}
+exports.applicationSeqInfo = applicationSeqInfo;
+
+function listApplications(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListApplications', inputVars, inputOpts);
+}
+exports.listApplications = listApplications;
+
+function countApplications(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountApplications', inputVars, inputOpts);
+}
+exports.countApplications = countApplications;
+
+function getApplication(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetApplication', inputVars, inputOpts);
+}
+exports.getApplication = getApplication;
 
