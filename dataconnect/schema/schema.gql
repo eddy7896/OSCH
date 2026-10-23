@@ -31,6 +31,7 @@ type School @table {
   enrollmentPrefix: String! @default(value: "S") # first letters of enrolment ids
   studentSeq: Int! @default(value: 0) # last student serial handed out
   staffSeq: Int! @default(value: 0) # last staff serial handed out
+  applicationSeq: Int! @default(value: 0) # last admission application serial handed out
   # Profile and branding (P2-1). The colour is a validated #rrggbb (white text on it is at least 4.5:1); the logo key lives under schools/<id>/logo/.
   address: String
   contactPhone: String
@@ -81,6 +82,7 @@ type Invitation @table {
 # Student Profile, belonging to a School
 enum StudentStatus { ACTIVE INACTIVE LEFT }
 enum Gender { FEMALE MALE OTHER }
+enum ApplicationStatus { SUBMITTED UNDER_REVIEW ACCEPTED REJECTED WITHDRAWN ADMITTED }
 enum StaffStatus { ACTIVE INACTIVE LEFT }
 enum StaffDocumentKind { APPOINTMENT_LETTER ID_PROOF QUALIFICATION EXPERIENCE MEDICAL OTHER }
 enum StudentDocumentKind { BIRTH_CERTIFICATE TRANSFER_CERTIFICATE REPORT_CARD ID_PROOF MEDICAL OTHER }
@@ -123,6 +125,32 @@ type StudentDocument @table @unique(fields: ["school", "fileKey"]) {
   fileName: String!
   contentType: String!
   sizeBytes: Int!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ERP: an admission application. Moves SUBMITTED -> UNDER_REVIEW -> ACCEPTED/REJECTED (or WITHDRAWN); an ACCEPTED one is ADMITTED,
+# which creates the student in the same transaction (`student` then points at it). The guardian is a CONTACT, not an account.
+type Application @table @unique(fields: ["school", "applicationNo"]) @unique(fields: ["school", "serial"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  applicationNo: String!
+  serial: Int!
+  status: ApplicationStatus! @default(value: SUBMITTED)
+  firstName: String!
+  lastName: String!
+  dateOfBirth: Date
+  gender: Gender
+  address: String
+  gradeLevel: GradeLevel! # the class level applied for
+  academicYear: AcademicYear! # the year applied for
+  guardianName: String!
+  guardianRelationship: String!
+  guardianPhone: String
+  guardianEmail: String
+  previousSchool: String
+  notes: String # internal remarks
+  decisionNote: String
+  student: Student # set when admitted
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

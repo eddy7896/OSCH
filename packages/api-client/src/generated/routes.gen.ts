@@ -118,6 +118,42 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "POST",
+    "path": "/v1/admissions/{id}/admit",
+    "access": "tenant",
+    "operationId": "Admissions_admit"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/admissions/{id}/decision",
+    "access": "tenant",
+    "operationId": "Admissions_decide"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/admissions/{id}",
+    "access": "tenant",
+    "operationId": "Admissions_get"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/admissions/{id}",
+    "access": "tenant",
+    "operationId": "Admissions_update"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/admissions",
+    "access": "tenant",
+    "operationId": "Admissions_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/admissions",
+    "access": "tenant",
+    "operationId": "Admissions_create"
+  },
+  {
+    "method": "POST",
     "path": "/v1/invitations/{id}/revoke",
     "access": "tenant",
     "operationId": "Invitations_revoke"

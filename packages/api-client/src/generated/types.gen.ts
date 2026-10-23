@@ -65,6 +65,73 @@ export type AddStaffDocumentDto = {
     kind: 'APPOINTMENT_LETTER' | 'ID_PROOF' | 'QUALIFICATION' | 'EXPERIENCE' | 'MEDICAL' | 'OTHER';
 };
 
+export type AdmitApplicationDto = {
+    admissionDate?: string;
+    classroomId: string;
+};
+
+export type AdmitResultDto = {
+    application: ApplicationDto;
+    guardianInvitationPending: boolean;
+    student: {
+        enrollmentId: string;
+        id: string;
+    };
+};
+
+export type ApplicationDto = {
+    academicYear: {
+        id: string;
+        name: string;
+    };
+    address: string | null;
+    applicationNo: string;
+    createdAt: string;
+    dateOfBirth: string | null;
+    decisionNote: string | null;
+    firstName: string;
+    gender: string | null;
+    gradeLevel: {
+        id: string;
+        name: string;
+    };
+    guardianEmail: string | null;
+    guardianName: string;
+    guardianPhone: string | null;
+    guardianRelationship: string;
+    id: string;
+    lastName: string;
+    notes: string | null;
+    previousSchool: string | null;
+    status: string;
+    studentId: string | null;
+};
+
+export type ApplicationListDto = {
+    items: Array<ApplicationSummaryDto>;
+    page: number;
+    pageSize: number;
+    total: number;
+};
+
+export type ApplicationSummaryDto = {
+    academicYear: {
+        id: string;
+        name: string;
+    };
+    applicationNo: string;
+    createdAt: string;
+    firstName: string;
+    gradeLevel: {
+        id: string;
+        name: string;
+    };
+    guardianName: string;
+    id: string;
+    lastName: string;
+    status: string;
+};
+
 export type ClassDto = {
     capacity: number;
     gradeLevel: {
@@ -91,6 +158,22 @@ export type CreateAcademicYearDto = {
     endDate: string;
     name: string;
     startDate: string;
+};
+
+export type CreateApplicationDto = {
+    academicYearId?: string;
+    address?: string;
+    dateOfBirth?: string;
+    firstName: string;
+    gender?: 'FEMALE' | 'MALE' | 'OTHER';
+    gradeLevelId: string;
+    guardianEmail?: string;
+    guardianName: string;
+    guardianPhone?: string;
+    guardianRelationship: 'MOTHER' | 'FATHER' | 'GUARDIAN' | 'OTHER';
+    lastName: string;
+    notes?: string;
+    previousSchool?: string;
 };
 
 export type CreateClassDto = {
@@ -183,6 +266,11 @@ export type CreatedInvitationDto = {
     role: string;
     status: string;
     token: string;
+};
+
+export type DecideApplicationDto = {
+    note?: string;
+    status: 'UNDER_REVIEW' | 'ACCEPTED' | 'REJECTED' | 'WITHDRAWN';
 };
 
 export type DocumentUploadRequestDto = {
@@ -542,6 +630,21 @@ export type UpdateAcademicYearDto = {
     endDate?: string;
     name?: string;
     startDate?: string;
+};
+
+export type UpdateApplicationDto = {
+    address?: string;
+    dateOfBirth?: string;
+    firstName?: string;
+    gender?: 'FEMALE' | 'MALE' | 'OTHER';
+    gradeLevelId?: string;
+    guardianEmail?: string;
+    guardianName?: string;
+    guardianPhone?: string;
+    guardianRelationship?: 'MOTHER' | 'FATHER' | 'GUARDIAN' | 'OTHER';
+    lastName?: string;
+    notes?: string;
+    previousSchool?: string;
 };
 
 export type UpdateClassDto = {
@@ -1512,6 +1615,264 @@ export type AcademicsActivateYearResponses = {
 };
 
 export type AcademicsActivateYearResponse = AcademicsActivateYearResponses[keyof AcademicsActivateYearResponses];
+
+export type AdmissionsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        search?: string;
+        status?: 'SUBMITTED' | 'UNDER_REVIEW' | 'ACCEPTED' | 'REJECTED' | 'WITHDRAWN' | 'ADMITTED';
+        academicYearId?: string;
+        page?: number;
+        pageSize?: number;
+    };
+    url: '/v1/admissions';
+};
+
+export type AdmissionsListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AdmissionsListError = AdmissionsListErrors[keyof AdmissionsListErrors];
+
+export type AdmissionsListResponses = {
+    200: ApplicationListDto;
+};
+
+export type AdmissionsListResponse = AdmissionsListResponses[keyof AdmissionsListResponses];
+
+export type AdmissionsCreateData = {
+    body: CreateApplicationDto;
+    path?: never;
+    query?: never;
+    url: '/v1/admissions';
+};
+
+export type AdmissionsCreateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AdmissionsCreateError = AdmissionsCreateErrors[keyof AdmissionsCreateErrors];
+
+export type AdmissionsCreateResponses = {
+    201: ApplicationDto;
+};
+
+export type AdmissionsCreateResponse = AdmissionsCreateResponses[keyof AdmissionsCreateResponses];
+
+export type AdmissionsGetData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/admissions/{id}';
+};
+
+export type AdmissionsGetErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AdmissionsGetError = AdmissionsGetErrors[keyof AdmissionsGetErrors];
+
+export type AdmissionsGetResponses = {
+    200: ApplicationDto;
+};
+
+export type AdmissionsGetResponse = AdmissionsGetResponses[keyof AdmissionsGetResponses];
+
+export type AdmissionsUpdateData = {
+    body: UpdateApplicationDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/admissions/{id}';
+};
+
+export type AdmissionsUpdateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AdmissionsUpdateError = AdmissionsUpdateErrors[keyof AdmissionsUpdateErrors];
+
+export type AdmissionsUpdateResponses = {
+    200: ApplicationDto;
+};
+
+export type AdmissionsUpdateResponse = AdmissionsUpdateResponses[keyof AdmissionsUpdateResponses];
+
+export type AdmissionsAdmitData = {
+    body: AdmitApplicationDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/admissions/{id}/admit';
+};
+
+export type AdmissionsAdmitErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AdmissionsAdmitError = AdmissionsAdmitErrors[keyof AdmissionsAdmitErrors];
+
+export type AdmissionsAdmitResponses = {
+    201: AdmitResultDto;
+};
+
+export type AdmissionsAdmitResponse = AdmissionsAdmitResponses[keyof AdmissionsAdmitResponses];
+
+export type AdmissionsDecideData = {
+    body: DecideApplicationDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/admissions/{id}/decision';
+};
+
+export type AdmissionsDecideErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AdmissionsDecideError = AdmissionsDecideErrors[keyof AdmissionsDecideErrors];
+
+export type AdmissionsDecideResponses = {
+    200: ApplicationDto;
+};
+
+export type AdmissionsDecideResponse = AdmissionsDecideResponses[keyof AdmissionsDecideResponses];
 
 export type InvitationsListData = {
     body?: never;

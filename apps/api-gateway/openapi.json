@@ -323,6 +323,260 @@
         ],
         "type": "object"
       },
+      "AdmitApplicationDto": {
+        "properties": {
+          "admissionDate": {
+            "type": "string"
+          },
+          "classroomId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "classroomId"
+        ],
+        "type": "object"
+      },
+      "AdmitResultDto": {
+        "properties": {
+          "application": {
+            "$ref": "#/components/schemas/ApplicationDto"
+          },
+          "guardianInvitationPending": {
+            "type": "boolean"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "application",
+          "student",
+          "guardianInvitationPending"
+        ],
+        "type": "object"
+      },
+      "ApplicationDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "address": {
+            "nullable": true,
+            "type": "string"
+          },
+          "applicationNo": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "nullable": true,
+            "type": "string"
+          },
+          "decisionNote": {
+            "nullable": true,
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "gender": {
+            "nullable": true,
+            "type": "string"
+          },
+          "gradeLevel": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "guardianEmail": {
+            "nullable": true,
+            "type": "string"
+          },
+          "guardianName": {
+            "type": "string"
+          },
+          "guardianPhone": {
+            "nullable": true,
+            "type": "string"
+          },
+          "guardianRelationship": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "notes": {
+            "nullable": true,
+            "type": "string"
+          },
+          "previousSchool": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "studentId": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "applicationNo",
+          "status",
+          "firstName",
+          "lastName",
+          "guardianName",
+          "gradeLevel",
+          "academicYear",
+          "createdAt",
+          "dateOfBirth",
+          "gender",
+          "address",
+          "guardianRelationship",
+          "guardianPhone",
+          "guardianEmail",
+          "previousSchool",
+          "notes",
+          "decisionNote",
+          "studentId"
+        ],
+        "type": "object"
+      },
+      "ApplicationListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ApplicationSummaryDto"
+            },
+            "type": "array"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize"
+        ],
+        "type": "object"
+      },
+      "ApplicationSummaryDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "applicationNo": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "gradeLevel": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "guardianName": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "applicationNo",
+          "status",
+          "firstName",
+          "lastName",
+          "guardianName",
+          "gradeLevel",
+          "academicYear",
+          "createdAt"
+        ],
+        "type": "object"
+      },
       "ClassDto": {
         "properties": {
           "capacity": {
@@ -417,6 +671,79 @@
           "name",
           "startDate",
           "endDate"
+        ],
+        "type": "object"
+      },
+      "CreateApplicationDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "address": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "firstName": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "gender": {
+            "enum": [
+              "FEMALE",
+              "MALE",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "gradeLevelId": {
+            "type": "string"
+          },
+          "guardianEmail": {
+            "maxLength": 254,
+            "minLength": 3,
+            "type": "string"
+          },
+          "guardianName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "guardianPhone": {
+            "type": "string"
+          },
+          "guardianRelationship": {
+            "enum": [
+              "MOTHER",
+              "FATHER",
+              "GUARDIAN",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "lastName": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "notes": {
+            "maxLength": 1000,
+            "type": "string"
+          },
+          "previousSchool": {
+            "maxLength": 200,
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "gradeLevelId",
+          "guardianName",
+          "guardianRelationship"
         ],
         "type": "object"
       },
@@ -827,6 +1154,27 @@
           "acceptedAt",
           "createdBy",
           "token"
+        ],
+        "type": "object"
+      },
+      "DecideApplicationDto": {
+        "properties": {
+          "note": {
+            "maxLength": 1000,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "UNDER_REVIEW",
+              "ACCEPTED",
+              "REJECTED",
+              "WITHDRAWN"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
         ],
         "type": "object"
       },
@@ -2162,6 +2510,69 @@
             "type": "string"
           },
           "startDate": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateApplicationDto": {
+        "properties": {
+          "address": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "firstName": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "gender": {
+            "enum": [
+              "FEMALE",
+              "MALE",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "gradeLevelId": {
+            "type": "string"
+          },
+          "guardianEmail": {
+            "maxLength": 254,
+            "minLength": 3,
+            "type": "string"
+          },
+          "guardianName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "guardianPhone": {
+            "type": "string"
+          },
+          "guardianRelationship": {
+            "enum": [
+              "MOTHER",
+              "FATHER",
+              "GUARDIAN",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "lastName": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "notes": {
+            "maxLength": 1000,
+            "type": "string"
+          },
+          "previousSchool": {
+            "maxLength": 200,
             "type": "string"
           }
         },
@@ -4070,6 +4481,456 @@
         "x-permission": {
           "action": "update",
           "resource": "academics"
+        }
+      }
+    },
+    "/v1/admissions": {
+      "get": {
+        "operationId": "Admissions_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "maxLength": 80,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "enum": [
+                "SUBMITTED",
+                "UNDER_REVIEW",
+                "ACCEPTED",
+                "REJECTED",
+                "WITHDRAWN",
+                "ADMITTED"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Admissions"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "admissions"
+        }
+      },
+      "post": {
+        "operationId": "Admissions_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplicationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Admissions"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "admission.application.create",
+          "operation": "CreateApplication"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "admissions"
+        }
+      }
+    },
+    "/v1/admissions/{id}": {
+      "get": {
+        "operationId": "Admissions_get",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Admissions"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "admissions"
+        }
+      },
+      "patch": {
+        "operationId": "Admissions_update",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApplicationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Admissions"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "admission.application.update",
+          "operation": "UpdateApplication"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "admissions"
+        }
+      }
+    },
+    "/v1/admissions/{id}/admit": {
+      "post": {
+        "operationId": "Admissions_admit",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdmitApplicationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdmitResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Admissions"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "admission.admit",
+          "operation": "AdmitApplication"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "admissions"
+        }
+      }
+    },
+    "/v1/admissions/{id}/decision": {
+      "post": {
+        "operationId": "Admissions_decide",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideApplicationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Admissions"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "admission.application.decide",
+          "operation": "DecideApplication"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "admissions"
         }
       }
     },
