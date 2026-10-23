@@ -154,6 +154,42 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "POST",
+    "path": "/v1/imports/guardians/dry-run",
+    "access": "tenant",
+    "operationId": "Imports_guardiansDryRun"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/imports/guardians",
+    "access": "tenant",
+    "operationId": "Imports_guardians"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/imports/staff/dry-run",
+    "access": "tenant",
+    "operationId": "Imports_staffDryRun"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/imports/staff",
+    "access": "tenant",
+    "operationId": "Imports_staff"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/imports/students/dry-run",
+    "access": "tenant",
+    "operationId": "Imports_studentsDryRun"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/imports/students",
+    "access": "tenant",
+    "operationId": "Imports_students"
+  },
+  {
+    "method": "POST",
     "path": "/v1/invitations/{id}/revoke",
     "access": "tenant",
     "operationId": "Invitations_revoke"

@@ -26,6 +26,12 @@ export const GlobalRole = {
   USER: "USER",
 }
 
+export const ImportStatus = {
+  STARTED: "STARTED",
+  COMPLETED: "COMPLETED",
+  PARTIAL: "PARTIAL",
+}
+
 export const InvitationStatus = {
   PENDING: "PENDING",
   ACCEPTED: "ACCEPTED",
@@ -455,6 +461,18 @@ export function admitApplication(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('AdmitApplication', inputVars, inputOpts);
 }
 
+export function startImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('StartImportBatch', inputVars, inputOpts);
+}
+
+export function finishImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('FinishImportBatch', inputVars, inputOpts);
+}
+
 export function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -657,5 +675,29 @@ export function getApplication(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeQuery('GetApplication', inputVars, inputOpts);
+}
+
+export function findImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('FindImportBatch', inputVars, inputOpts);
+}
+
+export function studentsByEnrollmentIds(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StudentsByEnrollmentIds', inputVars, inputOpts);
+}
+
+export function studentIdentities(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StudentIdentities', inputVars, inputOpts);
+}
+
+export function staffIdentities(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StaffIdentities', inputVars, inputOpts);
 }
 

@@ -82,6 +82,7 @@ type Invitation @table {
 # Student Profile, belonging to a School
 enum StudentStatus { ACTIVE INACTIVE LEFT }
 enum Gender { FEMALE MALE OTHER }
+enum ImportStatus { STARTED COMPLETED PARTIAL }
 enum ApplicationStatus { SUBMITTED UNDER_REVIEW ACCEPTED REJECTED WITHDRAWN ADMITTED }
 enum StaffStatus { ACTIVE INACTIVE LEFT }
 enum StaffDocumentKind { APPOINTMENT_LETTER ID_PROOF QUALIFICATION EXPERIENCE MEDICAL OTHER }
@@ -151,6 +152,20 @@ type Application @table @unique(fields: ["school", "applicationNo"]) @unique(fie
   notes: String # internal remarks
   decisionNote: String
   student: Student # set when admitted
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A bulk import of one CSV file (students, staff or guardians). The SHA-256 of the file is unique per school and kind, so the same file
+# cannot be imported twice. STARTED until the run ends; then COMPLETED or PARTIAL (some rows failed after the checks passed).
+type ImportBatch @table @unique(fields: ["school", "kind", "fileHash"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  kind: String! # students, staff, guardians
+  fileHash: String!
+  rowCount: Int!
+  createdCount: Int! @default(value: 0)
+  failedCount: Int! @default(value: 0)
+  status: ImportStatus! @default(value: STARTED)
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

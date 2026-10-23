@@ -46,7 +46,7 @@ describe.skipIf(!ready)('E-AUD-1 runtime: every audited write adds its audit row
       const count = async (school: string) => (await rows(school.replaceAll('-', ''), route.audit!.action)).filter((a) => a.actor.id === sample.actor(w!, ctx)).length;
       const school = sample.auditSchool(w!, ctx, {});
       const before = school ? await count(school) : 0; // prepare() may already have written rows of the same action
-      const res = await send(route, sample.token(w!, ctx), sample.school?.(w!), ctx, sample.body?.(w!, ctx) ?? {});
+      const res = await send(route, sample.token(w!, ctx), sample.school?.(w!), ctx, (await sample.body?.(w!, ctx)) ?? {});
       expect(res.status, JSON.stringify(res.body)).toBeLessThan(300);
       expect(await count(sample.auditSchool(w!, ctx, res.body))).toBe((school ? before : 0) + 1);
     });
@@ -57,7 +57,7 @@ describe.skipIf(!ready)('E-AUD-1 runtime: every audited write adds its audit row
       const school = sample.auditSchool(w!, ctx, {});
       const count = async () => (school ? (await rows(school.replaceAll('-', ''), route.audit!.action)).length : 0);
       const before = await count();
-      const res = await send(route, w!.roles.A.PRINCIPAL.token, w!.schools.A, ctx, sample.body?.(w!, ctx) ?? {});
+      const res = await send(route, w!.roles.A.PRINCIPAL.token, w!.schools.A, ctx, (await sample.body?.(w!, ctx)) ?? {});
       expect(res.status).toBe(403);
       expect(await count()).toBe(before);
     });
