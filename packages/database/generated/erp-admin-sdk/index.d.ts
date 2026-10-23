@@ -60,6 +60,19 @@ export enum SchoolRole {
   DRIVER = "DRIVER",
   PARENT = "PARENT",
 }
+export enum StaffDocumentKind {
+  APPOINTMENT_LETTER = "APPOINTMENT_LETTER",
+  ID_PROOF = "ID_PROOF",
+  QUALIFICATION = "QUALIFICATION",
+  EXPERIENCE = "EXPERIENCE",
+  MEDICAL = "MEDICAL",
+  OTHER = "OTHER",
+}
+export enum StaffStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  LEFT = "LEFT",
+}
 export enum StudentDocumentKind {
   BIRTH_CERTIFICATE = "BIRTH_CERTIFICATE",
   TRANSFER_CERTIFICATE = "TRANSFER_CERTIFICATE",
@@ -170,6 +183,32 @@ export interface AddMembershipVariables {
   details?: unknown | null;
 }
 
+export interface AddStaffDocumentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+  };
+  staffDocument_insert: StaffDocument_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddStaffDocumentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  staffId: UUIDString;
+  kind: StaffDocumentKind;
+  fileKey: string;
+  fileName: string;
+  contentType: string;
+  sizeBytes: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface AddStudentDocumentData {
   query?: {
     actor: ({
@@ -209,6 +248,19 @@ export interface ClassSchedule_Key {
 export interface Classroom_Key {
   id: UUIDString;
   __typename?: 'Classroom_Key';
+}
+
+export interface CountStaffProfilesData {
+  staffProfiles: ({
+    _count: number;
+  })[];
+}
+
+export interface CountStaffProfilesVariables {
+  schoolId: UUIDString;
+  search?: string | null;
+  status?: StaffStatus | null;
+  department?: string | null;
 }
 
 export interface CountStudentsData {
@@ -433,6 +485,41 @@ export interface CreateSchoolVariables {
   id: UUIDString;
   name: string;
   subDomain: string;
+}
+
+export interface CreateStaffData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    counter: ({
+      id: UUIDString;
+    } & School_Key)[];
+  };
+  school_update?: School_Key | null;
+  staffProfile_insert: StaffProfile_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateStaffVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  expectedSeq: number;
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  department?: string | null;
+  designation?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  dateOfBirth?: DateString | null;
+  gender?: Gender | null;
+  dateOfJoining?: DateString | null;
+  address?: string | null;
+  emergencyContactName?: string | null;
+  emergencyContactPhone?: string | null;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CreateStudentData {
@@ -679,6 +766,43 @@ export interface GetSchoolVariables {
   schoolId: UUIDString;
 }
 
+export interface GetStaffProfileData {
+  staffProfiles: ({
+    id: UUIDString;
+    employeeId: string;
+    firstName: string;
+    lastName: string;
+    department?: string | null;
+    designation?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    dateOfBirth?: DateString | null;
+    gender?: Gender | null;
+    dateOfJoining?: DateString | null;
+    address?: string | null;
+    emergencyContactName?: string | null;
+    emergencyContactPhone?: string | null;
+    status: StaffStatus;
+    photoKey?: string | null;
+    createdAt: TimestampString;
+    userId?: string | null;
+    documents: ({
+      id: UUIDString;
+      kind: StaffDocumentKind;
+      fileKey: string;
+      fileName: string;
+      contentType: string;
+      sizeBytes: number;
+      createdAt: TimestampString;
+    } & StaffDocument_Key)[];
+  } & StaffProfile_Key)[];
+}
+
+export interface GetStaffProfileVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetStudentData {
   students: ({
     id: UUIDString;
@@ -766,6 +890,30 @@ export interface Invoice_Key {
 export interface LeaveRequest_Key {
   id: UUIDString;
   __typename?: 'LeaveRequest_Key';
+}
+
+export interface LinkStaffAccountData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    member: ({
+      userId: string;
+    })[];
+  };
+  staffProfile_update?: StaffProfile_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface LinkStaffAccountVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  userId: string;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface ListAcademicYearsData {
@@ -1024,6 +1172,38 @@ export interface ListStaffData {
   })[];
 }
 
+export interface ListStaffDepartmentsData {
+  staffProfiles: ({
+    department?: string | null;
+  })[];
+}
+
+export interface ListStaffDepartmentsVariables {
+  schoolId: UUIDString;
+}
+
+export interface ListStaffProfilesData {
+  staffProfiles: ({
+    id: UUIDString;
+    employeeId: string;
+    firstName: string;
+    lastName: string;
+    department?: string | null;
+    designation?: string | null;
+    status: StaffStatus;
+    userId?: string | null;
+  } & StaffProfile_Key)[];
+}
+
+export interface ListStaffProfilesVariables {
+  schoolId: UUIDString;
+  search?: string | null;
+  status?: StaffStatus | null;
+  department?: string | null;
+  limit: number;
+  offset: number;
+}
+
 export interface ListStaffVariables {
   schoolId: UUIDString;
 }
@@ -1224,6 +1404,26 @@ export interface RemoveMembershipVariables {
   details?: unknown | null;
 }
 
+export interface RemoveStaffDocumentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    doc: ({
+      id: UUIDString;
+    } & StaffDocument_Key)[];
+  };
+  staffDocument_delete?: StaffDocument_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveStaffDocumentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface RemoveStudentDocumentData {
   query?: {
     actor: ({
@@ -1301,6 +1501,27 @@ export interface SetSchoolLogoVariables {
   details?: unknown | null;
 }
 
+export interface SetStaffPhotoData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+  };
+  staffProfile_update?: StaffProfile_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetStaffPhotoVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  photoKey: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface SetStudentPhotoData {
   query?: {
     actor: ({
@@ -1341,6 +1562,27 @@ export interface SetUserLanguageData {
 export interface SetUserLanguageVariables {
   userId: string;
   language?: string | null;
+}
+
+export interface StaffDocument_Key {
+  id: UUIDString;
+  __typename?: 'StaffDocument_Key';
+}
+
+export interface StaffProfile_Key {
+  id: UUIDString;
+  __typename?: 'StaffProfile_Key';
+}
+
+export interface StaffSeqInfoData {
+  school?: {
+    id: UUIDString;
+    staffSeq: number;
+  } & School_Key;
+}
+
+export interface StaffSeqInfoVariables {
+  schoolId: UUIDString;
 }
 
 export interface StudentDocument_Key {
@@ -1522,6 +1764,39 @@ export interface UpdateSchoolVariables {
   schoolId: UUIDString;
   name: string;
   defaultLanguage: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface UpdateStaffData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+  };
+  staffProfile_update?: StaffProfile_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateStaffVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  firstName?: string | null;
+  lastName?: string | null;
+  department?: string | null;
+  designation?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  dateOfBirth?: DateString | null;
+  gender?: Gender | null;
+  dateOfJoining?: DateString | null;
+  address?: string | null;
+  emergencyContactName?: string | null;
+  emergencyContactPhone?: string | null;
+  status?: StaffStatus | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -1826,6 +2101,36 @@ export function removeStudentDocument(dc: DataConnect, vars: RemoveStudentDocume
 /** Generated Node Admin SDK operation action function for the 'RemoveStudentDocument' Mutation. Allow users to pass in custom DataConnect instances. */
 export function removeStudentDocument(vars: RemoveStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStudentDocumentData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateStaff' Mutation. Allow users to execute without passing in DataConnect. */
+export function createStaff(dc: DataConnect, vars: CreateStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStaffData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateStaff' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createStaff(vars: CreateStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStaffData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateStaff' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateStaff(dc: DataConnect, vars: UpdateStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateStaffData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateStaff' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateStaff(vars: UpdateStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateStaffData>>;
+
+/** Generated Node Admin SDK operation action function for the 'LinkStaffAccount' Mutation. Allow users to execute without passing in DataConnect. */
+export function linkStaffAccount(dc: DataConnect, vars: LinkStaffAccountVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<LinkStaffAccountData>>;
+/** Generated Node Admin SDK operation action function for the 'LinkStaffAccount' Mutation. Allow users to pass in custom DataConnect instances. */
+export function linkStaffAccount(vars: LinkStaffAccountVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<LinkStaffAccountData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetStaffPhoto' Mutation. Allow users to execute without passing in DataConnect. */
+export function setStaffPhoto(dc: DataConnect, vars: SetStaffPhotoVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetStaffPhotoData>>;
+/** Generated Node Admin SDK operation action function for the 'SetStaffPhoto' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setStaffPhoto(vars: SetStaffPhotoVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetStaffPhotoData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddStaffDocument' Mutation. Allow users to execute without passing in DataConnect. */
+export function addStaffDocument(dc: DataConnect, vars: AddStaffDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddStaffDocumentData>>;
+/** Generated Node Admin SDK operation action function for the 'AddStaffDocument' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addStaffDocument(vars: AddStaffDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddStaffDocumentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveStaffDocument' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeStaffDocument(dc: DataConnect, vars: RemoveStaffDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStaffDocumentData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveStaffDocument' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeStaffDocument(vars: RemoveStaffDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStaffDocumentData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to execute without passing in DataConnect. */
 export function listInvoices(dc: DataConnect, vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;
 /** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to pass in custom DataConnect instances. */
@@ -1950,4 +2255,29 @@ export function countStudents(vars: CountStudentsVariables, options?: OperationO
 export function getStudent(dc: DataConnect, vars: GetStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentData>>;
 /** Generated Node Admin SDK operation action function for the 'GetStudent' Query. Allow users to pass in custom DataConnect instances. */
 export function getStudent(vars: GetStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StaffSeqInfo' Query. Allow users to execute without passing in DataConnect. */
+export function staffSeqInfo(dc: DataConnect, vars: StaffSeqInfoVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffSeqInfoData>>;
+/** Generated Node Admin SDK operation action function for the 'StaffSeqInfo' Query. Allow users to pass in custom DataConnect instances. */
+export function staffSeqInfo(vars: StaffSeqInfoVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffSeqInfoData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListStaffProfiles' Query. Allow users to execute without passing in DataConnect. */
+export function listStaffProfiles(dc: DataConnect, vars: ListStaffProfilesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffProfilesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListStaffProfiles' Query. Allow users to pass in custom DataConnect instances. */
+export function listStaffProfiles(vars: ListStaffProfilesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffProfilesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountStaffProfiles' Query. Allow users to execute without passing in DataConnect. */
+export function countStaffProfiles(dc: DataConnect, vars: CountStaffProfilesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountStaffProfilesData>>;
+/** Generated Node Admin SDK operation action function for the 'CountStaffProfiles' Query. Allow users to pass in custom DataConnect instances. */
+export function countStaffProfiles(vars: CountStaffProfilesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountStaffProfilesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetStaffProfile' Query. Allow users to execute without passing in DataConnect. */
+export function getStaffProfile(dc: DataConnect, vars: GetStaffProfileVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStaffProfileData>>;
+/** Generated Node Admin SDK operation action function for the 'GetStaffProfile' Query. Allow users to pass in custom DataConnect instances. */
+export function getStaffProfile(vars: GetStaffProfileVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStaffProfileData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListStaffDepartments' Query. Allow users to execute without passing in DataConnect. */
+export function listStaffDepartments(dc: DataConnect, vars: ListStaffDepartmentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffDepartmentsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListStaffDepartments' Query. Allow users to pass in custom DataConnect instances. */
+export function listStaffDepartments(vars: ListStaffDepartmentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffDepartmentsData>>;
 

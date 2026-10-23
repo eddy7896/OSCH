@@ -198,3 +198,29 @@ query GetStudent($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
     documents: studentDocuments_on_student(orderBy: [{createdAt: DESC}]) { id kind fileKey fileName contentType sizeBytes createdAt }
   }
 }
+
+# ---- Staff (P2-4). `search` is a LIKE pattern the gateway builds; a null filter is skipped.
+query StaffSeqInfo($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  school(id: $schoolId) { id staffSeq }
+}
+
+query ListStaffProfiles($schoolId: UUID!, $search: String, $status: StaffStatus, $department: String, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  staffProfiles(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: $status}}, {department: {eq: $department}}, {_or: [{firstName: {pattern: {like: $search, ignoreCase: true}}}, {lastName: {pattern: {like: $search, ignoreCase: true}}}, {employeeId: {pattern: {like: $search, ignoreCase: true}}}]}]}, orderBy: [{lastName: ASC}, {firstName: ASC}, {serial: ASC}], limit: $limit, offset: $offset) {
+    id employeeId firstName lastName department designation status userId
+  }
+}
+
+query CountStaffProfiles($schoolId: UUID!, $search: String, $status: StaffStatus, $department: String) @auth(level: NO_ACCESS) {
+  staffProfiles(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: $status}}, {department: {eq: $department}}, {_or: [{firstName: {pattern: {like: $search, ignoreCase: true}}}, {lastName: {pattern: {like: $search, ignoreCase: true}}}, {employeeId: {pattern: {like: $search, ignoreCase: true}}}]}]}) { _count }
+}
+
+query GetStaffProfile($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  staffProfiles(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id employeeId firstName lastName department designation phone email dateOfBirth gender dateOfJoining address emergencyContactName emergencyContactPhone status photoKey createdAt userId
+    documents: staffDocuments_on_staff(orderBy: [{createdAt: DESC}]) { id kind fileKey fileName contentType sizeBytes createdAt }
+  }
+}
+
+query ListStaffDepartments($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  staffProfiles(where: {schoolId: {eq: $schoolId}, department: {isNull: false}}, orderBy: [{department: ASC}]) { department }
+}
