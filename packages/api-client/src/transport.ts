@@ -20,7 +20,8 @@ export interface TransportOptions {
 }
 
 const compile = (r: RouteInfo) => ({ route: r, re: new RegExp(`^${r.path.replace(/[.*+?^$()|[\]\\]/g, '\\$&').replace(/\{[^}]+\}/g, '[^/]+')}/?$`) });
-const TABLE = ROUTES.map(compile);
+// A fixed path wins over a parameterised one (`/v1/staff/departments` before `/v1/staff/{id}`), whatever order the contract lists them in.
+const TABLE = ROUTES.map(compile).sort((a, b) => (a.route.path.match(/\{/g)?.length ?? 0) - (b.route.path.match(/\{/g)?.length ?? 0));
 
 /** The route a request belongs to (so the transport knows what it needs), or undefined for an unknown path. */
 export function matchRoute(method: string, pathname: string): RouteInfo | undefined {

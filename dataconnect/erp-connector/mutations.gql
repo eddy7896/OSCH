@@ -469,3 +469,61 @@ mutation RemoveStudentDocument($schoolId: UUID!, $id: UUID!, $actorId: String!, 
   studentDocument_delete(id: $id)
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "student.document.remove", entityType: "StudentDocument", entityId_expr: "request.variables.id", details: $details })
 }
+
+# ---- Staff (P2-4). Same number scheme as students: compare the counter with what the gateway read; a taken number aborts, nothing is written.
+mutation CreateStaff($schoolId: UUID!, $id: UUID!, $expectedSeq: Int!, $employeeId: String!, $firstName: String!, $lastName: String!, $department: String, $designation: String, $phone: String, $email: String, $dateOfBirth: Date, $gender: Gender, $dateOfJoining: Date, $address: String, $emergencyContactName: String, $emergencyContactPhone: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    counter: schools(where: {id: {eq: $schoolId}, staffSeq: {eq: $expectedSeq}}) @check(expr: "this.size() == 1", message: "staff number was taken, retry") { id }
+  }
+  school_update(id: $schoolId, data: { staffSeq_update: { inc: 1 } })
+  staffProfile_insert(data: { id: $id, schoolId: $schoolId, serial_expr: "request.variables.expectedSeq + 1", employeeId: $employeeId, firstName: $firstName, lastName: $lastName, department: $department, designation: $designation, phone: $phone, email: $email, dateOfBirth: $dateOfBirth, gender: $gender, dateOfJoining: $dateOfJoining, address: $address, emergencyContactName: $emergencyContactName, emergencyContactPhone: $emergencyContactPhone })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "staff.create", entityType: "StaffProfile", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateStaff($schoolId: UUID!, $id: UUID!, $firstName: String, $lastName: String, $department: String, $designation: String, $phone: String, $email: String, $dateOfBirth: Date, $gender: Gender, $dateOfJoining: Date, $address: String, $emergencyContactName: String, $emergencyContactPhone: String, $status: StaffStatus, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "staff member not found in this school") { id }
+  }
+  staffProfile_update(id: $id, data: { firstName: $firstName, lastName: $lastName, department: $department, designation: $designation, phone: $phone, email: $email, dateOfBirth: $dateOfBirth, gender: $gender, dateOfJoining: $dateOfJoining, address: $address, emergencyContactName: $emergencyContactName, emergencyContactPhone: $emergencyContactPhone, status: $status })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "staff.update", entityType: "StaffProfile", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Links the staff record to a sign-in account. The account must already be a member of THIS school (checked here, not only by the gateway).
+mutation LinkStaffAccount($schoolId: UUID!, $id: UUID!, $userId: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "staff member not found in this school") { id }
+    member: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}) @check(expr: "this.size() == 1", message: "that account is not a member of this school") { userId }
+  }
+  staffProfile_update(id: $id, data: { userId: $userId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "staff.account.link", entityType: "StaffProfile", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation SetStaffPhoto($schoolId: UUID!, $id: UUID!, $photoKey: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "staff member not found in this school") { id }
+  }
+  staffProfile_update(id: $id, data: { photoKey: $photoKey })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "staff.photo.set", entityType: "StaffProfile", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation AddStaffDocument($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $kind: StaffDocumentKind!, $fileKey: String!, $fileName: String!, $contentType: String!, $sizeBytes: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "staff member not found in this school") { id }
+  }
+  staffDocument_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, kind: $kind, fileKey: $fileKey, fileName: $fileName, contentType: $contentType, sizeBytes: $sizeBytes })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "staff.document.add", entityType: "StaffDocument", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation RemoveStaffDocument($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    doc: staffDocuments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "document not found in this school") { id }
+  }
+  staffDocument_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "staff.document.remove", entityType: "StaffDocument", entityId_expr: "request.variables.id", details: $details })
+}

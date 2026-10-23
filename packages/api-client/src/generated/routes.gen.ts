@@ -249,6 +249,84 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "School_update"
   },
   {
+    "method": "PUT",
+    "path": "/v1/staff/{id}/account",
+    "access": "tenant",
+    "operationId": "Staff_link"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/staff/{id}/documents/{documentId}/url",
+    "access": "tenant",
+    "operationId": "Staff_documentUrl"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/staff/{id}/documents/{documentId}",
+    "access": "tenant",
+    "operationId": "Staff_removeDocument"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/staff/{id}/documents/upload-url",
+    "access": "tenant",
+    "operationId": "Staff_documentTicket"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/staff/{id}/documents",
+    "access": "tenant",
+    "operationId": "Staff_addDocument"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/staff/{id}/photo/upload-url",
+    "access": "tenant",
+    "operationId": "Staff_photoTicket"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/staff/{id}/photo",
+    "access": "tenant",
+    "operationId": "Staff_photo"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/staff/{id}/photo",
+    "access": "tenant",
+    "operationId": "Staff_setPhoto"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/staff/{id}",
+    "access": "tenant",
+    "operationId": "Staff_get"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/staff/{id}",
+    "access": "tenant",
+    "operationId": "Staff_update"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/staff/departments",
+    "access": "tenant",
+    "operationId": "Staff_departments"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/staff",
+    "access": "tenant",
+    "operationId": "Staff_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/staff",
+    "access": "tenant",
+    "operationId": "Staff_create"
+  },
+  {
     "method": "GET",
     "path": "/v1/students/{id}/documents/{documentId}/url",
     "access": "tenant",

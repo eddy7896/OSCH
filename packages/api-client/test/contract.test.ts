@@ -27,7 +27,7 @@ describe('the client matches the committed contract', () => {
   });
 
   it('school routes are exactly those that need a school, and public routes exactly those without a token', () => {
-    expect(ROUTES.filter((r) => r.access === 'tenant').map((r) => r.path).every((p) => /^\/v1\/(memberships|invitations|uploads|school|academics|students)/.test(p))).toBe(true);
+    expect(ROUTES.filter((r) => r.access === 'tenant').map((r) => r.path).every((p) => /^\/v1\/(memberships|invitations|uploads|school|academics|students|staff)/.test(p))).toBe(true);
     expect(ROUTES.filter((r) => r.access === 'public').map((r) => r.path).sort()).toEqual(['/health', '/health/db', '/v1/public/schools/by-subdomain/{sub}']);
     expect(ROUTES.filter((r) => r.access === 'platform').every((r) => r.path.startsWith('/v1/platform/'))).toBe(true);
   });

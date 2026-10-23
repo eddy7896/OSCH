@@ -30,6 +30,7 @@ type School @table {
   activeAcademicYear: AcademicYear
   enrollmentPrefix: String! @default(value: "S") # first letters of enrolment ids
   studentSeq: Int! @default(value: 0) # last student serial handed out
+  staffSeq: Int! @default(value: 0) # last staff serial handed out
   # Profile and branding (P2-1). The colour is a validated #rrggbb (white text on it is at least 4.5:1); the logo key lives under schools/<id>/logo/.
   address: String
   contactPhone: String
@@ -80,6 +81,8 @@ type Invitation @table {
 # Student Profile, belonging to a School
 enum StudentStatus { ACTIVE INACTIVE LEFT }
 enum Gender { FEMALE MALE OTHER }
+enum StaffStatus { ACTIVE INACTIVE LEFT }
+enum StaffDocumentKind { APPOINTMENT_LETTER ID_PROOF QUALIFICATION EXPERIENCE MEDICAL OTHER }
 enum StudentDocumentKind { BIRTH_CERTIFICATE TRANSFER_CERTIFICATE REPORT_CARD ID_PROOF MEDICAL OTHER }
 
 # ERP: Student. `serial` is the school's running student number (1, 2, 3 ...); the gateway builds `enrollmentId` from the school
@@ -116,6 +119,44 @@ type StudentDocument @table @unique(fields: ["school", "fileKey"]) {
   school: School!
   student: Student!
   kind: StudentDocumentKind!
+  fileKey: String!
+  fileName: String!
+  contentType: String!
+  sizeBytes: Int!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ERP: a member of staff (HR record). Not every member of staff signs in, so the sign-in account is an optional link: `user` is set
+# only for someone who is already a member of this school. `serial` and `employeeId` work like the student numbers (unique per school).
+type StaffProfile @table @unique(fields: ["school", "employeeId"]) @unique(fields: ["school", "serial"]) @unique(fields: ["school", "user"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  user: User
+  employeeId: String!
+  serial: Int!
+  firstName: String!
+  lastName: String!
+  department: String
+  designation: String
+  phone: String
+  email: String
+  dateOfBirth: Date
+  gender: Gender
+  dateOfJoining: Date
+  address: String
+  emergencyContactName: String
+  emergencyContactPhone: String
+  status: StaffStatus! @default(value: ACTIVE)
+  photoKey: String # private bucket key
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A file kept for a member of staff (private bucket, key under schools/<school>/staff/<staff>/documents/).
+type StaffDocument @table @unique(fields: ["school", "fileKey"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  staff: StaffProfile!
+  kind: StaffDocumentKind!
   fileKey: String!
   fileName: String!
   contentType: String!

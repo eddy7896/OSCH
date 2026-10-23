@@ -62,6 +62,21 @@ export const SchoolRole = {
   PARENT: "PARENT",
 }
 
+export const StaffDocumentKind = {
+  APPOINTMENT_LETTER: "APPOINTMENT_LETTER",
+  ID_PROOF: "ID_PROOF",
+  QUALIFICATION: "QUALIFICATION",
+  EXPERIENCE: "EXPERIENCE",
+  MEDICAL: "MEDICAL",
+  OTHER: "OTHER",
+}
+
+export const StaffStatus = {
+  ACTIVE: "ACTIVE",
+  INACTIVE: "INACTIVE",
+  LEFT: "LEFT",
+}
+
 export const StudentDocumentKind = {
   BIRTH_CERTIFICATE: "BIRTH_CERTIFICATE",
   TRANSFER_CERTIFICATE: "TRANSFER_CERTIFICATE",
@@ -371,6 +386,42 @@ export function removeStudentDocument(dcOrVarsOrOptions, varsOrOptions, options)
   return dcInstance.executeMutation('RemoveStudentDocument', inputVars, inputOpts);
 }
 
+export function createStaff(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateStaff', inputVars, inputOpts);
+}
+
+export function updateStaff(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateStaff', inputVars, inputOpts);
+}
+
+export function linkStaffAccount(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('LinkStaffAccount', inputVars, inputOpts);
+}
+
+export function setStaffPhoto(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetStaffPhoto', inputVars, inputOpts);
+}
+
+export function addStaffDocument(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddStaffDocument', inputVars, inputOpts);
+}
+
+export function removeStaffDocument(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveStaffDocument', inputVars, inputOpts);
+}
+
 export function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -519,5 +570,35 @@ export function getStudent(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeQuery('GetStudent', inputVars, inputOpts);
+}
+
+export function staffSeqInfo(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StaffSeqInfo', inputVars, inputOpts);
+}
+
+export function listStaffProfiles(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListStaffProfiles', inputVars, inputOpts);
+}
+
+export function countStaffProfiles(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountStaffProfiles', inputVars, inputOpts);
+}
+
+export function getStaffProfile(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetStaffProfile', inputVars, inputOpts);
+}
+
+export function listStaffDepartments(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListStaffDepartments', inputVars, inputOpts);
 }
 

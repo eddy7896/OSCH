@@ -125,6 +125,25 @@ const studentWithDocument = async (w: World): Promise<Record<string, string>> =>
   return { ...ctx, documentId: dash(docId) };
 };
 
+const hrOfA = { token: (w: World) => w.roles.A.HR_MANAGER.token, actor: (w: World) => w.roles.A.HR_MANAGER.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+const staffOfA = async (w: World): Promise<Record<string, string>> => {
+  const seq = (await w.db.staffSeqInfo({ schoolId: w.schools.A })).data.school!.staffSeq;
+  const id = randomUUID();
+  await w.db.createStaff({ schoolId: w.schools.A, id, expectedSeq: seq, employeeId: `E${String(seq + 1).padStart(4, '0')}`, firstName: 'Sample', lastName: 'Staff', actorId: w.roles.A.HR_MANAGER.uid });
+  return { id: dash(id) };
+};
+const staffKey = (w: World, staffId: string, area: 'photo' | 'documents', ext = 'png', type = 'image/png'): string => {
+  const key = `schools/${w.schools.A}/staff/${staffId}/${area}/${randomUUID()}.${ext}`;
+  sampleStore.objects.set(key, { sizeBytes: 1234, contentType: type });
+  return key;
+};
+const staffWithDocument = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await staffOfA(w);
+  const docId = randomUUID();
+  await w.db.addStaffDocument({ schoolId: w.schools.A, id: docId, staffId: ctx['id']!, kind: 'ID_PROOF' as never, fileKey: staffKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf'), fileName: 'id.pdf', contentType: 'application/pdf', sizeBytes: 1234, actorId: w.roles.A.HR_MANAGER.uid });
+  return { ...ctx, documentId: dash(docId) };
+};
+
 export const SAMPLES: Record<string, Sample> = {
   'POST /platform/schools': { ...platform, body: () => ({ name: 'Audit sample school', subDomain: `a${randomUUID().slice(0, 12)}`, defaultLanguage: 'en' }), auditSchool: (_w, _c, res) => res['id'] },
   'PATCH /platform/schools/:id': { ...platform, prepare: freshSchool, body: () => ({ name: 'Renamed by the audit sample' }), auditSchool: (_w, ctx) => ctx['id']! },
@@ -187,4 +206,10 @@ export const SAMPLES: Record<string, Sample> = {
   'PUT /students/:id/photo': { ...academicAdminOfA, prepare: studentOfA, body: (w, ctx) => ({ key: uploadedKey(w, ctx['id']!, 'photo') }) },
   'POST /students/:id/documents': { ...academicAdminOfA, prepare: studentOfA, body: (w, ctx) => ({ key: uploadedKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf'), kind: 'BIRTH_CERTIFICATE', fileName: 'birth certificate.pdf' }) },
   'DELETE /students/:id/documents/:documentId': { ...academicAdminOfA, prepare: studentWithDocument },
+  'POST /staff': { ...hrOfA, body: () => ({ firstName: 'Audit', lastName: 'Staff', department: 'Science' }) },
+  'PATCH /staff/:id': { ...hrOfA, prepare: staffOfA, body: () => ({ designation: 'Teacher' }) },
+  'PUT /staff/:id/account': { ...hrOfA, prepare: staffOfA, body: (w) => ({ userId: w.roles.A.TEACHER.uid }) },
+  'PUT /staff/:id/photo': { ...hrOfA, prepare: staffOfA, body: (w, ctx) => ({ key: staffKey(w, ctx['id']!, 'photo') }) },
+  'POST /staff/:id/documents': { ...hrOfA, prepare: staffOfA, body: (w, ctx) => ({ key: staffKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf'), kind: 'APPOINTMENT_LETTER', fileName: 'letter.pdf' }) },
+  'DELETE /staff/:id/documents/:documentId': { ...hrOfA, prepare: staffWithDocument },
 };

@@ -59,6 +59,12 @@ export type AddMembershipDto = {
     userId: string;
 };
 
+export type AddStaffDocumentDto = {
+    fileName: string;
+    key: string;
+    kind: 'APPOINTMENT_LETTER' | 'ID_PROOF' | 'QUALIFICATION' | 'EXPERIENCE' | 'MEDICAL' | 'OTHER';
+};
+
 export type ClassDto = {
     capacity: number;
     gradeLevel: {
@@ -130,6 +136,21 @@ export type CreateStaffAccountDto = {
     email?: string;
     phoneNumber?: string;
     schoolRole: 'PRINCIPAL' | 'MANAGEMENT' | 'BURSAR' | 'ACADEMIC_ADMIN' | 'SYSTEM_ADMIN' | 'HR_MANAGER' | 'ACCOUNTANT' | 'ADMISSIONS_OFFICER' | 'TRANSPORT_MANAGER' | 'OPERATIONS_MANAGER' | 'TEACHER' | 'STAFF' | 'DRIVER';
+};
+
+export type CreateStaffDto = {
+    address?: string;
+    dateOfBirth?: string;
+    dateOfJoining?: string;
+    department?: string;
+    designation?: string;
+    email?: string;
+    emergencyContactName?: string;
+    emergencyContactPhone?: string;
+    firstName: string;
+    gender?: 'FEMALE' | 'MALE' | 'OTHER';
+    lastName: string;
+    phone?: string;
 };
 
 export type CreateStudentDto = {
@@ -237,6 +258,10 @@ export type InvitationDto = {
 
 export type InvitationListDto = {
     items: Array<InvitationDto>;
+};
+
+export type LinkStaffAccountDto = {
+    userId: string;
 };
 
 export type MeLanguageDto = {
@@ -392,6 +417,73 @@ export type StaffAccountDto = {
     userId: string;
 };
 
+export type StaffDepartmentsDto = {
+    items: Array<string>;
+};
+
+export type StaffDocumentDto = {
+    contentType: string;
+    createdAt: string;
+    fileName: string;
+    id: string;
+    kind: string;
+    sizeBytes: number;
+};
+
+export type StaffDocumentUploadRequestDto = {
+    contentType: 'image/png' | 'image/jpeg' | 'image/webp' | 'application/pdf';
+    sizeBytes: number;
+};
+
+export type StaffDto = {
+    address: string | null;
+    dateOfBirth: string | null;
+    dateOfJoining: string | null;
+    department: string | null;
+    designation: string | null;
+    documents: Array<StaffDocumentDto>;
+    email: string | null;
+    emergencyContactName: string | null;
+    emergencyContactPhone: string | null;
+    employeeId: string;
+    firstName: string;
+    gender: string | null;
+    hasAccount: boolean;
+    hasPhoto: boolean;
+    id: string;
+    lastName: string;
+    phone: string | null;
+    status: string;
+    userId: string | null;
+};
+
+export type StaffListDto = {
+    items: Array<StaffSummaryDto>;
+    page: number;
+    pageSize: number;
+    total: number;
+};
+
+export type StaffPhotoUploadRequestDto = {
+    contentType: 'image/png' | 'image/jpeg' | 'image/webp';
+    sizeBytes: number;
+};
+
+export type StaffSetPhotoDto = {
+    key: string;
+};
+
+export type StaffSummaryDto = {
+    department: string | null;
+    designation: string | null;
+    employeeId: string;
+    firstName: string;
+    hasAccount: boolean;
+    id: string;
+    lastName: string;
+    status: string;
+};
+
 export type StudentDocumentDto = {
     contentType: string;
     createdAt: string;
@@ -491,6 +583,22 @@ export type UpdateSchoolProfileDto = {
     defaultLanguage?: 'en' | 'hi' | 'ur' | 'ks' | 'sd' | 'ps' | 'fa' | 'ar' | 'bn' | 'as' | 'mr' | 'doi' | 'gu' | 'pa' | 'or' | 'ta' | 'te' | 'kn' | 'ml';
     name?: string;
     primaryColor?: string;
+};
+
+export type UpdateStaffDto = {
+    address?: string;
+    dateOfBirth?: string;
+    dateOfJoining?: string;
+    department?: string;
+    designation?: string;
+    email?: string;
+    emergencyContactName?: string;
+    emergencyContactPhone?: string;
+    firstName?: string;
+    gender?: 'FEMALE' | 'MALE' | 'OTHER';
+    lastName?: string;
+    phone?: string;
+    status?: 'ACTIVE' | 'INACTIVE' | 'LEFT';
 };
 
 export type UpdateStudentDto = {
@@ -2287,6 +2395,568 @@ export type SchoolUpdateResponses = {
 };
 
 export type SchoolUpdateResponse = SchoolUpdateResponses[keyof SchoolUpdateResponses];
+
+export type StaffListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        search?: string;
+        status?: 'ACTIVE' | 'INACTIVE' | 'LEFT';
+        department?: string;
+        page?: number;
+        pageSize?: number;
+    };
+    url: '/v1/staff';
+};
+
+export type StaffListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffListError = StaffListErrors[keyof StaffListErrors];
+
+export type StaffListResponses = {
+    200: StaffListDto;
+};
+
+export type StaffListResponse = StaffListResponses[keyof StaffListResponses];
+
+export type StaffCreateData = {
+    body: CreateStaffDto;
+    path?: never;
+    query?: never;
+    url: '/v1/staff';
+};
+
+export type StaffCreateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffCreateError = StaffCreateErrors[keyof StaffCreateErrors];
+
+export type StaffCreateResponses = {
+    201: StaffDto;
+};
+
+export type StaffCreateResponse = StaffCreateResponses[keyof StaffCreateResponses];
+
+export type StaffDepartmentsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/staff/departments';
+};
+
+export type StaffDepartmentsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffDepartmentsError = StaffDepartmentsErrors[keyof StaffDepartmentsErrors];
+
+export type StaffDepartmentsResponses = {
+    200: StaffDepartmentsDto;
+};
+
+export type StaffDepartmentsResponse = StaffDepartmentsResponses[keyof StaffDepartmentsResponses];
+
+export type StaffGetData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}';
+};
+
+export type StaffGetErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffGetError = StaffGetErrors[keyof StaffGetErrors];
+
+export type StaffGetResponses = {
+    200: StaffDto;
+};
+
+export type StaffGetResponse = StaffGetResponses[keyof StaffGetResponses];
+
+export type StaffUpdateData = {
+    body: UpdateStaffDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}';
+};
+
+export type StaffUpdateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffUpdateError = StaffUpdateErrors[keyof StaffUpdateErrors];
+
+export type StaffUpdateResponses = {
+    200: StaffDto;
+};
+
+export type StaffUpdateResponse = StaffUpdateResponses[keyof StaffUpdateResponses];
+
+export type StaffLinkData = {
+    body: LinkStaffAccountDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}/account';
+};
+
+export type StaffLinkErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffLinkError = StaffLinkErrors[keyof StaffLinkErrors];
+
+export type StaffLinkResponses = {
+    200: StaffDto;
+};
+
+export type StaffLinkResponse = StaffLinkResponses[keyof StaffLinkResponses];
+
+export type StaffAddDocumentData = {
+    body: AddStaffDocumentDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}/documents';
+};
+
+export type StaffAddDocumentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffAddDocumentError = StaffAddDocumentErrors[keyof StaffAddDocumentErrors];
+
+export type StaffAddDocumentResponses = {
+    201: StaffDto;
+};
+
+export type StaffAddDocumentResponse = StaffAddDocumentResponses[keyof StaffAddDocumentResponses];
+
+export type StaffDocumentTicketData = {
+    body: StaffDocumentUploadRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}/documents/upload-url';
+};
+
+export type StaffDocumentTicketErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffDocumentTicketError = StaffDocumentTicketErrors[keyof StaffDocumentTicketErrors];
+
+export type StaffDocumentTicketResponses = {
+    200: FileUploadTicketDto;
+};
+
+export type StaffDocumentTicketResponse = StaffDocumentTicketResponses[keyof StaffDocumentTicketResponses];
+
+export type StaffRemoveDocumentData = {
+    body?: never;
+    path: {
+        id: string;
+        documentId: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}/documents/{documentId}';
+};
+
+export type StaffRemoveDocumentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffRemoveDocumentError = StaffRemoveDocumentErrors[keyof StaffRemoveDocumentErrors];
+
+export type StaffRemoveDocumentResponses = {
+    204: void;
+};
+
+export type StaffRemoveDocumentResponse = StaffRemoveDocumentResponses[keyof StaffRemoveDocumentResponses];
+
+export type StaffDocumentUrlData = {
+    body?: never;
+    path: {
+        id: string;
+        documentId: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}/documents/{documentId}/url';
+};
+
+export type StaffDocumentUrlErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffDocumentUrlError = StaffDocumentUrlErrors[keyof StaffDocumentUrlErrors];
+
+export type StaffDocumentUrlResponses = {
+    200: SignedReadDto;
+};
+
+export type StaffDocumentUrlResponse = StaffDocumentUrlResponses[keyof StaffDocumentUrlResponses];
+
+export type StaffPhotoData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}/photo';
+};
+
+export type StaffPhotoErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffPhotoError = StaffPhotoErrors[keyof StaffPhotoErrors];
+
+export type StaffPhotoResponses = {
+    200: SignedReadDto;
+};
+
+export type StaffPhotoResponse = StaffPhotoResponses[keyof StaffPhotoResponses];
+
+export type StaffSetPhotoData = {
+    body: StaffSetPhotoDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}/photo';
+};
+
+export type StaffSetPhotoErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffSetPhotoError = StaffSetPhotoErrors[keyof StaffSetPhotoErrors];
+
+export type StaffSetPhotoResponses = {
+    200: StaffDto;
+};
+
+export type StaffSetPhotoResponse = StaffSetPhotoResponses[keyof StaffSetPhotoResponses];
+
+export type StaffPhotoTicketData = {
+    body: StaffPhotoUploadRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/staff/{id}/photo/upload-url';
+};
+
+export type StaffPhotoTicketErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffPhotoTicketError = StaffPhotoTicketErrors[keyof StaffPhotoTicketErrors];
+
+export type StaffPhotoTicketResponses = {
+    200: FileUploadTicketDto;
+};
+
+export type StaffPhotoTicketResponse = StaffPhotoTicketResponses[keyof StaffPhotoTicketResponses];
 
 export type StudentsListData = {
     body?: never;
