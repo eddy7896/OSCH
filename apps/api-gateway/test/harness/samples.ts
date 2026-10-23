@@ -144,6 +144,22 @@ const staffWithDocument = async (w: World): Promise<Record<string, string>> => {
   return { ...ctx, documentId: dash(docId) };
 };
 
+const officerOfA = { token: (w: World) => w.roles.A.ADMISSIONS_OFFICER.token, actor: (w: World) => w.roles.A.ADMISSIONS_OFFICER.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+/** A class level, year and class of school A, plus an application for them (optionally already ACCEPTED), through the real operations. */
+const applicationOfA = (accepted: boolean) => async (w: World): Promise<Record<string, string>> => {
+  const actor = w.roles.A.ADMISSIONS_OFFICER.uid;
+  const year = randomUUID();
+  await w.db.createAcademicYear({ schoolId: w.schools.A, id: year, name: `AY-${year.slice(0, 6)}`, startDate: '2060-04-01', endDate: '2061-03-31', actorId: actor });
+  const level = (await w.db.listGradeLevels({ schoolId: w.schools.A })).data.gradeLevels.find((l) => l.name === '2')!.id;
+  const room = randomUUID();
+  await w.db.createClassroom({ schoolId: w.schools.A, id: room, gradeLevelId: level, section: `S${year.slice(0, 3)}`, name: `2 S${year.slice(0, 3)}`, capacity: 30, actorId: actor });
+  const seq = (await w.db.applicationSeqInfo({ schoolId: w.schools.A })).data.school!.applicationSeq;
+  const id = randomUUID();
+  await w.db.createApplication({ schoolId: w.schools.A, id, expectedSeq: seq, applicationNo: `A${String(seq + 1).padStart(4, '0')}`, firstName: 'Sample', lastName: 'Applicant', gradeLevelId: level, academicYearId: year, guardianName: 'Sample Guardian', guardianRelationship: 'MOTHER', guardianEmail: 'guardian@example.com', actorId: actor });
+  if (accepted) await w.db.decideApplication({ schoolId: w.schools.A, id, fromStatus: 'SUBMITTED' as never, toStatus: 'ACCEPTED' as never, actorId: actor });
+  return { id: dash(id), level: dash(level), year: dash(year), room: dash(room) };
+};
+
 export const SAMPLES: Record<string, Sample> = {
   'POST /platform/schools': { ...platform, body: () => ({ name: 'Audit sample school', subDomain: `a${randomUUID().slice(0, 12)}`, defaultLanguage: 'en' }), auditSchool: (_w, _c, res) => res['id'] },
   'PATCH /platform/schools/:id': { ...platform, prepare: freshSchool, body: () => ({ name: 'Renamed by the audit sample' }), auditSchool: (_w, ctx) => ctx['id']! },
@@ -212,4 +228,12 @@ export const SAMPLES: Record<string, Sample> = {
   'PUT /staff/:id/photo': { ...hrOfA, prepare: staffOfA, body: (w, ctx) => ({ key: staffKey(w, ctx['id']!, 'photo') }) },
   'POST /staff/:id/documents': { ...hrOfA, prepare: staffOfA, body: (w, ctx) => ({ key: staffKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf'), kind: 'APPOINTMENT_LETTER', fileName: 'letter.pdf' }) },
   'DELETE /staff/:id/documents/:documentId': { ...hrOfA, prepare: staffWithDocument },
+  'POST /admissions': {
+    ...officerOfA,
+    prepare: async (w) => ({ level: dash((await w.db.listGradeLevels({ schoolId: w.schools.A })).data.gradeLevels.find((l) => l.name === '3')!.id), year: dash((await applicationOfA(false)(w))['year']!) }),
+    body: (_w, ctx) => ({ firstName: 'Audit', lastName: 'Applicant', gradeLevelId: ctx['level'], academicYearId: ctx['year'], guardianName: 'Audit Guardian', guardianRelationship: 'FATHER' }),
+  },
+  'PATCH /admissions/:id': { ...officerOfA, prepare: applicationOfA(false), body: () => ({ notes: 'Sibling in class 5' }) },
+  'POST /admissions/:id/decision': { ...officerOfA, prepare: applicationOfA(false), body: () => ({ status: 'UNDER_REVIEW' }) },
+  'POST /admissions/:id/admit': { ...officerOfA, prepare: applicationOfA(true), body: (_w, ctx) => ({ classroomId: ctx['room'] }) },
 };
