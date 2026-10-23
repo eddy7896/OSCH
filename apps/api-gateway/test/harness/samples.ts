@@ -76,6 +76,55 @@ const yearOfA = async (w: World): Promise<Record<string, string>> => {
   return { id };
 };
 
+/** A student of school A (admitted through the real operation, as the gateway does). */
+const studentOfA = async (w: World): Promise<Record<string, string>> => {
+  const { school } = (await w.db.schoolSeq({ schoolId: w.schools.A })).data;
+  const id = randomUUID();
+  await w.db.createStudent({ schoolId: w.schools.A, id, expectedSeq: school!.studentSeq, enrollmentId: `${school!.enrollmentPrefix}${String(school!.studentSeq + 1).padStart(4, '0')}`, firstName: 'Sample', lastName: 'Student', actorId: actorA(w) });
+  return { id: dash(id) };
+};
+const placedStudentOfA = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await studentOfA(w);
+  const year = randomUUID();
+  await w.db.createAcademicYear({ schoolId: w.schools.A, id: year, name: `PY-${year.slice(0, 6)}`, startDate: '2050-04-01', endDate: '2051-03-31', actorId: actorA(w) });
+  const room = (await w.db.listClassrooms({ schoolId: w.schools.A })).data.classrooms[0]!;
+  await w.db.placeStudent({ schoolId: w.schools.A, studentId: ctx['id']!, academicYearId: year, classroomId: room.id, actorId: actorA(w) });
+  return { ...ctx, year: dash(year), room: dash(room.id) };
+};
+const guardianOfA = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await studentOfA(w);
+  const gid = randomUUID();
+  await w.db.addGuardian({ schoolId: w.schools.A, id: gid, studentId: ctx['id']!, name: 'Sample Guardian', relationship: 'MOTHER', phone: '+919876543210', isPrimary: false, actorId: actorA(w) });
+  return { ...ctx, guardianId: gid };
+};
+const roomOfA = async (w: World): Promise<string> => dash((await w.db.listClassrooms({ schoolId: w.schools.A })).data.classrooms[0]!.id);
+
+/** An in-memory private store the sample (and the integration tests) share: the gateway code under test is real, only the bucket is fake. */
+export const sampleStore = (() => {
+  const objects = new Map<string, { sizeBytes: number; contentType: string }>();
+  return {
+    objects,
+    store: {
+      presignPut: async (i: { key: string }) => `https://private.example/put/${i.key}`,
+      presignGet: async (i: { key: string }) => `https://private.example/get/${i.key}`,
+      head: async (key: string) => objects.get(key) ?? null,
+      remove: async (key: string) => void objects.delete(key),
+    },
+  };
+})();
+const uploadedKey = (w: World, studentId: string, area: 'photo' | 'documents', ext = 'png', type = 'image/png'): string => {
+  const key = `schools/${w.schools.A}/students/${studentId}/${area}/${randomUUID()}.${ext}`;
+  sampleStore.objects.set(key, { sizeBytes: 1234, contentType: type });
+  return key;
+};
+const studentWithDocument = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await studentOfA(w);
+  const key = uploadedKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf');
+  const docId = randomUUID();
+  await w.db.addStudentDocument({ schoolId: w.schools.A, id: docId, studentId: ctx['id']!, kind: 'ID_PROOF' as never, fileKey: key, fileName: 'id.pdf', contentType: 'application/pdf', sizeBytes: 1234, actorId: actorA(w) });
+  return { ...ctx, documentId: dash(docId) };
+};
+
 export const SAMPLES: Record<string, Sample> = {
   'POST /platform/schools': { ...platform, body: () => ({ name: 'Audit sample school', subDomain: `a${randomUUID().slice(0, 12)}`, defaultLanguage: 'en' }), auditSchool: (_w, _c, res) => res['id'] },
   'PATCH /platform/schools/:id': { ...platform, prepare: freshSchool, body: () => ({ name: 'Renamed by the audit sample' }), auditSchool: (_w, ctx) => ctx['id']! },
@@ -119,4 +168,23 @@ export const SAMPLES: Record<string, Sample> = {
   'PATCH /academics/years/:id': { ...academicAdminOfA, prepare: yearOfA, body: () => ({ name: 'Renamed year' }) },
   'POST /academics/years/:id/activate': { ...academicAdminOfA, prepare: yearOfA, body: () => ({}) },
   'DELETE /academics/years/:id': { ...academicAdminOfA, prepare: yearOfA },
+  'POST /students': { ...academicAdminOfA, body: () => ({ firstName: 'Audit', lastName: 'Sample' }) },
+  'PATCH /students/:id': { ...academicAdminOfA, prepare: studentOfA, body: () => ({ address: '2 Sample Lane' }) },
+  'POST /students/:id/placement': {
+    ...academicAdminOfA,
+    prepare: async (w) => {
+      const ctx = await studentOfA(w);
+      const year = randomUUID();
+      await w.db.createAcademicYear({ schoolId: w.schools.A, id: year, name: `QY-${year.slice(0, 6)}`, startDate: '2052-04-01', endDate: '2053-03-31', actorId: actorA(w) });
+      return { ...ctx, year: dash(year), room: await roomOfA(w) };
+    },
+    body: (_w, ctx) => ({ classroomId: ctx['room'], academicYearId: ctx['year'] }),
+  },
+  'PATCH /students/:id/placement': { ...academicAdminOfA, prepare: placedStudentOfA, body: (_w, ctx) => ({ classroomId: ctx['room'], academicYearId: ctx['year'] }) },
+  'POST /students/:id/guardians': { ...academicAdminOfA, prepare: studentOfA, body: () => ({ name: 'Audit Guardian', relationship: 'FATHER', phone: '+919876543211' }) },
+  'PATCH /students/:id/guardians/:guardianId': { ...academicAdminOfA, prepare: guardianOfA, body: () => ({ name: 'Renamed Guardian' }) },
+  'DELETE /students/:id/guardians/:guardianId': { ...academicAdminOfA, prepare: guardianOfA },
+  'PUT /students/:id/photo': { ...academicAdminOfA, prepare: studentOfA, body: (w, ctx) => ({ key: uploadedKey(w, ctx['id']!, 'photo') }) },
+  'POST /students/:id/documents': { ...academicAdminOfA, prepare: studentOfA, body: (w, ctx) => ({ key: uploadedKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf'), kind: 'BIRTH_CERTIFICATE', fileName: 'birth certificate.pdf' }) },
+  'DELETE /students/:id/documents/:documentId': { ...academicAdminOfA, prepare: studentWithDocument },
 };

@@ -14,8 +14,10 @@ describe.skipIf(!host)('Admin SDK against the emulator', () => {
     db = createDatabase({ projectId: 'demo-oruschools' });
     await db.createSchool({ id: A, name: 'School A', subDomain: `a-${tag}` });
     await db.createSchool({ id: B, name: 'School B', subDomain: `b-${tag}` });
-    await db.createStudent({ schoolId: A, firstName: 'Aarav', lastName: 'Mehta', enrollmentId: `E-${tag}`, gradeLevel: '10' });
-    studentId = (await db.listStudents({ schoolId: A })).data.students[0]!.id;
+    await db.upsertUser({ id: `adm-${tag}`, email: `adm-${tag}@example.com` });
+    await db.createSchoolMember({ schoolId: A, userId: `adm-${tag}`, schoolRole: 'ACADEMIC_ADMIN' as never });
+    studentId = randomUUID();
+    await db.createStudent({ schoolId: A, id: studentId, expectedSeq: 0, enrollmentId: `E-${tag}`, firstName: 'Aarav', lastName: 'Mehta', actorId: `adm-${tag}` });
   });
 
   it('runs a NO_ACCESS mutation as admin (the operations are gateway-only, not unusable)', async () => {
@@ -24,8 +26,8 @@ describe.skipIf(!host)('Admin SDK against the emulator', () => {
   });
 
   it('scopes reads by schoolId: B does not see A\'s student', async () => {
-    expect((await db.listStudents({ schoolId: A })).data.students).toHaveLength(1);
-    expect((await db.listStudents({ schoolId: B })).data.students).toHaveLength(0);
+    expect((await db.listStudents({ schoolId: A, limit: 50, offset: 0 })).data.students).toHaveLength(1);
+    expect((await db.listStudents({ schoolId: B, limit: 50, offset: 0 })).data.students).toHaveLength(0);
   });
 
   it('a cross-tenant reference is ABORTED by the database and surfaces as FORBIDDEN_REFERENCE (403)', async () => {
@@ -53,7 +55,7 @@ describe('Admin SDK with no server', () => {
     process.env.DATA_CONNECT_EMULATOR_HOST = '127.0.0.1:1';
     try {
       const db = createDatabase({ projectId: 'demo-unreachable' });
-      await expect(db.listStudents({ schoolId: randomUUID() })).rejects.toMatchObject({ kind: 'UNAVAILABLE', httpStatus: 502 });
+      await expect(db.listStudents({ schoolId: randomUUID(), limit: 1, offset: 0 })).rejects.toMatchObject({ kind: 'UNAVAILABLE', httpStatus: 502 });
     } finally {
       if (saved === undefined) delete process.env.DATA_CONNECT_EMULATOR_HOST;
       else process.env.DATA_CONNECT_EMULATOR_HOST = saved;

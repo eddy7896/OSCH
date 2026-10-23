@@ -36,9 +36,9 @@ out=$(run "$M" CreateSchool --vars "{\"id\":\"$A\",\"name\":\"School A\",\"subDo
 out=$(run "$M" CreateSchool --vars "{\"id\":\"$B\",\"name\":\"School B\",\"subDomain\":\"b-$TAG\"}"); check_ok "create school B" "$out"
 out=$(run "$M" CreateUser --vars "{\"id\":\"u-$TAG\",\"email\":\"$TAG@example.com\",\"globalRole\":\"USER\"}"); check_ok "create user (enum GlobalRole)" "$out"
 out=$(run "$M" CreateSchoolMember --vars "{\"schoolId\":\"$A\",\"userId\":\"u-$TAG\",\"schoolRole\":\"PRINCIPAL\"}"); check_ok "create membership (enum SchoolRole)" "$out"
-out=$(run "$M" CreateStudent --vars "{\"schoolId\":\"$A\",\"firstName\":\"Aarav\",\"lastName\":\"Mehta\",\"enrollmentId\":\"E-$TAG\",\"gradeLevel\":\"10\"}"); check_ok "create student in A" "$out"
-out=$(run "$Q" ListStudents --vars "{\"schoolId\":\"$A\"}"); SID=$(first_id "$out"); [ -n "$SID" ] && ok "A lists its student" || bad "A lists no student"
-out=$(run "$Q" ListStudents --vars "{\"schoolId\":\"$B\"}"); check_lacks "B cannot list A's student" "$out" "Aarav"
+SID=$(uid); out=$(run "$M" CreateStudent --vars "{\"schoolId\":\"$A\",\"id\":\"$SID\",\"expectedSeq\":0,\"enrollmentId\":\"E-$TAG\",\"firstName\":\"Aarav\",\"lastName\":\"Mehta\",\"actorId\":\"u-$TAG\"}"); check_ok "create student in A" "$out"
+out=$(run "$Q" ListStudents --vars "{\"schoolId\":\"$A\",\"limit\":50,\"offset\":0}"); grep -q "Aarav" <<<"$out" && ok "A lists its student" || bad "A lists no student"
+out=$(run "$Q" ListStudents --vars "{\"schoolId\":\"$B\",\"limit\":50,\"offset\":0}"); check_lacks "B cannot list A's student" "$out" "Aarav"
 
 out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$A\",\"studentId\":\"$SID\",\"amountMinor\":\"1240000\",\"dueDate\":\"2026-11-01\"}"); check_ok "invoice for A's student billed to A" "$out"
 out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$B\",\"studentId\":\"$SID\",\"amountMinor\":\"999\",\"dueDate\":\"2026-11-01\"}"); check_rejected "invoice for A's student billed to B is ABORTED" "$out" "ABORTED"

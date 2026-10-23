@@ -2,7 +2,7 @@
 
 import { client } from './client.gen.js';
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client/index.js';
-import type { AcademicsActivateYearData, AcademicsActivateYearErrors, AcademicsActivateYearResponses, AcademicsClassesData, AcademicsClassesErrors, AcademicsClassesResponses, AcademicsCreateClassData, AcademicsCreateClassErrors, AcademicsCreateClassResponses, AcademicsCreateLevelData, AcademicsCreateLevelErrors, AcademicsCreateLevelResponses, AcademicsCreateSubjectData, AcademicsCreateSubjectErrors, AcademicsCreateSubjectResponses, AcademicsCreateYearData, AcademicsCreateYearErrors, AcademicsCreateYearResponses, AcademicsDeleteClassData, AcademicsDeleteClassErrors, AcademicsDeleteClassResponses, AcademicsDeleteLevelData, AcademicsDeleteLevelErrors, AcademicsDeleteLevelResponses, AcademicsDeleteSubjectData, AcademicsDeleteSubjectErrors, AcademicsDeleteSubjectResponses, AcademicsDeleteYearData, AcademicsDeleteYearErrors, AcademicsDeleteYearResponses, AcademicsLevelsData, AcademicsLevelsErrors, AcademicsLevelsResponses, AcademicsSubjectsData, AcademicsSubjectsErrors, AcademicsSubjectsResponses, AcademicsUpdateClassData, AcademicsUpdateClassErrors, AcademicsUpdateClassResponses, AcademicsUpdateLevelData, AcademicsUpdateLevelErrors, AcademicsUpdateLevelResponses, AcademicsUpdateSubjectData, AcademicsUpdateSubjectErrors, AcademicsUpdateSubjectResponses, AcademicsUpdateYearData, AcademicsUpdateYearErrors, AcademicsUpdateYearResponses, AcademicsYearsData, AcademicsYearsErrors, AcademicsYearsResponses, AccountsCreateData, AccountsCreateErrors, AccountsCreateResponses, HealthCheckData, HealthCheckDbData, HealthCheckDbErrors, HealthCheckDbResponses, HealthCheckErrors, HealthCheckResponses, InvitationsAcceptData, InvitationsAcceptErrors, InvitationsAcceptResponses, InvitationsCreateData, InvitationsCreateErrors, InvitationsCreateResponses, InvitationsListData, InvitationsListErrors, InvitationsListResponses, InvitationsRevokeData, InvitationsRevokeErrors, InvitationsRevokeResponses, MeGetData, MeGetErrors, MeGetResponses, MembershipsAddData, MembershipsAddErrors, MembershipsAddResponses, MembershipsListData, MembershipsListErrors, MembershipsListResponses, MembershipsRemoveData, MembershipsRemoveErrors, MembershipsRemoveResponses, MembershipsUpdateData, MembershipsUpdateErrors, MembershipsUpdateResponses, MePreferencesData, MePreferencesErrors, MePreferencesResponses, PlatformSchoolsActivateData, PlatformSchoolsActivateErrors, PlatformSchoolsActivateResponses, PlatformSchoolsCreateAdminData, PlatformSchoolsCreateAdminErrors, PlatformSchoolsCreateAdminResponses, PlatformSchoolsCreateData, PlatformSchoolsCreateErrors, PlatformSchoolsCreateResponses, PlatformSchoolsGetData, PlatformSchoolsGetErrors, PlatformSchoolsGetResponses, PlatformSchoolsListData, PlatformSchoolsListErrors, PlatformSchoolsListResponses, PlatformSchoolsSuspendData, PlatformSchoolsSuspendErrors, PlatformSchoolsSuspendResponses, PlatformSchoolsUpdateData, PlatformSchoolsUpdateErrors, PlatformSchoolsUpdateResponses, PublicSchoolsBySubdomainData, PublicSchoolsBySubdomainErrors, PublicSchoolsBySubdomainResponses, SchoolProfileData, SchoolProfileErrors, SchoolProfileResponses, SchoolSetLogoData, SchoolSetLogoErrors, SchoolSetLogoResponses, SchoolUpdateData, SchoolUpdateErrors, SchoolUpdateResponses, UploadsSchoolLogoData, UploadsSchoolLogoErrors, UploadsSchoolLogoResponses } from './types.gen.js';
+import type { AcademicsActivateYearData, AcademicsActivateYearErrors, AcademicsActivateYearResponses, AcademicsClassesData, AcademicsClassesErrors, AcademicsClassesResponses, AcademicsCreateClassData, AcademicsCreateClassErrors, AcademicsCreateClassResponses, AcademicsCreateLevelData, AcademicsCreateLevelErrors, AcademicsCreateLevelResponses, AcademicsCreateSubjectData, AcademicsCreateSubjectErrors, AcademicsCreateSubjectResponses, AcademicsCreateYearData, AcademicsCreateYearErrors, AcademicsCreateYearResponses, AcademicsDeleteClassData, AcademicsDeleteClassErrors, AcademicsDeleteClassResponses, AcademicsDeleteLevelData, AcademicsDeleteLevelErrors, AcademicsDeleteLevelResponses, AcademicsDeleteSubjectData, AcademicsDeleteSubjectErrors, AcademicsDeleteSubjectResponses, AcademicsDeleteYearData, AcademicsDeleteYearErrors, AcademicsDeleteYearResponses, AcademicsLevelsData, AcademicsLevelsErrors, AcademicsLevelsResponses, AcademicsSubjectsData, AcademicsSubjectsErrors, AcademicsSubjectsResponses, AcademicsUpdateClassData, AcademicsUpdateClassErrors, AcademicsUpdateClassResponses, AcademicsUpdateLevelData, AcademicsUpdateLevelErrors, AcademicsUpdateLevelResponses, AcademicsUpdateSubjectData, AcademicsUpdateSubjectErrors, AcademicsUpdateSubjectResponses, AcademicsUpdateYearData, AcademicsUpdateYearErrors, AcademicsUpdateYearResponses, AcademicsYearsData, AcademicsYearsErrors, AcademicsYearsResponses, AccountsCreateData, AccountsCreateErrors, AccountsCreateResponses, HealthCheckData, HealthCheckDbData, HealthCheckDbErrors, HealthCheckDbResponses, HealthCheckErrors, HealthCheckResponses, InvitationsAcceptData, InvitationsAcceptErrors, InvitationsAcceptResponses, InvitationsCreateData, InvitationsCreateErrors, InvitationsCreateResponses, InvitationsListData, InvitationsListErrors, InvitationsListResponses, InvitationsRevokeData, InvitationsRevokeErrors, InvitationsRevokeResponses, MeGetData, MeGetErrors, MeGetResponses, MembershipsAddData, MembershipsAddErrors, MembershipsAddResponses, MembershipsListData, MembershipsListErrors, MembershipsListResponses, MembershipsRemoveData, MembershipsRemoveErrors, MembershipsRemoveResponses, MembershipsUpdateData, MembershipsUpdateErrors, MembershipsUpdateResponses, MePreferencesData, MePreferencesErrors, MePreferencesResponses, PlatformSchoolsActivateData, PlatformSchoolsActivateErrors, PlatformSchoolsActivateResponses, PlatformSchoolsCreateAdminData, PlatformSchoolsCreateAdminErrors, PlatformSchoolsCreateAdminResponses, PlatformSchoolsCreateData, PlatformSchoolsCreateErrors, PlatformSchoolsCreateResponses, PlatformSchoolsGetData, PlatformSchoolsGetErrors, PlatformSchoolsGetResponses, PlatformSchoolsListData, PlatformSchoolsListErrors, PlatformSchoolsListResponses, PlatformSchoolsSuspendData, PlatformSchoolsSuspendErrors, PlatformSchoolsSuspendResponses, PlatformSchoolsUpdateData, PlatformSchoolsUpdateErrors, PlatformSchoolsUpdateResponses, PublicSchoolsBySubdomainData, PublicSchoolsBySubdomainErrors, PublicSchoolsBySubdomainResponses, SchoolProfileData, SchoolProfileErrors, SchoolProfileResponses, SchoolSetLogoData, SchoolSetLogoErrors, SchoolSetLogoResponses, SchoolUpdateData, SchoolUpdateErrors, SchoolUpdateResponses, StudentFilesAddDocumentData, StudentFilesAddDocumentErrors, StudentFilesAddDocumentResponses, StudentFilesDocumentTicketData, StudentFilesDocumentTicketErrors, StudentFilesDocumentTicketResponses, StudentFilesDocumentUrlData, StudentFilesDocumentUrlErrors, StudentFilesDocumentUrlResponses, StudentFilesPhotoData, StudentFilesPhotoErrors, StudentFilesPhotoResponses, StudentFilesPhotoTicketData, StudentFilesPhotoTicketErrors, StudentFilesPhotoTicketResponses, StudentFilesRemoveDocumentData, StudentFilesRemoveDocumentErrors, StudentFilesRemoveDocumentResponses, StudentFilesSetPhotoData, StudentFilesSetPhotoErrors, StudentFilesSetPhotoResponses, StudentsAddGuardianData, StudentsAddGuardianErrors, StudentsAddGuardianResponses, StudentsCreateData, StudentsCreateErrors, StudentsCreateResponses, StudentsGetData, StudentsGetErrors, StudentsGetResponses, StudentsListData, StudentsListErrors, StudentsListResponses, StudentsMoveData, StudentsMoveErrors, StudentsMoveResponses, StudentsPlaceData, StudentsPlaceErrors, StudentsPlaceResponses, StudentsRemoveGuardianData, StudentsRemoveGuardianErrors, StudentsRemoveGuardianResponses, StudentsUpdateData, StudentsUpdateErrors, StudentsUpdateGuardianData, StudentsUpdateGuardianErrors, StudentsUpdateGuardianResponses, StudentsUpdateResponses, UploadsSchoolLogoData, UploadsSchoolLogoErrors, UploadsSchoolLogoResponses } from './types.gen.js';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -329,6 +329,142 @@ export const schoolProfile = <ThrowOnError extends boolean = false>(options?: Op
 export const schoolUpdate = <ThrowOnError extends boolean = false>(options: Options<SchoolUpdateData, ThrowOnError>): RequestResult<SchoolUpdateResponses, SchoolUpdateErrors, ThrowOnError> => (options.client ?? client).patch<SchoolUpdateResponses, SchoolUpdateErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/v1/school/profile',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentsList = <ThrowOnError extends boolean = false>(options?: Options<StudentsListData, ThrowOnError>): RequestResult<StudentsListResponses, StudentsListErrors, ThrowOnError> => (options?.client ?? client).get<StudentsListResponses, StudentsListErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students',
+    ...options
+});
+
+export const studentsCreate = <ThrowOnError extends boolean = false>(options: Options<StudentsCreateData, ThrowOnError>): RequestResult<StudentsCreateResponses, StudentsCreateErrors, ThrowOnError> => (options.client ?? client).post<StudentsCreateResponses, StudentsCreateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentsGet = <ThrowOnError extends boolean = false>(options: Options<StudentsGetData, ThrowOnError>): RequestResult<StudentsGetResponses, StudentsGetErrors, ThrowOnError> => (options.client ?? client).get<StudentsGetResponses, StudentsGetErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}',
+    ...options
+});
+
+export const studentsUpdate = <ThrowOnError extends boolean = false>(options: Options<StudentsUpdateData, ThrowOnError>): RequestResult<StudentsUpdateResponses, StudentsUpdateErrors, ThrowOnError> => (options.client ?? client).patch<StudentsUpdateResponses, StudentsUpdateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentFilesAddDocument = <ThrowOnError extends boolean = false>(options: Options<StudentFilesAddDocumentData, ThrowOnError>): RequestResult<StudentFilesAddDocumentResponses, StudentFilesAddDocumentErrors, ThrowOnError> => (options.client ?? client).post<StudentFilesAddDocumentResponses, StudentFilesAddDocumentErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/documents',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentFilesDocumentTicket = <ThrowOnError extends boolean = false>(options: Options<StudentFilesDocumentTicketData, ThrowOnError>): RequestResult<StudentFilesDocumentTicketResponses, StudentFilesDocumentTicketErrors, ThrowOnError> => (options.client ?? client).post<StudentFilesDocumentTicketResponses, StudentFilesDocumentTicketErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/documents/upload-url',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentFilesRemoveDocument = <ThrowOnError extends boolean = false>(options: Options<StudentFilesRemoveDocumentData, ThrowOnError>): RequestResult<StudentFilesRemoveDocumentResponses, StudentFilesRemoveDocumentErrors, ThrowOnError> => (options.client ?? client).delete<StudentFilesRemoveDocumentResponses, StudentFilesRemoveDocumentErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/documents/{documentId}',
+    ...options
+});
+
+export const studentFilesDocumentUrl = <ThrowOnError extends boolean = false>(options: Options<StudentFilesDocumentUrlData, ThrowOnError>): RequestResult<StudentFilesDocumentUrlResponses, StudentFilesDocumentUrlErrors, ThrowOnError> => (options.client ?? client).get<StudentFilesDocumentUrlResponses, StudentFilesDocumentUrlErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/documents/{documentId}/url',
+    ...options
+});
+
+export const studentsAddGuardian = <ThrowOnError extends boolean = false>(options: Options<StudentsAddGuardianData, ThrowOnError>): RequestResult<StudentsAddGuardianResponses, StudentsAddGuardianErrors, ThrowOnError> => (options.client ?? client).post<StudentsAddGuardianResponses, StudentsAddGuardianErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/guardians',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentsRemoveGuardian = <ThrowOnError extends boolean = false>(options: Options<StudentsRemoveGuardianData, ThrowOnError>): RequestResult<StudentsRemoveGuardianResponses, StudentsRemoveGuardianErrors, ThrowOnError> => (options.client ?? client).delete<StudentsRemoveGuardianResponses, StudentsRemoveGuardianErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/guardians/{guardianId}',
+    ...options
+});
+
+export const studentsUpdateGuardian = <ThrowOnError extends boolean = false>(options: Options<StudentsUpdateGuardianData, ThrowOnError>): RequestResult<StudentsUpdateGuardianResponses, StudentsUpdateGuardianErrors, ThrowOnError> => (options.client ?? client).patch<StudentsUpdateGuardianResponses, StudentsUpdateGuardianErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/guardians/{guardianId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentFilesPhoto = <ThrowOnError extends boolean = false>(options: Options<StudentFilesPhotoData, ThrowOnError>): RequestResult<StudentFilesPhotoResponses, StudentFilesPhotoErrors, ThrowOnError> => (options.client ?? client).get<StudentFilesPhotoResponses, StudentFilesPhotoErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/photo',
+    ...options
+});
+
+export const studentFilesSetPhoto = <ThrowOnError extends boolean = false>(options: Options<StudentFilesSetPhotoData, ThrowOnError>): RequestResult<StudentFilesSetPhotoResponses, StudentFilesSetPhotoErrors, ThrowOnError> => (options.client ?? client).put<StudentFilesSetPhotoResponses, StudentFilesSetPhotoErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/photo',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentFilesPhotoTicket = <ThrowOnError extends boolean = false>(options: Options<StudentFilesPhotoTicketData, ThrowOnError>): RequestResult<StudentFilesPhotoTicketResponses, StudentFilesPhotoTicketErrors, ThrowOnError> => (options.client ?? client).post<StudentFilesPhotoTicketResponses, StudentFilesPhotoTicketErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/photo/upload-url',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentsMove = <ThrowOnError extends boolean = false>(options: Options<StudentsMoveData, ThrowOnError>): RequestResult<StudentsMoveResponses, StudentsMoveErrors, ThrowOnError> => (options.client ?? client).patch<StudentsMoveResponses, StudentsMoveErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/placement',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const studentsPlace = <ThrowOnError extends boolean = false>(options: Options<StudentsPlaceData, ThrowOnError>): RequestResult<StudentsPlaceResponses, StudentsPlaceErrors, ThrowOnError> => (options.client ?? client).post<StudentsPlaceResponses, StudentsPlaceErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/students/{id}/placement',
     ...options,
     headers: {
         'Content-Type': 'application/json',

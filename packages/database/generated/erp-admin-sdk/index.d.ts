@@ -12,6 +12,11 @@ export enum AcademicYearStatus {
   ACTIVE = "ACTIVE",
   ARCHIVED = "ARCHIVED",
 }
+export enum Gender {
+  FEMALE = "FEMALE",
+  MALE = "MALE",
+  OTHER = "OTHER",
+}
 export enum GlobalRole {
   SUPER_ADMIN = "SUPER_ADMIN",
   USER = "USER",
@@ -54,6 +59,19 @@ export enum SchoolRole {
   STAFF = "STAFF",
   DRIVER = "DRIVER",
   PARENT = "PARENT",
+}
+export enum StudentDocumentKind {
+  BIRTH_CERTIFICATE = "BIRTH_CERTIFICATE",
+  TRANSFER_CERTIFICATE = "TRANSFER_CERTIFICATE",
+  REPORT_CARD = "REPORT_CARD",
+  ID_PROOF = "ID_PROOF",
+  MEDICAL = "MEDICAL",
+  OTHER = "OTHER",
+}
+export enum StudentStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  LEFT = "LEFT",
 }
 export enum SubscriptionStatus {
   ACTIVE = "ACTIVE",
@@ -108,6 +126,32 @@ export interface ActivateAcademicYearVariables {
   details?: unknown | null;
 }
 
+export interface AddGuardianData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+  };
+  guardian_insert: Guardian_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddGuardianVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  name: string;
+  relationship: string;
+  phone?: string | null;
+  email?: string | null;
+  isPrimary: boolean;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface AddMembershipData {
   query?: {
     actor: ({
@@ -126,6 +170,32 @@ export interface AddMembershipVariables {
   details?: unknown | null;
 }
 
+export interface AddStudentDocumentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+  };
+  studentDocument_insert: StudentDocument_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddStudentDocumentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  kind: StudentDocumentKind;
+  fileKey: string;
+  fileName: string;
+  contentType: string;
+  sizeBytes: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface AuditLog_Key {
   id: UUIDString;
   __typename?: 'AuditLog_Key';
@@ -139,6 +209,18 @@ export interface ClassSchedule_Key {
 export interface Classroom_Key {
   id: UUIDString;
   __typename?: 'Classroom_Key';
+}
+
+export interface CountStudentsData {
+  students: ({
+    _count: number;
+  })[];
+}
+
+export interface CountStudentsVariables {
+  schoolId: UUIDString;
+  search?: string | null;
+  status?: StudentStatus | null;
 }
 
 export interface CreateAcademicYearData {
@@ -354,15 +436,32 @@ export interface CreateSchoolVariables {
 }
 
 export interface CreateStudentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    counter: ({
+      id: UUIDString;
+    } & School_Key)[];
+  };
+  school_update?: School_Key | null;
   student_insert: Student_Key;
+  auditLog_insert: AuditLog_Key;
 }
 
 export interface CreateStudentVariables {
   schoolId: UUIDString;
+  id: UUIDString;
+  expectedSeq: number;
+  enrollmentId: string;
   firstName: string;
   lastName: string;
-  enrollmentId: string;
-  gradeLevel: string;
+  dateOfBirth?: DateString | null;
+  gender?: Gender | null;
+  admissionDate?: DateString | null;
+  address?: string | null;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CreateSubjectData {
@@ -580,6 +679,55 @@ export interface GetSchoolVariables {
   schoolId: UUIDString;
 }
 
+export interface GetStudentData {
+  students: ({
+    id: UUIDString;
+    firstName: string;
+    lastName: string;
+    enrollmentId: string;
+    serial: number;
+    status: StudentStatus;
+    gender?: Gender | null;
+    dateOfBirth?: DateString | null;
+    admissionDate?: DateString | null;
+    address?: string | null;
+    photoKey?: string | null;
+    createdAt: TimestampString;
+    placements: ({
+      academicYear: {
+        id: UUIDString;
+        name: string;
+      } & AcademicYear_Key;
+      classroom: {
+        id: UUIDString;
+        name: string;
+      } & Classroom_Key;
+    })[];
+    guardians: ({
+      id: UUIDString;
+      name: string;
+      relationship: string;
+      phone?: string | null;
+      email?: string | null;
+      isPrimary: boolean;
+    } & Guardian_Key)[];
+    documents: ({
+      id: UUIDString;
+      kind: StudentDocumentKind;
+      fileKey: string;
+      fileName: string;
+      contentType: string;
+      sizeBytes: number;
+      createdAt: TimestampString;
+    } & StudentDocument_Key)[];
+  } & Student_Key)[];
+}
+
+export interface GetStudentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetUserData {
   user?: {
     id: string;
@@ -598,6 +746,11 @@ export interface GetUserVariables {
 export interface GradeLevel_Key {
   id: UUIDString;
   __typename?: 'GradeLevel_Key';
+}
+
+export interface Guardian_Key {
+  id: UUIDString;
+  __typename?: 'Guardian_Key';
 }
 
 export interface Invitation_Key {
@@ -881,12 +1034,29 @@ export interface ListStudentsData {
     firstName: string;
     lastName: string;
     enrollmentId: string;
-    gradeLevel: string;
+    serial: number;
+    status: StudentStatus;
+    gender?: Gender | null;
+    dateOfBirth?: DateString | null;
+    placements: ({
+      academicYear: {
+        id: UUIDString;
+        name: string;
+      } & AcademicYear_Key;
+      classroom: {
+        id: UUIDString;
+        name: string;
+      } & Classroom_Key;
+    })[];
   } & Student_Key)[];
 }
 
 export interface ListStudentsVariables {
   schoolId: UUIDString;
+  search?: string | null;
+  status?: StudentStatus | null;
+  limit: number;
+  offset: number;
 }
 
 export interface ListSubjectsData {
@@ -901,6 +1071,34 @@ export interface ListSubjectsVariables {
   schoolId: UUIDString;
 }
 
+export interface MoveStudentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    room: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+    placement: ({
+      id: UUIDString;
+    } & StudentEnrollment_Key)[];
+  };
+  studentEnrollment_updateMany: number;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface MoveStudentVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  academicYearId: UUIDString;
+  classroomId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface ParentGuardian_Key {
   studentId: UUIDString;
   userId: string;
@@ -910,6 +1108,34 @@ export interface ParentGuardian_Key {
 export interface Payroll_Key {
   id: UUIDString;
   __typename?: 'Payroll_Key';
+}
+
+export interface PlaceStudentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+    room: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+  };
+  studentEnrollment_insert: StudentEnrollment_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface PlaceStudentVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  academicYearId: UUIDString;
+  classroomId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface ProvisionSchoolAdminData {
@@ -961,6 +1187,26 @@ export interface ProvisionSchoolVariables {
   details?: unknown | null;
 }
 
+export interface RemoveGuardianData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    guardian: ({
+      id: UUIDString;
+    } & Guardian_Key)[];
+  };
+  guardian_delete?: Guardian_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveGuardianVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface RemoveMembershipData {
   query?: {
     target: ({
@@ -974,6 +1220,26 @@ export interface RemoveMembershipData {
 export interface RemoveMembershipVariables {
   schoolId: UUIDString;
   userId: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface RemoveStudentDocumentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    doc: ({
+      id: UUIDString;
+    } & StudentDocument_Key)[];
+  };
+  studentDocument_delete?: StudentDocument_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveStudentDocumentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
   actorId: string;
   details?: unknown | null;
 }
@@ -1001,6 +1267,18 @@ export interface SchoolMember_Key {
   __typename?: 'SchoolMember_Key';
 }
 
+export interface SchoolSeqData {
+  school?: {
+    id: UUIDString;
+    studentSeq: number;
+    enrollmentPrefix: string;
+  } & School_Key;
+}
+
+export interface SchoolSeqVariables {
+  schoolId: UUIDString;
+}
+
 export interface School_Key {
   id: UUIDString;
   __typename?: 'School_Key';
@@ -1019,6 +1297,27 @@ export interface SetSchoolLogoData {
 export interface SetSchoolLogoVariables {
   schoolId: UUIDString;
   logoKey: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface SetStudentPhotoData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+  };
+  student_update?: Student_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetStudentPhotoVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  photoKey: string;
   actorId: string;
   details?: unknown | null;
 }
@@ -1042,6 +1341,16 @@ export interface SetUserLanguageData {
 export interface SetUserLanguageVariables {
   userId: string;
   language?: string | null;
+}
+
+export interface StudentDocument_Key {
+  id: UUIDString;
+  __typename?: 'StudentDocument_Key';
+}
+
+export interface StudentEnrollment_Key {
+  id: UUIDString;
+  __typename?: 'StudentEnrollment_Key';
 }
 
 export interface Student_Key {
@@ -1122,6 +1431,31 @@ export interface UpdateGradeLevelVariables {
   details?: unknown | null;
 }
 
+export interface UpdateGuardianData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    guardian: ({
+      id: UUIDString;
+    } & Guardian_Key)[];
+  };
+  guardian_update?: Guardian_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateGuardianVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  name?: string | null;
+  relationship?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  isPrimary?: boolean | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface UpdateLeaveRequestData {
   query?: {
     schoolMembers: ({
@@ -1192,6 +1526,33 @@ export interface UpdateSchoolVariables {
   details?: unknown | null;
 }
 
+export interface UpdateStudentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+  };
+  student_update?: Student_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateStudentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  firstName?: string | null;
+  lastName?: string | null;
+  dateOfBirth?: DateString | null;
+  gender?: Gender | null;
+  admissionDate?: DateString | null;
+  address?: string | null;
+  status?: StudentStatus | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface UpdateSubjectData {
   query?: {
     actor: ({
@@ -1239,11 +1600,6 @@ export function createSchool(vars: CreateSchoolVariables, options?: OperationOpt
 export function createUser(dc: DataConnect, vars: CreateUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateUserData>>;
 /** Generated Node Admin SDK operation action function for the 'CreateUser' Mutation. Allow users to pass in custom DataConnect instances. */
 export function createUser(vars: CreateUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateUserData>>;
-
-/** Generated Node Admin SDK operation action function for the 'CreateStudent' Mutation. Allow users to execute without passing in DataConnect. */
-export function createStudent(dc: DataConnect, vars: CreateStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStudentData>>;
-/** Generated Node Admin SDK operation action function for the 'CreateStudent' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createStudent(vars: CreateStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStudentData>>;
 
 /** Generated Node Admin SDK operation action function for the 'CreateSchoolMember' Mutation. Allow users to execute without passing in DataConnect. */
 export function createSchoolMember(dc: DataConnect, vars: CreateSchoolMemberVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolMemberData>>;
@@ -1420,15 +1776,60 @@ export function deleteAcademicYear(dc: DataConnect, vars: DeleteAcademicYearVari
 /** Generated Node Admin SDK operation action function for the 'DeleteAcademicYear' Mutation. Allow users to pass in custom DataConnect instances. */
 export function deleteAcademicYear(vars: DeleteAcademicYearVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteAcademicYearData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateStudent' Mutation. Allow users to execute without passing in DataConnect. */
+export function createStudent(dc: DataConnect, vars: CreateStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStudentData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateStudent' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createStudent(vars: CreateStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStudentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateStudent' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateStudent(dc: DataConnect, vars: UpdateStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateStudentData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateStudent' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateStudent(vars: UpdateStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateStudentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'PlaceStudent' Mutation. Allow users to execute without passing in DataConnect. */
+export function placeStudent(dc: DataConnect, vars: PlaceStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PlaceStudentData>>;
+/** Generated Node Admin SDK operation action function for the 'PlaceStudent' Mutation. Allow users to pass in custom DataConnect instances. */
+export function placeStudent(vars: PlaceStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PlaceStudentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'MoveStudent' Mutation. Allow users to execute without passing in DataConnect. */
+export function moveStudent(dc: DataConnect, vars: MoveStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MoveStudentData>>;
+/** Generated Node Admin SDK operation action function for the 'MoveStudent' Mutation. Allow users to pass in custom DataConnect instances. */
+export function moveStudent(vars: MoveStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MoveStudentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddGuardian' Mutation. Allow users to execute without passing in DataConnect. */
+export function addGuardian(dc: DataConnect, vars: AddGuardianVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddGuardianData>>;
+/** Generated Node Admin SDK operation action function for the 'AddGuardian' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addGuardian(vars: AddGuardianVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddGuardianData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateGuardian' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateGuardian(dc: DataConnect, vars: UpdateGuardianVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateGuardianData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateGuardian' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateGuardian(vars: UpdateGuardianVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateGuardianData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveGuardian' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeGuardian(dc: DataConnect, vars: RemoveGuardianVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveGuardianData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveGuardian' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeGuardian(vars: RemoveGuardianVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveGuardianData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetStudentPhoto' Mutation. Allow users to execute without passing in DataConnect. */
+export function setStudentPhoto(dc: DataConnect, vars: SetStudentPhotoVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetStudentPhotoData>>;
+/** Generated Node Admin SDK operation action function for the 'SetStudentPhoto' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setStudentPhoto(vars: SetStudentPhotoVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetStudentPhotoData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddStudentDocument' Mutation. Allow users to execute without passing in DataConnect. */
+export function addStudentDocument(dc: DataConnect, vars: AddStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddStudentDocumentData>>;
+/** Generated Node Admin SDK operation action function for the 'AddStudentDocument' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addStudentDocument(vars: AddStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddStudentDocumentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveStudentDocument' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeStudentDocument(dc: DataConnect, vars: RemoveStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStudentDocumentData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveStudentDocument' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeStudentDocument(vars: RemoveStudentDocumentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStudentDocumentData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to execute without passing in DataConnect. */
 export function listInvoices(dc: DataConnect, vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;
 /** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to pass in custom DataConnect instances. */
 export function listInvoices(vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;
-
-/** Generated Node Admin SDK operation action function for the 'ListStudents' Query. Allow users to execute without passing in DataConnect. */
-export function listStudents(dc: DataConnect, vars: ListStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStudentsData>>;
-/** Generated Node Admin SDK operation action function for the 'ListStudents' Query. Allow users to pass in custom DataConnect instances. */
-export function listStudents(vars: ListStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStudentsData>>;
 
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
@@ -1529,4 +1930,24 @@ export function listSubjects(vars: ListSubjectsVariables, options?: OperationOpt
 export function listAcademicYears(dc: DataConnect, vars: ListAcademicYearsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAcademicYearsData>>;
 /** Generated Node Admin SDK operation action function for the 'ListAcademicYears' Query. Allow users to pass in custom DataConnect instances. */
 export function listAcademicYears(vars: ListAcademicYearsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAcademicYearsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SchoolSeq' Query. Allow users to execute without passing in DataConnect. */
+export function schoolSeq(dc: DataConnect, vars: SchoolSeqVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SchoolSeqData>>;
+/** Generated Node Admin SDK operation action function for the 'SchoolSeq' Query. Allow users to pass in custom DataConnect instances. */
+export function schoolSeq(vars: SchoolSeqVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SchoolSeqData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListStudents' Query. Allow users to execute without passing in DataConnect. */
+export function listStudents(dc: DataConnect, vars: ListStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStudentsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListStudents' Query. Allow users to pass in custom DataConnect instances. */
+export function listStudents(vars: ListStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStudentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountStudents' Query. Allow users to execute without passing in DataConnect. */
+export function countStudents(dc: DataConnect, vars: CountStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountStudentsData>>;
+/** Generated Node Admin SDK operation action function for the 'CountStudents' Query. Allow users to pass in custom DataConnect instances. */
+export function countStudents(vars: CountStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountStudentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetStudent' Query. Allow users to execute without passing in DataConnect. */
+export function getStudent(dc: DataConnect, vars: GetStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentData>>;
+/** Generated Node Admin SDK operation action function for the 'GetStudent' Query. Allow users to pass in custom DataConnect instances. */
+export function getStudent(vars: GetStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentData>>;
 

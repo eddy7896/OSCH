@@ -249,6 +249,102 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "School_update"
   },
   {
+    "method": "GET",
+    "path": "/v1/students/{id}/documents/{documentId}/url",
+    "access": "tenant",
+    "operationId": "StudentFiles_documentUrl"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/students/{id}/documents/{documentId}",
+    "access": "tenant",
+    "operationId": "StudentFiles_removeDocument"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students/{id}/documents/upload-url",
+    "access": "tenant",
+    "operationId": "StudentFiles_documentTicket"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students/{id}/documents",
+    "access": "tenant",
+    "operationId": "StudentFiles_addDocument"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/students/{id}/guardians/{guardianId}",
+    "access": "tenant",
+    "operationId": "Students_removeGuardian"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/students/{id}/guardians/{guardianId}",
+    "access": "tenant",
+    "operationId": "Students_updateGuardian"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students/{id}/guardians",
+    "access": "tenant",
+    "operationId": "Students_addGuardian"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students/{id}/photo/upload-url",
+    "access": "tenant",
+    "operationId": "StudentFiles_photoTicket"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/students/{id}/photo",
+    "access": "tenant",
+    "operationId": "StudentFiles_photo"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/students/{id}/photo",
+    "access": "tenant",
+    "operationId": "StudentFiles_setPhoto"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/students/{id}/placement",
+    "access": "tenant",
+    "operationId": "Students_move"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students/{id}/placement",
+    "access": "tenant",
+    "operationId": "Students_place"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/students/{id}",
+    "access": "tenant",
+    "operationId": "Students_get"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/students/{id}",
+    "access": "tenant",
+    "operationId": "Students_update"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/students",
+    "access": "tenant",
+    "operationId": "Students_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students",
+    "access": "tenant",
+    "operationId": "Students_create"
+  },
+  {
     "method": "POST",
     "path": "/v1/uploads/school-logo",
     "access": "tenant",
