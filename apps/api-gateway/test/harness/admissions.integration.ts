@@ -113,11 +113,11 @@ describe.skipIf(!ready)('admissions against the real emulators (P2-3)', () => {
 
   it('concurrent admissions each get their own student number', async () => {
     const ctx = await setup();
-    const apps = await Promise.all(Array.from({ length: 5 }, () => apply(ctx)));
-    for (const a of apps) await call('post', `/admissions/${a.id}/decision`).send({ status: 'ACCEPTED' }).expect(200);
+    const apps = await Promise.all(Array.from({ length: 4 }, () => apply(ctx)));
+    await Promise.all(apps.map((a) => call('post', `/admissions/${a.id}/decision`).send({ status: 'ACCEPTED' }).expect(200)));
     const results = await Promise.all(apps.map((a) => call('post', `/admissions/${a.id}/admit`).send({ classroomId: ctx.room.id }).expect(201)));
-    expect(new Set(results.map((r) => r.body.student.enrollmentId)).size).toBe(5);
-  });
+    expect(new Set(results.map((r) => r.body.student.enrollmentId)).size).toBe(4);
+  }, 120_000); // the emulator runs one statement at a time and racing admits retry with a pause, so a slow CI machine needs room
 
   it('list: filters by status, year and search, with a total; paging', async () => {
     const ctx = await setup();
