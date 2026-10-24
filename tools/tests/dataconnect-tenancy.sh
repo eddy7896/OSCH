@@ -40,12 +40,11 @@ SID=$(uid); out=$(run "$M" CreateStudent --vars "{\"schoolId\":\"$A\",\"id\":\"$
 out=$(run "$Q" ListStudents --vars "{\"schoolId\":\"$A\",\"limit\":50,\"offset\":0}"); grep -q "Aarav" <<<"$out" && ok "A lists its student" || bad "A lists no student"
 out=$(run "$Q" ListStudents --vars "{\"schoolId\":\"$B\",\"limit\":50,\"offset\":0}"); check_lacks "B cannot list A's student" "$out" "Aarav"
 
-out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$A\",\"studentId\":\"$SID\",\"amountMinor\":\"1240000\",\"dueDate\":\"2026-11-01\"}"); check_ok "invoice for A's student billed to A" "$out"
-out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$B\",\"studentId\":\"$SID\",\"amountMinor\":\"999\",\"dueDate\":\"2026-11-01\"}"); check_rejected "invoice for A's student billed to B is ABORTED" "$out" "ABORTED"
-out=$(run "$Q" ListInvoices --vars "{\"schoolId\":\"$A\"}"); check_has "A sees its invoice in minor units" "$out" "1240000"
+out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$A\",\"id\":\"$(uid)\",\"studentId\":\"$SID\",\"title\":\"Fee\",\"actorId\":\"u-$TAG\",\"amountMinor\":\"1240000\",\"dueDate\":\"2026-11-01\"}"); check_ok "invoice for A's student billed to A" "$out"
+out=$(run "$Q" ListInvoices --vars "{\"schoolId\":\"$A\",\"limit\":50,\"offset\":0}"); check_has "A sees its invoice in minor units" "$out" "1240000"
 [ "$(grep -c '"amountMinor"' <<<"$out")" = "1" ] && ok "exactly one invoice exists for A (the rejected one wrote nothing)" || bad "unexpected invoice count for A"
-out=$(run "$Q" ListInvoices --vars "{\"schoolId\":\"$B\"}"); check_lacks "B sees none of A's invoices" "$out" "amountMinor"
-out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$A\",\"studentId\":\"00000000-0000-4000-8000-000000000000\",\"amountMinor\":\"1\",\"dueDate\":\"2026-11-01\"}"); check_rejected "invoice for a non-existent student is ABORTED" "$out" "ABORTED"
+out=$(run "$Q" ListInvoices --vars "{\"schoolId\":\"$B\",\"limit\":50,\"offset\":0}"); check_lacks "B sees none of A's invoices" "$out" "amountMinor"
+out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$A\",\"id\":\"$(uid)\",\"title\":\"Fee\",\"actorId\":\"u-$TAG\",\"studentId\":\"00000000-0000-4000-8000-000000000000\",\"amountMinor\":\"1\",\"dueDate\":\"2026-11-01\"}"); check_rejected "invoice for a non-existent student is ABORTED" "$out" "ABORTED"
 
 out=$(run "$M" CreateLeaveRequest --vars "{\"schoolId\":\"$A\",\"userId\":\"u-$TAG\",\"startDate\":\"2026-11-02\",\"endDate\":\"2026-11-03\",\"reason\":\"x\"}"); check_ok "create leave in A" "$out"
 out=$(run "$Q" ListLeaveRequests --vars "{\"schoolId\":\"$A\"}"); LID=$(first_id "$out"); check_has "leave defaults to PENDING" "$out" "PENDING"
@@ -63,6 +62,7 @@ out=$(run "$M" CreateSchoolMember --vars "{\"schoolId\":\"$A\",\"userId\":\"u-$T
 UB="ub-$TAG"
 out=$(run "$M" CreateUser --vars "{\"id\":\"$UB\",\"email\":\"ub$TAG@example.com\",\"globalRole\":\"USER\"}"); check_ok "create user that belongs to school B only" "$out"
 out=$(run "$M" CreateSchoolMember --vars "{\"schoolId\":\"$B\",\"userId\":\"$UB\",\"schoolRole\":\"TEACHER\"}"); check_ok "make that user a member of B" "$out"
+out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$B\",\"id\":\"$(uid)\",\"studentId\":\"$SID\",\"title\":\"Fee\",\"actorId\":\"$UB\",\"amountMinor\":\"999\",\"dueDate\":\"2026-11-01\"}"); check_rejected "invoice for A's student billed to B is ABORTED" "$out" "ABORTED"
 GLA=$(uid); GLB=$(uid)
 out=$(run "$M" CreateGradeLevel --vars "{\"schoolId\":\"$A\",\"id\":\"$GLA\",\"name\":\"10-$TAG\",\"position\":10,\"actorId\":\"u-$TAG\"}"); check_ok "class level in A" "$out"
 out=$(run "$M" CreateGradeLevel --vars "{\"schoolId\":\"$B\",\"id\":\"$GLB\",\"name\":\"10-$TAG\",\"position\":10,\"actorId\":\"$UB\"}"); check_ok "class level in B" "$out"

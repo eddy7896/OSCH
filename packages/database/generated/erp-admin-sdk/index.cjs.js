@@ -70,6 +70,15 @@ const MembershipStatus = {
 }
 exports.MembershipStatus = MembershipStatus;
 
+const PaymentMethod = {
+  CASH: "CASH",
+  CHEQUE: "CHEQUE",
+  BANK_TRANSFER: "BANK_TRANSFER",
+  UPI: "UPI",
+  OTHER: "OTHER",
+}
+exports.PaymentMethod = PaymentMethod;
+
 const PayrollStatus = {
   PENDING: "PENDING",
   PAID: "PAID",
@@ -162,13 +171,6 @@ function createSchoolMember(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('CreateSchoolMember', inputVars, inputOpts);
 }
 exports.createSchoolMember = createSchoolMember;
-
-function createInvoice(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateInvoice', inputVars, inputOpts);
-}
-exports.createInvoice = createInvoice;
 
 function createPayroll(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -639,12 +641,33 @@ function finishImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.finishImportBatch = finishImportBatch;
 
-function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
+function createInvoice(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListInvoices', inputVars, inputOpts);
+  return dcInstance.executeMutation('CreateInvoice', inputVars, inputOpts);
 }
-exports.listInvoices = listInvoices;
+exports.createInvoice = createInvoice;
+
+function createInstalmentInvoice(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateInstalmentInvoice', inputVars, inputOpts);
+}
+exports.createInstalmentInvoice = createInstalmentInvoice;
+
+function recordPayment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RecordPayment', inputVars, inputOpts);
+}
+exports.recordPayment = recordPayment;
+
+function reversePayment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ReversePayment', inputVars, inputOpts);
+}
+exports.reversePayment = reversePayment;
 
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -946,4 +969,46 @@ function staffIdentities(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('StaffIdentities', inputVars, inputOpts);
 }
 exports.staffIdentities = staffIdentities;
+
+function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListInvoices', inputVars, inputOpts);
+}
+exports.listInvoices = listInvoices;
+
+function countInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountInvoices', inputVars, inputOpts);
+}
+exports.countInvoices = countInvoices;
+
+function getInvoice(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetInvoice', inputVars, inputOpts);
+}
+exports.getInvoice = getInvoice;
+
+function invoicedInstalments(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('InvoicedInstalments', inputVars, inputOpts);
+}
+exports.invoicedInstalments = invoicedInstalments;
+
+function unpaidTotals(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('UnpaidTotals', inputVars, inputOpts);
+}
+exports.unpaidTotals = unpaidTotals;
+
+function placedStudents(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('PlacedStudents', inputVars, inputOpts);
+}
+exports.placedStudents = placedStudents;
 

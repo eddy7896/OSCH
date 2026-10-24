@@ -16,20 +16,6 @@ mutation CreateSchoolMember($schoolId: UUID!, $userId: String!, $schoolRole: Sch
   })
 }
 
-# Finance: Create an Invoice
-# The student must belong to $schoolId or the whole mutation aborts (DB-enforced, audit F4).
-mutation CreateInvoice($schoolId: UUID!, $studentId: UUID!, $amountMinor: Int64!, $dueDate: Date!) @auth(level: NO_ACCESS) @transaction {
-  query {
-    students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
-  }
-  invoice_insert(data: {
-    schoolId: $schoolId,
-    studentId: $studentId,
-    amountMinor: $amountMinor,
-    dueDate: $dueDate
-  })
-}
-
 # Finance: Create a Payroll Record
 # The paid user must be a member of $schoolId (DB-enforced; review finding: users are a GLOBAL table).
 mutation CreatePayroll($schoolId: UUID!, $userId: String!, $amountMinor: Int64!, $payDate: Date!) @auth(level: NO_ACCESS) @transaction {
@@ -708,4 +694,52 @@ mutation FinishImportBatch($schoolId: UUID!, $id: UUID!, $status: ImportStatus!,
   }
   importBatch_update(id: $id, data: { status: $status, createdCount: $createdCount, failedCount: $failedCount })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "import.finish", entityType: "ImportBatch", entityId_expr: "request.variables.id", details: $details })
+}
+
+# ---- Invoices and payments (P2-7b)
+# A manual invoice (no fee instalment behind it).
+mutation CreateInvoice($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $title: String!, $amountMinor: Int64!, $dueDate: Date!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+  }
+  invoice_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, title: $title, amountMinor: $amountMinor, dueDate: $dueDate })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.invoice.create", entityType: "Invoice", entityId_expr: "request.variables.id", details: $details })
+}
+
+# The invoice for one student and one fee instalment. The unique (student, instalment) key refuses a second one (CONFLICT), which is how
+# generating twice stays harmless.
+mutation CreateInstalmentInvoice($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $instalmentId: UUID!, $academicYearId: UUID!, $title: String!, $grossMinor: Int64!, $discountMinor: Int64!, $amountMinor: Int64!, $dueDate: Date!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+    inst: feeInstalments(where: {id: {eq: $instalmentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "instalment not found in this school") { id }
+    year: academicYears(where: {id: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "academic year not found in this school") { id }
+  }
+  invoice_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, instalmentId: $instalmentId, academicYearId: $academicYearId, title: $title, grossMinor: $grossMinor, discountMinor: $discountMinor, amountMinor: $amountMinor, dueDate: $dueDate })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.invoice.create", entityType: "Invoice", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Records a payment. $expectedPaidMinor is the paid total the caller saw: if another payment landed meanwhile the check fails (ABORTED)
+# and nothing is written, so two cashiers can never overpay an invoice between them. The gateway has already checked the new total.
+mutation RecordPayment($schoolId: UUID!, $id: UUID!, $invoiceId: UUID!, $studentId: UUID!, $amountMinor: Int64!, $method: PaymentMethod!, $reference: String, $paidOn: Date!, $expectedPaidMinor: Int64!, $newPaidMinor: Int64!, $newStatus: InvoiceStatus!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    invoice: invoices(where: {id: {eq: $invoiceId}, schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, paidMinor: {eq: $expectedPaidMinor}}) @check(expr: "this.size() == 1", message: "invoice not found in this school or its paid total changed") { id }
+  }
+  invoice_update(id: $invoiceId, data: { paidMinor: $newPaidMinor, status: $newStatus })
+  payment_insert(data: { id: $id, schoolId: $schoolId, invoiceId: $invoiceId, studentId: $studentId, amountMinor: $amountMinor, method: $method, reference: $reference, paidOn: $paidOn, recordedById: $actorId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.payment.record", entityType: "Payment", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Takes a payment back out: the payment is kept and marked, the invoice's paid total goes down. Only a payment not yet reversed.
+mutation ReversePayment($schoolId: UUID!, $id: UUID!, $invoiceId: UUID!, $reason: String!, $expectedPaidMinor: Int64!, $newPaidMinor: Int64!, $newStatus: InvoiceStatus!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    payment: payments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, invoiceId: {eq: $invoiceId}, reversedAt: {isNull: true}}) @check(expr: "this.size() == 1", message: "payment not found in this school or already reversed") { id }
+    invoice: invoices(where: {id: {eq: $invoiceId}, schoolId: {eq: $schoolId}, paidMinor: {eq: $expectedPaidMinor}}) @check(expr: "this.size() == 1", message: "invoice not found in this school or its paid total changed") { id }
+  }
+  invoice_update(id: $invoiceId, data: { paidMinor: $newPaidMinor, status: $newStatus })
+  payment_update(id: $id, data: { reversedAt_expr: "request.time", reversalReason: $reason })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.payment.reverse", entityType: "Payment", entityId_expr: "request.variables.id", details: $details })
 }
