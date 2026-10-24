@@ -2399,6 +2399,222 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'No fees in this structure yet'**
   String get feeNoItems;
+
+  /// Tab: the classes of the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes'**
+  String get setTabClasses;
+
+  /// Tab: the subjects taught.
+  ///
+  /// In en, this message translates to:
+  /// **'Subjects'**
+  String get setTabSubjects;
+
+  /// Tab: the academic years.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic years'**
+  String get setTabYears;
+
+  /// Button that opens the form for a new class.
+  ///
+  /// In en, this message translates to:
+  /// **'Add class'**
+  String get setAddClass;
+
+  /// Confirmation after adding a class.
+  ///
+  /// In en, this message translates to:
+  /// **'Class added'**
+  String get setClassAdded;
+
+  /// Hint under the section field.
+  ///
+  /// In en, this message translates to:
+  /// **'Section letter, for example A'**
+  String get setSectionHint;
+
+  /// Button that adds a subject.
+  ///
+  /// In en, this message translates to:
+  /// **'Add subject'**
+  String get setAddSubject;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject name'**
+  String get setSubjectName;
+
+  /// Form label: a short unique code of a subject, for example MATH.
+  ///
+  /// In en, this message translates to:
+  /// **'Short code'**
+  String get setSubjectCode;
+
+  /// Empty state of the subjects list.
+  ///
+  /// In en, this message translates to:
+  /// **'No subjects yet'**
+  String get setNoSubjects;
+
+  /// Confirmation after adding a subject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject added'**
+  String get setSubjectAdded;
+
+  /// Button that opens the form for a new academic year.
+  ///
+  /// In en, this message translates to:
+  /// **'New academic year'**
+  String get setNewYear;
+
+  /// Hint for the name of an academic year.
+  ///
+  /// In en, this message translates to:
+  /// **'Name, for example 2027-2028'**
+  String get setYearName;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get setStartDate;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get setEndDate;
+
+  /// Button that makes an academic year the active one.
+  ///
+  /// In en, this message translates to:
+  /// **'Make active'**
+  String get setMakeActive;
+
+  /// Question before an academic year becomes the active one.
+  ///
+  /// In en, this message translates to:
+  /// **'Make {name} the active academic year? New students, invoices and receipts will use it.'**
+  String setConfirmActivate(String name);
+
+  /// Confirmation after adding an academic year.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic year added'**
+  String get setYearAdded;
+
+  /// Heading of the school profile form.
+  ///
+  /// In en, this message translates to:
+  /// **'School profile'**
+  String get setProfileTitle;
+
+  /// Form label: the school's main colour.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand colour'**
+  String get setBrandColour;
+
+  /// Hint under the brand colour field.
+  ///
+  /// In en, this message translates to:
+  /// **'A dark colour written as # and six letters or digits, so white text on it is easy to read.'**
+  String get setBrandHint;
+
+  /// Confirmation after saving the school profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings saved'**
+  String get setProfileSaved;
+
+  /// Button that opens the CSV import.
+  ///
+  /// In en, this message translates to:
+  /// **'Import from CSV'**
+  String get setImport;
+
+  /// Explains the CSV import.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a CSV file. It is checked first, and nothing is saved until you confirm.'**
+  String get setImportIntro;
+
+  /// Label of the file chooser.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV file'**
+  String get setChooseFile;
+
+  /// Button that checks a CSV file without saving anything.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the file'**
+  String get setCheckFile;
+
+  /// Result of checking a CSV file.
+  ///
+  /// In en, this message translates to:
+  /// **'{valid} of {total} rows are ready. {errors} rows have problems.'**
+  String setCheckResult(String valid, String total, String errors);
+
+  /// Lists the columns a CSV file must have and does not.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing columns: {names}'**
+  String setMissingColumns(String names);
+
+  /// One problem found in a CSV file.
+  ///
+  /// In en, this message translates to:
+  /// **'Row {row}, {column}: {rule}'**
+  String setProblemLine(String row, String column, String rule);
+
+  /// Shown when the same CSV file is chosen again.
+  ///
+  /// In en, this message translates to:
+  /// **'This file was already imported.'**
+  String get setAlreadyImported;
+
+  /// Button that imports a checked CSV file.
+  ///
+  /// In en, this message translates to:
+  /// **'Import {count} rows'**
+  String setImportNow(String count);
+
+  /// Result after a CSV import.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} records created.'**
+  String setImportDone(String count);
+
+  /// Result after a CSV import when some rows failed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} rows could not be created.'**
+  String setImportFailed(String count);
+
+  /// Heading of the payroll totals split by department.
+  ///
+  /// In en, this message translates to:
+  /// **'By department'**
+  String get hrrByDepartment;
+
+  /// Label for staff who have no department.
+  ///
+  /// In en, this message translates to:
+  /// **'No department'**
+  String get hrrNoDepartment;
+
+  /// Empty state of the payroll summary.
+  ///
+  /// In en, this message translates to:
+  /// **'No approved or paid pay runs in this year'**
+  String get hrrNoRunsTitle;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

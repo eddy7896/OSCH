@@ -1238,4 +1238,129 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get feeNoItems => 'इस संरचना में अभी कोई शुल्क नहीं';
+
+  @override
+  String get setTabClasses => 'कक्षाएँ';
+
+  @override
+  String get setTabSubjects => 'विषय';
+
+  @override
+  String get setTabYears => 'शैक्षणिक वर्ष';
+
+  @override
+  String get setAddClass => 'कक्षा जोड़ें';
+
+  @override
+  String get setClassAdded => 'कक्षा जोड़ी गई';
+
+  @override
+  String get setSectionHint => 'सेक्शन अक्षर, जैसे A';
+
+  @override
+  String get setAddSubject => 'विषय जोड़ें';
+
+  @override
+  String get setSubjectName => 'विषय का नाम';
+
+  @override
+  String get setSubjectCode => 'संक्षिप्त कोड';
+
+  @override
+  String get setNoSubjects => 'अभी कोई विषय नहीं';
+
+  @override
+  String get setSubjectAdded => 'विषय जोड़ा गया';
+
+  @override
+  String get setNewYear => 'नया शैक्षणिक वर्ष';
+
+  @override
+  String get setYearName => 'नाम, जैसे 2027-2028';
+
+  @override
+  String get setStartDate => 'आरंभ तिथि';
+
+  @override
+  String get setEndDate => 'समाप्ति तिथि';
+
+  @override
+  String get setMakeActive => 'चालू करें';
+
+  @override
+  String setConfirmActivate(String name) {
+    return '$name को चालू शैक्षणिक वर्ष बनाएँ? नए छात्र, इनवॉइस और रसीदें इसी का उपयोग करेंगे।';
+  }
+
+  @override
+  String get setYearAdded => 'शैक्षणिक वर्ष जोड़ा गया';
+
+  @override
+  String get setProfileTitle => 'स्कूल प्रोफ़ाइल';
+
+  @override
+  String get setBrandColour => 'ब्रांड रंग';
+
+  @override
+  String get setBrandHint =>
+      'गहरा रंग, # और छह अक्षर या अंकों में लिखा हुआ, ताकि उस पर सफ़ेद अक्षर आसानी से पढ़े जा सकें।';
+
+  @override
+  String get setProfileSaved => 'सेटिंग्स सहेजे गए';
+
+  @override
+  String get setImport => 'CSV से आयात करें';
+
+  @override
+  String get setImportIntro =>
+      'CSV फ़ाइल चुनें। पहले उसकी जाँच होती है, और आपकी पुष्टि तक कुछ सहेजा नहीं जाता।';
+
+  @override
+  String get setChooseFile => 'CSV फ़ाइल';
+
+  @override
+  String get setCheckFile => 'फ़ाइल जाँचें';
+
+  @override
+  String setCheckResult(String valid, String total, String errors) {
+    return '$total में से $valid पंक्तियाँ तैयार हैं। $errors पंक्तियों में समस्या है।';
+  }
+
+  @override
+  String setMissingColumns(String names) {
+    return 'ज़रूरी कॉलम नहीं मिले: $names';
+  }
+
+  @override
+  String setProblemLine(String row, String column, String rule) {
+    return 'पंक्ति $row, $column: $rule';
+  }
+
+  @override
+  String get setAlreadyImported => 'यह फ़ाइल पहले ही आयात हो चुकी है।';
+
+  @override
+  String setImportNow(String count) {
+    return '$count पंक्तियाँ आयात करें';
+  }
+
+  @override
+  String setImportDone(String count) {
+    return '$count रिकॉर्ड बने।';
+  }
+
+  @override
+  String setImportFailed(String count) {
+    return '$count पंक्तियाँ नहीं बन सकीं।';
+  }
+
+  @override
+  String get hrrByDepartment => 'विभाग के अनुसार';
+
+  @override
+  String get hrrNoDepartment => 'कोई विभाग नहीं';
+
+  @override
+  String get hrrNoRunsTitle =>
+      'इस वर्ष कोई स्वीकृत या भुगतान किया गया वेतन चक्र नहीं';
 }
