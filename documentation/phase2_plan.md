@@ -67,7 +67,7 @@ graph TD
 ### M4 Screens
 | ID | Task | Size |
 |---|---|---|
-| P2-10 | Web ERP screens for all of the above, and the dashboard (fees collected, dues, strength) | XL |
+| P2-10 IN PROGRESS, sliced. **10a BUILT** (web-admin: the dashboard's key numbers (fees collected this month, fees outstanding, students on the roll, each shown only if the role may read it, a failed one left out), the Financial reports screen (fee collections with dates, fees outstanding with ageing, payments paged, reversed marked, CSV and PDF downloads for roles that may export, totals-only notice for Management), a local `DataTable` and `useLoad` hook; 25 new i18n keys, hi and ur DRAFT). To come: 10b students, classes and admissions; 10c staff and payroll; 10d fees (structures, invoices, payments, receipts); 10e school setup, imports and HR reports. No table exists in the design system: `DataTable` is local to web-admin and needs the design owner's view | Web ERP screens for all of the above, and the dashboard (fees collected, dues, strength) | XL |
 | P2-11 | Role-scoped UI: the Bursar sees no academics and the Academic Admin sees no finance, because the gateway returns 403; the UI only omits | M |
 
 ## 4. Gate (the phase closes only when all pass)

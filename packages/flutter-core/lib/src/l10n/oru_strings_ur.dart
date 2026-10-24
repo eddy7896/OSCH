@@ -738,4 +738,98 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get reportPaid => 'ادا کیا گیا';
+
+  @override
+  String get webFrom => 'از';
+
+  @override
+  String get webTo => 'تک';
+
+  @override
+  String get webDownloadCsv => 'CSV ڈاؤن لوڈ کریں';
+
+  @override
+  String get webDownloadPdf => 'PDF ڈاؤن لوڈ کریں';
+
+  @override
+  String get webDownloadFailed => 'فائل نہیں بن سکی۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get webAtAGlance => 'ایک نظر میں';
+
+  @override
+  String get webCollectedThisMonth => 'اس ماہ کی وصولی';
+
+  @override
+  String webPaymentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ادائیگیاں',
+      one: '$count ادائیگی',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get webOutstandingFees => 'بقایا فیس';
+
+  @override
+  String webInvoicesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count انوائسز',
+      one: '$count انوائس',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get webByMethod => 'ادائیگی کے طریقے کے لحاظ سے';
+
+  @override
+  String get webByAge => 'تاخیر کی مدت کے لحاظ سے';
+
+  @override
+  String get webBandDueToday => 'آج واجب الادا';
+
+  @override
+  String get webBand1To30 => '1 سے 30 دن تاخیر';
+
+  @override
+  String get webBand31To60 => '31 سے 60 دن تاخیر';
+
+  @override
+  String get webBand61To90 => '61 سے 90 دن تاخیر';
+
+  @override
+  String get webBandOver90 => '90 دن سے زیادہ تاخیر';
+
+  @override
+  String get webNoRowsTitle => 'اس حد میں کچھ نہیں';
+
+  @override
+  String get webNoRowsBody => 'دوسری تاریخیں چن کر دیکھیں۔';
+
+  @override
+  String get webNoDuesTitle => 'کوئی فیس بقایا نہیں';
+
+  @override
+  String get webTotalsOnly =>
+      'آپ کل رقم دیکھ سکتے ہیں، انفرادی ادائیگیاں نہیں۔';
+
+  @override
+  String get webPrevious => 'پچھلا';
+
+  @override
+  String get webNext => 'اگلا';
+
+  @override
+  String webPageOf(String page, String pages) {
+    return 'صفحہ $page / $pages';
+  }
+
+  @override
+  String get webCollected => 'وصول شدہ';
 }
