@@ -21,4 +21,14 @@ if ! grep -q "All emulators ready" "$LOG"; then
 fi
 # The gateway imports workspace packages (database, rbac, ...) through their built output; a fresh checkout (CI) has none.
 npx turbo run build --filter='api-gateway^...' || exit 1
-npm run test:integration -w api-gateway
+# Whole suite by default. In CI the suite is split across parallel jobs: ORU_SHARD="2/3" runs only this shard's files (planned by
+# tools/tests/gateway-shards.mjs, which also proves afterwards that every file ran exactly once) and writes a JSON report for that check.
+if [ -n "${ORU_SHARD:-}" ]; then
+  SHARD="${ORU_SHARD%/*}"; TOTAL="${ORU_SHARD#*/}"
+  FILES="$(node tools/tests/gateway-shards.mjs files "$SHARD" "$TOTAL")" || exit 2
+  mkdir -p apps/api-gateway/test-results
+  # shellcheck disable=SC2086
+  npm run test:integration -w api-gateway -- $FILES --reporter=default --reporter=json --outputFile.json="test-results/gateway-shard-${SHARD}-of-${TOTAL}.json"
+else
+  npm run test:integration -w api-gateway
+fi

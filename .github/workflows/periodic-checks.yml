@@ -13,6 +13,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # How many parallel jobs run the gateway integration suite. The `shard` list in the `gateway` job below must be 1..GATEWAY_SHARDS;
+  # the `gateway-complete` job fails the build if any shard is missing, if any test file ran twice or not at all, or if a test failed.
+  GATEWAY_SHARDS: 3
+
 jobs:
   js:
     name: JS/TS (build, lint, typecheck, test, drift, evals)
@@ -87,5 +92,59 @@ jobs:
         run: npm run test:dataconnect
       - name: Admin SDK data layer against the emulator
         run: npm run test:database
-      - name: Gateway against the Auth emulator
+
+  # The gateway integration suite (about 3,000 tests against the real Auth and Data Connect emulators) is the slow part of CI, so it is split
+  # over parallel jobs, each with its own emulators. tools/tests/gateway-shards.mjs plans which files each shard runs.
+  gateway:
+    name: Gateway integration (shard ${{ matrix.shard }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Cache the Firebase emulators
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/firebase/emulators
+          key: firebase-emulators-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: firebase-emulators-${{ runner.os }}-
+      - name: This shard's part of the gateway suite
         run: npm run test:gateway
+        env:
+          ORU_SHARD: ${{ matrix.shard }}/${{ env.GATEWAY_SHARDS }}
+      - name: Keep this shard's report for the completeness check
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gateway-shard-${{ matrix.shard }}
+          path: apps/api-gateway/test-results/*.json
+          if-no-files-found: warn
+
+  gateway-complete:
+    name: Gateway integration (all shards ran, none missing)
+    needs: gateway
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Every shard job finished successfully
+        run: |
+          echo "gateway shard jobs: ${{ needs.gateway.result }}"
+          test "${{ needs.gateway.result }}" = "success"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gateway-shard-*
+          path: shard-reports
+          merge-multiple: true
+      - name: Every test file ran exactly once, nothing failed, nothing was skipped
+        run: node tools/tests/gateway-shards.mjs verify shard-reports ${{ env.GATEWAY_SHARDS }}
