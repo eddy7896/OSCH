@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { ROLES } from "../packages/rbac/dist/index.js";
+
+// Read the roles from source: this eval runs before any package is built.
+const ROLES = [...readFileSync("packages/rbac/src/roles.ts", "utf8").match(/export const ROLES = \[([\s\S]*?)\] as const/)[1].matchAll(/"([A-Z_]+)"/g)].map((m) => m[1]);
 import { DEMO_PEOPLE, DEMO_SUBDOMAIN, dobFor, loginTable, paymentPlan, payMonths, phoneFor, schoolYear, termAmount, termDates } from "../tools/lib/demo-school.mjs";
 
 test("E-DEMO-1 the seed script refuses to run without the Auth emulator, and with NODE_ENV=production", () => {

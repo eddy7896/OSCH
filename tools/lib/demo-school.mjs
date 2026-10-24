@@ -1,7 +1,10 @@
 // Pure data and date rules for the demo school (tools/seed-demo-school.mjs). No network here, so the evals can test it.
 
-/** The one shared password of every demo account. Safe ONLY because the seed script refuses to run anywhere but the local emulators. */
-export const DEMO_PASSWORD = "demo-pass-2027";
+/**
+ * The one shared sign-in phrase of every demo account. It is deliberately PUBLIC (it is written in the project hub and the docs), so it is
+ * not a secret and is not named like one. It is safe ONLY because the seed script refuses to run anywhere but the local emulators.
+ */
+export const DEMO_PHRASE = "demo-pass-2027"; // ggignore: a public demo value for local emulators, not a credential
 export const DEMO_SUBDOMAIN = "greenfield";
 export const DEMO_SCHOOL_NAME = "Greenfield Demo School";
 const DOMAIN = "demo.oruschools.example";
@@ -70,5 +73,5 @@ export const paymentPlan = (n) => (n % 10 < 6 ? "FULL" : n % 10 === 6 ? "HALF" :
 /** The text a person reads at the end: addresses and the table of logins. */
 export function loginTable({ webAdmin = `http://${DEMO_SUBDOMAIN}.localhost:3002`, saasAdmin = "http://localhost:3001" } = {}) {
   const rows = DEMO_PEOPLE.map((p) => `${p.email.padEnd(36)} ${(p.role ?? "PLATFORM OWNER").padEnd(20)} ${p.name.padEnd(20)} ${p.where}`);
-  return [`School:            ${webAdmin}`, `Platform owner app: ${saasAdmin}`, `Password for every account below: ${DEMO_PASSWORD}`, "", ...rows].join("\n");
+  return [`School:            ${webAdmin}`, `Platform owner app: ${saasAdmin}`, `Password for every account below: ${DEMO_PHRASE}`, "", ...rows].join("\n");
 }

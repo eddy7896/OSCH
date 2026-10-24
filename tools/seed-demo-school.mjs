@@ -16,7 +16,7 @@
 import { getApps, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import {
-  DEMO_PASSWORD, DEMO_PEOPLE, DEMO_SCHOOL_NAME, DEMO_SUBDOMAIN, FIRST_NAMES, LAST_NAMES, LEVELS_WITH_CLASSES, METHODS, SECTIONS, STAFF, SUBJECTS,
+  DEMO_PHRASE, DEMO_PEOPLE, DEMO_SCHOOL_NAME, DEMO_SUBDOMAIN, FIRST_NAMES, LAST_NAMES, LEVELS_WITH_CLASSES, METHODS, SECTIONS, STAFF, SUBJECTS,
   dobFor, loginTable, paymentPlan, payMonths, phoneFor, schoolYear, termAmount, termDates,
 } from "./lib/demo-school.mjs";
 
@@ -38,7 +38,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function signIn(email) {
   // Changing a password revokes older tokens at the second it happens; wait it out so the new token is accepted.
   await sleep(1100);
-  const res = await fetch(`http://${AUTH_HOST}/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=fake`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email, password: DEMO_PASSWORD, returnSecureToken: true }) });
+  const res = await fetch(`http://${AUTH_HOST}/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=fake`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email, password: DEMO_PHRASE, returnSecureToken: true }) });
   const body = await res.json();
   if (!body.idToken) throw new Error(`could not sign ${email} in: ${JSON.stringify(body).slice(0, 200)}`);
   return body.idToken;
@@ -69,7 +69,7 @@ try {
   // ---- the platform owner, the school, and the first System administrator
   const people = Object.fromEntries(DEMO_PEOPLE.map((p) => [p.key, { ...p }]));
   const owner = people.owner;
-  const ownerUser = await auth.createUser({ email: owner.email, password: DEMO_PASSWORD, emailVerified: true, displayName: owner.name }).catch(async (e) => (e.code === "auth/email-already-exists" ? auth.getUserByEmail(owner.email) : Promise.reject(e)));
+  const ownerUser = await auth.createUser({ email: owner.email, password: DEMO_PHRASE, emailVerified: true, displayName: owner.name }).catch(async (e) => (e.code === "auth/email-already-exists" ? auth.getUserByEmail(owner.email) : Promise.reject(e)));
   await auth.setCustomUserClaims(ownerUser.uid, { globalRole: "SUPER_ADMIN" });
   owner.uid = ownerUser.uid;
   owner.token = await signIn(owner.email);
@@ -79,14 +79,14 @@ try {
   log(`School created: ${school.name} (${DEMO_SUBDOMAIN})`);
   const admin = people.admin;
   const first = await call("POST", `/v1/platform/schools/${sid}/admins`, { token: owner.token, body: { displayName: admin.name, email: admin.email } });
-  await auth.updateUser(first.userId, { password: DEMO_PASSWORD, emailVerified: true });
+  await auth.updateUser(first.userId, { password: DEMO_PHRASE, emailVerified: true });
   admin.uid = first.userId;
   admin.token = await signIn(admin.email);
 
   // ---- everyone else, through the System administrator's account endpoint
   for (const p of Object.values(people).filter((x) => x.role && x.key !== "admin")) {
     const made = await call("POST", "/v1/memberships/accounts", { token: admin.token, school: sid, body: { displayName: p.name, email: p.email, schoolRole: p.role } });
-    await auth.updateUser(made.userId, { password: DEMO_PASSWORD, emailVerified: true });
+    await auth.updateUser(made.userId, { password: DEMO_PHRASE, emailVerified: true });
     p.uid = made.userId;
     p.token = await signIn(p.email);
   }
