@@ -122,6 +122,10 @@ export class ErrorEnvelopeFilter implements ExceptionFilter {
       status = exception.httpStatus;
       code = DB_CODE[exception.kind];
       if (exception.kind === 'INTERNAL' || exception.kind === 'UNAVAILABLE') this.logger.error({ requestId, kind: exception.kind, cause: describe(exception.cause) }, 'database error');
+    } else if (isClientHttpError(exception)) {
+      // Errors raised by the body parser before any route runs: malformed JSON (400), a body over the limit (413), an unsupported charset (415).
+      status = exception.status;
+      code = STATUS_CODE[status] ?? ErrorCode.INVALID_REQUEST;
     } else {
       this.logger.error({ requestId, error: describe(exception) }, 'unhandled error');
     }
@@ -133,6 +137,12 @@ export class ErrorEnvelopeFilter implements ExceptionFilter {
     const envelope: ErrorEnvelope = { error: { code, message: MESSAGES[code], ...(requestId ? { requestId } : {}), ...(details?.length ? { details } : {}) } };
     res.status(status).json(envelope);
   }
+}
+
+/** An `http-errors` style error (what Express middleware throws) that is the client's fault and safe to report as such. */
+function isClientHttpError(e: unknown): e is { status: number } {
+  const status = (e as { status?: unknown } | null)?.status;
+  return typeof status === 'number' && status >= 400 && status < 500 && (e as { expose?: unknown }).expose === true;
 }
 
 /** The throttler writes `Retry-After-<limit name>` for named limits; clients and browsers look for the standard header. */
