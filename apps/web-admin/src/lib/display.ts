@@ -24,3 +24,18 @@ export const BAND_KEY: Record<string, string> = {
   DAYS_61_90: "webBand61To90",
   DAYS_OVER_90: "webBandOver90",
 };
+
+/**
+ * Rupees typed by a person (`45000`, `45,000.5`, `45000.50`) as paise for the gateway, or null when it is not an amount. Whole paise only,
+ * no sign, nothing but digits, an optional comma grouping and at most two decimals; exact for any size (no floating point).
+ */
+export function rupeesToMinor(text: string): string | null {
+  const t = text.trim().replaceAll(",", "");
+  const m = /^(\d{1,15})(?:\.(\d{1,2}))?$/.exec(t);
+  if (!m) return null;
+  const minor = `${m[1]!}${(m[2] ?? "").padEnd(2, "0")}`.replace(/^0+(?=\d)/, "");
+  return minor === "0" ? null : minor;
+}
+
+/** `2027-04` style label of a pay month, `04/2027`. */
+export const monthLabel = (year: number, month: number): string => `${String(month).padStart(2, "0")}/${year}`;

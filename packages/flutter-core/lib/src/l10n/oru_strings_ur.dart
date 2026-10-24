@@ -994,4 +994,115 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get peoApplicationSaved => 'درخواست محفوظ ہو گئی';
+
+  @override
+  String get hrpAddStaff => 'عملہ کا رکن شامل کریں';
+
+  @override
+  String get hrpSearch => 'نام یا ملازم نمبر سے تلاش کریں';
+
+  @override
+  String get hrpAllDepartments => 'تمام شعبے';
+
+  @override
+  String get hrpJoined => 'تاریخ تقرری';
+
+  @override
+  String get hrpNoStaffTitle => 'ابھی کوئی عملہ نہیں';
+
+  @override
+  String get hrpNoMatch => 'اس تلاش سے عملہ کا کوئی رکن نہیں ملا۔';
+
+  @override
+  String get hrpStaffAdded => 'عملہ کا رکن شامل کر دیا گیا';
+
+  @override
+  String get hrpSalary => 'تنخواہ';
+
+  @override
+  String get hrpEarning => 'آمدن';
+
+  @override
+  String get hrpDeduction => 'کٹوتی';
+
+  @override
+  String get hrpKind => 'قسم';
+
+  @override
+  String get hrpComponent => 'جزو';
+
+  @override
+  String get hrpAmount => 'رقم';
+
+  @override
+  String get hrpAmountHint => 'روپے میں، مثلاً 45,000.50';
+
+  @override
+  String get hrpAddLine => 'تنخواہ کی مد شامل کریں';
+
+  @override
+  String get hrpNoLines => 'ابھی تنخواہ طے نہیں';
+
+  @override
+  String get hrpRemove => 'ہٹائیں';
+
+  @override
+  String get hrpNewRun => 'نیا تنخواہ سائیکل';
+
+  @override
+  String get hrpRunCreated => 'تنخواہ سائیکل بن گیا';
+
+  @override
+  String get hrpDraft => 'مسودہ';
+
+  @override
+  String get hrpPreparedBy => 'تیار کنندہ';
+
+  @override
+  String get hrpApprovedBy => 'منظور کنندہ';
+
+  @override
+  String get hrpApprove => 'منظور کریں';
+
+  @override
+  String get hrpPay => 'ادا شدہ نشان زد کریں';
+
+  @override
+  String get hrpDeleteRun => 'مسودہ ہٹائیں';
+
+  @override
+  String get hrpConfirm => 'تصدیق کریں';
+
+  @override
+  String hrpConfirmApprove(String month, String count, String net) {
+    return '$month کی تنخواہ منظور کریں؟ $count عملہ، خالص تنخواہ $net۔ اسے واپس نہیں کیا جا سکتا۔';
+  }
+
+  @override
+  String hrpConfirmPay(String net, String month) {
+    return '$month کے لیے $net کی ادائیگی درج کریں؟ اسے واپس نہیں کیا جا سکتا۔';
+  }
+
+  @override
+  String hrpConfirmDelete(String month) {
+    return '$month کا مسودہ ہٹائیں؟ آپ اسے دوبارہ بنا سکتے ہیں۔';
+  }
+
+  @override
+  String hrpRunTitle(String month) {
+    return 'تنخواہ $month';
+  }
+
+  @override
+  String get hrpDetails => 'تفصیل';
+
+  @override
+  String get hrpPayslipPdf => 'تنخواہ کی پرچی PDF';
+
+  @override
+  String get hrpNoRunsTitle => 'ابھی کوئی تنخواہ سائیکل نہیں';
+
+  @override
+  String get hrpNoRunsBody =>
+      'پہلے ہر عملہ کے رکن کی تنخواہ طے کریں، پھر مہینے کا تنخواہ سائیکل بنائیں۔';
 }

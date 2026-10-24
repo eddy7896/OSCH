@@ -11,6 +11,8 @@ import { canRead, Glance } from "./screens/Glance";
 import { Admissions } from "./screens/Admissions";
 import { Classes } from "./screens/Classes";
 import { FinanceReports } from "./screens/FinanceReports";
+import { Payroll } from "./screens/Payroll";
+import { Staff } from "./screens/Staff";
 import { Students } from "./screens/Students";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
@@ -18,8 +20,8 @@ type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
 /**
  * The school's frame: navigation built from what the gateway says this person may open (modules they cannot open are not
- * sent, so they are not shown at all), the language, and who is signed in. The dashboard, financial reports, students, classes and
- * admissions are built; the other screens arrive with their slices of P2-10.
+ * sent, so they are not shown at all), the language, and who is signed in. The dashboard, financial reports, students, classes,
+ * admissions, staff and payroll are built; the other screens arrive with their slices of P2-10.
  */
 export function ErpShell({ me, active: access, school, hour = new Date().getHours() }: { me: MeResponseDto; active: ActiveSchool; school: PublicSchoolDto; hour?: number }) {
   const t = useTranslations();
@@ -56,6 +58,10 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
             <Classes />
           ) : current === "admissions" ? (
             <Admissions canCreate={access.permissions["admissions"]?.["create"] === "school"} canUpdate={access.permissions["admissions"]?.["update"] === "school"} />
+          ) : current === "staff" ? (
+            <Staff grants={{ create: access.permissions["staff"]?.["create"] === "school", salaryRead: access.permissions["payroll"]?.["read"] === "school", salaryAdd: access.permissions["payroll"]?.["create"] === "school", salaryRemove: access.permissions["payroll"]?.["delete"] === "school" }} />
+          ) : current === "payroll" ? (
+            <Payroll grants={{ create: access.permissions["payroll"]?.["create"] === "school", approve: access.permissions["payroll"]?.["approve"] === "school", pay: access.permissions["payroll"]?.["delete"] === "school" }} />
           ) : current === "reports-finance" ? (
             <FinanceReports canExport={access.permissions["reports_finance"]?.["export"] === "school"} />
           ) : (

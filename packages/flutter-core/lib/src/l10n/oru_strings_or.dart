@@ -991,4 +991,115 @@ class OruStringsOr extends OruStrings {
 
   @override
   String get peoApplicationSaved => 'Application saved';
+
+  @override
+  String get hrpAddStaff => 'Add staff member';
+
+  @override
+  String get hrpSearch => 'Search by name or employee no.';
+
+  @override
+  String get hrpAllDepartments => 'All departments';
+
+  @override
+  String get hrpJoined => 'Date of joining';
+
+  @override
+  String get hrpNoStaffTitle => 'No staff yet';
+
+  @override
+  String get hrpNoMatch => 'No staff member matches this search.';
+
+  @override
+  String get hrpStaffAdded => 'Staff member added';
+
+  @override
+  String get hrpSalary => 'Salary';
+
+  @override
+  String get hrpEarning => 'Earning';
+
+  @override
+  String get hrpDeduction => 'Deduction';
+
+  @override
+  String get hrpKind => 'Type';
+
+  @override
+  String get hrpComponent => 'Component';
+
+  @override
+  String get hrpAmount => 'Amount';
+
+  @override
+  String get hrpAmountHint => 'In rupees, for example 45,000.50';
+
+  @override
+  String get hrpAddLine => 'Add salary line';
+
+  @override
+  String get hrpNoLines => 'No salary set yet';
+
+  @override
+  String get hrpRemove => 'Remove';
+
+  @override
+  String get hrpNewRun => 'New pay run';
+
+  @override
+  String get hrpRunCreated => 'Pay run created';
+
+  @override
+  String get hrpDraft => 'Draft';
+
+  @override
+  String get hrpPreparedBy => 'Prepared by';
+
+  @override
+  String get hrpApprovedBy => 'Approved by';
+
+  @override
+  String get hrpApprove => 'Approve';
+
+  @override
+  String get hrpPay => 'Mark as paid';
+
+  @override
+  String get hrpDeleteRun => 'Delete draft';
+
+  @override
+  String get hrpConfirm => 'Confirm';
+
+  @override
+  String hrpConfirmApprove(String month, String count, String net) {
+    return 'Approve payroll for $month? $count staff, net pay $net. This cannot be undone.';
+  }
+
+  @override
+  String hrpConfirmPay(String net, String month) {
+    return 'Record payment of $net for $month? This cannot be undone.';
+  }
+
+  @override
+  String hrpConfirmDelete(String month) {
+    return 'Delete the draft for $month? You can make it again.';
+  }
+
+  @override
+  String hrpRunTitle(String month) {
+    return 'Payroll $month';
+  }
+
+  @override
+  String get hrpDetails => 'Details';
+
+  @override
+  String get hrpPayslipPdf => 'Payslip PDF';
+
+  @override
+  String get hrpNoRunsTitle => 'No pay runs yet';
+
+  @override
+  String get hrpNoRunsBody =>
+      'Set up salaries on each staff member first, then create the month\'s run.';
 }
