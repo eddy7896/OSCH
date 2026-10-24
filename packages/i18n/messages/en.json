@@ -205,5 +205,21 @@
   "payslipTotalDeductions": "Total deductions",
   "payslipNetPay": "Net pay",
   "payslipPaidOn": "Paid on",
-  "payslipFooter": "This is a computer-generated payslip."
+  "payslipFooter": "This is a computer-generated payslip.",
+  "reportCollectionsTitle": "Fee collections",
+  "reportDuesTitle": "Fees outstanding",
+  "reportPayrollTitle": "Payroll summary",
+  "reportAsOf": "As of",
+  "reportYear": "Year",
+  "reportStatus": "Status",
+  "reportReversed": "Reversed",
+  "reportTotal": "Total",
+  "reportDueDate": "Due date",
+  "reportAmountDue": "Amount due",
+  "reportOutstanding": "Outstanding",
+  "reportDaysOverdue": "Days overdue",
+  "reportMonth": "Month",
+  "reportHeadcount": "Staff",
+  "reportApproved": "Approved",
+  "reportPaid": "Paid"
 }

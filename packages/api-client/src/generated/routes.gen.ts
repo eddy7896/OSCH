@@ -555,6 +555,42 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "PublicSchools_bySubdomain"
   },
   {
+    "method": "GET",
+    "path": "/v1/reports/finance/collections/export",
+    "access": "tenant",
+    "operationId": "Reports_collectionsExport"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/reports/finance/collections",
+    "access": "tenant",
+    "operationId": "Reports_collections"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/reports/finance/dues/export",
+    "access": "tenant",
+    "operationId": "Reports_duesExport"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/reports/finance/dues",
+    "access": "tenant",
+    "operationId": "Reports_dues"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/reports/hr/payroll-summary/export",
+    "access": "tenant",
+    "operationId": "Reports_payrollExport"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/reports/hr/payroll-summary",
+    "access": "tenant",
+    "operationId": "Reports_payroll"
+  },
+  {
     "method": "PUT",
     "path": "/v1/school/logo",
     "access": "tenant",

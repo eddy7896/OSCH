@@ -1373,6 +1373,102 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'This is a computer-generated payslip.'**
   String get payslipFooter;
+
+  /// Title of the printed fee collections report (money taken in a date range).
+  ///
+  /// In en, this message translates to:
+  /// **'Fee collections'**
+  String get reportCollectionsTitle;
+
+  /// Title of the printed report of unpaid fee invoices that have fallen due.
+  ///
+  /// In en, this message translates to:
+  /// **'Fees outstanding'**
+  String get reportDuesTitle;
+
+  /// Title of the printed report of a year's approved and paid pay runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Payroll summary'**
+  String get reportPayrollTitle;
+
+  /// Label before the date a report is calculated up to (for example As of 24-10-2026).
+  ///
+  /// In en, this message translates to:
+  /// **'As of'**
+  String get reportAsOf;
+
+  /// Label before a calendar year on the payroll summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get reportYear;
+
+  /// Column heading: the state of a payment or a pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get reportStatus;
+
+  /// Status of a payment that was taken back.
+  ///
+  /// In en, this message translates to:
+  /// **'Reversed'**
+  String get reportReversed;
+
+  /// Label of the last row, which adds up the columns above it.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get reportTotal;
+
+  /// Column heading: the date an invoice has to be paid by.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get reportDueDate;
+
+  /// Column heading: the amount an invoice asks for.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount due'**
+  String get reportAmountDue;
+
+  /// Column heading: money still owed on an invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Outstanding'**
+  String get reportOutstanding;
+
+  /// Column heading: how many days past its due date an invoice is.
+  ///
+  /// In en, this message translates to:
+  /// **'Days overdue'**
+  String get reportDaysOverdue;
+
+  /// Column heading: the month a pay run is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get reportMonth;
+
+  /// Column heading: how many staff members were paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get reportHeadcount;
+
+  /// Status of a pay run the Principal has approved and the Bursar has not yet paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get reportApproved;
+
+  /// Status of a pay run that has been paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get reportPaid;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

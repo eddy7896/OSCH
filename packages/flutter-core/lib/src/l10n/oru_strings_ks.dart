@@ -688,4 +688,52 @@ class OruStringsKs extends OruStrings {
 
   @override
   String get payslipFooter => 'This is a computer-generated payslip.';
+
+  @override
+  String get reportCollectionsTitle => 'Fee collections';
+
+  @override
+  String get reportDuesTitle => 'Fees outstanding';
+
+  @override
+  String get reportPayrollTitle => 'Payroll summary';
+
+  @override
+  String get reportAsOf => 'As of';
+
+  @override
+  String get reportYear => 'Year';
+
+  @override
+  String get reportStatus => 'Status';
+
+  @override
+  String get reportReversed => 'Reversed';
+
+  @override
+  String get reportTotal => 'Total';
+
+  @override
+  String get reportDueDate => 'Due date';
+
+  @override
+  String get reportAmountDue => 'Amount due';
+
+  @override
+  String get reportOutstanding => 'Outstanding';
+
+  @override
+  String get reportDaysOverdue => 'Days overdue';
+
+  @override
+  String get reportMonth => 'Month';
+
+  @override
+  String get reportHeadcount => 'Staff';
+
+  @override
+  String get reportApproved => 'Approved';
+
+  @override
+  String get reportPaid => 'Paid';
 }

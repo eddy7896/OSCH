@@ -410,3 +410,30 @@ query PayslipLine($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
 query SalaryLineById($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
   salaryLines(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id kind name amountMinor staff { id } }
 }
+
+# ---- Reports (P2-9). Read-only; the gateway pages through them and totals in bigint, because Data Connect has no group-by.
+# Every payment taken in a date window (reversed ones too: the day book shows both), oldest first.
+query PaymentsInRange($schoolId: UUID!, $from: Date!, $to: Date!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  payments(where: {_and: [{schoolId: {eq: $schoolId}}, {paidOn: {ge: $from}}, {paidOn: {le: $to}}]}, orderBy: [{paidOn: ASC}, {createdAt: ASC}], limit: $limit, offset: $offset) {
+    id amountMinor method reference paidOn reversedAt reversalReason createdAt
+    student { id enrollmentId firstName lastName }
+    invoice { id title }
+    recordedBy { id displayName email }
+    receipt: receipt_on_payment { number }
+  }
+}
+
+query CountPaymentsInRange($schoolId: UUID!, $from: Date!, $to: Date!) @auth(level: NO_ACCESS) {
+  payments(where: {_and: [{schoolId: {eq: $schoolId}}, {paidOn: {ge: $from}}, {paidOn: {le: $to}}]}) { _count }
+}
+
+# Unpaid invoices due on or before a date, oldest due date first.
+query DuesInvoices($schoolId: UUID!, $dueOnOrBefore: Date!, $academicYearId: UUID, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  invoices(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: PENDING}}, {dueDate: {le: $dueOnOrBefore}}, {academicYearId: {eq: $academicYearId}}]}, orderBy: [{dueDate: ASC}, {createdAt: ASC}], limit: $limit, offset: $offset) {
+    id title amountMinor paidMinor dueDate student { id enrollmentId firstName lastName }
+  }
+}
+
+query CountDuesInvoices($schoolId: UUID!, $dueOnOrBefore: Date!, $academicYearId: UUID) @auth(level: NO_ACCESS) {
+  invoices(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: PENDING}}, {dueDate: {le: $dueOnOrBefore}}, {academicYearId: {eq: $academicYearId}}]}) { _count }
+}

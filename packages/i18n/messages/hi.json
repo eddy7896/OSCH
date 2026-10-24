@@ -205,5 +205,21 @@
   "payslipTotalDeductions": "कुल कटौती",
   "payslipNetPay": "शुद्ध वेतन",
   "payslipPaidOn": "भुगतान की तिथि",
-  "payslipFooter": "यह कंप्यूटर द्वारा बनाई गई वेतन पर्ची है।"
+  "payslipFooter": "यह कंप्यूटर द्वारा बनाई गई वेतन पर्ची है।",
+  "reportCollectionsTitle": "शुल्क संग्रह",
+  "reportDuesTitle": "बकाया शुल्क",
+  "reportPayrollTitle": "वेतन सारांश",
+  "reportAsOf": "तिथि तक",
+  "reportYear": "वर्ष",
+  "reportStatus": "स्थिति",
+  "reportReversed": "वापस किया गया",
+  "reportTotal": "कुल",
+  "reportDueDate": "देय तिथि",
+  "reportAmountDue": "देय राशि",
+  "reportOutstanding": "बकाया",
+  "reportDaysOverdue": "विलंब के दिन",
+  "reportMonth": "माह",
+  "reportHeadcount": "स्टाफ़",
+  "reportApproved": "स्वीकृत",
+  "reportPaid": "भुगतान किया गया"
 }

@@ -882,5 +882,69 @@
   "payslipFooter": "This is a computer-generated payslip.",
   "@payslipFooter": {
     "description": "Line at the bottom of a printed payslip."
+  },
+  "reportCollectionsTitle": "Fee collections",
+  "@reportCollectionsTitle": {
+    "description": "Title of the printed fee collections report (money taken in a date range)."
+  },
+  "reportDuesTitle": "Fees outstanding",
+  "@reportDuesTitle": {
+    "description": "Title of the printed report of unpaid fee invoices that have fallen due."
+  },
+  "reportPayrollTitle": "Payroll summary",
+  "@reportPayrollTitle": {
+    "description": "Title of the printed report of a year's approved and paid pay runs."
+  },
+  "reportAsOf": "As of",
+  "@reportAsOf": {
+    "description": "Label before the date a report is calculated up to (for example As of 24-10-2026)."
+  },
+  "reportYear": "Year",
+  "@reportYear": {
+    "description": "Label before a calendar year on the payroll summary."
+  },
+  "reportStatus": "Status",
+  "@reportStatus": {
+    "description": "Column heading: the state of a payment or a pay run."
+  },
+  "reportReversed": "Reversed",
+  "@reportReversed": {
+    "description": "Status of a payment that was taken back."
+  },
+  "reportTotal": "Total",
+  "@reportTotal": {
+    "description": "Label of the last row, which adds up the columns above it."
+  },
+  "reportDueDate": "Due date",
+  "@reportDueDate": {
+    "description": "Column heading: the date an invoice has to be paid by."
+  },
+  "reportAmountDue": "Amount due",
+  "@reportAmountDue": {
+    "description": "Column heading: the amount an invoice asks for."
+  },
+  "reportOutstanding": "Outstanding",
+  "@reportOutstanding": {
+    "description": "Column heading: money still owed on an invoice."
+  },
+  "reportDaysOverdue": "Days overdue",
+  "@reportDaysOverdue": {
+    "description": "Column heading: how many days past its due date an invoice is."
+  },
+  "reportMonth": "Month",
+  "@reportMonth": {
+    "description": "Column heading: the month a pay run is for."
+  },
+  "reportHeadcount": "Staff",
+  "@reportHeadcount": {
+    "description": "Column heading: how many staff members were paid."
+  },
+  "reportApproved": "Approved",
+  "@reportApproved": {
+    "description": "Status of a pay run the Principal has approved and the Bursar has not yet paid."
+  },
+  "reportPaid": "Paid",
+  "@reportPaid": {
+    "description": "Status of a pay run that has been paid."
   }
 }

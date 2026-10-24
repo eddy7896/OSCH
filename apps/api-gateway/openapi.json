@@ -705,6 +705,147 @@
         ],
         "type": "object"
       },
+      "CollectionRowDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "invoice": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "type": "object"
+          },
+          "method": {
+            "type": "string"
+          },
+          "paidOn": {
+            "type": "string"
+          },
+          "paymentId": {
+            "type": "string"
+          },
+          "receiptNumber": {
+            "nullable": true,
+            "type": "string"
+          },
+          "recordedBy": {
+            "type": "string"
+          },
+          "reference": {
+            "nullable": true,
+            "type": "string"
+          },
+          "reversed": {
+            "type": "boolean"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "paymentId",
+          "paidOn",
+          "receiptNumber",
+          "student",
+          "invoice",
+          "method",
+          "reference",
+          "amountMinor",
+          "reversed",
+          "recordedBy"
+        ],
+        "type": "object"
+      },
+      "CollectionsReportDto": {
+        "properties": {
+          "byDay": {
+            "items": {
+              "$ref": "#/components/schemas/DayTotalDto"
+            },
+            "type": "array"
+          },
+          "byMethod": {
+            "items": {
+              "$ref": "#/components/schemas/MethodTotalDto"
+            },
+            "type": "array"
+          },
+          "collectedMinor": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          },
+          "detail": {
+            "type": "boolean"
+          },
+          "from": {
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CollectionRowDto"
+            },
+            "type": "array"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "reversedMinor": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "detail",
+          "count",
+          "collectedMinor",
+          "reversedMinor",
+          "byMethod",
+          "byDay",
+          "items",
+          "total",
+          "page",
+          "pageSize"
+        ],
+        "type": "object"
+      },
       "ConcessionDto": {
         "properties": {
           "academicYear": {
@@ -1452,6 +1593,25 @@
         ],
         "type": "object"
       },
+      "DayTotalDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          },
+          "date": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "count",
+          "amountMinor"
+        ],
+        "type": "object"
+      },
       "DecideApplicationDto": {
         "properties": {
           "note": {
@@ -1470,6 +1630,34 @@
         },
         "required": [
           "status"
+        ],
+        "type": "object"
+      },
+      "DepartmentTotalDto": {
+        "properties": {
+          "deductionsMinor": {
+            "type": "string"
+          },
+          "department": {
+            "nullable": true,
+            "type": "string"
+          },
+          "grossMinor": {
+            "type": "string"
+          },
+          "headcount": {
+            "type": "number"
+          },
+          "netMinor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "department",
+          "headcount",
+          "grossMinor",
+          "deductionsMinor",
+          "netMinor"
         ],
         "type": "object"
       },
@@ -1493,6 +1681,141 @@
         "required": [
           "contentType",
           "sizeBytes"
+        ],
+        "type": "object"
+      },
+      "DueBandDto": {
+        "properties": {
+          "band": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          },
+          "outstandingMinor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "band",
+          "count",
+          "outstandingMinor"
+        ],
+        "type": "object"
+      },
+      "DueRowDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "band": {
+            "type": "string"
+          },
+          "daysOverdue": {
+            "type": "number"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "invoiceId": {
+            "type": "string"
+          },
+          "outstandingMinor": {
+            "type": "string"
+          },
+          "paidMinor": {
+            "type": "string"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "invoiceId",
+          "student",
+          "title",
+          "dueDate",
+          "amountMinor",
+          "paidMinor",
+          "outstandingMinor",
+          "daysOverdue",
+          "band"
+        ],
+        "type": "object"
+      },
+      "DuesReportDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "asOf": {
+            "type": "string"
+          },
+          "bands": {
+            "items": {
+              "$ref": "#/components/schemas/DueBandDto"
+            },
+            "type": "array"
+          },
+          "count": {
+            "type": "number"
+          },
+          "detail": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DueRowDto"
+            },
+            "type": "array"
+          },
+          "outstandingMinor": {
+            "type": "string"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "paidMinor": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "asOf",
+          "detail",
+          "count",
+          "amountMinor",
+          "paidMinor",
+          "outstandingMinor",
+          "bands",
+          "items",
+          "total",
+          "page",
+          "pageSize"
         ],
         "type": "object"
       },
@@ -2540,6 +2863,25 @@
         ],
         "type": "object"
       },
+      "MethodTotalDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          },
+          "method": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "method",
+          "count",
+          "amountMinor"
+        ],
+        "type": "object"
+      },
       "NavItemDto": {
         "properties": {
           "key": {
@@ -2711,6 +3053,46 @@
         ],
         "type": "object"
       },
+      "PayrollMonthDto": {
+        "properties": {
+          "deductionsMinor": {
+            "type": "string"
+          },
+          "grossMinor": {
+            "type": "string"
+          },
+          "headcount": {
+            "type": "number"
+          },
+          "month": {
+            "type": "number"
+          },
+          "netMinor": {
+            "type": "string"
+          },
+          "paidOn": {
+            "nullable": true,
+            "type": "string"
+          },
+          "runId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "runId",
+          "month",
+          "status",
+          "paidOn",
+          "headcount",
+          "grossMinor",
+          "deductionsMinor",
+          "netMinor"
+        ],
+        "type": "object"
+      },
       "PayrollRunDto": {
         "properties": {
           "approvedAt": {
@@ -2857,6 +3239,43 @@
           "paidBy",
           "paidOn",
           "paymentReference"
+        ],
+        "type": "object"
+      },
+      "PayrollSummaryDto": {
+        "properties": {
+          "byDepartment": {
+            "items": {
+              "$ref": "#/components/schemas/DepartmentTotalDto"
+            },
+            "type": "array"
+          },
+          "deductionsMinor": {
+            "type": "string"
+          },
+          "grossMinor": {
+            "type": "string"
+          },
+          "months": {
+            "items": {
+              "$ref": "#/components/schemas/PayrollMonthDto"
+            },
+            "type": "array"
+          },
+          "netMinor": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "year",
+          "months",
+          "byDepartment",
+          "grossMinor",
+          "deductionsMinor",
+          "netMinor"
         ],
         "type": "object"
       },
@@ -11205,6 +11624,472 @@
           "PublicSchools"
         ],
         "x-access": "public"
+      }
+    },
+    "/v1/reports/finance/collections": {
+      "get": {
+        "operationId": "Reports_collections",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionsReportDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Reports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "reports_finance"
+        }
+      }
+    },
+    "/v1/reports/finance/collections/export": {
+      "get": {
+        "operationId": "Reports_collectionsExport",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": true,
+            "schema": {
+              "enum": [
+                "csv",
+                "pdf"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "pattern": "^[a-z]{2,3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Reports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "export",
+          "resource": "reports_finance"
+        }
+      }
+    },
+    "/v1/reports/finance/dues": {
+      "get": {
+        "operationId": "Reports_dues",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "asOf",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuesReportDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Reports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "reports_finance"
+        }
+      }
+    },
+    "/v1/reports/finance/dues/export": {
+      "get": {
+        "operationId": "Reports_duesExport",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "asOf",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": true,
+            "schema": {
+              "enum": [
+                "csv",
+                "pdf"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "pattern": "^[a-z]{2,3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Reports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "export",
+          "resource": "reports_finance"
+        }
+      }
+    },
+    "/v1/reports/hr/payroll-summary": {
+      "get": {
+        "operationId": "Reports_payroll",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "required": false,
+            "schema": {
+              "maximum": 2200,
+              "minimum": 2000,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollSummaryDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Reports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "reports_hr"
+        }
+      }
+    },
+    "/v1/reports/hr/payroll-summary/export": {
+      "get": {
+        "operationId": "Reports_payrollExport",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "required": false,
+            "schema": {
+              "maximum": 2200,
+              "minimum": 2000,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": true,
+            "schema": {
+              "enum": [
+                "csv",
+                "pdf"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "pattern": "^[a-z]{2,3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Reports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "export",
+          "resource": "reports_hr"
+        }
       }
     },
     "/v1/school/logo": {

@@ -687,4 +687,52 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get payslipFooter => 'यह कंप्यूटर द्वारा बनाई गई वेतन पर्ची है।';
+
+  @override
+  String get reportCollectionsTitle => 'शुल्क संग्रह';
+
+  @override
+  String get reportDuesTitle => 'बकाया शुल्क';
+
+  @override
+  String get reportPayrollTitle => 'वेतन सारांश';
+
+  @override
+  String get reportAsOf => 'तिथि तक';
+
+  @override
+  String get reportYear => 'वर्ष';
+
+  @override
+  String get reportStatus => 'स्थिति';
+
+  @override
+  String get reportReversed => 'वापस किया गया';
+
+  @override
+  String get reportTotal => 'कुल';
+
+  @override
+  String get reportDueDate => 'देय तिथि';
+
+  @override
+  String get reportAmountDue => 'देय राशि';
+
+  @override
+  String get reportOutstanding => 'बकाया';
+
+  @override
+  String get reportDaysOverdue => 'विलंब के दिन';
+
+  @override
+  String get reportMonth => 'माह';
+
+  @override
+  String get reportHeadcount => 'स्टाफ़';
+
+  @override
+  String get reportApproved => 'स्वीकृत';
+
+  @override
+  String get reportPaid => 'भुगतान किया गया';
 }

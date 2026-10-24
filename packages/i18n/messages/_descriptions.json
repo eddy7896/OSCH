@@ -206,5 +206,21 @@
   "payslipTotalDeductions": "Label before the sum of all deductions, on a payslip.",
   "payslipNetPay": "Label before the amount actually paid out, on a payslip. Keep it short.",
   "payslipPaidOn": "Label before the day the salary was paid, on a payslip.",
-  "payslipFooter": "Line at the bottom of a printed payslip."
+  "payslipFooter": "Line at the bottom of a printed payslip.",
+  "reportCollectionsTitle": "Title of the printed fee collections report (money taken in a date range).",
+  "reportDuesTitle": "Title of the printed report of unpaid fee invoices that have fallen due.",
+  "reportPayrollTitle": "Title of the printed report of a year's approved and paid pay runs.",
+  "reportAsOf": "Label before the date a report is calculated up to (for example As of 24-10-2026).",
+  "reportYear": "Label before a calendar year on the payroll summary.",
+  "reportStatus": "Column heading: the state of a payment or a pay run.",
+  "reportReversed": "Status of a payment that was taken back.",
+  "reportTotal": "Label of the last row, which adds up the columns above it.",
+  "reportDueDate": "Column heading: the date an invoice has to be paid by.",
+  "reportAmountDue": "Column heading: the amount an invoice asks for.",
+  "reportOutstanding": "Column heading: money still owed on an invoice.",
+  "reportDaysOverdue": "Column heading: how many days past its due date an invoice is.",
+  "reportMonth": "Column heading: the month a pay run is for.",
+  "reportHeadcount": "Column heading: how many staff members were paid.",
+  "reportApproved": "Status of a pay run the Principal has approved and the Bursar has not yet paid.",
+  "reportPaid": "Status of a pay run that has been paid."
 }
