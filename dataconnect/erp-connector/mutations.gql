@@ -16,20 +16,6 @@ mutation CreateSchoolMember($schoolId: UUID!, $userId: String!, $schoolRole: Sch
   })
 }
 
-# Finance: Create a Payroll Record
-# The paid user must be a member of $schoolId (DB-enforced; review finding: users are a GLOBAL table).
-mutation CreatePayroll($schoolId: UUID!, $userId: String!, $amountMinor: Int64!, $payDate: Date!) @auth(level: NO_ACCESS) @transaction {
-  query {
-    schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}) @check(expr: "this.size() == 1", message: "user is not a member of this school") { userId }
-  }
-  payroll_insert(data: {
-    schoolId: $schoolId,
-    userId: $userId,
-    amountMinor: $amountMinor,
-    payDate: $payDate
-  })
-}
-
 # Academic: Create a Class Schedule
 # Classroom, subject and teacher must all belong to $schoolId (DB-enforced; otherwise the List joins would leak another tenant's names/emails).
 mutation CreateSchedule($schoolId: UUID!, $classroomId: UUID!, $subjectId: UUID!, $teacherId: String!, $dayOfWeek: String!, $startTime: String!, $endTime: String!) @auth(level: NO_ACCESS) @transaction {
@@ -747,4 +733,102 @@ mutation ReversePayment($schoolId: UUID!, $id: UUID!, $invoiceId: UUID!, $reason
   payment_update(id: $id, data: { reversedAt_expr: "request.time", reversalReason: $reason })
   receipt_updateMany(where: {paymentId: {eq: $id}, schoolId: {eq: $schoolId}}, data: { cancelledAt_expr: "request.time", cancelReason: $reason })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.payment.reverse", entityType: "Payment", entityId_expr: "request.variables.id", details: $details })
+}
+
+# ---- Payroll (P2-8)
+mutation AddSalaryLine($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $kind: SalaryLineKind!, $name: String!, $amountMinor: Int64!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "staff member not found in this school") { id }
+  }
+  salaryLine_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, kind: $kind, name: $name, amountMinor: $amountMinor })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.salaryline.add", entityType: "SalaryLine", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateSalaryLine($schoolId: UUID!, $id: UUID!, $kind: SalaryLineKind, $name: String, $amountMinor: Int64, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    line: salaryLines(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "salary line not found in this school") { id }
+  }
+  salaryLine_update(id: $id, data: { kind: $kind, name: $name, amountMinor: $amountMinor })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.salaryline.update", entityType: "SalaryLine", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation RemoveSalaryLine($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    line: salaryLines(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "salary line not found in this school") { id }
+  }
+  salaryLine_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.salaryline.remove", entityType: "SalaryLine", entityId_expr: "request.variables.id", details: $details })
+}
+
+# A month's run, empty and DRAFT. One per school and month (a second is a CONFLICT).
+mutation CreatePayrollRun($schoolId: UUID!, $id: UUID!, $year: Int!, $month: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  payrollRun_insert(data: { id: $id, schoolId: $schoolId, year: $year, month: $month, preparedById: $actorId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.run.create", entityType: "PayrollRun", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation CreatePayslip($schoolId: UUID!, $id: UUID!, $runId: UUID!, $staffId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    run: payrollRuns(where: {id: {eq: $runId}, schoolId: {eq: $schoolId}, status: {eq: DRAFT}}) @check(expr: "this.size() == 1", message: "payroll run not found in this school or no longer a draft") { id }
+    staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "staff member not found in this school") { id }
+  }
+  payslip_insert(data: { id: $id, schoolId: $schoolId, runId: $runId, staffId: $staffId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.payslip.create", entityType: "Payslip", entityId_expr: "request.variables.id", details: $details })
+}
+
+# A line on a payslip of a DRAFT run (copied from the salary lines, or added by hand).
+mutation AddPayslipLine($schoolId: UUID!, $id: UUID!, $runId: UUID!, $payslipId: UUID!, $kind: SalaryLineKind!, $name: String!, $amountMinor: Int64!, $manual: Boolean!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    run: payrollRuns(where: {id: {eq: $runId}, schoolId: {eq: $schoolId}, status: {eq: DRAFT}}) @check(expr: "this.size() == 1", message: "payroll run not found in this school or no longer a draft") { id }
+    payslip: payslips(where: {id: {eq: $payslipId}, runId: {eq: $runId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "payslip not found in this run") { id }
+  }
+  payslipLine_insert(data: { id: $id, schoolId: $schoolId, runId: $runId, payslipId: $payslipId, kind: $kind, name: $name, amountMinor: $amountMinor, manual: $manual })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.payslipline.add", entityType: "PayslipLine", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation RemovePayslipLine($schoolId: UUID!, $id: UUID!, $runId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    run: payrollRuns(where: {id: {eq: $runId}, schoolId: {eq: $schoolId}, status: {eq: DRAFT}}) @check(expr: "this.size() == 1", message: "payroll run not found in this school or no longer a draft") { id }
+    line: payslipLines(where: {id: {eq: $id}, runId: {eq: $runId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "line not found in this run") { id }
+  }
+  payslipLine_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.payslipline.remove", entityType: "PayslipLine", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeletePayrollRun($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    run: payrollRuns(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: DRAFT}}) @check(expr: "this.size() == 1", message: "payroll run not found in this school or no longer a draft") { id }
+  }
+  payrollRun_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.run.delete", entityType: "PayrollRun", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Approval is the Principal's alone, and the database itself checks it: the actor must be an ACTIVE PRINCIPAL of this school, so even a mistake
+# in the gateway cannot let anyone else approve. A run can only be approved while it is a DRAFT.
+mutation ApprovePayrollRun($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can approve payroll") { userId }
+    run: payrollRuns(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: DRAFT}}) @check(expr: "this.size() == 1", message: "payroll run not found in this school or no longer a draft") { id }
+  }
+  payrollRun_update(id: $id, data: { status: APPROVED, approvedById: $actorId, approvedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.run.approve", entityType: "PayrollRun", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Paying is the Bursar's (the finance silo), also checked by the database. Only an APPROVED run.
+mutation MarkPayrollRunPaid($schoolId: UUID!, $id: UUID!, $paidOn: Date!, $paymentReference: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: BURSAR}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Bursar of this school can mark payroll paid") { userId }
+    run: payrollRuns(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: APPROVED}}) @check(expr: "this.size() == 1", message: "payroll run not found in this school or not approved") { id }
+  }
+  payrollRun_update(id: $id, data: { status: PAID, paidById: $actorId, paidAt_expr: "request.time", paidOn: $paidOn, paymentReference: $paymentReference })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.run.pay", entityType: "PayrollRun", entityId_expr: "request.variables.id", details: $details })
 }

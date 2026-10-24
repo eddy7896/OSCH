@@ -64,9 +64,14 @@ export enum PaymentMethod {
   UPI = "UPI",
   OTHER = "OTHER",
 }
-export enum PayrollStatus {
-  PENDING = "PENDING",
+export enum PayrollRunStatus {
+  DRAFT = "DRAFT",
+  APPROVED = "APPROVED",
   PAID = "PAID",
+}
+export enum SalaryLineKind {
+  EARNING = "EARNING",
+  DEDUCTION = "DEDUCTION",
 }
 export enum SchoolRole {
   PRINCIPAL = "PRINCIPAL",
@@ -232,6 +237,59 @@ export interface AddMembershipVariables {
   details?: unknown | null;
 }
 
+export interface AddPayslipLineData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    run: ({
+      id: UUIDString;
+    } & PayrollRun_Key)[];
+    payslip: ({
+      id: UUIDString;
+    } & Payslip_Key)[];
+  };
+  payslipLine_insert: PayslipLine_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddPayslipLineVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  runId: UUIDString;
+  payslipId: UUIDString;
+  kind: SalaryLineKind;
+  name: string;
+  amountMinor: Int64String;
+  manual: boolean;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface AddSalaryLineData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+  };
+  salaryLine_insert: SalaryLine_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddSalaryLineVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  staffId: UUIDString;
+  kind: SalaryLineKind;
+  name: string;
+  amountMinor: Int64String;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface AddStaffDocumentData {
   query?: {
     actor: ({
@@ -346,6 +404,26 @@ export interface ApplicationSeqInfoVariables {
 export interface Application_Key {
   id: UUIDString;
   __typename?: 'Application_Key';
+}
+
+export interface ApprovePayrollRunData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    run: ({
+      id: UUIDString;
+    } & PayrollRun_Key)[];
+  };
+  payrollRun_update?: PayrollRun_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ApprovePayrollRunVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface AuditLog_Key {
@@ -792,20 +870,48 @@ export interface CreateLeaveRequestVariables {
   reason?: string | null;
 }
 
-export interface CreatePayrollData {
+export interface CreatePayrollRunData {
   query?: {
-    schoolMembers: ({
+    actor: ({
       userId: string;
     })[];
   };
-  payroll_insert: Payroll_Key;
+  payrollRun_insert: PayrollRun_Key;
+  auditLog_insert: AuditLog_Key;
 }
 
-export interface CreatePayrollVariables {
+export interface CreatePayrollRunVariables {
   schoolId: UUIDString;
-  userId: string;
-  amountMinor: Int64String;
-  payDate: DateString;
+  id: UUIDString;
+  year: number;
+  month: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface CreatePayslipData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    run: ({
+      id: UUIDString;
+    } & PayrollRun_Key)[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+  };
+  payslip_insert: Payslip_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreatePayslipVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  runId: UUIDString;
+  staffId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CreateScheduleData {
@@ -1115,6 +1221,26 @@ export interface DeleteGradeLevelVariables {
   details?: unknown | null;
 }
 
+export interface DeletePayrollRunData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    run: ({
+      id: UUIDString;
+    } & PayrollRun_Key)[];
+  };
+  payrollRun_delete?: PayrollRun_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeletePayrollRunVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface DeleteSubjectData {
   query?: {
     actor: ({
@@ -1170,6 +1296,19 @@ export interface FindImportBatchVariables {
   schoolId: UUIDString;
   kind: string;
   fileHash: string;
+}
+
+export interface FindPayrollRunData {
+  payrollRuns: ({
+    id: UUIDString;
+    status: PayrollRunStatus;
+  } & PayrollRun_Key)[];
+}
+
+export interface FindPayrollRunVariables {
+  schoolId: UUIDString;
+  year: number;
+  month: number;
 }
 
 export interface FinishImportBatchData {
@@ -1406,6 +1545,110 @@ export interface GetPaymentData {
 }
 
 export interface GetPaymentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetPayrollRunData {
+  payrollRuns: ({
+    id: UUIDString;
+    year: number;
+    month: number;
+    status: PayrollRunStatus;
+    createdAt: TimestampString;
+    approvedAt?: TimestampString | null;
+    paidAt?: TimestampString | null;
+    paidOn?: DateString | null;
+    paymentReference?: string | null;
+    preparedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    approvedBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    paidBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    payslips: ({
+      id: UUIDString;
+      staff: {
+        id: UUIDString;
+        employeeId: string;
+        firstName: string;
+        lastName: string;
+        department?: string | null;
+        designation?: string | null;
+      } & StaffProfile_Key;
+      lines: ({
+        id: UUIDString;
+        kind: SalaryLineKind;
+        name: string;
+        amountMinor: Int64String;
+        manual: boolean;
+      } & PayslipLine_Key)[];
+    } & Payslip_Key)[];
+  } & PayrollRun_Key)[];
+}
+
+export interface GetPayrollRunVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetPayslipData {
+  payslips: ({
+    id: UUIDString;
+    run: {
+      id: UUIDString;
+      year: number;
+      month: number;
+      status: PayrollRunStatus;
+      createdAt: TimestampString;
+      approvedAt?: TimestampString | null;
+      paidAt?: TimestampString | null;
+      paidOn?: DateString | null;
+      paymentReference?: string | null;
+      preparedBy: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+      approvedBy?: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+      paidBy?: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+    } & PayrollRun_Key;
+    staff: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      department?: string | null;
+      designation?: string | null;
+    } & StaffProfile_Key;
+    lines: ({
+      id: UUIDString;
+      kind: SalaryLineKind;
+      name: string;
+      amountMinor: Int64String;
+      manual: boolean;
+    } & PayslipLine_Key)[];
+  } & Payslip_Key)[];
+}
+
+export interface GetPayslipVariables {
   schoolId: UUIDString;
   id: UUIDString;
 }
@@ -2040,21 +2283,39 @@ export interface ListMembershipsVariables {
   schoolId: UUIDString;
 }
 
-export interface ListPayrollData {
-  payrolls: ({
+export interface ListPayrollRunsData {
+  payrollRuns: ({
     id: UUIDString;
-    amountMinor: Int64String;
-    payDate: DateString;
-    status: PayrollStatus;
-    user: {
+    year: number;
+    month: number;
+    status: PayrollRunStatus;
+    createdAt: TimestampString;
+    approvedAt?: TimestampString | null;
+    paidAt?: TimestampString | null;
+    paidOn?: DateString | null;
+    paymentReference?: string | null;
+    preparedBy: {
       id: string;
+      displayName?: string | null;
       email: string;
     } & User_Key;
-  } & Payroll_Key)[];
+    approvedBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    paidBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & PayrollRun_Key)[];
 }
 
-export interface ListPayrollVariables {
+export interface ListPayrollRunsVariables {
   schoolId: UUIDString;
+  limit: number;
+  offset: number;
 }
 
 export interface ListReceiptsData {
@@ -2101,6 +2362,20 @@ export interface ListReceiptsVariables {
   academicYearId?: UUIDString | null;
   limit: number;
   offset: number;
+}
+
+export interface ListSalaryLinesData {
+  salaryLines: ({
+    id: UUIDString;
+    kind: SalaryLineKind;
+    name: string;
+    amountMinor: Int64String;
+  } & SalaryLine_Key)[];
+}
+
+export interface ListSalaryLinesVariables {
+  schoolId: UUIDString;
+  staffId: UUIDString;
 }
 
 export interface ListSchedulesData {
@@ -2235,6 +2510,28 @@ export interface ListSubjectsVariables {
   schoolId: UUIDString;
 }
 
+export interface MarkPayrollRunPaidData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    run: ({
+      id: UUIDString;
+    } & PayrollRun_Key)[];
+  };
+  payrollRun_update?: PayrollRun_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface MarkPayrollRunPaidVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  paidOn: DateString;
+  paymentReference?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface MoveStudentData {
   query?: {
     actor: ({
@@ -2274,9 +2571,54 @@ export interface Payment_Key {
   __typename?: 'Payment_Key';
 }
 
-export interface Payroll_Key {
+export interface PayrollRunSumData {
+  payslipLines: ({
+    _count: number;
+    amountMinor_sum?: Int64String | null;
+  })[];
+}
+
+export interface PayrollRunSumVariables {
+  schoolId: UUIDString;
+  runId: UUIDString;
+  kind: SalaryLineKind;
+}
+
+export interface PayrollRun_Key {
   id: UUIDString;
-  __typename?: 'Payroll_Key';
+  __typename?: 'PayrollRun_Key';
+}
+
+export interface PayslipLineData {
+  payslipLines: ({
+    id: UUIDString;
+    kind: SalaryLineKind;
+    name: string;
+    amountMinor: Int64String;
+    manual: boolean;
+    run: {
+      id: UUIDString;
+      status: PayrollRunStatus;
+    } & PayrollRun_Key;
+    payslip: {
+      id: UUIDString;
+    } & Payslip_Key;
+  } & PayslipLine_Key)[];
+}
+
+export interface PayslipLineVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface PayslipLine_Key {
+  id: UUIDString;
+  __typename?: 'PayslipLine_Key';
+}
+
+export interface Payslip_Key {
+  id: UUIDString;
+  __typename?: 'Payslip_Key';
 }
 
 export interface PlaceStudentData {
@@ -2457,6 +2799,50 @@ export interface RemoveMembershipVariables {
   details?: unknown | null;
 }
 
+export interface RemovePayslipLineData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    run: ({
+      id: UUIDString;
+    } & PayrollRun_Key)[];
+    line: ({
+      id: UUIDString;
+    } & PayslipLine_Key)[];
+  };
+  payslipLine_delete?: PayslipLine_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemovePayslipLineVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  runId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface RemoveSalaryLineData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    line: ({
+      id: UUIDString;
+    } & SalaryLine_Key)[];
+  };
+  salaryLine_delete?: SalaryLine_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveSalaryLineVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface RemoveStaffDocumentData {
   query?: {
     actor: ({
@@ -2542,6 +2928,28 @@ export interface RevokeInvitationVariables {
   invitationId: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface SalaryLineByIdData {
+  salaryLines: ({
+    id: UUIDString;
+    kind: SalaryLineKind;
+    name: string;
+    amountMinor: Int64String;
+    staff: {
+      id: UUIDString;
+    } & StaffProfile_Key;
+  } & SalaryLine_Key)[];
+}
+
+export interface SalaryLineByIdVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface SalaryLine_Key {
+  id: UUIDString;
+  __typename?: 'SalaryLine_Key';
 }
 
 export interface SchoolMember_Key {
@@ -2650,6 +3058,26 @@ export interface SetUserLanguageVariables {
 export interface StaffDocument_Key {
   id: UUIDString;
   __typename?: 'StaffDocument_Key';
+}
+
+export interface StaffForPayrollData {
+  staffProfiles: ({
+    id: UUIDString;
+    employeeId: string;
+    firstName: string;
+    lastName: string;
+    lines: ({
+      kind: SalaryLineKind;
+      name: string;
+      amountMinor: Int64String;
+    })[];
+  } & StaffProfile_Key)[];
+}
+
+export interface StaffForPayrollVariables {
+  schoolId: UUIDString;
+  limit: number;
+  offset: number;
 }
 
 export interface StaffIdentitiesData {
@@ -2989,6 +3417,29 @@ export interface UpdateMembershipVariables {
   details?: unknown | null;
 }
 
+export interface UpdateSalaryLineData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    line: ({
+      id: UUIDString;
+    } & SalaryLine_Key)[];
+  };
+  salaryLine_update?: SalaryLine_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateSalaryLineVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  kind?: SalaryLineKind | null;
+  name?: string | null;
+  amountMinor?: Int64String | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface UpdateSchoolData {
   school_update?: School_Key | null;
   auditLog_insert: AuditLog_Key;
@@ -3136,11 +3587,6 @@ export function createUser(vars: CreateUserVariables, options?: OperationOptions
 export function createSchoolMember(dc: DataConnect, vars: CreateSchoolMemberVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolMemberData>>;
 /** Generated Node Admin SDK operation action function for the 'CreateSchoolMember' Mutation. Allow users to pass in custom DataConnect instances. */
 export function createSchoolMember(vars: CreateSchoolMemberVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolMemberData>>;
-
-/** Generated Node Admin SDK operation action function for the 'CreatePayroll' Mutation. Allow users to execute without passing in DataConnect. */
-export function createPayroll(dc: DataConnect, vars: CreatePayrollVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePayrollData>>;
-/** Generated Node Admin SDK operation action function for the 'CreatePayroll' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createPayroll(vars: CreatePayrollVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePayrollData>>;
 
 /** Generated Node Admin SDK operation action function for the 'CreateSchedule' Mutation. Allow users to execute without passing in DataConnect. */
 export function createSchedule(dc: DataConnect, vars: CreateScheduleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateScheduleData>>;
@@ -3492,15 +3938,60 @@ export function reversePayment(dc: DataConnect, vars: ReversePaymentVariables, o
 /** Generated Node Admin SDK operation action function for the 'ReversePayment' Mutation. Allow users to pass in custom DataConnect instances. */
 export function reversePayment(vars: ReversePaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ReversePaymentData>>;
 
+/** Generated Node Admin SDK operation action function for the 'AddSalaryLine' Mutation. Allow users to execute without passing in DataConnect. */
+export function addSalaryLine(dc: DataConnect, vars: AddSalaryLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddSalaryLineData>>;
+/** Generated Node Admin SDK operation action function for the 'AddSalaryLine' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addSalaryLine(vars: AddSalaryLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddSalaryLineData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateSalaryLine' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateSalaryLine(dc: DataConnect, vars: UpdateSalaryLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateSalaryLineData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateSalaryLine' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateSalaryLine(vars: UpdateSalaryLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateSalaryLineData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveSalaryLine' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeSalaryLine(dc: DataConnect, vars: RemoveSalaryLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveSalaryLineData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveSalaryLine' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeSalaryLine(vars: RemoveSalaryLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveSalaryLineData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreatePayrollRun' Mutation. Allow users to execute without passing in DataConnect. */
+export function createPayrollRun(dc: DataConnect, vars: CreatePayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePayrollRunData>>;
+/** Generated Node Admin SDK operation action function for the 'CreatePayrollRun' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createPayrollRun(vars: CreatePayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePayrollRunData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreatePayslip' Mutation. Allow users to execute without passing in DataConnect. */
+export function createPayslip(dc: DataConnect, vars: CreatePayslipVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePayslipData>>;
+/** Generated Node Admin SDK operation action function for the 'CreatePayslip' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createPayslip(vars: CreatePayslipVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePayslipData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddPayslipLine' Mutation. Allow users to execute without passing in DataConnect. */
+export function addPayslipLine(dc: DataConnect, vars: AddPayslipLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddPayslipLineData>>;
+/** Generated Node Admin SDK operation action function for the 'AddPayslipLine' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addPayslipLine(vars: AddPayslipLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddPayslipLineData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemovePayslipLine' Mutation. Allow users to execute without passing in DataConnect. */
+export function removePayslipLine(dc: DataConnect, vars: RemovePayslipLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemovePayslipLineData>>;
+/** Generated Node Admin SDK operation action function for the 'RemovePayslipLine' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removePayslipLine(vars: RemovePayslipLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemovePayslipLineData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeletePayrollRun' Mutation. Allow users to execute without passing in DataConnect. */
+export function deletePayrollRun(dc: DataConnect, vars: DeletePayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeletePayrollRunData>>;
+/** Generated Node Admin SDK operation action function for the 'DeletePayrollRun' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deletePayrollRun(vars: DeletePayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeletePayrollRunData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ApprovePayrollRun' Mutation. Allow users to execute without passing in DataConnect. */
+export function approvePayrollRun(dc: DataConnect, vars: ApprovePayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApprovePayrollRunData>>;
+/** Generated Node Admin SDK operation action function for the 'ApprovePayrollRun' Mutation. Allow users to pass in custom DataConnect instances. */
+export function approvePayrollRun(vars: ApprovePayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApprovePayrollRunData>>;
+
+/** Generated Node Admin SDK operation action function for the 'MarkPayrollRunPaid' Mutation. Allow users to execute without passing in DataConnect. */
+export function markPayrollRunPaid(dc: DataConnect, vars: MarkPayrollRunPaidVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkPayrollRunPaidData>>;
+/** Generated Node Admin SDK operation action function for the 'MarkPayrollRunPaid' Mutation. Allow users to pass in custom DataConnect instances. */
+export function markPayrollRunPaid(vars: MarkPayrollRunPaidVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkPayrollRunPaidData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
 export function listStaff(vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
-
-/** Generated Node Admin SDK operation action function for the 'ListPayroll' Query. Allow users to execute without passing in DataConnect. */
-export function listPayroll(dc: DataConnect, vars: ListPayrollVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListPayrollData>>;
-/** Generated Node Admin SDK operation action function for the 'ListPayroll' Query. Allow users to pass in custom DataConnect instances. */
-export function listPayroll(vars: ListPayrollVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListPayrollData>>;
 
 /** Generated Node Admin SDK operation action function for the 'ListSchedules' Query. Allow users to execute without passing in DataConnect. */
 export function listSchedules(dc: DataConnect, vars: ListSchedulesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSchedulesData>>;
@@ -3766,4 +4257,49 @@ export function getReceipt(vars: GetReceiptVariables, options?: OperationOptions
 export function getReceiptByPayment(dc: DataConnect, vars: GetReceiptByPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetReceiptByPaymentData>>;
 /** Generated Node Admin SDK operation action function for the 'GetReceiptByPayment' Query. Allow users to pass in custom DataConnect instances. */
 export function getReceiptByPayment(vars: GetReceiptByPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetReceiptByPaymentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListSalaryLines' Query. Allow users to execute without passing in DataConnect. */
+export function listSalaryLines(dc: DataConnect, vars: ListSalaryLinesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSalaryLinesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListSalaryLines' Query. Allow users to pass in custom DataConnect instances. */
+export function listSalaryLines(vars: ListSalaryLinesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSalaryLinesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StaffForPayroll' Query. Allow users to execute without passing in DataConnect. */
+export function staffForPayroll(dc: DataConnect, vars: StaffForPayrollVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffForPayrollData>>;
+/** Generated Node Admin SDK operation action function for the 'StaffForPayroll' Query. Allow users to pass in custom DataConnect instances. */
+export function staffForPayroll(vars: StaffForPayrollVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffForPayrollData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListPayrollRuns' Query. Allow users to execute without passing in DataConnect. */
+export function listPayrollRuns(dc: DataConnect, vars: ListPayrollRunsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListPayrollRunsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListPayrollRuns' Query. Allow users to pass in custom DataConnect instances. */
+export function listPayrollRuns(vars: ListPayrollRunsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListPayrollRunsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'FindPayrollRun' Query. Allow users to execute without passing in DataConnect. */
+export function findPayrollRun(dc: DataConnect, vars: FindPayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FindPayrollRunData>>;
+/** Generated Node Admin SDK operation action function for the 'FindPayrollRun' Query. Allow users to pass in custom DataConnect instances. */
+export function findPayrollRun(vars: FindPayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FindPayrollRunData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetPayrollRun' Query. Allow users to execute without passing in DataConnect. */
+export function getPayrollRun(dc: DataConnect, vars: GetPayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetPayrollRunData>>;
+/** Generated Node Admin SDK operation action function for the 'GetPayrollRun' Query. Allow users to pass in custom DataConnect instances. */
+export function getPayrollRun(vars: GetPayrollRunVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetPayrollRunData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetPayslip' Query. Allow users to execute without passing in DataConnect. */
+export function getPayslip(dc: DataConnect, vars: GetPayslipVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetPayslipData>>;
+/** Generated Node Admin SDK operation action function for the 'GetPayslip' Query. Allow users to pass in custom DataConnect instances. */
+export function getPayslip(vars: GetPayslipVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetPayslipData>>;
+
+/** Generated Node Admin SDK operation action function for the 'PayrollRunSum' Query. Allow users to execute without passing in DataConnect. */
+export function payrollRunSum(dc: DataConnect, vars: PayrollRunSumVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PayrollRunSumData>>;
+/** Generated Node Admin SDK operation action function for the 'PayrollRunSum' Query. Allow users to pass in custom DataConnect instances. */
+export function payrollRunSum(vars: PayrollRunSumVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PayrollRunSumData>>;
+
+/** Generated Node Admin SDK operation action function for the 'PayslipLine' Query. Allow users to execute without passing in DataConnect. */
+export function payslipLine(dc: DataConnect, vars: PayslipLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PayslipLineData>>;
+/** Generated Node Admin SDK operation action function for the 'PayslipLine' Query. Allow users to pass in custom DataConnect instances. */
+export function payslipLine(vars: PayslipLineVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PayslipLineData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SalaryLineById' Query. Allow users to execute without passing in DataConnect. */
+export function salaryLineById(dc: DataConnect, vars: SalaryLineByIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SalaryLineByIdData>>;
+/** Generated Node Admin SDK operation action function for the 'SalaryLineById' Query. Allow users to pass in custom DataConnect instances. */
+export function salaryLineById(vars: SalaryLineByIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SalaryLineByIdData>>;
 

@@ -13,7 +13,6 @@ enum SchoolRole { PRINCIPAL MANAGEMENT BURSAR ACADEMIC_ADMIN SYSTEM_ADMIN HR_MAN
 enum SubscriptionStatus { ACTIVE TRIAL SUSPENDED }
 enum AcademicYearStatus { PLANNED ACTIVE ARCHIVED }
 enum InvoiceStatus { PENDING PAID OVERDUE }
-enum PayrollStatus { PENDING PAID }
 enum LeaveStatus { PENDING APPROVED REJECTED }
 enum MembershipStatus { ACTIVE SUSPENDED }
 enum InvitationStatus { PENDING ACCEPTED REVOKED }
@@ -82,6 +81,8 @@ type Invitation @table {
 # Student Profile, belonging to a School
 enum StudentStatus { ACTIVE INACTIVE LEFT }
 enum Gender { FEMALE MALE OTHER }
+enum SalaryLineKind { EARNING DEDUCTION }
+enum PayrollRunStatus { DRAFT APPROVED PAID }
 enum PaymentMethod { CASH CHEQUE BANK_TRANSFER UPI OTHER }
 enum ConcessionKind { PERCENT FIXED }
 enum ImportStatus { STARTED COMPLETED PARTIAL }
@@ -363,14 +364,54 @@ type Payment @table {
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
-# ERP: Payroll
-type Payroll @table {
+# ---- Payroll (P2-8, ADR-0012). No statutory calculation (provident fund, ESI, professional tax, income tax): a salary is a list of EARNING
+# components (basic pay, allowances) and DEDUCTION lines per person, all typed in; a monthly run goes DRAFT -> APPROVED (Principal only) -> PAID
+# (Bursar only). Amounts are integer paise. Totals are never stored: they are summed from the lines, so they cannot disagree with them.
+type SalaryLine @table @unique(fields: ["staff", "name"]) {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
-  user: User!
-  amountMinor: Int64! # minor units (paise)
-  payDate: Date!
-  status: PayrollStatus! @default(value: PENDING)
+  staff: StaffProfile!
+  kind: SalaryLineKind!
+  name: String! # Basic pay, House rent allowance, Advance recovery ...
+  amountMinor: Int64! # per month
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type PayrollRun @table @unique(fields: ["school", "year", "month"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  year: Int!
+  month: Int! # 1 to 12
+  status: PayrollRunStatus! @default(value: DRAFT)
+  preparedBy: User!
+  approvedBy: User
+  approvedAt: Timestamp
+  paidBy: User
+  paidAt: Timestamp
+  paidOn: Date # the day the salaries were paid
+  paymentReference: String
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# One person's payslip in one run. Its lines are COPIED from the salary lines when the draft run is made (so later changes to a salary do not
+# alter a draft until it is made again), plus any manual lines added to the draft. Once the run is approved nothing in it can change.
+type Payslip @table @unique(fields: ["run", "staff"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  run: PayrollRun!
+  staff: StaffProfile!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type PayslipLine @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  run: PayrollRun! # the same run as the payslip's, kept here so a run's totals are one sum
+  payslip: Payslip!
+  kind: SalaryLineKind!
+  name: String!
+  amountMinor: Int64!
+  manual: Boolean! @default(value: false) # added by hand to this run, not copied from the salary lines
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
