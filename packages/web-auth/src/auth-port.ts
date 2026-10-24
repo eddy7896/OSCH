@@ -2,6 +2,7 @@ import { FirebaseError, getApp, getApps, initializeApp, type FirebaseOptions } f
 import {
   GoogleAuthProvider,
   RecaptchaVerifier,
+  connectAuthEmulator,
   getAuth,
   onAuthStateChanged,
   sendPasswordResetEmail,
@@ -80,9 +81,17 @@ const fail = (e: unknown): never => {
   throw new AuthFailure(e instanceof FirebaseError ? mapFirebaseAuthError(e.code) : "GENERIC");
 };
 
-export function createFirebaseAuthPort(firebase: FirebaseOptions): AuthPort {
-  const app = getApps().length ? getApp() : initializeApp(firebase);
+export interface FirebasePortOptions {
+  /** Local development only: `host:port` of the Firebase Auth emulator (for example `127.0.0.1:9099`). Leave out everywhere else. */
+  authEmulatorHost?: string;
+}
+
+export function createFirebaseAuthPort(firebase: FirebaseOptions, options: FirebasePortOptions = {}): AuthPort {
+  const fresh = getApps().length === 0;
+  const app = fresh ? initializeApp(firebase) : getApp();
   const auth = getAuth(app);
+  // Connect to the emulator once per app (a second call on the same Auth instance throws).
+  if (fresh && options.authEmulatorHost) connectAuthEmulator(auth, `http://${options.authEmulatorHost}`, { disableWarnings: true });
 
   return {
     subscribe(listener) {

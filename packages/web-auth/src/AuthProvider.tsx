@@ -24,6 +24,8 @@ export interface AuthProviderProps {
   children: ReactNode;
   /** The public Firebase web config (it identifies the project and is not a secret). Not needed when a `port` is passed in. */
   firebase?: FirebaseOptions;
+  /** Local development only: `host:port` of the Firebase Auth emulator. Apps pass nothing in production builds. */
+  authEmulatorHost?: string;
   /** The gateway's origin. Not needed when an `api` is passed in. */
   apiUrl?: string;
   /** The school the person is working in (a uuid), sent as X-School-Id on school routes. Read on every request. */
@@ -37,7 +39,7 @@ export interface AuthProviderProps {
  * Sign-in state for the whole app (ADR-0009: the browser signs in with the Firebase web SDK and calls the gateway directly).
  * Firebase is set up in an effect so nothing runs during prerendering; the shell stays static and this is a client island.
  */
-export function AuthProvider({ children, firebase, apiUrl, getSchoolId, port: injectedPort, api: injectedApi }: AuthProviderProps) {
+export function AuthProvider({ children, firebase, authEmulatorHost, apiUrl, getSchoolId, port: injectedPort, api: injectedApi }: AuthProviderProps) {
   const [port, setPort] = useState<AuthPort | null>(injectedPort ?? null);
   const [state, setState] = useState<AuthState>({ status: "loading" });
   const schoolId = useRef(getSchoolId);
@@ -45,13 +47,13 @@ export function AuthProvider({ children, firebase, apiUrl, getSchoolId, port: in
 
   useEffect(() => {
     if (!injectedPort && !firebase) throw new Error("AuthProvider needs `firebase` (or an injected `port`)");
-    const active = injectedPort ?? createFirebaseAuthPort(firebase as FirebaseOptions);
+    const active = injectedPort ?? createFirebaseAuthPort(firebase as FirebaseOptions, { authEmulatorHost });
     // The port is published together with the first sign-in report, from inside the subscription callback.
     return active.subscribe((next) => {
       setPort(active);
       setState(next);
     });
-  }, [injectedPort, firebase]);
+  }, [injectedPort, firebase, authEmulatorHost]);
 
   const api = useMemo(
     () =>
