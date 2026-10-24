@@ -9,7 +9,7 @@ import { monthLabel, rupees, shortDate, todayIso } from "@/lib/display";
 import { useLoad } from "@/lib/use-load";
 import { DataTable, type Column } from "./DataTable";
 import { saveFile } from "./download";
-import { Failed, Saved, SelectField } from "./parts";
+import { ConfirmBox, Failed, Saved, SelectField } from "./parts";
 
 const STATUS_KEY: Record<string, string> = { DRAFT: "hrpDraft", APPROVED: "reportApproved", PAID: "reportPaid" };
 const TONE: Record<string, "warning" | "info" | "success"> = { DRAFT: "warning", APPROVED: "info", PAID: "success" };
@@ -121,21 +121,19 @@ function Detail({ id, grants, onBack, onChanged }: { id: string; grants: Payroll
             </div>
           )}
           {pending && (
-            <Banner tone="warning" title={t(pending === "approve" ? "hrpConfirmApprove" : pending === "pay" ? "hrpConfirmPay" : "hrpConfirmDelete", { month, count: run.totals.payslips, net: rupees(run.totals.netMinor, locale) })}>
-              <span className="mt-2 flex flex-wrap items-end gap-3">
-                {pending === "pay" && (
-                  <>
-                    <TextField size="comfortable" label={t("receiptReference")} value={reference} onChange={(e) => setReference(e.target.value)} />
-                    <TextField size="comfortable" type="date" label={t("payslipPaidOn")} value={paidOn} onChange={(e) => setPaidOn(e.target.value)} />
-                  </>
-                )}
-                <Button size="comfortable" variant={pending === "delete" ? "danger" : "primary"} disabled={busy} onClick={() => void act(
-                  pending === "approve" ? () => api!.payrollApprove({ path: { id } }) : pending === "pay" ? () => api!.payrollPay({ path: { id }, body: { ...(reference.trim() ? { reference: reference.trim() } : {}), ...(paidOn ? { paidOn } : {}) } }) : () => api!.payrollDeleteRun({ path: { id } }),
-                  pending === "delete" ? () => setGone(true) : undefined,
-                )}>{t("hrpConfirm")}</Button>
-                <Button size="comfortable" onClick={() => setPending(null)}>{t("actionCancel")}</Button>
-              </span>
-            </Banner>
+            <ConfirmBox question={t(pending === "approve" ? "hrpConfirmApprove" : pending === "pay" ? "hrpConfirmPay" : "hrpConfirmDelete", { month, count: run.totals.payslips, net: rupees(run.totals.netMinor, locale) })}>
+              {pending === "pay" && (
+                <>
+                  <TextField size="comfortable" label={t("receiptReference")} value={reference} onChange={(e) => setReference(e.target.value)} />
+                  <TextField size="comfortable" type="date" label={t("payslipPaidOn")} value={paidOn} onChange={(e) => setPaidOn(e.target.value)} />
+                </>
+              )}
+              <Button size="comfortable" variant={pending === "delete" ? "danger" : "primary"} disabled={busy} onClick={() => void act(
+                pending === "approve" ? () => api!.payrollApprove({ path: { id } }) : pending === "pay" ? () => api!.payrollPay({ path: { id }, body: { ...(reference.trim() ? { reference: reference.trim() } : {}), ...(paidOn ? { paidOn } : {}) } }) : () => api!.payrollDeleteRun({ path: { id } }),
+                pending === "delete" ? () => setGone(true) : undefined,
+              )}>{t("hrpConfirm")}</Button>
+              <Button size="comfortable" onClick={() => setPending(null)}>{t("actionCancel")}</Button>
+            </ConfirmBox>
           )}
           <DataTable caption={t("navPayroll")} columns={columns} rows={run.payslips} rowKey={(s) => s.id} />
         </>

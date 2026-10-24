@@ -49,3 +49,16 @@ export function SelectField({ label, value, onChange, options, className }: { la
 export function Saved({ children }: { children: ReactNode }) {
   return <p role="status" className="rounded-md bg-success-bg px-3 py-2 text-body text-success-fg">{children}</p>;
 }
+
+/**
+ * Asks before something that cannot be undone. A warning-toned block with the question and the actions under it. (Not a Banner:
+ * a Banner's text styles reach into a button's label and spoil its colour, and a Banner is one line of news, not a question.)
+ */
+export function ConfirmBox({ question, children }: { question: string; children: ReactNode }) {
+  return (
+    <div role="alertdialog" aria-label={question} className="oru-tone--warning flex flex-col gap-3 rounded-lg p-4">
+      <p className="text-body-lg font-semibold">{question}</p>
+      <div className="flex flex-wrap items-end gap-3">{children}</div>
+    </div>
+  );
+}
