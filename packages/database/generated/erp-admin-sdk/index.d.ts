@@ -409,6 +409,19 @@ export interface CountInvoicesVariables {
   dueOnOrAfter?: DateString | null;
 }
 
+export interface CountReceiptsData {
+  receipts: ({
+    _count: number;
+    amountMinor_sum?: Int64String | null;
+  })[];
+}
+
+export interface CountReceiptsVariables {
+  schoolId: UUIDString;
+  studentId?: UUIDString | null;
+  academicYearId?: UUIDString | null;
+}
+
 export interface CountStaffProfilesData {
   staffProfiles: ({
     _count: number;
@@ -1346,6 +1359,11 @@ export interface GetInvoiceData {
         displayName?: string | null;
         email: string;
       } & User_Key;
+      receipt?: {
+        id: UUIDString;
+        number: string;
+        cancelledAt?: TimestampString | null;
+      } & Receipt_Key;
     } & Payment_Key)[];
   } & Invoice_Key)[];
 }
@@ -1388,6 +1406,92 @@ export interface GetPaymentData {
 }
 
 export interface GetPaymentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetReceiptByPaymentData {
+  receipts: ({
+    id: UUIDString;
+    number: string;
+    serial: number;
+    amountMinor: Int64String;
+    balanceAfterMinor: Int64String;
+    cancelledAt?: TimestampString | null;
+    cancelReason?: string | null;
+    createdAt: TimestampString;
+    academicYear: {
+      id: UUIDString;
+      name: string;
+    } & AcademicYear_Key;
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    invoice: {
+      id: UUIDString;
+      title: string;
+    } & Invoice_Key;
+    payment: {
+      id: UUIDString;
+      method: PaymentMethod;
+      reference?: string | null;
+      paidOn: DateString;
+      recordedBy: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+    } & Payment_Key;
+  } & Receipt_Key)[];
+}
+
+export interface GetReceiptByPaymentVariables {
+  schoolId: UUIDString;
+  paymentId: UUIDString;
+}
+
+export interface GetReceiptData {
+  receipts: ({
+    id: UUIDString;
+    number: string;
+    serial: number;
+    amountMinor: Int64String;
+    balanceAfterMinor: Int64String;
+    cancelledAt?: TimestampString | null;
+    cancelReason?: string | null;
+    createdAt: TimestampString;
+    academicYear: {
+      id: UUIDString;
+      name: string;
+    } & AcademicYear_Key;
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    invoice: {
+      id: UUIDString;
+      title: string;
+    } & Invoice_Key;
+    payment: {
+      id: UUIDString;
+      method: PaymentMethod;
+      reference?: string | null;
+      paidOn: DateString;
+      recordedBy: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+    } & Payment_Key;
+  } & Receipt_Key)[];
+}
+
+export interface GetReceiptVariables {
   schoolId: UUIDString;
   id: UUIDString;
 }
@@ -1645,6 +1749,7 @@ export interface ListAcademicYearsData {
     startDate: DateString;
     endDate: DateString;
     status: AcademicYearStatus;
+    receiptSeq: number;
   } & AcademicYear_Key)[];
 }
 
@@ -1952,6 +2057,52 @@ export interface ListPayrollVariables {
   schoolId: UUIDString;
 }
 
+export interface ListReceiptsData {
+  receipts: ({
+    id: UUIDString;
+    number: string;
+    serial: number;
+    amountMinor: Int64String;
+    balanceAfterMinor: Int64String;
+    cancelledAt?: TimestampString | null;
+    cancelReason?: string | null;
+    createdAt: TimestampString;
+    academicYear: {
+      id: UUIDString;
+      name: string;
+    } & AcademicYear_Key;
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    invoice: {
+      id: UUIDString;
+      title: string;
+    } & Invoice_Key;
+    payment: {
+      id: UUIDString;
+      method: PaymentMethod;
+      reference?: string | null;
+      paidOn: DateString;
+      recordedBy: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+    } & Payment_Key;
+  } & Receipt_Key)[];
+}
+
+export interface ListReceiptsVariables {
+  schoolId: UUIDString;
+  studentId?: UUIDString | null;
+  academicYearId?: UUIDString | null;
+  limit: number;
+  offset: number;
+}
+
 export interface ListSchedulesData {
   classSchedules: ({
     id: UUIDString;
@@ -2224,6 +2375,11 @@ export interface ProvisionSchoolVariables {
   details?: unknown | null;
 }
 
+export interface Receipt_Key {
+  id: UUIDString;
+  __typename?: 'Receipt_Key';
+}
+
 export interface RecordPaymentData {
   query?: {
     actor: ({
@@ -2232,15 +2388,21 @@ export interface RecordPaymentData {
     invoice: ({
       id: UUIDString;
     } & Invoice_Key)[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
   };
+  academicYear_update?: AcademicYear_Key | null;
   invoice_update?: Invoice_Key | null;
   payment_insert: Payment_Key;
+  receipt_insert: Receipt_Key;
   auditLog_insert: AuditLog_Key;
 }
 
 export interface RecordPaymentVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  receiptId: UUIDString;
   invoiceId: UUIDString;
   studentId: UUIDString;
   amountMinor: Int64String;
@@ -2250,6 +2412,10 @@ export interface RecordPaymentVariables {
   expectedPaidMinor: Int64String;
   newPaidMinor: Int64String;
   newStatus: InvoiceStatus;
+  balanceAfterMinor: Int64String;
+  receiptYearId: UUIDString;
+  expectedReceiptSeq: number;
+  receiptNumber: string;
   actorId: string;
   details?: unknown | null;
 }
@@ -2345,6 +2511,7 @@ export interface ReversePaymentData {
   };
   invoice_update?: Invoice_Key | null;
   payment_update?: Payment_Key | null;
+  receipt_updateMany: number;
   auditLog_insert: AuditLog_Key;
 }
 
@@ -3579,4 +3746,24 @@ export function unpaidTotals(vars: UnpaidTotalsVariables, options?: OperationOpt
 export function placedStudents(dc: DataConnect, vars: PlacedStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PlacedStudentsData>>;
 /** Generated Node Admin SDK operation action function for the 'PlacedStudents' Query. Allow users to pass in custom DataConnect instances. */
 export function placedStudents(vars: PlacedStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PlacedStudentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListReceipts' Query. Allow users to execute without passing in DataConnect. */
+export function listReceipts(dc: DataConnect, vars: ListReceiptsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListReceiptsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListReceipts' Query. Allow users to pass in custom DataConnect instances. */
+export function listReceipts(vars: ListReceiptsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListReceiptsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountReceipts' Query. Allow users to execute without passing in DataConnect. */
+export function countReceipts(dc: DataConnect, vars: CountReceiptsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountReceiptsData>>;
+/** Generated Node Admin SDK operation action function for the 'CountReceipts' Query. Allow users to pass in custom DataConnect instances. */
+export function countReceipts(vars: CountReceiptsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountReceiptsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetReceipt' Query. Allow users to execute without passing in DataConnect. */
+export function getReceipt(dc: DataConnect, vars: GetReceiptVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetReceiptData>>;
+/** Generated Node Admin SDK operation action function for the 'GetReceipt' Query. Allow users to pass in custom DataConnect instances. */
+export function getReceipt(vars: GetReceiptVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetReceiptData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetReceiptByPayment' Query. Allow users to execute without passing in DataConnect. */
+export function getReceiptByPayment(dc: DataConnect, vars: GetReceiptByPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetReceiptByPaymentData>>;
+/** Generated Node Admin SDK operation action function for the 'GetReceiptByPayment' Query. Allow users to pass in custom DataConnect instances. */
+export function getReceiptByPayment(vars: GetReceiptByPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetReceiptByPaymentData>>;
 

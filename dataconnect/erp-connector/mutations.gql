@@ -720,15 +720,19 @@ mutation CreateInstalmentInvoice($schoolId: UUID!, $id: UUID!, $studentId: UUID!
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.invoice.create", entityType: "Invoice", entityId_expr: "request.variables.id", details: $details })
 }
 
-# Records a payment. $expectedPaidMinor is the paid total the caller saw: if another payment landed meanwhile the check fails (ABORTED)
-# and nothing is written, so two cashiers can never overpay an invoice between them. The gateway has already checked the new total.
-mutation RecordPayment($schoolId: UUID!, $id: UUID!, $invoiceId: UUID!, $studentId: UUID!, $amountMinor: Int64!, $method: PaymentMethod!, $reference: String, $paidOn: Date!, $expectedPaidMinor: Int64!, $newPaidMinor: Int64!, $newStatus: InvoiceStatus!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+# Records a payment AND its receipt in one transaction. $expectedPaidMinor is the paid total the caller saw, $expectedReceiptSeq the year's receipt
+# counter the caller saw: if either changed meanwhile the check fails (ABORTED) or the unique serial refuses (CONFLICT) and nothing is written, so
+# two cashiers can neither overpay an invoice nor share a receipt number. The gateway has already checked the new totals.
+mutation RecordPayment($schoolId: UUID!, $id: UUID!, $receiptId: UUID!, $invoiceId: UUID!, $studentId: UUID!, $amountMinor: Int64!, $method: PaymentMethod!, $reference: String, $paidOn: Date!, $expectedPaidMinor: Int64!, $newPaidMinor: Int64!, $newStatus: InvoiceStatus!, $balanceAfterMinor: Int64!, $receiptYearId: UUID!, $expectedReceiptSeq: Int!, $receiptNumber: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     invoice: invoices(where: {id: {eq: $invoiceId}, schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, paidMinor: {eq: $expectedPaidMinor}}) @check(expr: "this.size() == 1", message: "invoice not found in this school or its paid total changed") { id }
+    year: academicYears(where: {id: {eq: $receiptYearId}, schoolId: {eq: $schoolId}, receiptSeq: {eq: $expectedReceiptSeq}}) @check(expr: "this.size() == 1", message: "receipt number was taken, retry") { id }
   }
+  academicYear_update(id: $receiptYearId, data: { receiptSeq_update: { inc: 1 } })
   invoice_update(id: $invoiceId, data: { paidMinor: $newPaidMinor, status: $newStatus })
   payment_insert(data: { id: $id, schoolId: $schoolId, invoiceId: $invoiceId, studentId: $studentId, amountMinor: $amountMinor, method: $method, reference: $reference, paidOn: $paidOn, recordedById: $actorId })
+  receipt_insert(data: { id: $receiptId, schoolId: $schoolId, academicYearId: $receiptYearId, serial_expr: "request.variables.expectedReceiptSeq + 1", number: $receiptNumber, paymentId: $id, studentId: $studentId, invoiceId: $invoiceId, amountMinor: $amountMinor, balanceAfterMinor: $balanceAfterMinor })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.payment.record", entityType: "Payment", entityId_expr: "request.variables.id", details: $details })
 }
 
@@ -741,5 +745,6 @@ mutation ReversePayment($schoolId: UUID!, $id: UUID!, $invoiceId: UUID!, $reason
   }
   invoice_update(id: $invoiceId, data: { paidMinor: $newPaidMinor, status: $newStatus })
   payment_update(id: $id, data: { reversedAt_expr: "request.time", reversalReason: $reason })
+  receipt_updateMany(where: {paymentId: {eq: $id}, schoolId: {eq: $schoolId}}, data: { cancelledAt_expr: "request.time", cancelReason: $reason })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.payment.reverse", entityType: "Payment", entityId_expr: "request.variables.id", details: $details })
 }
