@@ -1381,4 +1381,118 @@ class OruStringsUr extends OruStrings {
   @override
   String get webFieldRoleBody =>
       'یہ ویب حصہ منتظم کے لیے ہے۔ اپنے فون میں OruSchools ایپ کھولیں۔';
+
+  @override
+  String get usrTabMembers => 'اراکین';
+
+  @override
+  String get usrTabInvitations => 'دعوت نامہ';
+
+  @override
+  String get usrSince => 'رکن بننے کی تاریخ';
+
+  @override
+  String get usrYou => 'آپ';
+
+  @override
+  String get usrChangeRole => 'کردار تبدیل کریں';
+
+  @override
+  String get usrRole => 'کردار';
+
+  @override
+  String usrConfirmRole(String name, String role) {
+    return '$name کو $role بنائیں؟ ان کی اسکرینیں فوراً بدل جائیں گی۔';
+  }
+
+  @override
+  String usrConfirmSuspend(String name) {
+    return '$name کو معطل کریں؟ جب تک آپ انہیں دوبارہ فعال نہیں کرتے، وہ سائن اِن نہیں کر سکیں گے۔';
+  }
+
+  @override
+  String usrConfirmRemove(String name) {
+    return '$name کو اس اسکول سے ہٹائیں؟ یہاں ان کی جگہ ختم ہو جائے گی۔';
+  }
+
+  @override
+  String get usrNewAccount => 'اکاؤنٹ بنائیں';
+
+  @override
+  String get usrAccountIntro =>
+      'اس شخص کے لیے جو اسکول میں کام کرتا ہے اور جس کا ابھی اکاؤنٹ نہیں ہے۔ وہ ای میل یا موبائل نمبر سے سائن اِن کرتے ہیں۔';
+
+  @override
+  String get usrDisplayName => 'پورا نام';
+
+  @override
+  String usrAccountCreated(String name) {
+    return '$name کا اکاؤنٹ بن گیا۔';
+  }
+
+  @override
+  String usrLinkSent(String email) {
+    return '$email پر پاس ورڈ سیٹ کرنے کا لنک بھیجا گیا۔';
+  }
+
+  @override
+  String get usrLinkFailed => 'اکاؤنٹ بن گیا، لیکن لنک بھیجا نہیں جا سکا۔';
+
+  @override
+  String get usrSendLink => 'لنک دوبارہ بھیجیں';
+
+  @override
+  String get usrNewInvitation => 'کسی کو مدعو کریں';
+
+  @override
+  String get usrInvitationIntro =>
+      'ایک بار کا کوڈ بناتا ہے۔ اسے شخص کو دیں: سائن اِن کرنے کے بعد وہ اسے درج کر کے اس اسکول سے جڑتا ہے۔';
+
+  @override
+  String get usrExpiresIn => 'میعاد (دن)';
+
+  @override
+  String get usrInvitationCode =>
+      'ایک بار کا کوڈ۔ ابھی کاپی کریں: یہ صرف ایک بار دکھایا جاتا ہے۔';
+
+  @override
+  String get usrRevoke => 'دعوت نامہ منسوخ کریں';
+
+  @override
+  String get usrExpires => 'میعاد ختم';
+
+  @override
+  String get usrPending => 'زیر التوا';
+
+  @override
+  String get usrCancelled => 'منسوخ';
+
+  @override
+  String get usrNoInvitations => 'ابھی کوئی دعوت نامہ نہیں';
+
+  @override
+  String get usrHaveCode => 'میرے پاس دعوت نامہ کوڈ ہے';
+
+  @override
+  String get usrEnterCode => 'دعوت نامہ کوڈ';
+
+  @override
+  String get usrJoin => 'شامل ہوں';
+
+  @override
+  String usrJoined(String role) {
+    return 'آپ $role کے طور پر شامل ہو گئے۔ آپ کا اسکول لوڈ ہو رہا ہے…';
+  }
+
+  @override
+  String get errorInvitationInvalid =>
+      'یہ کوڈ درست نہیں، یا اس کی میعاد ختم ہو گئی ہے۔ اسکول سے نیا کوڈ مانگیں۔';
+
+  @override
+  String get errorEmailNotVerified =>
+      'پہلے اپنا ای میل تصدیق کریں، پھر دوبارہ کوشش کریں۔';
+
+  @override
+  String get errorOwnMembership =>
+      'آپ اپنا کردار نہیں بدل سکتے۔ کسی دوسرے سسٹم منتظم سے کہیں۔';
 }

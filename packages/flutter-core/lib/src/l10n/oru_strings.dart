@@ -2639,6 +2639,198 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'This web area is for administrators. Open the OruSchools app on your phone.'**
   String get webFieldRoleBody;
+
+  /// Tab: the people who can sign in to this school.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get usrTabMembers;
+
+  /// Tab: the invitations that have been made.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitations'**
+  String get usrTabInvitations;
+
+  /// Column heading: when a person joined the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Member since'**
+  String get usrSince;
+
+  /// Marks the row that is the signed-in person.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get usrYou;
+
+  /// Button that changes the role of a member.
+  ///
+  /// In en, this message translates to:
+  /// **'Change role'**
+  String get usrChangeRole;
+
+  /// Column heading and form label: the role a person has.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get usrRole;
+
+  /// Question before a member's role is changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Change {name} to {role}? Their screens change at once.'**
+  String usrConfirmRole(String name, String role);
+
+  /// Question before a member is suspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend {name}? They cannot sign in until you reactivate them.'**
+  String usrConfirmSuspend(String name);
+
+  /// Question before a member is removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from this school? They lose their place here.'**
+  String usrConfirmRemove(String name);
+
+  /// Button that opens the form that creates an account for a staff member.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account'**
+  String get usrNewAccount;
+
+  /// Explains who an account is for.
+  ///
+  /// In en, this message translates to:
+  /// **'For a person who works at the school and does not have an account yet. They sign in with email or a mobile number.'**
+  String get usrAccountIntro;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get usrDisplayName;
+
+  /// Confirmation after creating an account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created for {name}.'**
+  String usrAccountCreated(String name);
+
+  /// Shown after the set-password email was sent.
+  ///
+  /// In en, this message translates to:
+  /// **'A link to set a password was sent to {email}.'**
+  String usrLinkSent(String email);
+
+  /// Shown when the set-password email could not be sent.
+  ///
+  /// In en, this message translates to:
+  /// **'The account was created, but the link could not be sent.'**
+  String get usrLinkFailed;
+
+  /// Button that sends the set-password email again.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the link again'**
+  String get usrSendLink;
+
+  /// Button that opens the form for an invitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite someone'**
+  String get usrNewInvitation;
+
+  /// Explains how an invitation works.
+  ///
+  /// In en, this message translates to:
+  /// **'Makes a one-time code. Give it to the person: after they sign in they enter it to join this school.'**
+  String get usrInvitationIntro;
+
+  /// Form label: how many days an invitation can be used.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid for (days)'**
+  String get usrExpiresIn;
+
+  /// Shown with a new invitation's secret code.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time code. Copy it now: it is shown only once.'**
+  String get usrInvitationCode;
+
+  /// Button that cancels an invitation that has not been used.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel invitation'**
+  String get usrRevoke;
+
+  /// Column heading: when an invitation stops working.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires'**
+  String get usrExpires;
+
+  /// Status of an invitation nobody has used yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get usrPending;
+
+  /// Status of an invitation that was cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get usrCancelled;
+
+  /// Empty state of the invitations list.
+  ///
+  /// In en, this message translates to:
+  /// **'No invitations yet'**
+  String get usrNoInvitations;
+
+  /// Opens the box where a person enters the invitation code they were given.
+  ///
+  /// In en, this message translates to:
+  /// **'I have an invitation code'**
+  String get usrHaveCode;
+
+  /// Label of the invitation code field.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation code'**
+  String get usrEnterCode;
+
+  /// Button that uses an invitation code.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get usrJoin;
+
+  /// Confirmation after a person used an invitation code.
+  ///
+  /// In en, this message translates to:
+  /// **'You joined as {role}. Loading your school…'**
+  String usrJoined(String role);
+
+  /// Error: an invitation code was refused.
+  ///
+  /// In en, this message translates to:
+  /// **'This code is not valid, or it has expired. Ask the school for a new one.'**
+  String get errorInvitationInvalid;
+
+  /// Error: the person has not verified their email address.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email address first, then try again.'**
+  String get errorEmailNotVerified;
+
+  /// Error: someone tried to change their own role.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot change your own role. Ask another system administrator.'**
+  String get errorOwnMembership;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {
