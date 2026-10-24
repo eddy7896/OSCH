@@ -4,7 +4,7 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
-import { allIntegrationFiles, assign, plan, verify } from "../tools/tests/gateway-shards.mjs";
+import { allIntegrationFiles, assign, plan, verify, weights } from "../tools/tests/gateway-shards.mjs";
 
 test("E-CI-SHARD-1 assign: every file lands in exactly one shard, for any number of shards, and the plan is repeatable", () => {
   const files = Array.from({ length: 23 }, (_, i) => `test/f${String(i).padStart(2, "0")}.integration.ts`);
@@ -95,4 +95,28 @@ test("E-CI-SHARD-10 the workflow's shard list is exactly 1..GATEWAY_SHARDS, and 
   assert.match(wf, /if:\s*always\(\)/, "the completeness check must run even when a shard job failed");
   assert.match(wf, /gateway-shards\.mjs verify shard-reports \$\{\{ env\.GATEWAY_SHARDS \}\}/);
   assert.match(wf, /ORU_SHARD:\s*\$\{\{ matrix\.shard \}\}\/\$\{\{ env\.GATEWAY_SHARDS \}\}/);
+});
+
+test("E-CI-SHARD-11 the matrix is split in exactly MATRIX_PARTS files, numbered 1..MATRIX_PARTS, each running its own part", () => {
+  const suite = readFileSync("apps/api-gateway/test/harness/matrix-suite.ts", "utf8");
+  const parts = Number(suite.match(/export const MATRIX_PARTS = (\d+)/)?.[1]);
+  assert.ok(parts >= 1);
+  const files = allIntegrationFiles().filter((f) => /matrix\.part-\d+\.integration\.ts$/.test(f));
+  assert.equal(files.length, parts, `expected ${parts} matrix part files, found ${files.length}`);
+  for (let n = 1; n <= parts; n++) {
+    const f = files.find((x) => x.endsWith(`matrix.part-${n}.integration.ts`));
+    assert.ok(f, `matrix.part-${n}.integration.ts is missing`);
+    assert.match(readFileSync(join("apps/api-gateway", f), "utf8"), new RegExp(`await defineMatrix\\(${n}\\);`), `part file ${n} must run part ${n}`);
+  }
+  assert.ok(!allIntegrationFiles().includes("test/harness/matrix.integration.ts"), "the old single matrix file must not come back next to the parts");
+});
+
+test("E-CI-SHARD-12 the shard weights only name files that exist, and the planned shards stay within 1.6x of each other", () => {
+  const { known } = weights();
+  const all = new Set(allIntegrationFiles());
+  for (const f of Object.keys(known)) assert.ok(all.has(f), `gateway-shard-weights.json names a file that no longer exists: ${f}`);
+  const total = Number(readFileSync(".github/workflows/periodic-checks.yml", "utf8").match(/GATEWAY_SHARDS:\s*(\d+)/)?.[1]);
+  const { median } = weights();
+  const loads = plan(total).map((files) => files.reduce((t, f) => t + (known[f] ?? median), 0));
+  assert.ok(Math.max(...loads) <= Math.min(...loads) * 1.6, `uneven shards: ${loads.join(", ")}`);
 });
