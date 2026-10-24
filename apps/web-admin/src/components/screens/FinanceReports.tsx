@@ -8,6 +8,7 @@ import { useSession } from "@oruschools/web-auth";
 import { BAND_KEY, firstOfMonth, methodKey, rupees, shortDate, todayIso } from "@/lib/display";
 import { useLoad } from "@/lib/use-load";
 import { DataTable, type Column } from "./DataTable";
+import { Failed, Pager } from "./parts";
 import { saveFile } from "./download";
 
 const PAGE_SIZE = 25;
@@ -39,30 +40,6 @@ function Downloads({ canExport, make }: { canExport: boolean; make: (format: For
       </div>
       {failed && <Banner tone="danger" title={t("webDownloadFailed")} />}
     </div>
-  );
-}
-
-function Pager({ page, pageSize, total, onPage }: { page: number; pageSize: number; total: number; onPage: (page: number) => void }) {
-  const t = useTranslations();
-  const pages = Math.max(1, Math.ceil(total / pageSize));
-  if (pages <= 1) return null;
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-2">
-      <span className="text-body text-text-muted">{t("webPageOf", { page, pages })}</span>
-      <div className="flex gap-2">
-        <Button size="comfortable" disabled={page <= 1} onClick={() => onPage(page - 1)}>{t("webPrevious")}</Button>
-        <Button size="comfortable" disabled={page >= pages} onClick={() => onPage(page + 1)}>{t("webNext")}</Button>
-      </div>
-    </div>
-  );
-}
-
-function Failed({ messageKey, retry }: { messageKey: string; retry: () => void }) {
-  const t = useTranslations();
-  return (
-    <Banner tone="danger" title={t("webLoadFailed")} action={<Button size="comfortable" icon="refresh" onClick={retry}>{t("actionRetry")}</Button>}>
-      {t(messageKey)}
-    </Banner>
   );
 }
 

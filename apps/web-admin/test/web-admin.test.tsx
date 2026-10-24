@@ -71,9 +71,9 @@ describe("signed in", () => {
 
   it("a module whose screen is not built says so instead of showing nothing", async () => {
     signedIn();
-    fireEvent.click(await screen.findByRole("button", { name: "Students" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Audit log" }));
     expect(await screen.findByText("This module is not ready yet")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Students" }).getAttribute("aria-current")).toBe("page");
+    expect(screen.getByRole("button", { name: "Audit log" }).getAttribute("aria-current")).toBe("page");
     fireEvent.click(screen.getByRole("button", { name: "Dashboard" }));
     expect(await screen.findByText("Nothing to show yet")).toBeTruthy();
   });

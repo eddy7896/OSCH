@@ -1619,6 +1619,324 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Collected'**
   String get webCollected;
+
+  /// Placeholder-style label of the search box above a list of students.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name or enrolment no.'**
+  String get peoSearch;
+
+  /// Choice that shows every status in a list.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get peoAll;
+
+  /// Status of a student who is not attending at the moment.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get peoInactive;
+
+  /// Status of a student who has left the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get peoLeft;
+
+  /// Button that opens the form to add a student.
+  ///
+  /// In en, this message translates to:
+  /// **'Add student'**
+  String get peoAddStudent;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get peoFirstName;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get peoLastName;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth'**
+  String get peoDateOfBirth;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get peoGender;
+
+  /// Choice for gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get peoFemale;
+
+  /// Choice for gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get peoMale;
+
+  /// Form label for a home address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get peoAddress;
+
+  /// Heading of a column or form field: the class a student is in.
+  ///
+  /// In en, this message translates to:
+  /// **'Class'**
+  String get peoClass;
+
+  /// Empty state of the students list.
+  ///
+  /// In en, this message translates to:
+  /// **'No students yet'**
+  String get peoNoStudentsTitle;
+
+  /// Hint under the empty state of the students list.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the first student, or import a list.'**
+  String get peoNoStudentsBody;
+
+  /// Shown when a search finds nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No student matches this search.'**
+  String get peoNoMatch;
+
+  /// Confirmation after adding a student.
+  ///
+  /// In en, this message translates to:
+  /// **'Student added'**
+  String get peoStudentAdded;
+
+  /// Heading of the list of a student's guardians.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardians'**
+  String get peoGuardians;
+
+  /// Shown when a student has no guardian on record.
+  ///
+  /// In en, this message translates to:
+  /// **'No guardians recorded'**
+  String get peoNoGuardians;
+
+  /// Form label: how a guardian is related to the child.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get peoRelationship;
+
+  /// Relationship choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother'**
+  String get peoMother;
+
+  /// Relationship choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Father'**
+  String get peoFather;
+
+  /// Relationship choice: a guardian who is not a parent.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian'**
+  String get peoGuardianRel;
+
+  /// Marks the guardian the school calls first.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary contact'**
+  String get peoPrimary;
+
+  /// Heading of the list of classes a student has been in.
+  ///
+  /// In en, this message translates to:
+  /// **'Class history'**
+  String get peoClassHistory;
+
+  /// Label of the day a student was admitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Admission date'**
+  String get peoAdmissionDate;
+
+  /// Link back from a detail page to its list.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the list'**
+  String get peoBackToList;
+
+  /// Column heading: how many students a class can hold.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity'**
+  String get peoCapacity;
+
+  /// Column heading: the section letter of a class.
+  ///
+  /// In en, this message translates to:
+  /// **'Section'**
+  String get peoSection;
+
+  /// Column heading: the class level, for example 5 or Nursery.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get peoLevel;
+
+  /// Empty state of the classes list.
+  ///
+  /// In en, this message translates to:
+  /// **'No classes yet'**
+  String get peoNoClassesTitle;
+
+  /// Title of the admissions applications screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get peoApplications;
+
+  /// Button that opens the form for a new admission application.
+  ///
+  /// In en, this message translates to:
+  /// **'New application'**
+  String get peoNewApplication;
+
+  /// Column heading: the number given to an application.
+  ///
+  /// In en, this message translates to:
+  /// **'Application no.'**
+  String get peoApplicationNo;
+
+  /// Column heading: the child applying.
+  ///
+  /// In en, this message translates to:
+  /// **'Applicant'**
+  String get peoApplicant;
+
+  /// Form label: the class level the child is applying to.
+  ///
+  /// In en, this message translates to:
+  /// **'Level applied for'**
+  String get peoLevelApplied;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian name'**
+  String get peoGuardianName;
+
+  /// Form label.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian phone'**
+  String get peoGuardianPhone;
+
+  /// Status of an application that has just come in.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get peoSubmitted;
+
+  /// Status of an application being looked at.
+  ///
+  /// In en, this message translates to:
+  /// **'Under review'**
+  String get peoUnderReview;
+
+  /// Status of an application the school has accepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get peoAccepted;
+
+  /// Status of an application the school has turned down.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get peoRejected;
+
+  /// Status of an application the family took back.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawn'**
+  String get peoWithdrawn;
+
+  /// Status of an application whose child is now a student.
+  ///
+  /// In en, this message translates to:
+  /// **'Admitted'**
+  String get peoAdmitted;
+
+  /// Button: move an application to under review.
+  ///
+  /// In en, this message translates to:
+  /// **'Start review'**
+  String get peoStartReview;
+
+  /// Button: accept an application.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get peoAccept;
+
+  /// Button: turn an application down.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get peoReject;
+
+  /// Button: record that the family withdrew the application.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as withdrawn'**
+  String get peoWithdraw;
+
+  /// Form label for a note that goes with a decision.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get peoNote;
+
+  /// Button: turn an accepted application into a student.
+  ///
+  /// In en, this message translates to:
+  /// **'Admit student'**
+  String get peoAdmitStudent;
+
+  /// Confirmation after admitting a student; {id} is the new enrolment number.
+  ///
+  /// In en, this message translates to:
+  /// **'Student admitted. Enrolment no. {id}'**
+  String peoStudentAdmitted(String id);
+
+  /// Empty state of the applications list.
+  ///
+  /// In en, this message translates to:
+  /// **'No applications yet'**
+  String get peoNoApplicationsTitle;
+
+  /// Confirmation after saving an application.
+  ///
+  /// In en, this message translates to:
+  /// **'Application saved'**
+  String get peoApplicationSaved;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

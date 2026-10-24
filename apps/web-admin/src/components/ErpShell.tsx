@@ -8,15 +8,18 @@ import { useSession } from "@oruschools/web-auth";
 import { isDashboard, ITEM, SECTION_KEY } from "@/lib/nav";
 import { Dashboard } from "./Dashboard";
 import { canRead, Glance } from "./screens/Glance";
+import { Admissions } from "./screens/Admissions";
+import { Classes } from "./screens/Classes";
 import { FinanceReports } from "./screens/FinanceReports";
+import { Students } from "./screens/Students";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
 /**
  * The school's frame: navigation built from what the gateway says this person may open (modules they cannot open are not
- * sent, so they are not shown at all), the language, and who is signed in. The dashboard and the financial reports are built; the
- * other screens arrive with their slices of P2-10.
+ * sent, so they are not shown at all), the language, and who is signed in. The dashboard, financial reports, students, classes and
+ * admissions are built; the other screens arrive with their slices of P2-10.
  */
 export function ErpShell({ me, active: access, school, hour = new Date().getHours() }: { me: MeResponseDto; active: ActiveSchool; school: PublicSchoolDto; hour?: number }) {
   const t = useTranslations();
@@ -47,6 +50,12 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
         <main className="mx-auto w-full max-w-5xl flex-1 p-4">
           {isDashboard(current) ? (
             <Dashboard name={me.user.displayName ?? me.user.email} role={access.role} hour={hour} glance={canRead(access.permissions, "reports_finance") || canRead(access.permissions, "students") ? <Glance permissions={access.permissions} /> : undefined} />
+          ) : current === "students" ? (
+            <Students canCreate={access.permissions["students"]?.["create"] === "school"} />
+          ) : current === "classes" ? (
+            <Classes />
+          ) : current === "admissions" ? (
+            <Admissions canCreate={access.permissions["admissions"]?.["create"] === "school"} canUpdate={access.permissions["admissions"]?.["update"] === "school"} />
           ) : current === "reports-finance" ? (
             <FinanceReports canExport={access.permissions["reports_finance"]?.["export"] === "school"} />
           ) : (

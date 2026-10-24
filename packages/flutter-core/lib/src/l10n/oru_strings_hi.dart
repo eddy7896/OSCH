@@ -828,4 +828,165 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get webCollected => 'संग्रहित';
+
+  @override
+  String get peoSearch => 'नाम या नामांकन संख्या से खोजें';
+
+  @override
+  String get peoAll => 'सभी';
+
+  @override
+  String get peoInactive => 'निष्क्रिय';
+
+  @override
+  String get peoLeft => 'छोड़ चुके';
+
+  @override
+  String get peoAddStudent => 'छात्र जोड़ें';
+
+  @override
+  String get peoFirstName => 'पहला नाम';
+
+  @override
+  String get peoLastName => 'उपनाम';
+
+  @override
+  String get peoDateOfBirth => 'जन्म तिथि';
+
+  @override
+  String get peoGender => 'लिंग';
+
+  @override
+  String get peoFemale => 'महिला';
+
+  @override
+  String get peoMale => 'पुरुष';
+
+  @override
+  String get peoAddress => 'पता';
+
+  @override
+  String get peoClass => 'कक्षा';
+
+  @override
+  String get peoNoStudentsTitle => 'अभी कोई छात्र नहीं';
+
+  @override
+  String get peoNoStudentsBody => 'पहला छात्र जोड़ें, या सूची आयात करें।';
+
+  @override
+  String get peoNoMatch => 'इस खोज से कोई छात्र नहीं मिला।';
+
+  @override
+  String get peoStudentAdded => 'छात्र जोड़ा गया';
+
+  @override
+  String get peoGuardians => 'अभिभावक';
+
+  @override
+  String get peoNoGuardians => 'कोई अभिभावक दर्ज नहीं';
+
+  @override
+  String get peoRelationship => 'संबंध';
+
+  @override
+  String get peoMother => 'माता';
+
+  @override
+  String get peoFather => 'पिता';
+
+  @override
+  String get peoGuardianRel => 'अभिभावक';
+
+  @override
+  String get peoPrimary => 'मुख्य संपर्क';
+
+  @override
+  String get peoClassHistory => 'कक्षा का इतिहास';
+
+  @override
+  String get peoAdmissionDate => 'प्रवेश की तिथि';
+
+  @override
+  String get peoBackToList => 'सूची पर वापस';
+
+  @override
+  String get peoCapacity => 'क्षमता';
+
+  @override
+  String get peoSection => 'सेक्शन';
+
+  @override
+  String get peoLevel => 'स्तर';
+
+  @override
+  String get peoNoClassesTitle => 'अभी कोई कक्षा नहीं';
+
+  @override
+  String get peoApplications => 'आवेदन';
+
+  @override
+  String get peoNewApplication => 'नया आवेदन';
+
+  @override
+  String get peoApplicationNo => 'आवेदन संख्या';
+
+  @override
+  String get peoApplicant => 'आवेदक';
+
+  @override
+  String get peoLevelApplied => 'आवेदित स्तर';
+
+  @override
+  String get peoGuardianName => 'अभिभावक का नाम';
+
+  @override
+  String get peoGuardianPhone => 'अभिभावक का फ़ोन';
+
+  @override
+  String get peoSubmitted => 'जमा किया गया';
+
+  @override
+  String get peoUnderReview => 'समीक्षा में';
+
+  @override
+  String get peoAccepted => 'स्वीकार किया गया';
+
+  @override
+  String get peoRejected => 'अस्वीकृत';
+
+  @override
+  String get peoWithdrawn => 'वापस लिया गया';
+
+  @override
+  String get peoAdmitted => 'प्रवेश दिया गया';
+
+  @override
+  String get peoStartReview => 'समीक्षा शुरू करें';
+
+  @override
+  String get peoAccept => 'स्वीकार करें';
+
+  @override
+  String get peoReject => 'अस्वीकार करें';
+
+  @override
+  String get peoWithdraw => 'वापस लिया गया चिह्नित करें';
+
+  @override
+  String get peoNote => 'टिप्पणी (वैकल्पिक)';
+
+  @override
+  String get peoAdmitStudent => 'छात्र को प्रवेश दें';
+
+  @override
+  String peoStudentAdmitted(String id) {
+    return 'छात्र को प्रवेश मिला। नामांकन संख्या $id';
+  }
+
+  @override
+  String get peoNoApplicationsTitle => 'अभी कोई आवेदन नहीं';
+
+  @override
+  String get peoApplicationSaved => 'आवेदन सहेजा गया';
 }

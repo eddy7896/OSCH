@@ -1064,5 +1064,222 @@
   "webCollected": "Collected",
   "@webCollected": {
     "description": "Label of the total of fee money taken in the chosen dates."
+  },
+  "peoSearch": "Search by name or enrolment no.",
+  "@peoSearch": {
+    "description": "Placeholder-style label of the search box above a list of students."
+  },
+  "peoAll": "All",
+  "@peoAll": {
+    "description": "Choice that shows every status in a list."
+  },
+  "peoInactive": "Inactive",
+  "@peoInactive": {
+    "description": "Status of a student who is not attending at the moment."
+  },
+  "peoLeft": "Left",
+  "@peoLeft": {
+    "description": "Status of a student who has left the school."
+  },
+  "peoAddStudent": "Add student",
+  "@peoAddStudent": {
+    "description": "Button that opens the form to add a student."
+  },
+  "peoFirstName": "First name",
+  "@peoFirstName": {
+    "description": "Form label."
+  },
+  "peoLastName": "Last name",
+  "@peoLastName": {
+    "description": "Form label."
+  },
+  "peoDateOfBirth": "Date of birth",
+  "@peoDateOfBirth": {
+    "description": "Form label."
+  },
+  "peoGender": "Gender",
+  "@peoGender": {
+    "description": "Form label."
+  },
+  "peoFemale": "Female",
+  "@peoFemale": {
+    "description": "Choice for gender."
+  },
+  "peoMale": "Male",
+  "@peoMale": {
+    "description": "Choice for gender."
+  },
+  "peoAddress": "Address",
+  "@peoAddress": {
+    "description": "Form label for a home address."
+  },
+  "peoClass": "Class",
+  "@peoClass": {
+    "description": "Heading of a column or form field: the class a student is in."
+  },
+  "peoNoStudentsTitle": "No students yet",
+  "@peoNoStudentsTitle": {
+    "description": "Empty state of the students list."
+  },
+  "peoNoStudentsBody": "Add the first student, or import a list.",
+  "@peoNoStudentsBody": {
+    "description": "Hint under the empty state of the students list."
+  },
+  "peoNoMatch": "No student matches this search.",
+  "@peoNoMatch": {
+    "description": "Shown when a search finds nothing."
+  },
+  "peoStudentAdded": "Student added",
+  "@peoStudentAdded": {
+    "description": "Confirmation after adding a student."
+  },
+  "peoGuardians": "Guardians",
+  "@peoGuardians": {
+    "description": "Heading of the list of a student's guardians."
+  },
+  "peoNoGuardians": "No guardians recorded",
+  "@peoNoGuardians": {
+    "description": "Shown when a student has no guardian on record."
+  },
+  "peoRelationship": "Relationship",
+  "@peoRelationship": {
+    "description": "Form label: how a guardian is related to the child."
+  },
+  "peoMother": "Mother",
+  "@peoMother": {
+    "description": "Relationship choice."
+  },
+  "peoFather": "Father",
+  "@peoFather": {
+    "description": "Relationship choice."
+  },
+  "peoGuardianRel": "Guardian",
+  "@peoGuardianRel": {
+    "description": "Relationship choice: a guardian who is not a parent."
+  },
+  "peoPrimary": "Primary contact",
+  "@peoPrimary": {
+    "description": "Marks the guardian the school calls first."
+  },
+  "peoClassHistory": "Class history",
+  "@peoClassHistory": {
+    "description": "Heading of the list of classes a student has been in."
+  },
+  "peoAdmissionDate": "Admission date",
+  "@peoAdmissionDate": {
+    "description": "Label of the day a student was admitted."
+  },
+  "peoBackToList": "Back to the list",
+  "@peoBackToList": {
+    "description": "Link back from a detail page to its list."
+  },
+  "peoCapacity": "Capacity",
+  "@peoCapacity": {
+    "description": "Column heading: how many students a class can hold."
+  },
+  "peoSection": "Section",
+  "@peoSection": {
+    "description": "Column heading: the section letter of a class."
+  },
+  "peoLevel": "Level",
+  "@peoLevel": {
+    "description": "Column heading: the class level, for example 5 or Nursery."
+  },
+  "peoNoClassesTitle": "No classes yet",
+  "@peoNoClassesTitle": {
+    "description": "Empty state of the classes list."
+  },
+  "peoApplications": "Applications",
+  "@peoApplications": {
+    "description": "Title of the admissions applications screen."
+  },
+  "peoNewApplication": "New application",
+  "@peoNewApplication": {
+    "description": "Button that opens the form for a new admission application."
+  },
+  "peoApplicationNo": "Application no.",
+  "@peoApplicationNo": {
+    "description": "Column heading: the number given to an application."
+  },
+  "peoApplicant": "Applicant",
+  "@peoApplicant": {
+    "description": "Column heading: the child applying."
+  },
+  "peoLevelApplied": "Level applied for",
+  "@peoLevelApplied": {
+    "description": "Form label: the class level the child is applying to."
+  },
+  "peoGuardianName": "Guardian name",
+  "@peoGuardianName": {
+    "description": "Form label."
+  },
+  "peoGuardianPhone": "Guardian phone",
+  "@peoGuardianPhone": {
+    "description": "Form label."
+  },
+  "peoSubmitted": "Submitted",
+  "@peoSubmitted": {
+    "description": "Status of an application that has just come in."
+  },
+  "peoUnderReview": "Under review",
+  "@peoUnderReview": {
+    "description": "Status of an application being looked at."
+  },
+  "peoAccepted": "Accepted",
+  "@peoAccepted": {
+    "description": "Status of an application the school has accepted."
+  },
+  "peoRejected": "Rejected",
+  "@peoRejected": {
+    "description": "Status of an application the school has turned down."
+  },
+  "peoWithdrawn": "Withdrawn",
+  "@peoWithdrawn": {
+    "description": "Status of an application the family took back."
+  },
+  "peoAdmitted": "Admitted",
+  "@peoAdmitted": {
+    "description": "Status of an application whose child is now a student."
+  },
+  "peoStartReview": "Start review",
+  "@peoStartReview": {
+    "description": "Button: move an application to under review."
+  },
+  "peoAccept": "Accept",
+  "@peoAccept": {
+    "description": "Button: accept an application."
+  },
+  "peoReject": "Reject",
+  "@peoReject": {
+    "description": "Button: turn an application down."
+  },
+  "peoWithdraw": "Mark as withdrawn",
+  "@peoWithdraw": {
+    "description": "Button: record that the family withdrew the application."
+  },
+  "peoNote": "Note (optional)",
+  "@peoNote": {
+    "description": "Form label for a note that goes with a decision."
+  },
+  "peoAdmitStudent": "Admit student",
+  "@peoAdmitStudent": {
+    "description": "Button: turn an accepted application into a student."
+  },
+  "peoStudentAdmitted": "Student admitted. Enrolment no. {id}",
+  "@peoStudentAdmitted": {
+    "description": "Confirmation after admitting a student; {id} is the new enrolment number.",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "peoNoApplicationsTitle": "No applications yet",
+  "@peoNoApplicationsTitle": {
+    "description": "Empty state of the applications list."
+  },
+  "peoApplicationSaved": "Application saved",
+  "@peoApplicationSaved": {
+    "description": "Confirmation after saving an application."
   }
 }

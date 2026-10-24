@@ -832,4 +832,166 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get webCollected => 'وصول شدہ';
+
+  @override
+  String get peoSearch => 'نام یا اندراج نمبر سے تلاش کریں';
+
+  @override
+  String get peoAll => 'تمام';
+
+  @override
+  String get peoInactive => 'غیر فعال';
+
+  @override
+  String get peoLeft => 'چھوڑ چکے';
+
+  @override
+  String get peoAddStudent => 'طالب علم شامل کریں';
+
+  @override
+  String get peoFirstName => 'پہلا نام';
+
+  @override
+  String get peoLastName => 'آخری نام';
+
+  @override
+  String get peoDateOfBirth => 'تاریخ پیدائش';
+
+  @override
+  String get peoGender => 'جنس';
+
+  @override
+  String get peoFemale => 'خاتون';
+
+  @override
+  String get peoMale => 'مرد';
+
+  @override
+  String get peoAddress => 'پتہ';
+
+  @override
+  String get peoClass => 'جماعت';
+
+  @override
+  String get peoNoStudentsTitle => 'ابھی کوئی طالب علم نہیں';
+
+  @override
+  String get peoNoStudentsBody =>
+      'پہلا طالب علم شامل کریں، یا فہرست درآمد کریں۔';
+
+  @override
+  String get peoNoMatch => 'اس تلاش سے کوئی طالب علم نہیں ملا۔';
+
+  @override
+  String get peoStudentAdded => 'طالب علم شامل کر دیا گیا';
+
+  @override
+  String get peoGuardians => 'سرپرست';
+
+  @override
+  String get peoNoGuardians => 'کوئی سرپرست درج نہیں';
+
+  @override
+  String get peoRelationship => 'رشتہ';
+
+  @override
+  String get peoMother => 'والدہ';
+
+  @override
+  String get peoFather => 'والد';
+
+  @override
+  String get peoGuardianRel => 'سرپرست';
+
+  @override
+  String get peoPrimary => 'بنیادی رابطہ';
+
+  @override
+  String get peoClassHistory => 'جماعت کی تاریخ';
+
+  @override
+  String get peoAdmissionDate => 'داخلے کی تاریخ';
+
+  @override
+  String get peoBackToList => 'فہرست پر واپس';
+
+  @override
+  String get peoCapacity => 'گنجائش';
+
+  @override
+  String get peoSection => 'سیکشن';
+
+  @override
+  String get peoLevel => 'درجہ';
+
+  @override
+  String get peoNoClassesTitle => 'ابھی کوئی جماعت نہیں';
+
+  @override
+  String get peoApplications => 'درخواست';
+
+  @override
+  String get peoNewApplication => 'نئی درخواست';
+
+  @override
+  String get peoApplicationNo => 'درخواست نمبر';
+
+  @override
+  String get peoApplicant => 'درخواست گزار';
+
+  @override
+  String get peoLevelApplied => 'مطلوبہ درجہ';
+
+  @override
+  String get peoGuardianName => 'سرپرست کا نام';
+
+  @override
+  String get peoGuardianPhone => 'سرپرست کا فون';
+
+  @override
+  String get peoSubmitted => 'جمع کرائی گئی';
+
+  @override
+  String get peoUnderReview => 'زیر جائزہ';
+
+  @override
+  String get peoAccepted => 'قبول کی گئی';
+
+  @override
+  String get peoRejected => 'مسترد شدہ';
+
+  @override
+  String get peoWithdrawn => 'واپس لی گئی';
+
+  @override
+  String get peoAdmitted => 'داخلہ دیا گیا';
+
+  @override
+  String get peoStartReview => 'جائزہ شروع کریں';
+
+  @override
+  String get peoAccept => 'قبول کریں';
+
+  @override
+  String get peoReject => 'مسترد کریں';
+
+  @override
+  String get peoWithdraw => 'واپس لی گئی نشان زد کریں';
+
+  @override
+  String get peoNote => 'نوٹ (اختیاری)';
+
+  @override
+  String get peoAdmitStudent => 'طالب علم کو داخلہ دیں';
+
+  @override
+  String peoStudentAdmitted(String id) {
+    return 'طالب علم کو داخلہ مل گیا۔ اندراج نمبر $id';
+  }
+
+  @override
+  String get peoNoApplicationsTitle => 'ابھی کوئی درخواست نہیں';
+
+  @override
+  String get peoApplicationSaved => 'درخواست محفوظ ہو گئی';
 }
