@@ -36,6 +36,13 @@ const GlobalRole = {
 }
 exports.GlobalRole = GlobalRole;
 
+const ImportStatus = {
+  STARTED: "STARTED",
+  COMPLETED: "COMPLETED",
+  PARTIAL: "PARTIAL",
+}
+exports.ImportStatus = ImportStatus;
+
 const InvitationStatus = {
   PENDING: "PENDING",
   ACCEPTED: "ACCEPTED",
@@ -618,6 +625,20 @@ function deleteConcession(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.deleteConcession = deleteConcession;
 
+function startImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('StartImportBatch', inputVars, inputOpts);
+}
+exports.startImportBatch = startImportBatch;
+
+function finishImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('FinishImportBatch', inputVars, inputOpts);
+}
+exports.finishImportBatch = finishImportBatch;
+
 function listInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -897,4 +918,32 @@ function getStudentLevel(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetStudentLevel', inputVars, inputOpts);
 }
 exports.getStudentLevel = getStudentLevel;
+
+function findImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('FindImportBatch', inputVars, inputOpts);
+}
+exports.findImportBatch = findImportBatch;
+
+function studentsByEnrollmentIds(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StudentsByEnrollmentIds', inputVars, inputOpts);
+}
+exports.studentsByEnrollmentIds = studentsByEnrollmentIds;
+
+function studentIdentities(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StudentIdentities', inputVars, inputOpts);
+}
+exports.studentIdentities = studentIdentities;
+
+function staffIdentities(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StaffIdentities', inputVars, inputOpts);
+}
+exports.staffIdentities = staffIdentities;
 

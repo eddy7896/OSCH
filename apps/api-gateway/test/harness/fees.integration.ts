@@ -14,7 +14,8 @@ if (ready) {
   w = await buildWorld();
 }
 
-describe.skipIf(!ready)('fees against the real emulators (P2-7a)', () => {
+// Most tests here make 15 to 30 requests; a slow CI emulator needs more than the default 30 seconds.
+describe.skipIf(!ready)('fees against the real emulators (P2-7a)', { timeout: 120_000 }, () => {
   afterAll(async () => app?.close());
   const A = () => w!.schools.A;
   const B = () => w!.schools.B;

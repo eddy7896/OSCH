@@ -691,3 +691,21 @@ mutation DeleteConcession($schoolId: UUID!, $id: UUID!, $actorId: String!, $deta
   concession_delete(id: $id)
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.concession.delete", entityType: "Concession", entityId_expr: "request.variables.id", details: $details })
 }
+
+# ---- Bulk import (P2-5). Each row is created (and audited) by the ordinary create operation; these two bracket the run.
+mutation StartImportBatch($schoolId: UUID!, $id: UUID!, $kind: String!, $fileHash: String!, $rowCount: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  importBatch_insert(data: { id: $id, schoolId: $schoolId, kind: $kind, fileHash: $fileHash, rowCount: $rowCount })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "import.start", entityType: "ImportBatch", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation FinishImportBatch($schoolId: UUID!, $id: UUID!, $status: ImportStatus!, $createdCount: Int!, $failedCount: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    batch: importBatches(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: STARTED}}) @check(expr: "this.size() == 1", message: "import not found in this school or already finished") { id }
+  }
+  importBatch_update(id: $id, data: { status: $status, createdCount: $createdCount, failedCount: $failedCount })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "import.finish", entityType: "ImportBatch", entityId_expr: "request.variables.id", details: $details })
+}

@@ -1642,6 +1642,180 @@
         ],
         "type": "object"
       },
+      "ImportColumnsDto": {
+        "properties": {
+          "ignored": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "missingRequired": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "recognized": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "recognized",
+          "ignored",
+          "missingRequired"
+        ],
+        "type": "object"
+      },
+      "ImportProblemDto": {
+        "properties": {
+          "column": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "number"
+          },
+          "row": {
+            "type": "number"
+          },
+          "rule": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "row",
+          "rule"
+        ],
+        "type": "object"
+      },
+      "ImportReportDto": {
+        "properties": {
+          "alreadyImported": {
+            "type": "boolean"
+          },
+          "canImport": {
+            "type": "boolean"
+          },
+          "columns": {
+            "$ref": "#/components/schemas/ImportColumnsDto"
+          },
+          "errorRows": {
+            "type": "number"
+          },
+          "fileHash": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "problems": {
+            "items": {
+              "$ref": "#/components/schemas/ImportProblemDto"
+            },
+            "type": "array"
+          },
+          "problemsTruncated": {
+            "type": "boolean"
+          },
+          "totalRows": {
+            "type": "number"
+          },
+          "validRows": {
+            "type": "number"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/ImportProblemDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "kind",
+          "fileHash",
+          "totalRows",
+          "validRows",
+          "errorRows",
+          "columns",
+          "problems",
+          "problemsTruncated",
+          "warnings",
+          "alreadyImported",
+          "canImport"
+        ],
+        "type": "object"
+      },
+      "ImportRequestDto": {
+        "properties": {
+          "csv": {
+            "maxLength": 1000000,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "csv"
+        ],
+        "type": "object"
+      },
+      "ImportResultDto": {
+        "properties": {
+          "batchId": {
+            "type": "string"
+          },
+          "created": {
+            "items": {
+              "$ref": "#/components/schemas/ImportRowResultDto"
+            },
+            "type": "array"
+          },
+          "createdCount": {
+            "type": "number"
+          },
+          "failedCount": {
+            "type": "number"
+          },
+          "failures": {
+            "items": {
+              "$ref": "#/components/schemas/ImportProblemDto"
+            },
+            "type": "array"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "batchId",
+          "status",
+          "createdCount",
+          "failedCount",
+          "created",
+          "failures"
+        ],
+        "type": "object"
+      },
+      "ImportRowResultDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "row": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "row",
+          "id"
+        ],
+        "type": "object"
+      },
       "InstalmentDto": {
         "properties": {
           "amountMinor": {
@@ -6426,6 +6600,378 @@
         "x-permission": {
           "action": "read",
           "resource": "finance"
+        }
+      }
+    },
+    "/v1/imports/guardians": {
+      "post": {
+        "operationId": "Imports_guardians",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Imports"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "import.finish",
+          "operation": "FinishImportBatch"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/imports/guardians/dry-run": {
+      "post": {
+        "operationId": "Imports_guardiansDryRun",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportReportDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Imports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/imports/staff": {
+      "post": {
+        "operationId": "Imports_staff",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Imports"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "import.finish",
+          "operation": "FinishImportBatch"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/imports/staff/dry-run": {
+      "post": {
+        "operationId": "Imports_staffDryRun",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportReportDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Imports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "create",
+          "resource": "staff"
+        }
+      }
+    },
+    "/v1/imports/students": {
+      "post": {
+        "operationId": "Imports_students",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Imports"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "import.finish",
+          "operation": "FinishImportBatch"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/imports/students/dry-run": {
+      "post": {
+        "operationId": "Imports_studentsDryRun",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportReportDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Imports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "create",
+          "resource": "students"
         }
       }
     },

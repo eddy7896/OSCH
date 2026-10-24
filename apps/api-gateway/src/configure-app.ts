@@ -1,5 +1,6 @@
 import type { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { json, type NextFunction, type Request, type Response } from 'express';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { createValidationPipe } from './common/validation.js';
@@ -21,6 +22,10 @@ export function configureApp(app: INestApplication): void {
     exposedHeaders: [REQUEST_ID_HEADER, 'Retry-After'],
     maxAge: 600,
   });
+  // The default body limit (100 kb) stays everywhere except the CSV import routes, which carry a whole file as text (up to 1 MB).
+  // (Wrapped on purpose: Nest looks for a middleware NAMED jsonParser and, finding one, would skip its own parsers for every other route.)
+  const largeJson = json({ limit: '1mb' });
+  app.use('/v1/imports', (req: Request, res: Response, next: NextFunction) => largeJson(req, res, next));
   app.setGlobalPrefix('v1', { exclude: ['health', 'health/db'] });
   app.useGlobalPipes(createValidationPipe());
   app.enableShutdownHooks();

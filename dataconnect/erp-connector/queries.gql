@@ -298,3 +298,21 @@ query GetStudentLevel($schoolId: UUID!, $studentId: UUID!, $academicYearId: UUID
     classroom { id name gradeLevel { id name } }
   }
 }
+
+# ---- Bulk import (P2-5)
+query FindImportBatch($schoolId: UUID!, $kind: String!, $fileHash: String!) @auth(level: NO_ACCESS) {
+  importBatches(where: {schoolId: {eq: $schoolId}, kind: {eq: $kind}, fileHash: {eq: $fileHash}}, limit: 1) { id status rowCount createdCount failedCount createdAt }
+}
+
+query StudentsByEnrollmentIds($schoolId: UUID!, $ids: [String!]!) @auth(level: NO_ACCESS) {
+  students(where: {schoolId: {eq: $schoolId}, enrollmentId: {in: $ids}}, limit: 1000) { id enrollmentId firstName lastName }
+}
+
+# First name, last name and birth date of every student, for "may already exist" warnings.
+query StudentIdentities($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  students(where: {schoolId: {eq: $schoolId}}, orderBy: [{serial: ASC}], limit: $limit, offset: $offset) { firstName lastName dateOfBirth }
+}
+
+query StaffIdentities($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  staffProfiles(where: {schoolId: {eq: $schoolId}}, orderBy: [{serial: ASC}], limit: $limit, offset: $offset) { firstName lastName dateOfBirth }
+}

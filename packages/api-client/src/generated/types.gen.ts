@@ -401,6 +401,52 @@ export type GuardianDto = {
     relationship: string;
 };
 
+export type ImportColumnsDto = {
+    ignored: Array<string>;
+    missingRequired: Array<string>;
+    recognized: Array<string>;
+};
+
+export type ImportProblemDto = {
+    column?: string;
+    ref?: number;
+    row: number;
+    rule: string;
+};
+
+export type ImportReportDto = {
+    alreadyImported: boolean;
+    canImport: boolean;
+    columns: ImportColumnsDto;
+    errorRows: number;
+    fileHash: string;
+    kind: string;
+    problems: Array<ImportProblemDto>;
+    problemsTruncated: boolean;
+    totalRows: number;
+    validRows: number;
+    warnings: Array<ImportProblemDto>;
+};
+
+export type ImportRequestDto = {
+    csv: string;
+};
+
+export type ImportResultDto = {
+    batchId: string;
+    created: Array<ImportRowResultDto>;
+    createdCount: number;
+    failedCount: number;
+    failures: Array<ImportProblemDto>;
+    status: string;
+};
+
+export type ImportRowResultDto = {
+    id: string;
+    number?: string;
+    row: number;
+};
+
 export type InstalmentDto = {
     amountMinor: string;
     dueDate: string;
@@ -2652,6 +2698,234 @@ export type FeesScheduleResponses = {
 };
 
 export type FeesScheduleResponse = FeesScheduleResponses[keyof FeesScheduleResponses];
+
+export type ImportsGuardiansData = {
+    body: ImportRequestDto;
+    path?: never;
+    query?: never;
+    url: '/v1/imports/guardians';
+};
+
+export type ImportsGuardiansErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ImportsGuardiansError = ImportsGuardiansErrors[keyof ImportsGuardiansErrors];
+
+export type ImportsGuardiansResponses = {
+    201: ImportResultDto;
+};
+
+export type ImportsGuardiansResponse = ImportsGuardiansResponses[keyof ImportsGuardiansResponses];
+
+export type ImportsGuardiansDryRunData = {
+    body: ImportRequestDto;
+    path?: never;
+    query?: never;
+    url: '/v1/imports/guardians/dry-run';
+};
+
+export type ImportsGuardiansDryRunErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ImportsGuardiansDryRunError = ImportsGuardiansDryRunErrors[keyof ImportsGuardiansDryRunErrors];
+
+export type ImportsGuardiansDryRunResponses = {
+    200: ImportReportDto;
+};
+
+export type ImportsGuardiansDryRunResponse = ImportsGuardiansDryRunResponses[keyof ImportsGuardiansDryRunResponses];
+
+export type ImportsStaffData = {
+    body: ImportRequestDto;
+    path?: never;
+    query?: never;
+    url: '/v1/imports/staff';
+};
+
+export type ImportsStaffErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ImportsStaffError = ImportsStaffErrors[keyof ImportsStaffErrors];
+
+export type ImportsStaffResponses = {
+    201: ImportResultDto;
+};
+
+export type ImportsStaffResponse = ImportsStaffResponses[keyof ImportsStaffResponses];
+
+export type ImportsStaffDryRunData = {
+    body: ImportRequestDto;
+    path?: never;
+    query?: never;
+    url: '/v1/imports/staff/dry-run';
+};
+
+export type ImportsStaffDryRunErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ImportsStaffDryRunError = ImportsStaffDryRunErrors[keyof ImportsStaffDryRunErrors];
+
+export type ImportsStaffDryRunResponses = {
+    200: ImportReportDto;
+};
+
+export type ImportsStaffDryRunResponse = ImportsStaffDryRunResponses[keyof ImportsStaffDryRunResponses];
+
+export type ImportsStudentsData = {
+    body: ImportRequestDto;
+    path?: never;
+    query?: never;
+    url: '/v1/imports/students';
+};
+
+export type ImportsStudentsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ImportsStudentsError = ImportsStudentsErrors[keyof ImportsStudentsErrors];
+
+export type ImportsStudentsResponses = {
+    201: ImportResultDto;
+};
+
+export type ImportsStudentsResponse = ImportsStudentsResponses[keyof ImportsStudentsResponses];
+
+export type ImportsStudentsDryRunData = {
+    body: ImportRequestDto;
+    path?: never;
+    query?: never;
+    url: '/v1/imports/students/dry-run';
+};
+
+export type ImportsStudentsDryRunErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ImportsStudentsDryRunError = ImportsStudentsDryRunErrors[keyof ImportsStudentsDryRunErrors];
+
+export type ImportsStudentsDryRunResponses = {
+    200: ImportReportDto;
+};
+
+export type ImportsStudentsDryRunResponse = ImportsStudentsDryRunResponses[keyof ImportsStudentsDryRunResponses];
 
 export type InvitationsListData = {
     body?: never;

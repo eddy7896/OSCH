@@ -15,7 +15,7 @@ export interface Sample {
   actor: (w: World, ctx: Record<string, string>) => string;
   /** `X-School-Id` for school routes (platform routes send none). */
   school?: (w: World) => string;
-  body?: (w: World, ctx: Record<string, string>) => Record<string, unknown>;
+  body?: (w: World, ctx: Record<string, string>) => Record<string, unknown> | Promise<Record<string, unknown>>;
   /** The school whose audit log must receive the row. */
   auditSchool: (w: World, ctx: Record<string, string>, responseBody: Record<string, any>) => string;
 }
@@ -290,4 +290,11 @@ export const SAMPLES: Record<string, Sample> = {
     body: (_w, ctx) => ({ studentId: ctx['studentId'], academicYearId: ctx['year'], name: 'Sibling', kind: 'PERCENT', basisPoints: 1000 }),
   },
   'DELETE /fees/concessions/:id': { ...bursarOfA, prepare: concessionOfA },
+  'POST /imports/students': { ...academicAdminOfA, body: () => ({ csv: `first name,last name\nImp${randomUUID().slice(0, 6)},Student\n` }) },
+  'POST /imports/staff': { ...hrOfA, body: () => ({ csv: `first name,last name,department\nImp${randomUUID().slice(0, 6)},Staff,Science\n` }) },
+  'POST /imports/guardians': {
+    ...academicAdminOfA,
+    prepare: studentOfA,
+    body: async (w, ctx) => ({ csv: `student id,name,relationship,phone\n${(await w.db.getStudent({ schoolId: w.schools.A, id: ctx['id']! })).data.students[0]!.enrollmentId},Imp Guardian,MOTHER,9876543210\n` }),
+  },
 };

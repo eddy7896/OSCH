@@ -33,6 +33,11 @@ export enum GlobalRole {
   SUPER_ADMIN = "SUPER_ADMIN",
   USER = "USER",
 }
+export enum ImportStatus {
+  STARTED = "STARTED",
+  COMPLETED = "COMPLETED",
+  PARTIAL = "PARTIAL",
+}
 export enum InvitationStatus {
   PENDING = "PENDING",
   ACCEPTED = "ACCEPTED",
@@ -1060,6 +1065,46 @@ export interface FeeStructure_Key {
   __typename?: 'FeeStructure_Key';
 }
 
+export interface FindImportBatchData {
+  importBatches: ({
+    id: UUIDString;
+    status: ImportStatus;
+    rowCount: number;
+    createdCount: number;
+    failedCount: number;
+    createdAt: TimestampString;
+  } & ImportBatch_Key)[];
+}
+
+export interface FindImportBatchVariables {
+  schoolId: UUIDString;
+  kind: string;
+  fileHash: string;
+}
+
+export interface FinishImportBatchData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    batch: ({
+      id: UUIDString;
+    } & ImportBatch_Key)[];
+  };
+  importBatch_update?: ImportBatch_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface FinishImportBatchVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  status: ImportStatus;
+  createdCount: number;
+  failedCount: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface GetApplicationData {
   applications: ({
     id: UUIDString;
@@ -1392,6 +1437,11 @@ export interface GradeLevel_Key {
 export interface Guardian_Key {
   id: UUIDString;
   __typename?: 'Guardian_Key';
+}
+
+export interface ImportBatch_Key {
+  id: UUIDString;
+  __typename?: 'ImportBatch_Key';
 }
 
 export interface Invitation_Key {
@@ -2180,6 +2230,20 @@ export interface StaffDocument_Key {
   __typename?: 'StaffDocument_Key';
 }
 
+export interface StaffIdentitiesData {
+  staffProfiles: ({
+    firstName: string;
+    lastName: string;
+    dateOfBirth?: DateString | null;
+  })[];
+}
+
+export interface StaffIdentitiesVariables {
+  schoolId: UUIDString;
+  limit: number;
+  offset: number;
+}
+
 export interface StaffProfile_Key {
   id: UUIDString;
   __typename?: 'StaffProfile_Key';
@@ -2196,6 +2260,26 @@ export interface StaffSeqInfoVariables {
   schoolId: UUIDString;
 }
 
+export interface StartImportBatchData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  importBatch_insert: ImportBatch_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface StartImportBatchVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  kind: string;
+  fileHash: string;
+  rowCount: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface StudentDocument_Key {
   id: UUIDString;
   __typename?: 'StudentDocument_Key';
@@ -2206,9 +2290,37 @@ export interface StudentEnrollment_Key {
   __typename?: 'StudentEnrollment_Key';
 }
 
+export interface StudentIdentitiesData {
+  students: ({
+    firstName: string;
+    lastName: string;
+    dateOfBirth?: DateString | null;
+  })[];
+}
+
+export interface StudentIdentitiesVariables {
+  schoolId: UUIDString;
+  limit: number;
+  offset: number;
+}
+
 export interface Student_Key {
   id: UUIDString;
   __typename?: 'Student_Key';
+}
+
+export interface StudentsByEnrollmentIdsData {
+  students: ({
+    id: UUIDString;
+    enrollmentId: string;
+    firstName: string;
+    lastName: string;
+  } & Student_Key)[];
+}
+
+export interface StudentsByEnrollmentIdsVariables {
+  schoolId: UUIDString;
+  ids: string[];
 }
 
 export interface Subject_Key {
@@ -2919,6 +3031,16 @@ export function deleteConcession(dc: DataConnect, vars: DeleteConcessionVariable
 /** Generated Node Admin SDK operation action function for the 'DeleteConcession' Mutation. Allow users to pass in custom DataConnect instances. */
 export function deleteConcession(vars: DeleteConcessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteConcessionData>>;
 
+/** Generated Node Admin SDK operation action function for the 'StartImportBatch' Mutation. Allow users to execute without passing in DataConnect. */
+export function startImportBatch(dc: DataConnect, vars: StartImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StartImportBatchData>>;
+/** Generated Node Admin SDK operation action function for the 'StartImportBatch' Mutation. Allow users to pass in custom DataConnect instances. */
+export function startImportBatch(vars: StartImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StartImportBatchData>>;
+
+/** Generated Node Admin SDK operation action function for the 'FinishImportBatch' Mutation. Allow users to execute without passing in DataConnect. */
+export function finishImportBatch(dc: DataConnect, vars: FinishImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishImportBatchData>>;
+/** Generated Node Admin SDK operation action function for the 'FinishImportBatch' Mutation. Allow users to pass in custom DataConnect instances. */
+export function finishImportBatch(vars: FinishImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishImportBatchData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to execute without passing in DataConnect. */
 export function listInvoices(dc: DataConnect, vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;
 /** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to pass in custom DataConnect instances. */
@@ -3118,4 +3240,24 @@ export function listConcessions(vars: ListConcessionsVariables, options?: Operat
 export function getStudentLevel(dc: DataConnect, vars: GetStudentLevelVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentLevelData>>;
 /** Generated Node Admin SDK operation action function for the 'GetStudentLevel' Query. Allow users to pass in custom DataConnect instances. */
 export function getStudentLevel(vars: GetStudentLevelVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentLevelData>>;
+
+/** Generated Node Admin SDK operation action function for the 'FindImportBatch' Query. Allow users to execute without passing in DataConnect. */
+export function findImportBatch(dc: DataConnect, vars: FindImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FindImportBatchData>>;
+/** Generated Node Admin SDK operation action function for the 'FindImportBatch' Query. Allow users to pass in custom DataConnect instances. */
+export function findImportBatch(vars: FindImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FindImportBatchData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StudentsByEnrollmentIds' Query. Allow users to execute without passing in DataConnect. */
+export function studentsByEnrollmentIds(dc: DataConnect, vars: StudentsByEnrollmentIdsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentsByEnrollmentIdsData>>;
+/** Generated Node Admin SDK operation action function for the 'StudentsByEnrollmentIds' Query. Allow users to pass in custom DataConnect instances. */
+export function studentsByEnrollmentIds(vars: StudentsByEnrollmentIdsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentsByEnrollmentIdsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StudentIdentities' Query. Allow users to execute without passing in DataConnect. */
+export function studentIdentities(dc: DataConnect, vars: StudentIdentitiesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentIdentitiesData>>;
+/** Generated Node Admin SDK operation action function for the 'StudentIdentities' Query. Allow users to pass in custom DataConnect instances. */
+export function studentIdentities(vars: StudentIdentitiesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentIdentitiesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StaffIdentities' Query. Allow users to execute without passing in DataConnect. */
+export function staffIdentities(dc: DataConnect, vars: StaffIdentitiesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffIdentitiesData>>;
+/** Generated Node Admin SDK operation action function for the 'StaffIdentities' Query. Allow users to pass in custom DataConnect instances. */
+export function staffIdentities(vars: StaffIdentitiesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffIdentitiesData>>;
 

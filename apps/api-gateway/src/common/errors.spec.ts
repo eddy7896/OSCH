@@ -59,6 +59,20 @@ describe('ErrorEnvelopeFilter', () => {
     expect(out.body).toMatchObject({ error: { code } });
   });
 
+  it('a client error from the body parser keeps its 4xx status (413 too large, 400 malformed JSON) and leaks nothing', () => {
+    const tooLarge = Object.assign(new Error('request entity too large: 4000000 bytes'), { status: 413, statusCode: 413, expose: true, type: 'entity.too.large' });
+    const out = run(tooLarge);
+    expect(out.status).toBe(413);
+    expect(out.body).toMatchObject({ error: { code: 'INVALID_REQUEST' } });
+    expect(JSON.stringify(out.body)).not.toMatch(/4000000|entity/);
+    expect(run(Object.assign(new SyntaxError('Unexpected token } in JSON at position 5'), { status: 400, expose: true })).status).toBe(400);
+  });
+
+  it('an error that merely carries a status but is not safe to expose stays a 500', () => {
+    expect(run(Object.assign(new Error('boom'), { status: 400 })).status).toBe(500);
+    expect(run(Object.assign(new Error('boom'), { status: 502, expose: true })).status).toBe(500);
+  });
+
   it('turns any unknown error into a bare 500 INTERNAL with no detail', () => {
     const out = run(new Error('TypeError: cannot read property x of undefined at /srv/app.js:12'));
     expect(out.status).toBe(500);
