@@ -193,5 +193,18 @@
   "paymentMethodCheque": "Way of paying a fee: by cheque.",
   "paymentMethodBankTransfer": "Way of paying a fee: by bank transfer.",
   "paymentMethodUpi": "Way of paying a fee: by UPI (the Indian instant payment system).",
-  "paymentMethodOther": "Way of paying a fee: any other way."
+  "paymentMethodOther": "Way of paying a fee: any other way.",
+  "payslipTitle": "Title at the top of a printed payslip.",
+  "payslipPeriod": "Label before the month a payslip is for, for example 04/2027. (A month of pay, not a class period.)",
+  "payslipEmployee": "Label before the name of the member of staff on a payslip.",
+  "payslipEmployeeId": "Label before the employee number on a payslip.",
+  "payslipDepartment": "Label before the department (for example Science) on a payslip.",
+  "payslipDesignation": "Label before the job title (for example Teacher) on a payslip.",
+  "payslipEarnings": "Heading of the list of pay components (basic pay, allowances) on a payslip.",
+  "payslipDeductions": "Heading of the list of amounts taken off pay on a payslip.",
+  "payslipGross": "Label before pay before deductions, on a payslip.",
+  "payslipTotalDeductions": "Label before the sum of all deductions, on a payslip.",
+  "payslipNetPay": "Label before the amount actually paid out, on a payslip. Keep it short.",
+  "payslipPaidOn": "Label before the day the salary was paid, on a payslip.",
+  "payslipFooter": "Line at the bottom of a printed payslip."
 }

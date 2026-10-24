@@ -23,5 +23,6 @@
   "test/harness/public-schools.integration.ts": 8,
   "test/harness/bootstrap.integration.ts": 6,
   "test/auth.integration.ts": 1,
-  "test/harness/invoices.integration.ts": 150
+  "test/harness/invoices.integration.ts": 150,
+  "test/harness/payroll.integration.ts": 100
 }

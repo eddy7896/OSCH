@@ -648,4 +648,43 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get paymentMethodOther => 'अन्य';
+
+  @override
+  String get payslipTitle => 'वेतन पर्ची';
+
+  @override
+  String get payslipPeriod => 'वेतन माह';
+
+  @override
+  String get payslipEmployee => 'कर्मचारी';
+
+  @override
+  String get payslipEmployeeId => 'कर्मचारी संख्या';
+
+  @override
+  String get payslipDepartment => 'विभाग';
+
+  @override
+  String get payslipDesignation => 'पदनाम';
+
+  @override
+  String get payslipEarnings => 'आय';
+
+  @override
+  String get payslipDeductions => 'कटौती';
+
+  @override
+  String get payslipGross => 'कुल वेतन';
+
+  @override
+  String get payslipTotalDeductions => 'कुल कटौती';
+
+  @override
+  String get payslipNetPay => 'शुद्ध वेतन';
+
+  @override
+  String get payslipPaidOn => 'भुगतान की तिथि';
+
+  @override
+  String get payslipFooter => 'यह कंप्यूटर द्वारा बनाई गई वेतन पर्ची है।';
 }
