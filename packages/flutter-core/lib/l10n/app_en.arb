@@ -946,5 +946,123 @@
   "reportPaid": "Paid",
   "@reportPaid": {
     "description": "Status of a pay run that has been paid."
+  },
+  "webFrom": "From",
+  "@webFrom": {
+    "description": "Label of the first date of a date range on a report screen."
+  },
+  "webTo": "To",
+  "@webTo": {
+    "description": "Label of the last date of a date range on a report screen."
+  },
+  "webDownloadCsv": "Download CSV",
+  "@webDownloadCsv": {
+    "description": "Button that saves the report as a spreadsheet file (CSV)."
+  },
+  "webDownloadPdf": "Download PDF",
+  "@webDownloadPdf": {
+    "description": "Button that saves the report as a printable PDF file."
+  },
+  "webDownloadFailed": "The file could not be made. Try again.",
+  "@webDownloadFailed": {
+    "description": "Shown when saving a report file fails."
+  },
+  "webAtAGlance": "At a glance",
+  "@webAtAGlance": {
+    "description": "Heading of the row of key numbers on the dashboard."
+  },
+  "webCollectedThisMonth": "Collected this month",
+  "@webCollectedThisMonth": {
+    "description": "Dashboard number: fee money taken since the first of the month."
+  },
+  "webPaymentsCount": "{count, plural, one{{count} payment} other{{count} payments}}",
+  "@webPaymentsCount": {
+    "description": "How many payments make up a total.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "webOutstandingFees": "Outstanding fees",
+  "@webOutstandingFees": {
+    "description": "Dashboard number: fee money that has fallen due and is not paid."
+  },
+  "webInvoicesCount": "{count, plural, one{{count} invoice} other{{count} invoices}}",
+  "@webInvoicesCount": {
+    "description": "How many fee invoices make up a total.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "webByMethod": "By payment method",
+  "@webByMethod": {
+    "description": "Heading of the totals split by cash, cheque, UPI and so on."
+  },
+  "webByAge": "By how long overdue",
+  "@webByAge": {
+    "description": "Heading of the outstanding totals split by how late they are."
+  },
+  "webBandDueToday": "Due today",
+  "@webBandDueToday": {
+    "description": "Age group: falls due on the report date."
+  },
+  "webBand1To30": "1 to 30 days overdue",
+  "@webBand1To30": {
+    "description": "Age group of unpaid fees."
+  },
+  "webBand31To60": "31 to 60 days overdue",
+  "@webBand31To60": {
+    "description": "Age group of unpaid fees."
+  },
+  "webBand61To90": "61 to 90 days overdue",
+  "@webBand61To90": {
+    "description": "Age group of unpaid fees."
+  },
+  "webBandOver90": "More than 90 days overdue",
+  "@webBandOver90": {
+    "description": "Age group of unpaid fees."
+  },
+  "webNoRowsTitle": "Nothing in this range",
+  "@webNoRowsTitle": {
+    "description": "Empty state of a report for the chosen dates."
+  },
+  "webNoRowsBody": "Try different dates.",
+  "@webNoRowsBody": {
+    "description": "Hint under the empty state of a report."
+  },
+  "webNoDuesTitle": "No fees outstanding",
+  "@webNoDuesTitle": {
+    "description": "Empty state of the outstanding fees report: everything due is paid."
+  },
+  "webTotalsOnly": "You can see the totals but not the individual payments.",
+  "@webTotalsOnly": {
+    "description": "Note shown to a role that may see report totals but not the people in them."
+  },
+  "webPrevious": "Previous",
+  "@webPrevious": {
+    "description": "Button: go to the previous page of a table."
+  },
+  "webNext": "Next",
+  "@webNext": {
+    "description": "Button: go to the next page of a table."
+  },
+  "webPageOf": "Page {page} of {pages}",
+  "@webPageOf": {
+    "description": "Where you are in a table that has several pages.",
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "webCollected": "Collected",
+  "@webCollected": {
+    "description": "Label of the total of fee money taken in the chosen dates."
   }
 }

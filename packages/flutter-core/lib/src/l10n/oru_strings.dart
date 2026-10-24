@@ -1469,6 +1469,156 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Paid'**
   String get reportPaid;
+
+  /// Label of the first date of a date range on a report screen.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get webFrom;
+
+  /// Label of the last date of a date range on a report screen.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get webTo;
+
+  /// Button that saves the report as a spreadsheet file (CSV).
+  ///
+  /// In en, this message translates to:
+  /// **'Download CSV'**
+  String get webDownloadCsv;
+
+  /// Button that saves the report as a printable PDF file.
+  ///
+  /// In en, this message translates to:
+  /// **'Download PDF'**
+  String get webDownloadPdf;
+
+  /// Shown when saving a report file fails.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be made. Try again.'**
+  String get webDownloadFailed;
+
+  /// Heading of the row of key numbers on the dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'At a glance'**
+  String get webAtAGlance;
+
+  /// Dashboard number: fee money taken since the first of the month.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected this month'**
+  String get webCollectedThisMonth;
+
+  /// How many payments make up a total.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} payment} other{{count} payments}}'**
+  String webPaymentsCount(int count);
+
+  /// Dashboard number: fee money that has fallen due and is not paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Outstanding fees'**
+  String get webOutstandingFees;
+
+  /// How many fee invoices make up a total.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} invoice} other{{count} invoices}}'**
+  String webInvoicesCount(int count);
+
+  /// Heading of the totals split by cash, cheque, UPI and so on.
+  ///
+  /// In en, this message translates to:
+  /// **'By payment method'**
+  String get webByMethod;
+
+  /// Heading of the outstanding totals split by how late they are.
+  ///
+  /// In en, this message translates to:
+  /// **'By how long overdue'**
+  String get webByAge;
+
+  /// Age group: falls due on the report date.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get webBandDueToday;
+
+  /// Age group of unpaid fees.
+  ///
+  /// In en, this message translates to:
+  /// **'1 to 30 days overdue'**
+  String get webBand1To30;
+
+  /// Age group of unpaid fees.
+  ///
+  /// In en, this message translates to:
+  /// **'31 to 60 days overdue'**
+  String get webBand31To60;
+
+  /// Age group of unpaid fees.
+  ///
+  /// In en, this message translates to:
+  /// **'61 to 90 days overdue'**
+  String get webBand61To90;
+
+  /// Age group of unpaid fees.
+  ///
+  /// In en, this message translates to:
+  /// **'More than 90 days overdue'**
+  String get webBandOver90;
+
+  /// Empty state of a report for the chosen dates.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in this range'**
+  String get webNoRowsTitle;
+
+  /// Hint under the empty state of a report.
+  ///
+  /// In en, this message translates to:
+  /// **'Try different dates.'**
+  String get webNoRowsBody;
+
+  /// Empty state of the outstanding fees report: everything due is paid.
+  ///
+  /// In en, this message translates to:
+  /// **'No fees outstanding'**
+  String get webNoDuesTitle;
+
+  /// Note shown to a role that may see report totals but not the people in them.
+  ///
+  /// In en, this message translates to:
+  /// **'You can see the totals but not the individual payments.'**
+  String get webTotalsOnly;
+
+  /// Button: go to the previous page of a table.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get webPrevious;
+
+  /// Button: go to the next page of a table.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get webNext;
+
+  /// Where you are in a table that has several pages.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {pages}'**
+  String webPageOf(String page, String pages);
+
+  /// Label of the total of fee money taken in the chosen dates.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected'**
+  String get webCollected;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

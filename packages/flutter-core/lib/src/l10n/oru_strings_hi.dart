@@ -735,4 +735,97 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get reportPaid => 'भुगतान किया गया';
+
+  @override
+  String get webFrom => 'से';
+
+  @override
+  String get webTo => 'तक';
+
+  @override
+  String get webDownloadCsv => 'CSV डाउनलोड करें';
+
+  @override
+  String get webDownloadPdf => 'PDF डाउनलोड करें';
+
+  @override
+  String get webDownloadFailed => 'फ़ाइल नहीं बन सकी। फिर कोशिश करें।';
+
+  @override
+  String get webAtAGlance => 'एक नज़र में';
+
+  @override
+  String get webCollectedThisMonth => 'इस माह का संग्रह';
+
+  @override
+  String webPaymentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count भुगतान',
+      one: '$count भुगतान',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get webOutstandingFees => 'बकाया शुल्क';
+
+  @override
+  String webInvoicesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count इनवॉइस',
+      one: '$count इनवॉइस',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get webByMethod => 'भुगतान के तरीके से';
+
+  @override
+  String get webByAge => 'विलंब की अवधि के अनुसार';
+
+  @override
+  String get webBandDueToday => 'आज देय';
+
+  @override
+  String get webBand1To30 => '1 से 30 दिन विलंब';
+
+  @override
+  String get webBand31To60 => '31 से 60 दिन विलंब';
+
+  @override
+  String get webBand61To90 => '61 से 90 दिन विलंब';
+
+  @override
+  String get webBandOver90 => '90 दिन से अधिक विलंब';
+
+  @override
+  String get webNoRowsTitle => 'इस सीमा में कुछ नहीं';
+
+  @override
+  String get webNoRowsBody => 'दूसरी तिथियाँ चुनकर देखें।';
+
+  @override
+  String get webNoDuesTitle => 'कोई शुल्क बकाया नहीं';
+
+  @override
+  String get webTotalsOnly => 'आप कुल राशि देख सकते हैं, अलग-अलग भुगतान नहीं।';
+
+  @override
+  String get webPrevious => 'पिछला';
+
+  @override
+  String get webNext => 'अगला';
+
+  @override
+  String webPageOf(String page, String pages) {
+    return 'पृष्ठ $page / $pages';
+  }
+
+  @override
+  String get webCollected => 'संग्रहित';
 }

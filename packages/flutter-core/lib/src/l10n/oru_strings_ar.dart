@@ -736,4 +736,98 @@ class OruStringsAr extends OruStrings {
 
   @override
   String get reportPaid => 'Paid';
+
+  @override
+  String get webFrom => 'From';
+
+  @override
+  String get webTo => 'To';
+
+  @override
+  String get webDownloadCsv => 'Download CSV';
+
+  @override
+  String get webDownloadPdf => 'Download PDF';
+
+  @override
+  String get webDownloadFailed => 'The file could not be made. Try again.';
+
+  @override
+  String get webAtAGlance => 'At a glance';
+
+  @override
+  String get webCollectedThisMonth => 'Collected this month';
+
+  @override
+  String webPaymentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count payments',
+      one: '$count payment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get webOutstandingFees => 'Outstanding fees';
+
+  @override
+  String webInvoicesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count invoices',
+      one: '$count invoice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get webByMethod => 'By payment method';
+
+  @override
+  String get webByAge => 'By how long overdue';
+
+  @override
+  String get webBandDueToday => 'Due today';
+
+  @override
+  String get webBand1To30 => '1 to 30 days overdue';
+
+  @override
+  String get webBand31To60 => '31 to 60 days overdue';
+
+  @override
+  String get webBand61To90 => '61 to 90 days overdue';
+
+  @override
+  String get webBandOver90 => 'More than 90 days overdue';
+
+  @override
+  String get webNoRowsTitle => 'Nothing in this range';
+
+  @override
+  String get webNoRowsBody => 'Try different dates.';
+
+  @override
+  String get webNoDuesTitle => 'No fees outstanding';
+
+  @override
+  String get webTotalsOnly =>
+      'You can see the totals but not the individual payments.';
+
+  @override
+  String get webPrevious => 'Previous';
+
+  @override
+  String get webNext => 'Next';
+
+  @override
+  String webPageOf(String page, String pages) {
+    return 'Page $page of $pages';
+  }
+
+  @override
+  String get webCollected => 'Collected';
 }
