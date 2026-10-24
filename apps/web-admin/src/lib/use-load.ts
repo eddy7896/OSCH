@@ -7,20 +7,20 @@ export type Load<T> = { status: "loading" } | { status: "error"; messageKey: str
 
 /**
  * Runs `run` whenever `key` changes (the key names everything `run` depends on) and gives back what a screen needs: loading,
- * an error with the message key to show, or the data. `reload` asks again. An answer for an old key is never shown: while the
- * new one is on its way the screen says loading.
+ * an error with the message key to show, or the data. `reload` asks again and keeps showing the last answer meanwhile. An answer for an
+ * old key is never shown: while the new one is on its way the screen says loading.
  */
 export function useLoad<T>(run: (() => Promise<T>) | null, key: string): [Load<T>, () => void] {
   const [attempt, setAttempt] = useState(0);
   const id = `${key}#${attempt}`;
-  const [done, setDone] = useState<{ id: string; result: { ok: true; data: T } | { ok: false; messageKey: string } } | null>(null);
+  const [done, setDone] = useState<{ id: string; key: string; result: { ok: true; data: T } | { ok: false; messageKey: string } } | null>(null);
 
   useEffect(() => {
     if (!run) return;
     let current = true;
     Promise.resolve().then(run).then(
-      (data) => current && setDone({ id, result: { ok: true, data } }),
-      (e: unknown) => current && setDone({ id, result: { ok: false, messageKey: errorKey(e) } }),
+      (data) => current && setDone({ id, key, result: { ok: true, data } }),
+      (e: unknown) => current && setDone({ id, key, result: { ok: false, messageKey: errorKey(e) } }),
     );
     return () => {
       current = false;
@@ -29,6 +29,8 @@ export function useLoad<T>(run: (() => Promise<T>) | null, key: string): [Load<T
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const state: Load<T> = !run || done?.id !== id ? { status: "loading" } : done.result.ok ? { status: "ready", data: done.result.data } : { status: "error", messageKey: done.result.messageKey };
+  // A reload of the same thing keeps showing the last answer until the new one arrives (a screen must not flash empty and lose its place);
+  // an answer for a different key is never shown, and a failed answer is replaced by loading as soon as Retry is pressed.
+  const state: Load<T> = !run || done?.key !== key || (!done.result.ok && done.id !== id) ? { status: "loading" } : done.result.ok ? { status: "ready", data: done.result.data } : { status: "error", messageKey: done.result.messageKey };
   return [state, () => setAttempt((n) => n + 1)];
 }

@@ -2141,6 +2141,264 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Set up salaries on each staff member first, then create the month\'s run.'**
   String get hrpNoRunsBody;
+
+  /// Tab: the list of fee invoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoices'**
+  String get feeTabInvoices;
+
+  /// Tab: the list of fee receipts.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipts'**
+  String get feeTabReceipts;
+
+  /// Tab: what each class level pays.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee structures'**
+  String get feeTabStructures;
+
+  /// Status of an invoice past its due date and not paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get feeStatusOverdue;
+
+  /// Status of an invoice that has been paid in part.
+  ///
+  /// In en, this message translates to:
+  /// **'Part paid'**
+  String get feeStatusPartial;
+
+  /// Status of an invoice that has no payment yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not paid'**
+  String get feeStatusPending;
+
+  /// Total of the invoices in a list.
+  ///
+  /// In en, this message translates to:
+  /// **'Billed'**
+  String get feeBilled;
+
+  /// Button that opens the form for a one-off invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'New invoice'**
+  String get feeNewInvoice;
+
+  /// Button that opens the form that makes invoices from the fee structures.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill fees'**
+  String get feeBillFees;
+
+  /// Form label: what an invoice is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get feeDescription;
+
+  /// Label of the box that finds the student an invoice is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a student by name or enrolment no.'**
+  String get feeFindStudent;
+
+  /// Confirmation after creating an invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice created'**
+  String get feeInvoiceCreated;
+
+  /// Button that records money received for an invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Record payment'**
+  String get feeRecordPayment;
+
+  /// Confirmation after a payment; {number} is the receipt number.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment recorded. Receipt no. {number}'**
+  String feePaymentRecorded(String number);
+
+  /// Heading of the payments made against an invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get feePayments;
+
+  /// Shown when an invoice has no payment.
+  ///
+  /// In en, this message translates to:
+  /// **'No payments yet'**
+  String get feeNoPayments;
+
+  /// Form label: cash, cheque, UPI and so on.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get feeMethod;
+
+  /// Button that takes a payment back.
+  ///
+  /// In en, this message translates to:
+  /// **'Reverse'**
+  String get feeReverse;
+
+  /// Form label: why a payment is being reversed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get feeReason;
+
+  /// Question before a payment is reversed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reverse this payment of {amount}? The invoice becomes unpaid again and the receipt is cancelled. This cannot be undone.'**
+  String feeConfirmReverse(String amount);
+
+  /// Button that saves a receipt as a PDF.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt PDF'**
+  String get feeReceiptPdf;
+
+  /// Explains what billing fees does.
+  ///
+  /// In en, this message translates to:
+  /// **'Makes an invoice for every instalment due on or before the date, for the students of the level you choose (or all). Instalments already billed are left alone.'**
+  String get feeBillIntro;
+
+  /// Form label: the last due date to bill.
+  ///
+  /// In en, this message translates to:
+  /// **'Instalments due up to'**
+  String get feeBillUpTo;
+
+  /// Button that counts what would be billed without saving anything.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get feePreview;
+
+  /// Button that makes the invoices after a preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Create invoices'**
+  String get feeCreateInvoices;
+
+  /// Result of a preview of billing.
+  ///
+  /// In en, this message translates to:
+  /// **'{created} invoices would be created. Already billed: {already}. Students without fees set up: {without}.'**
+  String feePreviewResult(String created, String already, String without);
+
+  /// Result after billing.
+  ///
+  /// In en, this message translates to:
+  /// **'{created} invoices created. Already billed: {already}.'**
+  String feeCreatedResult(String created, String already);
+
+  /// Choice that bills every class level.
+  ///
+  /// In en, this message translates to:
+  /// **'All levels'**
+  String get feeLevelAll;
+
+  /// Total of the receipts in a list.
+  ///
+  /// In en, this message translates to:
+  /// **'Total received'**
+  String get feeReceiptsTotal;
+
+  /// Empty state of the receipts list.
+  ///
+  /// In en, this message translates to:
+  /// **'No receipts yet'**
+  String get feeNoReceiptsTitle;
+
+  /// Empty state of the invoices list.
+  ///
+  /// In en, this message translates to:
+  /// **'No invoices yet'**
+  String get feeNoInvoicesTitle;
+
+  /// Hint under the empty state of the invoices list.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up fees, then bill them.'**
+  String get feeNoInvoicesBody;
+
+  /// Button that starts the fee structure of a class level.
+  ///
+  /// In en, this message translates to:
+  /// **'New fee structure'**
+  String get feeNewStructure;
+
+  /// Confirmation after creating a fee structure.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee structure created'**
+  String get feeStructureCreated;
+
+  /// Button that adds a fee, for example Tuition, to a structure.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a fee'**
+  String get feeAddFee;
+
+  /// Form label: the name of a fee, for example Tuition.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee name'**
+  String get feeFeeName;
+
+  /// Heading of the parts a fee is paid in.
+  ///
+  /// In en, this message translates to:
+  /// **'Instalments'**
+  String get feeInstalments;
+
+  /// Form label: the name of an instalment, for example Term 1.
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get feeInstalmentLabel;
+
+  /// Button that adds a row for another instalment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add instalment'**
+  String get feeAddInstalment;
+
+  /// Empty state of the fee structures list.
+  ///
+  /// In en, this message translates to:
+  /// **'No fee structures yet'**
+  String get feeNoStructuresTitle;
+
+  /// Total of all the fees of a structure.
+  ///
+  /// In en, this message translates to:
+  /// **'Total for the year'**
+  String get feeStructureTotal;
+
+  /// Confirmation after adding a fee.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee added'**
+  String get feeFeeAdded;
+
+  /// Shown when a structure has no fees.
+  ///
+  /// In en, this message translates to:
+  /// **'No fees in this structure yet'**
+  String get feeNoItems;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

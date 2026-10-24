@@ -1102,4 +1102,142 @@ class OruStringsDoi extends OruStrings {
   @override
   String get hrpNoRunsBody =>
       'Set up salaries on each staff member first, then create the month\'s run.';
+
+  @override
+  String get feeTabInvoices => 'Invoices';
+
+  @override
+  String get feeTabReceipts => 'Receipts';
+
+  @override
+  String get feeTabStructures => 'Fee structures';
+
+  @override
+  String get feeStatusOverdue => 'Overdue';
+
+  @override
+  String get feeStatusPartial => 'Part paid';
+
+  @override
+  String get feeStatusPending => 'Not paid';
+
+  @override
+  String get feeBilled => 'Billed';
+
+  @override
+  String get feeNewInvoice => 'New invoice';
+
+  @override
+  String get feeBillFees => 'Bill fees';
+
+  @override
+  String get feeDescription => 'Description';
+
+  @override
+  String get feeFindStudent => 'Find a student by name or enrolment no.';
+
+  @override
+  String get feeInvoiceCreated => 'Invoice created';
+
+  @override
+  String get feeRecordPayment => 'Record payment';
+
+  @override
+  String feePaymentRecorded(String number) {
+    return 'Payment recorded. Receipt no. $number';
+  }
+
+  @override
+  String get feePayments => 'Payments';
+
+  @override
+  String get feeNoPayments => 'No payments yet';
+
+  @override
+  String get feeMethod => 'Payment method';
+
+  @override
+  String get feeReverse => 'Reverse';
+
+  @override
+  String get feeReason => 'Reason';
+
+  @override
+  String feeConfirmReverse(String amount) {
+    return 'Reverse this payment of $amount? The invoice becomes unpaid again and the receipt is cancelled. This cannot be undone.';
+  }
+
+  @override
+  String get feeReceiptPdf => 'Receipt PDF';
+
+  @override
+  String get feeBillIntro =>
+      'Makes an invoice for every instalment due on or before the date, for the students of the level you choose (or all). Instalments already billed are left alone.';
+
+  @override
+  String get feeBillUpTo => 'Instalments due up to';
+
+  @override
+  String get feePreview => 'Preview';
+
+  @override
+  String get feeCreateInvoices => 'Create invoices';
+
+  @override
+  String feePreviewResult(String created, String already, String without) {
+    return '$created invoices would be created. Already billed: $already. Students without fees set up: $without.';
+  }
+
+  @override
+  String feeCreatedResult(String created, String already) {
+    return '$created invoices created. Already billed: $already.';
+  }
+
+  @override
+  String get feeLevelAll => 'All levels';
+
+  @override
+  String get feeReceiptsTotal => 'Total received';
+
+  @override
+  String get feeNoReceiptsTitle => 'No receipts yet';
+
+  @override
+  String get feeNoInvoicesTitle => 'No invoices yet';
+
+  @override
+  String get feeNoInvoicesBody => 'Set up fees, then bill them.';
+
+  @override
+  String get feeNewStructure => 'New fee structure';
+
+  @override
+  String get feeStructureCreated => 'Fee structure created';
+
+  @override
+  String get feeAddFee => 'Add a fee';
+
+  @override
+  String get feeFeeName => 'Fee name';
+
+  @override
+  String get feeInstalments => 'Instalments';
+
+  @override
+  String get feeInstalmentLabel => 'Label';
+
+  @override
+  String get feeAddInstalment => 'Add instalment';
+
+  @override
+  String get feeNoStructuresTitle => 'No fee structures yet';
+
+  @override
+  String get feeStructureTotal => 'Total for the year';
+
+  @override
+  String get feeFeeAdded => 'Fee added';
+
+  @override
+  String get feeNoItems => 'No fees in this structure yet';
 }
