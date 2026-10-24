@@ -127,7 +127,7 @@ export async function renderReceipt(model: ReceiptPdfModel, language: string, fo
     while (s.length > 1 && ctx.measureText(`${s}…`).width > max) s = s.slice(0, -1);
     return `${s}…`;
   };
-  const rule = (y: number, color = INK.line) => {
+  const rule = (y: number, color: string = INK.line) => {
     ctx.strokeStyle = color;
     ctx.lineWidth = 0.8;
     ctx.beginPath();
