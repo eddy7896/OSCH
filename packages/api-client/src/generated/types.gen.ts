@@ -168,6 +168,41 @@ export type ClassSectionDto = {
     section: string;
 };
 
+export type CollectionRowDto = {
+    amountMinor: string;
+    invoice: {
+        id: string;
+        title: string;
+    };
+    method: string;
+    paidOn: string;
+    paymentId: string;
+    receiptNumber: string | null;
+    recordedBy: string;
+    reference: string | null;
+    reversed: boolean;
+    student: {
+        enrollmentId: string;
+        id: string;
+        name: string;
+    };
+};
+
+export type CollectionsReportDto = {
+    byDay: Array<DayTotalDto>;
+    byMethod: Array<MethodTotalDto>;
+    collectedMinor: string;
+    count: number;
+    detail: boolean;
+    from: string;
+    items: Array<CollectionRowDto>;
+    page: number;
+    pageSize: number;
+    reversedMinor: string;
+    to: string;
+    total: number;
+};
+
 export type ConcessionDto = {
     academicYear: {
         id: string;
@@ -346,14 +381,64 @@ export type CreatedInvitationDto = {
     token: string;
 };
 
+export type DayTotalDto = {
+    amountMinor: string;
+    count: number;
+    date: string;
+};
+
 export type DecideApplicationDto = {
     note?: string;
     status: 'UNDER_REVIEW' | 'ACCEPTED' | 'REJECTED' | 'WITHDRAWN';
 };
 
+export type DepartmentTotalDto = {
+    deductionsMinor: string;
+    department: string | null;
+    grossMinor: string;
+    headcount: number;
+    netMinor: string;
+};
+
 export type DocumentUploadRequestDto = {
     contentType: 'image/png' | 'image/jpeg' | 'image/webp' | 'application/pdf';
     sizeBytes: number;
+};
+
+export type DueBandDto = {
+    band: string;
+    count: number;
+    outstandingMinor: string;
+};
+
+export type DueRowDto = {
+    amountMinor: string;
+    band: string;
+    daysOverdue: number;
+    dueDate: string;
+    invoiceId: string;
+    outstandingMinor: string;
+    paidMinor: string;
+    student: {
+        enrollmentId: string;
+        id: string;
+        name: string;
+    };
+    title: string;
+};
+
+export type DuesReportDto = {
+    amountMinor: string;
+    asOf: string;
+    bands: Array<DueBandDto>;
+    count: number;
+    detail: boolean;
+    items: Array<DueRowDto>;
+    outstandingMinor: string;
+    page: number;
+    pageSize: number;
+    paidMinor: string;
+    total: number;
 };
 
 export type ErrorEnvelope = {
@@ -640,6 +725,12 @@ export type MembershipListDto = {
     items: Array<MembershipDto>;
 };
 
+export type MethodTotalDto = {
+    amountMinor: string;
+    count: number;
+    method: string;
+};
+
 export type NavItemDto = {
     key: string;
     label: string;
@@ -688,6 +779,17 @@ export type PaymentReceiptDto = {
     number: string;
 };
 
+export type PayrollMonthDto = {
+    deductionsMinor: string;
+    grossMinor: string;
+    headcount: number;
+    month: number;
+    netMinor: string;
+    paidOn: string | null;
+    runId: string;
+    status: string;
+};
+
 export type PayrollRunDto = {
     approvedAt: string | null;
     approvedBy: PersonRefDto | null;
@@ -717,6 +819,15 @@ export type PayrollRunSummaryDto = {
     paymentReference: string | null;
     preparedBy: PersonRefDto;
     status: string;
+    year: number;
+};
+
+export type PayrollSummaryDto = {
+    byDepartment: Array<DepartmentTotalDto>;
+    deductionsMinor: string;
+    grossMinor: string;
+    months: Array<PayrollMonthDto>;
+    netMinor: string;
     year: number;
 };
 
@@ -5182,6 +5293,254 @@ export type PublicSchoolsBySubdomainResponses = {
 };
 
 export type PublicSchoolsBySubdomainResponse = PublicSchoolsBySubdomainResponses[keyof PublicSchoolsBySubdomainResponses];
+
+export type ReportsCollectionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+        to?: string;
+        page?: number;
+        pageSize?: number;
+    };
+    url: '/v1/reports/finance/collections';
+};
+
+export type ReportsCollectionsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReportsCollectionsError = ReportsCollectionsErrors[keyof ReportsCollectionsErrors];
+
+export type ReportsCollectionsResponses = {
+    200: CollectionsReportDto;
+};
+
+export type ReportsCollectionsResponse = ReportsCollectionsResponses[keyof ReportsCollectionsResponses];
+
+export type ReportsCollectionsExportData = {
+    body?: never;
+    path?: never;
+    query: {
+        from?: string;
+        to?: string;
+        format: 'csv' | 'pdf';
+        lang?: string;
+    };
+    url: '/v1/reports/finance/collections/export';
+};
+
+export type ReportsCollectionsExportErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReportsCollectionsExportError = ReportsCollectionsExportErrors[keyof ReportsCollectionsExportErrors];
+
+export type ReportsCollectionsExportResponses = {
+    200: unknown;
+};
+
+export type ReportsDuesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        asOf?: string;
+        academicYearId?: string;
+        page?: number;
+        pageSize?: number;
+    };
+    url: '/v1/reports/finance/dues';
+};
+
+export type ReportsDuesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReportsDuesError = ReportsDuesErrors[keyof ReportsDuesErrors];
+
+export type ReportsDuesResponses = {
+    200: DuesReportDto;
+};
+
+export type ReportsDuesResponse = ReportsDuesResponses[keyof ReportsDuesResponses];
+
+export type ReportsDuesExportData = {
+    body?: never;
+    path?: never;
+    query: {
+        asOf?: string;
+        academicYearId?: string;
+        format: 'csv' | 'pdf';
+        lang?: string;
+    };
+    url: '/v1/reports/finance/dues/export';
+};
+
+export type ReportsDuesExportErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReportsDuesExportError = ReportsDuesExportErrors[keyof ReportsDuesExportErrors];
+
+export type ReportsDuesExportResponses = {
+    200: unknown;
+};
+
+export type ReportsPayrollData = {
+    body?: never;
+    path?: never;
+    query?: {
+        year?: number;
+    };
+    url: '/v1/reports/hr/payroll-summary';
+};
+
+export type ReportsPayrollErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReportsPayrollError = ReportsPayrollErrors[keyof ReportsPayrollErrors];
+
+export type ReportsPayrollResponses = {
+    200: PayrollSummaryDto;
+};
+
+export type ReportsPayrollResponse = ReportsPayrollResponses[keyof ReportsPayrollResponses];
+
+export type ReportsPayrollExportData = {
+    body?: never;
+    path?: never;
+    query: {
+        year?: number;
+        format: 'csv' | 'pdf';
+        lang?: string;
+    };
+    url: '/v1/reports/hr/payroll-summary/export';
+};
+
+export type ReportsPayrollExportErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReportsPayrollExportError = ReportsPayrollExportErrors[keyof ReportsPayrollExportErrors];
+
+export type ReportsPayrollExportResponses = {
+    200: unknown;
+};
 
 export type SchoolSetLogoData = {
     body: SetSchoolLogoDto;

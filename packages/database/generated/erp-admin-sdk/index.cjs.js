@@ -1180,3 +1180,31 @@ function salaryLineById(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.salaryLineById = salaryLineById;
 
+function paymentsInRange(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('PaymentsInRange', inputVars, inputOpts);
+}
+exports.paymentsInRange = paymentsInRange;
+
+function countPaymentsInRange(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountPaymentsInRange', inputVars, inputOpts);
+}
+exports.countPaymentsInRange = countPaymentsInRange;
+
+function duesInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('DuesInvoices', inputVars, inputOpts);
+}
+exports.duesInvoices = duesInvoices;
+
+function countDuesInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountDuesInvoices', inputVars, inputOpts);
+}
+exports.countDuesInvoices = countDuesInvoices;
+

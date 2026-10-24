@@ -459,6 +459,18 @@ export interface CountApplicationsVariables {
   academicYearId?: UUIDString | null;
 }
 
+export interface CountDuesInvoicesData {
+  invoices: ({
+    _count: number;
+  })[];
+}
+
+export interface CountDuesInvoicesVariables {
+  schoolId: UUIDString;
+  dueOnOrBefore: DateString;
+  academicYearId?: UUIDString | null;
+}
+
 export interface CountInvoicesData {
   invoices: ({
     _count: number;
@@ -485,6 +497,18 @@ export interface CountInvoicesVariables {
   status?: InvoiceStatus | null;
   dueOnOrBefore?: DateString | null;
   dueOnOrAfter?: DateString | null;
+}
+
+export interface CountPaymentsInRangeData {
+  payments: ({
+    _count: number;
+  })[];
+}
+
+export interface CountPaymentsInRangeVariables {
+  schoolId: UUIDString;
+  from: DateString;
+  to: DateString;
 }
 
 export interface CountReceiptsData {
@@ -1259,6 +1283,30 @@ export interface DeleteSubjectVariables {
   id: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface DuesInvoicesData {
+  invoices: ({
+    id: UUIDString;
+    title: string;
+    amountMinor: Int64String;
+    paidMinor: Int64String;
+    dueDate: DateString;
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+  } & Invoice_Key)[];
+}
+
+export interface DuesInvoicesVariables {
+  schoolId: UUIDString;
+  dueOnOrBefore: DateString;
+  academicYearId?: UUIDString | null;
+  limit: number;
+  offset: number;
 }
 
 export interface Exam_Key {
@@ -2569,6 +2617,45 @@ export interface ParentGuardian_Key {
 export interface Payment_Key {
   id: UUIDString;
   __typename?: 'Payment_Key';
+}
+
+export interface PaymentsInRangeData {
+  payments: ({
+    id: UUIDString;
+    amountMinor: Int64String;
+    method: PaymentMethod;
+    reference?: string | null;
+    paidOn: DateString;
+    reversedAt?: TimestampString | null;
+    reversalReason?: string | null;
+    createdAt: TimestampString;
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    invoice: {
+      id: UUIDString;
+      title: string;
+    } & Invoice_Key;
+    recordedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    receipt?: {
+      number: string;
+    };
+  } & Payment_Key)[];
+}
+
+export interface PaymentsInRangeVariables {
+  schoolId: UUIDString;
+  from: DateString;
+  to: DateString;
+  limit: number;
+  offset: number;
 }
 
 export interface PayrollRunSumData {
@@ -4302,4 +4389,24 @@ export function payslipLine(vars: PayslipLineVariables, options?: OperationOptio
 export function salaryLineById(dc: DataConnect, vars: SalaryLineByIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SalaryLineByIdData>>;
 /** Generated Node Admin SDK operation action function for the 'SalaryLineById' Query. Allow users to pass in custom DataConnect instances. */
 export function salaryLineById(vars: SalaryLineByIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SalaryLineByIdData>>;
+
+/** Generated Node Admin SDK operation action function for the 'PaymentsInRange' Query. Allow users to execute without passing in DataConnect. */
+export function paymentsInRange(dc: DataConnect, vars: PaymentsInRangeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PaymentsInRangeData>>;
+/** Generated Node Admin SDK operation action function for the 'PaymentsInRange' Query. Allow users to pass in custom DataConnect instances. */
+export function paymentsInRange(vars: PaymentsInRangeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PaymentsInRangeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountPaymentsInRange' Query. Allow users to execute without passing in DataConnect. */
+export function countPaymentsInRange(dc: DataConnect, vars: CountPaymentsInRangeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountPaymentsInRangeData>>;
+/** Generated Node Admin SDK operation action function for the 'CountPaymentsInRange' Query. Allow users to pass in custom DataConnect instances. */
+export function countPaymentsInRange(vars: CountPaymentsInRangeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountPaymentsInRangeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DuesInvoices' Query. Allow users to execute without passing in DataConnect. */
+export function duesInvoices(dc: DataConnect, vars: DuesInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DuesInvoicesData>>;
+/** Generated Node Admin SDK operation action function for the 'DuesInvoices' Query. Allow users to pass in custom DataConnect instances. */
+export function duesInvoices(vars: DuesInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DuesInvoicesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountDuesInvoices' Query. Allow users to execute without passing in DataConnect. */
+export function countDuesInvoices(dc: DataConnect, vars: CountDuesInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountDuesInvoicesData>>;
+/** Generated Node Admin SDK operation action function for the 'CountDuesInvoices' Query. Allow users to pass in custom DataConnect instances. */
+export function countDuesInvoices(vars: CountDuesInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountDuesInvoicesData>>;
 

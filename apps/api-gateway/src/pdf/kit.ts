@@ -60,7 +60,10 @@ export const INK = { paper: 'rgb(255, 255, 255)', text: 'rgb(21, 24, 56)', muted
 
 export interface PageKit {
   canvas: Canvas;
-  ctx: CanvasRenderingContext2D;
+  /** The drawing context of the CURRENT page. */
+  readonly ctx: CanvasRenderingContext2D;
+  /** Starts another page of the same size (a white page); everything drawn after goes there. */
+  newPage(): void;
   W: number;
   H: number;
   M: number;
@@ -84,9 +87,16 @@ export function createPage(W: number, H: number, language: string, M = 28): Page
   const t = getMessages(code);
   const rtl = isRtl(code);
   const canvas = new Canvas(W, H);
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = INK.paper;
-  ctx.fillRect(0, 0, W, H);
+  let ctx = canvas.getContext('2d');
+  const blank = () => {
+    ctx.fillStyle = INK.paper;
+    ctx.fillRect(0, 0, W, H);
+  };
+  blank();
+  const newPage = () => {
+    ctx = canvas.newPage(W, H);
+    blank();
+  };
   const font = (text: string, size: number, bold = false) => {
     const fam = familyFor(text, code);
     ctx.font = `${bold ? 'bold ' : ''}${size}px ${fam === 'OruSans' ? 'OruSans' : `${fam}, OruSans`}`;
@@ -119,5 +129,5 @@ export function createPage(W: number, H: number, language: string, M = 28): Page
     ctx.lineTo(W - M, y);
     ctx.stroke();
   };
-  return { canvas, ctx, W, H, M, rtl, t, font, fit, edge, far, rule, language: code };
+  return { canvas, get ctx() { return ctx; }, newPage, W, H, M, rtl, t, font, fit, edge, far, rule, language: code };
 }

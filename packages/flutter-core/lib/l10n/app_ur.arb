@@ -206,5 +206,21 @@
   "payslipTotalDeductions": "کل کٹوتی",
   "payslipNetPay": "خالص تنخواہ",
   "payslipPaidOn": "ادائیگی کی تاریخ",
-  "payslipFooter": "یہ کمپیوٹر سے تیار کردہ تنخواہ کی پرچی ہے۔"
+  "payslipFooter": "یہ کمپیوٹر سے تیار کردہ تنخواہ کی پرچی ہے۔",
+  "reportCollectionsTitle": "فیس کی وصولی",
+  "reportDuesTitle": "بقایا فیس",
+  "reportPayrollTitle": "تنخواہ کا خلاصہ",
+  "reportAsOf": "تاریخ تک",
+  "reportYear": "سال",
+  "reportStatus": "حالت",
+  "reportReversed": "واپس کیا گیا",
+  "reportTotal": "کل",
+  "reportDueDate": "آخری تاریخ",
+  "reportAmountDue": "واجب الادا رقم",
+  "reportOutstanding": "بقایا",
+  "reportDaysOverdue": "تاخیر کے دن",
+  "reportMonth": "مہینہ",
+  "reportHeadcount": "عملہ",
+  "reportApproved": "منظور شدہ",
+  "reportPaid": "ادا کیا گیا"
 }

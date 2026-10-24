@@ -690,4 +690,52 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get payslipFooter => 'یہ کمپیوٹر سے تیار کردہ تنخواہ کی پرچی ہے۔';
+
+  @override
+  String get reportCollectionsTitle => 'فیس کی وصولی';
+
+  @override
+  String get reportDuesTitle => 'بقایا فیس';
+
+  @override
+  String get reportPayrollTitle => 'تنخواہ کا خلاصہ';
+
+  @override
+  String get reportAsOf => 'تاریخ تک';
+
+  @override
+  String get reportYear => 'سال';
+
+  @override
+  String get reportStatus => 'حالت';
+
+  @override
+  String get reportReversed => 'واپس کیا گیا';
+
+  @override
+  String get reportTotal => 'کل';
+
+  @override
+  String get reportDueDate => 'آخری تاریخ';
+
+  @override
+  String get reportAmountDue => 'واجب الادا رقم';
+
+  @override
+  String get reportOutstanding => 'بقایا';
+
+  @override
+  String get reportDaysOverdue => 'تاخیر کے دن';
+
+  @override
+  String get reportMonth => 'مہینہ';
+
+  @override
+  String get reportHeadcount => 'عملہ';
+
+  @override
+  String get reportApproved => 'منظور شدہ';
+
+  @override
+  String get reportPaid => 'ادا کیا گیا';
 }
