@@ -191,6 +191,28 @@ const concessionOfA = async (w: World): Promise<Record<string, string>> => {
   return { id: dash(id) };
 };
 
+/** A manual invoice of school A (optionally already part-paid), through the real operations. */
+const invoiceOfA = (paid: boolean) => async (w: World): Promise<Record<string, string>> => {
+  const actor = w.roles.A.BURSAR.uid;
+  const stu = (await studentOfA(w))['id']!;
+  const id = randomUUID();
+  await w.db.createInvoice({ schoolId: w.schools.A, id, studentId: stu, title: 'Sample invoice', amountMinor: '100000', dueDate: '2060-01-01', actorId: actor });
+  if (!paid) return { id: dash(id) };
+  const payment = randomUUID();
+  await w.db.recordPayment({ schoolId: w.schools.A, id: payment, invoiceId: id, studentId: stu, amountMinor: '40000', method: 'CASH' as never, paidOn: '2060-01-02', expectedPaidMinor: '0', newPaidMinor: '40000', newStatus: 'PENDING' as never, actorId: actor });
+  return { id: dash(payment), invoice: dash(id) };
+};
+/** One fee structure with one instalment and one placed student, so an invoice run makes exactly one invoice. */
+const readyToBillA = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await instalmentOfA(w); // year, level 4, structure, fee, one instalment due 2061-05-01
+  const actor = w.roles.A.BURSAR.uid;
+  const room = randomUUID();
+  await w.db.createClassroom({ schoolId: w.schools.A, id: room, gradeLevelId: ctx['level']!, section: `B${room.slice(0, 4)}`, name: `4 B${room.slice(0, 4)}`, capacity: 30, actorId: actor });
+  const stu = (await studentOfA(w))['id']!;
+  await w.db.placeStudent({ schoolId: w.schools.A, studentId: stu, academicYearId: ctx['year']!, classroomId: room, actorId: actor });
+  return { year: ctx['year']!, student: stu };
+};
+
 export const SAMPLES: Record<string, Sample> = {
   'POST /platform/schools': { ...platform, body: () => ({ name: 'Audit sample school', subDomain: `a${randomUUID().slice(0, 12)}`, defaultLanguage: 'en' }), auditSchool: (_w, _c, res) => res['id'] },
   'PATCH /platform/schools/:id': { ...platform, prepare: freshSchool, body: () => ({ name: 'Renamed by the audit sample' }), auditSchool: (_w, ctx) => ctx['id']! },
@@ -297,4 +319,8 @@ export const SAMPLES: Record<string, Sample> = {
     prepare: studentOfA,
     body: async (w, ctx) => ({ csv: `student id,name,relationship,phone\n${(await w.db.getStudent({ schoolId: w.schools.A, id: ctx['id']! })).data.students[0]!.enrollmentId},Imp Guardian,MOTHER,9876543210\n` }),
   },
+  'POST /fees/invoices': { ...bursarOfA, prepare: studentOfA, body: (_w, ctx) => ({ studentId: ctx['id'], title: 'Trip fee', amountMinor: '50000', dueDate: '2060-02-01' }) },
+  'POST /fees/invoices/generate': { ...bursarOfA, prepare: readyToBillA, body: (_w, ctx) => ({ dueOnOrBefore: '2061-12-31', academicYearId: ctx['year'], studentId: ctx['student'] }) },
+  'POST /fees/invoices/:id/payments': { ...bursarOfA, prepare: invoiceOfA(false), body: () => ({ amountMinor: '10000', method: 'CASH' }) },
+  'POST /fees/payments/:id/reverse': { ...bursarOfA, prepare: invoiceOfA(true), body: () => ({ reason: 'Entered in error' }) },
 };

@@ -62,7 +62,7 @@ describe.skipIf(!host)('Invoice and payment operations (P2-7b)', () => {
     const got = (await invoice(A, id))!;
     expect(got).toMatchObject({ title: 'Tuition - April', amountMinor: '1000000', grossMinor: '1250000', discountMinor: '250000', paidMinor: '0', status: 'PENDING', dueDate: '2027-04-10' });
     expect(got.student).toMatchObject({ enrollmentId: expect.stringMatching(/^S\d{4}$/) });
-    expect((await db.invoicedInstalments({ schoolId: A, studentId: studentA })).data.invoices.map((i) => bare(i.instalmentId!)).sort()).toEqual([bare(instalmentA), bare(instalment2A)].sort());
+    expect((await db.invoicedForYear({ schoolId: A, academicYearId: yearA, limit: 100, offset: 0 })).data.invoices.filter((i) => bare(i.studentId) === bare(studentA)).map((i) => bare(i.instalmentId!)).sort()).toEqual([bare(instalmentA), bare(instalment2A)].sort());
     expect((await audit(A, 'fees.invoice.create')).length).toBe(3);
   });
 
@@ -149,7 +149,7 @@ describe.skipIf(!host)('Invoice and payment operations (P2-7b)', () => {
     await db.updateStudent({ schoolId: A, id: studentA2, status: 'LEFT' as never, actorId: cashierA });
     const byLevel = (await db.placedStudents({ schoolId: A, academicYearId: yearA, gradeLevelId: level, limit: 100, offset: 0 })).data.studentEnrollments.map((e) => bare(e.studentId));
     expect(byLevel).toEqual([bare(studentA)]);
-    expect((await db.placedStudents({ schoolId: A, academicYearId: yearA, classroomId: room, limit: 100, offset: 0 })).data.studentEnrollments).toHaveLength(1);
+    expect((await db.placedStudents({ schoolId: A, academicYearId: yearA, classroomId: room, limit: 100, offset: 0 })).data.studentEnrollments.map((e) => bare(e.classroom.gradeLevelId))).toEqual([bare(level)]);
     expect((await db.placedStudents({ schoolId: B, academicYearId: yearA, limit: 100, offset: 0 })).data.studentEnrollments).toEqual([]);
   });
 

@@ -316,7 +316,7 @@ type Invoice @table @unique(fields: ["student", "instalment"]) {
   student: Student!
   instalment: FeeInstalment # null for a manual invoice
   academicYear: AcademicYear
-  title: String! # what it is for, copied when the invoice is made ("Tuition - April")
+  title: String! @default(value: "Fee") # what it is for, copied when the invoice is made ("Tuition - April")
   grossMinor: Int64 # before concessions (null for a manual invoice)
   discountMinor: Int64 # taken off by concessions (null for a manual invoice)
   amountMinor: Int64! # due, in minor units (paise)

@@ -991,12 +991,26 @@ function getInvoice(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.getInvoice = getInvoice;
 
-function invoicedInstalments(dcOrVarsOrOptions, varsOrOptions, options) {
+function invoicedForYear(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('InvoicedInstalments', inputVars, inputOpts);
+  return dcInstance.executeQuery('InvoicedForYear', inputVars, inputOpts);
 }
-exports.invoicedInstalments = invoicedInstalments;
+exports.invoicedForYear = invoicedForYear;
+
+function countInvoicesForInstalments(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountInvoicesForInstalments', inputVars, inputOpts);
+}
+exports.countInvoicesForInstalments = countInvoicesForInstalments;
+
+function getPayment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetPayment', inputVars, inputOpts);
+}
+exports.getPayment = getPayment;
 
 function unpaidTotals(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);

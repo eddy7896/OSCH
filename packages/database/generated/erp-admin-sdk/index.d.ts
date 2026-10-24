@@ -389,6 +389,17 @@ export interface CountInvoicesData {
   })[];
 }
 
+export interface CountInvoicesForInstalmentsData {
+  invoices: ({
+    _count: number;
+  })[];
+}
+
+export interface CountInvoicesForInstalmentsVariables {
+  schoolId: UUIDString;
+  ids: UUIDString[];
+}
+
 export interface CountInvoicesVariables {
   schoolId: UUIDString;
   studentId?: UUIDString | null;
@@ -1362,6 +1373,25 @@ export interface GetMembershipVariables {
   userId: string;
 }
 
+export interface GetPaymentData {
+  payments: ({
+    id: UUIDString;
+    amountMinor: Int64String;
+    reversedAt?: TimestampString | null;
+    invoice: {
+      id: UUIDString;
+      amountMinor: Int64String;
+      paidMinor: Int64String;
+      status: InvoiceStatus;
+    } & Invoice_Key;
+  } & Payment_Key)[];
+}
+
+export interface GetPaymentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetSchoolBySubDomainData {
   schools: ({
     id: UUIDString;
@@ -1565,15 +1595,18 @@ export interface Invoice_Key {
   __typename?: 'Invoice_Key';
 }
 
-export interface InvoicedInstalmentsData {
+export interface InvoicedForYearData {
   invoices: ({
+    studentId: UUIDString;
     instalmentId?: UUIDString | null;
   })[];
 }
 
-export interface InvoicedInstalmentsVariables {
+export interface InvoicedForYearVariables {
   schoolId: UUIDString;
-  studentId: UUIDString;
+  academicYearId: UUIDString;
+  limit: number;
+  offset: number;
 }
 
 export interface LeaveRequest_Key {
@@ -2126,6 +2159,10 @@ export interface PlaceStudentVariables {
 export interface PlacedStudentsData {
   studentEnrollments: ({
     studentId: UUIDString;
+    classroom: {
+      id: UUIDString;
+      gradeLevelId: UUIDString;
+    } & Classroom_Key;
   })[];
 }
 
@@ -3518,10 +3555,20 @@ export function getInvoice(dc: DataConnect, vars: GetInvoiceVariables, options?:
 /** Generated Node Admin SDK operation action function for the 'GetInvoice' Query. Allow users to pass in custom DataConnect instances. */
 export function getInvoice(vars: GetInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetInvoiceData>>;
 
-/** Generated Node Admin SDK operation action function for the 'InvoicedInstalments' Query. Allow users to execute without passing in DataConnect. */
-export function invoicedInstalments(dc: DataConnect, vars: InvoicedInstalmentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<InvoicedInstalmentsData>>;
-/** Generated Node Admin SDK operation action function for the 'InvoicedInstalments' Query. Allow users to pass in custom DataConnect instances. */
-export function invoicedInstalments(vars: InvoicedInstalmentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<InvoicedInstalmentsData>>;
+/** Generated Node Admin SDK operation action function for the 'InvoicedForYear' Query. Allow users to execute without passing in DataConnect. */
+export function invoicedForYear(dc: DataConnect, vars: InvoicedForYearVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<InvoicedForYearData>>;
+/** Generated Node Admin SDK operation action function for the 'InvoicedForYear' Query. Allow users to pass in custom DataConnect instances. */
+export function invoicedForYear(vars: InvoicedForYearVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<InvoicedForYearData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountInvoicesForInstalments' Query. Allow users to execute without passing in DataConnect. */
+export function countInvoicesForInstalments(dc: DataConnect, vars: CountInvoicesForInstalmentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountInvoicesForInstalmentsData>>;
+/** Generated Node Admin SDK operation action function for the 'CountInvoicesForInstalments' Query. Allow users to pass in custom DataConnect instances. */
+export function countInvoicesForInstalments(vars: CountInvoicesForInstalmentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountInvoicesForInstalmentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetPayment' Query. Allow users to execute without passing in DataConnect. */
+export function getPayment(dc: DataConnect, vars: GetPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetPaymentData>>;
+/** Generated Node Admin SDK operation action function for the 'GetPayment' Query. Allow users to pass in custom DataConnect instances. */
+export function getPayment(vars: GetPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetPaymentData>>;
 
 /** Generated Node Admin SDK operation action function for the 'UnpaidTotals' Query. Allow users to execute without passing in DataConnect. */
 export function unpaidTotals(dc: DataConnect, vars: UnpaidTotalsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnpaidTotalsData>>;

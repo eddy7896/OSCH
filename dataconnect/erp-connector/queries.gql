@@ -321,9 +321,18 @@ query GetInvoice($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
   }
 }
 
-# Which students already have an invoice for these instalments (so a repeat run can say how many existed).
-query InvoicedInstalments($schoolId: UUID!, $studentId: UUID!) @auth(level: NO_ACCESS) {
-  invoices(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, instalmentId: {isNull: false}}, limit: 1000) { instalmentId }
+# Every instalment invoice of a year, to tell what an invoice run has already made. Paged.
+query InvoicedForYear($schoolId: UUID!, $academicYearId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  invoices(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, instalmentId: {isNull: false}}, orderBy: [{createdAt: ASC}], limit: $limit, offset: $offset) { studentId instalmentId }
+}
+
+# How many invoices stand on these fee instalments (a fee that has been billed cannot be deleted).
+query CountInvoicesForInstalments($schoolId: UUID!, $ids: [UUID!]!) @auth(level: NO_ACCESS) {
+  invoices(where: {schoolId: {eq: $schoolId}, instalmentId: {in: $ids}}) { _count }
+}
+
+query GetPayment($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  payments(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id amountMinor reversedAt invoice { id amountMinor paidMinor status } }
 }
 
 # Totals of what is still unpaid and due in a date window; the gateway runs one per ageing band. Exact Int64 sums, computed in the database.
@@ -335,5 +344,6 @@ query UnpaidTotals($schoolId: UUID!, $dueOnOrBefore: Date, $dueOnOrAfter: Date) 
 query PlacedStudents($schoolId: UUID!, $academicYearId: UUID!, $gradeLevelId: UUID, $classroomId: UUID, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
   studentEnrollments(where: {_and: [{schoolId: {eq: $schoolId}}, {academicYearId: {eq: $academicYearId}}, {classroomId: {eq: $classroomId}}, {classroom: {gradeLevelId: {eq: $gradeLevelId}}}, {student: {status: {eq: ACTIVE}}}]}, orderBy: [{createdAt: ASC}], limit: $limit, offset: $offset) {
     studentId
+    classroom { id gradeLevelId }
   }
 }

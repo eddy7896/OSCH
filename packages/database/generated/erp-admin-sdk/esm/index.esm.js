@@ -852,10 +852,22 @@ export function getInvoice(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetInvoice', inputVars, inputOpts);
 }
 
-export function invoicedInstalments(dcOrVarsOrOptions, varsOrOptions, options) {
+export function invoicedForYear(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('InvoicedInstalments', inputVars, inputOpts);
+  return dcInstance.executeQuery('InvoicedForYear', inputVars, inputOpts);
+}
+
+export function countInvoicesForInstalments(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountInvoicesForInstalments', inputVars, inputOpts);
+}
+
+export function getPayment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetPayment', inputVars, inputOpts);
 }
 
 export function unpaidTotals(dcOrVarsOrOptions, varsOrOptions, options) {

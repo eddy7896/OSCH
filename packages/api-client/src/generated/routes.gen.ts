@@ -184,6 +184,42 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "POST",
+    "path": "/v1/fees/invoices/{id}/payments",
+    "access": "tenant",
+    "operationId": "Invoices_pay"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/invoices/{id}",
+    "access": "tenant",
+    "operationId": "Invoices_get"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/fees/invoices/generate/preview",
+    "access": "tenant",
+    "operationId": "Invoices_preview"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/fees/invoices/generate",
+    "access": "tenant",
+    "operationId": "Invoices_generate"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/invoices",
+    "access": "tenant",
+    "operationId": "Invoices_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/fees/invoices",
+    "access": "tenant",
+    "operationId": "Invoices_create"
+  },
+  {
+    "method": "POST",
     "path": "/v1/fees/items/{id}/instalments",
     "access": "tenant",
     "operationId": "Fees_addInstalment"
@@ -199,6 +235,18 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/fees/items/{id}",
     "access": "tenant",
     "operationId": "Fees_updateItem"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/outstanding",
+    "access": "tenant",
+    "operationId": "Invoices_outstanding"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/fees/payments/{id}/reverse",
+    "access": "tenant",
+    "operationId": "Invoices_reverse"
   },
   {
     "method": "POST",
@@ -241,6 +289,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/fees/students/{studentId}/schedule",
     "access": "tenant",
     "operationId": "Fees_schedule"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/students/{studentId}/statement",
+    "access": "tenant",
+    "operationId": "Invoices_statement"
   },
   {
     "method": "POST",

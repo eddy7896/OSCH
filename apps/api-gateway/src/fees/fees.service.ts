@@ -80,8 +80,15 @@ export class FeesService {
     await this.db.updateFeeStructure({ schoolId: t.schoolId, id: dashed(before.id), name: dto.name, actorId: t.userId, details: { from: before.name, to: dto.name } });
     return this.getStructure(t, id);
   }
+  /** A fee that has been billed cannot be taken away: the invoices stand on its instalments. */
+  private async refuseIfBilled(t: TenantContext, instalmentIds: string[]): Promise<void> {
+    if (instalmentIds.length === 0) return;
+    const n = (await this.db.countInvoicesForInstalments({ schoolId: t.schoolId, ids: instalmentIds.map(dashed) })).data.invoices[0]?._count ?? 0;
+    if (n > 0) throw new ApiException(ErrorCode.CONFLICT, 409, [{ field: 'id', rule: 'alreadyBilled' }]);
+  }
   async deleteStructure(t: TenantContext, id: string): Promise<void> {
     const before = await this.structureRow(t, id);
+    await this.refuseIfBilled(t, before.items.flatMap((i) => i.instalments.map((x) => x.id)));
     await this.db.deleteFeeStructure({ schoolId: t.schoolId, id: dashed(before.id), actorId: t.userId, details: { name: before.name, items: before.items.length } });
   }
 
@@ -128,6 +135,7 @@ export class FeesService {
   }
   async deleteItem(t: TenantContext, id: string): Promise<FeeStructureDto> {
     const before = await this.itemRow(t, id);
+    await this.refuseIfBilled(t, before.instalments.map((i) => i.id));
     await this.db.deleteFeeItem({ schoolId: t.schoolId, id: dashed(before.id), actorId: t.userId, details: { name: before.name, instalments: before.instalments.length } });
     return this.getStructure(t, dashed(before.structure.id));
   }
@@ -150,6 +158,7 @@ export class FeesService {
   async deleteInstalment(t: TenantContext, id: string): Promise<FeeStructureDto> {
     const before = (await this.db.getFeeInstalment({ schoolId: t.schoolId, id })).data.feeInstalments[0];
     if (!before) throw notFound();
+    await this.refuseIfBilled(t, [before.id]);
     await this.db.deleteFeeInstalment({ schoolId: t.schoolId, id: dashed(before.id), actorId: t.userId, details: { fee: before.item.name, sequence: before.sequence, amountMinor: String(before.amountMinor) } });
     return this.getStructure(t, dashed(before.item.structure.id));
   }
