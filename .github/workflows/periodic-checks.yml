@@ -16,7 +16,7 @@ concurrency:
 env:
   # How many parallel jobs run the gateway integration suite. The `shard` list in the `gateway` job below must be 1..GATEWAY_SHARDS;
   # the `gateway-complete` job fails the build if any shard is missing, if any test file ran twice or not at all, or if a test failed.
-  GATEWAY_SHARDS: 3
+  GATEWAY_SHARDS: 4
 
 jobs:
   js:
@@ -101,7 +101,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3]
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

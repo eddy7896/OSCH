@@ -22,7 +22,7 @@ Multi-tenant school ERP (SaaS). **Two pillars**: Next.js web ERP (system of reco
 - `npm run i18n:build | i18n:check` — languages: edit `packages/i18n/locales.json` / `messages/*.json`, never the generated ARB/Dart/TS/CSS/`fonts.ts`/pubspec font block
 - `npm run tokens:build | tokens:check` — design tokens (never hand-edit `*/generated/*` or `tokens.g.dart`)
 - `npm run test:dataconnect` — database-level tenant-isolation tests on the emulator (needs network once to download the emulator)
-- `npm run test:gateway` — the gateway against the REAL Auth and Data Connect emulators: real tokens, and the cross-tenant / RBAC route matrix generated from every registered route (a new route is covered automatically); `ORU_SHARD=2/3 npm run test:gateway` runs one shard (CI runs three in parallel and `node tools/tests/gateway-shards.mjs verify <dir> 3` proves every file ran once)
+- `npm run test:gateway` — the gateway against the REAL Auth and Data Connect emulators: real tokens, and the cross-tenant / RBAC route matrix generated from every registered route (a new route is covered automatically); `ORU_SHARD=2/4 npm run test:gateway` runs one shard (CI runs four in parallel and `node tools/tests/gateway-shards.mjs verify <dir> 4` proves every file ran once)
 - `node tools/bootstrap-super-admin.mjs --email <e> --project <id> [--apply|--revoke]` — the only way to create/remove the platform owner (SUPER_ADMIN); dry run by default; see documentation/environment.md
 - `npm run generate -w @oruschools/api-client` — regenerate the typed client after `openapi.json` changes (`npm test` fails if it is stale); web code calls the gateway only through `createApi`
 - `npm run test:database` — `packages/database` (generated Admin SDK, error mapping) against the emulator

@@ -40,7 +40,18 @@ export function assign(files, total, sizeOf = () => 1) {
   return shards.map((s) => s.files.sort());
 }
 
-export const plan = (total, root = GATEWAY) => assign(allIntegrationFiles(root), total, (f) => statSync(join(root, f)).size);
+/** Measured seconds per file (tools/tests/gateway-shard-weights.json); a file with no entry gets the median, so a new file is placed sensibly. */
+export function weights(file = join(here, "gateway-shard-weights.json")) {
+  const raw = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : {};
+  const known = Object.fromEntries(Object.entries(raw).filter(([k, v]) => !k.startsWith("_") && Number.isFinite(v)));
+  const sorted = Object.values(known).sort((a, b) => a - b);
+  const median = sorted.length ? sorted[Math.floor(sorted.length / 2)] : 1;
+  return { known, median };
+}
+export function plan(total, root = GATEWAY, weightFile) {
+  const { known, median } = weights(weightFile);
+  return assign(allIntegrationFiles(root), total, (f) => known[f] ?? median);
+}
 
 /** @returns {string[]} problems; empty means every file ran exactly once, on its planned shard, with no failure and nothing skipped */
 export function verify(reportsDir, total, root = GATEWAY) {
