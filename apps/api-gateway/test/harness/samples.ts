@@ -199,7 +199,9 @@ const invoiceOfA = (paid: boolean) => async (w: World): Promise<Record<string, s
   await w.db.createInvoice({ schoolId: w.schools.A, id, studentId: stu, title: 'Sample invoice', amountMinor: '100000', dueDate: '2060-01-01', actorId: actor });
   if (!paid) return { id: dash(id) };
   const payment = randomUUID();
-  await w.db.recordPayment({ schoolId: w.schools.A, id: payment, invoiceId: id, studentId: stu, amountMinor: '40000', method: 'CASH' as never, paidOn: '2060-01-02', expectedPaidMinor: '0', newPaidMinor: '40000', newStatus: 'PENDING' as never, actorId: actor });
+  const year = randomUUID();
+  await w.db.createAcademicYear({ schoolId: w.schools.A, id: year, name: `RY-${year.slice(0, 6)}`, startDate: '2059-04-01', endDate: '2060-03-31', actorId: actor });
+  await w.db.recordPayment({ schoolId: w.schools.A, id: payment, receiptId: randomUUID(), invoiceId: id, studentId: stu, amountMinor: '40000', method: 'CASH' as never, paidOn: '2060-01-02', expectedPaidMinor: '0', newPaidMinor: '40000', newStatus: 'PENDING' as never, balanceAfterMinor: '60000', receiptYearId: year, expectedReceiptSeq: 0, receiptNumber: `R-RY-${year.slice(0, 6)}-00001`, actorId: actor });
   return { id: dash(payment), invoice: dash(id) };
 };
 /** One fee structure with one instalment and one placed student, so an invoice run makes exactly one invoice. */
@@ -321,6 +323,17 @@ export const SAMPLES: Record<string, Sample> = {
   },
   'POST /fees/invoices': { ...bursarOfA, prepare: studentOfA, body: (_w, ctx) => ({ studentId: ctx['id'], title: 'Trip fee', amountMinor: '50000', dueDate: '2060-02-01' }) },
   'POST /fees/invoices/generate': { ...bursarOfA, prepare: readyToBillA, body: (_w, ctx) => ({ dueOnOrBefore: '2061-12-31', academicYearId: ctx['year'], studentId: ctx['student'] }) },
-  'POST /fees/invoices/:id/payments': { ...bursarOfA, prepare: invoiceOfA(false), body: () => ({ amountMinor: '10000', method: 'CASH' }) },
+  'POST /fees/invoices/:id/payments': {
+    ...bursarOfA,
+    prepare: async (w) => {
+      // a manual invoice has no academic year of its own: the receipt is numbered in the year the payment date falls in
+      const year = randomUUID();
+      const d = new Date();
+      const iso = (days: number) => new Date(d.getTime() + days * 86_400_000).toISOString().slice(0, 10);
+      await w.db.createAcademicYear({ schoolId: w.schools.A, id: year, name: `PY-${year.slice(0, 6)}`, startDate: iso(-30), endDate: iso(300), actorId: w.roles.A.BURSAR.uid });
+      return invoiceOfA(false)(w);
+    },
+    body: () => ({ amountMinor: '10000', method: 'CASH' }),
+  },
   'POST /fees/payments/:id/reverse': { ...bursarOfA, prepare: invoiceOfA(true), body: () => ({ reason: 'Entered in error' }) },
 };

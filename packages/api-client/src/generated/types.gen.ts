@@ -650,6 +650,7 @@ export type PaymentDto = {
     id: string;
     method: string;
     paidOn: string;
+    receipt: PaymentReceiptDto | null;
     recordedBy: {
         id: string;
         name: string;
@@ -657,6 +658,12 @@ export type PaymentDto = {
     reference: string | null;
     reversalReason: string | null;
     reversedAt: string | null;
+};
+
+export type PaymentReceiptDto = {
+    cancelled: boolean;
+    id: string;
+    number: string;
 };
 
 export type PhotoUploadRequestDto = {
@@ -685,6 +692,68 @@ export type PublicSchoolDto = {
     id: string;
     name: string;
     subDomain: string;
+};
+
+export type ReceiptDto = {
+    academicYear: {
+        id: string;
+        name: string;
+    };
+    amountMinor: string;
+    balanceAfterMinor: string;
+    cancelReason: string | null;
+    cancelled: boolean;
+    className: string | null;
+    id: string;
+    invoice: {
+        id: string;
+        title: string;
+    };
+    issuedAt: string;
+    method: string;
+    number: string;
+    paidOn: string;
+    receivedBy: string;
+    reference: string | null;
+    school: {
+        address: string | null;
+        email: string | null;
+        language: string;
+        logoKey: string | null;
+        name: string;
+        phone: string | null;
+    };
+    student: {
+        enrollmentId: string;
+        id: string;
+        name: string;
+    };
+};
+
+export type ReceiptListDto = {
+    items: Array<ReceiptSummaryDto>;
+    page: number;
+    pageSize: number;
+    total: number;
+    totalAmountMinor: string;
+};
+
+export type ReceiptSummaryDto = {
+    amountMinor: string;
+    cancelled: boolean;
+    id: string;
+    invoice: {
+        id: string;
+        title: string;
+    };
+    issuedAt: string;
+    number: string;
+    paidOn: string;
+    student: {
+        enrollmentId: string;
+        id: string;
+        name: string;
+    };
 };
 
 export type RecordPaymentDto = {
@@ -2831,6 +2900,50 @@ export type InvoicesOutstandingResponses = {
 
 export type InvoicesOutstandingResponse = InvoicesOutstandingResponses[keyof InvoicesOutstandingResponses];
 
+export type ReceiptsByPaymentData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/payments/{id}/receipt';
+};
+
+export type ReceiptsByPaymentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReceiptsByPaymentError = ReceiptsByPaymentErrors[keyof ReceiptsByPaymentErrors];
+
+export type ReceiptsByPaymentResponses = {
+    200: ReceiptDto;
+};
+
+export type ReceiptsByPaymentResponse = ReceiptsByPaymentResponses[keyof ReceiptsByPaymentResponses];
+
 export type InvoicesReverseData = {
     body: ReversePaymentDto;
     path: {
@@ -2874,6 +2987,137 @@ export type InvoicesReverseResponses = {
 };
 
 export type InvoicesReverseResponse = InvoicesReverseResponses[keyof InvoicesReverseResponses];
+
+export type ReceiptsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        studentId?: string;
+        academicYearId?: string;
+        page?: number;
+        pageSize?: number;
+    };
+    url: '/v1/fees/receipts';
+};
+
+export type ReceiptsListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReceiptsListError = ReceiptsListErrors[keyof ReceiptsListErrors];
+
+export type ReceiptsListResponses = {
+    200: ReceiptListDto;
+};
+
+export type ReceiptsListResponse = ReceiptsListResponses[keyof ReceiptsListResponses];
+
+export type ReceiptsGetData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/receipts/{id}';
+};
+
+export type ReceiptsGetErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReceiptsGetError = ReceiptsGetErrors[keyof ReceiptsGetErrors];
+
+export type ReceiptsGetResponses = {
+    200: ReceiptDto;
+};
+
+export type ReceiptsGetResponse = ReceiptsGetResponses[keyof ReceiptsGetResponses];
+
+export type ReceiptsPdfData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        lang?: string;
+    };
+    url: '/v1/fees/receipts/{id}/pdf';
+};
+
+export type ReceiptsPdfErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ReceiptsPdfError = ReceiptsPdfErrors[keyof ReceiptsPdfErrors];
+
+export type ReceiptsPdfResponses = {
+    200: unknown;
+};
 
 export type FeesStructuresData = {
     body?: never;

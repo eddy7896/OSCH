@@ -1181,6 +1181,120 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'The file could not be uploaded. Try again.'**
   String get errorUploadFailed;
+
+  /// Title at the top of a printed fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee receipt'**
+  String get receiptTitle;
+
+  /// Label before the receipt number on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt no.'**
+  String get receiptNumber;
+
+  /// Label before the date the fee was paid, on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get receiptDate;
+
+  /// Label before the student name on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Student'**
+  String get receiptStudent;
+
+  /// Label before the student enrolment number on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrolment no.'**
+  String get receiptEnrollment;
+
+  /// Label before the class (for example 5 B) on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Class'**
+  String get receiptClass;
+
+  /// Label before what the payment was for (for example Tuition - April) on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment for'**
+  String get receiptFor;
+
+  /// Label before the amount paid, on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount paid'**
+  String get receiptAmountPaid;
+
+  /// Label before how the fee was paid (cash, cheque, UPI), on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid by'**
+  String get receiptMethod;
+
+  /// Label before the cheque, bank or UPI reference, on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get receiptReference;
+
+  /// Label before the amount still owed on the invoice after this payment, on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance on this invoice'**
+  String get receiptBalance;
+
+  /// Label before the name of the person who took the payment, on a fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Received by'**
+  String get receiptReceivedBy;
+
+  /// Large stamp across a fee receipt whose payment was reversed. Keep it short.
+  ///
+  /// In en, this message translates to:
+  /// **'CANCELLED'**
+  String get receiptCancelled;
+
+  /// Line at the bottom of a printed fee receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a computer-generated receipt.'**
+  String get receiptFooter;
+
+  /// Way of paying a fee: cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get paymentMethodCash;
+
+  /// Way of paying a fee: by cheque.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque'**
+  String get paymentMethodCheque;
+
+  /// Way of paying a fee: by bank transfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank transfer'**
+  String get paymentMethodBankTransfer;
+
+  /// Way of paying a fee: by UPI (the Indian instant payment system).
+  ///
+  /// In en, this message translates to:
+  /// **'UPI'**
+  String get paymentMethodUpi;
+
+  /// Way of paying a fee: any other way.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get paymentMethodOther;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

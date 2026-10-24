@@ -239,6 +239,7 @@ type AcademicYear @table {
   startDate: Date!
   endDate: Date!
   status: AcademicYearStatus! @default(value: PLANNED)
+  receiptSeq: Int! @default(value: 0) # last receipt serial handed out for this year (P2-7c)
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
@@ -323,6 +324,25 @@ type Invoice @table @unique(fields: ["student", "instalment"]) {
   paidMinor: Int64! @default(value: "0")
   dueDate: Date!
   status: InvoiceStatus! @default(value: PENDING)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A fee receipt (P2-7c): one per payment, made in the same transaction as the payment. The number is `R-<year>-<serial>`; the serial comes
+# from the academic year's counter and is unique per year, so two receipts can never share a number, and a payment that fails leaves no gap.
+# A receipt is never deleted; reversing the payment CANCELS it (it stays, marked).
+type Receipt @table @unique(fields: ["academicYear", "serial"]) @unique(fields: ["school", "number"]) @unique(fields: ["payment"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  academicYear: AcademicYear!
+  serial: Int!
+  number: String!
+  payment: Payment!
+  student: Student!
+  invoice: Invoice!
+  amountMinor: Int64!
+  balanceAfterMinor: Int64! # what is still owed on the invoice after this payment
+  cancelledAt: Timestamp
+  cancelReason: String
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

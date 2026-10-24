@@ -591,4 +591,61 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get errorUploadFailed => 'फ़ाइल अपलोड नहीं हो सकी। फिर कोशिश करें।';
+
+  @override
+  String get receiptTitle => 'शुल्क रसीद';
+
+  @override
+  String get receiptNumber => 'रसीद संख्या';
+
+  @override
+  String get receiptDate => 'दिनांक';
+
+  @override
+  String get receiptStudent => 'विद्यार्थी';
+
+  @override
+  String get receiptEnrollment => 'नामांकन संख्या';
+
+  @override
+  String get receiptClass => 'कक्षा';
+
+  @override
+  String get receiptFor => 'भुगतान का विवरण';
+
+  @override
+  String get receiptAmountPaid => 'भुगतान की गई राशि';
+
+  @override
+  String get receiptMethod => 'भुगतान का तरीका';
+
+  @override
+  String get receiptReference => 'संदर्भ';
+
+  @override
+  String get receiptBalance => 'इस बिल पर शेष राशि';
+
+  @override
+  String get receiptReceivedBy => 'प्राप्तकर्ता';
+
+  @override
+  String get receiptCancelled => 'रद्द';
+
+  @override
+  String get receiptFooter => 'यह कंप्यूटर द्वारा बनाई गई रसीद है।';
+
+  @override
+  String get paymentMethodCash => 'नकद';
+
+  @override
+  String get paymentMethodCheque => 'चेक';
+
+  @override
+  String get paymentMethodBankTransfer => 'बैंक हस्तांतरण';
+
+  @override
+  String get paymentMethodUpi => 'यूपीआई';
+
+  @override
+  String get paymentMethodOther => 'अन्य';
 }

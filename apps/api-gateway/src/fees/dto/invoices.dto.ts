@@ -13,6 +13,11 @@ export class PaymentIdParamDto {
   @IsString() @Matches(UUID) id!: string;
 }
 
+export class PaymentReceiptDto {
+  id!: string;
+  number!: string;
+  cancelled!: boolean;
+}
 export class PaymentDto {
   id!: string;
   amountMinor!: string;
@@ -23,6 +28,8 @@ export class PaymentDto {
   reversedAt!: string | null;
   reversalReason!: string | null;
   recordedBy!: { id: string; name: string };
+  /** The receipt made with this payment (every recorded payment has one; it is cancelled if the payment is reversed). */
+  receipt!: PaymentReceiptDto | null;
 }
 export class InvoiceSummaryDto {
   id!: string;
@@ -147,4 +154,48 @@ export class StatementDto {
 }
 export class StatementQueryDto {
   @IsOptional() @Matches(UUID) academicYearId?: string;
+}
+
+// ---- receipts (P2-7c) ----
+export class ListReceiptsQueryDto {
+  @IsOptional() @Matches(UUID) studentId?: string;
+  @IsOptional() @Matches(UUID) academicYearId?: string;
+  @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(100000) page?: number;
+  @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(100) pageSize?: number;
+}
+export class ReceiptPdfQueryDto {
+  /** The language of the labels (an explicit choice, never guessed). Defaults to the school's language. */
+  @IsOptional() @IsString() @Matches(/^[a-z]{2,3}$/) lang?: string;
+}
+export class ReceiptSummaryDto {
+  id!: string;
+  /** For example `R-2027-2028-00012`. */
+  number!: string;
+  /** The day the fee was paid. */
+  paidOn!: string;
+  /** When the receipt was made. */
+  issuedAt!: string;
+  cancelled!: boolean;
+  amountMinor!: string;
+  student!: { id: string; enrollmentId: string; name: string };
+  invoice!: { id: string; title: string };
+}
+export class ReceiptListDto {
+  items!: ReceiptSummaryDto[];
+  total!: number;
+  page!: number;
+  pageSize!: number;
+  /** Over everything the filter matches. */
+  totalAmountMinor!: string;
+}
+export class ReceiptDto extends ReceiptSummaryDto {
+  cancelReason!: string | null;
+  academicYear!: { id: string; name: string };
+  school!: { name: string; address: string | null; phone: string | null; email: string | null; logoKey: string | null; language: string };
+  className!: string | null;
+  method!: string;
+  reference!: string | null;
+  /** Still owed on the invoice after this payment. */
+  balanceAfterMinor!: string;
+  receivedBy!: string;
 }

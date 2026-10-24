@@ -45,6 +45,12 @@ describe.skipIf(!ready)('invoices and payments against the real emulators (P2-7b
   };
   const two = (a = '1250000', b = '1250000') => [{ label: 'Apr', amountMinor: a, dueDate: '2090-04-10' }, { label: 'Jul', amountMinor: b, dueDate: '2090-07-10' }];
 
+  /** A manual invoice has no academic year of its own, so its receipt is numbered in the year the payment date falls in: make sure one covers today. */
+  let currentYear: { id: string; name: string } | undefined;
+  const ensureCurrentYear = async () => (currentYear ??= (await call('post', '/academics/years', acad()).send({ name: `CY-${uniq()}`, startDate: shift(-30), endDate: shift(300) }).expect(201)).body);
+  const pdf = (id: string, who: Person = bursar(), school = A(), query = '') =>
+    agent(app!).get(`/v1/fees/receipts/${id}/pdf${query}`).set('Authorization', `Bearer ${who.token}`).set('X-School-Id', school).buffer(true).parse((res, cb) => { const chunks: Buffer[] = []; res.on('data', (c: Buffer) => chunks.push(c)); res.on('end', () => cb(null, Buffer.concat(chunks))); });
+
   it('a dry run counts and writes nothing; the real run bills exactly once; running again changes nothing', async () => {
     const s = await school('4', two());
     const before = { invoices: (await call('get', `/fees/invoices?academicYearId=${s.year.id}`).expect(200)).body.total, audit: (await audit(A(), 'fees.invoice.create')).length };
@@ -149,6 +155,10 @@ describe.skipIf(!ready)('invoices and payments against the real emulators (P2-7b
     const final = (await call('get', `/fees/invoices/${inv.id}`).expect(200)).body;
     expect(final.paidMinor).toBe('900000');
     expect(final.payments).toHaveLength(3);
+    // each of the 3 payments has its own receipt, and the numbers are consecutive: no duplicate, no gap, even though 6 cashiers raced
+    const numbers = final.payments.map((p: { receipt: { number: string } }) => Number(p.receipt.number.split('-').pop())).sort((a: number, b: number) => a - b);
+    expect(new Set(numbers).size).toBe(3);
+    expect(numbers[2] - numbers[0]).toBe(2);
   });
 
   it('a reversal keeps the payment, marks it, and reopens the invoice; only the Bursar, only once', async () => {
@@ -186,6 +196,7 @@ describe.skipIf(!ready)('invoices and payments against the real emulators (P2-7b
   });
 
   it('manual invoices; statements add up; the outstanding report ages unpaid money into exact bands', async () => {
+    await ensureCurrentYear();
     const kid = (await call('post', '/students', acad()).send({ firstName: `Age${uniq()}`, lastName: 'Ing' }).expect(201)).body;
     const make = (title: string, amountMinor: string, dueDate: string) => call('post', '/fees/invoices').send({ studentId: kid.id, title, amountMinor, dueDate }).expect(201);
     await call('post', '/fees/invoices').send({ studentId: kid.id, title: 'x', amountMinor: '0', dueDate: shift(1) }).expect(400);
@@ -221,7 +232,90 @@ describe.skipIf(!ready)('invoices and payments against the real emulators (P2-7b
     expect(BigInt((await call('get', '/fees/outstanding', w!.roles.B.BURSAR, B()).expect(200)).body.totals.outstandingMinor)).toBe(0n);
   });
 
+  it('every payment makes a numbered receipt in the same breath; numbers run per academic year; a refused payment leaves no gap', async () => {
+    const s = await school('3', [{ label: 'Only', amountMinor: '1000000', dueDate: '2999-01-10' }, { label: 'Second', amountMinor: '1000000', dueDate: '2999-02-10' }], 1);
+    await call('post', '/fees/invoices/generate').send({ academicYearId: s.year.id, studentId: s.kids[0]!.id, dueOnOrBefore: '2999-12-31' }).expect(200);
+    const [one, two2] = (await call('get', `/fees/invoices?studentId=${s.kids[0]!.id}`).expect(200)).body.items;
+    const pay = (id: string, amountMinor: string) => call('post', `/fees/invoices/${id}/payments`).send({ amountMinor, method: 'CASH' });
+    const p1 = (await pay(one.id, '300000').expect(201)).body.payments[0];
+    await pay(one.id, '9999999').expect(409); // refused: more than is owed
+    await pay(one.id, '0').expect(400); // refused: not valid
+    const p2 = (await pay(one.id, '200000').expect(201)).body.payments[1];
+    const p3 = (await pay(two2.id, '500000').expect(201)).body.payments[0];
+    const nums = [p1, p2, p3].map((p) => p.receipt.number as string);
+    expect(nums).toEqual([`R-${s.year.name}-00001`, `R-${s.year.name}-00002`, `R-${s.year.name}-00003`]); // refused payments used no number
+    expect(p1.receipt.cancelled).toBe(false);
+    const r = (await call('get', `/fees/payments/${p2.id}/receipt`).expect(200)).body;
+    expect(r).toMatchObject({ number: nums[1], cancelled: false, amountMinor: '200000', balanceAfterMinor: '500000', method: 'CASH', receivedBy: expect.any(String), student: { id: s.kids[0]!.id }, invoice: { id: one.id, title: 'Tuition - Only' }, academicYear: { id: s.year.id } });
+    expect(r.className).toBe(s.room.name);
+    expect(r.school).toMatchObject({ name: expect.any(String), language: 'en' });
+    expect((await call('get', `/fees/receipts/${r.id}`).expect(200)).body.number).toBe(nums[1]);
+    const list = (await call('get', `/fees/receipts?studentId=${s.kids[0]!.id}`).expect(200)).body;
+    expect(list.items.map((i: { number: string }) => i.number)).toEqual([nums[2], nums[1], nums[0]]); // newest first
+    expect(list).toMatchObject({ total: 3, totalAmountMinor: '1000000' });
+    // a second academic year starts again at 00001
+    const s2 = await school('2', [{ label: 'Only', amountMinor: '100000', dueDate: '2999-01-10' }], 1);
+    await call('post', '/fees/invoices/generate').send({ academicYearId: s2.year.id, studentId: s2.kids[0]!.id, dueOnOrBefore: '2999-12-31' }).expect(200);
+    const [inv2] = (await call('get', `/fees/invoices?studentId=${s2.kids[0]!.id}`).expect(200)).body.items;
+    expect((await pay(inv2.id, '100000').expect(201)).body.payments[0].receipt.number).toBe(`R-${s2.year.name}-00001`);
+  });
+
+  it('a manual invoice is receipted in the year the payment date falls in; with no academic year at all there is nothing to number it in (409)', async () => {
+    const year = await ensureCurrentYear();
+    const kid = (await call('post', '/students', acad()).send({ firstName: `Man${uniq()}`, lastName: 'Ual' }).expect(201)).body;
+    const inv = (await call('post', '/fees/invoices').send({ studentId: kid.id, title: 'Trip', amountMinor: '50000', dueDate: shift(7) }).expect(201)).body;
+    const paid = (await call('post', `/fees/invoices/${inv.id}/payments`).send({ amountMinor: '50000', method: 'UPI', reference: 'U1' }).expect(201)).body;
+    expect(paid.payments[0].receipt.number).toMatch(new RegExp(`^R-${year.name}-\\d{5}$`));
+    // school B has no academic year in this test
+    const b = w!.roles.B.BURSAR;
+    const bKid = (await call('post', '/students', w!.roles.B.ACADEMIC_ADMIN, B()).send({ firstName: 'Bee', lastName: 'Man' }).expect(201)).body;
+    const bInv = (await call('post', '/fees/invoices', b, B()).send({ studentId: bKid.id, title: 'Trip', amountMinor: '50000', dueDate: shift(7) }).expect(201)).body;
+    const refused = await call('post', `/fees/invoices/${bInv.id}/payments`, b, B()).send({ amountMinor: '50000', method: 'CASH' }).expect(409);
+    expect(refused.body.error.details).toEqual([{ field: 'paidOn', rule: 'noAcademicYearForReceipt' }]);
+    expect((await call('get', `/fees/invoices/${bInv.id}`, b, B()).expect(200)).body).toMatchObject({ paidMinor: '0', payments: [] }); // nothing was recorded
+  });
+
+  it('the receipt PDF is a real PDF in the school language (or the one asked for), cancelled receipts are stamped, other schools and roles are refused', async () => {
+    const s = await school('1', [{ label: 'Only', amountMinor: '250000', dueDate: '2999-01-10' }], 1);
+    await call('post', '/fees/invoices/generate').send({ academicYearId: s.year.id, studentId: s.kids[0]!.id, dueOnOrBefore: '2999-12-31' }).expect(200);
+    const [inv] = (await call('get', `/fees/invoices?studentId=${s.kids[0]!.id}`).expect(200)).body.items;
+    const paid = (await call('post', `/fees/invoices/${inv.id}/payments`).send({ amountMinor: '250000', method: 'CHEQUE', reference: '000123' }).expect(201)).body;
+    const receipt = (await call('get', `/fees/payments/${paid.payments[0].id}/receipt`).expect(200)).body;
+    const en = await pdf(receipt.id);
+    expect(en.status).toBe(200);
+    expect(en.headers['content-type']).toMatch(/application\/pdf/);
+    expect(en.headers['content-disposition']).toContain(`receipt-${receipt.number}.pdf`);
+    expect(en.headers['cache-control']).toMatch(/no-store/);
+    const bytes = en.body as Buffer;
+    expect(bytes.subarray(0, 5).toString()).toBe('%PDF-');
+    expect(bytes.length).toBeGreaterThan(5_000);
+    const hi = (await pdf(receipt.id, bursar(), A(), '?lang=hi')).body as Buffer;
+    const ur = (await pdf(receipt.id, bursar(), A(), '?lang=ur')).body as Buffer;
+    expect(hi.equals(bytes)).toBe(false);
+    expect(ur.equals(hi)).toBe(false);
+    expect(ur.toString('latin1')).toMatch(/Nastaliq/i);
+    expect(hi.toString('latin1')).toMatch(/Devanagari/i);
+    await pdf(receipt.id, bursar(), A(), '?lang=zz').expect(400);
+    await pdf(receipt.id, bursar(), A(), '?lang=english').expect(400);
+    // reversing the payment cancels the receipt: it stays, with the same number, stamped
+    await call('post', `/fees/payments/${paid.payments[0].id}/reverse`).send({ reason: 'Cheque bounced' }).expect(200);
+    const cancelled = (await call('get', `/fees/receipts/${receipt.id}`).expect(200)).body;
+    expect(cancelled).toMatchObject({ number: receipt.number, cancelled: true, cancelReason: 'Cheque bounced' });
+    expect(((await pdf(receipt.id)).body as Buffer).equals(bytes)).toBe(false);
+    expect((await call('get', `/fees/invoices/${inv.id}`).expect(200)).body.payments[0].receipt).toMatchObject({ number: receipt.number, cancelled: true });
+    // other schools and roles
+    const b = w!.roles.B.BURSAR;
+    await call('get', `/fees/receipts/${receipt.id}`, b, B()).expect(404);
+    await call('get', `/fees/payments/${paid.payments[0].id}/receipt`, b, B()).expect(404);
+    expect((await pdf(receipt.id, b, B())).status).toBe(404);
+    expect((await call('get', `/fees/receipts?studentId=${s.kids[0]!.id}`, b, B()).expect(200)).body.total).toBe(0);
+    expect((await pdf(receipt.id, w!.roles.A.PRINCIPAL)).status).toBe(200);
+    for (const who of [acad(), w!.roles.A.TEACHER, w!.roles.A.DRIVER]) expect((await pdf(receipt.id, who)).status).toBe(403);
+    expect((await pdf(receipt.id, w!.roles.A.PARENT)).status).toBe(404);
+  });
+
   it('roles: Bursar full; Accountant bills and takes payments but cannot reverse; Principal reads; others get nothing', async () => {
+    await ensureCurrentYear();
     const acct = w!.roles.A.ACCOUNTANT;
     const kid = (await call('post', '/students', acad()).send({ firstName: `Rol${uniq()}`, lastName: 'Es' }).expect(201)).body;
     const inv = (await call('post', '/fees/invoices', acct).send({ studentId: kid.id, title: 'Fine', amountMinor: '10000', dueDate: shift(3) }).expect(201)).body;
@@ -241,6 +335,7 @@ describe.skipIf(!ready)('invoices and payments against the real emulators (P2-7b
   it('audit: every bill, payment and reversal left a row with the verified actor', async () => {
     for (const a of ['fees.invoice.create', 'fees.payment.record', 'fees.payment.reverse']) expect((await audit(A(), a)).length, a).toBeGreaterThan(0);
     expect((await audit(A(), 'fees.payment.record')).every((r) => [bursar().uid, w!.roles.A.ACCOUNTANT.uid].includes(r.actor.id))).toBe(true);
-    expect((await audit(B(), 'fees.invoice.create')).length).toBe(0);
+    expect((await audit(B(), 'fees.payment.record')).length).toBe(0); // B's only attempt was refused (no academic year to number the receipt in)
+    expect((await audit(B(), 'fees.invoice.create')).every((r) => r.actor.id === w!.roles.B.BURSAR.uid)).toBe(true);
   });
 });

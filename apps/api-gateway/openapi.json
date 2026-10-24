@@ -2560,6 +2560,15 @@
           "paidOn": {
             "type": "string"
           },
+          "receipt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaymentReceiptDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
           "recordedBy": {
             "properties": {
               "id": {
@@ -2596,7 +2605,27 @@
           "paidOn",
           "reversedAt",
           "reversalReason",
-          "recordedBy"
+          "recordedBy",
+          "receipt"
+        ],
+        "type": "object"
+      },
+      "PaymentReceiptDto": {
+        "properties": {
+          "cancelled": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "number",
+          "cancelled"
         ],
         "type": "object"
       },
@@ -2695,6 +2724,249 @@
           "name",
           "subDomain",
           "defaultLanguage"
+        ],
+        "type": "object"
+      },
+      "ReceiptDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "amountMinor": {
+            "type": "string"
+          },
+          "balanceAfterMinor": {
+            "type": "string"
+          },
+          "cancelReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "cancelled": {
+            "type": "boolean"
+          },
+          "className": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "invoice": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "type": "object"
+          },
+          "issuedAt": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "paidOn": {
+            "type": "string"
+          },
+          "receivedBy": {
+            "type": "string"
+          },
+          "reference": {
+            "nullable": true,
+            "type": "string"
+          },
+          "school": {
+            "properties": {
+              "address": {
+                "nullable": true,
+                "type": "string"
+              },
+              "email": {
+                "nullable": true,
+                "type": "string"
+              },
+              "language": {
+                "type": "string"
+              },
+              "logoKey": {
+                "nullable": true,
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "phone": {
+                "nullable": true,
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "address",
+              "phone",
+              "email",
+              "logoKey",
+              "language"
+            ],
+            "type": "object"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "number",
+          "paidOn",
+          "issuedAt",
+          "cancelled",
+          "amountMinor",
+          "student",
+          "invoice",
+          "cancelReason",
+          "academicYear",
+          "school",
+          "className",
+          "method",
+          "reference",
+          "balanceAfterMinor",
+          "receivedBy"
+        ],
+        "type": "object"
+      },
+      "ReceiptListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReceiptSummaryDto"
+            },
+            "type": "array"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "totalAmountMinor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize",
+          "totalAmountMinor"
+        ],
+        "type": "object"
+      },
+      "ReceiptSummaryDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "cancelled": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "invoice": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title"
+            ],
+            "type": "object"
+          },
+          "issuedAt": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "paidOn": {
+            "type": "string"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "number",
+          "paidOn",
+          "issuedAt",
+          "cancelled",
+          "amountMinor",
+          "student",
+          "invoice"
         ],
         "type": "object"
       },
@@ -7175,6 +7447,67 @@
         }
       }
     },
+    "/v1/fees/payments/{id}/receipt": {
+      "get": {
+        "operationId": "Receipts_byPayment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receipts"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      }
+    },
     "/v1/fees/payments/{id}/reverse": {
       "post": {
         "operationId": "Invoices_reverse",
@@ -7246,6 +7579,216 @@
         },
         "x-permission": {
           "action": "delete",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/receipts": {
+      "get": {
+        "operationId": "Receipts_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "studentId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receipts"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/receipts/{id}": {
+      "get": {
+        "operationId": "Receipts_get",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receipts"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/receipts/{id}/pdf": {
+      "get": {
+        "operationId": "Receipts_pdf",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "pattern": "^[a-z]{2,3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Receipts"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
           "resource": "finance"
         }
       }

@@ -25,7 +25,7 @@ const PAGE = 1000;
 type InvoiceRow = {
   id: string; title: string; amountMinor: string; paidMinor: string; grossMinor?: string | null; discountMinor?: string | null; dueDate: string; status: string;
   student: { id: string; enrollmentId: string; firstName: string; lastName: string }; academicYear?: { id: string; name: string } | null;
-  payments?: Array<{ id: string; amountMinor: string; method: string; reference?: string | null; paidOn: string; reversedAt?: string | null; reversalReason?: string | null; recordedBy: { id: string; displayName?: string | null; email: string } }>;
+  payments?: Array<{ id: string; amountMinor: string; method: string; reference?: string | null; paidOn: string; reversedAt?: string | null; reversalReason?: string | null; recordedBy: { id: string; displayName?: string | null; email: string }; receipt?: { id: string; number: string; cancelledAt?: string | null } | null }>;
 };
 
 const totals = (count: number, amount: bigint, paid: bigint): InvoiceTotalsDto => ({ count, amountMinor: String(amount), paidMinor: String(paid), outstandingMinor: String(amount - paid) });
@@ -61,7 +61,7 @@ export class InvoicesService {
     };
   }
   private payment(p: NonNullable<InvoiceRow['payments']>[number]): PaymentDto {
-    return { id: dashed(p.id), amountMinor: String(p.amountMinor), method: p.method, reference: p.reference ?? null, paidOn: p.paidOn, reversedAt: p.reversedAt ?? null, reversalReason: p.reversalReason ?? null, recordedBy: { id: p.recordedBy.id, name: p.recordedBy.displayName ?? p.recordedBy.email } };
+    return { id: dashed(p.id), amountMinor: String(p.amountMinor), method: p.method, reference: p.reference ?? null, paidOn: p.paidOn, reversedAt: p.reversedAt ?? null, reversalReason: p.reversalReason ?? null, recordedBy: { id: p.recordedBy.id, name: p.recordedBy.displayName ?? p.recordedBy.email }, receipt: p.receipt ? { id: dashed(p.receipt.id), number: p.receipt.number, cancelled: !!p.receipt.cancelledAt } : null };
   }
 
   // ---------------------------------------------------------------- reading
@@ -220,6 +220,16 @@ export class InvoicesService {
   }
 
   // ---------------------------------------------------------------- payments
+  /** The academic year a receipt is numbered in: the invoice's own year, else the year the payment date falls in (the active one if several), else the active year. */
+  private async receiptYear(t: TenantContext, inv: InvoiceRow, paidOn: string): Promise<{ id: string; name: string; receiptSeq: number }> {
+    const years = (await this.db.listAcademicYears({ schoolId: t.schoolId })).data.academicYears;
+    const pick = inv.academicYear
+      ? years.find((y) => dashed(y.id) === dashed(inv.academicYear!.id))
+      : [...years].filter((y) => y.startDate <= paidOn && paidOn <= y.endDate).sort((a, b) => Number(b.status === 'ACTIVE') - Number(a.status === 'ACTIVE') || b.startDate.localeCompare(a.startDate))[0] ?? years.find((y) => y.status === 'ACTIVE');
+    if (!pick) throw new ApiException(ErrorCode.CONFLICT, 409, [{ field: 'paidOn', rule: 'noAcademicYearForReceipt' }]); // no year to number the receipt in
+    return { id: dashed(pick.id), name: pick.name, receiptSeq: pick.receiptSeq };
+  }
+
   async recordPayment(t: TenantContext, invoiceId: string, dto: RecordPaymentDto): Promise<InvoiceDto> {
     const paidOn = dto.paidOn ?? today();
     if (!realDate(paidOn)) throw invalid('paidOn', 'realDate');
@@ -230,17 +240,23 @@ export class InvoicesService {
       const due = BigInt(inv.amountMinor), paid = BigInt(inv.paidMinor);
       if (amount > due - paid) throw new ApiException(ErrorCode.CONFLICT, 409, [{ field: 'amountMinor', rule: 'moreThanOutstanding' }]); // never overpay
       const next = paid + amount;
+      const year = await this.receiptYear(t, inv, paidOn);
+      const number = `R-${year.name}-${String(year.receiptSeq + 1).padStart(5, '0')}`;
       try {
         await this.db.recordPayment({
-          schoolId: t.schoolId, id: randomUUID(), invoiceId: dashed(inv.id), studentId: dashed(inv.student.id), amountMinor: dto.amountMinor, method: dto.method as never,
-          ...(dto.reference ? { reference: dto.reference } : {}), paidOn, expectedPaidMinor: String(paid), newPaidMinor: String(next), newStatus: storedStatus(due, next) as never, actorId: t.userId,
-          details: { invoice: inv.title, amountMinor: dto.amountMinor, method: dto.method, paidBefore: String(paid), paidAfter: String(next) },
+          schoolId: t.schoolId, id: randomUUID(), receiptId: randomUUID(), invoiceId: dashed(inv.id), studentId: dashed(inv.student.id), amountMinor: dto.amountMinor, method: dto.method as never,
+          ...(dto.reference ? { reference: dto.reference } : {}), paidOn, expectedPaidMinor: String(paid), newPaidMinor: String(next), newStatus: storedStatus(due, next) as never,
+          balanceAfterMinor: String(due - next), receiptYearId: year.id, expectedReceiptSeq: year.receiptSeq, receiptNumber: number, actorId: t.userId,
+          details: { invoice: inv.title, amountMinor: dto.amountMinor, method: dto.method, paidBefore: String(paid), paidAfter: String(next), receipt: number },
         });
         break;
       } catch (e) {
-        // Someone else recorded a payment on this invoice a moment ago: read it again and decide against the new total.
-        if (e instanceof DatabaseError && e.kind === 'FORBIDDEN_REFERENCE' && attempt < MAX_PAYMENT_ATTEMPTS) continue;
-        if (e instanceof DatabaseError && e.kind === 'FORBIDDEN_REFERENCE') throw conflict();
+        // Someone else recorded a payment on this invoice, or took this receipt number, a moment ago: read it all again and decide against the new state.
+        if (e instanceof DatabaseError && (e.kind === 'FORBIDDEN_REFERENCE' || e.kind === 'CONFLICT') && attempt < MAX_PAYMENT_ATTEMPTS * 2) {
+          await new Promise((r) => setTimeout(r, Math.random() * 15 * attempt + 5));
+          continue;
+        }
+        if (e instanceof DatabaseError && (e.kind === 'FORBIDDEN_REFERENCE' || e.kind === 'CONFLICT')) throw conflict();
         throw e;
       }
     }

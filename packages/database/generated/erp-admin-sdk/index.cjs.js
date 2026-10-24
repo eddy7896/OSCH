@@ -1026,3 +1026,31 @@ function placedStudents(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.placedStudents = placedStudents;
 
+function listReceipts(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListReceipts', inputVars, inputOpts);
+}
+exports.listReceipts = listReceipts;
+
+function countReceipts(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountReceipts', inputVars, inputOpts);
+}
+exports.countReceipts = countReceipts;
+
+function getReceipt(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetReceipt', inputVars, inputOpts);
+}
+exports.getReceipt = getReceipt;
+
+function getReceiptByPayment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetReceiptByPayment', inputVars, inputOpts);
+}
+exports.getReceiptByPayment = getReceiptByPayment;
+

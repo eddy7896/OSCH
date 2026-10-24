@@ -20,9 +20,14 @@ describe.skipIf(!host)('Invoice and payment operations (P2-7b)', () => {
     await db.createInstalmentInvoice({ schoolId: A, id, studentId: student, instalmentId: inst, academicYearId: yearA, title: 'Tuition - April', grossMinor: gross, discountMinor: discount, amountMinor: amount, dueDate: due, actorId: cashierA });
     return id;
   };
-  const pay = async (id: string, student: string, amount: string, paidBefore: string, newTotal: string, status = 'PENDING', method = 'CASH') => {
+  /** What the gateway does: read the year's receipt counter, build the number, record the payment and its receipt together. */
+  const receiptFields = async (year = yearA) => {
+    const y = (await db.listAcademicYears({ schoolId: A })).data.academicYears.find((x) => bare(x.id) === bare(year))!;
+    return { receiptId: randomUUID(), receiptYearId: year, expectedReceiptSeq: y.receiptSeq, receiptNumber: `R-${y.name}-${String(y.receiptSeq + 1).padStart(5, '0')}` };
+  };
+  const pay = async (id: string, student: string, amount: string, paidBefore: string, newTotal: string, status = 'PENDING', method = 'CASH', due = '1000000') => {
     const pid = randomUUID();
-    await db.recordPayment({ schoolId: A, id: pid, invoiceId: id, studentId: student, amountMinor: amount, method: method as never, reference: 'REF1', paidOn: '2027-04-12', expectedPaidMinor: paidBefore, newPaidMinor: newTotal, newStatus: status as never, actorId: cashierA });
+    await db.recordPayment({ schoolId: A, id: pid, invoiceId: id, studentId: student, amountMinor: amount, method: method as never, reference: 'REF1', paidOn: '2027-04-12', expectedPaidMinor: paidBefore, newPaidMinor: newTotal, newStatus: status as never, balanceAfterMinor: String(BigInt(due) - BigInt(newTotal)), ...(await receiptFields()), actorId: cashierA });
     return pid;
   };
   const student = async (s: string, actor: string, first: string) => {
@@ -77,12 +82,12 @@ describe.skipIf(!host)('Invoice and payment operations (P2-7b)', () => {
 
   it('a payment moves the paid total and status together; part payments add up exactly', async () => {
     const id = await make(studentA2, instalment2A, '1250000', '2027-07-10');
-    await pay(id, studentA2, '400000', '0', '400000');
-    await pay(id, studentA2, '350000', '400000', '750000', 'PENDING', 'UPI');
+    await pay(id, studentA2, '400000', '0', '400000', 'PENDING', 'CASH', '1250000');
+    await pay(id, studentA2, '350000', '400000', '750000', 'PENDING', 'UPI', '1250000');
     let got = (await invoice(A, id))!;
     expect(got).toMatchObject({ paidMinor: '750000', status: 'PENDING' });
     expect(got.payments.map((p) => [p.amountMinor, p.method, p.reversedAt])).toEqual([['400000', 'CASH', null], ['350000', 'UPI', null]]);
-    await pay(id, studentA2, '500000', '750000', '1250000', 'PAID', 'CHEQUE');
+    await pay(id, studentA2, '500000', '750000', '1250000', 'PAID', 'CHEQUE', '1250000');
     got = (await invoice(A, id))!;
     expect(got).toMatchObject({ paidMinor: '1250000', status: 'PAID' });
     expect(got.payments[2]!.recordedBy.id).toBe(cashierA);
@@ -102,8 +107,8 @@ describe.skipIf(!host)('Invoice and payment operations (P2-7b)', () => {
   it('another school cannot pay or read an invoice, and a payment must name the invoice\'s own student', async () => {
     const s = await student(A, cashierA, 'Own');
     const inv = await make(s, instalmentA);
-    await expect(db.recordPayment({ schoolId: B, id: randomUUID(), invoiceId: inv, studentId: s, amountMinor: '1', method: 'CASH' as never, paidOn: '2027-04-12', expectedPaidMinor: '0', newPaidMinor: '1', newStatus: 'PENDING' as never, actorId: cashierB })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
-    await expect(db.recordPayment({ schoolId: A, id: randomUUID(), invoiceId: inv, studentId: studentA, amountMinor: '1', method: 'CASH' as never, paidOn: '2027-04-12', expectedPaidMinor: '0', newPaidMinor: '1', newStatus: 'PENDING' as never, actorId: cashierA })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // another student's name on it
+    await expect(db.recordPayment({ schoolId: B, id: randomUUID(), invoiceId: inv, studentId: s, amountMinor: '1', method: 'CASH' as never, paidOn: '2027-04-12', expectedPaidMinor: '0', newPaidMinor: '1', newStatus: 'PENDING' as never, balanceAfterMinor: '0', ...(await receiptFields()), actorId: cashierB })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    await expect(db.recordPayment({ schoolId: A, id: randomUUID(), invoiceId: inv, studentId: studentA, amountMinor: '1', method: 'CASH' as never, paidOn: '2027-04-12', expectedPaidMinor: '0', newPaidMinor: '1', newStatus: 'PENDING' as never, balanceAfterMinor: '0', ...(await receiptFields()), actorId: cashierA })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // another student's name on it
     expect((await db.getInvoice({ schoolId: B, id: inv })).data.invoices).toEqual([]);
     expect((await invoice(A, inv))!).toMatchObject({ paidMinor: '0' });
   });
@@ -151,6 +156,91 @@ describe.skipIf(!host)('Invoice and payment operations (P2-7b)', () => {
     expect(byLevel).toEqual([bare(studentA)]);
     expect((await db.placedStudents({ schoolId: A, academicYearId: yearA, classroomId: room, limit: 100, offset: 0 })).data.studentEnrollments.map((e) => bare(e.classroom.gradeLevelId))).toEqual([bare(level)]);
     expect((await db.placedStudents({ schoolId: B, academicYearId: yearA, limit: 100, offset: 0 })).data.studentEnrollments).toEqual([]);
+  });
+
+  describe('receipts (P2-7c)', () => {
+    const receiptOf = async (paymentId: string) => (await db.getReceiptByPayment({ schoolId: A, paymentId })).data.receipts[0];
+    const seqOf = async (year: string) => (await db.listAcademicYears({ schoolId: A })).data.academicYears.find((y) => bare(y.id) === bare(year))!.receiptSeq;
+
+    it('a payment and its receipt are one transaction; the number runs 1, 2, 3 per academic year', async () => {
+      const s = await student(A, cashierA, 'Rcpt');
+      const inv = await make(s, instalmentA, '1000000');
+      const start = await seqOf(yearA);
+      const p1 = await pay(inv, s, '300000', '0', '300000');
+      const p2 = await pay(inv, s, '200000', '300000', '500000');
+      const r1 = (await receiptOf(p1))!, r2 = (await receiptOf(p2))!;
+      expect([r1.serial, r2.serial]).toEqual([start + 1, start + 2]);
+      expect(r1.number).toBe(`R-2027-2028-${String(start + 1).padStart(5, '0')}`);
+      expect(r1).toMatchObject({ amountMinor: '300000', balanceAfterMinor: '700000', cancelledAt: null });
+      expect(r2).toMatchObject({ amountMinor: '200000', balanceAfterMinor: '500000' });
+      expect(r1.student.enrollmentId).toMatch(/^S\d{4}$/);
+      expect(await seqOf(yearA)).toBe(start + 2);
+      expect((await invoice(A, inv))!.payments.map((p) => p.receipt?.number)).toEqual([r1.number, r2.number]);
+    });
+
+    it('a stale counter is refused and nothing is written: no payment, no receipt, no gap in the numbers', async () => {
+      const s = await student(A, cashierA, 'Stale');
+      const inv = await make(s, instalmentA, '1000000');
+      const fields = await receiptFields();
+      await pay(inv, s, '100000', '0', '100000'); // takes the number the fields above were built for
+      const before = { seq: await seqOf(yearA), payments: (await invoice(A, inv))!.payments.length, audits: (await audit(A, 'fees.payment.record')).length };
+      await expect(db.recordPayment({ schoolId: A, id: randomUUID(), invoiceId: inv, studentId: s, amountMinor: '100000', method: 'CASH' as never, paidOn: '2027-04-12', expectedPaidMinor: '100000', newPaidMinor: '200000', newStatus: 'PENDING' as never, balanceAfterMinor: '800000', ...fields, actorId: cashierA })).rejects.toBeDefined();
+      expect({ seq: await seqOf(yearA), payments: (await invoice(A, inv))!.payments.length, audits: (await audit(A, 'fees.payment.record')).length }).toEqual(before);
+      await pay(inv, s, '100000', '100000', '200000'); // the retry with fresh numbers works and continues without a gap
+      expect(await seqOf(yearA)).toBe(before.seq + 1);
+    });
+
+    it('a refused payment (stale paid total) leaves the receipt counter where it was', async () => {
+      const s = await student(A, cashierA, 'Gap');
+      const inv = await make(s, instalmentA, '1000000');
+      await pay(inv, s, '300000', '0', '300000');
+      const seq = await seqOf(yearA);
+      await expect(pay(inv, s, '300000', '0', '300000')).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+      expect(await seqOf(yearA)).toBe(seq);
+    });
+
+    it('each academic year counts on its own, and a year of another school cannot be used', async () => {
+      const y2 = randomUUID();
+      await db.createAcademicYear({ schoolId: A, id: y2, name: '2028-2029', startDate: '2028-04-01', endDate: '2029-03-31', actorId: cashierA });
+      const s = await student(A, cashierA, 'Other year');
+      const inv = await make(s, instalmentA, '1000000');
+      const pid = randomUUID();
+      const f = await receiptFields(y2);
+      await db.recordPayment({ schoolId: A, id: pid, invoiceId: inv, studentId: s, amountMinor: '100000', method: 'CASH' as never, paidOn: '2028-04-12', expectedPaidMinor: '0', newPaidMinor: '100000', newStatus: 'PENDING' as never, balanceAfterMinor: '900000', ...f, actorId: cashierA });
+      expect((await receiptOf(pid))).toMatchObject({ serial: 1, number: 'R-2028-2029-00001' });
+      const yearB = randomUUID();
+      await db.createAcademicYear({ schoolId: B, id: yearB, name: '2027-2028', startDate: '2027-04-01', endDate: '2028-03-31', actorId: cashierB });
+      const s2 = await student(A, cashierA, 'Foreign year');
+      const inv2 = await make(s2, instalmentA, '1000000');
+      await expect(db.recordPayment({ schoolId: A, id: randomUUID(), invoiceId: inv2, studentId: s2, amountMinor: '100000', method: 'CASH' as never, paidOn: '2028-04-12', expectedPaidMinor: '0', newPaidMinor: '100000', newStatus: 'PENDING' as never, balanceAfterMinor: '900000', receiptId: randomUUID(), receiptYearId: yearB, expectedReceiptSeq: 0, receiptNumber: 'R-X-00001', actorId: cashierA })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    });
+
+    it('reversing the payment CANCELS the receipt (it stays, marked); another school cannot read it', async () => {
+      const s = await student(A, cashierA, 'Cancel');
+      const inv = await make(s, instalmentA, '1000000');
+      const pid = await pay(inv, s, '1000000', '0', '1000000', 'PAID');
+      const before = (await receiptOf(pid))!;
+      await db.reversePayment({ schoolId: A, id: pid, invoiceId: inv, reason: 'Wrong child', expectedPaidMinor: '1000000', newPaidMinor: '0', newStatus: 'PENDING' as never, actorId: cashierA });
+      const after = (await receiptOf(pid))!;
+      expect(after.number).toBe(before.number);
+      expect(after.cancelledAt).toBeTruthy();
+      expect(after.cancelReason).toBe('Wrong child');
+      expect((await db.getReceipt({ schoolId: B, id: before.id })).data.receipts).toEqual([]);
+      expect((await db.getReceiptByPayment({ schoolId: B, paymentId: pid })).data.receipts).toEqual([]);
+    });
+
+    it('lists and counts receipts of a student and a year, newest first, inside the school', async () => {
+      const s = await student(A, cashierA, 'Listed');
+      const inv = await make(s, instalmentA, '1000000');
+      await pay(inv, s, '100000', '0', '100000');
+      await pay(inv, s, '100000', '100000', '200000');
+      const list = (await db.listReceipts({ schoolId: A, studentId: s, limit: 50, offset: 0 })).data.receipts;
+      expect(list.map((r) => r.serial)).toEqual([list[0]!.serial, list[0]!.serial - 1]);
+      const count = (await db.countReceipts({ schoolId: A, studentId: s })).data.receipts[0]!;
+      expect(count._count).toBe(2);
+      expect(count.amountMinor_sum).toBe('200000');
+      expect((await db.listReceipts({ schoolId: B, studentId: s, limit: 50, offset: 0 })).data.receipts).toEqual([]);
+    });
   });
 
   it('every change left its audit row; refused ones left none', async () => {
