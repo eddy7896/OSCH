@@ -20,6 +20,10 @@ export enum ApplicationStatus {
   WITHDRAWN = "WITHDRAWN",
   ADMITTED = "ADMITTED",
 }
+export enum ConcessionKind {
+  PERCENT = "PERCENT",
+  FIXED = "FIXED",
+}
 export enum Gender {
   FEMALE = "FEMALE",
   MALE = "MALE",
@@ -148,6 +152,31 @@ export interface ActivateAcademicYearData {
 export interface ActivateAcademicYearVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface AddFeeInstalmentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    item: ({
+      id: UUIDString;
+    } & FeeItem_Key)[];
+  };
+  feeInstalment_insert: FeeInstalment_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddFeeInstalmentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  itemId: UUIDString;
+  sequence: number;
+  label?: string | null;
+  amountMinor: Int64String;
+  dueDate: DateString;
   actorId: string;
   details?: unknown | null;
 }
@@ -327,6 +356,11 @@ export interface Classroom_Key {
   __typename?: 'Classroom_Key';
 }
 
+export interface Concession_Key {
+  id: UUIDString;
+  __typename?: 'Concession_Key';
+}
+
 export interface CountApplicationsData {
   applications: ({
     _count: number;
@@ -464,6 +498,35 @@ export interface CreateClassroomVariables {
   details?: unknown | null;
 }
 
+export interface CreateConcessionData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+  };
+  concession_insert: Concession_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateConcessionVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  academicYearId: UUIDString;
+  name: string;
+  kind: ConcessionKind;
+  basisPoints?: number | null;
+  amountMinor?: Int64String | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface CreateExamData {
   query?: {
     classrooms: ({
@@ -483,6 +546,54 @@ export interface CreateExamVariables {
   title: string;
   examDate: DateString;
   maxScore: number;
+}
+
+export interface CreateFeeItemData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    structure: ({
+      id: UUIDString;
+    } & FeeStructure_Key)[];
+  };
+  feeItem_insert: FeeItem_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateFeeItemVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  structureId: UUIDString;
+  name: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface CreateFeeStructureData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+    level: ({
+      id: UUIDString;
+    } & GradeLevel_Key)[];
+  };
+  feeStructure_insert: FeeStructure_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateFeeStructureVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  academicYearId: UUIDString;
+  gradeLevelId: UUIDString;
+  name: string;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CreateGradeLevelData {
@@ -539,6 +650,39 @@ export interface CreateInvoiceVariables {
   studentId: UUIDString;
   amountMinor: Int64String;
   dueDate: DateString;
+}
+
+export interface CreateItemConcessionData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+    item: ({
+      id: UUIDString;
+    } & FeeItem_Key)[];
+  };
+  concession_insert: Concession_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateItemConcessionVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  academicYearId: UUIDString;
+  feeItemId: UUIDString;
+  name: string;
+  kind: ConcessionKind;
+  basisPoints?: number | null;
+  amountMinor?: Int64String | null;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CreateLeaveRequestData {
@@ -778,6 +922,86 @@ export interface DeleteClassroomVariables {
   details?: unknown | null;
 }
 
+export interface DeleteConcessionData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    concession: ({
+      id: UUIDString;
+    } & Concession_Key)[];
+  };
+  concession_delete?: Concession_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteConcessionVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeleteFeeInstalmentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    inst: ({
+      id: UUIDString;
+    } & FeeInstalment_Key)[];
+  };
+  feeInstalment_delete?: FeeInstalment_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteFeeInstalmentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeleteFeeItemData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    item: ({
+      id: UUIDString;
+    } & FeeItem_Key)[];
+  };
+  feeItem_delete?: FeeItem_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteFeeItemVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeleteFeeStructureData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    structure: ({
+      id: UUIDString;
+    } & FeeStructure_Key)[];
+  };
+  feeStructure_delete?: FeeStructure_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteFeeStructureVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface DeleteGradeLevelData {
   query?: {
     actor: ({
@@ -824,6 +1048,21 @@ export interface DeleteSubjectVariables {
 export interface Exam_Key {
   id: UUIDString;
   __typename?: 'Exam_Key';
+}
+
+export interface FeeInstalment_Key {
+  id: UUIDString;
+  __typename?: 'FeeInstalment_Key';
+}
+
+export interface FeeItem_Key {
+  id: UUIDString;
+  __typename?: 'FeeItem_Key';
+}
+
+export interface FeeStructure_Key {
+  id: UUIDString;
+  __typename?: 'FeeStructure_Key';
 }
 
 export interface FindImportBatchData {
@@ -897,6 +1136,80 @@ export interface GetApplicationData {
 }
 
 export interface GetApplicationVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetFeeInstalmentData {
+  feeInstalments: ({
+    id: UUIDString;
+    sequence: number;
+    label?: string | null;
+    amountMinor: Int64String;
+    dueDate: DateString;
+    item: {
+      id: UUIDString;
+      name: string;
+      structure: {
+        id: UUIDString;
+      } & FeeStructure_Key;
+    } & FeeItem_Key;
+  } & FeeInstalment_Key)[];
+}
+
+export interface GetFeeInstalmentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetFeeItemData {
+  feeItems: ({
+    id: UUIDString;
+    name: string;
+    structure: {
+      id: UUIDString;
+    } & FeeStructure_Key;
+    instalments: ({
+      id: UUIDString;
+      sequence: number;
+    } & FeeInstalment_Key)[];
+  } & FeeItem_Key)[];
+}
+
+export interface GetFeeItemVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetFeeStructureData {
+  feeStructures: ({
+    id: UUIDString;
+    name: string;
+    createdAt: TimestampString;
+    academicYear: {
+      id: UUIDString;
+      name: string;
+    } & AcademicYear_Key;
+    gradeLevel: {
+      id: UUIDString;
+      name: string;
+      position: number;
+    } & GradeLevel_Key;
+    items: ({
+      id: UUIDString;
+      name: string;
+      instalments: ({
+        id: UUIDString;
+        sequence: number;
+        label?: string | null;
+        amountMinor: Int64String;
+        dueDate: DateString;
+      } & FeeInstalment_Key)[];
+    } & FeeItem_Key)[];
+  } & FeeStructure_Key)[];
+}
+
+export interface GetFeeStructureVariables {
   schoolId: UUIDString;
   id: UUIDString;
 }
@@ -1077,6 +1390,25 @@ export interface GetStudentData {
   } & Student_Key)[];
 }
 
+export interface GetStudentLevelData {
+  studentEnrollments: ({
+    classroom: {
+      id: UUIDString;
+      name: string;
+      gradeLevel: {
+        id: UUIDString;
+        name: string;
+      } & GradeLevel_Key;
+    } & Classroom_Key;
+  })[];
+}
+
+export interface GetStudentLevelVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  academicYearId: UUIDString;
+}
+
 export interface GetStudentVariables {
   schoolId: UUIDString;
   id: UUIDString;
@@ -1234,6 +1566,37 @@ export interface ListClassroomsVariables {
   schoolId: UUIDString;
 }
 
+export interface ListConcessionsData {
+  concessions: ({
+    id: UUIDString;
+    name: string;
+    kind: ConcessionKind;
+    basisPoints?: number | null;
+    amountMinor?: Int64String | null;
+    createdAt: TimestampString;
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    academicYear: {
+      id: UUIDString;
+      name: string;
+    } & AcademicYear_Key;
+    targetItem?: {
+      id: UUIDString;
+      name: string;
+    } & FeeItem_Key;
+  } & Concession_Key)[];
+}
+
+export interface ListConcessionsVariables {
+  schoolId: UUIDString;
+  studentId?: UUIDString | null;
+  academicYearId?: UUIDString | null;
+}
+
 export interface ListExamsData {
   exams: ({
     id: UUIDString;
@@ -1251,6 +1614,40 @@ export interface ListExamsData {
 
 export interface ListExamsVariables {
   schoolId: UUIDString;
+}
+
+export interface ListFeeStructuresData {
+  feeStructures: ({
+    id: UUIDString;
+    name: string;
+    createdAt: TimestampString;
+    academicYear: {
+      id: UUIDString;
+      name: string;
+    } & AcademicYear_Key;
+    gradeLevel: {
+      id: UUIDString;
+      name: string;
+      position: number;
+    } & GradeLevel_Key;
+    items: ({
+      id: UUIDString;
+      name: string;
+      instalments: ({
+        id: UUIDString;
+        sequence: number;
+        label?: string | null;
+        amountMinor: Int64String;
+        dueDate: DateString;
+      } & FeeInstalment_Key)[];
+    } & FeeItem_Key)[];
+  } & FeeStructure_Key)[];
+}
+
+export interface ListFeeStructuresVariables {
+  schoolId: UUIDString;
+  academicYearId?: UUIDString | null;
+  gradeLevelId?: UUIDString | null;
 }
 
 export interface ListGradeLevelsData {
@@ -2009,6 +2406,71 @@ export interface UpdateClassroomVariables {
   details?: unknown | null;
 }
 
+export interface UpdateFeeInstalmentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    inst: ({
+      id: UUIDString;
+    } & FeeInstalment_Key)[];
+  };
+  feeInstalment_update?: FeeInstalment_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateFeeInstalmentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  label?: string | null;
+  amountMinor?: Int64String | null;
+  dueDate?: DateString | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface UpdateFeeItemData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    item: ({
+      id: UUIDString;
+    } & FeeItem_Key)[];
+  };
+  feeItem_update?: FeeItem_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateFeeItemVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  name?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface UpdateFeeStructureData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    structure: ({
+      id: UUIDString;
+    } & FeeStructure_Key)[];
+  };
+  feeStructure_update?: FeeStructure_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateFeeStructureVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  name?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface UpdateGradeLevelData {
   query?: {
     actor: ({
@@ -2509,6 +2971,66 @@ export function admitApplication(dc: DataConnect, vars: AdmitApplicationVariable
 /** Generated Node Admin SDK operation action function for the 'AdmitApplication' Mutation. Allow users to pass in custom DataConnect instances. */
 export function admitApplication(vars: AdmitApplicationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AdmitApplicationData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateFeeStructure' Mutation. Allow users to execute without passing in DataConnect. */
+export function createFeeStructure(dc: DataConnect, vars: CreateFeeStructureVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateFeeStructureData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateFeeStructure' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createFeeStructure(vars: CreateFeeStructureVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateFeeStructureData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateFeeStructure' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateFeeStructure(dc: DataConnect, vars: UpdateFeeStructureVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateFeeStructureData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateFeeStructure' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateFeeStructure(vars: UpdateFeeStructureVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateFeeStructureData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteFeeStructure' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteFeeStructure(dc: DataConnect, vars: DeleteFeeStructureVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteFeeStructureData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteFeeStructure' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteFeeStructure(vars: DeleteFeeStructureVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteFeeStructureData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateFeeItem' Mutation. Allow users to execute without passing in DataConnect. */
+export function createFeeItem(dc: DataConnect, vars: CreateFeeItemVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateFeeItemData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateFeeItem' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createFeeItem(vars: CreateFeeItemVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateFeeItemData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateFeeItem' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateFeeItem(dc: DataConnect, vars: UpdateFeeItemVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateFeeItemData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateFeeItem' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateFeeItem(vars: UpdateFeeItemVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateFeeItemData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteFeeItem' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteFeeItem(dc: DataConnect, vars: DeleteFeeItemVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteFeeItemData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteFeeItem' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteFeeItem(vars: DeleteFeeItemVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteFeeItemData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddFeeInstalment' Mutation. Allow users to execute without passing in DataConnect. */
+export function addFeeInstalment(dc: DataConnect, vars: AddFeeInstalmentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddFeeInstalmentData>>;
+/** Generated Node Admin SDK operation action function for the 'AddFeeInstalment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addFeeInstalment(vars: AddFeeInstalmentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddFeeInstalmentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateFeeInstalment' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateFeeInstalment(dc: DataConnect, vars: UpdateFeeInstalmentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateFeeInstalmentData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateFeeInstalment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateFeeInstalment(vars: UpdateFeeInstalmentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateFeeInstalmentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteFeeInstalment' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteFeeInstalment(dc: DataConnect, vars: DeleteFeeInstalmentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteFeeInstalmentData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteFeeInstalment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteFeeInstalment(vars: DeleteFeeInstalmentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteFeeInstalmentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateConcession' Mutation. Allow users to execute without passing in DataConnect. */
+export function createConcession(dc: DataConnect, vars: CreateConcessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateConcessionData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateConcession' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createConcession(vars: CreateConcessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateConcessionData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateItemConcession' Mutation. Allow users to execute without passing in DataConnect. */
+export function createItemConcession(dc: DataConnect, vars: CreateItemConcessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateItemConcessionData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateItemConcession' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createItemConcession(vars: CreateItemConcessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateItemConcessionData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteConcession' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteConcession(dc: DataConnect, vars: DeleteConcessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteConcessionData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteConcession' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteConcession(vars: DeleteConcessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteConcessionData>>;
+
 /** Generated Node Admin SDK operation action function for the 'StartImportBatch' Mutation. Allow users to execute without passing in DataConnect. */
 export function startImportBatch(dc: DataConnect, vars: StartImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StartImportBatchData>>;
 /** Generated Node Admin SDK operation action function for the 'StartImportBatch' Mutation. Allow users to pass in custom DataConnect instances. */
@@ -2688,6 +3210,36 @@ export function countApplications(vars: CountApplicationsVariables, options?: Op
 export function getApplication(dc: DataConnect, vars: GetApplicationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetApplicationData>>;
 /** Generated Node Admin SDK operation action function for the 'GetApplication' Query. Allow users to pass in custom DataConnect instances. */
 export function getApplication(vars: GetApplicationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetApplicationData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListFeeStructures' Query. Allow users to execute without passing in DataConnect. */
+export function listFeeStructures(dc: DataConnect, vars: ListFeeStructuresVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListFeeStructuresData>>;
+/** Generated Node Admin SDK operation action function for the 'ListFeeStructures' Query. Allow users to pass in custom DataConnect instances. */
+export function listFeeStructures(vars: ListFeeStructuresVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListFeeStructuresData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetFeeStructure' Query. Allow users to execute without passing in DataConnect. */
+export function getFeeStructure(dc: DataConnect, vars: GetFeeStructureVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetFeeStructureData>>;
+/** Generated Node Admin SDK operation action function for the 'GetFeeStructure' Query. Allow users to pass in custom DataConnect instances. */
+export function getFeeStructure(vars: GetFeeStructureVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetFeeStructureData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetFeeItem' Query. Allow users to execute without passing in DataConnect. */
+export function getFeeItem(dc: DataConnect, vars: GetFeeItemVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetFeeItemData>>;
+/** Generated Node Admin SDK operation action function for the 'GetFeeItem' Query. Allow users to pass in custom DataConnect instances. */
+export function getFeeItem(vars: GetFeeItemVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetFeeItemData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetFeeInstalment' Query. Allow users to execute without passing in DataConnect. */
+export function getFeeInstalment(dc: DataConnect, vars: GetFeeInstalmentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetFeeInstalmentData>>;
+/** Generated Node Admin SDK operation action function for the 'GetFeeInstalment' Query. Allow users to pass in custom DataConnect instances. */
+export function getFeeInstalment(vars: GetFeeInstalmentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetFeeInstalmentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListConcessions' Query. Allow users to execute without passing in DataConnect. */
+export function listConcessions(dc: DataConnect, vars: ListConcessionsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListConcessionsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListConcessions' Query. Allow users to pass in custom DataConnect instances. */
+export function listConcessions(vars: ListConcessionsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListConcessionsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetStudentLevel' Query. Allow users to execute without passing in DataConnect. */
+export function getStudentLevel(dc: DataConnect, vars: GetStudentLevelVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentLevelData>>;
+/** Generated Node Admin SDK operation action function for the 'GetStudentLevel' Query. Allow users to pass in custom DataConnect instances. */
+export function getStudentLevel(vars: GetStudentLevelVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentLevelData>>;
 
 /** Generated Node Admin SDK operation action function for the 'FindImportBatch' Query. Allow users to execute without passing in DataConnect. */
 export function findImportBatch(dc: DataConnect, vars: FindImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FindImportBatchData>>;

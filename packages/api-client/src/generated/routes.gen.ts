@@ -153,6 +153,96 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Admissions_create"
   },
   {
+    "method": "DELETE",
+    "path": "/v1/fees/concessions/{id}",
+    "access": "tenant",
+    "operationId": "Fees_deleteConcession"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/concessions",
+    "access": "tenant",
+    "operationId": "Fees_concessions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/fees/concessions",
+    "access": "tenant",
+    "operationId": "Fees_createConcession"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/fees/instalments/{id}",
+    "access": "tenant",
+    "operationId": "Fees_deleteInstalment"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/fees/instalments/{id}",
+    "access": "tenant",
+    "operationId": "Fees_updateInstalment"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/fees/items/{id}/instalments",
+    "access": "tenant",
+    "operationId": "Fees_addInstalment"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/fees/items/{id}",
+    "access": "tenant",
+    "operationId": "Fees_deleteItem"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/fees/items/{id}",
+    "access": "tenant",
+    "operationId": "Fees_updateItem"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/fees/structures/{id}/items",
+    "access": "tenant",
+    "operationId": "Fees_createItem"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/fees/structures/{id}",
+    "access": "tenant",
+    "operationId": "Fees_deleteStructure"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/structures/{id}",
+    "access": "tenant",
+    "operationId": "Fees_getStructure"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/fees/structures/{id}",
+    "access": "tenant",
+    "operationId": "Fees_updateStructure"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/structures",
+    "access": "tenant",
+    "operationId": "Fees_structures"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/fees/structures",
+    "access": "tenant",
+    "operationId": "Fees_createStructure"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/students/{studentId}/schedule",
+    "access": "tenant",
+    "operationId": "Fees_schedule"
+  },
+  {
     "method": "POST",
     "path": "/v1/imports/guardians/dry-run",
     "access": "tenant",

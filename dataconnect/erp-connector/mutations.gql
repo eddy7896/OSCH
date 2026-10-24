@@ -577,6 +577,121 @@ mutation AdmitApplication($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $expe
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "admission.admit", entityType: "Application", entityId_expr: "request.variables.id", details: $details })
 }
 
+# ---- Fees (P2-7a). Every operation checks the actor, and that every row it touches belongs to $schoolId; the audit row is in the same transaction.
+mutation CreateFeeStructure($schoolId: UUID!, $id: UUID!, $academicYearId: UUID!, $gradeLevelId: UUID!, $name: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    year: academicYears(where: {id: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "academic year not found in this school") { id }
+    level: gradeLevels(where: {id: {eq: $gradeLevelId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "class level not found in this school") { id }
+  }
+  feeStructure_insert(data: { id: $id, schoolId: $schoolId, academicYearId: $academicYearId, gradeLevelId: $gradeLevelId, name: $name })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.structure.create", entityType: "FeeStructure", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateFeeStructure($schoolId: UUID!, $id: UUID!, $name: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    structure: feeStructures(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "fee structure not found in this school") { id }
+  }
+  feeStructure_update(id: $id, data: { name: $name })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.structure.update", entityType: "FeeStructure", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeleteFeeStructure($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    structure: feeStructures(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "fee structure not found in this school") { id }
+  }
+  feeStructure_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.structure.delete", entityType: "FeeStructure", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation CreateFeeItem($schoolId: UUID!, $id: UUID!, $structureId: UUID!, $name: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    structure: feeStructures(where: {id: {eq: $structureId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "fee structure not found in this school") { id }
+  }
+  feeItem_insert(data: { id: $id, schoolId: $schoolId, structureId: $structureId, name: $name })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.item.create", entityType: "FeeItem", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateFeeItem($schoolId: UUID!, $id: UUID!, $name: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    item: feeItems(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "fee item not found in this school") { id }
+  }
+  feeItem_update(id: $id, data: { name: $name })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.item.update", entityType: "FeeItem", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeleteFeeItem($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    item: feeItems(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "fee item not found in this school") { id }
+  }
+  feeItem_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.item.delete", entityType: "FeeItem", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation AddFeeInstalment($schoolId: UUID!, $id: UUID!, $itemId: UUID!, $sequence: Int!, $label: String, $amountMinor: Int64!, $dueDate: Date!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    item: feeItems(where: {id: {eq: $itemId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "fee item not found in this school") { id }
+  }
+  feeInstalment_insert(data: { id: $id, schoolId: $schoolId, itemId: $itemId, sequence: $sequence, label: $label, amountMinor: $amountMinor, dueDate: $dueDate })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.instalment.add", entityType: "FeeInstalment", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateFeeInstalment($schoolId: UUID!, $id: UUID!, $label: String, $amountMinor: Int64, $dueDate: Date, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    inst: feeInstalments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "instalment not found in this school") { id }
+  }
+  feeInstalment_update(id: $id, data: { label: $label, amountMinor: $amountMinor, dueDate: $dueDate })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.instalment.update", entityType: "FeeInstalment", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeleteFeeInstalment($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    inst: feeInstalments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "instalment not found in this school") { id }
+  }
+  feeInstalment_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.instalment.delete", entityType: "FeeInstalment", entityId_expr: "request.variables.id", details: $details })
+}
+
+# A concession on every item of the student's structure ...
+mutation CreateConcession($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $academicYearId: UUID!, $name: String!, $kind: ConcessionKind!, $basisPoints: Int, $amountMinor: Int64, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+    year: academicYears(where: {id: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "academic year not found in this school") { id }
+  }
+  concession_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, academicYearId: $academicYearId, name: $name, kind: $kind, basisPoints: $basisPoints, amountMinor: $amountMinor })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.concession.create", entityType: "Concession", entityId_expr: "request.variables.id", details: $details })
+}
+
+# ... or on one fee item.
+mutation CreateItemConcession($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $academicYearId: UUID!, $feeItemId: UUID!, $name: String!, $kind: ConcessionKind!, $basisPoints: Int, $amountMinor: Int64, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "student not found in this school") { id }
+    year: academicYears(where: {id: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "academic year not found in this school") { id }
+    item: feeItems(where: {id: {eq: $feeItemId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "fee item not found in this school") { id }
+  }
+  concession_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, academicYearId: $academicYearId, targetItemId: $feeItemId, name: $name, kind: $kind, basisPoints: $basisPoints, amountMinor: $amountMinor })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.concession.create", entityType: "Concession", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeleteConcession($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    concession: concessions(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "concession not found in this school") { id }
+  }
+  concession_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.concession.delete", entityType: "Concession", entityId_expr: "request.variables.id", details: $details })
+}
+
 # ---- Bulk import (P2-5). Each row is created (and audited) by the ordinary create operation; these two bracket the run.
 mutation StartImportBatch($schoolId: UUID!, $id: UUID!, $kind: String!, $fileHash: String!, $rowCount: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {

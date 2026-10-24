@@ -154,6 +154,31 @@ export type ClassSectionDto = {
     section: string;
 };
 
+export type ConcessionDto = {
+    academicYear: {
+        id: string;
+        name: string;
+    };
+    amountMinor: string | null;
+    basisPoints: number | null;
+    feeItem: {
+        id: string;
+        name: string;
+    };
+    id: string;
+    kind: string;
+    name: string;
+    student: {
+        enrollmentId: string;
+        id: string;
+        name: string;
+    };
+};
+
+export type ConcessionListDto = {
+    items: Array<ConcessionDto>;
+};
+
 export type CreateAcademicYearDto = {
     endDate: string;
     name: string;
@@ -182,6 +207,16 @@ export type CreateClassDto = {
     section: string;
 };
 
+export type CreateConcessionDto = {
+    academicYearId?: string;
+    amountMinor?: string;
+    basisPoints?: number;
+    feeItemId?: string;
+    kind: 'PERCENT' | 'FIXED';
+    name: string;
+    studentId: string;
+};
+
 export type CreateGradeLevelDto = {
     name: string;
     position: number;
@@ -200,6 +235,11 @@ export type CreateInvitationDto = {
     expiresInDays?: number;
     phoneNumber?: string;
     schoolRole: 'PRINCIPAL' | 'MANAGEMENT' | 'BURSAR' | 'ACADEMIC_ADMIN' | 'SYSTEM_ADMIN' | 'HR_MANAGER' | 'ACCOUNTANT' | 'ADMISSIONS_OFFICER' | 'TRANSPORT_MANAGER' | 'OPERATIONS_MANAGER' | 'TEACHER' | 'STAFF' | 'DRIVER' | 'PARENT';
+};
+
+export type CreateItemDto = {
+    instalments: Array<NewInstalmentDto>;
+    name: string;
 };
 
 export type CreateSchoolAdminDto = {
@@ -234,6 +274,12 @@ export type CreateStaffDto = {
     gender?: 'FEMALE' | 'MALE' | 'OTHER';
     lastName: string;
     phone?: string;
+};
+
+export type CreateStructureDto = {
+    academicYearId?: string;
+    gradeLevelId: string;
+    name?: string;
 };
 
 export type CreateStudentDto = {
@@ -297,6 +343,32 @@ export type ErrorEnvelope = {
         message: string;
         requestId?: string;
     };
+};
+
+export type FeeItemDto = {
+    id: string;
+    instalments: Array<InstalmentDto>;
+    name: string;
+    totalMinor: string;
+};
+
+export type FeeStructureDto = {
+    academicYear: {
+        id: string;
+        name: string;
+    };
+    gradeLevel: {
+        id: string;
+        name: string;
+    };
+    id: string;
+    items: Array<FeeItemDto>;
+    name: string;
+    totalMinor: string;
+};
+
+export type FeeStructureListDto = {
+    items: Array<FeeStructureDto>;
 };
 
 export type FileUploadTicketDto = {
@@ -373,6 +445,14 @@ export type ImportRowResultDto = {
     id: string;
     number?: string;
     row: number;
+};
+
+export type InstalmentDto = {
+    amountMinor: string;
+    dueDate: string;
+    id: string;
+    label: string | null;
+    sequence: number;
 };
 
 export type InvitationDto = {
@@ -456,6 +536,12 @@ export type NavSectionDto = {
     title: string;
 };
 
+export type NewInstalmentDto = {
+    amountMinor: string;
+    dueDate: string;
+    label?: string;
+};
+
 export type PhotoUploadRequestDto = {
     contentType: 'image/png' | 'image/jpeg' | 'image/webp';
     sizeBytes: number;
@@ -482,6 +568,41 @@ export type PublicSchoolDto = {
     id: string;
     name: string;
     subDomain: string;
+};
+
+export type ScheduleDto = {
+    academicYear: {
+        id: string;
+        name: string;
+    };
+    discountMinor: string;
+    grossMinor: string;
+    lines: Array<ScheduleLineDto>;
+    netMinor: string;
+    status: string;
+    structure: {
+        id: string;
+        name: string;
+    };
+    student: {
+        enrollmentId: string;
+        id: string;
+        name: string;
+    };
+};
+
+export type ScheduleLineDto = {
+    discountMinor: string;
+    dueDate: string;
+    feeItem: {
+        id: string;
+        name: string;
+    };
+    grossMinor: string;
+    instalmentId: string;
+    label: string | null;
+    netMinor: string;
+    sequence: number;
 };
 
 export type SchoolDto = {
@@ -711,6 +832,16 @@ export type UpdateGuardianDto = {
     relationship?: 'MOTHER' | 'FATHER' | 'GUARDIAN' | 'OTHER';
 };
 
+export type UpdateInstalmentDto = {
+    amountMinor?: string;
+    dueDate?: string;
+    label?: string;
+};
+
+export type UpdateItemDto = {
+    name: string;
+};
+
 export type UpdateMembershipDto = {
     schoolRole?: 'PRINCIPAL' | 'MANAGEMENT' | 'BURSAR' | 'ACADEMIC_ADMIN' | 'SYSTEM_ADMIN' | 'HR_MANAGER' | 'ACCOUNTANT' | 'ADMISSIONS_OFFICER' | 'TRANSPORT_MANAGER' | 'OPERATIONS_MANAGER' | 'TEACHER' | 'STAFF' | 'DRIVER' | 'PARENT';
     status?: 'ACTIVE' | 'SUSPENDED';
@@ -748,6 +879,10 @@ export type UpdateStaffDto = {
     lastName?: string;
     phone?: string;
     status?: 'ACTIVE' | 'INACTIVE' | 'LEFT';
+};
+
+export type UpdateStructureDto = {
+    name: string;
 };
 
 export type UpdateStudentDto = {
@@ -1919,6 +2054,650 @@ export type AdmissionsDecideResponses = {
 };
 
 export type AdmissionsDecideResponse = AdmissionsDecideResponses[keyof AdmissionsDecideResponses];
+
+export type FeesConcessionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        studentId?: string;
+        academicYearId?: string;
+    };
+    url: '/v1/fees/concessions';
+};
+
+export type FeesConcessionsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesConcessionsError = FeesConcessionsErrors[keyof FeesConcessionsErrors];
+
+export type FeesConcessionsResponses = {
+    200: ConcessionListDto;
+};
+
+export type FeesConcessionsResponse = FeesConcessionsResponses[keyof FeesConcessionsResponses];
+
+export type FeesCreateConcessionData = {
+    body: CreateConcessionDto;
+    path?: never;
+    query?: never;
+    url: '/v1/fees/concessions';
+};
+
+export type FeesCreateConcessionErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesCreateConcessionError = FeesCreateConcessionErrors[keyof FeesCreateConcessionErrors];
+
+export type FeesCreateConcessionResponses = {
+    201: ConcessionDto;
+};
+
+export type FeesCreateConcessionResponse = FeesCreateConcessionResponses[keyof FeesCreateConcessionResponses];
+
+export type FeesDeleteConcessionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/concessions/{id}';
+};
+
+export type FeesDeleteConcessionErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesDeleteConcessionError = FeesDeleteConcessionErrors[keyof FeesDeleteConcessionErrors];
+
+export type FeesDeleteConcessionResponses = {
+    204: void;
+};
+
+export type FeesDeleteConcessionResponse = FeesDeleteConcessionResponses[keyof FeesDeleteConcessionResponses];
+
+export type FeesDeleteInstalmentData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/instalments/{id}';
+};
+
+export type FeesDeleteInstalmentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesDeleteInstalmentError = FeesDeleteInstalmentErrors[keyof FeesDeleteInstalmentErrors];
+
+export type FeesDeleteInstalmentResponses = {
+    200: FeeStructureDto;
+};
+
+export type FeesDeleteInstalmentResponse = FeesDeleteInstalmentResponses[keyof FeesDeleteInstalmentResponses];
+
+export type FeesUpdateInstalmentData = {
+    body: UpdateInstalmentDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/instalments/{id}';
+};
+
+export type FeesUpdateInstalmentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesUpdateInstalmentError = FeesUpdateInstalmentErrors[keyof FeesUpdateInstalmentErrors];
+
+export type FeesUpdateInstalmentResponses = {
+    200: FeeStructureDto;
+};
+
+export type FeesUpdateInstalmentResponse = FeesUpdateInstalmentResponses[keyof FeesUpdateInstalmentResponses];
+
+export type FeesDeleteItemData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/items/{id}';
+};
+
+export type FeesDeleteItemErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesDeleteItemError = FeesDeleteItemErrors[keyof FeesDeleteItemErrors];
+
+export type FeesDeleteItemResponses = {
+    200: FeeStructureDto;
+};
+
+export type FeesDeleteItemResponse = FeesDeleteItemResponses[keyof FeesDeleteItemResponses];
+
+export type FeesUpdateItemData = {
+    body: UpdateItemDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/items/{id}';
+};
+
+export type FeesUpdateItemErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesUpdateItemError = FeesUpdateItemErrors[keyof FeesUpdateItemErrors];
+
+export type FeesUpdateItemResponses = {
+    200: FeeStructureDto;
+};
+
+export type FeesUpdateItemResponse = FeesUpdateItemResponses[keyof FeesUpdateItemResponses];
+
+export type FeesAddInstalmentData = {
+    body: NewInstalmentDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/items/{id}/instalments';
+};
+
+export type FeesAddInstalmentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesAddInstalmentError = FeesAddInstalmentErrors[keyof FeesAddInstalmentErrors];
+
+export type FeesAddInstalmentResponses = {
+    201: FeeStructureDto;
+};
+
+export type FeesAddInstalmentResponse = FeesAddInstalmentResponses[keyof FeesAddInstalmentResponses];
+
+export type FeesStructuresData = {
+    body?: never;
+    path?: never;
+    query?: {
+        academicYearId?: string;
+        gradeLevelId?: string;
+    };
+    url: '/v1/fees/structures';
+};
+
+export type FeesStructuresErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesStructuresError = FeesStructuresErrors[keyof FeesStructuresErrors];
+
+export type FeesStructuresResponses = {
+    200: FeeStructureListDto;
+};
+
+export type FeesStructuresResponse = FeesStructuresResponses[keyof FeesStructuresResponses];
+
+export type FeesCreateStructureData = {
+    body: CreateStructureDto;
+    path?: never;
+    query?: never;
+    url: '/v1/fees/structures';
+};
+
+export type FeesCreateStructureErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesCreateStructureError = FeesCreateStructureErrors[keyof FeesCreateStructureErrors];
+
+export type FeesCreateStructureResponses = {
+    201: FeeStructureDto;
+};
+
+export type FeesCreateStructureResponse = FeesCreateStructureResponses[keyof FeesCreateStructureResponses];
+
+export type FeesDeleteStructureData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/structures/{id}';
+};
+
+export type FeesDeleteStructureErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesDeleteStructureError = FeesDeleteStructureErrors[keyof FeesDeleteStructureErrors];
+
+export type FeesDeleteStructureResponses = {
+    204: void;
+};
+
+export type FeesDeleteStructureResponse = FeesDeleteStructureResponses[keyof FeesDeleteStructureResponses];
+
+export type FeesGetStructureData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/structures/{id}';
+};
+
+export type FeesGetStructureErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesGetStructureError = FeesGetStructureErrors[keyof FeesGetStructureErrors];
+
+export type FeesGetStructureResponses = {
+    200: FeeStructureDto;
+};
+
+export type FeesGetStructureResponse = FeesGetStructureResponses[keyof FeesGetStructureResponses];
+
+export type FeesUpdateStructureData = {
+    body: UpdateStructureDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/structures/{id}';
+};
+
+export type FeesUpdateStructureErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesUpdateStructureError = FeesUpdateStructureErrors[keyof FeesUpdateStructureErrors];
+
+export type FeesUpdateStructureResponses = {
+    200: FeeStructureDto;
+};
+
+export type FeesUpdateStructureResponse = FeesUpdateStructureResponses[keyof FeesUpdateStructureResponses];
+
+export type FeesCreateItemData = {
+    body: CreateItemDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/fees/structures/{id}/items';
+};
+
+export type FeesCreateItemErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesCreateItemError = FeesCreateItemErrors[keyof FeesCreateItemErrors];
+
+export type FeesCreateItemResponses = {
+    201: FeeStructureDto;
+};
+
+export type FeesCreateItemResponse = FeesCreateItemResponses[keyof FeesCreateItemResponses];
+
+export type FeesScheduleData = {
+    body?: never;
+    path: {
+        studentId: string;
+    };
+    query?: {
+        academicYearId?: string;
+    };
+    url: '/v1/fees/students/{studentId}/schedule';
+};
+
+export type FeesScheduleErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type FeesScheduleError = FeesScheduleErrors[keyof FeesScheduleErrors];
+
+export type FeesScheduleResponses = {
+    200: ScheduleDto;
+};
+
+export type FeesScheduleResponse = FeesScheduleResponses[keyof FeesScheduleResponses];
 
 export type ImportsGuardiansData = {
     body: ImportRequestDto;

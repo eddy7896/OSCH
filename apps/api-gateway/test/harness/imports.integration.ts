@@ -115,7 +115,7 @@ describe.skipIf(!ready)('CSV import against the real emulators (P2-5)', () => {
     // every row audited with the batch id, plus a start and a finish
     const rows = await auditRows(A());
     const batch = dry.fileHash;
-    const batchOf = (r: { details: unknown }) => String((r.details as { importBatchId?: string } | null)?.importBatchId ?? '').replaceAll('-', '');
+    const batchOf = (r: { details?: unknown }) => String((r.details as { importBatchId?: string } | null)?.importBatchId ?? '').replaceAll('-', '');
     expect(rows.filter((r) => r.action === 'student.create' && batchOf(r) === res.batchId.replaceAll('-', ''))).toHaveLength(3);
     expect(rows.filter((r) => r.action === 'import.start' && JSON.stringify(r.details).includes(batch))).toHaveLength(1);
     expect(rows.filter((r) => r.action === 'import.finish' && JSON.stringify(r.details).includes('"createdCount":3'))).toHaveLength(1);

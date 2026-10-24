@@ -250,6 +250,55 @@ query GetApplication($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
   }
 }
 
+# ---- Fees (P2-7a). A null filter is skipped.
+query ListFeeStructures($schoolId: UUID!, $academicYearId: UUID, $gradeLevelId: UUID) @auth(level: NO_ACCESS) {
+  feeStructures(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, gradeLevelId: {eq: $gradeLevelId}}, orderBy: [{createdAt: ASC}]) {
+    id name createdAt
+    academicYear { id name }
+    gradeLevel { id name position }
+    items: feeItems_on_structure(orderBy: [{createdAt: ASC}]) {
+      id name
+      instalments: feeInstalments_on_item(orderBy: [{sequence: ASC}]) { id sequence label amountMinor dueDate }
+    }
+  }
+}
+
+query GetFeeStructure($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  feeStructures(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id name createdAt
+    academicYear { id name }
+    gradeLevel { id name position }
+    items: feeItems_on_structure(orderBy: [{createdAt: ASC}]) {
+      id name
+      instalments: feeInstalments_on_item(orderBy: [{sequence: ASC}]) { id sequence label amountMinor dueDate }
+    }
+  }
+}
+
+# Finds a fee item or an instalment (with the structure it belongs to) inside this school.
+query GetFeeItem($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  feeItems(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id name structure { id } instalments: feeInstalments_on_item(orderBy: [{sequence: ASC}]) { id sequence } }
+}
+query GetFeeInstalment($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  feeInstalments(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id sequence label amountMinor dueDate item { id name structure { id } } }
+}
+
+query ListConcessions($schoolId: UUID!, $studentId: UUID, $academicYearId: UUID) @auth(level: NO_ACCESS) {
+  concessions(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, academicYearId: {eq: $academicYearId}}, orderBy: [{createdAt: ASC}]) {
+    id name kind basisPoints amountMinor createdAt
+    student { id enrollmentId firstName lastName }
+    academicYear { id name }
+    targetItem { id name }
+  }
+}
+
+# The class level a student is placed in, for one academic year (what decides which fee structure applies).
+query GetStudentLevel($schoolId: UUID!, $studentId: UUID!, $academicYearId: UUID!) @auth(level: NO_ACCESS) {
+  studentEnrollments(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, academicYearId: {eq: $academicYearId}}, limit: 1) {
+    classroom { id name gradeLevel { id name } }
+  }
+}
+
 # ---- Bulk import (P2-5)
 query FindImportBatch($schoolId: UUID!, $kind: String!, $fileHash: String!) @auth(level: NO_ACCESS) {
   importBatches(where: {schoolId: {eq: $schoolId}, kind: {eq: $kind}, fileHash: {eq: $fileHash}}, limit: 1) { id status rowCount createdCount failedCount createdAt }

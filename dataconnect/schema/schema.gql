@@ -82,6 +82,7 @@ type Invitation @table {
 # Student Profile, belonging to a School
 enum StudentStatus { ACTIVE INACTIVE LEFT }
 enum Gender { FEMALE MALE OTHER }
+enum ConcessionKind { PERCENT FIXED }
 enum ImportStatus { STARTED COMPLETED PARTIAL }
 enum ApplicationStatus { SUBMITTED UNDER_REVIEW ACCEPTED REJECTED WITHDRAWN ADMITTED }
 enum StaffStatus { ACTIVE INACTIVE LEFT }
@@ -257,6 +258,51 @@ type Classroom @table @unique(fields: ["gradeLevel", "section"]) {
   section: String! # "B"
   name: String! # "5 B"
   capacity: Int!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ERP: fees (P2-7a). A fee STRUCTURE is the set of fees one class level pays in one academic year (one structure per year and level).
+# It has ITEMS (Tuition, Transport ...), each with one or more INSTALMENTS (an amount due on a date). Money is in minor units (paise).
+type FeeStructure @table @unique(fields: ["academicYear", "gradeLevel"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  academicYear: AcademicYear!
+  gradeLevel: GradeLevel!
+  name: String!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type FeeItem @table @unique(fields: ["structure", "name"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  structure: FeeStructure!
+  name: String!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type FeeInstalment @table @unique(fields: ["item", "sequence"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  item: FeeItem!
+  sequence: Int! # 1, 2, 3 ... the order within the item
+  label: String # "April", "Term 1"
+  amountMinor: Int64!
+  dueDate: Date!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A discount for one student in one academic year. PERCENT takes basisPoints (100 = 1%) off every targeted instalment; FIXED takes
+# amountMinor off each targeted instalment (never below zero). With no item it applies to every item of the student's structure.
+type Concession @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  student: Student!
+  academicYear: AcademicYear!
+  targetItem: FeeItem
+  name: String!
+  kind: ConcessionKind!
+  basisPoints: Int
+  amountMinor: Int64
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

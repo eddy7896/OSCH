@@ -160,6 +160,37 @@ const applicationOfA = (accepted: boolean) => async (w: World): Promise<Record<s
   return { id: dash(id), level: dash(level), year: dash(year), room: dash(room) };
 };
 
+const bursarOfA = { token: (w: World) => w.roles.A.BURSAR.token, actor: (w: World) => w.roles.A.BURSAR.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+/** A fee structure of school A for a fresh year and a class level, through the real operations. */
+const structureOfA = async (w: World): Promise<Record<string, string>> => {
+  const actor = w.roles.A.BURSAR.uid;
+  const year = randomUUID();
+  await w.db.createAcademicYear({ schoolId: w.schools.A, id: year, name: `FY-${year.slice(0, 6)}`, startDate: '2061-04-01', endDate: '2062-03-31', actorId: actor });
+  const level = (await w.db.listGradeLevels({ schoolId: w.schools.A })).data.gradeLevels.find((l) => l.name === '4')!.id;
+  const id = randomUUID();
+  await w.db.createFeeStructure({ schoolId: w.schools.A, id, academicYearId: year, gradeLevelId: level, name: 'Sample fees', actorId: actor });
+  return { id: dash(id), year: dash(year), level: dash(level) };
+};
+const feeItemOfA = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await structureOfA(w);
+  const itemId = randomUUID();
+  await w.db.createFeeItem({ schoolId: w.schools.A, id: itemId, structureId: ctx['id']!, name: 'Tuition', actorId: w.roles.A.BURSAR.uid });
+  return { ...ctx, structureId: ctx['id']!, id: dash(itemId) };
+};
+const instalmentOfA = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await feeItemOfA(w);
+  const id = randomUUID();
+  await w.db.addFeeInstalment({ schoolId: w.schools.A, id, itemId: ctx['id']!, sequence: 1, amountMinor: '1000000', dueDate: '2061-05-01', actorId: w.roles.A.BURSAR.uid });
+  return { ...ctx, id: dash(id) };
+};
+const concessionOfA = async (w: World): Promise<Record<string, string>> => {
+  const stu = await studentOfA(w);
+  const year = (await structureOfA(w))['year']!;
+  const id = randomUUID();
+  await w.db.createConcession({ schoolId: w.schools.A, id, studentId: stu['id']!, academicYearId: year, name: 'Sample', kind: 'PERCENT' as never, basisPoints: 500, actorId: w.roles.A.BURSAR.uid });
+  return { id: dash(id) };
+};
+
 export const SAMPLES: Record<string, Sample> = {
   'POST /platform/schools': { ...platform, body: () => ({ name: 'Audit sample school', subDomain: `a${randomUUID().slice(0, 12)}`, defaultLanguage: 'en' }), auditSchool: (_w, _c, res) => res['id'] },
   'PATCH /platform/schools/:id': { ...platform, prepare: freshSchool, body: () => ({ name: 'Renamed by the audit sample' }), auditSchool: (_w, ctx) => ctx['id']! },
@@ -236,6 +267,29 @@ export const SAMPLES: Record<string, Sample> = {
   'PATCH /admissions/:id': { ...officerOfA, prepare: applicationOfA(false), body: () => ({ notes: 'Sibling in class 5' }) },
   'POST /admissions/:id/decision': { ...officerOfA, prepare: applicationOfA(false), body: () => ({ status: 'UNDER_REVIEW' }) },
   'POST /admissions/:id/admit': { ...officerOfA, prepare: applicationOfA(true), body: (_w, ctx) => ({ classroomId: ctx['room'] }) },
+  'POST /fees/structures': {
+    ...bursarOfA,
+    prepare: async (w) => {
+      const year = randomUUID();
+      await w.db.createAcademicYear({ schoolId: w.schools.A, id: year, name: `FY-${year.slice(0, 6)}`, startDate: '2063-04-01', endDate: '2064-03-31', actorId: w.roles.A.BURSAR.uid });
+      return { year: dash(year), level: dash((await w.db.listGradeLevels({ schoolId: w.schools.A })).data.gradeLevels.find((l) => l.name === '5')!.id) };
+    },
+    body: (_w, ctx) => ({ gradeLevelId: ctx['level'], academicYearId: ctx['year'] }),
+  },
+  'PATCH /fees/structures/:id': { ...bursarOfA, prepare: structureOfA, body: () => ({ name: 'Renamed fees' }) },
+  'DELETE /fees/structures/:id': { ...bursarOfA, prepare: structureOfA },
+  'POST /fees/structures/:id/items': { ...bursarOfA, prepare: structureOfA, body: () => ({ name: 'Tuition', instalments: [{ label: 'April', amountMinor: '1250000', dueDate: '2061-04-10' }, { label: 'July', amountMinor: '1250000', dueDate: '2061-07-10' }] }) },
+  'PATCH /fees/items/:id': { ...bursarOfA, prepare: feeItemOfA, body: () => ({ name: 'Tuition fee' }) },
+  'DELETE /fees/items/:id': { ...bursarOfA, prepare: feeItemOfA },
+  'POST /fees/items/:id/instalments': { ...bursarOfA, prepare: feeItemOfA, body: () => ({ label: 'October', amountMinor: '500000', dueDate: '2061-10-10' }) },
+  'PATCH /fees/instalments/:id': { ...bursarOfA, prepare: instalmentOfA, body: () => ({ amountMinor: '1100000' }) },
+  'DELETE /fees/instalments/:id': { ...bursarOfA, prepare: instalmentOfA },
+  'POST /fees/concessions': {
+    ...bursarOfA,
+    prepare: async (w) => ({ studentId: (await studentOfA(w))['id']!, year: (await structureOfA(w))['year']! }),
+    body: (_w, ctx) => ({ studentId: ctx['studentId'], academicYearId: ctx['year'], name: 'Sibling', kind: 'PERCENT', basisPoints: 1000 }),
+  },
+  'DELETE /fees/concessions/:id': { ...bursarOfA, prepare: concessionOfA },
   'POST /imports/students': { ...academicAdminOfA, body: () => ({ csv: `first name,last name\nImp${randomUUID().slice(0, 6)},Student\n` }) },
   'POST /imports/staff': { ...hrOfA, body: () => ({ csv: `first name,last name,department\nImp${randomUUID().slice(0, 6)},Staff,Science\n` }) },
   'POST /imports/guardians': {

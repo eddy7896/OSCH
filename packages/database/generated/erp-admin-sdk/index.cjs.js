@@ -17,6 +17,12 @@ const ApplicationStatus = {
 }
 exports.ApplicationStatus = ApplicationStatus;
 
+const ConcessionKind = {
+  PERCENT: "PERCENT",
+  FIXED: "FIXED",
+}
+exports.ConcessionKind = ConcessionKind;
+
 const Gender = {
   FEMALE: "FEMALE",
   MALE: "MALE",
@@ -535,6 +541,90 @@ function admitApplication(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.admitApplication = admitApplication;
 
+function createFeeStructure(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateFeeStructure', inputVars, inputOpts);
+}
+exports.createFeeStructure = createFeeStructure;
+
+function updateFeeStructure(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateFeeStructure', inputVars, inputOpts);
+}
+exports.updateFeeStructure = updateFeeStructure;
+
+function deleteFeeStructure(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteFeeStructure', inputVars, inputOpts);
+}
+exports.deleteFeeStructure = deleteFeeStructure;
+
+function createFeeItem(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateFeeItem', inputVars, inputOpts);
+}
+exports.createFeeItem = createFeeItem;
+
+function updateFeeItem(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateFeeItem', inputVars, inputOpts);
+}
+exports.updateFeeItem = updateFeeItem;
+
+function deleteFeeItem(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteFeeItem', inputVars, inputOpts);
+}
+exports.deleteFeeItem = deleteFeeItem;
+
+function addFeeInstalment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddFeeInstalment', inputVars, inputOpts);
+}
+exports.addFeeInstalment = addFeeInstalment;
+
+function updateFeeInstalment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateFeeInstalment', inputVars, inputOpts);
+}
+exports.updateFeeInstalment = updateFeeInstalment;
+
+function deleteFeeInstalment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteFeeInstalment', inputVars, inputOpts);
+}
+exports.deleteFeeInstalment = deleteFeeInstalment;
+
+function createConcession(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateConcession', inputVars, inputOpts);
+}
+exports.createConcession = createConcession;
+
+function createItemConcession(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateItemConcession', inputVars, inputOpts);
+}
+exports.createItemConcession = createItemConcession;
+
+function deleteConcession(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteConcession', inputVars, inputOpts);
+}
+exports.deleteConcession = deleteConcession;
+
 function startImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -786,6 +876,48 @@ function getApplication(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetApplication', inputVars, inputOpts);
 }
 exports.getApplication = getApplication;
+
+function listFeeStructures(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListFeeStructures', inputVars, inputOpts);
+}
+exports.listFeeStructures = listFeeStructures;
+
+function getFeeStructure(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetFeeStructure', inputVars, inputOpts);
+}
+exports.getFeeStructure = getFeeStructure;
+
+function getFeeItem(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetFeeItem', inputVars, inputOpts);
+}
+exports.getFeeItem = getFeeItem;
+
+function getFeeInstalment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetFeeInstalment', inputVars, inputOpts);
+}
+exports.getFeeInstalment = getFeeInstalment;
+
+function listConcessions(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListConcessions', inputVars, inputOpts);
+}
+exports.listConcessions = listConcessions;
+
+function getStudentLevel(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetStudentLevel', inputVars, inputOpts);
+}
+exports.getStudentLevel = getStudentLevel;
 
 function findImportBatch(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
