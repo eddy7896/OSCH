@@ -653,6 +653,101 @@
         ],
         "type": "object"
       },
+      "ConcessionDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "amountMinor": {
+            "nullable": true,
+            "type": "string"
+          },
+          "basisPoints": {
+            "nullable": true,
+            "type": "number"
+          },
+          "feeItem": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "basisPoints",
+          "amountMinor",
+          "student",
+          "academicYear",
+          "feeItem"
+        ],
+        "type": "object"
+      },
+      "ConcessionListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ConcessionDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "CreateAcademicYearDto": {
         "properties": {
           "endDate": {
@@ -770,6 +865,45 @@
         ],
         "type": "object"
       },
+      "CreateConcessionDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "amountMinor": {
+            "type": "string"
+          },
+          "basisPoints": {
+            "maximum": 10000,
+            "minimum": 1,
+            "type": "number"
+          },
+          "feeItemId": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "PERCENT",
+              "FIXED"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId",
+          "name",
+          "kind"
+        ],
+        "type": "object"
+      },
       "CreateGradeLevelDto": {
         "properties": {
           "name": {
@@ -863,6 +997,27 @@
         "required": [
           "email",
           "schoolRole"
+        ],
+        "type": "object"
+      },
+      "CreateItemDto": {
+        "properties": {
+          "instalments": {
+            "items": {
+              "$ref": "#/components/schemas/NewInstalmentDto"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "instalments"
         ],
         "type": "object"
       },
@@ -1031,6 +1186,25 @@
         "required": [
           "firstName",
           "lastName"
+        ],
+        "type": "object"
+      },
+      "CreateStructureDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "gradeLevelId": {
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "gradeLevelId"
         ],
         "type": "object"
       },
@@ -1264,6 +1438,104 @@
         ],
         "type": "object"
       },
+      "FeeItemDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "instalments": {
+            "items": {
+              "$ref": "#/components/schemas/InstalmentDto"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "totalMinor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "instalments",
+          "totalMinor"
+        ],
+        "type": "object"
+      },
+      "FeeStructureDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "gradeLevel": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FeeItemDto"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "totalMinor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "academicYear",
+          "gradeLevel",
+          "items",
+          "totalMinor"
+        ],
+        "type": "object"
+      },
+      "FeeStructureListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FeeStructureDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "FileUploadTicketDto": {
         "properties": {
           "expiresInSeconds": {
@@ -1367,6 +1639,34 @@
           "phone",
           "email",
           "isPrimary"
+        ],
+        "type": "object"
+      },
+      "InstalmentDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "nullable": true,
+            "type": "string"
+          },
+          "sequence": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "label",
+          "amountMinor",
+          "dueDate"
         ],
         "type": "object"
       },
@@ -1672,6 +1972,26 @@
         ],
         "type": "object"
       },
+      "NewInstalmentDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "amountMinor",
+          "dueDate"
+        ],
+        "type": "object"
+      },
       "PhotoUploadRequestDto": {
         "properties": {
           "contentType": {
@@ -1767,6 +2087,140 @@
           "name",
           "subDomain",
           "defaultLanguage"
+        ],
+        "type": "object"
+      },
+      "ScheduleDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "discountMinor": {
+            "type": "string"
+          },
+          "grossMinor": {
+            "type": "string"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduleLineDto"
+            },
+            "type": "array"
+          },
+          "netMinor": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "structure": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "status",
+          "student",
+          "academicYear",
+          "structure",
+          "lines",
+          "grossMinor",
+          "discountMinor",
+          "netMinor"
+        ],
+        "type": "object"
+      },
+      "ScheduleLineDto": {
+        "properties": {
+          "discountMinor": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "feeItem": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "grossMinor": {
+            "type": "string"
+          },
+          "instalmentId": {
+            "type": "string"
+          },
+          "label": {
+            "nullable": true,
+            "type": "string"
+          },
+          "netMinor": {
+            "type": "string"
+          },
+          "sequence": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "feeItem",
+          "instalmentId",
+          "sequence",
+          "label",
+          "dueDate",
+          "grossMinor",
+          "discountMinor",
+          "netMinor"
         ],
         "type": "object"
       },
@@ -2639,6 +3093,35 @@
         },
         "type": "object"
       },
+      "UpdateInstalmentDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateItemDto": {
+        "properties": {
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
       "UpdateMembershipDto": {
         "properties": {
           "schoolRole": {
@@ -2853,6 +3336,19 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "UpdateStructureDto": {
+        "properties": {
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
         "type": "object"
       },
       "UpdateStudentDto": {
@@ -4931,6 +5427,1005 @@
         "x-permission": {
           "action": "update",
           "resource": "admissions"
+        }
+      }
+    },
+    "/v1/fees/concessions": {
+      "get": {
+        "operationId": "Fees_concessions",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "studentId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConcessionListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      },
+      "post": {
+        "operationId": "Fees_createConcession",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateConcessionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConcessionDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.concession.create",
+          "operation": "CreateConcession"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/concessions/{id}": {
+      "delete": {
+        "operationId": "Fees_deleteConcession",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.concession.delete",
+          "operation": "DeleteConcession"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/instalments/{id}": {
+      "delete": {
+        "operationId": "Fees_deleteInstalment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.instalment.delete",
+          "operation": "DeleteFeeInstalment"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "finance"
+        }
+      },
+      "patch": {
+        "operationId": "Fees_updateInstalment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInstalmentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.instalment.update",
+          "operation": "UpdateFeeInstalment"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/items/{id}": {
+      "delete": {
+        "operationId": "Fees_deleteItem",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.item.delete",
+          "operation": "DeleteFeeItem"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "finance"
+        }
+      },
+      "patch": {
+        "operationId": "Fees_updateItem",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateItemDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.item.update",
+          "operation": "UpdateFeeItem"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/items/{id}/instalments": {
+      "post": {
+        "operationId": "Fees_addInstalment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewInstalmentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.instalment.add",
+          "operation": "AddFeeInstalment"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/structures": {
+      "get": {
+        "operationId": "Fees_structures",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "gradeLevelId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      },
+      "post": {
+        "operationId": "Fees_createStructure",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStructureDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.structure.create",
+          "operation": "CreateFeeStructure"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/structures/{id}": {
+      "delete": {
+        "operationId": "Fees_deleteStructure",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.structure.delete",
+          "operation": "DeleteFeeStructure"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "finance"
+        }
+      },
+      "get": {
+        "operationId": "Fees_getStructure",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      },
+      "patch": {
+        "operationId": "Fees_updateStructure",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStructureDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.structure.update",
+          "operation": "UpdateFeeStructure"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/structures/{id}/items": {
+      "post": {
+        "operationId": "Fees_createItem",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateItemDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeStructureDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.item.create",
+          "operation": "CreateFeeItem"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/students/{studentId}/schedule": {
+      "get": {
+        "operationId": "Fees_schedule",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "studentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Fees"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
         }
       }
     },

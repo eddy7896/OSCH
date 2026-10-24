@@ -288,7 +288,7 @@ query ListConcessions($schoolId: UUID!, $studentId: UUID, $academicYearId: UUID)
     id name kind basisPoints amountMinor createdAt
     student { id enrollmentId firstName lastName }
     academicYear { id name }
-    feeItem { id name }
+    targetItem { id name }
   }
 }
 

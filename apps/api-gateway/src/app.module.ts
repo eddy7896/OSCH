@@ -13,6 +13,7 @@ import { MeModule } from './me/me.module.js';
 import { PermissionModule } from './permission/permission.module.js';
 import { PublicModule } from './public/public.module.js';
 import { PlatformModule } from './platform/platform.module.js';
+import { FeesModule } from './fees/fees.module.js';
 import { AdmissionsModule } from './admissions/admissions.module.js';
 import { StaffModule } from './staff/staff.module.js';
 import { StudentsModule } from './students/students.module.js';
@@ -59,6 +60,7 @@ import { HealthModule } from './health/health.module.js';
     StudentsModule,
     StaffModule,
     AdmissionsModule,
+    FeesModule,
     AccountsModule,
     InvitationsModule,
     PlatformModule,

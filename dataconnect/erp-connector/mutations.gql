@@ -679,7 +679,7 @@ mutation CreateItemConcession($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $
     year: academicYears(where: {id: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "academic year not found in this school") { id }
     item: feeItems(where: {id: {eq: $feeItemId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "fee item not found in this school") { id }
   }
-  concession_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, academicYearId: $academicYearId, feeItemId: $feeItemId, name: $name, kind: $kind, basisPoints: $basisPoints, amountMinor: $amountMinor })
+  concession_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, academicYearId: $academicYearId, targetItemId: $feeItemId, name: $name, kind: $kind, basisPoints: $basisPoints, amountMinor: $amountMinor })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "fees.concession.create", entityType: "Concession", entityId_expr: "request.variables.id", details: $details })
 }
 

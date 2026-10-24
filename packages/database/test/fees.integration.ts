@@ -119,7 +119,7 @@ describe.skipIf(!host)('Fee operations (P2-7a)', () => {
     const bTuition = await item(bursarB, B, await structure(bursarB, B, yearB, (await db.listGradeLevels({ schoolId: B })).data.gradeLevels.find((l) => l.name === '2')!.id), 'Tuition');
     await expect(db.createItemConcession({ schoolId: A, id: randomUUID(), studentId: studentA, academicYearId: yearA, feeItemId: bTuition, name: 'x', kind: 'FIXED' as never, amountMinor: '1', actorId: bursarA })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     const list = (await db.listConcessions({ schoolId: A, studentId: studentA })).data.concessions;
-    expect(list.map((c) => [c.name, c.kind, c.basisPoints, c.amountMinor, c.feeItem?.name ?? null])).toEqual([['Sibling', 'PERCENT', 1000, null, null], ['Staff child', 'FIXED', null, '500000', 'Tuition']]);
+    expect(list.map((c) => [c.name, c.kind, c.basisPoints, c.amountMinor, c.targetItem?.name ?? null])).toEqual([['Sibling', 'PERCENT', 1000, null, null], ['Staff child', 'FIXED', null, '500000', 'Tuition']]);
     expect((await db.listConcessions({ schoolId: B })).data.concessions).toEqual([]);
     await expect(db.deleteConcession({ schoolId: B, id: list[0]!.id, actorId: bursarB })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     await db.deleteConcession({ schoolId: A, id: list[0]!.id, actorId: bursarA });

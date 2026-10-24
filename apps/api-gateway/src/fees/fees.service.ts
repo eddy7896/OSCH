@@ -155,11 +155,11 @@ export class FeesService {
   }
 
   // ---------------------------------------------------------------- concessions
-  private view(r: { id: string; name: string; kind: string; basisPoints?: number | null; amountMinor?: string | null; student: { id: string; enrollmentId: string; firstName: string; lastName: string }; academicYear: { id: string; name: string }; feeItem?: { id: string; name: string } | null }): ConcessionDto {
+  private view(r: { id: string; name: string; kind: string; basisPoints?: number | null; amountMinor?: string | null; student: { id: string; enrollmentId: string; firstName: string; lastName: string }; academicYear: { id: string; name: string }; targetItem?: { id: string; name: string } | null }): ConcessionDto {
     return {
       id: dashed(r.id), name: r.name, kind: r.kind, basisPoints: r.basisPoints ?? null, amountMinor: r.amountMinor == null ? null : String(r.amountMinor),
       student: { id: dashed(r.student.id), enrollmentId: r.student.enrollmentId, name: `${r.student.firstName} ${r.student.lastName}` },
-      academicYear: { id: dashed(r.academicYear.id), name: r.academicYear.name }, feeItem: r.feeItem ? { id: dashed(r.feeItem.id), name: r.feeItem.name } : null,
+      academicYear: { id: dashed(r.academicYear.id), name: r.academicYear.name }, feeItem: r.targetItem ? { id: dashed(r.targetItem.id), name: r.targetItem.name } : null,
     };
   }
   async listConcessions(t: TenantContext, q: ListConcessionsQueryDto): Promise<ConcessionListDto> {
@@ -208,7 +208,7 @@ export class FeesService {
     if (!found) return empty('NO_STRUCTURE', null);
 
     const rules: ConcessionRule[] = (await this.db.listConcessions({ schoolId: t.schoolId, studentId: dashed(stu.id), academicYearId: yearRef.id })).data.concessions.map((c) => ({
-      kind: c.kind as 'PERCENT' | 'FIXED', basisPoints: c.basisPoints ?? null, amountMinor: c.amountMinor == null ? null : BigInt(c.amountMinor), feeItemId: c.feeItem ? dashed(c.feeItem.id) : null,
+      kind: c.kind as 'PERCENT' | 'FIXED', basisPoints: c.basisPoints ?? null, amountMinor: c.amountMinor == null ? null : BigInt(c.amountMinor), feeItemId: c.targetItem ? dashed(c.targetItem.id) : null,
     }));
     const lines: ScheduleLineDto[] = [];
     let gross = 0n, discount = 0n;

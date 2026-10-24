@@ -283,7 +283,7 @@ type Concession @table {
   school: School!
   student: Student!
   academicYear: AcademicYear!
-  feeItem: FeeItem
+  targetItem: FeeItem
   name: String!
   kind: ConcessionKind!
   basisPoints: Int

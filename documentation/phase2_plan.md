@@ -58,7 +58,7 @@ graph TD
 ### M3 Finance (needs M0 spikes)
 | ID | Task | Size |
 |---|---|---|
-| P2-7a | Fee structures (per class level and academic year), fee items with instalments, concessions | M |
+| P2-7a BUILT (backend; `/v1/fees`: one fee structure per class level and academic year, fees (items) each with 1 to 24 instalments created all or nothing, concessions per student (percent in basis points or a fixed amount, on every fee or one fee), and `GET /v1/fees/students/:id/schedule` that lists what a student owes with the concessions applied; money is integer paise sent as strings; discount arithmetic is bigint, half away from zero, never below zero, and is the same code invoice generation will use; 10 unit tests, 8 database tests, an end-to-end suite) | Fee structures (per class level and academic year), fee items with instalments, concessions | M |
 | P2-7b | Invoice generation per student per instalment, **idempotent**; manual payment recording (cash, cheque, bank transfer, UPI reference), partial payments; outstanding and ageing | L |
 | P2-7c | Receipts: numbered, web page and PDF (ADR-0012) | M |
 | P2-8 | Payroll: salary structures with components, manual deduction lines, monthly run draft to approved to paid (approval by Principal only, ADR-0007), payslips; statutory calculation is out (ADR-0012) | L |

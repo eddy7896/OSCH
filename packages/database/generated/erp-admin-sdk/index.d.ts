@@ -1534,7 +1534,7 @@ export interface ListConcessionsData {
       id: UUIDString;
       name: string;
     } & AcademicYear_Key;
-    feeItem?: {
+    targetItem?: {
       id: UUIDString;
       name: string;
     } & FeeItem_Key;
