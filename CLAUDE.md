@@ -26,6 +26,7 @@ Multi-tenant school ERP (SaaS). **Two pillars**: Next.js web ERP (system of reco
 - `node tools/bootstrap-super-admin.mjs --email <e> --project <id> [--apply|--revoke]` — the only way to create/remove the platform owner (SUPER_ADMIN); dry run by default; see documentation/environment.md
 - `npm run generate -w @oruschools/api-client` — regenerate the typed client after `openapi.json` changes (`npm test` fails if it is stale); web code calls the gateway only through `createApi`
 - `node tools/prove-receipt-numbers.mjs --project <id> --apply` — proves on a REAL database that concurrent payments get unique, gap-free receipt numbers (dry run by default; `--emulator` for the local logic check)
+- `npm run demo` — a demo school to click through, on local emulators only (accounts and what to try: `documentation/demo-school.md`; `tools/seed-demo-school.mjs` refuses to run against a real project)
 - `npm run test:database` — `packages/database` (generated Admin SDK, error mapping) against the emulator
 - `npm run openapi:generate -w api-gateway` — regenerate `apps/api-gateway/openapi.json` after changing a route or DTO (`npm test` fails if it is stale)
 - `npm run build | lint | typecheck | test` — Turborepo (JS/TS). Dart: `melos run analyze|test` (Melos 8 reads its config from the root `pubspec.yaml` pub workspace; run `flutter pub get` once; put `~/.pub-cache/bin` on PATH or use `dart run melos`)

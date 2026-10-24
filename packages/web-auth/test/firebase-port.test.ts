@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const state = vi.hoisted(() => ({ listener: null as null | ((u: unknown) => Promise<void> | void), claims: {} as Record<string, unknown>, signIn: vi.fn(), token: vi.fn(), reset: vi.fn() }));
+const state = vi.hoisted(() => ({ listener: null as null | ((u: unknown) => Promise<void> | void), claims: {} as Record<string, unknown>, signIn: vi.fn(), token: vi.fn(), reset: vi.fn(), connect: vi.fn() }));
 
 vi.mock("firebase/app", () => {
   class FirebaseError extends Error {
@@ -12,6 +12,7 @@ vi.mock("firebase/app", () => {
 });
 vi.mock("firebase/auth", () => ({
   getAuth: () => ({ currentUser: { getIdToken: state.token } }),
+  connectAuthEmulator: (...args: unknown[]) => state.connect(...args),
   onAuthStateChanged: (_auth: unknown, cb: (u: unknown) => Promise<void> | void) => {
     state.listener = cb;
     return () => undefined;
@@ -42,6 +43,17 @@ beforeEach(() => {
   state.signIn.mockReset();
   state.token.mockReset();
   state.reset.mockReset();
+  state.connect.mockReset();
+});
+
+describe("Auth emulator (local development only)", () => {
+  it("connects to the emulator only when a host is given, with the warning banner off", () => {
+    createFirebaseAuthPort({ apiKey: "k" });
+    expect(state.connect).not.toHaveBeenCalled();
+    createFirebaseAuthPort({ apiKey: "k" }, { authEmulatorHost: "127.0.0.1:9099" });
+    expect(state.connect).toHaveBeenCalledTimes(1);
+    expect(state.connect).toHaveBeenCalledWith(expect.anything(), "http://127.0.0.1:9099", { disableWarnings: true });
+  });
 });
 
 describe("Firebase port", () => {

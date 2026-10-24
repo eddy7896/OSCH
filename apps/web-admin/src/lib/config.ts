@@ -6,6 +6,11 @@ export const config = {
   apiUrl: process.env.NEXT_PUBLIC_API_URL ?? "",
   /** The domain schools live under: `greenfield.oruschools.com` has base domain `oruschools.com` (in development, `localhost`). */
   baseDomain: (process.env.NEXT_PUBLIC_BASE_DOMAIN ?? "").toLowerCase(),
+  /**
+   * Local development only: `host:port` of the Firebase Auth emulator, so a demo school can be clicked through on this machine.
+   * Always empty in a production build (NODE_ENV is "production" there), whatever the environment says.
+   */
+  authEmulatorHost: process.env.NODE_ENV === "production" ? "" : (process.env.NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST ?? ""),
   firebase: {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? "",
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "",
