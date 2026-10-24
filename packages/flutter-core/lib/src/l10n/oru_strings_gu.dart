@@ -1377,4 +1377,119 @@ class OruStringsGu extends OruStrings {
   @override
   String get webFieldRoleBody =>
       'This web area is for administrators. Open the OruSchools app on your phone.';
+
+  @override
+  String get usrTabMembers => 'Members';
+
+  @override
+  String get usrTabInvitations => 'Invitations';
+
+  @override
+  String get usrSince => 'Member since';
+
+  @override
+  String get usrYou => 'You';
+
+  @override
+  String get usrChangeRole => 'Change role';
+
+  @override
+  String get usrRole => 'Role';
+
+  @override
+  String usrConfirmRole(String name, String role) {
+    return 'Change $name to $role? Their screens change at once.';
+  }
+
+  @override
+  String usrConfirmSuspend(String name) {
+    return 'Suspend $name? They cannot sign in until you reactivate them.';
+  }
+
+  @override
+  String usrConfirmRemove(String name) {
+    return 'Remove $name from this school? They lose their place here.';
+  }
+
+  @override
+  String get usrNewAccount => 'Create an account';
+
+  @override
+  String get usrAccountIntro =>
+      'For a person who works at the school and does not have an account yet. They sign in with email or a mobile number.';
+
+  @override
+  String get usrDisplayName => 'Full name';
+
+  @override
+  String usrAccountCreated(String name) {
+    return 'Account created for $name.';
+  }
+
+  @override
+  String usrLinkSent(String email) {
+    return 'A link to set a password was sent to $email.';
+  }
+
+  @override
+  String get usrLinkFailed =>
+      'The account was created, but the link could not be sent.';
+
+  @override
+  String get usrSendLink => 'Send the link again';
+
+  @override
+  String get usrNewInvitation => 'Invite someone';
+
+  @override
+  String get usrInvitationIntro =>
+      'Makes a one-time code. Give it to the person: after they sign in they enter it to join this school.';
+
+  @override
+  String get usrExpiresIn => 'Valid for (days)';
+
+  @override
+  String get usrInvitationCode =>
+      'One-time code. Copy it now: it is shown only once.';
+
+  @override
+  String get usrRevoke => 'Cancel invitation';
+
+  @override
+  String get usrExpires => 'Expires';
+
+  @override
+  String get usrPending => 'Pending';
+
+  @override
+  String get usrCancelled => 'Cancelled';
+
+  @override
+  String get usrNoInvitations => 'No invitations yet';
+
+  @override
+  String get usrHaveCode => 'I have an invitation code';
+
+  @override
+  String get usrEnterCode => 'Invitation code';
+
+  @override
+  String get usrJoin => 'Join';
+
+  @override
+  String usrJoined(String role) {
+    return 'You joined as $role. Loading your school…';
+  }
+
+  @override
+  String get errorInvitationInvalid =>
+      'This code is not valid, or it has expired. Ask the school for a new one.';
+
+  @override
+  String get errorEmailNotVerified =>
+      'Verify your email address first, then try again.';
+
+  @override
+  String get errorOwnMembership =>
+      'You cannot change your own role. Ask another system administrator.';
 }

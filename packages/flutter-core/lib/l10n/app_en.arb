@@ -1854,5 +1854,166 @@
   "webFieldRoleBody": "This web area is for administrators. Open the OruSchools app on your phone.",
   "@webFieldRoleBody": {
     "description": "Explains where a mobile-app role should go. Keep the brand name OruSchools in Latin letters."
+  },
+  "usrTabMembers": "Members",
+  "@usrTabMembers": {
+    "description": "Tab: the people who can sign in to this school."
+  },
+  "usrTabInvitations": "Invitations",
+  "@usrTabInvitations": {
+    "description": "Tab: the invitations that have been made."
+  },
+  "usrSince": "Member since",
+  "@usrSince": {
+    "description": "Column heading: when a person joined the school."
+  },
+  "usrYou": "You",
+  "@usrYou": {
+    "description": "Marks the row that is the signed-in person."
+  },
+  "usrChangeRole": "Change role",
+  "@usrChangeRole": {
+    "description": "Button that changes the role of a member."
+  },
+  "usrRole": "Role",
+  "@usrRole": {
+    "description": "Column heading and form label: the role a person has."
+  },
+  "usrConfirmRole": "Change {name} to {role}? Their screens change at once.",
+  "@usrConfirmRole": {
+    "description": "Question before a member's role is changed.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "usrConfirmSuspend": "Suspend {name}? They cannot sign in until you reactivate them.",
+  "@usrConfirmSuspend": {
+    "description": "Question before a member is suspended.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "usrConfirmRemove": "Remove {name} from this school? They lose their place here.",
+  "@usrConfirmRemove": {
+    "description": "Question before a member is removed.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "usrNewAccount": "Create an account",
+  "@usrNewAccount": {
+    "description": "Button that opens the form that creates an account for a staff member."
+  },
+  "usrAccountIntro": "For a person who works at the school and does not have an account yet. They sign in with email or a mobile number.",
+  "@usrAccountIntro": {
+    "description": "Explains who an account is for."
+  },
+  "usrDisplayName": "Full name",
+  "@usrDisplayName": {
+    "description": "Form label."
+  },
+  "usrAccountCreated": "Account created for {name}.",
+  "@usrAccountCreated": {
+    "description": "Confirmation after creating an account.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "usrLinkSent": "A link to set a password was sent to {email}.",
+  "@usrLinkSent": {
+    "description": "Shown after the set-password email was sent.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "usrLinkFailed": "The account was created, but the link could not be sent.",
+  "@usrLinkFailed": {
+    "description": "Shown when the set-password email could not be sent."
+  },
+  "usrSendLink": "Send the link again",
+  "@usrSendLink": {
+    "description": "Button that sends the set-password email again."
+  },
+  "usrNewInvitation": "Invite someone",
+  "@usrNewInvitation": {
+    "description": "Button that opens the form for an invitation."
+  },
+  "usrInvitationIntro": "Makes a one-time code. Give it to the person: after they sign in they enter it to join this school.",
+  "@usrInvitationIntro": {
+    "description": "Explains how an invitation works."
+  },
+  "usrExpiresIn": "Valid for (days)",
+  "@usrExpiresIn": {
+    "description": "Form label: how many days an invitation can be used."
+  },
+  "usrInvitationCode": "One-time code. Copy it now: it is shown only once.",
+  "@usrInvitationCode": {
+    "description": "Shown with a new invitation's secret code."
+  },
+  "usrRevoke": "Cancel invitation",
+  "@usrRevoke": {
+    "description": "Button that cancels an invitation that has not been used."
+  },
+  "usrExpires": "Expires",
+  "@usrExpires": {
+    "description": "Column heading: when an invitation stops working."
+  },
+  "usrPending": "Pending",
+  "@usrPending": {
+    "description": "Status of an invitation nobody has used yet."
+  },
+  "usrCancelled": "Cancelled",
+  "@usrCancelled": {
+    "description": "Status of an invitation that was cancelled."
+  },
+  "usrNoInvitations": "No invitations yet",
+  "@usrNoInvitations": {
+    "description": "Empty state of the invitations list."
+  },
+  "usrHaveCode": "I have an invitation code",
+  "@usrHaveCode": {
+    "description": "Opens the box where a person enters the invitation code they were given."
+  },
+  "usrEnterCode": "Invitation code",
+  "@usrEnterCode": {
+    "description": "Label of the invitation code field."
+  },
+  "usrJoin": "Join",
+  "@usrJoin": {
+    "description": "Button that uses an invitation code."
+  },
+  "usrJoined": "You joined as {role}. Loading your school…",
+  "@usrJoined": {
+    "description": "Confirmation after a person used an invitation code.",
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "errorInvitationInvalid": "This code is not valid, or it has expired. Ask the school for a new one.",
+  "@errorInvitationInvalid": {
+    "description": "Error: an invitation code was refused."
+  },
+  "errorEmailNotVerified": "Verify your email address first, then try again.",
+  "@errorEmailNotVerified": {
+    "description": "Error: the person has not verified their email address."
+  },
+  "errorOwnMembership": "You cannot change your own role. Ask another system administrator.",
+  "@errorOwnMembership": {
+    "description": "Error: someone tried to change their own role."
   }
 }

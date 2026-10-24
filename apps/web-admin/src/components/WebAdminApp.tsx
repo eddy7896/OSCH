@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import type { MeResponseDto } from "@oruschools/api-client";
 import { Banner, Button, Card, EmptyState } from "@oruschools/shared-ui";
 import { errorKey, SignIn, useSession } from "@oruschools/web-auth";
+import { AcceptInvitation } from "./AcceptInvitation";
 import { ApplyLanguage, rememberedLanguage } from "./ApplyLanguage";
 import { ErpShell } from "./ErpShell";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -56,7 +57,10 @@ function Account({ schoolId, schoolName }: { schoolId: string; schoolName: strin
       <Centered>
         <Card title={t("webNoAccessTitle", { name: schoolName })} headingLevel={2}>
           <p className="text-body text-text-muted">{t("webNoAccessBody")}</p>
-          <div className="mt-4">{signOut}</div>
+          <div className="mt-4 flex flex-col gap-3">
+            <AcceptInvitation onJoined={() => { setMe({ status: "loading" }); setAttempt((n) => n + 1); }} />
+            <div>{signOut}</div>
+          </div>
         </Card>
       </Centered>
     );
