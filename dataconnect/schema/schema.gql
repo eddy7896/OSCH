@@ -82,6 +82,7 @@ type Invitation @table {
 # Student Profile, belonging to a School
 enum StudentStatus { ACTIVE INACTIVE LEFT }
 enum Gender { FEMALE MALE OTHER }
+enum PaymentMethod { CASH CHEQUE BANK_TRANSFER UPI OTHER }
 enum ConcessionKind { PERCENT FIXED }
 enum ImportStatus { STARTED COMPLETED PARTIAL }
 enum ApplicationStatus { SUBMITTED UNDER_REVIEW ACCEPTED REJECTED WITHDRAWN ADMITTED }
@@ -306,14 +307,39 @@ type Concession @table {
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
-# ERP: Invoice
-type Invoice @table {
+# ERP: Invoice (P2-7b). One invoice per student per fee instalment (unique key: generating twice creates nothing). `amountMinor` is what
+# is due (after concessions), `paidMinor` what has been paid so far, both integer paise. A part-paid invoice is still PENDING; PAID means
+# paidMinor equals amountMinor. OVERDUE is never stored: it is worked out from the due date when the invoice is read.
+type Invoice @table @unique(fields: ["student", "instalment"]) {
   id: UUID! @default(expr: "uuidV4()")
   school: School! # direct tenant reference (was only reachable via Student: audit F4)
   student: Student!
-  amountMinor: Int64! # minor units (paise)
+  instalment: FeeInstalment # null for a manual invoice
+  academicYear: AcademicYear
+  title: String! @default(value: "Fee") # what it is for, copied when the invoice is made ("Tuition - April")
+  grossMinor: Int64 # before concessions (null for a manual invoice)
+  discountMinor: Int64 # taken off by concessions (null for a manual invoice)
+  amountMinor: Int64! # due, in minor units (paise)
+  paidMinor: Int64! @default(value: "0")
   dueDate: Date!
   status: InvoiceStatus! @default(value: PENDING)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A payment against one invoice. Several payments make a part-payment. A payment is never edited or deleted: a mistake is REVERSED
+# (kept, marked, and taken back out of the invoice), so the books show both.
+type Payment @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  invoice: Invoice!
+  student: Student!
+  amountMinor: Int64!
+  method: PaymentMethod!
+  reference: String # cheque number, bank or UPI reference
+  paidOn: Date!
+  recordedBy: User!
+  reversedAt: Timestamp
+  reversalReason: String
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

@@ -16,6 +16,8 @@ describe.skipIf(!host)('Admin SDK against the emulator', () => {
     await db.createSchool({ id: B, name: 'School B', subDomain: `b-${tag}` });
     await db.upsertUser({ id: `adm-${tag}`, email: `adm-${tag}@example.com` });
     await db.createSchoolMember({ schoolId: A, userId: `adm-${tag}`, schoolRole: 'ACADEMIC_ADMIN' as never });
+    await db.upsertUser({ id: `adm-b-${tag}`, email: `adm-b-${tag}@example.com` });
+    await db.createSchoolMember({ schoolId: B, userId: `adm-b-${tag}`, schoolRole: 'BURSAR' as never });
     studentId = randomUUID();
     await db.createStudent({ schoolId: A, id: studentId, expectedSeq: 0, enrollmentId: `E-${tag}`, firstName: 'Aarav', lastName: 'Mehta', actorId: `adm-${tag}` });
   });
@@ -31,14 +33,14 @@ describe.skipIf(!host)('Admin SDK against the emulator', () => {
   });
 
   it('a cross-tenant reference is ABORTED by the database and surfaces as FORBIDDEN_REFERENCE (403)', async () => {
-    const err = await db.createInvoice({ schoolId: B, studentId, amountMinor: '100', dueDate: '2030-01-01' }).catch((e: unknown) => e);
+    const err = await db.createInvoice({ schoolId: B, id: randomUUID(), studentId, title: 'Fee', amountMinor: '100', dueDate: '2030-01-01', actorId: `adm-b-${tag}` }).catch((e: unknown) => e);
     expect(err).toBeInstanceOf(DatabaseError);
     expect(err).toMatchObject({ kind: 'FORBIDDEN_REFERENCE', httpStatus: 403 });
     expect(String((err as Error).message)).not.toMatch(/student|school/i);
   });
 
   it('the same invoice in the owning school succeeds', async () => {
-    const res = await db.createInvoice({ schoolId: A, studentId, amountMinor: '100', dueDate: '2030-01-01' });
+    const res = await db.createInvoice({ schoolId: A, id: randomUUID(), studentId, title: 'Fee', amountMinor: '100', dueDate: '2030-01-01', actorId: `adm-${tag}` });
     expect(res.data.invoice_insert.id).toBeTruthy();
   });
 

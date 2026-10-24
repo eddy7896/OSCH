@@ -368,6 +368,33 @@
         ],
         "type": "object"
       },
+      "AgeingBandDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "band": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          },
+          "outstandingMinor": {
+            "type": "string"
+          },
+          "paidMinor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "band",
+          "count",
+          "amountMinor",
+          "paidMinor",
+          "outstandingMinor"
+        ],
+        "type": "object"
+      },
       "ApplicationDto": {
         "properties": {
           "academicYear": {
@@ -1000,6 +1027,31 @@
         ],
         "type": "object"
       },
+      "CreateInvoiceDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId",
+          "title",
+          "amountMinor",
+          "dueDate"
+        ],
+        "type": "object"
+      },
       "CreateItemDto": {
         "properties": {
           "instalments": {
@@ -1569,6 +1621,90 @@
         ],
         "type": "object"
       },
+      "GenerateInvoicesDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "classroomId": {
+            "type": "string"
+          },
+          "dryRun": {
+            "type": "boolean"
+          },
+          "dueOnOrBefore": {
+            "type": "string"
+          },
+          "gradeLevelId": {
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "dueOnOrBefore"
+        ],
+        "type": "object"
+      },
+      "GenerateResultDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "alreadyInvoiced": {
+            "type": "number"
+          },
+          "created": {
+            "type": "number"
+          },
+          "dryRun": {
+            "type": "boolean"
+          },
+          "fullyWaived": {
+            "type": "number"
+          },
+          "sample": {
+            "items": {
+              "$ref": "#/components/schemas/SampleInvoiceDto"
+            },
+            "type": "array"
+          },
+          "students": {
+            "type": "number"
+          },
+          "studentsWithoutStructure": {
+            "type": "number"
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "dryRun",
+          "academicYear",
+          "students",
+          "created",
+          "alreadyInvoiced",
+          "fullyWaived",
+          "studentsWithoutStructure",
+          "truncated",
+          "sample"
+        ],
+        "type": "object"
+      },
       "GradeLevelDto": {
         "properties": {
           "classes": {
@@ -1916,6 +2052,228 @@
         ],
         "type": "object"
       },
+      "InvoiceDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "amountMinor": {
+            "type": "string"
+          },
+          "discountMinor": {
+            "nullable": true,
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "grossMinor": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "outstandingMinor": {
+            "type": "string"
+          },
+          "paidMinor": {
+            "type": "string"
+          },
+          "payments": {
+            "items": {
+              "$ref": "#/components/schemas/PaymentDto"
+            },
+            "type": "array"
+          },
+          "status": {
+            "type": "string"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "student",
+          "academicYear",
+          "dueDate",
+          "grossMinor",
+          "discountMinor",
+          "amountMinor",
+          "paidMinor",
+          "outstandingMinor",
+          "status",
+          "payments"
+        ],
+        "type": "object"
+      },
+      "InvoiceListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceSummaryDto"
+            },
+            "type": "array"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/InvoiceTotalsDto"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize",
+          "totals"
+        ],
+        "type": "object"
+      },
+      "InvoiceSummaryDto": {
+        "properties": {
+          "academicYear": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "amountMinor": {
+            "type": "string"
+          },
+          "discountMinor": {
+            "nullable": true,
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "grossMinor": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "outstandingMinor": {
+            "type": "string"
+          },
+          "paidMinor": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "student",
+          "academicYear",
+          "dueDate",
+          "grossMinor",
+          "discountMinor",
+          "amountMinor",
+          "paidMinor",
+          "outstandingMinor",
+          "status"
+        ],
+        "type": "object"
+      },
+      "InvoiceTotalsDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          },
+          "outstandingMinor": {
+            "type": "string"
+          },
+          "paidMinor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "count",
+          "amountMinor",
+          "paidMinor",
+          "outstandingMinor"
+        ],
+        "type": "object"
+      },
       "LinkStaffAccountDto": {
         "properties": {
           "userId": {
@@ -2166,6 +2524,82 @@
         ],
         "type": "object"
       },
+      "OutstandingDto": {
+        "properties": {
+          "asOf": {
+            "type": "string"
+          },
+          "bands": {
+            "items": {
+              "$ref": "#/components/schemas/AgeingBandDto"
+            },
+            "type": "array"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/InvoiceTotalsDto"
+          }
+        },
+        "required": [
+          "asOf",
+          "bands",
+          "totals"
+        ],
+        "type": "object"
+      },
+      "PaymentDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "paidOn": {
+            "type": "string"
+          },
+          "recordedBy": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "reference": {
+            "nullable": true,
+            "type": "string"
+          },
+          "reversalReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "reversedAt": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "amountMinor",
+          "method",
+          "reference",
+          "paidOn",
+          "reversedAt",
+          "reversalReason",
+          "recordedBy"
+        ],
+        "type": "object"
+      },
       "PhotoUploadRequestDto": {
         "properties": {
           "contentType": {
@@ -2261,6 +2695,72 @@
           "name",
           "subDomain",
           "defaultLanguage"
+        ],
+        "type": "object"
+      },
+      "RecordPaymentDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "CASH",
+              "CHEQUE",
+              "BANK_TRANSFER",
+              "UPI",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "paidOn": {
+            "type": "string"
+          },
+          "reference": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "amountMinor",
+          "method"
+        ],
+        "type": "object"
+      },
+      "ReversePaymentDto": {
+        "properties": {
+          "reason": {
+            "maxLength": 200,
+            "minLength": 3,
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "type": "object"
+      },
+      "SampleInvoiceDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "student": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "student",
+          "title",
+          "dueDate",
+          "amountMinor"
         ],
         "type": "object"
       },
@@ -2905,6 +3405,44 @@
           "designation",
           "status",
           "hasAccount"
+        ],
+        "type": "object"
+      },
+      "StatementDto": {
+        "properties": {
+          "invoices": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceSummaryDto"
+            },
+            "type": "array"
+          },
+          "student": {
+            "properties": {
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "enrollmentId",
+              "name"
+            ],
+            "type": "object"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/InvoiceTotalsDto"
+          }
+        },
+        "required": [
+          "student",
+          "invoices",
+          "totals"
         ],
         "type": "object"
       },
@@ -5928,6 +6466,444 @@
         }
       }
     },
+    "/v1/fees/invoices": {
+      "get": {
+        "operationId": "Invoices_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "studentId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {
+              "enum": [
+                "ALL",
+                "UNPAID",
+                "PAID",
+                "OVERDUE"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dueFrom",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dueTo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      },
+      "post": {
+        "operationId": "Invoices_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInvoiceDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.invoice.create",
+          "operation": "CreateInvoice"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/invoices/generate": {
+      "post": {
+        "operationId": "Invoices_generate",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateInvoicesDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.invoice.create",
+          "operation": "CreateInstalmentInvoice"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/invoices/generate/preview": {
+      "post": {
+        "operationId": "Invoices_preview",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateInvoicesDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/invoices/{id}": {
+      "get": {
+        "operationId": "Invoices_get",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/invoices/{id}/payments": {
+      "post": {
+        "operationId": "Invoices_pay",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordPaymentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.payment.record",
+          "operation": "RecordPayment"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
     "/v1/fees/items/{id}": {
       "delete": {
         "operationId": "Fees_deleteItem",
@@ -6137,6 +7113,139 @@
         },
         "x-permission": {
           "action": "create",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/outstanding": {
+      "get": {
+        "operationId": "Invoices_outstanding",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "asOf",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutstandingDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/payments/{id}/reverse": {
+      "post": {
+        "operationId": "Invoices_reverse",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReversePaymentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "fees.payment.reverse",
+          "operation": "ReversePayment"
+        },
+        "x-permission": {
+          "action": "delete",
           "resource": "finance"
         }
       }
@@ -6595,6 +7704,75 @@
         ],
         "tags": [
           "Fees"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "finance"
+        }
+      }
+    },
+    "/v1/fees/students/{studentId}/statement": {
+      "get": {
+        "operationId": "Invoices_statement",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "studentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatementDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Invoices"
         ],
         "x-access": "tenant",
         "x-permission": {

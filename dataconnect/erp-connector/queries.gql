@@ -1,18 +1,3 @@
-# Get all Invoices for a School (Requires joining through Student)
-query ListInvoices($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  invoices(where: {schoolId: {eq: $schoolId}}, orderBy: [{dueDate: ASC}]) {
-    id
-    amountMinor
-    dueDate
-    status
-    student {
-      firstName
-      lastName
-      enrollmentId
-    }
-  }
-}
-
 # HR: Get all Staff (SchoolMembers) for a School
 query ListStaff($schoolId: UUID!) @auth(level: NO_ACCESS) {
   schoolMembers(where: {schoolId: {eq: $schoolId}}) {
@@ -315,4 +300,50 @@ query StudentIdentities($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(lev
 
 query StaffIdentities($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
   staffProfiles(where: {schoolId: {eq: $schoolId}}, orderBy: [{serial: ASC}], limit: $limit, offset: $offset) { firstName lastName dateOfBirth }
+}
+
+# ---- Invoices and payments (P2-7b). A null filter is skipped.
+query ListInvoices($schoolId: UUID!, $studentId: UUID, $academicYearId: UUID, $status: InvoiceStatus, $dueOnOrBefore: Date, $dueOnOrAfter: Date, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  invoices(where: {_and: [{schoolId: {eq: $schoolId}}, {studentId: {eq: $studentId}}, {academicYearId: {eq: $academicYearId}}, {status: {eq: $status}}, {dueDate: {le: $dueOnOrBefore}}, {dueDate: {ge: $dueOnOrAfter}}]}, orderBy: [{dueDate: ASC}, {createdAt: ASC}], limit: $limit, offset: $offset) {
+    id title amountMinor paidMinor grossMinor discountMinor dueDate status createdAt student { id enrollmentId firstName lastName } academicYear { id name }
+  }
+}
+
+query CountInvoices($schoolId: UUID!, $studentId: UUID, $academicYearId: UUID, $status: InvoiceStatus, $dueOnOrBefore: Date, $dueOnOrAfter: Date) @auth(level: NO_ACCESS) {
+  invoices(where: {_and: [{schoolId: {eq: $schoolId}}, {studentId: {eq: $studentId}}, {academicYearId: {eq: $academicYearId}}, {status: {eq: $status}}, {dueDate: {le: $dueOnOrBefore}}, {dueDate: {ge: $dueOnOrAfter}}]}) { _count amountMinor_sum paidMinor_sum }
+}
+
+query GetInvoice($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  invoices(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id title amountMinor paidMinor grossMinor discountMinor dueDate status createdAt student { id enrollmentId firstName lastName } academicYear { id name }
+    instalmentId
+    payments: payments_on_invoice(orderBy: [{createdAt: ASC}]) { id amountMinor method reference paidOn reversedAt reversalReason createdAt recordedBy { id displayName email } }
+  }
+}
+
+# Every instalment invoice of a year, to tell what an invoice run has already made. Paged.
+query InvoicedForYear($schoolId: UUID!, $academicYearId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  invoices(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, instalmentId: {isNull: false}}, orderBy: [{createdAt: ASC}], limit: $limit, offset: $offset) { studentId instalmentId }
+}
+
+# How many invoices stand on these fee instalments (a fee that has been billed cannot be deleted).
+query CountInvoicesForInstalments($schoolId: UUID!, $ids: [UUID!]!) @auth(level: NO_ACCESS) {
+  invoices(where: {schoolId: {eq: $schoolId}, instalmentId: {in: $ids}}) { _count }
+}
+
+query GetPayment($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  payments(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id amountMinor reversedAt invoice { id amountMinor paidMinor status } }
+}
+
+# Totals of what is still unpaid and due in a date window; the gateway runs one per ageing band. Exact Int64 sums, computed in the database.
+query UnpaidTotals($schoolId: UUID!, $dueOnOrBefore: Date, $dueOnOrAfter: Date) @auth(level: NO_ACCESS) {
+  invoices(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: PENDING}}, {dueDate: {le: $dueOnOrBefore}}, {dueDate: {ge: $dueOnOrAfter}}]}) { _count amountMinor_sum paidMinor_sum }
+}
+
+# The students placed in a class level (or one class) for a year: who an invoice run is for.
+query PlacedStudents($schoolId: UUID!, $academicYearId: UUID!, $gradeLevelId: UUID, $classroomId: UUID, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  studentEnrollments(where: {_and: [{schoolId: {eq: $schoolId}}, {academicYearId: {eq: $academicYearId}}, {classroomId: {eq: $classroomId}}, {classroom: {gradeLevelId: {eq: $gradeLevelId}}}, {student: {status: {eq: ACTIVE}}}]}, orderBy: [{createdAt: ASC}], limit: $limit, offset: $offset) {
+    studentId
+    classroom { id gradeLevelId }
+  }
 }

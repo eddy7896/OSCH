@@ -57,6 +57,13 @@ export enum MembershipStatus {
   ACTIVE = "ACTIVE",
   SUSPENDED = "SUSPENDED",
 }
+export enum PaymentMethod {
+  CASH = "CASH",
+  CHEQUE = "CHEQUE",
+  BANK_TRANSFER = "BANK_TRANSFER",
+  UPI = "UPI",
+  OTHER = "OTHER",
+}
 export enum PayrollStatus {
   PENDING = "PENDING",
   PAID = "PAID",
@@ -374,6 +381,34 @@ export interface CountApplicationsVariables {
   academicYearId?: UUIDString | null;
 }
 
+export interface CountInvoicesData {
+  invoices: ({
+    _count: number;
+    amountMinor_sum?: Int64String | null;
+    paidMinor_sum?: Int64String | null;
+  })[];
+}
+
+export interface CountInvoicesForInstalmentsData {
+  invoices: ({
+    _count: number;
+  })[];
+}
+
+export interface CountInvoicesForInstalmentsVariables {
+  schoolId: UUIDString;
+  ids: UUIDString[];
+}
+
+export interface CountInvoicesVariables {
+  schoolId: UUIDString;
+  studentId?: UUIDString | null;
+  academicYearId?: UUIDString | null;
+  status?: InvoiceStatus | null;
+  dueOnOrBefore?: DateString | null;
+  dueOnOrAfter?: DateString | null;
+}
+
 export interface CountStaffProfilesData {
   staffProfiles: ({
     _count: number;
@@ -615,6 +650,40 @@ export interface CreateGradeLevelVariables {
   details?: unknown | null;
 }
 
+export interface CreateInstalmentInvoiceData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    inst: ({
+      id: UUIDString;
+    } & FeeInstalment_Key)[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+  };
+  invoice_insert: Invoice_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateInstalmentInvoiceVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  instalmentId: UUIDString;
+  academicYearId: UUIDString;
+  title: string;
+  grossMinor: Int64String;
+  discountMinor: Int64String;
+  amountMinor: Int64String;
+  dueDate: DateString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface CreateInvitationData {
   query?: {
     actor: ({
@@ -638,18 +707,26 @@ export interface CreateInvitationVariables {
 
 export interface CreateInvoiceData {
   query?: {
-    students: ({
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
       id: UUIDString;
     } & Student_Key)[];
   };
   invoice_insert: Invoice_Key;
+  auditLog_insert: AuditLog_Key;
 }
 
 export interface CreateInvoiceVariables {
   schoolId: UUIDString;
+  id: UUIDString;
   studentId: UUIDString;
+  title: string;
   amountMinor: Int64String;
   dueDate: DateString;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CreateItemConcessionData {
@@ -1233,6 +1310,51 @@ export interface GetInvitationByTokenHashVariables {
   tokenHash: string;
 }
 
+export interface GetInvoiceData {
+  invoices: ({
+    id: UUIDString;
+    title: string;
+    amountMinor: Int64String;
+    paidMinor: Int64String;
+    grossMinor?: Int64String | null;
+    discountMinor?: Int64String | null;
+    dueDate: DateString;
+    status: InvoiceStatus;
+    createdAt: TimestampString;
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    academicYear?: {
+      id: UUIDString;
+      name: string;
+    } & AcademicYear_Key;
+    instalmentId?: UUIDString | null;
+    payments: ({
+      id: UUIDString;
+      amountMinor: Int64String;
+      method: PaymentMethod;
+      reference?: string | null;
+      paidOn: DateString;
+      reversedAt?: TimestampString | null;
+      reversalReason?: string | null;
+      createdAt: TimestampString;
+      recordedBy: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+    } & Payment_Key)[];
+  } & Invoice_Key)[];
+}
+
+export interface GetInvoiceVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetMembershipData {
   schoolMembers: ({
     schoolRole: SchoolRole;
@@ -1249,6 +1371,25 @@ export interface GetMembershipData {
 export interface GetMembershipVariables {
   schoolId: UUIDString;
   userId: string;
+}
+
+export interface GetPaymentData {
+  payments: ({
+    id: UUIDString;
+    amountMinor: Int64String;
+    reversedAt?: TimestampString | null;
+    invoice: {
+      id: UUIDString;
+      amountMinor: Int64String;
+      paidMinor: Int64String;
+      status: InvoiceStatus;
+    } & Invoice_Key;
+  } & Payment_Key)[];
+}
+
+export interface GetPaymentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
 }
 
 export interface GetSchoolBySubDomainData {
@@ -1452,6 +1593,20 @@ export interface Invitation_Key {
 export interface Invoice_Key {
   id: UUIDString;
   __typename?: 'Invoice_Key';
+}
+
+export interface InvoicedForYearData {
+  invoices: ({
+    studentId: UUIDString;
+    instalmentId?: UUIDString | null;
+  })[];
+}
+
+export interface InvoicedForYearVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
+  limit: number;
+  offset: number;
 }
 
 export interface LeaveRequest_Key {
@@ -1692,19 +1847,36 @@ export interface ListInvitationsVariables {
 export interface ListInvoicesData {
   invoices: ({
     id: UUIDString;
+    title: string;
     amountMinor: Int64String;
+    paidMinor: Int64String;
+    grossMinor?: Int64String | null;
+    discountMinor?: Int64String | null;
     dueDate: DateString;
     status: InvoiceStatus;
+    createdAt: TimestampString;
     student: {
+      id: UUIDString;
+      enrollmentId: string;
       firstName: string;
       lastName: string;
-      enrollmentId: string;
-    };
+    } & Student_Key;
+    academicYear?: {
+      id: UUIDString;
+      name: string;
+    } & AcademicYear_Key;
   } & Invoice_Key)[];
 }
 
 export interface ListInvoicesVariables {
   schoolId: UUIDString;
+  studentId?: UUIDString | null;
+  academicYearId?: UUIDString | null;
+  status?: InvoiceStatus | null;
+  dueOnOrBefore?: DateString | null;
+  dueOnOrAfter?: DateString | null;
+  limit: number;
+  offset: number;
 }
 
 export interface ListLeaveRequestsData {
@@ -1946,6 +2118,11 @@ export interface ParentGuardian_Key {
   __typename?: 'ParentGuardian_Key';
 }
 
+export interface Payment_Key {
+  id: UUIDString;
+  __typename?: 'Payment_Key';
+}
+
 export interface Payroll_Key {
   id: UUIDString;
   __typename?: 'Payroll_Key';
@@ -1977,6 +2154,25 @@ export interface PlaceStudentVariables {
   classroomId: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface PlacedStudentsData {
+  studentEnrollments: ({
+    studentId: UUIDString;
+    classroom: {
+      id: UUIDString;
+      gradeLevelId: UUIDString;
+    } & Classroom_Key;
+  })[];
+}
+
+export interface PlacedStudentsVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
+  gradeLevelId?: UUIDString | null;
+  classroomId?: UUIDString | null;
+  limit: number;
+  offset: number;
 }
 
 export interface ProvisionSchoolAdminData {
@@ -2024,6 +2220,36 @@ export interface ProvisionSchoolVariables {
   name: string;
   subDomain: string;
   defaultLanguage: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface RecordPaymentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    invoice: ({
+      id: UUIDString;
+    } & Invoice_Key)[];
+  };
+  invoice_update?: Invoice_Key | null;
+  payment_insert: Payment_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RecordPaymentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  invoiceId: UUIDString;
+  studentId: UUIDString;
+  amountMinor: Int64String;
+  method: PaymentMethod;
+  reference?: string | null;
+  paidOn: DateString;
+  expectedPaidMinor: Int64String;
+  newPaidMinor: Int64String;
+  newStatus: InvoiceStatus;
   actorId: string;
   details?: unknown | null;
 }
@@ -2101,6 +2327,35 @@ export interface RemoveStudentDocumentData {
 export interface RemoveStudentDocumentVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface ReversePaymentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    payment: ({
+      id: UUIDString;
+    } & Payment_Key)[];
+    invoice: ({
+      id: UUIDString;
+    } & Invoice_Key)[];
+  };
+  invoice_update?: Invoice_Key | null;
+  payment_update?: Payment_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ReversePaymentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  invoiceId: UUIDString;
+  reason: string;
+  expectedPaidMinor: Int64String;
+  newPaidMinor: Int64String;
+  newStatus: InvoiceStatus;
   actorId: string;
   details?: unknown | null;
 }
@@ -2326,6 +2581,20 @@ export interface StudentsByEnrollmentIdsVariables {
 export interface Subject_Key {
   id: UUIDString;
   __typename?: 'Subject_Key';
+}
+
+export interface UnpaidTotalsData {
+  invoices: ({
+    _count: number;
+    amountMinor_sum?: Int64String | null;
+    paidMinor_sum?: Int64String | null;
+  })[];
+}
+
+export interface UnpaidTotalsVariables {
+  schoolId: UUIDString;
+  dueOnOrBefore?: DateString | null;
+  dueOnOrAfter?: DateString | null;
 }
 
 export interface UpdateAcademicYearData {
@@ -2701,11 +2970,6 @@ export function createSchoolMember(dc: DataConnect, vars: CreateSchoolMemberVari
 /** Generated Node Admin SDK operation action function for the 'CreateSchoolMember' Mutation. Allow users to pass in custom DataConnect instances. */
 export function createSchoolMember(vars: CreateSchoolMemberVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolMemberData>>;
 
-/** Generated Node Admin SDK operation action function for the 'CreateInvoice' Mutation. Allow users to execute without passing in DataConnect. */
-export function createInvoice(dc: DataConnect, vars: CreateInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateInvoiceData>>;
-/** Generated Node Admin SDK operation action function for the 'CreateInvoice' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createInvoice(vars: CreateInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateInvoiceData>>;
-
 /** Generated Node Admin SDK operation action function for the 'CreatePayroll' Mutation. Allow users to execute without passing in DataConnect. */
 export function createPayroll(dc: DataConnect, vars: CreatePayrollVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePayrollData>>;
 /** Generated Node Admin SDK operation action function for the 'CreatePayroll' Mutation. Allow users to pass in custom DataConnect instances. */
@@ -3041,10 +3305,25 @@ export function finishImportBatch(dc: DataConnect, vars: FinishImportBatchVariab
 /** Generated Node Admin SDK operation action function for the 'FinishImportBatch' Mutation. Allow users to pass in custom DataConnect instances. */
 export function finishImportBatch(vars: FinishImportBatchVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishImportBatchData>>;
 
-/** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to execute without passing in DataConnect. */
-export function listInvoices(dc: DataConnect, vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;
-/** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to pass in custom DataConnect instances. */
-export function listInvoices(vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateInvoice' Mutation. Allow users to execute without passing in DataConnect. */
+export function createInvoice(dc: DataConnect, vars: CreateInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateInvoiceData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateInvoice' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createInvoice(vars: CreateInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateInvoiceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateInstalmentInvoice' Mutation. Allow users to execute without passing in DataConnect. */
+export function createInstalmentInvoice(dc: DataConnect, vars: CreateInstalmentInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateInstalmentInvoiceData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateInstalmentInvoice' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createInstalmentInvoice(vars: CreateInstalmentInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateInstalmentInvoiceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RecordPayment' Mutation. Allow users to execute without passing in DataConnect. */
+export function recordPayment(dc: DataConnect, vars: RecordPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordPaymentData>>;
+/** Generated Node Admin SDK operation action function for the 'RecordPayment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function recordPayment(vars: RecordPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordPaymentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ReversePayment' Mutation. Allow users to execute without passing in DataConnect. */
+export function reversePayment(dc: DataConnect, vars: ReversePaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ReversePaymentData>>;
+/** Generated Node Admin SDK operation action function for the 'ReversePayment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function reversePayment(vars: ReversePaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ReversePaymentData>>;
 
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
@@ -3260,4 +3539,44 @@ export function studentIdentities(vars: StudentIdentitiesVariables, options?: Op
 export function staffIdentities(dc: DataConnect, vars: StaffIdentitiesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffIdentitiesData>>;
 /** Generated Node Admin SDK operation action function for the 'StaffIdentities' Query. Allow users to pass in custom DataConnect instances. */
 export function staffIdentities(vars: StaffIdentitiesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffIdentitiesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to execute without passing in DataConnect. */
+export function listInvoices(dc: DataConnect, vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListInvoices' Query. Allow users to pass in custom DataConnect instances. */
+export function listInvoices(vars: ListInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListInvoicesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountInvoices' Query. Allow users to execute without passing in DataConnect. */
+export function countInvoices(dc: DataConnect, vars: CountInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountInvoicesData>>;
+/** Generated Node Admin SDK operation action function for the 'CountInvoices' Query. Allow users to pass in custom DataConnect instances. */
+export function countInvoices(vars: CountInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountInvoicesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetInvoice' Query. Allow users to execute without passing in DataConnect. */
+export function getInvoice(dc: DataConnect, vars: GetInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetInvoiceData>>;
+/** Generated Node Admin SDK operation action function for the 'GetInvoice' Query. Allow users to pass in custom DataConnect instances. */
+export function getInvoice(vars: GetInvoiceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetInvoiceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'InvoicedForYear' Query. Allow users to execute without passing in DataConnect. */
+export function invoicedForYear(dc: DataConnect, vars: InvoicedForYearVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<InvoicedForYearData>>;
+/** Generated Node Admin SDK operation action function for the 'InvoicedForYear' Query. Allow users to pass in custom DataConnect instances. */
+export function invoicedForYear(vars: InvoicedForYearVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<InvoicedForYearData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountInvoicesForInstalments' Query. Allow users to execute without passing in DataConnect. */
+export function countInvoicesForInstalments(dc: DataConnect, vars: CountInvoicesForInstalmentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountInvoicesForInstalmentsData>>;
+/** Generated Node Admin SDK operation action function for the 'CountInvoicesForInstalments' Query. Allow users to pass in custom DataConnect instances. */
+export function countInvoicesForInstalments(vars: CountInvoicesForInstalmentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountInvoicesForInstalmentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetPayment' Query. Allow users to execute without passing in DataConnect. */
+export function getPayment(dc: DataConnect, vars: GetPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetPaymentData>>;
+/** Generated Node Admin SDK operation action function for the 'GetPayment' Query. Allow users to pass in custom DataConnect instances. */
+export function getPayment(vars: GetPaymentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetPaymentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UnpaidTotals' Query. Allow users to execute without passing in DataConnect. */
+export function unpaidTotals(dc: DataConnect, vars: UnpaidTotalsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnpaidTotalsData>>;
+/** Generated Node Admin SDK operation action function for the 'UnpaidTotals' Query. Allow users to pass in custom DataConnect instances. */
+export function unpaidTotals(vars: UnpaidTotalsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnpaidTotalsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'PlacedStudents' Query. Allow users to execute without passing in DataConnect. */
+export function placedStudents(dc: DataConnect, vars: PlacedStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PlacedStudentsData>>;
+/** Generated Node Admin SDK operation action function for the 'PlacedStudents' Query. Allow users to pass in custom DataConnect instances. */
+export function placedStudents(vars: PlacedStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PlacedStudentsData>>;
 
