@@ -1368,4 +1368,17 @@ class OruStringsUr extends OruStrings {
   @override
   String get hrrNoRunsTitle =>
       'اس سال کوئی منظور شدہ یا ادا شدہ تنخواہ سائیکل نہیں';
+
+  @override
+  String get webApplicationsWaiting => 'جائزے کے منتظر درخواستیں';
+
+  @override
+  String get webRunsWaiting => 'منظوری کے منتظر تنخواہ سائیکل';
+
+  @override
+  String get webFieldRoleTitle => 'آپ کا کردار موبائل ایپ میں کام کرتا ہے';
+
+  @override
+  String get webFieldRoleBody =>
+      'یہ ویب حصہ منتظم کے لیے ہے۔ اپنے فون میں OruSchools ایپ کھولیں۔';
 }

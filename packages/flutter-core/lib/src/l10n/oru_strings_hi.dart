@@ -1363,4 +1363,17 @@ class OruStringsHi extends OruStrings {
   @override
   String get hrrNoRunsTitle =>
       'इस वर्ष कोई स्वीकृत या भुगतान किया गया वेतन चक्र नहीं';
+
+  @override
+  String get webApplicationsWaiting => 'समीक्षा की प्रतीक्षा में आवेदन';
+
+  @override
+  String get webRunsWaiting => 'स्वीकृति की प्रतीक्षा में वेतन चक्र';
+
+  @override
+  String get webFieldRoleTitle => 'आपकी भूमिका मोबाइल ऐप में काम करती है';
+
+  @override
+  String get webFieldRoleBody =>
+      'यह वेब क्षेत्र प्रशासक के लिए है। अपने फ़ोन में OruSchools ऐप खोलें।';
 }

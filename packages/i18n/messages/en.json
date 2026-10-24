@@ -412,5 +412,9 @@
   "setImportFailed": "{count} rows could not be created.",
   "hrrByDepartment": "By department",
   "hrrNoDepartment": "No department",
-  "hrrNoRunsTitle": "No approved or paid pay runs in this year"
+  "hrrNoRunsTitle": "No approved or paid pay runs in this year",
+  "webApplicationsWaiting": "Applications waiting for review",
+  "webRunsWaiting": "Pay runs waiting for approval",
+  "webFieldRoleTitle": "Your role works in the mobile app",
+  "webFieldRoleBody": "This web area is for administrators. Open the OruSchools app on your phone."
 }

@@ -412,5 +412,9 @@
   "setImportFailed": "{count} पंक्तियाँ नहीं बन सकीं।",
   "hrrByDepartment": "विभाग के अनुसार",
   "hrrNoDepartment": "कोई विभाग नहीं",
-  "hrrNoRunsTitle": "इस वर्ष कोई स्वीकृत या भुगतान किया गया वेतन चक्र नहीं"
+  "hrrNoRunsTitle": "इस वर्ष कोई स्वीकृत या भुगतान किया गया वेतन चक्र नहीं",
+  "webApplicationsWaiting": "समीक्षा की प्रतीक्षा में आवेदन",
+  "webRunsWaiting": "स्वीकृति की प्रतीक्षा में वेतन चक्र",
+  "webFieldRoleTitle": "आपकी भूमिका मोबाइल ऐप में काम करती है",
+  "webFieldRoleBody": "यह वेब क्षेत्र प्रशासक के लिए है। अपने फ़ोन में OruSchools ऐप खोलें।"
 }

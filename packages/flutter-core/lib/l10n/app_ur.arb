@@ -413,5 +413,9 @@
   "setImportFailed": "{count} قطاریں نہیں بن سکیں۔",
   "hrrByDepartment": "شعبے کے لحاظ سے",
   "hrrNoDepartment": "کوئی شعبہ نہیں",
-  "hrrNoRunsTitle": "اس سال کوئی منظور شدہ یا ادا شدہ تنخواہ سائیکل نہیں"
+  "hrrNoRunsTitle": "اس سال کوئی منظور شدہ یا ادا شدہ تنخواہ سائیکل نہیں",
+  "webApplicationsWaiting": "جائزے کے منتظر درخواستیں",
+  "webRunsWaiting": "منظوری کے منتظر تنخواہ سائیکل",
+  "webFieldRoleTitle": "آپ کا کردار موبائل ایپ میں کام کرتا ہے",
+  "webFieldRoleBody": "یہ ویب حصہ منتظم کے لیے ہے۔ اپنے فون میں OruSchools ایپ کھولیں۔"
 }

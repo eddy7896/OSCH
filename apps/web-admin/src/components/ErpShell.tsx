@@ -7,7 +7,7 @@ import { Button, Card, EmptyState, SideNav, type SideNavSection } from "@oruscho
 import { useSession } from "@oruschools/web-auth";
 import { isDashboard, ITEM, SECTION_KEY } from "@/lib/nav";
 import { Dashboard } from "./Dashboard";
-import { canRead, Glance } from "./screens/Glance";
+import { Glance, hasGlance } from "./screens/Glance";
 import { Admissions } from "./screens/Admissions";
 import { Classes } from "./screens/Classes";
 import { Fees } from "./screens/Fees";
@@ -18,6 +18,9 @@ import { Payroll } from "./screens/Payroll";
 import { Staff } from "./screens/Staff";
 import { Students } from "./screens/Students";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+
+/** The navigation keys that have a screen. */
+const BUILT = new Set(["students", "classes", "admissions", "staff", "payroll", "finance", "settings", "reports-finance", "reports-hr"]);
 
 type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
@@ -38,6 +41,8 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
     items: section.items.map((item) => ({ key: item.key, label: ITEM[item.key] ? t(ITEM[item.key]!.label) : item.label, icon: ITEM[item.key]?.icon ?? "grid" })),
   }));
   const name = me.user.displayName ?? me.user.email;
+  // A role whose work is in the mobile apps (teacher, staff, driver, parent) has nothing built for it here yet: say where to go, never "not ready".
+  const usable = access.navigation.some((section) => section.items.some((item) => isDashboard(item.key) || BUILT.has(item.key)));
 
   return (
     <div className="flex flex-1 flex-col md:flex-row">
@@ -53,8 +58,12 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
           </div>
         </header>
         <main className="mx-auto w-full max-w-5xl flex-1 p-4">
-          {isDashboard(current) ? (
-            <Dashboard name={me.user.displayName ?? me.user.email} role={access.role} hour={hour} glance={canRead(access.permissions, "reports_finance") || canRead(access.permissions, "students") ? <Glance permissions={access.permissions} /> : undefined} />
+          {!usable ? (
+            <Card>
+              <EmptyState title={t("webFieldRoleTitle")} description={t("webFieldRoleBody")} headingLevel={1} />
+            </Card>
+          ) : isDashboard(current) ? (
+            <Dashboard name={me.user.displayName ?? me.user.email} role={access.role} hour={hour} glance={hasGlance(access.permissions) ? <Glance permissions={access.permissions} /> : undefined} />
           ) : current === "students" ? (
             <Students canCreate={access.permissions["students"]?.["create"] === "school"} />
           ) : current === "classes" ? (

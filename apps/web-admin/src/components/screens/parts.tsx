@@ -22,6 +22,8 @@ export function Pager({ page, pageSize, total, onPage }: { page: number; pageSiz
 
 export function Failed({ messageKey, retry }: { messageKey: string; retry: () => void }) {
   const t = useTranslations();
+  // Refused for this role (the screen should not have been reachable): say so plainly; trying again cannot help.
+  if (messageKey === "errorForbidden") return <Banner tone="warning" title={t("errorForbidden")} />;
   return (
     <Banner tone="danger" title={t("webLoadFailed")} action={<Button size="comfortable" icon="refresh" onClick={retry}>{t("actionRetry")}</Button>}>
       {t(messageKey)}
