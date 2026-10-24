@@ -418,7 +418,11 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "setImportFailed": "{count} rows could not be created.",
     "hrrByDepartment": "By department",
     "hrrNoDepartment": "No department",
-    "hrrNoRunsTitle": "No approved or paid pay runs in this year"
+    "hrrNoRunsTitle": "No approved or paid pay runs in this year",
+    "webApplicationsWaiting": "Applications waiting for review",
+    "webRunsWaiting": "Pay runs waiting for approval",
+    "webFieldRoleTitle": "Your role works in the mobile app",
+    "webFieldRoleBody": "This web area is for administrators. Open the OruSchools app on your phone."
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -834,7 +838,11 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "setImportFailed": "{count} पंक्तियाँ नहीं बन सकीं।",
     "hrrByDepartment": "विभाग के अनुसार",
     "hrrNoDepartment": "कोई विभाग नहीं",
-    "hrrNoRunsTitle": "इस वर्ष कोई स्वीकृत या भुगतान किया गया वेतन चक्र नहीं"
+    "hrrNoRunsTitle": "इस वर्ष कोई स्वीकृत या भुगतान किया गया वेतन चक्र नहीं",
+    "webApplicationsWaiting": "समीक्षा की प्रतीक्षा में आवेदन",
+    "webRunsWaiting": "स्वीकृति की प्रतीक्षा में वेतन चक्र",
+    "webFieldRoleTitle": "आपकी भूमिका मोबाइल ऐप में काम करती है",
+    "webFieldRoleBody": "यह वेब क्षेत्र प्रशासक के लिए है। अपने फ़ोन में OruSchools ऐप खोलें।"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -1250,7 +1258,11 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "setImportFailed": "{count} قطاریں نہیں بن سکیں۔",
     "hrrByDepartment": "شعبے کے لحاظ سے",
     "hrrNoDepartment": "کوئی شعبہ نہیں",
-    "hrrNoRunsTitle": "اس سال کوئی منظور شدہ یا ادا شدہ تنخواہ سائیکل نہیں"
+    "hrrNoRunsTitle": "اس سال کوئی منظور شدہ یا ادا شدہ تنخواہ سائیکل نہیں",
+    "webApplicationsWaiting": "جائزے کے منتظر درخواستیں",
+    "webRunsWaiting": "منظوری کے منتظر تنخواہ سائیکل",
+    "webFieldRoleTitle": "آپ کا کردار موبائل ایپ میں کام کرتا ہے",
+    "webFieldRoleBody": "یہ ویب حصہ منتظم کے لیے ہے۔ اپنے فون میں OruSchools ایپ کھولیں۔"
   },
   "ks": {},
   "sd": {},

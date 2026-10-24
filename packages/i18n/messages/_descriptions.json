@@ -413,5 +413,9 @@
   "setImportFailed": "Result after a CSV import when some rows failed.",
   "hrrByDepartment": "Heading of the payroll totals split by department.",
   "hrrNoDepartment": "Label for staff who have no department.",
-  "hrrNoRunsTitle": "Empty state of the payroll summary."
+  "hrrNoRunsTitle": "Empty state of the payroll summary.",
+  "webApplicationsWaiting": "Dashboard number: admission applications that have come in and nobody has started to review.",
+  "webRunsWaiting": "Dashboard number: draft pay runs the Principal has not approved yet.",
+  "webFieldRoleTitle": "Heading shown on the web ERP to a person whose role is for the mobile apps (teacher, staff, driver, parent).",
+  "webFieldRoleBody": "Explains where a mobile-app role should go. Keep the brand name OruSchools in Latin letters."
 }

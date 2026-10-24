@@ -1838,5 +1838,21 @@
   "hrrNoRunsTitle": "No approved or paid pay runs in this year",
   "@hrrNoRunsTitle": {
     "description": "Empty state of the payroll summary."
+  },
+  "webApplicationsWaiting": "Applications waiting for review",
+  "@webApplicationsWaiting": {
+    "description": "Dashboard number: admission applications that have come in and nobody has started to review."
+  },
+  "webRunsWaiting": "Pay runs waiting for approval",
+  "@webRunsWaiting": {
+    "description": "Dashboard number: draft pay runs the Principal has not approved yet."
+  },
+  "webFieldRoleTitle": "Your role works in the mobile app",
+  "@webFieldRoleTitle": {
+    "description": "Heading shown on the web ERP to a person whose role is for the mobile apps (teacher, staff, driver, parent)."
+  },
+  "webFieldRoleBody": "This web area is for administrators. Open the OruSchools app on your phone.",
+  "@webFieldRoleBody": {
+    "description": "Explains where a mobile-app role should go. Keep the brand name OruSchools in Latin letters."
   }
 }

@@ -2615,6 +2615,30 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'No approved or paid pay runs in this year'**
   String get hrrNoRunsTitle;
+
+  /// Dashboard number: admission applications that have come in and nobody has started to review.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications waiting for review'**
+  String get webApplicationsWaiting;
+
+  /// Dashboard number: draft pay runs the Principal has not approved yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay runs waiting for approval'**
+  String get webRunsWaiting;
+
+  /// Heading shown on the web ERP to a person whose role is for the mobile apps (teacher, staff, driver, parent).
+  ///
+  /// In en, this message translates to:
+  /// **'Your role works in the mobile app'**
+  String get webFieldRoleTitle;
+
+  /// Explains where a mobile-app role should go. Keep the brand name OruSchools in Latin letters.
+  ///
+  /// In en, this message translates to:
+  /// **'This web area is for administrators. Open the OruSchools app on your phone.'**
+  String get webFieldRoleBody;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

@@ -1364,4 +1364,17 @@ class OruStringsEn extends OruStrings {
 
   @override
   String get hrrNoRunsTitle => 'No approved or paid pay runs in this year';
+
+  @override
+  String get webApplicationsWaiting => 'Applications waiting for review';
+
+  @override
+  String get webRunsWaiting => 'Pay runs waiting for approval';
+
+  @override
+  String get webFieldRoleTitle => 'Your role works in the mobile app';
+
+  @override
+  String get webFieldRoleBody =>
+      'This web area is for administrators. Open the OruSchools app on your phone.';
 }
