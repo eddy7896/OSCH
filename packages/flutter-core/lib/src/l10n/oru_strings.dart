@@ -1937,6 +1937,210 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Application saved'**
   String get peoApplicationSaved;
+
+  /// Button that opens the form to add a staff member.
+  ///
+  /// In en, this message translates to:
+  /// **'Add staff member'**
+  String get hrpAddStaff;
+
+  /// Label of the search box above the staff list.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name or employee no.'**
+  String get hrpSearch;
+
+  /// Choice that shows staff of every department.
+  ///
+  /// In en, this message translates to:
+  /// **'All departments'**
+  String get hrpAllDepartments;
+
+  /// Label of the day a staff member joined.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of joining'**
+  String get hrpJoined;
+
+  /// Empty state of the staff list.
+  ///
+  /// In en, this message translates to:
+  /// **'No staff yet'**
+  String get hrpNoStaffTitle;
+
+  /// Shown when a search finds nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No staff member matches this search.'**
+  String get hrpNoMatch;
+
+  /// Confirmation after adding a staff member.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff member added'**
+  String get hrpStaffAdded;
+
+  /// Heading of the salary section on a staff member's page.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get hrpSalary;
+
+  /// Kind of salary line: money the person is paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Earning'**
+  String get hrpEarning;
+
+  /// Kind of salary line: money taken off pay.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduction'**
+  String get hrpDeduction;
+
+  /// Form label: earning or deduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get hrpKind;
+
+  /// Form label: the name of a salary line, for example Basic pay.
+  ///
+  /// In en, this message translates to:
+  /// **'Component'**
+  String get hrpComponent;
+
+  /// Column heading and form label for an amount of money.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get hrpAmount;
+
+  /// Hint under an amount field.
+  ///
+  /// In en, this message translates to:
+  /// **'In rupees, for example 45,000.50'**
+  String get hrpAmountHint;
+
+  /// Button that adds a line to a salary.
+  ///
+  /// In en, this message translates to:
+  /// **'Add salary line'**
+  String get hrpAddLine;
+
+  /// Shown when a staff member has no salary lines.
+  ///
+  /// In en, this message translates to:
+  /// **'No salary set yet'**
+  String get hrpNoLines;
+
+  /// Button that removes a salary line.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get hrpRemove;
+
+  /// Button that starts the monthly pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'New pay run'**
+  String get hrpNewRun;
+
+  /// Confirmation after creating a pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay run created'**
+  String get hrpRunCreated;
+
+  /// Status of a pay run that can still change.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get hrpDraft;
+
+  /// Label: who made the pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepared by'**
+  String get hrpPreparedBy;
+
+  /// Label: who approved the pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved by'**
+  String get hrpApprovedBy;
+
+  /// Button: the Principal approves a pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get hrpApprove;
+
+  /// Button: the Bursar records that a pay run was paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as paid'**
+  String get hrpPay;
+
+  /// Button that deletes a draft pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete draft'**
+  String get hrpDeleteRun;
+
+  /// Button that confirms an action that cannot be undone.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get hrpConfirm;
+
+  /// Question before a pay run is approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve payroll for {month}? {count} staff, net pay {net}. This cannot be undone.'**
+  String hrpConfirmApprove(String month, String count, String net);
+
+  /// Question before a pay run is marked as paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Record payment of {net} for {month}? This cannot be undone.'**
+  String hrpConfirmPay(String net, String month);
+
+  /// Question before a draft pay run is deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete the draft for {month}? You can make it again.'**
+  String hrpConfirmDelete(String month);
+
+  /// Title of one month's pay run page.
+  ///
+  /// In en, this message translates to:
+  /// **'Payroll {month}'**
+  String hrpRunTitle(String month);
+
+  /// Opens the lines of one payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get hrpDetails;
+
+  /// Button that saves one payslip as a PDF.
+  ///
+  /// In en, this message translates to:
+  /// **'Payslip PDF'**
+  String get hrpPayslipPdf;
+
+  /// Empty state of the pay runs list.
+  ///
+  /// In en, this message translates to:
+  /// **'No pay runs yet'**
+  String get hrpNoRunsTitle;
+
+  /// Hint under the empty state of the pay runs list.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up salaries on each staff member first, then create the month\'s run.'**
+  String get hrpNoRunsBody;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

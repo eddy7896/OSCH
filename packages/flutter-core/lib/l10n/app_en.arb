@@ -1281,5 +1281,170 @@
   "peoApplicationSaved": "Application saved",
   "@peoApplicationSaved": {
     "description": "Confirmation after saving an application."
+  },
+  "hrpAddStaff": "Add staff member",
+  "@hrpAddStaff": {
+    "description": "Button that opens the form to add a staff member."
+  },
+  "hrpSearch": "Search by name or employee no.",
+  "@hrpSearch": {
+    "description": "Label of the search box above the staff list."
+  },
+  "hrpAllDepartments": "All departments",
+  "@hrpAllDepartments": {
+    "description": "Choice that shows staff of every department."
+  },
+  "hrpJoined": "Date of joining",
+  "@hrpJoined": {
+    "description": "Label of the day a staff member joined."
+  },
+  "hrpNoStaffTitle": "No staff yet",
+  "@hrpNoStaffTitle": {
+    "description": "Empty state of the staff list."
+  },
+  "hrpNoMatch": "No staff member matches this search.",
+  "@hrpNoMatch": {
+    "description": "Shown when a search finds nothing."
+  },
+  "hrpStaffAdded": "Staff member added",
+  "@hrpStaffAdded": {
+    "description": "Confirmation after adding a staff member."
+  },
+  "hrpSalary": "Salary",
+  "@hrpSalary": {
+    "description": "Heading of the salary section on a staff member's page."
+  },
+  "hrpEarning": "Earning",
+  "@hrpEarning": {
+    "description": "Kind of salary line: money the person is paid."
+  },
+  "hrpDeduction": "Deduction",
+  "@hrpDeduction": {
+    "description": "Kind of salary line: money taken off pay."
+  },
+  "hrpKind": "Type",
+  "@hrpKind": {
+    "description": "Form label: earning or deduction."
+  },
+  "hrpComponent": "Component",
+  "@hrpComponent": {
+    "description": "Form label: the name of a salary line, for example Basic pay."
+  },
+  "hrpAmount": "Amount",
+  "@hrpAmount": {
+    "description": "Column heading and form label for an amount of money."
+  },
+  "hrpAmountHint": "In rupees, for example 45,000.50",
+  "@hrpAmountHint": {
+    "description": "Hint under an amount field."
+  },
+  "hrpAddLine": "Add salary line",
+  "@hrpAddLine": {
+    "description": "Button that adds a line to a salary."
+  },
+  "hrpNoLines": "No salary set yet",
+  "@hrpNoLines": {
+    "description": "Shown when a staff member has no salary lines."
+  },
+  "hrpRemove": "Remove",
+  "@hrpRemove": {
+    "description": "Button that removes a salary line."
+  },
+  "hrpNewRun": "New pay run",
+  "@hrpNewRun": {
+    "description": "Button that starts the monthly pay run."
+  },
+  "hrpRunCreated": "Pay run created",
+  "@hrpRunCreated": {
+    "description": "Confirmation after creating a pay run."
+  },
+  "hrpDraft": "Draft",
+  "@hrpDraft": {
+    "description": "Status of a pay run that can still change."
+  },
+  "hrpPreparedBy": "Prepared by",
+  "@hrpPreparedBy": {
+    "description": "Label: who made the pay run."
+  },
+  "hrpApprovedBy": "Approved by",
+  "@hrpApprovedBy": {
+    "description": "Label: who approved the pay run."
+  },
+  "hrpApprove": "Approve",
+  "@hrpApprove": {
+    "description": "Button: the Principal approves a pay run."
+  },
+  "hrpPay": "Mark as paid",
+  "@hrpPay": {
+    "description": "Button: the Bursar records that a pay run was paid."
+  },
+  "hrpDeleteRun": "Delete draft",
+  "@hrpDeleteRun": {
+    "description": "Button that deletes a draft pay run."
+  },
+  "hrpConfirm": "Confirm",
+  "@hrpConfirm": {
+    "description": "Button that confirms an action that cannot be undone."
+  },
+  "hrpConfirmApprove": "Approve payroll for {month}? {count} staff, net pay {net}. This cannot be undone.",
+  "@hrpConfirmApprove": {
+    "description": "Question before a pay run is approved.",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      },
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "hrpConfirmPay": "Record payment of {net} for {month}? This cannot be undone.",
+  "@hrpConfirmPay": {
+    "description": "Question before a pay run is marked as paid.",
+    "placeholders": {
+      "net": {
+        "type": "String"
+      },
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "hrpConfirmDelete": "Delete the draft for {month}? You can make it again.",
+  "@hrpConfirmDelete": {
+    "description": "Question before a draft pay run is deleted.",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "hrpRunTitle": "Payroll {month}",
+  "@hrpRunTitle": {
+    "description": "Title of one month's pay run page.",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "hrpDetails": "Details",
+  "@hrpDetails": {
+    "description": "Opens the lines of one payslip."
+  },
+  "hrpPayslipPdf": "Payslip PDF",
+  "@hrpPayslipPdf": {
+    "description": "Button that saves one payslip as a PDF."
+  },
+  "hrpNoRunsTitle": "No pay runs yet",
+  "@hrpNoRunsTitle": {
+    "description": "Empty state of the pay runs list."
+  },
+  "hrpNoRunsBody": "Set up salaries on each staff member first, then create the month's run.",
+  "@hrpNoRunsBody": {
+    "description": "Hint under the empty state of the pay runs list."
   }
 }

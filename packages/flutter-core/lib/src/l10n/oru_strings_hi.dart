@@ -989,4 +989,115 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get peoApplicationSaved => 'आवेदन सहेजा गया';
+
+  @override
+  String get hrpAddStaff => 'स्टाफ़ सदस्य जोड़ें';
+
+  @override
+  String get hrpSearch => 'नाम या कर्मचारी संख्या से खोजें';
+
+  @override
+  String get hrpAllDepartments => 'सभी विभाग';
+
+  @override
+  String get hrpJoined => 'नियुक्ति की तिथि';
+
+  @override
+  String get hrpNoStaffTitle => 'अभी कोई स्टाफ़ नहीं';
+
+  @override
+  String get hrpNoMatch => 'इस खोज से कोई स्टाफ़ सदस्य नहीं मिला।';
+
+  @override
+  String get hrpStaffAdded => 'स्टाफ़ सदस्य जोड़ा गया';
+
+  @override
+  String get hrpSalary => 'वेतन';
+
+  @override
+  String get hrpEarning => 'आय';
+
+  @override
+  String get hrpDeduction => 'कटौती';
+
+  @override
+  String get hrpKind => 'प्रकार';
+
+  @override
+  String get hrpComponent => 'घटक';
+
+  @override
+  String get hrpAmount => 'राशि';
+
+  @override
+  String get hrpAmountHint => 'रुपये में, जैसे 45,000.50';
+
+  @override
+  String get hrpAddLine => 'वेतन मद जोड़ें';
+
+  @override
+  String get hrpNoLines => 'अभी वेतन तय नहीं';
+
+  @override
+  String get hrpRemove => 'हटाएँ';
+
+  @override
+  String get hrpNewRun => 'नया वेतन चक्र';
+
+  @override
+  String get hrpRunCreated => 'वेतन चक्र बना';
+
+  @override
+  String get hrpDraft => 'मसौदा';
+
+  @override
+  String get hrpPreparedBy => 'तैयार करने वाले';
+
+  @override
+  String get hrpApprovedBy => 'स्वीकृत करने वाले';
+
+  @override
+  String get hrpApprove => 'स्वीकृत करें';
+
+  @override
+  String get hrpPay => 'भुगतान किया गया चिह्नित करें';
+
+  @override
+  String get hrpDeleteRun => 'मसौदा हटाएँ';
+
+  @override
+  String get hrpConfirm => 'पुष्टि करें';
+
+  @override
+  String hrpConfirmApprove(String month, String count, String net) {
+    return '$month का वेतन स्वीकृत करें? $count स्टाफ़, शुद्ध वेतन $net। इसे वापस नहीं किया जा सकता।';
+  }
+
+  @override
+  String hrpConfirmPay(String net, String month) {
+    return '$month के लिए $net का भुगतान दर्ज करें? इसे वापस नहीं किया जा सकता।';
+  }
+
+  @override
+  String hrpConfirmDelete(String month) {
+    return '$month का मसौदा हटाएँ? आप इसे फिर बना सकते हैं।';
+  }
+
+  @override
+  String hrpRunTitle(String month) {
+    return 'वेतन $month';
+  }
+
+  @override
+  String get hrpDetails => 'विवरण';
+
+  @override
+  String get hrpPayslipPdf => 'वेतन पर्ची PDF';
+
+  @override
+  String get hrpNoRunsTitle => 'अभी कोई वेतन चक्र नहीं';
+
+  @override
+  String get hrpNoRunsBody =>
+      'पहले हर स्टाफ़ सदस्य का वेतन तय करें, फिर माह का वेतन चक्र बनाएँ।';
 }
