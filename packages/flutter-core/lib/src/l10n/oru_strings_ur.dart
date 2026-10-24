@@ -1243,4 +1243,129 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get feeNoItems => 'اس ڈھانچے میں ابھی کوئی فیس نہیں';
+
+  @override
+  String get setTabClasses => 'جماعتیں';
+
+  @override
+  String get setTabSubjects => 'مضامین';
+
+  @override
+  String get setTabYears => 'تعلیمی سال';
+
+  @override
+  String get setAddClass => 'جماعت شامل کریں';
+
+  @override
+  String get setClassAdded => 'جماعت شامل ہو گئی';
+
+  @override
+  String get setSectionHint => 'سیکشن کا حرف، مثلاً A';
+
+  @override
+  String get setAddSubject => 'مضمون شامل کریں';
+
+  @override
+  String get setSubjectName => 'مضمون کا نام';
+
+  @override
+  String get setSubjectCode => 'مختصر کوڈ';
+
+  @override
+  String get setNoSubjects => 'ابھی کوئی مضمون نہیں';
+
+  @override
+  String get setSubjectAdded => 'مضمون شامل ہو گیا';
+
+  @override
+  String get setNewYear => 'نیا تعلیمی سال';
+
+  @override
+  String get setYearName => 'نام، مثلاً 2027-2028';
+
+  @override
+  String get setStartDate => 'آغاز کی تاریخ';
+
+  @override
+  String get setEndDate => 'اختتام کی تاریخ';
+
+  @override
+  String get setMakeActive => 'فعال کریں';
+
+  @override
+  String setConfirmActivate(String name) {
+    return '$name کو فعال تعلیمی سال بنائیں؟ نئے طالب علم، انوائس اور رسیدیں اسی کو استعمال کریں گی۔';
+  }
+
+  @override
+  String get setYearAdded => 'تعلیمی سال شامل ہو گیا';
+
+  @override
+  String get setProfileTitle => 'اسکول پروفائل';
+
+  @override
+  String get setBrandColour => 'برانڈ کا رنگ';
+
+  @override
+  String get setBrandHint =>
+      'گہرا رنگ، # اور چھ حروف یا ہندسوں میں لکھا ہوا، تاکہ اس پر سفید حروف آسانی سے پڑھے جا سکیں۔';
+
+  @override
+  String get setProfileSaved => 'ترتیبات محفوظ ہو گئیں';
+
+  @override
+  String get setImport => 'CSV سے درآمد کریں';
+
+  @override
+  String get setImportIntro =>
+      'CSV فائل منتخب کریں۔ پہلے اس کی جانچ ہوتی ہے، اور آپ کی تصدیق تک کچھ محفوظ نہیں ہوتا۔';
+
+  @override
+  String get setChooseFile => 'CSV فائل';
+
+  @override
+  String get setCheckFile => 'فائل کی جانچ کریں';
+
+  @override
+  String setCheckResult(String valid, String total, String errors) {
+    return '$total میں سے $valid قطاریں تیار ہیں۔ $errors قطاروں میں مسئلہ ہے۔';
+  }
+
+  @override
+  String setMissingColumns(String names) {
+    return 'ضروری کالم نہیں ملے: $names';
+  }
+
+  @override
+  String setProblemLine(String row, String column, String rule) {
+    return 'قطار $row، $column: $rule';
+  }
+
+  @override
+  String get setAlreadyImported => 'یہ فائل پہلے ہی درآمد ہو چکی ہے۔';
+
+  @override
+  String setImportNow(String count) {
+    return '$count قطاریں درآمد کریں';
+  }
+
+  @override
+  String setImportDone(String count) {
+    return '$count ریکارڈ بن گئے۔';
+  }
+
+  @override
+  String setImportFailed(String count) {
+    return '$count قطاریں نہیں بن سکیں۔';
+  }
+
+  @override
+  String get hrrByDepartment => 'شعبے کے لحاظ سے';
+
+  @override
+  String get hrrNoDepartment => 'کوئی شعبہ نہیں';
+
+  @override
+  String get hrrNoRunsTitle =>
+      'اس سال کوئی منظور شدہ یا ادا شدہ تنخواہ سائیکل نہیں';
 }

@@ -11,6 +11,8 @@ import { canRead, Glance } from "./screens/Glance";
 import { Admissions } from "./screens/Admissions";
 import { Classes } from "./screens/Classes";
 import { Fees } from "./screens/Fees";
+import { HrReports } from "./screens/HrReports";
+import { Settings } from "./screens/Settings";
 import { FinanceReports } from "./screens/FinanceReports";
 import { Payroll } from "./screens/Payroll";
 import { Staff } from "./screens/Staff";
@@ -22,7 +24,7 @@ type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 /**
  * The school's frame: navigation built from what the gateway says this person may open (modules they cannot open are not
  * sent, so they are not shown at all), the language, and who is signed in. The dashboard, financial reports, students, classes,
- * admissions, staff, payroll and fees are built; the other screens arrive with their slices of P2-10.
+ * admissions, staff, payroll, fees, settings and HR reports are built; the other screens arrive with their slices of P2-10.
  */
 export function ErpShell({ me, active: access, school, hour = new Date().getHours() }: { me: MeResponseDto; active: ActiveSchool; school: PublicSchoolDto; hour?: number }) {
   const t = useTranslations();
@@ -56,7 +58,7 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
           ) : current === "students" ? (
             <Students canCreate={access.permissions["students"]?.["create"] === "school"} />
           ) : current === "classes" ? (
-            <Classes />
+            <Classes grants={{ create: access.permissions["academics"]?.["create"] === "school", remove: access.permissions["academics"]?.["delete"] === "school", update: access.permissions["academics"]?.["update"] === "school" }} />
           ) : current === "admissions" ? (
             <Admissions canCreate={access.permissions["admissions"]?.["create"] === "school"} canUpdate={access.permissions["admissions"]?.["update"] === "school"} />
           ) : current === "finance" ? (
@@ -65,6 +67,10 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
             <Staff grants={{ create: access.permissions["staff"]?.["create"] === "school", salaryRead: access.permissions["payroll"]?.["read"] === "school", salaryAdd: access.permissions["payroll"]?.["create"] === "school", salaryRemove: access.permissions["payroll"]?.["delete"] === "school" }} />
           ) : current === "payroll" ? (
             <Payroll grants={{ create: access.permissions["payroll"]?.["create"] === "school", approve: access.permissions["payroll"]?.["approve"] === "school", pay: access.permissions["payroll"]?.["delete"] === "school" }} />
+          ) : current === "settings" ? (
+            <Settings canEdit={access.permissions["settings"]?.["update"] === "school"} />
+          ) : current === "reports-hr" ? (
+            <HrReports canExport={access.permissions["reports_hr"]?.["export"] === "school"} />
           ) : current === "reports-finance" ? (
             <FinanceReports canExport={access.permissions["reports_finance"]?.["export"] === "school"} />
           ) : (

@@ -8,6 +8,7 @@ import { errorKey, useSession } from "@oruschools/web-auth";
 import { rupees, rupeesToMinor, shortDate } from "@/lib/display";
 import { useLoad } from "@/lib/use-load";
 import { DataTable, type Column } from "./DataTable";
+import { ImportPanel } from "./ImportPanel";
 import { Failed, Pager, Saved, SelectField } from "./parts";
 
 const PAGE_SIZE = 25;
@@ -186,6 +187,7 @@ export function Staff({ grants }: { grants: StaffGrants }) {
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [importing, setImporting] = useState(false);
   const [added, setAdded] = useState(false);
   const [departments] = useLoad<string[]>(api ? async () => (await api.staffDepartments({})).items : null, "departments");
   const [state, reload] = useLoad<StaffListDto>(
@@ -206,8 +208,14 @@ export function Staff({ grants }: { grants: StaffGrants }) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-title">{t("navStaff")}</h1>
-        {grants.create && !adding && <Button variant="primary" size="comfortable" icon="user-plus" onClick={() => { setAdding(true); setAdded(false); }}>{t("hrpAddStaff")}</Button>}
+        {grants.create && !adding && !importing && (
+          <div className="flex flex-wrap gap-2">
+            <Button variant="primary" size="comfortable" icon="user-plus" onClick={() => { setAdding(true); setAdded(false); }}>{t("hrpAddStaff")}</Button>
+            <Button size="comfortable" icon="upload" onClick={() => setImporting(true)}>{t("setImport")}</Button>
+          </div>
+        )}
       </div>
+      {importing && <ImportPanel kind="staff" onCancel={() => setImporting(false)} onDone={() => { setPage(1); reload(); }} />}
       {added && <Saved>{t("hrpStaffAdded")}</Saved>}
       {adding && <AddForm onCancel={() => setAdding(false)} onDone={() => { setAdding(false); setAdded(true); setPage(1); reload(); }} />}
       <div className="flex flex-wrap items-end gap-3">

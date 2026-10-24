@@ -1647,5 +1647,196 @@
   "feeNoItems": "No fees in this structure yet",
   "@feeNoItems": {
     "description": "Shown when a structure has no fees."
+  },
+  "setTabClasses": "Classes",
+  "@setTabClasses": {
+    "description": "Tab: the classes of the school."
+  },
+  "setTabSubjects": "Subjects",
+  "@setTabSubjects": {
+    "description": "Tab: the subjects taught."
+  },
+  "setTabYears": "Academic years",
+  "@setTabYears": {
+    "description": "Tab: the academic years."
+  },
+  "setAddClass": "Add class",
+  "@setAddClass": {
+    "description": "Button that opens the form for a new class."
+  },
+  "setClassAdded": "Class added",
+  "@setClassAdded": {
+    "description": "Confirmation after adding a class."
+  },
+  "setSectionHint": "Section letter, for example A",
+  "@setSectionHint": {
+    "description": "Hint under the section field."
+  },
+  "setAddSubject": "Add subject",
+  "@setAddSubject": {
+    "description": "Button that adds a subject."
+  },
+  "setSubjectName": "Subject name",
+  "@setSubjectName": {
+    "description": "Form label."
+  },
+  "setSubjectCode": "Short code",
+  "@setSubjectCode": {
+    "description": "Form label: a short unique code of a subject, for example MATH."
+  },
+  "setNoSubjects": "No subjects yet",
+  "@setNoSubjects": {
+    "description": "Empty state of the subjects list."
+  },
+  "setSubjectAdded": "Subject added",
+  "@setSubjectAdded": {
+    "description": "Confirmation after adding a subject."
+  },
+  "setNewYear": "New academic year",
+  "@setNewYear": {
+    "description": "Button that opens the form for a new academic year."
+  },
+  "setYearName": "Name, for example 2027-2028",
+  "@setYearName": {
+    "description": "Hint for the name of an academic year."
+  },
+  "setStartDate": "Start date",
+  "@setStartDate": {
+    "description": "Form label."
+  },
+  "setEndDate": "End date",
+  "@setEndDate": {
+    "description": "Form label."
+  },
+  "setMakeActive": "Make active",
+  "@setMakeActive": {
+    "description": "Button that makes an academic year the active one."
+  },
+  "setConfirmActivate": "Make {name} the active academic year? New students, invoices and receipts will use it.",
+  "@setConfirmActivate": {
+    "description": "Question before an academic year becomes the active one.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "setYearAdded": "Academic year added",
+  "@setYearAdded": {
+    "description": "Confirmation after adding an academic year."
+  },
+  "setProfileTitle": "School profile",
+  "@setProfileTitle": {
+    "description": "Heading of the school profile form."
+  },
+  "setBrandColour": "Brand colour",
+  "@setBrandColour": {
+    "description": "Form label: the school's main colour."
+  },
+  "setBrandHint": "A dark colour written as # and six letters or digits, so white text on it is easy to read.",
+  "@setBrandHint": {
+    "description": "Hint under the brand colour field."
+  },
+  "setProfileSaved": "Settings saved",
+  "@setProfileSaved": {
+    "description": "Confirmation after saving the school profile."
+  },
+  "setImport": "Import from CSV",
+  "@setImport": {
+    "description": "Button that opens the CSV import."
+  },
+  "setImportIntro": "Choose a CSV file. It is checked first, and nothing is saved until you confirm.",
+  "@setImportIntro": {
+    "description": "Explains the CSV import."
+  },
+  "setChooseFile": "CSV file",
+  "@setChooseFile": {
+    "description": "Label of the file chooser."
+  },
+  "setCheckFile": "Check the file",
+  "@setCheckFile": {
+    "description": "Button that checks a CSV file without saving anything."
+  },
+  "setCheckResult": "{valid} of {total} rows are ready. {errors} rows have problems.",
+  "@setCheckResult": {
+    "description": "Result of checking a CSV file.",
+    "placeholders": {
+      "valid": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "errors": {
+        "type": "String"
+      }
+    }
+  },
+  "setMissingColumns": "Missing columns: {names}",
+  "@setMissingColumns": {
+    "description": "Lists the columns a CSV file must have and does not.",
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "setProblemLine": "Row {row}, {column}: {rule}",
+  "@setProblemLine": {
+    "description": "One problem found in a CSV file.",
+    "placeholders": {
+      "row": {
+        "type": "String"
+      },
+      "column": {
+        "type": "String"
+      },
+      "rule": {
+        "type": "String"
+      }
+    }
+  },
+  "setAlreadyImported": "This file was already imported.",
+  "@setAlreadyImported": {
+    "description": "Shown when the same CSV file is chosen again."
+  },
+  "setImportNow": "Import {count} rows",
+  "@setImportNow": {
+    "description": "Button that imports a checked CSV file.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "setImportDone": "{count} records created.",
+  "@setImportDone": {
+    "description": "Result after a CSV import.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "setImportFailed": "{count} rows could not be created.",
+  "@setImportFailed": {
+    "description": "Result after a CSV import when some rows failed.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hrrByDepartment": "By department",
+  "@hrrByDepartment": {
+    "description": "Heading of the payroll totals split by department."
+  },
+  "hrrNoDepartment": "No department",
+  "@hrrNoDepartment": {
+    "description": "Label for staff who have no department."
+  },
+  "hrrNoRunsTitle": "No approved or paid pay runs in this year",
+  "@hrrNoRunsTitle": {
+    "description": "Empty state of the payroll summary."
   }
 }

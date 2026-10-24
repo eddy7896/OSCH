@@ -1240,4 +1240,128 @@ class OruStringsPs extends OruStrings {
 
   @override
   String get feeNoItems => 'No fees in this structure yet';
+
+  @override
+  String get setTabClasses => 'Classes';
+
+  @override
+  String get setTabSubjects => 'Subjects';
+
+  @override
+  String get setTabYears => 'Academic years';
+
+  @override
+  String get setAddClass => 'Add class';
+
+  @override
+  String get setClassAdded => 'Class added';
+
+  @override
+  String get setSectionHint => 'Section letter, for example A';
+
+  @override
+  String get setAddSubject => 'Add subject';
+
+  @override
+  String get setSubjectName => 'Subject name';
+
+  @override
+  String get setSubjectCode => 'Short code';
+
+  @override
+  String get setNoSubjects => 'No subjects yet';
+
+  @override
+  String get setSubjectAdded => 'Subject added';
+
+  @override
+  String get setNewYear => 'New academic year';
+
+  @override
+  String get setYearName => 'Name, for example 2027-2028';
+
+  @override
+  String get setStartDate => 'Start date';
+
+  @override
+  String get setEndDate => 'End date';
+
+  @override
+  String get setMakeActive => 'Make active';
+
+  @override
+  String setConfirmActivate(String name) {
+    return 'Make $name the active academic year? New students, invoices and receipts will use it.';
+  }
+
+  @override
+  String get setYearAdded => 'Academic year added';
+
+  @override
+  String get setProfileTitle => 'School profile';
+
+  @override
+  String get setBrandColour => 'Brand colour';
+
+  @override
+  String get setBrandHint =>
+      'A dark colour written as # and six letters or digits, so white text on it is easy to read.';
+
+  @override
+  String get setProfileSaved => 'Settings saved';
+
+  @override
+  String get setImport => 'Import from CSV';
+
+  @override
+  String get setImportIntro =>
+      'Choose a CSV file. It is checked first, and nothing is saved until you confirm.';
+
+  @override
+  String get setChooseFile => 'CSV file';
+
+  @override
+  String get setCheckFile => 'Check the file';
+
+  @override
+  String setCheckResult(String valid, String total, String errors) {
+    return '$valid of $total rows are ready. $errors rows have problems.';
+  }
+
+  @override
+  String setMissingColumns(String names) {
+    return 'Missing columns: $names';
+  }
+
+  @override
+  String setProblemLine(String row, String column, String rule) {
+    return 'Row $row, $column: $rule';
+  }
+
+  @override
+  String get setAlreadyImported => 'This file was already imported.';
+
+  @override
+  String setImportNow(String count) {
+    return 'Import $count rows';
+  }
+
+  @override
+  String setImportDone(String count) {
+    return '$count records created.';
+  }
+
+  @override
+  String setImportFailed(String count) {
+    return '$count rows could not be created.';
+  }
+
+  @override
+  String get hrrByDepartment => 'By department';
+
+  @override
+  String get hrrNoDepartment => 'No department';
+
+  @override
+  String get hrrNoRunsTitle => 'No approved or paid pay runs in this year';
 }

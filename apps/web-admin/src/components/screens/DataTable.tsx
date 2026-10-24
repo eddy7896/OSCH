@@ -7,6 +7,8 @@ export interface Column<R> {
   render: (row: R) => ReactNode;
   /** Amounts and counts: aligned to the far side, in tabular digits. */
   numeric?: boolean;
+  /** A column of buttons has a heading for screen readers but none on screen. */
+  hideHeader?: boolean;
 }
 
 /**
@@ -23,7 +25,7 @@ export function DataTable<R>({ caption, columns, rows, rowKey, footer }: { capti
           <tr className="bg-surface-muted">
             {columns.map((c) => (
               <th key={c.key} scope="col" className={`px-3 py-2 text-caption font-semibold text-text-muted ${c.numeric ? "text-end" : "text-start"}`}>
-                {c.header}
+                {c.hideHeader ? <span className="sr-only">{c.header}</span> : c.header}
               </th>
             ))}
           </tr>
