@@ -30,6 +30,8 @@ const NEEDS: Record<string, [string, string]> = {
   invoicesCreate: ["finance", "create"], invoicesPay: ["finance", "create"], invoicesPreview: ["finance", "create"], invoicesGenerate: ["finance", "create"], feesCreateStructure: ["finance", "create"], feesCreateItem: ["finance", "create"],
   invoicesReverse: ["finance", "delete"],
   schoolProfile: ["settings", "read"], schoolUpdate: ["settings", "update"],
+  membershipsList: ["memberships", "read"], membershipsUpdate: ["memberships", "update"], membershipsRemove: ["memberships", "delete"], accountsCreate: ["memberships", "create"],
+  invitationsList: ["memberships", "read"], invitationsCreate: ["memberships", "create"], invitationsRevoke: ["memberships", "update"],
 };
 /** Buttons that start an action, and the grant that must be held for the button to exist. */
 const BUTTONS: Array<{ name: string; screen: string; needs: [string, string] }> = [
@@ -40,6 +42,7 @@ const BUTTONS: Array<{ name: string; screen: string; needs: [string, string] }> 
   { name: "New invoice", screen: "finance", needs: ["finance", "create"] },
   { name: "Bill fees", screen: "finance", needs: ["finance", "create"] },
   { name: "Add class", screen: "classes", needs: ["academics", "create"] },
+  { name: "Create an account", screen: "memberships", needs: ["memberships", "create"] },
 ];
 
 /** One answer that fits every list and total the screens read; empty, so no row buttons appear. */
@@ -73,7 +76,7 @@ const asRole = (role: Role) => {
   return m;
 };
 const granted = (role: Role, [resource, action]: [string, string]) => permissionsOf({ schoolRole: role }).some((p) => p.resource === resource && p.action === action && p.scope === "school");
-const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings" };
+const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
 const settle = () => new Promise((r) => setTimeout(r, 100));
 
 afterEach(() => vi.restoreAllMocks());

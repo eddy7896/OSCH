@@ -66,6 +66,9 @@ graph TD
 
 **P2-13 demo school (the gate's seed script)**: BUILT. `npm run demo` starts the emulators, a gateway on 3100, `tools/seed-demo-school.mjs` (10 accounts, 10 classes, 30 students with guardians, 4 applications, 8 staff with salaries, fee structures, concessions, about 90 invoices, 66 payments with one reversed, a paid pay run and a draft) and the two web apps on 3101 and 3102. Emulators only: the web apps can now connect their sign-in to the Auth emulator (development builds only), and the script refuses a real project. See `documentation/demo-school.md`.
 
+
+**P2-12 (added after P2-11, owner question "can the school admin see all screens?")**: the System administrator's `Users and roles` screen, which had no web screen (the gateway endpoints existed since Phase 1). BUILT (web-admin: Members (role, status, since; change role, suspend or reactivate, remove, each behind a question; your own row has no buttons because the gateway refuses changes to yourself), Create an account for staff, driver and other roles (not parents) with email or phone, sending the set-password email from the browser (ADR-0011) and offering to send it again if it failed, Invitations (list, invite someone with a one-time code shown once, cancel a pending one) and, for a signed-in person with no membership yet, an invitation-code box that joins them; 3 new error messages (invalid code, email not verified, own membership) instead of a generic one; 29 + 3 new i18n keys, hi and ur DRAFT). The role-scoped proof (P2-11) now includes these screens. The `Audit log` screen is still not built.
+
 ### M4 Screens
 | ID | Task | Size |
 |---|---|---|
