@@ -89,3 +89,4 @@ local.properties
 # OS / editor
 .DS_Store
 .idea
+apps/api-gateway/test-results/
