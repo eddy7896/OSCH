@@ -830,4 +830,165 @@ class OruStringsAs extends OruStrings {
 
   @override
   String get webCollected => 'Collected';
+
+  @override
+  String get peoSearch => 'Search by name or enrolment no.';
+
+  @override
+  String get peoAll => 'All';
+
+  @override
+  String get peoInactive => 'Inactive';
+
+  @override
+  String get peoLeft => 'Left';
+
+  @override
+  String get peoAddStudent => 'Add student';
+
+  @override
+  String get peoFirstName => 'First name';
+
+  @override
+  String get peoLastName => 'Last name';
+
+  @override
+  String get peoDateOfBirth => 'Date of birth';
+
+  @override
+  String get peoGender => 'Gender';
+
+  @override
+  String get peoFemale => 'Female';
+
+  @override
+  String get peoMale => 'Male';
+
+  @override
+  String get peoAddress => 'Address';
+
+  @override
+  String get peoClass => 'Class';
+
+  @override
+  String get peoNoStudentsTitle => 'No students yet';
+
+  @override
+  String get peoNoStudentsBody => 'Add the first student, or import a list.';
+
+  @override
+  String get peoNoMatch => 'No student matches this search.';
+
+  @override
+  String get peoStudentAdded => 'Student added';
+
+  @override
+  String get peoGuardians => 'Guardians';
+
+  @override
+  String get peoNoGuardians => 'No guardians recorded';
+
+  @override
+  String get peoRelationship => 'Relationship';
+
+  @override
+  String get peoMother => 'Mother';
+
+  @override
+  String get peoFather => 'Father';
+
+  @override
+  String get peoGuardianRel => 'Guardian';
+
+  @override
+  String get peoPrimary => 'Primary contact';
+
+  @override
+  String get peoClassHistory => 'Class history';
+
+  @override
+  String get peoAdmissionDate => 'Admission date';
+
+  @override
+  String get peoBackToList => 'Back to the list';
+
+  @override
+  String get peoCapacity => 'Capacity';
+
+  @override
+  String get peoSection => 'Section';
+
+  @override
+  String get peoLevel => 'Level';
+
+  @override
+  String get peoNoClassesTitle => 'No classes yet';
+
+  @override
+  String get peoApplications => 'Applications';
+
+  @override
+  String get peoNewApplication => 'New application';
+
+  @override
+  String get peoApplicationNo => 'Application no.';
+
+  @override
+  String get peoApplicant => 'Applicant';
+
+  @override
+  String get peoLevelApplied => 'Level applied for';
+
+  @override
+  String get peoGuardianName => 'Guardian name';
+
+  @override
+  String get peoGuardianPhone => 'Guardian phone';
+
+  @override
+  String get peoSubmitted => 'Submitted';
+
+  @override
+  String get peoUnderReview => 'Under review';
+
+  @override
+  String get peoAccepted => 'Accepted';
+
+  @override
+  String get peoRejected => 'Rejected';
+
+  @override
+  String get peoWithdrawn => 'Withdrawn';
+
+  @override
+  String get peoAdmitted => 'Admitted';
+
+  @override
+  String get peoStartReview => 'Start review';
+
+  @override
+  String get peoAccept => 'Accept';
+
+  @override
+  String get peoReject => 'Reject';
+
+  @override
+  String get peoWithdraw => 'Mark as withdrawn';
+
+  @override
+  String get peoNote => 'Note (optional)';
+
+  @override
+  String get peoAdmitStudent => 'Admit student';
+
+  @override
+  String peoStudentAdmitted(String id) {
+    return 'Student admitted. Enrolment no. $id';
+  }
+
+  @override
+  String get peoNoApplicationsTitle => 'No applications yet';
+
+  @override
+  String get peoApplicationSaved => 'Application saved';
 }
