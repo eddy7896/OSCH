@@ -122,7 +122,7 @@ function Detail({ id, grants, onBack, onChanged }: { id: string; grants: FeeGran
                   <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 text-body">
                     <span>
                       {shortDate(p.paidOn, locale)}, {t(methodKey(p.method))}{p.reference ? ` (${p.reference})` : ""}
-                      {p.reversedAt && <><Badge tone="danger">{t("reportReversed")}</Badge><span className="ms-2 text-text-muted">{p.reversalReason}</span></>}
+                      {p.reversedAt && <><span className="ms-2"><Badge tone="danger">{t("reportReversed")}</Badge></span><span className="ms-2 text-text-muted">{p.reversalReason}</span></>}
                     </span>
                     <span className="flex flex-wrap items-center gap-2">
                       <span className="tabular-nums">{rupees(p.amountMinor, locale)}</span>
