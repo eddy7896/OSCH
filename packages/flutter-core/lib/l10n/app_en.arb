@@ -1446,5 +1446,206 @@
   "hrpNoRunsBody": "Set up salaries on each staff member first, then create the month's run.",
   "@hrpNoRunsBody": {
     "description": "Hint under the empty state of the pay runs list."
+  },
+  "feeTabInvoices": "Invoices",
+  "@feeTabInvoices": {
+    "description": "Tab: the list of fee invoices."
+  },
+  "feeTabReceipts": "Receipts",
+  "@feeTabReceipts": {
+    "description": "Tab: the list of fee receipts."
+  },
+  "feeTabStructures": "Fee structures",
+  "@feeTabStructures": {
+    "description": "Tab: what each class level pays."
+  },
+  "feeStatusOverdue": "Overdue",
+  "@feeStatusOverdue": {
+    "description": "Status of an invoice past its due date and not paid."
+  },
+  "feeStatusPartial": "Part paid",
+  "@feeStatusPartial": {
+    "description": "Status of an invoice that has been paid in part."
+  },
+  "feeStatusPending": "Not paid",
+  "@feeStatusPending": {
+    "description": "Status of an invoice that has no payment yet."
+  },
+  "feeBilled": "Billed",
+  "@feeBilled": {
+    "description": "Total of the invoices in a list."
+  },
+  "feeNewInvoice": "New invoice",
+  "@feeNewInvoice": {
+    "description": "Button that opens the form for a one-off invoice."
+  },
+  "feeBillFees": "Bill fees",
+  "@feeBillFees": {
+    "description": "Button that opens the form that makes invoices from the fee structures."
+  },
+  "feeDescription": "Description",
+  "@feeDescription": {
+    "description": "Form label: what an invoice is for."
+  },
+  "feeFindStudent": "Find a student by name or enrolment no.",
+  "@feeFindStudent": {
+    "description": "Label of the box that finds the student an invoice is for."
+  },
+  "feeInvoiceCreated": "Invoice created",
+  "@feeInvoiceCreated": {
+    "description": "Confirmation after creating an invoice."
+  },
+  "feeRecordPayment": "Record payment",
+  "@feeRecordPayment": {
+    "description": "Button that records money received for an invoice."
+  },
+  "feePaymentRecorded": "Payment recorded. Receipt no. {number}",
+  "@feePaymentRecorded": {
+    "description": "Confirmation after a payment; {number} is the receipt number.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "feePayments": "Payments",
+  "@feePayments": {
+    "description": "Heading of the payments made against an invoice."
+  },
+  "feeNoPayments": "No payments yet",
+  "@feeNoPayments": {
+    "description": "Shown when an invoice has no payment."
+  },
+  "feeMethod": "Payment method",
+  "@feeMethod": {
+    "description": "Form label: cash, cheque, UPI and so on."
+  },
+  "feeReverse": "Reverse",
+  "@feeReverse": {
+    "description": "Button that takes a payment back."
+  },
+  "feeReason": "Reason",
+  "@feeReason": {
+    "description": "Form label: why a payment is being reversed."
+  },
+  "feeConfirmReverse": "Reverse this payment of {amount}? The invoice becomes unpaid again and the receipt is cancelled. This cannot be undone.",
+  "@feeConfirmReverse": {
+    "description": "Question before a payment is reversed.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "feeReceiptPdf": "Receipt PDF",
+  "@feeReceiptPdf": {
+    "description": "Button that saves a receipt as a PDF."
+  },
+  "feeBillIntro": "Makes an invoice for every instalment due on or before the date, for the students of the level you choose (or all). Instalments already billed are left alone.",
+  "@feeBillIntro": {
+    "description": "Explains what billing fees does."
+  },
+  "feeBillUpTo": "Instalments due up to",
+  "@feeBillUpTo": {
+    "description": "Form label: the last due date to bill."
+  },
+  "feePreview": "Preview",
+  "@feePreview": {
+    "description": "Button that counts what would be billed without saving anything."
+  },
+  "feeCreateInvoices": "Create invoices",
+  "@feeCreateInvoices": {
+    "description": "Button that makes the invoices after a preview."
+  },
+  "feePreviewResult": "{created} invoices would be created. Already billed: {already}. Students without fees set up: {without}.",
+  "@feePreviewResult": {
+    "description": "Result of a preview of billing.",
+    "placeholders": {
+      "created": {
+        "type": "String"
+      },
+      "already": {
+        "type": "String"
+      },
+      "without": {
+        "type": "String"
+      }
+    }
+  },
+  "feeCreatedResult": "{created} invoices created. Already billed: {already}.",
+  "@feeCreatedResult": {
+    "description": "Result after billing.",
+    "placeholders": {
+      "created": {
+        "type": "String"
+      },
+      "already": {
+        "type": "String"
+      }
+    }
+  },
+  "feeLevelAll": "All levels",
+  "@feeLevelAll": {
+    "description": "Choice that bills every class level."
+  },
+  "feeReceiptsTotal": "Total received",
+  "@feeReceiptsTotal": {
+    "description": "Total of the receipts in a list."
+  },
+  "feeNoReceiptsTitle": "No receipts yet",
+  "@feeNoReceiptsTitle": {
+    "description": "Empty state of the receipts list."
+  },
+  "feeNoInvoicesTitle": "No invoices yet",
+  "@feeNoInvoicesTitle": {
+    "description": "Empty state of the invoices list."
+  },
+  "feeNoInvoicesBody": "Set up fees, then bill them.",
+  "@feeNoInvoicesBody": {
+    "description": "Hint under the empty state of the invoices list."
+  },
+  "feeNewStructure": "New fee structure",
+  "@feeNewStructure": {
+    "description": "Button that starts the fee structure of a class level."
+  },
+  "feeStructureCreated": "Fee structure created",
+  "@feeStructureCreated": {
+    "description": "Confirmation after creating a fee structure."
+  },
+  "feeAddFee": "Add a fee",
+  "@feeAddFee": {
+    "description": "Button that adds a fee, for example Tuition, to a structure."
+  },
+  "feeFeeName": "Fee name",
+  "@feeFeeName": {
+    "description": "Form label: the name of a fee, for example Tuition."
+  },
+  "feeInstalments": "Instalments",
+  "@feeInstalments": {
+    "description": "Heading of the parts a fee is paid in."
+  },
+  "feeInstalmentLabel": "Label",
+  "@feeInstalmentLabel": {
+    "description": "Form label: the name of an instalment, for example Term 1."
+  },
+  "feeAddInstalment": "Add instalment",
+  "@feeAddInstalment": {
+    "description": "Button that adds a row for another instalment."
+  },
+  "feeNoStructuresTitle": "No fee structures yet",
+  "@feeNoStructuresTitle": {
+    "description": "Empty state of the fee structures list."
+  },
+  "feeStructureTotal": "Total for the year",
+  "@feeStructureTotal": {
+    "description": "Total of all the fees of a structure."
+  },
+  "feeFeeAdded": "Fee added",
+  "@feeFeeAdded": {
+    "description": "Confirmation after adding a fee."
+  },
+  "feeNoItems": "No fees in this structure yet",
+  "@feeNoItems": {
+    "description": "Shown when a structure has no fees."
   }
 }

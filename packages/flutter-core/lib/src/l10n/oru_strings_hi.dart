@@ -1100,4 +1100,142 @@ class OruStringsHi extends OruStrings {
   @override
   String get hrpNoRunsBody =>
       'पहले हर स्टाफ़ सदस्य का वेतन तय करें, फिर माह का वेतन चक्र बनाएँ।';
+
+  @override
+  String get feeTabInvoices => 'इनवॉइस';
+
+  @override
+  String get feeTabReceipts => 'रसीदें';
+
+  @override
+  String get feeTabStructures => 'शुल्क संरचना';
+
+  @override
+  String get feeStatusOverdue => 'अतिदेय';
+
+  @override
+  String get feeStatusPartial => 'आंशिक भुगतान';
+
+  @override
+  String get feeStatusPending => 'अदत्त';
+
+  @override
+  String get feeBilled => 'बिल की गई राशि';
+
+  @override
+  String get feeNewInvoice => 'नया इनवॉइस';
+
+  @override
+  String get feeBillFees => 'शुल्क का बिल बनाएँ';
+
+  @override
+  String get feeDescription => 'विवरण';
+
+  @override
+  String get feeFindStudent => 'नाम या नामांकन संख्या से छात्र खोजें';
+
+  @override
+  String get feeInvoiceCreated => 'इनवॉइस बना';
+
+  @override
+  String get feeRecordPayment => 'भुगतान दर्ज करें';
+
+  @override
+  String feePaymentRecorded(String number) {
+    return 'भुगतान दर्ज हुआ। रसीद संख्या $number';
+  }
+
+  @override
+  String get feePayments => 'भुगतान';
+
+  @override
+  String get feeNoPayments => 'अभी कोई भुगतान नहीं';
+
+  @override
+  String get feeMethod => 'भुगतान का तरीका';
+
+  @override
+  String get feeReverse => 'उलटें';
+
+  @override
+  String get feeReason => 'कारण';
+
+  @override
+  String feeConfirmReverse(String amount) {
+    return '$amount का यह भुगतान उलटें? इनवॉइस फिर से अदत्त हो जाएगा और रसीद रद्द हो जाएगी। इसे वापस नहीं किया जा सकता।';
+  }
+
+  @override
+  String get feeReceiptPdf => 'रसीद PDF';
+
+  @override
+  String get feeBillIntro =>
+      'चुनी गई तारीख तक देय हर किस्त का इनवॉइस बनाता है, चुने गए स्तर (या सभी) के छात्रों के लिए। जो किस्तें पहले बिल हो चुकी हैं उन्हें छोड़ दिया जाता है।';
+
+  @override
+  String get feeBillUpTo => 'इस तारीख तक देय किस्तें';
+
+  @override
+  String get feePreview => 'पूर्वावलोकन';
+
+  @override
+  String get feeCreateInvoices => 'इनवॉइस बनाएँ';
+
+  @override
+  String feePreviewResult(String created, String already, String without) {
+    return '$created इनवॉइस बनेंगे। पहले से बिल: $already। जिन छात्रों के लिए शुल्क तय नहीं: $without।';
+  }
+
+  @override
+  String feeCreatedResult(String created, String already) {
+    return '$created इनवॉइस बने। पहले से बिल: $already।';
+  }
+
+  @override
+  String get feeLevelAll => 'सभी स्तर';
+
+  @override
+  String get feeReceiptsTotal => 'कुल प्राप्त राशि';
+
+  @override
+  String get feeNoReceiptsTitle => 'अभी कोई रसीद नहीं';
+
+  @override
+  String get feeNoInvoicesTitle => 'अभी कोई इनवॉइस नहीं';
+
+  @override
+  String get feeNoInvoicesBody => 'पहले शुल्क तय करें, फिर बिल बनाएँ।';
+
+  @override
+  String get feeNewStructure => 'नई शुल्क संरचना';
+
+  @override
+  String get feeStructureCreated => 'शुल्क संरचना बनी';
+
+  @override
+  String get feeAddFee => 'शुल्क जोड़ें';
+
+  @override
+  String get feeFeeName => 'शुल्क का नाम';
+
+  @override
+  String get feeInstalments => 'किस्तें';
+
+  @override
+  String get feeInstalmentLabel => 'नाम';
+
+  @override
+  String get feeAddInstalment => 'किस्त जोड़ें';
+
+  @override
+  String get feeNoStructuresTitle => 'अभी कोई शुल्क संरचना नहीं';
+
+  @override
+  String get feeStructureTotal => 'वर्ष का कुल';
+
+  @override
+  String get feeFeeAdded => 'शुल्क जोड़ा गया';
+
+  @override
+  String get feeNoItems => 'इस संरचना में अभी कोई शुल्क नहीं';
 }
