@@ -594,4 +594,61 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get errorUploadFailed => 'فائل اپ لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get receiptTitle => 'فیس کی رسید';
+
+  @override
+  String get receiptNumber => 'رسید نمبر';
+
+  @override
+  String get receiptDate => 'تاریخ';
+
+  @override
+  String get receiptStudent => 'طالب علم';
+
+  @override
+  String get receiptEnrollment => 'اندراج نمبر';
+
+  @override
+  String get receiptClass => 'جماعت';
+
+  @override
+  String get receiptFor => 'ادائیگی کی تفصیل';
+
+  @override
+  String get receiptAmountPaid => 'ادا کی گئی رقم';
+
+  @override
+  String get receiptMethod => 'ادائیگی کا طریقہ';
+
+  @override
+  String get receiptReference => 'حوالہ';
+
+  @override
+  String get receiptBalance => 'اس بل پر بقیہ رقم';
+
+  @override
+  String get receiptReceivedBy => 'وصول کنندہ';
+
+  @override
+  String get receiptCancelled => 'منسوخ';
+
+  @override
+  String get receiptFooter => 'یہ کمپیوٹر سے تیار کردہ رسید ہے۔';
+
+  @override
+  String get paymentMethodCash => 'نقد';
+
+  @override
+  String get paymentMethodCheque => 'چیک';
+
+  @override
+  String get paymentMethodBankTransfer => 'بینک ٹرانسفر';
+
+  @override
+  String get paymentMethodUpi => 'یو پی آئی';
+
+  @override
+  String get paymentMethodOther => 'دیگر';
 }

@@ -29,6 +29,10 @@ if [ -n "${ORU_SHARD:-}" ]; then
   mkdir -p apps/api-gateway/test-results
   # shellcheck disable=SC2086
   npm run test:integration -w api-gateway -- $FILES --reporter=default --reporter=json --outputFile.json="test-results/gateway-shard-${SHARD}-of-${TOTAL}.json"
+elif [ -n "${ORU_FILES:-}" ]; then
+  # Development shortcut: ORU_FILES="test/harness/fees.integration.ts" npm run test:gateway  runs just those files (add  -t "name"  via ORU_ARGS).
+  # shellcheck disable=SC2086
+  npm run test:integration -w api-gateway -- $ORU_FILES ${ORU_ARGS:-}
 else
   npm run test:integration -w api-gateway
 fi

@@ -592,4 +592,61 @@ class OruStringsMl extends OruStrings {
 
   @override
   String get errorUploadFailed => 'The file could not be uploaded. Try again.';
+
+  @override
+  String get receiptTitle => 'Fee receipt';
+
+  @override
+  String get receiptNumber => 'Receipt no.';
+
+  @override
+  String get receiptDate => 'Date';
+
+  @override
+  String get receiptStudent => 'Student';
+
+  @override
+  String get receiptEnrollment => 'Enrolment no.';
+
+  @override
+  String get receiptClass => 'Class';
+
+  @override
+  String get receiptFor => 'Payment for';
+
+  @override
+  String get receiptAmountPaid => 'Amount paid';
+
+  @override
+  String get receiptMethod => 'Paid by';
+
+  @override
+  String get receiptReference => 'Reference';
+
+  @override
+  String get receiptBalance => 'Balance on this invoice';
+
+  @override
+  String get receiptReceivedBy => 'Received by';
+
+  @override
+  String get receiptCancelled => 'CANCELLED';
+
+  @override
+  String get receiptFooter => 'This is a computer-generated receipt.';
+
+  @override
+  String get paymentMethodCash => 'Cash';
+
+  @override
+  String get paymentMethodCheque => 'Cheque';
+
+  @override
+  String get paymentMethodBankTransfer => 'Bank transfer';
+
+  @override
+  String get paymentMethodUpi => 'UPI';
+
+  @override
+  String get paymentMethodOther => 'Other';
 }

@@ -243,10 +243,34 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Invoices_outstanding"
   },
   {
+    "method": "GET",
+    "path": "/v1/fees/payments/{id}/receipt",
+    "access": "tenant",
+    "operationId": "Receipts_byPayment"
+  },
+  {
     "method": "POST",
     "path": "/v1/fees/payments/{id}/reverse",
     "access": "tenant",
     "operationId": "Invoices_reverse"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/receipts/{id}/pdf",
+    "access": "tenant",
+    "operationId": "Receipts_pdf"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/receipts/{id}",
+    "access": "tenant",
+    "operationId": "Receipts_get"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/fees/receipts",
+    "access": "tenant",
+    "operationId": "Receipts_list"
   },
   {
     "method": "POST",

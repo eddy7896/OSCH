@@ -754,5 +754,81 @@
   "errorUploadFailed": "The file could not be uploaded. Try again.",
   "@errorUploadFailed": {
     "description": "Error when sending a file to storage failed."
+  },
+  "receiptTitle": "Fee receipt",
+  "@receiptTitle": {
+    "description": "Title at the top of a printed fee receipt."
+  },
+  "receiptNumber": "Receipt no.",
+  "@receiptNumber": {
+    "description": "Label before the receipt number on a fee receipt."
+  },
+  "receiptDate": "Date",
+  "@receiptDate": {
+    "description": "Label before the date the fee was paid, on a fee receipt."
+  },
+  "receiptStudent": "Student",
+  "@receiptStudent": {
+    "description": "Label before the student name on a fee receipt."
+  },
+  "receiptEnrollment": "Enrolment no.",
+  "@receiptEnrollment": {
+    "description": "Label before the student enrolment number on a fee receipt."
+  },
+  "receiptClass": "Class",
+  "@receiptClass": {
+    "description": "Label before the class (for example 5 B) on a fee receipt."
+  },
+  "receiptFor": "Payment for",
+  "@receiptFor": {
+    "description": "Label before what the payment was for (for example Tuition - April) on a fee receipt."
+  },
+  "receiptAmountPaid": "Amount paid",
+  "@receiptAmountPaid": {
+    "description": "Label before the amount paid, on a fee receipt."
+  },
+  "receiptMethod": "Paid by",
+  "@receiptMethod": {
+    "description": "Label before how the fee was paid (cash, cheque, UPI), on a fee receipt."
+  },
+  "receiptReference": "Reference",
+  "@receiptReference": {
+    "description": "Label before the cheque, bank or UPI reference, on a fee receipt."
+  },
+  "receiptBalance": "Balance on this invoice",
+  "@receiptBalance": {
+    "description": "Label before the amount still owed on the invoice after this payment, on a fee receipt."
+  },
+  "receiptReceivedBy": "Received by",
+  "@receiptReceivedBy": {
+    "description": "Label before the name of the person who took the payment, on a fee receipt."
+  },
+  "receiptCancelled": "CANCELLED",
+  "@receiptCancelled": {
+    "description": "Large stamp across a fee receipt whose payment was reversed. Keep it short."
+  },
+  "receiptFooter": "This is a computer-generated receipt.",
+  "@receiptFooter": {
+    "description": "Line at the bottom of a printed fee receipt."
+  },
+  "paymentMethodCash": "Cash",
+  "@paymentMethodCash": {
+    "description": "Way of paying a fee: cash."
+  },
+  "paymentMethodCheque": "Cheque",
+  "@paymentMethodCheque": {
+    "description": "Way of paying a fee: by cheque."
+  },
+  "paymentMethodBankTransfer": "Bank transfer",
+  "@paymentMethodBankTransfer": {
+    "description": "Way of paying a fee: by bank transfer."
+  },
+  "paymentMethodUpi": "UPI",
+  "@paymentMethodUpi": {
+    "description": "Way of paying a fee: by UPI (the Indian instant payment system)."
+  },
+  "paymentMethodOther": "Other",
+  "@paymentMethodOther": {
+    "description": "Way of paying a fee: any other way."
   }
 }
