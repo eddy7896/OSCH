@@ -193,5 +193,18 @@
   "paymentMethodCheque": "चेक",
   "paymentMethodBankTransfer": "बैंक हस्तांतरण",
   "paymentMethodUpi": "यूपीआई",
-  "paymentMethodOther": "अन्य"
+  "paymentMethodOther": "अन्य",
+  "payslipTitle": "वेतन पर्ची",
+  "payslipPeriod": "वेतन माह",
+  "payslipEmployee": "कर्मचारी",
+  "payslipEmployeeId": "कर्मचारी संख्या",
+  "payslipDepartment": "विभाग",
+  "payslipDesignation": "पदनाम",
+  "payslipEarnings": "आय",
+  "payslipDeductions": "कटौती",
+  "payslipGross": "कुल वेतन",
+  "payslipTotalDeductions": "कुल कटौती",
+  "payslipNetPay": "शुद्ध वेतन",
+  "payslipPaidOn": "भुगतान की तिथि",
+  "payslipFooter": "यह कंप्यूटर द्वारा बनाई गई वेतन पर्ची है।"
 }

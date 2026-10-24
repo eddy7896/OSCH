@@ -51,13 +51,15 @@ describe.skipIf(!ready)('E-AUD-1 runtime: every audited write adds its audit row
       expect(await count(sample.auditSchool(w!, ctx, res.body))).toBe((school ? before : 0) + 1);
     });
 
-    it('a refused call (a Principal: no such permission) writes no row of this action', async () => {
+    it('a refused call (a role without the permission) writes no row of this action', async () => {
       const sample = SAMPLES[key(route)]!;
       const ctx = sample.prepare ? await sample.prepare(w!) : {};
       const school = sample.auditSchool(w!, ctx, {});
       const count = async () => (school ? (await rows(school.replaceAll('-', ''), route.audit!.action)).length : 0);
       const before = await count();
-      const res = await send(route, w!.roles.A.PRINCIPAL.token, w!.schools.A, ctx, (await sample.body?.(w!, ctx)) ?? {});
+      // The Principal holds no write grants (except to approve); for the route the Principal may call, an Accountant (no payroll, no HR) is the outsider.
+      const outsider = sample.actor(w!, ctx) === w!.roles.A.PRINCIPAL.uid ? w!.roles.A.ACCOUNTANT : w!.roles.A.PRINCIPAL;
+      const res = await send(route, outsider.token, w!.schools.A, ctx, (await sample.body?.(w!, ctx)) ?? {});
       expect(res.status).toBe(403);
       expect(await count()).toBe(before);
     });

@@ -35,7 +35,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
   PRINCIPAL: {
     dashboard_school: school("read"),
     finance: school("read"),
-    payroll: school("read"), // [SSOT] payroll is part of financial data
+    payroll: school("read", "approve"), // [SSOT] payroll is part of financial data; [ADR-0012] a monthly payroll run is approved by the Principal and nobody else
     reports_finance: school("read", "export"), // [ASSUMED] export of reports
     attendance: school("read"),
     students: school("read"),

@@ -1295,6 +1295,84 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Other'**
   String get paymentMethodOther;
+
+  /// Title at the top of a printed payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Payslip'**
+  String get payslipTitle;
+
+  /// Label before the month a payslip is for, for example 04/2027. (A month of pay, not a class period.)
+  ///
+  /// In en, this message translates to:
+  /// **'Pay month'**
+  String get payslipPeriod;
+
+  /// Label before the name of the member of staff on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get payslipEmployee;
+
+  /// Label before the employee number on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee no.'**
+  String get payslipEmployeeId;
+
+  /// Label before the department (for example Science) on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get payslipDepartment;
+
+  /// Label before the job title (for example Teacher) on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Designation'**
+  String get payslipDesignation;
+
+  /// Heading of the list of pay components (basic pay, allowances) on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get payslipEarnings;
+
+  /// Heading of the list of amounts taken off pay on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Deductions'**
+  String get payslipDeductions;
+
+  /// Label before pay before deductions, on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Gross pay'**
+  String get payslipGross;
+
+  /// Label before the sum of all deductions, on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Total deductions'**
+  String get payslipTotalDeductions;
+
+  /// Label before the amount actually paid out, on a payslip. Keep it short.
+  ///
+  /// In en, this message translates to:
+  /// **'Net pay'**
+  String get payslipNetPay;
+
+  /// Label before the day the salary was paid, on a payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid on'**
+  String get payslipPaidOn;
+
+  /// Line at the bottom of a printed payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a computer-generated payslip.'**
+  String get payslipFooter;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

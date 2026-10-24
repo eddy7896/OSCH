@@ -44,6 +44,7 @@ describe("SignIn", () => {
     type("Mobile number", "+91 98765 43210");
     fireEvent.click(screen.getByRole("button", { name: "Send code" }));
     await waitFor(() => expect(port.startPhoneSignIn).toHaveBeenCalledWith("+91 98765 43210", expect.any(HTMLElement)));
+    await screen.findByLabelText("6-digit code"); // the code step appears after the number is accepted, which is not instant on a slow runner
     type("6-digit code", "123456");
     fireEvent.click(await screen.findByRole("button", { name: "Verify code" }));
     await waitFor(() => expect(challenge.confirm).toHaveBeenCalledWith("123456"));

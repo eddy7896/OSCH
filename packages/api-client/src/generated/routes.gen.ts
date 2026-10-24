@@ -423,6 +423,90 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Memberships_add"
   },
   {
+    "method": "DELETE",
+    "path": "/v1/payroll/payslip-lines/{id}",
+    "access": "tenant",
+    "operationId": "Payroll_removePayslipLine"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/payroll/payslips/{id}/lines",
+    "access": "tenant",
+    "operationId": "Payroll_addPayslipLine"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/payroll/payslips/{id}/pdf",
+    "access": "tenant",
+    "operationId": "Payroll_payslipPdf"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/payroll/payslips/{id}",
+    "access": "tenant",
+    "operationId": "Payroll_payslip"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/payroll/runs/{id}/approve",
+    "access": "tenant",
+    "operationId": "Payroll_approve"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/payroll/runs/{id}/pay",
+    "access": "tenant",
+    "operationId": "Payroll_pay"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/payroll/runs/{id}",
+    "access": "tenant",
+    "operationId": "Payroll_deleteRun"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/payroll/runs/{id}",
+    "access": "tenant",
+    "operationId": "Payroll_run"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/payroll/runs",
+    "access": "tenant",
+    "operationId": "Payroll_runs"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/payroll/runs",
+    "access": "tenant",
+    "operationId": "Payroll_createRun"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/payroll/salary-lines/{id}",
+    "access": "tenant",
+    "operationId": "Payroll_removeLine"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/payroll/salary-lines/{id}",
+    "access": "tenant",
+    "operationId": "Payroll_updateLine"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/payroll/staff/{staffId}/salary-lines",
+    "access": "tenant",
+    "operationId": "Payroll_addLine"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/payroll/staff/{staffId}/salary",
+    "access": "tenant",
+    "operationId": "Payroll_salary"
+  },
+  {
     "method": "POST",
     "path": "/v1/platform/schools/{id}/activate",
     "access": "platform",

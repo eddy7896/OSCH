@@ -651,4 +651,43 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get paymentMethodOther => 'دیگر';
+
+  @override
+  String get payslipTitle => 'تنخواہ کی پرچی';
+
+  @override
+  String get payslipPeriod => 'تنخواہ کا مہینہ';
+
+  @override
+  String get payslipEmployee => 'ملازم';
+
+  @override
+  String get payslipEmployeeId => 'ملازم نمبر';
+
+  @override
+  String get payslipDepartment => 'شعبہ';
+
+  @override
+  String get payslipDesignation => 'عہدہ';
+
+  @override
+  String get payslipEarnings => 'آمدنی';
+
+  @override
+  String get payslipDeductions => 'کٹوتی';
+
+  @override
+  String get payslipGross => 'کل تنخواہ';
+
+  @override
+  String get payslipTotalDeductions => 'کل کٹوتی';
+
+  @override
+  String get payslipNetPay => 'خالص تنخواہ';
+
+  @override
+  String get payslipPaidOn => 'ادائیگی کی تاریخ';
+
+  @override
+  String get payslipFooter => 'یہ کمپیوٹر سے تیار کردہ تنخواہ کی پرچی ہے۔';
 }

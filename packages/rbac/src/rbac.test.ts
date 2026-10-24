@@ -39,8 +39,9 @@ describe("E-RBAC: SSOT §4 matrix cells (locked)", () => {
     expect(can(as("PRINCIPAL"), "dashboard_school", "read")).toBe(true);
   });
 
-  it("Principal can approve leave (explicit exception); its only writes are self-service on its OWN records", () => {
+  it("Principal can approve leave and payroll runs (explicit exceptions); its only writes are self-service on its OWN records", () => {
     expect(can(as("PRINCIPAL"), "leave", "approve")).toBe(true);
+    expect(can(as("PRINCIPAL"), "payroll", "approve")).toBe(true);
     const writes = permissionsOf(as("PRINCIPAL")).filter((p) => WRITE.includes(p.action));
     expect(writes.length).toBeGreaterThan(0); // check-in and own leave request
     for (const w of writes) {
@@ -48,7 +49,7 @@ describe("E-RBAC: SSOT §4 matrix cells (locked)", () => {
       expect(w.scope, `${w.resource}:${w.action}`).toBe("own");
     }
     const approvals = permissionsOf(as("PRINCIPAL")).filter((p) => p.action === "approve");
-    expect(approvals.map((p) => p.resource)).toEqual(["leave"]);
+    expect(approvals.map((p) => p.resource).sort()).toEqual(["leave", "payroll"]); // leave requests and the monthly payroll run (ADR-0012)
   });
 
   it("Finance Admin: full CRUD on finance + payroll; NO attendance, academics, settings", () => {
@@ -89,6 +90,10 @@ describe("E-RBAC: silos and isolation", () => {
   it("only audit_log is readable by System Admin among non-admin data; audit log is read-only for everyone", () => {
     for (const role of ROLES) for (const a of [...WRITE, "export", "approve"] as const) expect(can(as(role), "audit_log", a)).toBe(false);
     expect(ROLES.filter((r) => can(as(r), "audit_log", "read"))).toEqual(["SYSTEM_ADMIN"]);
+  });
+
+  it("nobody else can approve payroll: not HR who prepares it, not the Bursar who pays it", () => {
+    for (const role of ROLES.filter((r) => r !== "PRINCIPAL")) expect(can(as(role), "payroll", "approve"), role).toBe(false);
   });
 
   it("only the Principal can approve anything", () => {

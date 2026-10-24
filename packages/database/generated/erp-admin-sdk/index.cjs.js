@@ -79,11 +79,18 @@ const PaymentMethod = {
 }
 exports.PaymentMethod = PaymentMethod;
 
-const PayrollStatus = {
-  PENDING: "PENDING",
+const PayrollRunStatus = {
+  DRAFT: "DRAFT",
+  APPROVED: "APPROVED",
   PAID: "PAID",
 }
-exports.PayrollStatus = PayrollStatus;
+exports.PayrollRunStatus = PayrollRunStatus;
+
+const SalaryLineKind = {
+  EARNING: "EARNING",
+  DEDUCTION: "DEDUCTION",
+}
+exports.SalaryLineKind = SalaryLineKind;
 
 const SchoolRole = {
   PRINCIPAL: "PRINCIPAL",
@@ -171,13 +178,6 @@ function createSchoolMember(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('CreateSchoolMember', inputVars, inputOpts);
 }
 exports.createSchoolMember = createSchoolMember;
-
-function createPayroll(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreatePayroll', inputVars, inputOpts);
-}
-exports.createPayroll = createPayroll;
 
 function createSchedule(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -669,19 +669,82 @@ function reversePayment(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.reversePayment = reversePayment;
 
+function addSalaryLine(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddSalaryLine', inputVars, inputOpts);
+}
+exports.addSalaryLine = addSalaryLine;
+
+function updateSalaryLine(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateSalaryLine', inputVars, inputOpts);
+}
+exports.updateSalaryLine = updateSalaryLine;
+
+function removeSalaryLine(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveSalaryLine', inputVars, inputOpts);
+}
+exports.removeSalaryLine = removeSalaryLine;
+
+function createPayrollRun(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreatePayrollRun', inputVars, inputOpts);
+}
+exports.createPayrollRun = createPayrollRun;
+
+function createPayslip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreatePayslip', inputVars, inputOpts);
+}
+exports.createPayslip = createPayslip;
+
+function addPayslipLine(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddPayslipLine', inputVars, inputOpts);
+}
+exports.addPayslipLine = addPayslipLine;
+
+function removePayslipLine(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemovePayslipLine', inputVars, inputOpts);
+}
+exports.removePayslipLine = removePayslipLine;
+
+function deletePayrollRun(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeletePayrollRun', inputVars, inputOpts);
+}
+exports.deletePayrollRun = deletePayrollRun;
+
+function approvePayrollRun(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ApprovePayrollRun', inputVars, inputOpts);
+}
+exports.approvePayrollRun = approvePayrollRun;
+
+function markPayrollRunPaid(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('MarkPayrollRunPaid', inputVars, inputOpts);
+}
+exports.markPayrollRunPaid = markPayrollRunPaid;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeQuery('ListStaff', inputVars, inputOpts);
 }
 exports.listStaff = listStaff;
-
-function listPayroll(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListPayroll', inputVars, inputOpts);
-}
-exports.listPayroll = listPayroll;
 
 function listSchedules(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -1053,4 +1116,67 @@ function getReceiptByPayment(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetReceiptByPayment', inputVars, inputOpts);
 }
 exports.getReceiptByPayment = getReceiptByPayment;
+
+function listSalaryLines(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListSalaryLines', inputVars, inputOpts);
+}
+exports.listSalaryLines = listSalaryLines;
+
+function staffForPayroll(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StaffForPayroll', inputVars, inputOpts);
+}
+exports.staffForPayroll = staffForPayroll;
+
+function listPayrollRuns(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListPayrollRuns', inputVars, inputOpts);
+}
+exports.listPayrollRuns = listPayrollRuns;
+
+function findPayrollRun(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('FindPayrollRun', inputVars, inputOpts);
+}
+exports.findPayrollRun = findPayrollRun;
+
+function getPayrollRun(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetPayrollRun', inputVars, inputOpts);
+}
+exports.getPayrollRun = getPayrollRun;
+
+function getPayslip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetPayslip', inputVars, inputOpts);
+}
+exports.getPayslip = getPayslip;
+
+function payrollRunSum(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('PayrollRunSum', inputVars, inputOpts);
+}
+exports.payrollRunSum = payrollRunSum;
+
+function payslipLine(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('PayslipLine', inputVars, inputOpts);
+}
+exports.payslipLine = payslipLine;
+
+function salaryLineById(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('SalaryLineById', inputVars, inputOpts);
+}
+exports.salaryLineById = salaryLineById;
 

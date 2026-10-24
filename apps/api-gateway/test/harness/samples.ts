@@ -215,6 +215,28 @@ const readyToBillA = async (w: World): Promise<Record<string, string>> => {
   return { year: ctx['year']!, student: stu };
 };
 
+const principalOfA = { token: (w: World) => w.roles.A.PRINCIPAL.token, actor: (w: World) => w.roles.A.PRINCIPAL.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+/** Each sample run gets its own month (one run per school and month), counting up from January 2001. */
+let runCounter = 0;
+const nextRunPeriod = () => { const n = runCounter++; return { year: 2001 + Math.floor(n / 12), month: (n % 12) + 1 }; };
+/** A payroll run of school A with one payslip and one line, optionally approved, through the real operations. */
+const payrollRunOfA = (opts: { approve?: boolean } = {}) => async (w: World): Promise<Record<string, string>> => {
+  const hr = w.roles.A.HR_MANAGER.uid;
+  const staff = (await staffOfA(w))['id']!;
+  const runId = randomUUID(), slip = randomUUID(), line = randomUUID();
+  await w.db.createPayrollRun({ schoolId: w.schools.A, id: runId, ...nextRunPeriod(), actorId: hr });
+  await w.db.createPayslip({ schoolId: w.schools.A, id: slip, runId, staffId: staff, actorId: hr });
+  await w.db.addPayslipLine({ schoolId: w.schools.A, id: line, runId, payslipId: slip, kind: 'EARNING' as never, name: 'Basic pay', amountMinor: '3000000', manual: false, actorId: hr });
+  if (opts.approve) await w.db.approvePayrollRun({ schoolId: w.schools.A, id: runId, actorId: w.roles.A.PRINCIPAL.uid });
+  return { id: dash(runId), payslip: dash(slip), line: dash(line) };
+};
+const salaryLineOfA = async (w: World): Promise<Record<string, string>> => {
+  const staff = (await staffOfA(w))['id']!;
+  const id = randomUUID();
+  await w.db.addSalaryLine({ schoolId: w.schools.A, id, staffId: staff, kind: 'EARNING' as never, name: 'Basic pay', amountMinor: '3000000', actorId: w.roles.A.HR_MANAGER.uid });
+  return { id: dash(id), staffId: staff };
+};
+
 export const SAMPLES: Record<string, Sample> = {
   'POST /platform/schools': { ...platform, body: () => ({ name: 'Audit sample school', subDomain: `a${randomUUID().slice(0, 12)}`, defaultLanguage: 'en' }), auditSchool: (_w, _c, res) => res['id'] },
   'PATCH /platform/schools/:id': { ...platform, prepare: freshSchool, body: () => ({ name: 'Renamed by the audit sample' }), auditSchool: (_w, ctx) => ctx['id']! },
@@ -336,4 +358,17 @@ export const SAMPLES: Record<string, Sample> = {
     body: () => ({ amountMinor: '10000', method: 'CASH' }),
   },
   'POST /fees/payments/:id/reverse': { ...bursarOfA, prepare: invoiceOfA(true), body: () => ({ reason: 'Entered in error' }) },
+  'POST /payroll/staff/:staffId/salary-lines': { ...hrOfA, prepare: async (w) => ({ staffId: (await staffOfA(w))['id']! }), body: () => ({ kind: 'EARNING', name: 'Basic pay', amountMinor: '3500000' }) },
+  'PATCH /payroll/salary-lines/:id': { ...hrOfA, prepare: salaryLineOfA, body: () => ({ amountMinor: '3600000' }) },
+  'DELETE /payroll/salary-lines/:id': { ...bursarOfA, prepare: salaryLineOfA },
+  'POST /payroll/runs': {
+    ...hrOfA,
+    prepare: async (w) => ({ staffId: (await salaryLineOfA(w))['staffId']! }), // somebody with a salary, so the draft has a payslip
+    body: () => nextRunPeriod(),
+  },
+  'DELETE /payroll/runs/:id': { ...bursarOfA, prepare: payrollRunOfA() },
+  'POST /payroll/runs/:id/approve': { ...principalOfA, prepare: payrollRunOfA(), body: () => ({}) },
+  'POST /payroll/runs/:id/pay': { ...bursarOfA, prepare: payrollRunOfA({ approve: true }), body: () => ({ reference: 'NEFT-1' }) },
+  'POST /payroll/payslips/:id/lines': { ...hrOfA, prepare: async (w) => { const r = await payrollRunOfA()(w); return { id: r['payslip']! }; }, body: () => ({ kind: 'DEDUCTION', name: 'Advance recovery', amountMinor: '100000' }) },
+  'DELETE /payroll/payslip-lines/:id': { ...hrOfA, prepare: async (w) => { const r = await payrollRunOfA()(w); return { id: r['line']! }; } },
 };

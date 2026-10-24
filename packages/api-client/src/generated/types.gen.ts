@@ -59,6 +59,12 @@ export type AddMembershipDto = {
     userId: string;
 };
 
+export type AddPayslipLineDto = {
+    amountMinor: string;
+    kind: 'EARNING' | 'DEDUCTION';
+    name: string;
+};
+
 export type AddStaffDocumentDto = {
     fileName: string;
     key: string;
@@ -254,6 +260,17 @@ export type CreateInvoiceDto = {
 
 export type CreateItemDto = {
     instalments: Array<NewInstalmentDto>;
+    name: string;
+};
+
+export type CreatePayrollRunDto = {
+    month: number;
+    year: number;
+};
+
+export type CreateSalaryLineDto = {
+    amountMinor: string;
+    kind: 'EARNING' | 'DEDUCTION';
     name: string;
 };
 
@@ -645,6 +662,11 @@ export type OutstandingDto = {
     totals: InvoiceTotalsDto;
 };
 
+export type PayRunDto = {
+    paidOn?: string;
+    reference?: string;
+};
+
 export type PaymentDto = {
     amountMinor: string;
     id: string;
@@ -664,6 +686,66 @@ export type PaymentReceiptDto = {
     cancelled: boolean;
     id: string;
     number: string;
+};
+
+export type PayrollRunDto = {
+    approvedAt: string | null;
+    approvedBy: PersonRefDto | null;
+    id: string;
+    month: number;
+    paidBy: PersonRefDto | null;
+    paidOn: string | null;
+    paymentReference: string | null;
+    payslips: Array<PayslipDto>;
+    preparedBy: PersonRefDto;
+    status: string;
+    totals: RunTotalsDto;
+    year: number;
+};
+
+export type PayrollRunListDto = {
+    items: Array<PayrollRunSummaryDto>;
+};
+
+export type PayrollRunSummaryDto = {
+    approvedAt: string | null;
+    approvedBy: PersonRefDto | null;
+    id: string;
+    month: number;
+    paidBy: PersonRefDto | null;
+    paidOn: string | null;
+    paymentReference: string | null;
+    preparedBy: PersonRefDto;
+    status: string;
+    year: number;
+};
+
+export type PayslipDto = {
+    deductionsMinor: string;
+    grossMinor: string;
+    id: string;
+    lines: Array<PayslipLineDto>;
+    netMinor: string;
+    staff: {
+        department: string | null;
+        designation: string | null;
+        employeeId: string;
+        id: string;
+        name: string;
+    };
+};
+
+export type PayslipLineDto = {
+    amountMinor: string;
+    id: string;
+    kind: string;
+    manual: boolean;
+    name: string;
+};
+
+export type PersonRefDto = {
+    id: string;
+    name: string;
 };
 
 export type PhotoUploadRequestDto = {
@@ -765,6 +847,32 @@ export type RecordPaymentDto = {
 
 export type ReversePaymentDto = {
     reason: string;
+};
+
+export type RunTotalsDto = {
+    deductionsMinor: string;
+    grossMinor: string;
+    netMinor: string;
+    payslips: number;
+};
+
+export type SalaryDto = {
+    deductionsMinor: string;
+    grossMinor: string;
+    lines: Array<SalaryLineDto>;
+    netMinor: string;
+    staff: {
+        employeeId: string;
+        id: string;
+        name: string;
+    };
+};
+
+export type SalaryLineDto = {
+    amountMinor: string;
+    id: string;
+    kind: string;
+    name: string;
 };
 
 export type SampleInvoiceDto = {
@@ -1063,6 +1171,12 @@ export type UpdateMembershipDto = {
 
 export type UpdatePreferencesDto = {
     language: 'en' | 'hi' | 'ur' | 'ks' | 'sd' | 'ps' | 'fa' | 'ar' | 'bn' | 'as' | 'mr' | 'doi' | 'gu' | 'pa' | 'or' | 'ta' | 'te' | 'kn' | 'ml';
+};
+
+export type UpdateSalaryLineDto = {
+    amountMinor?: string;
+    kind?: 'EARNING' | 'DEDUCTION';
+    name?: string;
 };
 
 export type UpdateSchoolDto = {
@@ -4127,6 +4241,612 @@ export type MembershipsUpdateResponses = {
 };
 
 export type MembershipsUpdateResponse = MembershipsUpdateResponses[keyof MembershipsUpdateResponses];
+
+export type PayrollRemovePayslipLineData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/payslip-lines/{id}';
+};
+
+export type PayrollRemovePayslipLineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollRemovePayslipLineError = PayrollRemovePayslipLineErrors[keyof PayrollRemovePayslipLineErrors];
+
+export type PayrollRemovePayslipLineResponses = {
+    200: PayrollRunDto;
+};
+
+export type PayrollRemovePayslipLineResponse = PayrollRemovePayslipLineResponses[keyof PayrollRemovePayslipLineResponses];
+
+export type PayrollPayslipData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/payslips/{id}';
+};
+
+export type PayrollPayslipErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollPayslipError = PayrollPayslipErrors[keyof PayrollPayslipErrors];
+
+export type PayrollPayslipResponses = {
+    200: PayslipDto;
+};
+
+export type PayrollPayslipResponse = PayrollPayslipResponses[keyof PayrollPayslipResponses];
+
+export type PayrollAddPayslipLineData = {
+    body: AddPayslipLineDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/payslips/{id}/lines';
+};
+
+export type PayrollAddPayslipLineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollAddPayslipLineError = PayrollAddPayslipLineErrors[keyof PayrollAddPayslipLineErrors];
+
+export type PayrollAddPayslipLineResponses = {
+    201: PayrollRunDto;
+};
+
+export type PayrollAddPayslipLineResponse = PayrollAddPayslipLineResponses[keyof PayrollAddPayslipLineResponses];
+
+export type PayrollPayslipPdfData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        lang?: string;
+    };
+    url: '/v1/payroll/payslips/{id}/pdf';
+};
+
+export type PayrollPayslipPdfErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollPayslipPdfError = PayrollPayslipPdfErrors[keyof PayrollPayslipPdfErrors];
+
+export type PayrollPayslipPdfResponses = {
+    200: unknown;
+};
+
+export type PayrollRunsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        limit?: number;
+    };
+    url: '/v1/payroll/runs';
+};
+
+export type PayrollRunsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollRunsError = PayrollRunsErrors[keyof PayrollRunsErrors];
+
+export type PayrollRunsResponses = {
+    200: PayrollRunListDto;
+};
+
+export type PayrollRunsResponse = PayrollRunsResponses[keyof PayrollRunsResponses];
+
+export type PayrollCreateRunData = {
+    body: CreatePayrollRunDto;
+    path?: never;
+    query?: never;
+    url: '/v1/payroll/runs';
+};
+
+export type PayrollCreateRunErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollCreateRunError = PayrollCreateRunErrors[keyof PayrollCreateRunErrors];
+
+export type PayrollCreateRunResponses = {
+    201: PayrollRunDto;
+};
+
+export type PayrollCreateRunResponse = PayrollCreateRunResponses[keyof PayrollCreateRunResponses];
+
+export type PayrollDeleteRunData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/runs/{id}';
+};
+
+export type PayrollDeleteRunErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollDeleteRunError = PayrollDeleteRunErrors[keyof PayrollDeleteRunErrors];
+
+export type PayrollDeleteRunResponses = {
+    204: void;
+};
+
+export type PayrollDeleteRunResponse = PayrollDeleteRunResponses[keyof PayrollDeleteRunResponses];
+
+export type PayrollRunData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/runs/{id}';
+};
+
+export type PayrollRunErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollRunError = PayrollRunErrors[keyof PayrollRunErrors];
+
+export type PayrollRunResponses = {
+    200: PayrollRunDto;
+};
+
+export type PayrollRunResponse = PayrollRunResponses[keyof PayrollRunResponses];
+
+export type PayrollApproveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/runs/{id}/approve';
+};
+
+export type PayrollApproveErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollApproveError = PayrollApproveErrors[keyof PayrollApproveErrors];
+
+export type PayrollApproveResponses = {
+    200: PayrollRunDto;
+};
+
+export type PayrollApproveResponse = PayrollApproveResponses[keyof PayrollApproveResponses];
+
+export type PayrollPayData = {
+    body: PayRunDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/runs/{id}/pay';
+};
+
+export type PayrollPayErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollPayError = PayrollPayErrors[keyof PayrollPayErrors];
+
+export type PayrollPayResponses = {
+    200: PayrollRunDto;
+};
+
+export type PayrollPayResponse = PayrollPayResponses[keyof PayrollPayResponses];
+
+export type PayrollRemoveLineData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/salary-lines/{id}';
+};
+
+export type PayrollRemoveLineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollRemoveLineError = PayrollRemoveLineErrors[keyof PayrollRemoveLineErrors];
+
+export type PayrollRemoveLineResponses = {
+    200: SalaryDto;
+};
+
+export type PayrollRemoveLineResponse = PayrollRemoveLineResponses[keyof PayrollRemoveLineResponses];
+
+export type PayrollUpdateLineData = {
+    body: UpdateSalaryLineDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/salary-lines/{id}';
+};
+
+export type PayrollUpdateLineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollUpdateLineError = PayrollUpdateLineErrors[keyof PayrollUpdateLineErrors];
+
+export type PayrollUpdateLineResponses = {
+    200: SalaryDto;
+};
+
+export type PayrollUpdateLineResponse = PayrollUpdateLineResponses[keyof PayrollUpdateLineResponses];
+
+export type PayrollSalaryData = {
+    body?: never;
+    path: {
+        staffId: string;
+    };
+    query?: never;
+    url: '/v1/payroll/staff/{staffId}/salary';
+};
+
+export type PayrollSalaryErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollSalaryError = PayrollSalaryErrors[keyof PayrollSalaryErrors];
+
+export type PayrollSalaryResponses = {
+    200: SalaryDto;
+};
+
+export type PayrollSalaryResponse = PayrollSalaryResponses[keyof PayrollSalaryResponses];
+
+export type PayrollAddLineData = {
+    body: CreateSalaryLineDto;
+    path: {
+        staffId: string;
+    };
+    query?: never;
+    url: '/v1/payroll/staff/{staffId}/salary-lines';
+};
+
+export type PayrollAddLineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type PayrollAddLineError = PayrollAddLineErrors[keyof PayrollAddLineErrors];
+
+export type PayrollAddLineResponses = {
+    201: SalaryDto;
+};
+
+export type PayrollAddLineResponse = PayrollAddLineResponses[keyof PayrollAddLineResponses];
 
 export type PlatformSchoolsListData = {
     body?: never;

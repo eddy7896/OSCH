@@ -192,5 +192,18 @@
   "paymentMethodCheque": "چیک",
   "paymentMethodBankTransfer": "بینک ٹرانسفر",
   "paymentMethodUpi": "یو پی آئی",
-  "paymentMethodOther": "دیگر"
+  "paymentMethodOther": "دیگر",
+  "payslipTitle": "تنخواہ کی پرچی",
+  "payslipPeriod": "تنخواہ کا مہینہ",
+  "payslipEmployee": "ملازم",
+  "payslipEmployeeId": "ملازم نمبر",
+  "payslipDepartment": "شعبہ",
+  "payslipDesignation": "عہدہ",
+  "payslipEarnings": "آمدنی",
+  "payslipDeductions": "کٹوتی",
+  "payslipGross": "کل تنخواہ",
+  "payslipTotalDeductions": "کل کٹوتی",
+  "payslipNetPay": "خالص تنخواہ",
+  "payslipPaidOn": "ادائیگی کی تاریخ",
+  "payslipFooter": "یہ کمپیوٹر سے تیار کردہ تنخواہ کی پرچی ہے۔"
 }

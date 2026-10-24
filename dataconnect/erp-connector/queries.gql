@@ -11,20 +11,6 @@ query ListStaff($schoolId: UUID!) @auth(level: NO_ACCESS) {
   }
 }
 
-# Finance: Get Payroll for a School
-query ListPayroll($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  payrolls(where: {schoolId: {eq: $schoolId}}, orderBy: [{payDate: DESC}]) {
-    id
-    amountMinor
-    payDate
-    status
-    user {
-      id
-      email
-    }
-  }
-}
-
 # Academic: Get Class Schedules
 query ListSchedules($schoolId: UUID!) @auth(level: NO_ACCESS) {
   classSchedules(where: {schoolId: {eq: $schoolId}}) {
@@ -369,4 +355,58 @@ query GetReceiptByPayment($schoolId: UUID!, $paymentId: UUID!) @auth(level: NO_A
   receipts(where: {schoolId: {eq: $schoolId}, paymentId: {eq: $paymentId}}, limit: 1) {
     id number serial amountMinor balanceAfterMinor cancelledAt cancelReason createdAt academicYear { id name } student { id enrollmentId firstName lastName } invoice { id title } payment { id method reference paidOn recordedBy { id displayName email } }
   }
+}
+
+# ---- Payroll (P2-8)
+query ListSalaryLines($schoolId: UUID!, $staffId: UUID!) @auth(level: NO_ACCESS) {
+  salaryLines(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}}, orderBy: [{kind: ASC}, {createdAt: ASC}]) { id kind name amountMinor }
+}
+
+# Everyone who could be on a payroll run: active staff with their salary lines.
+query StaffForPayroll($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  staffProfiles(where: {schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}, orderBy: [{serial: ASC}], limit: $limit, offset: $offset) {
+    id employeeId firstName lastName
+    lines: salaryLines_on_staff(orderBy: [{kind: ASC}, {createdAt: ASC}]) { kind name amountMinor }
+  }
+}
+
+query ListPayrollRuns($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  payrollRuns(where: {schoolId: {eq: $schoolId}}, orderBy: [{year: DESC}, {month: DESC}], limit: $limit, offset: $offset) { id year month status createdAt approvedAt paidAt paidOn paymentReference preparedBy { id displayName email } approvedBy { id displayName email } paidBy { id displayName email } }
+}
+
+query FindPayrollRun($schoolId: UUID!, $year: Int!, $month: Int!) @auth(level: NO_ACCESS) {
+  payrollRuns(where: {schoolId: {eq: $schoolId}, year: {eq: $year}, month: {eq: $month}}, limit: 1) { id status }
+}
+
+query GetPayrollRun($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  payrollRuns(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id year month status createdAt approvedAt paidAt paidOn paymentReference preparedBy { id displayName email } approvedBy { id displayName email } paidBy { id displayName email }
+    payslips: payslips_on_run(orderBy: [{createdAt: ASC}], limit: 1000) {
+      id
+      staff { id employeeId firstName lastName department designation }
+      lines: payslipLines_on_payslip(orderBy: [{kind: ASC}, {createdAt: ASC}]) { id kind name amountMinor manual }
+    }
+  }
+}
+
+query GetPayslip($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  payslips(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id
+    run { id year month status createdAt approvedAt paidAt paidOn paymentReference preparedBy { id displayName email } approvedBy { id displayName email } paidBy { id displayName email } }
+    staff { id employeeId firstName lastName department designation }
+    lines: payslipLines_on_payslip(orderBy: [{kind: ASC}, {createdAt: ASC}]) { id kind name amountMinor manual }
+  }
+}
+
+# Exact sums for one run and one kind of line, in the database.
+query PayrollRunSum($schoolId: UUID!, $runId: UUID!, $kind: SalaryLineKind!) @auth(level: NO_ACCESS) {
+  payslipLines(where: {schoolId: {eq: $schoolId}, runId: {eq: $runId}, kind: {eq: $kind}}) { _count amountMinor_sum }
+}
+
+query PayslipLine($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  payslipLines(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id kind name amountMinor manual run { id status } payslip { id } }
+}
+
+query SalaryLineById($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  salaryLines(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id kind name amountMinor staff { id } }
 }

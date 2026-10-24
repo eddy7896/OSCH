@@ -293,6 +293,31 @@
         ],
         "type": "object"
       },
+      "AddPayslipLineDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "EARNING",
+              "DEDUCTION"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "name",
+          "amountMinor"
+        ],
+        "type": "object"
+      },
       "AddStaffDocumentDto": {
         "properties": {
           "fileName": {
@@ -1070,6 +1095,50 @@
         "required": [
           "name",
           "instalments"
+        ],
+        "type": "object"
+      },
+      "CreatePayrollRunDto": {
+        "properties": {
+          "month": {
+            "maximum": 12,
+            "minimum": 1,
+            "type": "number"
+          },
+          "year": {
+            "maximum": 2200,
+            "minimum": 2000,
+            "type": "number"
+          }
+        },
+        "required": [
+          "year",
+          "month"
+        ],
+        "type": "object"
+      },
+      "CreateSalaryLineDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "EARNING",
+              "DEDUCTION"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "name",
+          "amountMinor"
         ],
         "type": "object"
       },
@@ -2546,6 +2615,19 @@
         ],
         "type": "object"
       },
+      "PayRunDto": {
+        "properties": {
+          "paidOn": {
+            "type": "string"
+          },
+          "reference": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "PaymentDto": {
         "properties": {
           "amountMinor": {
@@ -2626,6 +2708,257 @@
           "id",
           "number",
           "cancelled"
+        ],
+        "type": "object"
+      },
+      "PayrollRunDto": {
+        "properties": {
+          "approvedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "approvedBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PersonRefDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "month": {
+            "type": "number"
+          },
+          "paidBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PersonRefDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "paidOn": {
+            "nullable": true,
+            "type": "string"
+          },
+          "paymentReference": {
+            "nullable": true,
+            "type": "string"
+          },
+          "payslips": {
+            "items": {
+              "$ref": "#/components/schemas/PayslipDto"
+            },
+            "type": "array"
+          },
+          "preparedBy": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "status": {
+            "type": "string"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/RunTotalsDto"
+          },
+          "year": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "year",
+          "month",
+          "status",
+          "preparedBy",
+          "approvedBy",
+          "approvedAt",
+          "paidBy",
+          "paidOn",
+          "paymentReference",
+          "totals",
+          "payslips"
+        ],
+        "type": "object"
+      },
+      "PayrollRunListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PayrollRunSummaryDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "PayrollRunSummaryDto": {
+        "properties": {
+          "approvedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "approvedBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PersonRefDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "month": {
+            "type": "number"
+          },
+          "paidBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PersonRefDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "paidOn": {
+            "nullable": true,
+            "type": "string"
+          },
+          "paymentReference": {
+            "nullable": true,
+            "type": "string"
+          },
+          "preparedBy": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "status": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "year",
+          "month",
+          "status",
+          "preparedBy",
+          "approvedBy",
+          "approvedAt",
+          "paidBy",
+          "paidOn",
+          "paymentReference"
+        ],
+        "type": "object"
+      },
+      "PayslipDto": {
+        "properties": {
+          "deductionsMinor": {
+            "type": "string"
+          },
+          "grossMinor": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/PayslipLineDto"
+            },
+            "type": "array"
+          },
+          "netMinor": {
+            "type": "string"
+          },
+          "staff": {
+            "properties": {
+              "department": {
+                "nullable": true,
+                "type": "string"
+              },
+              "designation": {
+                "nullable": true,
+                "type": "string"
+              },
+              "employeeId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "employeeId",
+              "name",
+              "department",
+              "designation"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "staff",
+          "lines",
+          "grossMinor",
+          "deductionsMinor",
+          "netMinor"
+        ],
+        "type": "object"
+      },
+      "PayslipLineDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "manual": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "amountMinor",
+          "manual"
+        ],
+        "type": "object"
+      },
+      "PersonRefDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
         ],
         "type": "object"
       },
@@ -3010,6 +3343,98 @@
         },
         "required": [
           "reason"
+        ],
+        "type": "object"
+      },
+      "RunTotalsDto": {
+        "properties": {
+          "deductionsMinor": {
+            "type": "string"
+          },
+          "grossMinor": {
+            "type": "string"
+          },
+          "netMinor": {
+            "type": "string"
+          },
+          "payslips": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "payslips",
+          "grossMinor",
+          "deductionsMinor",
+          "netMinor"
+        ],
+        "type": "object"
+      },
+      "SalaryDto": {
+        "properties": {
+          "deductionsMinor": {
+            "type": "string"
+          },
+          "grossMinor": {
+            "type": "string"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/SalaryLineDto"
+            },
+            "type": "array"
+          },
+          "netMinor": {
+            "type": "string"
+          },
+          "staff": {
+            "properties": {
+              "employeeId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "employeeId",
+              "name"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "staff",
+          "lines",
+          "grossMinor",
+          "deductionsMinor",
+          "netMinor"
+        ],
+        "type": "object"
+      },
+      "SalaryLineDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "amountMinor"
         ],
         "type": "object"
       },
@@ -4168,6 +4593,26 @@
         "required": [
           "language"
         ],
+        "type": "object"
+      },
+      "UpdateSalaryLineDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "EARNING",
+              "DEDUCTION"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "UpdateSchoolDto": {
@@ -9329,6 +9774,923 @@
         "x-permission": {
           "action": "update",
           "resource": "memberships"
+        }
+      }
+    },
+    "/v1/payroll/payslip-lines/{id}": {
+      "delete": {
+        "operationId": "Payroll_removePayslipLine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollRunDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.payslipline.remove",
+          "operation": "RemovePayslipLine"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/payslips/{id}": {
+      "get": {
+        "operationId": "Payroll_payslip",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayslipDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/payslips/{id}/lines": {
+      "post": {
+        "operationId": "Payroll_addPayslipLine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPayslipLineDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollRunDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.payslipline.add",
+          "operation": "AddPayslipLine"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/payslips/{id}/pdf": {
+      "get": {
+        "operationId": "Payroll_payslipPdf",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "pattern": "^[a-z]{2,3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/runs": {
+      "get": {
+        "operationId": "Payroll_runs",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollRunListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "payroll"
+        }
+      },
+      "post": {
+        "operationId": "Payroll_createRun",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePayrollRunDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollRunDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.run.create",
+          "operation": "CreatePayrollRun"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/runs/{id}": {
+      "delete": {
+        "operationId": "Payroll_deleteRun",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.run.delete",
+          "operation": "DeletePayrollRun"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "payroll"
+        }
+      },
+      "get": {
+        "operationId": "Payroll_run",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollRunDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/runs/{id}/approve": {
+      "post": {
+        "operationId": "Payroll_approve",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollRunDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.run.approve",
+          "operation": "ApprovePayrollRun"
+        },
+        "x-permission": {
+          "action": "approve",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/runs/{id}/pay": {
+      "post": {
+        "operationId": "Payroll_pay",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayRunDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollRunDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.run.pay",
+          "operation": "MarkPayrollRunPaid"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/salary-lines/{id}": {
+      "delete": {
+        "operationId": "Payroll_removeLine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalaryDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.salaryline.remove",
+          "operation": "RemoveSalaryLine"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "payroll"
+        }
+      },
+      "patch": {
+        "operationId": "Payroll_updateLine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSalaryLineDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalaryDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.salaryline.update",
+          "operation": "UpdateSalaryLine"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/staff/{staffId}/salary": {
+      "get": {
+        "operationId": "Payroll_salary",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "staffId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalaryDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/staff/{staffId}/salary-lines": {
+      "post": {
+        "operationId": "Payroll_addLine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "staffId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSalaryLineDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalaryDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Payroll"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.salaryline.add",
+          "operation": "AddSalaryLine"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "payroll"
         }
       }
     },

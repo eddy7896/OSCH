@@ -830,5 +830,57 @@
   "paymentMethodOther": "Other",
   "@paymentMethodOther": {
     "description": "Way of paying a fee: any other way."
+  },
+  "payslipTitle": "Payslip",
+  "@payslipTitle": {
+    "description": "Title at the top of a printed payslip."
+  },
+  "payslipPeriod": "Pay month",
+  "@payslipPeriod": {
+    "description": "Label before the month a payslip is for, for example 04/2027. (A month of pay, not a class period.)"
+  },
+  "payslipEmployee": "Employee",
+  "@payslipEmployee": {
+    "description": "Label before the name of the member of staff on a payslip."
+  },
+  "payslipEmployeeId": "Employee no.",
+  "@payslipEmployeeId": {
+    "description": "Label before the employee number on a payslip."
+  },
+  "payslipDepartment": "Department",
+  "@payslipDepartment": {
+    "description": "Label before the department (for example Science) on a payslip."
+  },
+  "payslipDesignation": "Designation",
+  "@payslipDesignation": {
+    "description": "Label before the job title (for example Teacher) on a payslip."
+  },
+  "payslipEarnings": "Earnings",
+  "@payslipEarnings": {
+    "description": "Heading of the list of pay components (basic pay, allowances) on a payslip."
+  },
+  "payslipDeductions": "Deductions",
+  "@payslipDeductions": {
+    "description": "Heading of the list of amounts taken off pay on a payslip."
+  },
+  "payslipGross": "Gross pay",
+  "@payslipGross": {
+    "description": "Label before pay before deductions, on a payslip."
+  },
+  "payslipTotalDeductions": "Total deductions",
+  "@payslipTotalDeductions": {
+    "description": "Label before the sum of all deductions, on a payslip."
+  },
+  "payslipNetPay": "Net pay",
+  "@payslipNetPay": {
+    "description": "Label before the amount actually paid out, on a payslip. Keep it short."
+  },
+  "payslipPaidOn": "Paid on",
+  "@payslipPaidOn": {
+    "description": "Label before the day the salary was paid, on a payslip."
+  },
+  "payslipFooter": "This is a computer-generated payslip.",
+  "@payslipFooter": {
+    "description": "Line at the bottom of a printed payslip."
   }
 }

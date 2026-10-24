@@ -36,13 +36,13 @@ describe('audit binding against the real connector', () => {
       [
         { label: 'R1', audit: { action: 'membership.added', operation: 'AddMembership' } },
         { label: 'R2', audit: { action: 'x.y', operation: 'NoSuchOperation' } },
-        { label: 'R3', audit: { action: 'payroll.create', operation: 'CreatePayroll' } }, // Phase 0 operation: no audit insert yet
+        { label: 'R3', audit: { action: 'exam.create', operation: 'CreateExam' } }, // Phase 0 operation: no audit insert yet
       ],
       real,
     ).join('\n');
     expect(p).toMatch(/R1: @Audit says "membership.added" but AddMembership records "membership.add"/);
     expect(p).toMatch(/R2: .*NoSuchOperation is not a mutation/);
-    expect(p).toMatch(/R3: operation CreatePayroll has no auditLog_insert/);
+    expect(p).toMatch(/R3: operation CreateExam has no auditLog_insert/);
   });
 
   it('routes without @Audit are ignored by the binding check', () => {

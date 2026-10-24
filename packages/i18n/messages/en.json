@@ -192,5 +192,18 @@
   "paymentMethodCheque": "Cheque",
   "paymentMethodBankTransfer": "Bank transfer",
   "paymentMethodUpi": "UPI",
-  "paymentMethodOther": "Other"
+  "paymentMethodOther": "Other",
+  "payslipTitle": "Payslip",
+  "payslipPeriod": "Pay month",
+  "payslipEmployee": "Employee",
+  "payslipEmployeeId": "Employee no.",
+  "payslipDepartment": "Department",
+  "payslipDesignation": "Designation",
+  "payslipEarnings": "Earnings",
+  "payslipDeductions": "Deductions",
+  "payslipGross": "Gross pay",
+  "payslipTotalDeductions": "Total deductions",
+  "payslipNetPay": "Net pay",
+  "payslipPaidOn": "Paid on",
+  "payslipFooter": "This is a computer-generated payslip."
 }

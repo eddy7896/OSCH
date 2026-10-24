@@ -649,4 +649,43 @@ class OruStringsGu extends OruStrings {
 
   @override
   String get paymentMethodOther => 'Other';
+
+  @override
+  String get payslipTitle => 'Payslip';
+
+  @override
+  String get payslipPeriod => 'Pay month';
+
+  @override
+  String get payslipEmployee => 'Employee';
+
+  @override
+  String get payslipEmployeeId => 'Employee no.';
+
+  @override
+  String get payslipDepartment => 'Department';
+
+  @override
+  String get payslipDesignation => 'Designation';
+
+  @override
+  String get payslipEarnings => 'Earnings';
+
+  @override
+  String get payslipDeductions => 'Deductions';
+
+  @override
+  String get payslipGross => 'Gross pay';
+
+  @override
+  String get payslipTotalDeductions => 'Total deductions';
+
+  @override
+  String get payslipNetPay => 'Net pay';
+
+  @override
+  String get payslipPaidOn => 'Paid on';
+
+  @override
+  String get payslipFooter => 'This is a computer-generated payslip.';
 }
