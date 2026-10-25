@@ -753,6 +753,55 @@
         ],
         "type": "object"
       },
+      "ClassSlotDto": {
+        "properties": {
+          "day": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "periodId": {
+            "type": "string"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/TimetableStaffDto"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/TimetableSubjectDto"
+          }
+        },
+        "required": [
+          "id",
+          "day",
+          "periodId",
+          "subject",
+          "staff"
+        ],
+        "type": "object"
+      },
+      "ClassTimetableDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "classId": {
+            "type": "string"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/ClassSlotDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "academicYearId",
+          "classId",
+          "entries"
+        ],
+        "type": "object"
+      },
       "CollectionRowDto": {
         "properties": {
           "amountMinor": {
@@ -2774,6 +2823,41 @@
         ],
         "type": "object"
       },
+      "LoadByDayDto": {
+        "properties": {
+          "FRI": {
+            "type": "number"
+          },
+          "MON": {
+            "type": "number"
+          },
+          "SAT": {
+            "type": "number"
+          },
+          "SUN": {
+            "type": "number"
+          },
+          "THU": {
+            "type": "number"
+          },
+          "TUE": {
+            "type": "number"
+          },
+          "WED": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "MON",
+          "TUE",
+          "WED",
+          "THU",
+          "FRI",
+          "SAT",
+          "SUN"
+        ],
+        "type": "object"
+      },
       "MeLanguageDto": {
         "properties": {
           "chosen": {
@@ -4375,6 +4459,41 @@
         ],
         "type": "object"
       },
+      "SetSlotDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "day": {
+            "enum": [
+              "MON",
+              "TUE",
+              "WED",
+              "THU",
+              "FRI",
+              "SAT",
+              "SUN"
+            ],
+            "type": "string"
+          },
+          "periodId": {
+            "type": "string"
+          },
+          "staffId": {
+            "type": "string"
+          },
+          "subjectId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "day",
+          "periodId",
+          "subjectId",
+          "staffId"
+        ],
+        "type": "object"
+      },
       "SignedReadDto": {
         "properties": {
           "expiresInSeconds": {
@@ -4679,6 +4798,33 @@
         ],
         "type": "object"
       },
+      "StaffSlotDto": {
+        "properties": {
+          "class": {
+            "$ref": "#/components/schemas/TimetableClassRefDto"
+          },
+          "day": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "periodId": {
+            "type": "string"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/TimetableSubjectDto"
+          }
+        },
+        "required": [
+          "id",
+          "day",
+          "periodId",
+          "class",
+          "subject"
+        ],
+        "type": "object"
+      },
       "StaffSummaryDto": {
         "properties": {
           "department": {
@@ -4717,6 +4863,29 @@
           "designation",
           "status",
           "hasAccount"
+        ],
+        "type": "object"
+      },
+      "StaffTimetableDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/StaffSlotDto"
+            },
+            "type": "array"
+          },
+          "staffId": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "academicYearId",
+          "staffId",
+          "entries"
         ],
         "type": "object"
       },
@@ -5035,6 +5204,25 @@
         ],
         "type": "object"
       },
+      "TeacherLoadDto": {
+        "properties": {
+          "byDay": {
+            "$ref": "#/components/schemas/LoadByDayDto"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/TimetableStaffDto"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "staff",
+          "total",
+          "byDay"
+        ],
+        "type": "object"
+      },
       "TeacherStaffDto": {
         "properties": {
           "employeeId": {
@@ -5066,6 +5254,77 @@
         },
         "required": [
           "subjectId"
+        ],
+        "type": "object"
+      },
+      "TimetableClassRefDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "TimetableLoadDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TeacherLoadDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "academicYearId",
+          "items"
+        ],
+        "type": "object"
+      },
+      "TimetableStaffDto": {
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "name"
+        ],
+        "type": "object"
+      },
+      "TimetableSubjectDto": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "code"
         ],
         "type": "object"
       },
@@ -7594,6 +7853,393 @@
         },
         "x-permission": {
           "action": "delete",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/timetable/classes/{id}": {
+      "get": {
+        "operationId": "Timetable_forClass",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassTimetableDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Timetable"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/timetable/classes/{id}/slots": {
+      "put": {
+        "operationId": "Timetable_setSlot",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetSlotDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassTimetableDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Timetable"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.timetable.set",
+          "operation": "CreateTimetableEntry"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/timetable/entries/{id}": {
+      "delete": {
+        "operationId": "Timetable_clear",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Timetable"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.timetable.clear",
+          "operation": "DeleteTimetableEntry"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/timetable/load": {
+      "get": {
+        "operationId": "Timetable_load",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimetableLoadDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Timetable"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/timetable/mine": {
+      "get": {
+        "operationId": "Timetable_mine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffTimetableDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Timetable"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/timetable/teachers/{staffId}": {
+      "get": {
+        "operationId": "Timetable_forStaff",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "staffId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffTimetableDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Timetable"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
           "resource": "academics"
         }
       }

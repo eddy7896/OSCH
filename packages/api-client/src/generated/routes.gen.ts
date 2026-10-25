@@ -159,6 +159,42 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Teaching_teachers"
   },
   {
+    "method": "PUT",
+    "path": "/v1/academics/timetable/classes/{id}/slots",
+    "access": "tenant",
+    "operationId": "Timetable_setSlot"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/timetable/classes/{id}",
+    "access": "tenant",
+    "operationId": "Timetable_forClass"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/academics/timetable/entries/{id}",
+    "access": "tenant",
+    "operationId": "Timetable_clear"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/timetable/load",
+    "access": "tenant",
+    "operationId": "Timetable_load"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/timetable/mine",
+    "access": "tenant",
+    "operationId": "Timetable_mine"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/timetable/teachers/{staffId}",
+    "access": "tenant",
+    "operationId": "Timetable_forStaff"
+  },
+  {
     "method": "POST",
     "path": "/v1/academics/years/{id}/activate",
     "access": "tenant",

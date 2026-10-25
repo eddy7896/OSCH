@@ -152,6 +152,12 @@ export const bindApi = (client: Client) => ({
   teachingRemoveSubject: async (options: Opts<typeof sdk.teachingRemoveSubject<true>>): Out<typeof sdk.teachingRemoveSubject<true>> => (await sdk.teachingRemoveSubject<true>({ ...options, client, throwOnError: true } as never)).data,
   teachingSetClassTeacher: async (options: Opts<typeof sdk.teachingSetClassTeacher<true>>): Out<typeof sdk.teachingSetClassTeacher<true>> => (await sdk.teachingSetClassTeacher<true>({ ...options, client, throwOnError: true } as never)).data,
   teachingTeachers: async (options: Opts<typeof sdk.teachingTeachers<true>> = {}): Out<typeof sdk.teachingTeachers<true>> => (await sdk.teachingTeachers<true>({ ...options, client, throwOnError: true } as never)).data,
+  timetableClear: async (options: Opts<typeof sdk.timetableClear<true>>): Out<typeof sdk.timetableClear<true>> => (await sdk.timetableClear<true>({ ...options, client, throwOnError: true } as never)).data,
+  timetableForClass: async (options: Opts<typeof sdk.timetableForClass<true>>): Out<typeof sdk.timetableForClass<true>> => (await sdk.timetableForClass<true>({ ...options, client, throwOnError: true } as never)).data,
+  timetableForStaff: async (options: Opts<typeof sdk.timetableForStaff<true>>): Out<typeof sdk.timetableForStaff<true>> => (await sdk.timetableForStaff<true>({ ...options, client, throwOnError: true } as never)).data,
+  timetableLoad: async (options: Opts<typeof sdk.timetableLoad<true>> = {}): Out<typeof sdk.timetableLoad<true>> => (await sdk.timetableLoad<true>({ ...options, client, throwOnError: true } as never)).data,
+  timetableMine: async (options: Opts<typeof sdk.timetableMine<true>> = {}): Out<typeof sdk.timetableMine<true>> => (await sdk.timetableMine<true>({ ...options, client, throwOnError: true } as never)).data,
+  timetableSetSlot: async (options: Opts<typeof sdk.timetableSetSlot<true>>): Out<typeof sdk.timetableSetSlot<true>> => (await sdk.timetableSetSlot<true>({ ...options, client, throwOnError: true } as never)).data,
   uploadsSchoolLogo: async (options: Opts<typeof sdk.uploadsSchoolLogo<true>>): Out<typeof sdk.uploadsSchoolLogo<true>> => (await sdk.uploadsSchoolLogo<true>({ ...options, client, throwOnError: true } as never)).data,
 });
 

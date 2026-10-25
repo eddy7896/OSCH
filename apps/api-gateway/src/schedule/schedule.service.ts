@@ -15,7 +15,7 @@ type Row = { id: string; label: string; startTime: string; endTime: string; isBr
 
 /**
  * The school's bell schedule and working days (P3-1, ADR-0013). Periods are defined once and every class uses them. Overlaps are refused
- * here (the database keeps start times and labels unique); the timetable (P3-3) will refuse editing a period it uses.
+ * here (the database keeps start times and labels unique); a period the timetable (P3-3) uses cannot be deleted or turned into a break.
  */
 @Injectable()
 export class ScheduleService {
@@ -26,6 +26,11 @@ export class ScheduleService {
   }
   private views(rows: Row[]): PeriodDto[] {
     return numberPeriods(rows).map((r) => ({ id: dashed(r.id), label: r.label, startTime: r.startTime, endTime: r.endTime, isBreak: r.isBreak, number: r.number }));
+  }
+
+  /** How many timetable lessons use a period; one that is in use cannot be deleted or become a break. */
+  private async lessonsIn(t: TenantContext, periodId: string): Promise<number> {
+    return Number((await this.db.countTimetableForPeriod({ schoolId: t.schoolId, periodId: dashed(periodId) })).data.timetableEntries[0]?._count ?? 0);
   }
 
   async schedule(t: TenantContext): Promise<ScheduleDto> {
@@ -55,6 +60,7 @@ export class ScheduleService {
     const rows = await this.rows(t);
     const before = rows.find((r) => dashed(r.id) === id.toLowerCase());
     if (!before) throw notFound();
+    if (dto.isBreak === true && !before.isBreak && (await this.lessonsIn(t, before.id)) > 0) throw conflict('isBreak', 'periodInUse');
     const next = { label: dto.label?.trim() ?? before.label, startTime: dto.startTime ?? before.startTime, endTime: dto.endTime ?? before.endTime };
     const rule = periodProblem(next, rows.filter((r) => r.id !== before.id));
     if (rule) throw conflictOrInvalid(rule);
@@ -69,6 +75,7 @@ export class ScheduleService {
   async deletePeriod(t: TenantContext, id: string): Promise<void> {
     const before = (await this.rows(t)).find((r) => dashed(r.id) === id.toLowerCase());
     if (!before) throw notFound();
+    if ((await this.lessonsIn(t, before.id)) > 0) throw conflict('id', 'periodInUse');
     await this.db.deletePeriod({ schoolId: t.schoolId, id: dashed(before.id), actorId: t.userId, details: { label: before.label, startTime: before.startTime, endTime: before.endTime } });
   }
 

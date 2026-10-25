@@ -11,19 +11,6 @@ query ListStaff($schoolId: UUID!) @auth(level: NO_ACCESS) {
   }
 }
 
-# Academic: Get Class Schedules
-query ListSchedules($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  classSchedules(where: {schoolId: {eq: $schoolId}}) {
-    id
-    dayOfWeek
-    startTime
-    endTime
-    classroom { name }
-    subject { name }
-    teacher { email }
-  }
-}
-
 # Academic: Get Leave Requests
 query ListLeaveRequests($schoolId: UUID!) @auth(level: NO_ACCESS) {
   leaveRequests(where: {schoolId: {eq: $schoolId}}) {
@@ -470,4 +457,25 @@ query ParentLinksOfStudent($schoolId: UUID!, $studentId: UUID!) @auth(level: NO_
 
 query EnrollmentsOfStudents($schoolId: UUID!, $academicYearId: UUID!, $studentIds: [UUID!]!) @auth(level: NO_ACCESS) {
   studentEnrollments(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, studentId: {in: $studentIds}}, limit: 1000) { studentId classroom { id name } }
+}
+
+# ---- Timetable (P3-3)
+query ListTimetableForYear($schoolId: UUID!, $academicYearId: UUID!) @auth(level: NO_ACCESS) {
+  timetableEntries(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}}, limit: 10000) { id day periodId classroomId staffId subjectId staff { id employeeId firstName lastName status } }
+}
+
+query ListTimetableForClass($schoolId: UUID!, $academicYearId: UUID!, $classroomId: UUID!) @auth(level: NO_ACCESS) {
+  timetableEntries(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, classroomId: {eq: $classroomId}}, limit: 1000) {
+    id day periodId subject { id name code } staff { id employeeId firstName lastName }
+  }
+}
+
+query ListTimetableForStaff($schoolId: UUID!, $academicYearId: UUID!, $staffId: UUID!) @auth(level: NO_ACCESS) {
+  timetableEntries(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, staffId: {eq: $staffId}}, limit: 1000) {
+    id day periodId classroom { id name } subject { id name code }
+  }
+}
+
+query CountTimetableForPeriod($schoolId: UUID!, $periodId: UUID!) @auth(level: NO_ACCESS) {
+  timetableEntries(where: {schoolId: {eq: $schoolId}, periodId: {eq: $periodId}}) { _count }
 }
