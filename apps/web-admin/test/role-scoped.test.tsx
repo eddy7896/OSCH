@@ -26,6 +26,8 @@ const NEEDS: Record<string, [string, string]> = {
   scheduleGet: ["academics", "read"], teachingTeachers: ["academics", "read"], timetableForClass: ["academics", "read"], timetableForStaff: ["academics", "read"], timetableLoad: ["academics", "read"],
   scheduleCreate: ["academics", "create"], scheduleTemplate: ["academics", "create"], scheduleUpdate: ["academics", "update"], scheduleSetWorkingDays: ["academics", "update"], timetableSetSlot: ["academics", "update"],
   scheduleRemove: ["academics", "delete"], timetableClear: ["academics", "delete"],
+  attendanceDay: ["attendance", "read"], attendanceStatuses: ["attendance", "read"], attendanceMissing: ["attendance", "read"], attendanceSubmit: ["attendance", "create"], attendanceLock: ["attendance", "update"], attendanceCorrect: ["attendance", "update"], attendanceSetLabel: ["attendance", "update"],
+  staffAttendancePresence: ["staff_attendance", "read"], staffAttendanceCorrect: ["staff_attendance", "update"],
   admissionsList: ["admissions", "read"], admissionsGet: ["admissions", "read"], admissionsCreate: ["admissions", "create"], admissionsDecide: ["admissions", "update"], admissionsAdmit: ["admissions", "update"],
   payrollRuns: ["payroll", "read"], payrollRun: ["payroll", "read"], payrollSalary: ["payroll", "read"], payrollPayslipPdf: ["payroll", "read"],
   payrollCreateRun: ["payroll", "create"], payrollAddLine: ["payroll", "create"], payrollApprove: ["payroll", "approve"], payrollPay: ["payroll", "delete"], payrollDeleteRun: ["payroll", "delete"], payrollRemoveLine: ["payroll", "delete"],
@@ -53,6 +55,7 @@ const BUTTONS: Array<{ name: string; screen: string; needs: [string, string]; ta
 const EMPTY = {
   items: [], total: 0, count: 0, page: 1, pageSize: 25, limit: 100, detail: true, totals: { count: 0, amountMinor: "0", paidMinor: "0", outstandingMinor: "0" }, totalAmountMinor: "0", collectedMinor: "0", reversedMinor: "0",
   outstandingMinor: "0", amountMinor: "0", paidMinor: "0", byMethod: [], byDay: [], bands: [], months: [], byDepartment: [], grossMinor: "0", deductionsMinor: "0", netMinor: "0", year: 2027,
+  students: [], counts: { PRESENT: 0, ABSENT: 0, LATE: 0, LEAVE: 0, MEDICAL: 0, HALF_DAY: 0, EXCUSED: 0 }, submitted: false, locked: false, submittedBy: null,
   periods: [], workingDays: ["MON", "TUE", "WED", "THU", "FRI", "SAT"],
   id: SCHOOL.id, name: "Greenfield School", subDomain: "greenfield", defaultLanguage: "en", address: null, contactPhone: null, contactEmail: null, primaryColor: null,
 };
@@ -81,7 +84,7 @@ const asRole = (role: Role) => {
   return m;
 };
 const granted = (role: Role, [resource, action]: [string, string]) => permissionsOf({ schoolRole: role }).some((p) => p.resource === resource && p.action === action && p.scope === "school");
-const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
+const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", attendance: "Attendance", "staff-attendance": "Staff attendance", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
 const settle = () => new Promise((r) => setTimeout(r, 100));
 
 afterEach(() => vi.restoreAllMocks());

@@ -915,6 +915,222 @@
   "@reportTotal": {
     "description": "Label of the last row, which adds up the columns above it."
   },
+  "attLockDone": "Day locked",
+  "@attLockDone": {
+    "description": "Confirmation after a day was locked."
+  },
+  "attViewLabel": "Attendance view",
+  "@attViewLabel": {
+    "description": "Screen reader label of the switch between the daily register, the classes not taken yet and the status names."
+  },
+  "attTabRegister": "Daily register",
+  "@attTabRegister": {
+    "description": "Tab: one class's attendance on one date."
+  },
+  "attTabMissing": "Not taken yet",
+  "@attTabMissing": {
+    "description": "Tab: the classes that have not taken attendance on a date."
+  },
+  "attTabNames": "Status names",
+  "@attTabNames": {
+    "description": "Tab: the school's own wording for the seven attendance statuses."
+  },
+  "attDate": "Date",
+  "@attDate": {
+    "description": "Label of the date field."
+  },
+  "attStatusPRESENT": "Present",
+  "@attStatusPRESENT": {
+    "description": "Attendance status: came to school."
+  },
+  "attStatusABSENT": "Absent",
+  "@attStatusABSENT": {
+    "description": "Attendance status: did not come."
+  },
+  "attStatusLATE": "Late",
+  "@attStatusLATE": {
+    "description": "Attendance status: came after the start."
+  },
+  "attStatusLEAVE": "On leave",
+  "@attStatusLEAVE": {
+    "description": "Attendance status: away on approved leave."
+  },
+  "attStatusMEDICAL": "Medical",
+  "@attStatusMEDICAL": {
+    "description": "Attendance status: away for a medical reason."
+  },
+  "attStatusHALF_DAY": "Half day",
+  "@attStatusHALF_DAY": {
+    "description": "Attendance status: came for half the day."
+  },
+  "attStatusEXCUSED": "Excused",
+  "@attStatusEXCUSED": {
+    "description": "Attendance status: away with the school's permission."
+  },
+  "attCount": "{label}: {count}",
+  "@attCount": {
+    "description": "One count in the summary line above the register: the status word and how many students.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "attNotTaken": "Attendance has not been taken for this class on this date. Everyone is shown as present until it is.",
+  "@attNotTaken": {
+    "description": "Shown when no attendance exists yet for the class and date."
+  },
+  "attTakenBy": "Taken by {name}",
+  "@attTakenBy": {
+    "description": "Who took the attendance.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "attLocked": "Locked",
+  "@attLocked": {
+    "description": "Badge: the day is locked, a teacher can no longer change it."
+  },
+  "attLockedNote": "This day is locked. Only a correction can change it, and the old and new values are recorded.",
+  "@attLockedNote": {
+    "description": "Shown on a locked day for the Academic administrator."
+  },
+  "attStudent": "Student",
+  "@attStudent": {
+    "description": "Column heading."
+  },
+  "attStatus": "Status",
+  "@attStatus": {
+    "description": "Column heading: the attendance status."
+  },
+  "attNote": "Note",
+  "@attNote": {
+    "description": "Column heading and field: a short note on an exception."
+  },
+  "attNoStudents": "This class has no students yet.",
+  "@attNoStudents": {
+    "description": "Shown when the class has no students."
+  },
+  "attSave": "Save attendance",
+  "@attSave": {
+    "description": "Button: save the register."
+  },
+  "attSaveCorrection": "Save correction",
+  "@attSaveCorrection": {
+    "description": "Button: save a correction to a locked day."
+  },
+  "attLock": "Lock the day",
+  "@attLock": {
+    "description": "Button: lock the register so a teacher can no longer change it."
+  },
+  "attSaved": "Attendance saved",
+  "@attSaved": {
+    "description": "Confirmation after the register was saved."
+  },
+  "attCorrected": "Correction saved",
+  "@attCorrected": {
+    "description": "Confirmation after a correction was saved."
+  },
+  "attDayLocked": "This day is locked. Ask the Academic administrator for a correction.",
+  "@attDayLocked": {
+    "description": "Refusal: a teacher tried to change a locked day."
+  },
+  "attFutureDate": "That date has not come yet.",
+  "@attFutureDate": {
+    "description": "Refusal: attendance cannot be taken for a future date."
+  },
+  "attMissingEmpty": "Nothing is waiting for this date.",
+  "@attMissingEmpty": {
+    "description": "Shown when every class has taken attendance (or the school does not work on the date)."
+  },
+  "attMissingTitle": "Classes without attendance on {date}",
+  "@attMissingTitle": {
+    "description": "Heading of the list of classes that have not taken attendance.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "attNamesHint": "Rename a status for your school. What it means and its colour stay the same.",
+  "@attNamesHint": {
+    "description": "Explains the status names tab."
+  },
+  "attNameFor": "Name for {status}",
+  "@attNameFor": {
+    "description": "Label of the field where a school types its own word for a status.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "attNameSaved": "Name saved",
+  "@attNameSaved": {
+    "description": "Confirmation after a status was renamed."
+  },
+  "attNameDefault": "Standard name",
+  "@attNameDefault": {
+    "description": "Shown beside a status that still has its standard name."
+  },
+  "satTitleNote": "Who is at work on a date. Times are in Indian Standard Time.",
+  "@satTitleNote": {
+    "description": "Explains the staff attendance screen."
+  },
+  "satIn": "In",
+  "@satIn": {
+    "description": "Column heading: when a member of staff checked in."
+  },
+  "satOut": "Out",
+  "@satOut": {
+    "description": "Column heading: when a member of staff checked out."
+  },
+  "satStateIN": "At work",
+  "@satStateIN": {
+    "description": "Staff state: checked in, not yet out."
+  },
+  "satStateOUT": "Left for the day",
+  "@satStateOUT": {
+    "description": "Staff state: checked in and out."
+  },
+  "satStateNONE": "Not in yet",
+  "@satStateNONE": {
+    "description": "Staff state: no check-in."
+  },
+  "satCorrect": "Correct",
+  "@satCorrect": {
+    "description": "Button: correct a member of staff's times."
+  },
+  "satCorrectTitle": "Correct the times for {name}",
+  "@satCorrectTitle": {
+    "description": "Heading of the correction form.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "satTimeHint": "Write times like 09:15.",
+  "@satTimeHint": {
+    "description": "Hint under the time fields."
+  },
+  "satSaved": "Times saved",
+  "@satSaved": {
+    "description": "Confirmation after times were corrected."
+  },
+  "satNeedsIn": "Enter the time in as well.",
+  "@satNeedsIn": {
+    "description": "Refusal: a check-out time needs a check-in time."
+  },
+  "satNone": "Nobody is on the staff list yet.",
+  "@satNone": {
+    "description": "Shown when there is no member of staff."
+  },
   "ttRemoveQuestion": "Remove {name}?",
   "@ttRemoveQuestion": {
     "description": "Question before a period is removed from the bell schedule.",

@@ -716,6 +716,161 @@ class OruStringsUr extends OruStrings {
   String get reportTotal => 'کل';
 
   @override
+  String get attLockDone => 'دن مقفل کر دیا گیا';
+
+  @override
+  String get attViewLabel => 'حاضری کا منظر';
+
+  @override
+  String get attTabRegister => 'روزانہ حاضری';
+
+  @override
+  String get attTabMissing => 'ابھی تک نہیں لی گئی';
+
+  @override
+  String get attTabNames => 'کیفیت کے نام';
+
+  @override
+  String get attDate => 'تاریخ';
+
+  @override
+  String get attStatusPRESENT => 'حاضر';
+
+  @override
+  String get attStatusABSENT => 'غیر حاضر';
+
+  @override
+  String get attStatusLATE => 'دیر سے';
+
+  @override
+  String get attStatusLEAVE => 'رخصت پر';
+
+  @override
+  String get attStatusMEDICAL => 'طبی';
+
+  @override
+  String get attStatusHALF_DAY => 'آدھا دن';
+
+  @override
+  String get attStatusEXCUSED => 'معافی';
+
+  @override
+  String attCount(String label, String count) {
+    return '$label: $count';
+  }
+
+  @override
+  String get attNotTaken =>
+      'اس جماعت کی اس تاریخ کی حاضری ابھی نہیں لی گئی۔ جب تک نہ لی جائے، سب حاضر دکھائے جاتے ہیں۔';
+
+  @override
+  String attTakenBy(String name) {
+    return '$name نے لی';
+  }
+
+  @override
+  String get attLocked => 'مقفل';
+
+  @override
+  String get attLockedNote =>
+      'یہ دن مقفل ہے۔ صرف اصلاح سے بدلا جا سکتا ہے، اور پرانی اور نئی قدر درج ہوتی ہے۔';
+
+  @override
+  String get attStudent => 'طالب علم';
+
+  @override
+  String get attStatus => 'کیفیت';
+
+  @override
+  String get attNote => 'نوٹ';
+
+  @override
+  String get attNoStudents => 'اس جماعت میں ابھی کوئی طالب علم نہیں ہے۔';
+
+  @override
+  String get attSave => 'حاضری محفوظ کریں';
+
+  @override
+  String get attSaveCorrection => 'اصلاح محفوظ کریں';
+
+  @override
+  String get attLock => 'دن مقفل کریں';
+
+  @override
+  String get attSaved => 'حاضری محفوظ ہو گئی';
+
+  @override
+  String get attCorrected => 'اصلاح محفوظ ہو گئی';
+
+  @override
+  String get attDayLocked => 'یہ دن مقفل ہے۔ تعلیمی منتظم سے اصلاح کروائیں۔';
+
+  @override
+  String get attFutureDate => 'وہ تاریخ ابھی نہیں آئی۔';
+
+  @override
+  String get attMissingEmpty => 'اس تاریخ کے لیے کچھ باقی نہیں۔';
+
+  @override
+  String attMissingTitle(String date) {
+    return '$date کو بغیر حاضری والی جماعتیں';
+  }
+
+  @override
+  String get attNamesHint =>
+      'اپنے اسکول کے لیے کسی کیفیت کا نام بدلیں۔ اس کا مطلب اور رنگ وہی رہتے ہیں۔';
+
+  @override
+  String attNameFor(String status) {
+    return '$status کا نام';
+  }
+
+  @override
+  String get attNameSaved => 'نام محفوظ ہو گیا';
+
+  @override
+  String get attNameDefault => 'معیاری نام';
+
+  @override
+  String get satTitleNote =>
+      'کسی تاریخ کو کون کام پر ہے۔ وقت بھارتی معیاری وقت میں ہیں۔';
+
+  @override
+  String get satIn => 'آمد';
+
+  @override
+  String get satOut => 'روانگی';
+
+  @override
+  String get satStateIN => 'کام پر';
+
+  @override
+  String get satStateOUT => 'آج کے لیے جا چکے';
+
+  @override
+  String get satStateNONE => 'ابھی نہیں آئے';
+
+  @override
+  String get satCorrect => 'درست کریں';
+
+  @override
+  String satCorrectTitle(String name) {
+    return '$name کے وقت درست کریں';
+  }
+
+  @override
+  String get satTimeHint => 'وقت اس طرح لکھیں: 09:15۔';
+
+  @override
+  String get satSaved => 'وقت محفوظ ہو گئے';
+
+  @override
+  String get satNeedsIn => 'آمد کا وقت بھی لکھیں۔';
+
+  @override
+  String get satNone => 'فہرست میں ابھی کوئی عملہ نہیں۔';
+
+  @override
   String ttRemoveQuestion(String name) {
     return '$name ہٹائیں؟';
   }

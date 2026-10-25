@@ -110,3 +110,58 @@ describe.skipIf(!DIR)("screen pictures: timetable (P3-11a)", () => {
     });
   }
 });
+
+// ---- P3-11b: attendance
+const ST = ["PRESENT", "ABSENT", "LATE", "LEAVE", "MEDICAL", "HALF_DAY", "EXCUSED"].map((s) => ({ status: s, label: s, isDefault: s !== "LATE" }));
+const STATUS_LIST = { items: ST.map((s) => (s.status === "LATE" ? { ...s, label: "Tardy" } : s)) };
+const names = ["Aarav Mehta", "Bilal Khan", "Chitra Nair", "Devika Rao", "Farhan Ali", "Gauri Shah", "Harsh Verma", "Irfan Sheikh", "Jaya Menon", "Kabir Singh", "Lata Iyer", "Mohan Das"];
+const roster = (marks: Record<number, string>) => names.map((name, i) => ({ id: `s${i}`, enrollmentId: `S${String(i + 1).padStart(4, "0")}`, name, status: marks[i] ?? "PRESENT", note: null }));
+const cnt = (r: ReturnType<typeof roster>) => { const o: Record<string, number> = { PRESENT: 0, ABSENT: 0, LATE: 0, LEAVE: 0, MEDICAL: 0, HALF_DAY: 0, EXCUSED: 0 }; r.forEach((x) => { o[x.status] = (o[x.status] ?? 0) + 1; }); return o; };
+const TAKEN = roster({ 1: "ABSENT", 4: "LATE", 7: "MEDICAL", 9: "HALF_DAY" });
+const DAYS = (o: Record<string, unknown> = {}) => ({ classId: "c1", date: "2026-10-26", submitted: true, locked: false, submittedBy: "Tara Teach", submittedAt: "2026-10-26T03:50:00.000Z", counts: cnt(TAKEN), students: TAKEN, ...o });
+const ATT: Perms = { academics: { read: "school" }, attendance: { read: "school", create: "school", update: "school", delete: "school" } };
+const attBase = (over: Record<string, unknown> = {}) => ({ academicsClasses: vi.fn(async () => CLASSES), attendanceStatuses: vi.fn(async () => STATUS_LIST), attendanceDay: vi.fn(async () => DAYS()), attendanceMissing: vi.fn(async () => ({ date: "2026-10-26", items: [{ id: "c3", name: "6 A" }, { id: "c4", name: "7 B" }, { id: "c5", name: "8 A" }] })), ...over });
+const PRESENCE = { date: "2026-10-26", items: [
+  { staff: { id: "t1", employeeId: "E0001", name: "Asha Rao" }, checkIn: "2026-10-26T03:45:00.000Z", checkOut: null, state: "IN" },
+  { staff: { id: "t2", employeeId: "E0002", name: "Bilal Khan" }, checkIn: "2026-10-26T03:30:00.000Z", checkOut: "2026-10-26T11:00:00.000Z", state: "OUT" },
+  { staff: { id: "t3", employeeId: "E0003", name: "Chitra Nair" }, checkIn: null, checkOut: null, state: "NONE" },
+  { staff: { id: "t4", employeeId: "E0004", name: "Dev Patel" }, checkIn: "2026-10-26T03:55:00.000Z", checkOut: null, state: "IN" },
+] };
+
+describe.skipIf(!DIR)("screen pictures: attendance (P3-11b)", () => {
+  for (const locale of ["en", "ur"]) {
+    it(`daily register of a taken day (${locale})`, async () => {
+      if (!wanted("web-admin-attendance-register")) return;
+      await shoot("web-admin-attendance-register", locale, fakeApi({ meGet: vi.fn(async () => as("ACADEMIC_ADMIN", ATT)), ...attBase() }), "navAttendance", async () => { await table(); });
+    });
+    it(`daily register of a locked day (${locale})`, async () => {
+      if (!wanted("web-admin-attendance-locked")) return;
+      await shoot("web-admin-attendance-locked", locale, fakeApi({ meGet: vi.fn(async () => as("ACADEMIC_ADMIN", ATT)), ...attBase({ attendanceDay: vi.fn(async () => DAYS({ locked: true })) }) }), "navAttendance", async () => {
+        await table();
+        fireEvent.change(document.querySelectorAll("table select")[1]!, { target: { value: "PRESENT" } });
+      });
+    });
+    it(`classes not taken yet (${locale})`, async () => {
+      if (!wanted("web-admin-attendance-missing")) return;
+      await shoot("web-admin-attendance-missing", locale, fakeApi({ meGet: vi.fn(async () => as("PRINCIPAL", { academics: { read: "school" }, attendance: { read: "school" } })), ...attBase() }), "navAttendance", async () => {
+        fireEvent.click(screen.getAllByRole("radio")[1]!);
+        await table();
+      });
+    });
+    it(`status names (${locale})`, async () => {
+      if (!wanted("web-admin-attendance-names")) return;
+      await shoot("web-admin-attendance-names", locale, fakeApi({ meGet: vi.fn(async () => as("ACADEMIC_ADMIN", ATT)), ...attBase() }), "navAttendance", async () => {
+        fireEvent.click(screen.getAllByRole("radio")[2]!);
+        await waitFor(() => { if (document.querySelectorAll("form").length < 7) throw new Error("wait"); });
+      });
+    });
+    it(`staff attendance (${locale})`, async () => {
+      if (!wanted("web-admin-staff-attendance")) return;
+      await shoot("web-admin-staff-attendance", locale, fakeApi({ meGet: vi.fn(async () => as("HR_MANAGER", { staff_attendance: { read: "school", create: "school", update: "school" } })), staffAttendancePresence: vi.fn(async () => PRESENCE) }), "navStaffAttendance", async () => {
+        await table();
+        fireEvent.click(document.querySelectorAll("table button")[2]!);
+        await waitFor(() => { if (!document.querySelector("form")) throw new Error("wait"); });
+      });
+    });
+  }
+});
