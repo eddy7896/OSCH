@@ -34,6 +34,7 @@ export async function shoot(name: string, locale: string, api: ReturnType<typeof
   await new Promise((r) => setTimeout(r, 150));
   // what a person has chosen or typed lives in properties, not attributes: copy it over so the saved page shows it
   container.querySelectorAll("select").forEach((sel) => Array.from(sel.options).forEach((o) => o.toggleAttribute("selected", o.selected)));
+  container.querySelectorAll("details").forEach((d) => d.toggleAttribute("open", d.open));
   container.querySelectorAll("input").forEach((i) => { if (i.type === "checkbox") i.toggleAttribute("checked", i.checked); else i.setAttribute("value", i.value); });
   mkdirSync(`${DIR}/html`, { recursive: true });
   writeFileSync(`${DIR}/html/${name}-${locale}.html`, container.innerHTML);
@@ -161,6 +162,59 @@ describe.skipIf(!DIR)("screen pictures: attendance (P3-11b)", () => {
         await table();
         fireEvent.click(document.querySelectorAll("table button")[2]!);
         await waitFor(() => { if (!document.querySelector("form")) throw new Error("wait"); });
+      });
+    });
+  }
+});
+
+// ---- P3-11c: gradebook
+const GB: Perms = { academics: { read: "school", create: "school", update: "school", delete: "school" }, grades: { read: "school", create: "school", update: "school", delete: "school" }, students: { read: "school" } };
+const TERMS = { items: [{ id: "t1", name: "Term 1", academicYearId: "y1" }, { id: "t2", name: "Term 2", academicYearId: "y1" }] };
+const mkExam = (id: string, title: string, subject: keyof typeof SUBJ, date: string, max: string) => ({ id, title, examDate: date, term: { id: "t1", name: "Term 1" }, class: { id: "c1", name: "5 B" }, subject: SUBJ[subject], maxMarks: max, maxTenths: Number(max) * 10 });
+const EXAMS = { items: [mkExam("x1", "Unit test 1", "maths", "2026-08-12", "50"), mkExam("x2", "Unit test 1", "sci", "2026-08-13", "50"), mkExam("x3", "Half yearly", "maths", "2026-09-20", "100"), mkExam("x4", "Half yearly", "eng", "2026-09-22", "100")] };
+const marksFor: Array<[string | null, string | null, boolean]> = [["44.9", "89.8", false], ["31", "62.0", false], [null, null, false], ["0", "0.0", true], ["38.5", "77.0", false], ["49", "98.0", false], ["27.5", "55.0", false], ["41", "82.0", false]];
+const gradeOf = (p: string | null) => (p === null ? null : Number(p) >= 90 ? "A1" : Number(p) >= 80 ? "A2" : Number(p) >= 70 ? "B1" : Number(p) >= 60 ? "B2" : Number(p) >= 50 ? "C1" : "E");
+const GRID = { exam: EXAMS.items[0]!, rows: names.slice(0, 8).map((name, i) => ({ studentId: `s${i}`, enrollmentId: `S${String(i + 1).padStart(4, "0")}`, name, marks: marksFor[i]![1] === null ? null : marksFor[i]![0], marksTenths: marksFor[i]![0] === null ? null : Math.round(Number(marksFor[i]![0]) * 10), absent: marksFor[i]![2], percent: marksFor[i]![1], grade: gradeOf(marksFor[i]![1]) })) };
+const BANDS_SET = [{ label: "A1", minPercent: 90, maxPercent: 100 }, { label: "A2", minPercent: 80, maxPercent: 89 }, { label: "B1", minPercent: 70, maxPercent: 79 }, { label: "B2", minPercent: 60, maxPercent: 69 }, { label: "C1", minPercent: 50, maxPercent: 59 }, { label: "C2", minPercent: 40, maxPercent: 49 }, { label: "D", minPercent: 33, maxPercent: 39 }, { label: "E", minPercent: 0, maxPercent: 32 }];
+const CARD = { student: { id: "s0", enrollmentId: "S0001", name: "Aarav Mehta" }, class: { id: "c1", name: "5 B" }, term: { id: "t1", name: "Term 1" }, academicYearId: "y1", totalMarks: "287.5", totalMaxMarks: "350", percent: "82.1", grade: "A2", pending: 1,
+  subjects: [
+    { subject: SUBJ.eng, marks: "82", maxMarks: "100", percent: "82.0", grade: "A2", pending: 0, exams: [{ id: "e1", title: "Half yearly", date: "2026-09-22", maxMarks: "100", marks: "82", absent: false, percent: "82.0", grade: "A2" }] },
+    { subject: SUBJ.maths, marks: "134.9", maxMarks: "150", percent: "89.9", grade: "A2", pending: 0, exams: [{ id: "e2", title: "Unit test 1", date: "2026-08-12", maxMarks: "50", marks: "44.9", absent: false, percent: "89.8", grade: "A2" }, { id: "e3", title: "Half yearly", date: "2026-09-20", maxMarks: "100", marks: "90", absent: false, percent: "90.0", grade: "A1" }] },
+    { subject: SUBJ.sci, marks: "70.6", maxMarks: "100", percent: "70.6", grade: "B1", pending: 1, exams: [{ id: "e4", title: "Unit test 1", date: "2026-08-13", maxMarks: "50", marks: "35.3", absent: false, percent: "70.6", grade: "B1" }, { id: "e5", title: "Half yearly", date: "2026-09-25", maxMarks: "100", marks: null, absent: false, percent: null, grade: null }] },
+  ] };
+const STUDENTS = { items: names.slice(0, 8).map((n, i) => ({ id: `s${i}`, enrollmentId: `S${String(i + 1).padStart(4, "0")}`, firstName: n.split(" ")[0]!, lastName: n.split(" ")[1]!, dateOfBirth: null, gender: null, status: "ACTIVE", placement: { academicYear: { id: "y1", name: "2026-2027" }, classroom: { id: "c1", name: "5 B" } } })), total: 8, page: 1, pageSize: 100 };
+const gbBase = (over: Record<string, unknown> = {}) => ({ gradesTerms: vi.fn(async () => TERMS), gradesExams: vi.fn(async () => EXAMS), gradesGrid: vi.fn(async () => GRID), gradesBands: vi.fn(async () => ({ bands: BANDS_SET, template: BANDS_SET })), academicsClasses: vi.fn(async () => CLASSES), academicsSubjects: vi.fn(async () => ({ items: Object.values(SUBJ) })), studentsList: vi.fn(async () => STUDENTS), gradesReportCard: vi.fn(async () => CARD), ...over });
+
+describe.skipIf(!DIR)("screen pictures: gradebook (P3-11c)", () => {
+  for (const locale of ["en", "ur"]) {
+    it(`marks entry (${locale})`, async () => {
+      if (!wanted("web-admin-marks-entry")) return;
+      await shoot("web-admin-marks-entry", locale, fakeApi({ meGet: vi.fn(async () => as("ACADEMIC_ADMIN", GB)), ...gbBase() }), "navGradebook", async () => {
+        await table();
+        const inputs = Array.from(document.querySelectorAll<HTMLInputElement>("table input[inputmode=decimal]"));
+        fireEvent.change(inputs[2]!, { target: { value: "36" } });
+      });
+    });
+    it(`exams and terms (${locale})`, async () => {
+      if (!wanted("web-admin-exams")) return;
+      await shoot("web-admin-exams", locale, fakeApi({ meGet: vi.fn(async () => as("ACADEMIC_ADMIN", GB)), ...gbBase() }), "navGradebook", async () => {
+        fireEvent.click(screen.getAllByRole("radio")[1]!);
+        await table();
+      });
+    });
+    it(`grade bands (${locale})`, async () => {
+      if (!wanted("web-admin-grade-bands")) return;
+      await shoot("web-admin-grade-bands", locale, fakeApi({ meGet: vi.fn(async () => as("ACADEMIC_ADMIN", GB)), ...gbBase() }), "navGradebook", async () => {
+        fireEvent.click(screen.getAllByRole("radio")[2]!);
+        await waitFor(() => { if (document.querySelectorAll("input").length < 20) throw new Error("wait"); });
+      });
+    });
+    it(`report card (${locale})`, async () => {
+      if (!wanted("web-admin-report-card")) return;
+      await shoot("web-admin-report-card", locale, fakeApi({ meGet: vi.fn(async () => as("PRINCIPAL", { academics: { read: "school" }, grades: { read: "school" }, students: { read: "school" } })), ...gbBase() }), "navGradebook", async () => {
+        fireEvent.click(screen.getAllByRole("radio")[3]!);
+        await waitFor(() => { if (!document.querySelector("details")) throw new Error("wait"); });
+        document.querySelectorAll("details").forEach((d) => { d.open = true; });
       });
     });
   }

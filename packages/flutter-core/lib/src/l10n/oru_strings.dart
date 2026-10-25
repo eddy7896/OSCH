@@ -1422,6 +1422,306 @@ abstract class OruStrings {
   /// **'Total'**
   String get reportTotal;
 
+  /// Screen reader label of the switch between marks entry, exams and terms, grade bands and report cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Gradebook view'**
+  String get gbViewLabel;
+
+  /// Tab: enter the marks of one exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks entry'**
+  String get gbTabMarks;
+
+  /// Tab: the school's terms and exams.
+  ///
+  /// In en, this message translates to:
+  /// **'Exams and terms'**
+  String get gbTabExams;
+
+  /// Tab: the school's own grade bands, for example 90 to 100 is A1.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade bands'**
+  String get gbTabBands;
+
+  /// Tab: a student's report card for a term.
+  ///
+  /// In en, this message translates to:
+  /// **'Report cards'**
+  String get gbTabCards;
+
+  /// Label of the choice of term.
+  ///
+  /// In en, this message translates to:
+  /// **'Term'**
+  String get gbPickTerm;
+
+  /// Label of the choice of exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam'**
+  String get gbPickExam;
+
+  /// Title shown when the school has no terms.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no terms yet'**
+  String get gbNoTermsTitle;
+
+  /// Body shown with the no-terms title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a term under Exams and terms first.'**
+  String get gbNoTermsBody;
+
+  /// Shown when the chosen term has no exams.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no exams in this term yet.'**
+  String get gbNoExams;
+
+  /// Under the exam name: the most marks that can be got.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of {max}'**
+  String gbOutOf(String max);
+
+  /// Screen reader label of a student's marks field.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks: {name}'**
+  String gbMarksFor(String name);
+
+  /// Screen reader label of a student's absent checkbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent: {name}'**
+  String gbAbsentFor(String name);
+
+  /// Button: save the marks that were changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Save marks'**
+  String get gbSaveMarks;
+
+  /// Confirmation after marks were saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks saved'**
+  String get gbMarksSaved;
+
+  /// Refusal: a mark is higher than the exam's maximum.
+  ///
+  /// In en, this message translates to:
+  /// **'A mark is above the most possible for this exam.'**
+  String get gbAboveMax;
+
+  /// Refusal: a mark was not a number with at most one decimal.
+  ///
+  /// In en, this message translates to:
+  /// **'A mark must be a number with at most one decimal.'**
+  String get gbNotAMark;
+
+  /// Refusal: absent was ticked and marks were also typed.
+  ///
+  /// In en, this message translates to:
+  /// **'A student who is absent cannot have marks.'**
+  String get gbAbsentNoMarks;
+
+  /// Button and heading: add a term to the academic year.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a term'**
+  String get gbAddTerm;
+
+  /// Label of the term name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Term name'**
+  String get gbTermName;
+
+  /// Confirmation after a term was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Term added'**
+  String get gbTermAdded;
+
+  /// Refusal: a term or exam name is taken.
+  ///
+  /// In en, this message translates to:
+  /// **'That name is already used.'**
+  String get gbNameTaken;
+
+  /// Refusal: a term with exams cannot be removed.
+  ///
+  /// In en, this message translates to:
+  /// **'This term still has exams.'**
+  String get gbTermHasExams;
+
+  /// Button and heading: add an exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an exam'**
+  String get gbAddExam;
+
+  /// Label of the exam name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam name'**
+  String get gbExamName;
+
+  /// Confirmation after an exam was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam added'**
+  String get gbExamAdded;
+
+  /// Refusal: the exam already exists.
+  ///
+  /// In en, this message translates to:
+  /// **'This class already has an exam with that name for this subject and term.'**
+  String get gbExamExists;
+
+  /// Refusal: an exam with marks cannot be removed.
+  ///
+  /// In en, this message translates to:
+  /// **'This exam already has marks.'**
+  String get gbExamHasMarks;
+
+  /// Refusal: the exam's maximum was lowered below a mark.
+  ///
+  /// In en, this message translates to:
+  /// **'The most marks cannot be below a mark already given.'**
+  String get gbBelowMark;
+
+  /// Label of the field for the most marks of an exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of (marks)'**
+  String get gbMarksField;
+
+  /// Shown when the school has set no grade bands.
+  ///
+  /// In en, this message translates to:
+  /// **'No grade bands are set. Marks show a percentage without a grade.'**
+  String get gbBandsNone;
+
+  /// Explains the grade bands editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Together the bands must cover 0 to 100 with no gap and no overlap. A percentage is never rounded up into a better band.'**
+  String get gbBandsHint;
+
+  /// Label of the lowest percentage of a band.
+  ///
+  /// In en, this message translates to:
+  /// **'From (%)'**
+  String get gbFrom;
+
+  /// Label of the highest percentage of a band.
+  ///
+  /// In en, this message translates to:
+  /// **'To (%)'**
+  String get gbTo;
+
+  /// Button: add a row to the grade bands.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a band'**
+  String get gbAddBand;
+
+  /// Button: fill the editor with the standard starting grade bands.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the standard set'**
+  String get gbUseStandard;
+
+  /// Button: save the grade bands.
+  ///
+  /// In en, this message translates to:
+  /// **'Save grade bands'**
+  String get gbSaveBands;
+
+  /// Confirmation after the bands were saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade bands saved'**
+  String get gbBandsSaved;
+
+  /// Screen reader label of the remove button of a band.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove band {label}'**
+  String gbRemoveBand(String label);
+
+  /// Refusal: bands overlap.
+  ///
+  /// In en, this message translates to:
+  /// **'Two bands cover the same percentages.'**
+  String get gbBandOverlap;
+
+  /// Refusal: bands leave a gap.
+  ///
+  /// In en, this message translates to:
+  /// **'There is a gap between two bands.'**
+  String get gbBandGap;
+
+  /// Refusal: the lowest band does not start at 0.
+  ///
+  /// In en, this message translates to:
+  /// **'The lowest band must start at 0.'**
+  String get gbBandStart;
+
+  /// Refusal: the highest band does not end at 100.
+  ///
+  /// In en, this message translates to:
+  /// **'The highest band must end at 100.'**
+  String get gbBandEnd;
+
+  /// Refusal: two bands share a grade.
+  ///
+  /// In en, this message translates to:
+  /// **'Two bands have the same grade.'**
+  String get gbBandLabelTaken;
+
+  /// Refusal: a band is not valid.
+  ///
+  /// In en, this message translates to:
+  /// **'Each band needs whole numbers from 0 to 100, and a grade name.'**
+  String get gbBandBad;
+
+  /// Label of the choice of student.
+  ///
+  /// In en, this message translates to:
+  /// **'Student'**
+  String get gbPickStudent;
+
+  /// Under a report card: exams without a mark are not counted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} exam has no mark yet and is left out} other{{count} exams have no mark yet and are left out}}'**
+  String gbPending(int count);
+
+  /// Button: download the report card as a PDF.
+  ///
+  /// In en, this message translates to:
+  /// **'Download the report card (PDF)'**
+  String get gbPdf;
+
+  /// Shown when the student was in no class that term.
+  ///
+  /// In en, this message translates to:
+  /// **'This student has no report card for this term.'**
+  String get gbNoCard;
+
+  /// Shown in a report card line for an exam the student missed.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent'**
+  String get gbMarkAbsent;
+
   /// Confirmation after a day was locked.
   ///
   /// In en, this message translates to:

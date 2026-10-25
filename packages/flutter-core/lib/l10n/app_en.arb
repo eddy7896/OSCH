@@ -915,6 +915,231 @@
   "@reportTotal": {
     "description": "Label of the last row, which adds up the columns above it."
   },
+  "gbViewLabel": "Gradebook view",
+  "@gbViewLabel": {
+    "description": "Screen reader label of the switch between marks entry, exams and terms, grade bands and report cards."
+  },
+  "gbTabMarks": "Marks entry",
+  "@gbTabMarks": {
+    "description": "Tab: enter the marks of one exam."
+  },
+  "gbTabExams": "Exams and terms",
+  "@gbTabExams": {
+    "description": "Tab: the school's terms and exams."
+  },
+  "gbTabBands": "Grade bands",
+  "@gbTabBands": {
+    "description": "Tab: the school's own grade bands, for example 90 to 100 is A1."
+  },
+  "gbTabCards": "Report cards",
+  "@gbTabCards": {
+    "description": "Tab: a student's report card for a term."
+  },
+  "gbPickTerm": "Term",
+  "@gbPickTerm": {
+    "description": "Label of the choice of term."
+  },
+  "gbPickExam": "Exam",
+  "@gbPickExam": {
+    "description": "Label of the choice of exam."
+  },
+  "gbNoTermsTitle": "There are no terms yet",
+  "@gbNoTermsTitle": {
+    "description": "Title shown when the school has no terms."
+  },
+  "gbNoTermsBody": "Add a term under Exams and terms first.",
+  "@gbNoTermsBody": {
+    "description": "Body shown with the no-terms title."
+  },
+  "gbNoExams": "There are no exams in this term yet.",
+  "@gbNoExams": {
+    "description": "Shown when the chosen term has no exams."
+  },
+  "gbOutOf": "Out of {max}",
+  "@gbOutOf": {
+    "description": "Under the exam name: the most marks that can be got.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "gbMarksFor": "Marks: {name}",
+  "@gbMarksFor": {
+    "description": "Screen reader label of a student's marks field.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gbAbsentFor": "Absent: {name}",
+  "@gbAbsentFor": {
+    "description": "Screen reader label of a student's absent checkbox.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gbSaveMarks": "Save marks",
+  "@gbSaveMarks": {
+    "description": "Button: save the marks that were changed."
+  },
+  "gbMarksSaved": "Marks saved",
+  "@gbMarksSaved": {
+    "description": "Confirmation after marks were saved."
+  },
+  "gbAboveMax": "A mark is above the most possible for this exam.",
+  "@gbAboveMax": {
+    "description": "Refusal: a mark is higher than the exam's maximum."
+  },
+  "gbNotAMark": "A mark must be a number with at most one decimal.",
+  "@gbNotAMark": {
+    "description": "Refusal: a mark was not a number with at most one decimal."
+  },
+  "gbAbsentNoMarks": "A student who is absent cannot have marks.",
+  "@gbAbsentNoMarks": {
+    "description": "Refusal: absent was ticked and marks were also typed."
+  },
+  "gbAddTerm": "Add a term",
+  "@gbAddTerm": {
+    "description": "Button and heading: add a term to the academic year."
+  },
+  "gbTermName": "Term name",
+  "@gbTermName": {
+    "description": "Label of the term name field."
+  },
+  "gbTermAdded": "Term added",
+  "@gbTermAdded": {
+    "description": "Confirmation after a term was added."
+  },
+  "gbNameTaken": "That name is already used.",
+  "@gbNameTaken": {
+    "description": "Refusal: a term or exam name is taken."
+  },
+  "gbTermHasExams": "This term still has exams.",
+  "@gbTermHasExams": {
+    "description": "Refusal: a term with exams cannot be removed."
+  },
+  "gbAddExam": "Add an exam",
+  "@gbAddExam": {
+    "description": "Button and heading: add an exam."
+  },
+  "gbExamName": "Exam name",
+  "@gbExamName": {
+    "description": "Label of the exam name field."
+  },
+  "gbExamAdded": "Exam added",
+  "@gbExamAdded": {
+    "description": "Confirmation after an exam was added."
+  },
+  "gbExamExists": "This class already has an exam with that name for this subject and term.",
+  "@gbExamExists": {
+    "description": "Refusal: the exam already exists."
+  },
+  "gbExamHasMarks": "This exam already has marks.",
+  "@gbExamHasMarks": {
+    "description": "Refusal: an exam with marks cannot be removed."
+  },
+  "gbBelowMark": "The most marks cannot be below a mark already given.",
+  "@gbBelowMark": {
+    "description": "Refusal: the exam's maximum was lowered below a mark."
+  },
+  "gbMarksField": "Out of (marks)",
+  "@gbMarksField": {
+    "description": "Label of the field for the most marks of an exam."
+  },
+  "gbBandsNone": "No grade bands are set. Marks show a percentage without a grade.",
+  "@gbBandsNone": {
+    "description": "Shown when the school has set no grade bands."
+  },
+  "gbBandsHint": "Together the bands must cover 0 to 100 with no gap and no overlap. A percentage is never rounded up into a better band.",
+  "@gbBandsHint": {
+    "description": "Explains the grade bands editor."
+  },
+  "gbFrom": "From (%)",
+  "@gbFrom": {
+    "description": "Label of the lowest percentage of a band."
+  },
+  "gbTo": "To (%)",
+  "@gbTo": {
+    "description": "Label of the highest percentage of a band."
+  },
+  "gbAddBand": "Add a band",
+  "@gbAddBand": {
+    "description": "Button: add a row to the grade bands."
+  },
+  "gbUseStandard": "Use the standard set",
+  "@gbUseStandard": {
+    "description": "Button: fill the editor with the standard starting grade bands."
+  },
+  "gbSaveBands": "Save grade bands",
+  "@gbSaveBands": {
+    "description": "Button: save the grade bands."
+  },
+  "gbBandsSaved": "Grade bands saved",
+  "@gbBandsSaved": {
+    "description": "Confirmation after the bands were saved."
+  },
+  "gbRemoveBand": "Remove band {label}",
+  "@gbRemoveBand": {
+    "description": "Screen reader label of the remove button of a band.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "gbBandOverlap": "Two bands cover the same percentages.",
+  "@gbBandOverlap": {
+    "description": "Refusal: bands overlap."
+  },
+  "gbBandGap": "There is a gap between two bands.",
+  "@gbBandGap": {
+    "description": "Refusal: bands leave a gap."
+  },
+  "gbBandStart": "The lowest band must start at 0.",
+  "@gbBandStart": {
+    "description": "Refusal: the lowest band does not start at 0."
+  },
+  "gbBandEnd": "The highest band must end at 100.",
+  "@gbBandEnd": {
+    "description": "Refusal: the highest band does not end at 100."
+  },
+  "gbBandLabelTaken": "Two bands have the same grade.",
+  "@gbBandLabelTaken": {
+    "description": "Refusal: two bands share a grade."
+  },
+  "gbBandBad": "Each band needs whole numbers from 0 to 100, and a grade name.",
+  "@gbBandBad": {
+    "description": "Refusal: a band is not valid."
+  },
+  "gbPickStudent": "Student",
+  "@gbPickStudent": {
+    "description": "Label of the choice of student."
+  },
+  "gbPending": "{count, plural, one{{count} exam has no mark yet and is left out} other{{count} exams have no mark yet and are left out}}",
+  "@gbPending": {
+    "description": "Under a report card: exams without a mark are not counted.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gbPdf": "Download the report card (PDF)",
+  "@gbPdf": {
+    "description": "Button: download the report card as a PDF."
+  },
+  "gbNoCard": "This student has no report card for this term.",
+  "@gbNoCard": {
+    "description": "Shown when the student was in no class that term."
+  },
+  "gbMarkAbsent": "Absent",
+  "@gbMarkAbsent": {
+    "description": "Shown in a report card line for an exam the student missed."
+  },
   "attLockDone": "Day locked",
   "@attLockDone": {
     "description": "Confirmation after a day was locked."

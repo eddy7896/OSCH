@@ -13,6 +13,7 @@ import { Attendance } from "./screens/Attendance";
 import { StaffAttendance } from "./screens/StaffAttendance";
 import { Classes } from "./screens/Classes";
 import { Fees } from "./screens/Fees";
+import { Gradebook } from "./screens/Gradebook";
 import { HrReports } from "./screens/HrReports";
 import { Settings } from "./screens/Settings";
 import { FinanceReports } from "./screens/FinanceReports";
@@ -24,7 +25,7 @@ import { Students } from "./screens/Students";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 /** The navigation keys that have a screen. */
-const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "admissions", "staff", "payroll", "finance", "settings", "reports-finance", "reports-hr"]);
+const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "admissions", "staff", "payroll", "finance", "settings", "reports-finance", "reports-hr"]);
 
 type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
@@ -76,6 +77,8 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
             <Timetable grants={{ edit: access.permissions["academics"]?.["update"] === "school", create: access.permissions["academics"]?.["create"] === "school", remove: access.permissions["academics"]?.["delete"] === "school" }} />
           ) : current === "attendance" ? (
             <Attendance grants={{ submit: access.permissions["attendance"]?.["create"] === "school", edit: access.permissions["attendance"]?.["update"] === "school" }} />
+          ) : current === "gradebook" ? (
+            <Gradebook grants={{ enter: access.permissions["grades"]?.["create"] === "school", create: access.permissions["academics"]?.["create"] === "school", update: access.permissions["academics"]?.["update"] === "school", remove: access.permissions["academics"]?.["delete"] === "school" }} />
           ) : current === "staff-attendance" ? (
             <StaffAttendance grants={{ correct: access.permissions["staff_attendance"]?.["update"] === "school" }} />
           ) : current === "admissions" ? (
