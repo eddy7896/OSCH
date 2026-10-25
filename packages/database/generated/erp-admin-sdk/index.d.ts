@@ -342,6 +342,31 @@ export interface AddStudentDocumentVariables {
   details?: unknown | null;
 }
 
+export interface AddTeacherSubjectData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    subject: ({
+      id: UUIDString;
+    } & Subject_Key)[];
+  };
+  teacherSubject_insert: TeacherSubject_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddTeacherSubjectVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  staffId: UUIDString;
+  subjectId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface AdmitApplicationData {
   query?: {
     actor: ({
@@ -478,14 +503,72 @@ export interface ApprovePayrollRunVariables {
   details?: unknown | null;
 }
 
+export interface AssignClassTeacherData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    classroom: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+  };
+  classTeacher_insert: ClassTeacher_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AssignClassTeacherVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  classroomId: UUIDString;
+  academicYearId: UUIDString;
+  staffId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface AuditLog_Key {
   id: UUIDString;
   __typename?: 'AuditLog_Key';
 }
 
+export interface ChangeClassTeacherData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    link: ({
+      id: UUIDString;
+    } & ClassTeacher_Key)[];
+  };
+  classTeacher_update?: ClassTeacher_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ChangeClassTeacherVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  staffId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface ClassSchedule_Key {
   id: UUIDString;
   __typename?: 'ClassSchedule_Key';
+}
+
+export interface ClassTeacher_Key {
+  id: UUIDString;
+  __typename?: 'ClassTeacher_Key';
 }
 
 export interface Classroom_Key {
@@ -1402,6 +1485,22 @@ export interface DuesInvoicesVariables {
   offset: number;
 }
 
+export interface EnrollmentsOfStudentsData {
+  studentEnrollments: ({
+    studentId: UUIDString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+  })[];
+}
+
+export interface EnrollmentsOfStudentsVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
+  studentIds: UUIDString[];
+}
+
 export interface Exam_Key {
   id: UUIDString;
   __typename?: 'Exam_Key';
@@ -2102,6 +2201,32 @@ export interface LeaveRequest_Key {
   __typename?: 'LeaveRequest_Key';
 }
 
+export interface LinkParentAccountData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    parent: ({
+      userId: string;
+    })[];
+  };
+  parentLink_insert: ParentLink_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface LinkParentAccountVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  userId: string;
+  relationship: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface LinkStaffAccountData {
   query?: {
     actor: ({
@@ -2190,6 +2315,29 @@ export interface ListAuditLogVariables {
   schoolId: UUIDString;
   limit: number;
   offset: number;
+}
+
+export interface ListClassTeachersData {
+  classTeachers: ({
+    id: UUIDString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    staff: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      status: StaffStatus;
+      userId?: string | null;
+    } & StaffProfile_Key;
+  } & ClassTeacher_Key)[];
+}
+
+export interface ListClassTeachersVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
 }
 
 export interface ListClassroomsData {
@@ -2665,6 +2813,29 @@ export interface ListSubjectsVariables {
   schoolId: UUIDString;
 }
 
+export interface ListTeacherSubjectsData {
+  teacherSubjects: ({
+    id: UUIDString;
+    staff: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      status: StaffStatus;
+      userId?: string | null;
+    } & StaffProfile_Key;
+    subject: {
+      id: UUIDString;
+      name: string;
+      code: string;
+    } & Subject_Key;
+  } & TeacherSubject_Key)[];
+}
+
+export interface ListTeacherSubjectsVariables {
+  schoolId: UUIDString;
+}
+
 export interface MarkPayrollRunPaidData {
   query?: {
     actor: ({
@@ -2715,10 +2886,44 @@ export interface MoveStudentVariables {
   details?: unknown | null;
 }
 
-export interface ParentGuardian_Key {
+export interface ParentLink_Key {
+  id: UUIDString;
+  __typename?: 'ParentLink_Key';
+}
+
+export interface ParentLinksOfStudentData {
+  parentLinks: ({
+    id: UUIDString;
+    relationship: string;
+    user: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & ParentLink_Key)[];
+}
+
+export interface ParentLinksOfStudentVariables {
+  schoolId: UUIDString;
   studentId: UUIDString;
+}
+
+export interface ParentLinksOfUserData {
+  parentLinks: ({
+    id: UUIDString;
+    relationship: string;
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+  } & ParentLink_Key)[];
+}
+
+export interface ParentLinksOfUserVariables {
+  schoolId: UUIDString;
   userId: string;
-  __typename?: 'ParentGuardian_Key';
 }
 
 export interface Payment_Key {
@@ -2961,6 +3166,26 @@ export interface RecordPaymentVariables {
   details?: unknown | null;
 }
 
+export interface RemoveClassTeacherData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    link: ({
+      id: UUIDString;
+    } & ClassTeacher_Key)[];
+  };
+  classTeacher_delete?: ClassTeacher_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveClassTeacherVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface RemoveGuardianData {
   query?: {
     actor: ({
@@ -3076,6 +3301,26 @@ export interface RemoveStudentDocumentData {
 }
 
 export interface RemoveStudentDocumentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface RemoveTeacherSubjectData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    link: ({
+      id: UUIDString;
+    } & TeacherSubject_Key)[];
+  };
+  teacherSubject_delete?: TeacherSubject_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveTeacherSubjectVariables {
   schoolId: UUIDString;
   id: UUIDString;
   actorId: string;
@@ -3321,6 +3566,21 @@ export interface StaffIdentitiesVariables {
   offset: number;
 }
 
+export interface StaffOfUserData {
+  staffProfiles: ({
+    id: UUIDString;
+    employeeId: string;
+    firstName: string;
+    lastName: string;
+    status: StaffStatus;
+  } & StaffProfile_Key)[];
+}
+
+export interface StaffOfUserVariables {
+  schoolId: UUIDString;
+  userId: string;
+}
+
 export interface StaffProfile_Key {
   id: UUIDString;
   __typename?: 'StaffProfile_Key';
@@ -3403,6 +3663,31 @@ export interface StudentsByEnrollmentIdsVariables {
 export interface Subject_Key {
   id: UUIDString;
   __typename?: 'Subject_Key';
+}
+
+export interface TeacherSubject_Key {
+  id: UUIDString;
+  __typename?: 'TeacherSubject_Key';
+}
+
+export interface UnlinkParentAccountData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    link: ({
+      id: UUIDString;
+    } & ParentLink_Key)[];
+  };
+  parentLink_delete?: ParentLink_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UnlinkParentAccountVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface UnpaidTotalsData {
@@ -4269,6 +4554,41 @@ export function applyShortDaySchedule(dc: DataConnect, vars: ApplyShortDaySchedu
 /** Generated Node Admin SDK operation action function for the 'ApplyShortDaySchedule' Mutation. Allow users to pass in custom DataConnect instances. */
 export function applyShortDaySchedule(vars: ApplyShortDayScheduleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApplyShortDayScheduleData>>;
 
+/** Generated Node Admin SDK operation action function for the 'AddTeacherSubject' Mutation. Allow users to execute without passing in DataConnect. */
+export function addTeacherSubject(dc: DataConnect, vars: AddTeacherSubjectVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddTeacherSubjectData>>;
+/** Generated Node Admin SDK operation action function for the 'AddTeacherSubject' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addTeacherSubject(vars: AddTeacherSubjectVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddTeacherSubjectData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveTeacherSubject' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeTeacherSubject(dc: DataConnect, vars: RemoveTeacherSubjectVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveTeacherSubjectData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveTeacherSubject' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeTeacherSubject(vars: RemoveTeacherSubjectVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveTeacherSubjectData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AssignClassTeacher' Mutation. Allow users to execute without passing in DataConnect. */
+export function assignClassTeacher(dc: DataConnect, vars: AssignClassTeacherVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AssignClassTeacherData>>;
+/** Generated Node Admin SDK operation action function for the 'AssignClassTeacher' Mutation. Allow users to pass in custom DataConnect instances. */
+export function assignClassTeacher(vars: AssignClassTeacherVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AssignClassTeacherData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ChangeClassTeacher' Mutation. Allow users to execute without passing in DataConnect. */
+export function changeClassTeacher(dc: DataConnect, vars: ChangeClassTeacherVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ChangeClassTeacherData>>;
+/** Generated Node Admin SDK operation action function for the 'ChangeClassTeacher' Mutation. Allow users to pass in custom DataConnect instances. */
+export function changeClassTeacher(vars: ChangeClassTeacherVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ChangeClassTeacherData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveClassTeacher' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeClassTeacher(dc: DataConnect, vars: RemoveClassTeacherVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveClassTeacherData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveClassTeacher' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeClassTeacher(vars: RemoveClassTeacherVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveClassTeacherData>>;
+
+/** Generated Node Admin SDK operation action function for the 'LinkParentAccount' Mutation. Allow users to execute without passing in DataConnect. */
+export function linkParentAccount(dc: DataConnect, vars: LinkParentAccountVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<LinkParentAccountData>>;
+/** Generated Node Admin SDK operation action function for the 'LinkParentAccount' Mutation. Allow users to pass in custom DataConnect instances. */
+export function linkParentAccount(vars: LinkParentAccountVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<LinkParentAccountData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UnlinkParentAccount' Mutation. Allow users to execute without passing in DataConnect. */
+export function unlinkParentAccount(dc: DataConnect, vars: UnlinkParentAccountVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnlinkParentAccountData>>;
+/** Generated Node Admin SDK operation action function for the 'UnlinkParentAccount' Mutation. Allow users to pass in custom DataConnect instances. */
+export function unlinkParentAccount(vars: UnlinkParentAccountVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnlinkParentAccountData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -4613,4 +4933,34 @@ export function listPeriods(vars: ListPeriodsVariables, options?: OperationOptio
 export function schoolWorkingDays(dc: DataConnect, vars: SchoolWorkingDaysVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SchoolWorkingDaysData>>;
 /** Generated Node Admin SDK operation action function for the 'SchoolWorkingDays' Query. Allow users to pass in custom DataConnect instances. */
 export function schoolWorkingDays(vars: SchoolWorkingDaysVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SchoolWorkingDaysData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListTeacherSubjects' Query. Allow users to execute without passing in DataConnect. */
+export function listTeacherSubjects(dc: DataConnect, vars: ListTeacherSubjectsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTeacherSubjectsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListTeacherSubjects' Query. Allow users to pass in custom DataConnect instances. */
+export function listTeacherSubjects(vars: ListTeacherSubjectsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTeacherSubjectsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListClassTeachers' Query. Allow users to execute without passing in DataConnect. */
+export function listClassTeachers(dc: DataConnect, vars: ListClassTeachersVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListClassTeachersData>>;
+/** Generated Node Admin SDK operation action function for the 'ListClassTeachers' Query. Allow users to pass in custom DataConnect instances. */
+export function listClassTeachers(vars: ListClassTeachersVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListClassTeachersData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StaffOfUser' Query. Allow users to execute without passing in DataConnect. */
+export function staffOfUser(dc: DataConnect, vars: StaffOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffOfUserData>>;
+/** Generated Node Admin SDK operation action function for the 'StaffOfUser' Query. Allow users to pass in custom DataConnect instances. */
+export function staffOfUser(vars: StaffOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffOfUserData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ParentLinksOfUser' Query. Allow users to execute without passing in DataConnect. */
+export function parentLinksOfUser(dc: DataConnect, vars: ParentLinksOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ParentLinksOfUserData>>;
+/** Generated Node Admin SDK operation action function for the 'ParentLinksOfUser' Query. Allow users to pass in custom DataConnect instances. */
+export function parentLinksOfUser(vars: ParentLinksOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ParentLinksOfUserData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ParentLinksOfStudent' Query. Allow users to execute without passing in DataConnect. */
+export function parentLinksOfStudent(dc: DataConnect, vars: ParentLinksOfStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ParentLinksOfStudentData>>;
+/** Generated Node Admin SDK operation action function for the 'ParentLinksOfStudent' Query. Allow users to pass in custom DataConnect instances. */
+export function parentLinksOfStudent(vars: ParentLinksOfStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ParentLinksOfStudentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'EnrollmentsOfStudents' Query. Allow users to execute without passing in DataConnect. */
+export function enrollmentsOfStudents(dc: DataConnect, vars: EnrollmentsOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EnrollmentsOfStudentsData>>;
+/** Generated Node Admin SDK operation action function for the 'EnrollmentsOfStudents' Query. Allow users to pass in custom DataConnect instances. */
+export function enrollmentsOfStudents(vars: EnrollmentsOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EnrollmentsOfStudentsData>>;
 

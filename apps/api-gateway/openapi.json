@@ -644,6 +644,39 @@
         ],
         "type": "object"
       },
+      "ChildDto": {
+        "properties": {
+          "class": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RefDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "enrollmentId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "relationship": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "enrollmentId",
+          "name",
+          "relationship",
+          "class"
+        ],
+        "type": "object"
+      },
       "ClassDto": {
         "properties": {
           "capacity": {
@@ -2705,6 +2738,28 @@
         ],
         "type": "object"
       },
+      "LinkParentDto": {
+        "properties": {
+          "relationship": {
+            "enum": [
+              "MOTHER",
+              "FATHER",
+              "GUARDIAN",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "userId": {
+            "pattern": "^[A-Za-z0-9_-]{1,128}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "relationship"
+        ],
+        "type": "object"
+      },
       "LinkStaffAccountDto": {
         "properties": {
           "userId": {
@@ -2921,6 +2976,44 @@
         ],
         "type": "object"
       },
+      "MineDto": {
+        "properties": {
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/ChildDto"
+            },
+            "type": "array"
+          },
+          "classes": {
+            "items": {
+              "$ref": "#/components/schemas/RefDto"
+            },
+            "type": "array"
+          },
+          "staff": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StaffRefDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectRefDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "staff",
+          "subjects",
+          "classes",
+          "children"
+        ],
+        "type": "object"
+      },
       "NavItemDto": {
         "properties": {
           "key": {
@@ -2993,6 +3086,51 @@
           "asOf",
           "bands",
           "totals"
+        ],
+        "type": "object"
+      },
+      "ParentLinkDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "relationship": {
+            "type": "string"
+          },
+          "user": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "relationship",
+          "user"
+        ],
+        "type": "object"
+      },
+      "ParentLinkListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ParentLinkDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -3823,6 +3961,21 @@
         ],
         "type": "object"
       },
+      "RefDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
       "ReversePaymentDto": {
         "properties": {
           "reason": {
@@ -4184,6 +4337,20 @@
         },
         "type": "object"
       },
+      "SetClassTeacherDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "staffId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "staffId"
+        ],
+        "type": "object"
+      },
       "SetPhotoDto": {
         "properties": {
           "key": {
@@ -4478,6 +4645,25 @@
         "required": [
           "contentType",
           "sizeBytes"
+        ],
+        "type": "object"
+      },
+      "StaffRefDto": {
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "name"
         ],
         "type": "object"
       },
@@ -4788,6 +4974,98 @@
         },
         "required": [
           "items"
+        ],
+        "type": "object"
+      },
+      "SubjectRefDto": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "code"
+        ],
+        "type": "object"
+      },
+      "TeacherDto": {
+        "properties": {
+          "classes": {
+            "items": {
+              "$ref": "#/components/schemas/RefDto"
+            },
+            "type": "array"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/TeacherStaffDto"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectRefDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "staff",
+          "subjects",
+          "classes"
+        ],
+        "type": "object"
+      },
+      "TeacherListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TeacherDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "TeacherStaffDto": {
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "hasAccount": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "name",
+          "hasAccount"
+        ],
+        "type": "object"
+      },
+      "TeachesSubjectDto": {
+        "properties": {
+          "subjectId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subjectId"
         ],
         "type": "object"
       },
@@ -6088,6 +6366,138 @@
         }
       }
     },
+    "/v1/academics/classes/{id}/teacher": {
+      "delete": {
+        "operationId": "Teaching_removeClassTeacher",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Teaching"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.classteacher.remove",
+          "operation": "RemoveClassTeacher"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      },
+      "put": {
+        "operationId": "Teaching_setClassTeacher",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetClassTeacherDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Teaching"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.classteacher.set",
+          "operation": "AssignClassTeacher"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
     "/v1/academics/levels": {
       "get": {
         "operationId": "Academics_levels",
@@ -6327,6 +6737,56 @@
         },
         "x-permission": {
           "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/mine": {
+      "get": {
+        "operationId": "Teaching_mine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MineDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Teaching"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
           "resource": "academics"
         }
       }
@@ -6943,6 +7403,197 @@
         },
         "x-permission": {
           "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/teachers": {
+      "get": {
+        "operationId": "Teaching_teachers",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Teaching"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/teachers/{staffId}/subjects": {
+      "post": {
+        "operationId": "Teaching_addSubject",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "staffId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeachesSubjectDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Teaching"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.teachersubject.add",
+          "operation": "AddTeacherSubject"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/teachers/{staffId}/subjects/{subjectId}": {
+      "delete": {
+        "operationId": "Teaching_removeSubject",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "staffId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "subjectId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Teaching"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.teachersubject.remove",
+          "operation": "RemoveTeacherSubject"
+        },
+        "x-permission": {
+          "action": "delete",
           "resource": "academics"
         }
       }
@@ -14390,6 +15041,206 @@
         "x-audit": {
           "action": "student.guardian.update",
           "operation": "UpdateGuardian"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/students/{id}/parent-accounts": {
+      "get": {
+        "operationId": "ParentLinks_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParentLinkListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "ParentLinks"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "students"
+        }
+      },
+      "post": {
+        "operationId": "ParentLinks_link",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkParentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParentLinkListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "ParentLinks"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "student.parent.link",
+          "operation": "LinkParentAccount"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "students"
+        }
+      }
+    },
+    "/v1/students/{id}/parent-accounts/{linkId}": {
+      "delete": {
+        "operationId": "ParentLinks_unlink",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "linkId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "ParentLinks"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "student.parent.unlink",
+          "operation": "UnlinkParentAccount"
         },
         "x-permission": {
           "action": "update",

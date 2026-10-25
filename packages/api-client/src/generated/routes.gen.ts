@@ -16,6 +16,18 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "DELETE",
+    "path": "/v1/academics/classes/{id}/teacher",
+    "access": "tenant",
+    "operationId": "Teaching_removeClassTeacher"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/academics/classes/{id}/teacher",
+    "access": "tenant",
+    "operationId": "Teaching_setClassTeacher"
+  },
+  {
+    "method": "DELETE",
     "path": "/v1/academics/classes/{id}",
     "access": "tenant",
     "operationId": "Academics_deleteClass"
@@ -61,6 +73,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/academics/levels",
     "access": "tenant",
     "operationId": "Academics_createLevel"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/mine",
+    "access": "tenant",
+    "operationId": "Teaching_mine"
   },
   {
     "method": "DELETE",
@@ -121,6 +139,24 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/academics/subjects",
     "access": "tenant",
     "operationId": "Academics_createSubject"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/academics/teachers/{staffId}/subjects/{subjectId}",
+    "access": "tenant",
+    "operationId": "Teaching_removeSubject"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/academics/teachers/{staffId}/subjects",
+    "access": "tenant",
+    "operationId": "Teaching_addSubject"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/teachers",
+    "access": "tenant",
+    "operationId": "Teaching_teachers"
   },
   {
     "method": "POST",
@@ -763,6 +799,24 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/students/{id}/guardians",
     "access": "tenant",
     "operationId": "Students_addGuardian"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/students/{id}/parent-accounts/{linkId}",
+    "access": "tenant",
+    "operationId": "ParentLinks_unlink"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/students/{id}/parent-accounts",
+    "access": "tenant",
+    "operationId": "ParentLinks_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/students/{id}/parent-accounts",
+    "access": "tenant",
+    "operationId": "ParentLinks_link"
   },
   {
     "method": "POST",

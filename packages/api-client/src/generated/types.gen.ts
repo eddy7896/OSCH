@@ -150,6 +150,14 @@ export type ApplyTemplateDto = {
     template: 'STANDARD' | 'SHORT_DAY';
 };
 
+export type ChildDto = {
+    class: RefDto | null;
+    enrollmentId: string;
+    id: string;
+    name: string;
+    relationship: string;
+};
+
 export type ClassDto = {
     capacity: number;
     gradeLevel: {
@@ -684,6 +692,11 @@ export type InvoiceTotalsDto = {
     paidMinor: string;
 };
 
+export type LinkParentDto = {
+    relationship: 'MOTHER' | 'FATHER' | 'GUARDIAN' | 'OTHER';
+    userId: string;
+};
+
 export type LinkStaffAccountDto = {
     userId: string;
 };
@@ -742,6 +755,13 @@ export type MethodTotalDto = {
     method: string;
 };
 
+export type MineDto = {
+    children: Array<ChildDto>;
+    classes: Array<RefDto>;
+    staff: StaffRefDto | null;
+    subjects: Array<SubjectRefDto>;
+};
+
 export type NavItemDto = {
     key: string;
     label: string;
@@ -762,6 +782,19 @@ export type OutstandingDto = {
     asOf: string;
     bands: Array<AgeingBandDto>;
     totals: InvoiceTotalsDto;
+};
+
+export type ParentLinkDto = {
+    id: string;
+    relationship: string;
+    user: {
+        id: string;
+        name: string;
+    };
+};
+
+export type ParentLinkListDto = {
+    items: Array<ParentLinkDto>;
 };
 
 export type PayRunDto = {
@@ -976,6 +1009,11 @@ export type RecordPaymentDto = {
     reference?: string;
 };
 
+export type RefDto = {
+    id: string;
+    name: string;
+};
+
 export type ReversePaymentDto = {
     reason: string;
 };
@@ -1075,6 +1113,11 @@ export type SchoolStatusDto = {
     reason?: string;
 };
 
+export type SetClassTeacherDto = {
+    academicYearId?: string;
+    staffId: string;
+};
+
 export type SetPhotoDto = {
     key: string;
 };
@@ -1149,6 +1192,12 @@ export type StaffListDto = {
 export type StaffPhotoUploadRequestDto = {
     contentType: 'image/png' | 'image/jpeg' | 'image/webp';
     sizeBytes: number;
+};
+
+export type StaffRefDto = {
+    employeeId: string;
+    id: string;
+    name: string;
 };
 
 export type StaffSetPhotoDto = {
@@ -1228,6 +1277,33 @@ export type SubjectDto = {
 
 export type SubjectListDto = {
     items: Array<SubjectDto>;
+};
+
+export type SubjectRefDto = {
+    code: string;
+    id: string;
+    name: string;
+};
+
+export type TeacherDto = {
+    classes: Array<RefDto>;
+    staff: TeacherStaffDto;
+    subjects: Array<SubjectRefDto>;
+};
+
+export type TeacherListDto = {
+    items: Array<TeacherDto>;
+};
+
+export type TeacherStaffDto = {
+    employeeId: string;
+    hasAccount: boolean;
+    id: string;
+    name: string;
+};
+
+export type TeachesSubjectDto = {
+    subjectId: string;
 };
 
 export type UpdateAcademicYearDto = {
@@ -1715,6 +1791,94 @@ export type AcademicsUpdateClassResponses = {
 
 export type AcademicsUpdateClassResponse = AcademicsUpdateClassResponses[keyof AcademicsUpdateClassResponses];
 
+export type TeachingRemoveClassTeacherData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        academicYearId?: string;
+    };
+    url: '/v1/academics/classes/{id}/teacher';
+};
+
+export type TeachingRemoveClassTeacherErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TeachingRemoveClassTeacherError = TeachingRemoveClassTeacherErrors[keyof TeachingRemoveClassTeacherErrors];
+
+export type TeachingRemoveClassTeacherResponses = {
+    204: void;
+};
+
+export type TeachingRemoveClassTeacherResponse = TeachingRemoveClassTeacherResponses[keyof TeachingRemoveClassTeacherResponses];
+
+export type TeachingSetClassTeacherData = {
+    body: SetClassTeacherDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/academics/classes/{id}/teacher';
+};
+
+export type TeachingSetClassTeacherErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TeachingSetClassTeacherError = TeachingSetClassTeacherErrors[keyof TeachingSetClassTeacherErrors];
+
+export type TeachingSetClassTeacherResponses = {
+    200: unknown;
+};
+
 export type AcademicsLevelsData = {
     body?: never;
     path?: never;
@@ -1878,6 +2042,44 @@ export type AcademicsUpdateLevelResponses = {
 };
 
 export type AcademicsUpdateLevelResponse = AcademicsUpdateLevelResponses[keyof AcademicsUpdateLevelResponses];
+
+export type TeachingMineData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/academics/mine';
+};
+
+export type TeachingMineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TeachingMineError = TeachingMineErrors[keyof TeachingMineErrors];
+
+export type TeachingMineResponses = {
+    200: MineDto;
+};
+
+export type TeachingMineResponse = TeachingMineResponses[keyof TeachingMineResponses];
 
 export type ScheduleCreateData = {
     body: CreatePeriodDto;
@@ -2282,6 +2484,133 @@ export type AcademicsUpdateSubjectResponses = {
 };
 
 export type AcademicsUpdateSubjectResponse = AcademicsUpdateSubjectResponses[keyof AcademicsUpdateSubjectResponses];
+
+export type TeachingTeachersData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/academics/teachers';
+};
+
+export type TeachingTeachersErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TeachingTeachersError = TeachingTeachersErrors[keyof TeachingTeachersErrors];
+
+export type TeachingTeachersResponses = {
+    200: TeacherListDto;
+};
+
+export type TeachingTeachersResponse = TeachingTeachersResponses[keyof TeachingTeachersResponses];
+
+export type TeachingAddSubjectData = {
+    body: TeachesSubjectDto;
+    path: {
+        staffId: string;
+    };
+    query?: never;
+    url: '/v1/academics/teachers/{staffId}/subjects';
+};
+
+export type TeachingAddSubjectErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TeachingAddSubjectError = TeachingAddSubjectErrors[keyof TeachingAddSubjectErrors];
+
+export type TeachingAddSubjectResponses = {
+    201: TeacherDto;
+};
+
+export type TeachingAddSubjectResponse = TeachingAddSubjectResponses[keyof TeachingAddSubjectResponses];
+
+export type TeachingRemoveSubjectData = {
+    body?: never;
+    path: {
+        staffId: string;
+        subjectId: string;
+    };
+    query?: never;
+    url: '/v1/academics/teachers/{staffId}/subjects/{subjectId}';
+};
+
+export type TeachingRemoveSubjectErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TeachingRemoveSubjectError = TeachingRemoveSubjectErrors[keyof TeachingRemoveSubjectErrors];
+
+export type TeachingRemoveSubjectResponses = {
+    204: void;
+};
+
+export type TeachingRemoveSubjectResponse = TeachingRemoveSubjectResponses[keyof TeachingRemoveSubjectResponses];
 
 export type AcademicsYearsData = {
     body?: never;
@@ -6953,6 +7282,139 @@ export type StudentsUpdateGuardianResponses = {
 };
 
 export type StudentsUpdateGuardianResponse = StudentsUpdateGuardianResponses[keyof StudentsUpdateGuardianResponses];
+
+export type ParentLinksListData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/parent-accounts';
+};
+
+export type ParentLinksListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ParentLinksListError = ParentLinksListErrors[keyof ParentLinksListErrors];
+
+export type ParentLinksListResponses = {
+    200: ParentLinkListDto;
+};
+
+export type ParentLinksListResponse = ParentLinksListResponses[keyof ParentLinksListResponses];
+
+export type ParentLinksLinkData = {
+    body: LinkParentDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/parent-accounts';
+};
+
+export type ParentLinksLinkErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ParentLinksLinkError = ParentLinksLinkErrors[keyof ParentLinksLinkErrors];
+
+export type ParentLinksLinkResponses = {
+    201: ParentLinkListDto;
+};
+
+export type ParentLinksLinkResponse = ParentLinksLinkResponses[keyof ParentLinksLinkResponses];
+
+export type ParentLinksUnlinkData = {
+    body?: never;
+    path: {
+        id: string;
+        linkId: string;
+    };
+    query?: never;
+    url: '/v1/students/{id}/parent-accounts/{linkId}';
+};
+
+export type ParentLinksUnlinkErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ParentLinksUnlinkError = ParentLinksUnlinkErrors[keyof ParentLinksUnlinkErrors];
+
+export type ParentLinksUnlinkResponses = {
+    204: void;
+};
+
+export type ParentLinksUnlinkResponse = ParentLinksUnlinkResponses[keyof ParentLinksUnlinkResponses];
 
 export type StudentFilesPhotoData = {
     body?: never;

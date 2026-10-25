@@ -49,7 +49,7 @@ test("E-DOC-2 schema parsed (sanity: guards against the parser silently matching
 
 test("E-TEN-S1 membership & guardian join tables are tenant-reachable", () => {
   assert.ok(tables.SchoolMember.school, "SchoolMember must reference School");
-  assert.ok(tables.ParentGuardian.student, "ParentGuardian must reference Student");
+  assert.ok(tables.ParentLink.student && tables.ParentLink.school && tables.ParentLink.user, "ParentLink must reference School, Student and User");
 });
 
 test("E-TEN-S2 every tenant table has a direct school reference", () => {
@@ -57,8 +57,7 @@ test("E-TEN-S2 every tenant table has a direct school reference", () => {
     .filter(([name]) => !GLOBAL_TABLES.has(name))
     .filter(([, f]) => !("school" in f))
     .map(([name]) => name);
-  // ParentGuardian is a pure join to Student (tenant-scoped through it); tolerated until it gets its own school column.
-  assert.deepEqual(missing.filter((n) => n !== "ParentGuardian"), []);
+  assert.deepEqual(missing, []);
 });
 
 test("E-FIN-S1 money fields are integer minor units, never Float", () => {

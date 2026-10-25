@@ -83,6 +83,38 @@ const emptyScheduleOfA = async (w: World): Promise<Record<string, string>> => {
   for (const p of (await w.db.listPeriods({ schoolId: w.schools.A })).data.periods) await w.db.deletePeriod({ schoolId: w.schools.A, id: p.id, actorId: actorA(w), details: { sample: true } });
   return {};
 };
+/** Teachers (P3-2): a staff member and a subject of school A, optionally already linked; a class (and an active year) for the class-teacher routes. */
+const teacherAndSubjectOfA = async (w: World): Promise<Record<string, string>> => ({ staffId: (await staffOfA(w))['id']!, subjectId: dash((await subjectOfA(w))['id']!) });
+const taughtSubjectOfA = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await teacherAndSubjectOfA(w);
+  await w.db.addTeacherSubject({ schoolId: w.schools.A, id: randomUUID(), staffId: ctx['staffId']!, subjectId: ctx['subjectId']!, actorId: actorA(w) });
+  return ctx;
+};
+const classTeacherSetupOfA = async (w: World): Promise<Record<string, string>> => {
+  const klass = await classOfA(w);
+  const staff = await staffOfA(w);
+  const year = await yearOfA(w);
+  return { id: dash(klass['id']!), staffId: staff['id']!, year: dash(year['id']!) };
+};
+const activeYearOfA = async (w: World): Promise<string> => {
+  const current = (await w.db.getSchoolProfile({ schoolId: w.schools.A })).data.school?.activeAcademicYear;
+  if (current) return dash(current.id);
+  const { id } = await yearOfA(w);
+  await w.db.activateAcademicYear({ schoolId: w.schools.A, id: id!, actorId: actorA(w) });
+  return dash(id!);
+};
+const classWithTeacherOfA = async (w: World): Promise<Record<string, string>> => {
+  const klass = await classOfA(w);
+  const staff = await staffOfA(w);
+  await w.db.assignClassTeacher({ schoolId: w.schools.A, id: randomUUID(), classroomId: klass['id']!, academicYearId: await activeYearOfA(w), staffId: staff['id']!, actorId: actorA(w) });
+  return { id: dash(klass['id']!), staffId: staff['id']! };
+};
+const linkedParentOfA = async (w: World): Promise<Record<string, string>> => {
+  const student = await studentOfA(w);
+  await w.db.linkParentAccount({ schoolId: w.schools.A, id: randomUUID(), studentId: student['id']!, userId: w.roles.A.PARENT.uid, relationship: 'MOTHER', actorId: actorA(w) });
+  const link = (await w.db.parentLinksOfStudent({ schoolId: w.schools.A, studentId: student['id']! })).data.parentLinks[0]!;
+  return { id: student['id']!, linkId: dash(link.id) };
+};
 const yearOfA = async (w: World): Promise<Record<string, string>> => {
   const id = randomUUID();
   await w.db.createAcademicYear({ schoolId: w.schools.A, id, name: `Y-${id.slice(0, 6)}`, startDate: '2040-04-01', endDate: '2041-03-31', actorId: actorA(w) });
@@ -294,6 +326,12 @@ export const SAMPLES: Record<string, Sample> = {
   'POST /academics/periods': { ...academicAdminOfA, body: () => { const m = 1200 + Math.floor(Math.random() * 200); const t = (x: number) => `${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`; return { label: `Sample ${randomUUID().slice(0, 6)}`, startTime: t(m), endTime: t(m + 1) }; } },
   'PATCH /academics/periods/:id': { ...academicAdminOfA, prepare: periodOfA, body: () => ({ label: `Renamed ${randomUUID().slice(0, 6)}` }) },
   'DELETE /academics/periods/:id': { ...academicAdminOfA, prepare: periodOfA },
+  'POST /academics/teachers/:staffId/subjects': { ...academicAdminOfA, prepare: teacherAndSubjectOfA, body: (_w, ctx) => ({ subjectId: ctx['subjectId'] }) },
+  'DELETE /academics/teachers/:staffId/subjects/:subjectId': { ...academicAdminOfA, prepare: taughtSubjectOfA },
+  'PUT /academics/classes/:id/teacher': { ...academicAdminOfA, prepare: classTeacherSetupOfA, body: (_w, ctx) => ({ staffId: ctx['staffId'], academicYearId: ctx['year'] }) },
+  'DELETE /academics/classes/:id/teacher': { ...academicAdminOfA, prepare: classWithTeacherOfA },
+  'POST /students/:id/parent-accounts': { ...academicAdminOfA, prepare: studentOfA, body: (w) => ({ userId: w.roles.A.PARENT.uid, relationship: 'MOTHER' }) },
+  'DELETE /students/:id/parent-accounts/:linkId': { ...academicAdminOfA, prepare: linkedParentOfA },
   'POST /academics/years': { ...academicAdminOfA, body: () => ({ name: `Year ${randomUUID().slice(0, 6)}`, startDate: '2042-04-01', endDate: '2043-03-31' }) },
   'PATCH /academics/years/:id': { ...academicAdminOfA, prepare: yearOfA, body: () => ({ name: 'Renamed year' }) },
   'POST /academics/years/:id/activate': { ...academicAdminOfA, prepare: yearOfA, body: () => ({}) },
