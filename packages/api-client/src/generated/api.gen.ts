@@ -95,6 +95,8 @@ export const bindApi = (client: Client) => ({
   leaveCancel: async (options: Opts<typeof sdk.leaveCancel<true>>): Out<typeof sdk.leaveCancel<true>> => (await sdk.leaveCancel<true>({ ...options, client, throwOnError: true } as never)).data,
   leaveCreate: async (options: Opts<typeof sdk.leaveCreate<true>>): Out<typeof sdk.leaveCreate<true>> => (await sdk.leaveCreate<true>({ ...options, client, throwOnError: true } as never)).data,
   leaveCreateType: async (options: Opts<typeof sdk.leaveCreateType<true>>): Out<typeof sdk.leaveCreateType<true>> => (await sdk.leaveCreateType<true>({ ...options, client, throwOnError: true } as never)).data,
+  leaveDeductionApply: async (options: Opts<typeof sdk.leaveDeductionApply<true>>): Out<typeof sdk.leaveDeductionApply<true>> => (await sdk.leaveDeductionApply<true>({ ...options, client, throwOnError: true } as never)).data,
+  leaveDeductionProposals: async (options: Opts<typeof sdk.leaveDeductionProposals<true>>): Out<typeof sdk.leaveDeductionProposals<true>> => (await sdk.leaveDeductionProposals<true>({ ...options, client, throwOnError: true } as never)).data,
   leaveDeleteType: async (options: Opts<typeof sdk.leaveDeleteType<true>>): Out<typeof sdk.leaveDeleteType<true>> => (await sdk.leaveDeleteType<true>({ ...options, client, throwOnError: true } as never)).data,
   leaveReject: async (options: Opts<typeof sdk.leaveReject<true>>): Out<typeof sdk.leaveReject<true>> => (await sdk.leaveReject<true>({ ...options, client, throwOnError: true } as never)).data,
   leaveRequests: async (options: Opts<typeof sdk.leaveRequests<true>> = {}): Out<typeof sdk.leaveRequests<true>> => (await sdk.leaveRequests<true>({ ...options, client, throwOnError: true } as never)).data,

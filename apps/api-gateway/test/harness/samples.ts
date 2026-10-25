@@ -74,9 +74,10 @@ const subjectOfA = async (w: World): Promise<Record<string, string>> => {
   return { id };
 };
 /** A period of school A, made through the real operation (its own start time, so samples never collide). */
+let periodMinute = Math.floor(Math.random() * 600);
 const periodOfA = async (w: World): Promise<Record<string, string>> => {
   const id = randomUUID();
-  const minute = 600 + (parseInt(id.slice(0, 3), 16) % 600); // 10:00 to 19:59, one minute long
+  const minute = 600 + (periodMinute++ % 600); // 10:00 to 19:59, one minute long, each sample its own minute (the school keeps start times unique)
   const t = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
   await w.db.createPeriod({ schoolId: w.schools.A, id, label: `P-${id.slice(0, 8)}`, startTime: t(minute), endTime: t(minute + 1), isBreak: false, actorId: actorA(w), details: {} });
   return { id };
@@ -386,6 +387,26 @@ const principalOfA = { token: (w: World) => w.roles.A.PRINCIPAL.token, actor: (w
 /** Each sample run gets its own month (one run per school and month), counting up from January 2001. */
 let runCounter = 0;
 const nextRunPeriod = () => { const n = runCounter++; return { year: 2001 + Math.floor(n / 12), month: (n % 12) + 1 }; };
+/** A DRAFT payroll run with one payslip (Basic pay 30,000.00) for a person who has a day of approved UNPAID leave in the run's month (P3-8). */
+const unpaidLeaveRunOfA = async (w: World): Promise<Record<string, string>> => {
+  const hr = w.roles.A.HR_MANAGER.uid;
+  const { userId } = await memberOfA(w);
+  const staff = (await staffOfA(w))['id']!;
+  await w.db.linkStaffAccount({ schoolId: w.schools.A, id: staff, userId, actorId: hr, details: {} });
+  const period = nextRunPeriod();
+  const runId = randomUUID(), slip = randomUUID();
+  await w.db.createPayrollRun({ schoolId: w.schools.A, id: runId, ...period, actorId: hr });
+  await w.db.createPayslip({ schoolId: w.schools.A, id: slip, runId, staffId: staff, actorId: hr });
+  await w.db.addPayslipLine({ schoolId: w.schools.A, id: randomUUID(), runId, payslipId: slip, kind: 'EARNING' as never, name: 'Basic pay', amountMinor: '3000000', manual: false, actorId: hr });
+  const type = await leaveTypeOfA(w, false);
+  const day = new Date(Date.UTC(period.year, period.month - 1, 1));
+  day.setUTCDate(day.getUTCDate() + ((8 - day.getUTCDay()) % 7)); // the month's first Monday
+  const date = day.toISOString().slice(0, 10);
+  const leaveId = randomUUID();
+  await w.db.createLeaveRequest({ schoolId: w.schools.A, id: leaveId, staffId: staff, leaveTypeId: type['id']!, startDate: date, endDate: date, halfDays: 2, actorId: userId, details: {} });
+  await w.db.approveUnpaidLeaveRequest({ schoolId: w.schools.A, id: leaveId, actorId: w.roles.A.PRINCIPAL.uid, details: {} });
+  return { id: dash(slip), run: dash(runId), staffId: dash(staff) };
+};
 /** A payroll run of school A with one payslip and one line, optionally approved, through the real operations. */
 const payrollRunOfA = (opts: { approve?: boolean } = {}) => async (w: World): Promise<Record<string, string>> => {
   const hr = w.roles.A.HR_MANAGER.uid;
@@ -575,5 +596,6 @@ export const SAMPLES: Record<string, Sample> = {
   'POST /payroll/runs/:id/approve': { ...principalOfA, prepare: payrollRunOfA(), body: () => ({}) },
   'POST /payroll/runs/:id/pay': { ...bursarOfA, prepare: payrollRunOfA({ approve: true }), body: () => ({ reference: 'NEFT-1' }) },
   'POST /payroll/payslips/:id/lines': { ...hrOfA, prepare: async (w) => { const r = await payrollRunOfA()(w); return { id: r['payslip']! }; }, body: () => ({ kind: 'DEDUCTION', name: 'Advance recovery', amountMinor: '100000' }) },
+  'POST /payroll/payslips/:id/leave-deduction': { ...hrOfA, prepare: unpaidLeaveRunOfA, body: () => ({}) },
   'DELETE /payroll/payslip-lines/:id': { ...hrOfA, prepare: async (w) => { const r = await payrollRunOfA()(w); return { id: r['line']! }; } },
 };

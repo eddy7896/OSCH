@@ -59,3 +59,14 @@ test("E-ACAD-2 a substitution is unique per lesson and date and per substitute, 
   const op = read("dataconnect/erp-connector/mutations.gql").split(/\n(?=mutation )/).find((m) => m.startsWith("mutation SetSubstitute"));
   for (const rule of ["status: {eq: APPROVED}", "teacherSubjects(", "this.size() == 0\", message: \"the substitute has a lesson of their own", "the substitute is on approved leave", "id: {ne: $absentStaffId}"]) assert.ok(op.includes(rule), `SetSubstitute must check: ${rule}`);
 });
+
+test("E-ACAD-3 the unpaid-leave deduction is bigint paise rounded down, a proposal HR must apply, and only unpaid leave raises it", () => {
+  const rules = strip(read("apps/api-gateway/src/payroll/leave-deduction.ts"));
+  for (const banned of [/parseFloat/, /toFixed/, /Math\.round/, /Math\.floor\(.*\/.*\)/]) assert.doesNotMatch(rules, banned);
+  assert.match(rules, /\(grossMinor \* BigInt\(halfDays\)\) \/ \(2n \* BigInt\(monthWorkingDays\)\)/);
+  const svc = strip(read("apps/api-gateway/src/payroll/leave-deduction.service.ts"));
+  assert.match(svc, /!l\.leaveType\.paid/, "paid leave raises no proposal");
+  assert.match(svc, /status: 'APPROVED'/, "only approved leave raises one");
+  assert.match(svc, /slip\.run\.status !== 'DRAFT'/, "applied only to a draft run");
+  assert.doesNotMatch(strip(read("apps/api-gateway/src/leave/leave.service.ts")), /addPayslipLine|payslip/i, "approving leave never writes to payroll by itself");
+});
