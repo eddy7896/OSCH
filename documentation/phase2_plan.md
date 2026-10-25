@@ -69,6 +69,8 @@ graph TD
 
 **P2-12 (added after P2-11, owner question "can the school admin see all screens?")**: the System administrator's `Users and roles` screen, which had no web screen (the gateway endpoints existed since Phase 1). BUILT (web-admin: Members (role, status, since; change role, suspend or reactivate, remove, each behind a question; your own row has no buttons because the gateway refuses changes to yourself), Create an account for staff, driver and other roles (not parents) with email or phone, sending the set-password email from the browser (ADR-0011) and offering to send it again if it failed, Invitations (list, invite someone with a one-time code shown once, cancel a pending one) and, for a signed-in person with no membership yet, an invitation-code box that joins them; 3 new error messages (invalid code, email not verified, own membership) instead of a generic one; 29 + 3 new i18n keys, hi and ur DRAFT). The role-scoped proof (P2-11) now includes these screens. The `Audit log` screen is still not built.
 
+**Gate review**: see `documentation/phase2_gate.md` (each criterion mapped to its automated test, the evidence run of 2026-10-26, and what is NOT proven). Verdict: functionally complete and proven on the emulators, not production-ready.
+
 ### M4 Screens
 | ID | Task | Size |
 |---|---|---|
