@@ -436,7 +436,7 @@ query EnrollmentsOfStudents($schoolId: UUID!, $academicYearId: UUID!, $studentId
 
 # ---- Timetable (P3-3)
 query ListTimetableForYear($schoolId: UUID!, $academicYearId: UUID!) @auth(level: NO_ACCESS) {
-  timetableEntries(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}}, limit: 10000) { id day periodId classroomId staffId subjectId staff { id employeeId firstName lastName status } }
+  timetableEntries(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}}, limit: 10000) { id day periodId classroomId staffId subjectId staff { id employeeId firstName lastName status } classroom { id name } subject { id name code } }
 }
 
 query ListTimetableForClass($schoolId: UUID!, $academicYearId: UUID!, $classroomId: UUID!) @auth(level: NO_ACCESS) {
@@ -563,5 +563,13 @@ query GetLeaveRequest($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
   leaveRequests(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
     id startDate endDate half halfDays reason status decisionNote decidedAt createdAt
     staff { id employeeId firstName lastName userId } leaveType { id name paid quotaHalfDays } decidedBy { id displayName email }
+  }
+}
+
+# ---- Substitution (P3-7)
+query ListSubstitutions($schoolId: UUID!, $from: Date!, $to: Date!, $substituteId: UUID) @auth(level: NO_ACCESS) {
+  substitutions(where: {schoolId: {eq: $schoolId}, date: {ge: $from, le: $to}, substituteId: {eq: $substituteId}}, orderBy: [{date: ASC}], limit: 5000) {
+    id date periodId timetableEntryId leaveRequestId substitute { id employeeId firstName lastName status }
+    timetableEntry { id day classroom { id name } subject { id name code } staffId }
   }
 }

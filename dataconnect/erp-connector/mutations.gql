@@ -929,6 +929,7 @@ mutation UpdateTimetableEntry($schoolId: UUID!, $id: UUID!, $subjectId: UUID!, $
     staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "active staff member not found in this school") { id }
     teaches: teacherSubjects(where: {staffId: {eq: $staffId}, subjectId: {eq: $subjectId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "that staff member does not teach that subject") { id }
   }
+  substitution_deleteMany(where: {timetableEntryId: {eq: $id}, schoolId: {eq: $schoolId}})
   timetableEntry_update(id: $id, data: { subjectId: $subjectId, staffId: $staffId })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.timetable.set", entityType: "TimetableEntry", entityId_expr: "request.variables.id", details: $details })
 }
@@ -938,6 +939,7 @@ mutation DeleteTimetableEntry($schoolId: UUID!, $id: UUID!, $actorId: String!, $
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     entry: timetableEntries(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "timetable entry not found in this school") { id }
   }
+  substitution_deleteMany(where: {timetableEntryId: {eq: $id}, schoolId: {eq: $schoolId}})
   timetableEntry_delete(id: $id)
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.timetable.clear", entityType: "TimetableEntry", entityId_expr: "request.variables.id", details: $details })
 }
@@ -1231,4 +1233,30 @@ mutation RejectLeaveRequest($schoolId: UUID!, $id: UUID!, $note: String, $actorI
   }
   leaveRequest_update(id: $id, data: { status: REJECTED, decidedById: $actorId, decidedAt_expr: "request.time", decisionNote: $note })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.reject", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
+}
+
+# ---- Substitution (P3-7). Every rule the board applies is checked again here: the leave is APPROVED and covers the date for the absent teacher, the lesson is theirs on that
+# weekday and period, and the substitute is an active member of staff, someone else, qualified for the subject, free in that period (no lesson of their own, not on approved leave
+# that day). A second lesson in the same period on the same date is refused by the unique key.
+mutation SetSubstitute($schoolId: UUID!, $id: UUID!, $timetableEntryId: UUID!, $date: Date!, $day: String!, $periodId: UUID!, $subjectId: UUID!, $absentStaffId: UUID!, $leaveRequestId: UUID!, $substituteId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    leave: leaveRequests(where: {id: {eq: $leaveRequestId}, schoolId: {eq: $schoolId}, staffId: {eq: $absentStaffId}, status: {eq: APPROVED}, startDate: {le: $date}, endDate: {ge: $date}}) @check(expr: "this.size() == 1", message: "no approved leave covers that date for the absent teacher") { id }
+    entry: timetableEntries(where: {id: {eq: $timetableEntryId}, schoolId: {eq: $schoolId}, staffId: {eq: $absentStaffId}, day: {eq: $day}, periodId: {eq: $periodId}, subjectId: {eq: $subjectId}, academicYear: {startDate: {le: $date}, endDate: {ge: $date}}}) @check(expr: "this.size() == 1", message: "that lesson is not the absent teacher's on that day") { id }
+    substitute: staffProfiles(where: {_and: [{id: {eq: $substituteId}}, {id: {ne: $absentStaffId}}, {schoolId: {eq: $schoolId}}, {status: {eq: ACTIVE}}]}) @check(expr: "this.size() == 1", message: "the substitute must be another active member of staff of this school") { id }
+    qualified: teacherSubjects(where: {staffId: {eq: $substituteId}, subjectId: {eq: $subjectId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "the substitute does not teach that subject") { id }
+    busy: timetableEntries(where: {staffId: {eq: $substituteId}, schoolId: {eq: $schoolId}, day: {eq: $day}, periodId: {eq: $periodId}, academicYear: {startDate: {le: $date}, endDate: {ge: $date}}}) @check(expr: "this.size() == 0", message: "the substitute has a lesson of their own then") { id }
+    away: leaveRequests(where: {staffId: {eq: $substituteId}, schoolId: {eq: $schoolId}, status: {eq: APPROVED}, startDate: {le: $date}, endDate: {ge: $date}}) @check(expr: "this.size() == 0", message: "the substitute is on approved leave that day") { id }
+  }
+  substitution_upsert(data: { id: $id, schoolId: $schoolId, timetableEntryId: $timetableEntryId, date: $date, periodId: $periodId, substituteId: $substituteId, leaveRequestId: $leaveRequestId, assignedById: $actorId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.substitution.set", entityType: "Substitution", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation ClearSubstitute($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    row: substitutions(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "substitution not found in this school") { id }
+  }
+  substitution_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.substitution.clear", entityType: "Substitution", entityId_expr: "request.variables.id", details: $details })
 }

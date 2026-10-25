@@ -1045,6 +1045,20 @@ function rejectLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.rejectLeaveRequest = rejectLeaveRequest;
 
+function setSubstitute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetSubstitute', inputVars, inputOpts);
+}
+exports.setSubstitute = setSubstitute;
+
+function clearSubstitute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ClearSubstitute', inputVars, inputOpts);
+}
+exports.clearSubstitute = clearSubstitute;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1730,4 +1744,11 @@ function getLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetLeaveRequest', inputVars, inputOpts);
 }
 exports.getLeaveRequest = getLeaveRequest;
+
+function listSubstitutions(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListSubstitutions', inputVars, inputOpts);
+}
+exports.listSubstitutions = listSubstitutions;
 

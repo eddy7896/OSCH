@@ -1143,6 +1143,36 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Students_create"
   },
   {
+    "method": "DELETE",
+    "path": "/v1/substitutions/{id}",
+    "access": "tenant",
+    "operationId": "Substitution_clear"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/substitutions/mine",
+    "access": "tenant",
+    "operationId": "Substitution_mine"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/substitutions/needs",
+    "access": "tenant",
+    "operationId": "Substitution_needs"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/substitutions/suggestions",
+    "access": "tenant",
+    "operationId": "Substitution_suggestions"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/substitutions",
+    "access": "tenant",
+    "operationId": "Substitution_assign"
+  },
+  {
     "method": "POST",
     "path": "/v1/uploads/school-logo",
     "access": "tenant",
