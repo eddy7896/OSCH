@@ -20,6 +20,7 @@
     "i18n:build": "npm run generate --workspace @oruschools/i18n",
     "i18n:check": "npm run check --workspace @oruschools/i18n --silent",
     "test:database": "bash tools/tests/database-admin.sh",
+    "demo": "bash tools/demo-stack.sh",
     "test:gateway": "bash tools/tests/gateway-integration.sh"
   },
   "devDependencies": {
