@@ -677,6 +677,50 @@
         ],
         "type": "object"
       },
+      "ClassDayDto": {
+        "properties": {
+          "classId": {
+            "type": "string"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/StatusCountsDto"
+          },
+          "date": {
+            "type": "string"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "students": {
+            "items": {
+              "$ref": "#/components/schemas/RosterEntryDto"
+            },
+            "type": "array"
+          },
+          "submitted": {
+            "type": "boolean"
+          },
+          "submittedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "submittedBy": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "classId",
+          "date",
+          "submitted",
+          "locked",
+          "submittedBy",
+          "submittedAt",
+          "counts",
+          "students"
+        ],
+        "type": "object"
+      },
       "ClassDto": {
         "properties": {
           "capacity": {
@@ -1036,6 +1080,23 @@
         "required": [
           "items"
         ],
+        "type": "object"
+      },
+      "CorrectStaffDayDto": {
+        "properties": {
+          "checkIn": {
+            "maxLength": 40,
+            "minLength": 20,
+            "nullable": true,
+            "type": "string"
+          },
+          "checkOut": {
+            "maxLength": 40,
+            "minLength": 20,
+            "nullable": true,
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "CreateAcademicYearDto": {
@@ -1711,6 +1772,39 @@
           "acceptedAt",
           "createdBy",
           "token"
+        ],
+        "type": "object"
+      },
+      "DayListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DaySummaryDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "DaySummaryDto": {
+        "properties": {
+          "counts": {
+            "$ref": "#/components/schemas/StatusCountsDto"
+          },
+          "date": {
+            "type": "string"
+          },
+          "locked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "date",
+          "locked",
+          "counts"
         ],
         "type": "object"
       },
@@ -2858,6 +2952,35 @@
         ],
         "type": "object"
       },
+      "MarkInputDto": {
+        "properties": {
+          "note": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PRESENT",
+              "ABSENT",
+              "LATE",
+              "LEAVE",
+              "MEDICAL",
+              "HALF_DAY",
+              "EXCUSED"
+            ],
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId",
+          "status"
+        ],
+        "type": "object"
+      },
       "MeLanguageDto": {
         "properties": {
           "chosen": {
@@ -3095,6 +3218,39 @@
           "subjects",
           "classes",
           "children"
+        ],
+        "type": "object"
+      },
+      "MissingClassDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "MissingDto": {
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MissingClassDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "date",
+          "items"
         ],
         "type": "object"
       },
@@ -4073,6 +4229,34 @@
         ],
         "type": "object"
       },
+      "RosterEntryDto": {
+        "properties": {
+          "enrollmentId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "note": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "enrollmentId",
+          "name",
+          "status",
+          "note"
+        ],
+        "type": "object"
+      },
       "RunTotalsDto": {
         "properties": {
           "deductionsMinor": {
@@ -4554,6 +4738,41 @@
         ],
         "type": "object"
       },
+      "StaffDayDto": {
+        "properties": {
+          "checkIn": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkOut": {
+            "nullable": true,
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "checkIn",
+          "checkOut"
+        ],
+        "type": "object"
+      },
+      "StaffDayListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StaffDayDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "StaffDepartmentsDto": {
         "properties": {
           "items": {
@@ -4767,6 +4986,49 @@
         ],
         "type": "object"
       },
+      "StaffPresenceDto": {
+        "properties": {
+          "checkIn": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkOut": {
+            "nullable": true,
+            "type": "string"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/StaffStaffDto"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "staff",
+          "checkIn",
+          "checkOut",
+          "state"
+        ],
+        "type": "object"
+      },
+      "StaffPresenceListDto": {
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StaffPresenceDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "date",
+          "items"
+        ],
+        "type": "object"
+      },
       "StaffRefDto": {
         "properties": {
           "employeeId": {
@@ -4822,6 +5084,25 @@
           "periodId",
           "class",
           "subject"
+        ],
+        "type": "object"
+      },
+      "StaffStaffDto": {
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "name"
         ],
         "type": "object"
       },
@@ -4924,6 +5205,121 @@
           "student",
           "invoices",
           "totals"
+        ],
+        "type": "object"
+      },
+      "StatusCountsDto": {
+        "properties": {
+          "ABSENT": {
+            "type": "number"
+          },
+          "EXCUSED": {
+            "type": "number"
+          },
+          "HALF_DAY": {
+            "type": "number"
+          },
+          "LATE": {
+            "type": "number"
+          },
+          "LEAVE": {
+            "type": "number"
+          },
+          "MEDICAL": {
+            "type": "number"
+          },
+          "PRESENT": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "PRESENT",
+          "ABSENT",
+          "LATE",
+          "LEAVE",
+          "MEDICAL",
+          "HALF_DAY",
+          "EXCUSED"
+        ],
+        "type": "object"
+      },
+      "StatusDto": {
+        "properties": {
+          "isDefault": {
+            "type": "boolean"
+          },
+          "label": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "label",
+          "isDefault"
+        ],
+        "type": "object"
+      },
+      "StatusLabelDto": {
+        "properties": {
+          "label": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "label"
+        ],
+        "type": "object"
+      },
+      "StatusListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StatusDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "StudentAttendanceDto": {
+        "properties": {
+          "counts": {
+            "$ref": "#/components/schemas/StatusCountsDto"
+          },
+          "daysTaken": {
+            "type": "number"
+          },
+          "from": {
+            "type": "string"
+          },
+          "marks": {
+            "items": {
+              "$ref": "#/components/schemas/StudentMarkDto"
+            },
+            "type": "array"
+          },
+          "studentId": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId",
+          "from",
+          "to",
+          "daysTaken",
+          "counts",
+          "marks"
         ],
         "type": "object"
       },
@@ -5066,6 +5462,26 @@
         ],
         "type": "object"
       },
+      "StudentMarkDto": {
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "note": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "status",
+          "note"
+        ],
+        "type": "object"
+      },
       "StudentSummaryDto": {
         "properties": {
           "dateOfBirth": {
@@ -5162,6 +5578,28 @@
           "id",
           "name",
           "code"
+        ],
+        "type": "object"
+      },
+      "SubmitDayDto": {
+        "properties": {
+          "lock": {
+            "type": "boolean"
+          },
+          "marks": {
+            "items": {
+              "$ref": "#/components/schemas/MarkInputDto"
+            },
+            "maxItems": 1000,
+            "type": "array"
+          },
+          "submissionId": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "marks"
         ],
         "type": "object"
       },
@@ -8999,6 +9437,973 @@
         "x-permission": {
           "action": "update",
           "resource": "admissions"
+        }
+      }
+    },
+    "/v1/attendance/classes/{id}/days": {
+      "get": {
+        "operationId": "Attendance_days",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DayListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "attendance"
+        }
+      }
+    },
+    "/v1/attendance/classes/{id}/days/{date}": {
+      "get": {
+        "operationId": "Attendance_day",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassDayDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "attendance"
+        }
+      },
+      "put": {
+        "operationId": "Attendance_submit",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitDayDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassDayDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "attendance.submit",
+          "operation": "FinishAttendanceSubmit"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "attendance"
+        }
+      }
+    },
+    "/v1/attendance/classes/{id}/days/{date}/correction": {
+      "put": {
+        "operationId": "Attendance_correct",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitDayDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassDayDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "attendance.correct",
+          "operation": "FinishAttendanceCorrection"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "attendance"
+        }
+      }
+    },
+    "/v1/attendance/classes/{id}/days/{date}/lock": {
+      "post": {
+        "operationId": "Attendance_lock",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassDayDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "attendance.lock",
+          "operation": "LockAttendanceDay"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "attendance"
+        }
+      }
+    },
+    "/v1/attendance/missing": {
+      "get": {
+        "operationId": "Attendance_missing",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissingDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "attendance"
+        }
+      }
+    },
+    "/v1/attendance/staff": {
+      "get": {
+        "operationId": "StaffAttendance_presence",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffPresenceListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StaffAttendance"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "staff_attendance"
+        }
+      }
+    },
+    "/v1/attendance/staff/check-in": {
+      "post": {
+        "operationId": "StaffAttendance_checkIn",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDayDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StaffAttendance"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "attendance.staff.checkin",
+          "operation": "CheckInStaff"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "staff_attendance"
+        }
+      }
+    },
+    "/v1/attendance/staff/check-out": {
+      "post": {
+        "operationId": "StaffAttendance_checkOut",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDayDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StaffAttendance"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "attendance.staff.checkout",
+          "operation": "CheckOutStaff"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "staff_attendance"
+        }
+      }
+    },
+    "/v1/attendance/staff/mine": {
+      "get": {
+        "operationId": "StaffAttendance_mine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDayListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StaffAttendance"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "staff_attendance"
+        }
+      }
+    },
+    "/v1/attendance/staff/{staffId}/days/{date}": {
+      "put": {
+        "operationId": "StaffAttendance_correct",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "staffId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorrectStaffDayDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDayDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StaffAttendance"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "attendance.staff.correct",
+          "operation": "CorrectStaffAttendance"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "staff_attendance"
+        }
+      }
+    },
+    "/v1/attendance/statuses": {
+      "get": {
+        "operationId": "Attendance_statuses",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "attendance"
+        }
+      }
+    },
+    "/v1/attendance/statuses/{status}": {
+      "put": {
+        "operationId": "Attendance_setLabel",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "status",
+            "required": true,
+            "schema": {
+              "enum": [
+                "PRESENT",
+                "ABSENT",
+                "LATE",
+                "LEAVE",
+                "MEDICAL",
+                "HALF_DAY",
+                "EXCUSED"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusLabelDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "attendance.status.label",
+          "operation": "SetAttendanceStatusLabel"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "attendance"
+        }
+      }
+    },
+    "/v1/attendance/students/{id}": {
+      "get": {
+        "operationId": "Attendance_student",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentAttendanceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Attendance"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "attendance"
         }
       }
     },

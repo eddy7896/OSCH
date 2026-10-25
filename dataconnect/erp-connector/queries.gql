@@ -479,3 +479,51 @@ query ListTimetableForStaff($schoolId: UUID!, $academicYearId: UUID!, $staffId: 
 query CountTimetableForPeriod($schoolId: UUID!, $periodId: UUID!) @auth(level: NO_ACCESS) {
   timetableEntries(where: {schoolId: {eq: $schoolId}, periodId: {eq: $periodId}}) { _count }
 }
+
+# ---- Attendance (P3-4)
+query GetAttendanceDay($schoolId: UUID!, $classroomId: UUID!, $date: Date!) @auth(level: NO_ACCESS) {
+  attendanceDays(where: {schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, date: {eq: $date}}, limit: 1) {
+    id date locked submittedAt submissionId submittedBy { id displayName email }
+    marks: attendanceMarks_on_day(limit: 1000) { id status note student { id } }
+  }
+}
+
+query ListAttendanceDays($schoolId: UUID!, $classroomId: UUID!, $from: Date!, $to: Date!) @auth(level: NO_ACCESS) {
+  attendanceDays(where: {schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, date: {ge: $from, le: $to}}, orderBy: [{date: DESC}], limit: 400) {
+    id date locked marks: attendanceMarks_on_day(limit: 1000) { status }
+  }
+}
+
+query AttendanceDaysOn($schoolId: UUID!, $date: Date!) @auth(level: NO_ACCESS) {
+  attendanceDays(where: {schoolId: {eq: $schoolId}, date: {eq: $date}}, limit: 2000) { id classroomId locked }
+}
+
+query AttendanceOfStudent($schoolId: UUID!, $studentId: UUID!, $from: Date!, $to: Date!) @auth(level: NO_ACCESS) {
+  attendanceMarks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, day: {date: {ge: $from, le: $to}}}, limit: 1000) { status note day { date classroomId } }
+}
+
+query DaysOfClass($schoolId: UUID!, $classroomId: UUID!, $from: Date!, $to: Date!) @auth(level: NO_ACCESS) {
+  attendanceDays(where: {schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, date: {ge: $from, le: $to}}, limit: 400) { date }
+}
+
+query ListAttendanceStatusLabels($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  attendanceStatusLabels(where: {schoolId: {eq: $schoolId}}, limit: 20) { status label }
+}
+
+query ClassRoster($schoolId: UUID!, $academicYearId: UUID!, $classroomId: UUID!) @auth(level: NO_ACCESS) {
+  studentEnrollments(where: {_and: [{schoolId: {eq: $schoolId}}, {academicYearId: {eq: $academicYearId}}, {classroomId: {eq: $classroomId}}, {student: {status: {eq: ACTIVE}}}]}, orderBy: [{createdAt: ASC}], limit: 1000) {
+    student { id enrollmentId firstName lastName }
+  }
+}
+
+query GetStaffAttendance($schoolId: UUID!, $staffId: UUID!, $date: Date!) @auth(level: NO_ACCESS) {
+  staffAttendances(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, date: {eq: $date}}, limit: 1) { id date checkIn checkOut }
+}
+
+query StaffAttendanceOn($schoolId: UUID!, $date: Date!) @auth(level: NO_ACCESS) {
+  staffAttendances(where: {schoolId: {eq: $schoolId}, date: {eq: $date}}, limit: 2000) { staffId checkIn checkOut }
+}
+
+query StaffAttendanceOfStaff($schoolId: UUID!, $staffId: UUID!, $from: Date!, $to: Date!) @auth(level: NO_ACCESS) {
+  staffAttendances(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, date: {ge: $from, le: $to}}, orderBy: [{date: DESC}], limit: 400) { date checkIn checkOut }
+}

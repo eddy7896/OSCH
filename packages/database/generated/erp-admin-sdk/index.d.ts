@@ -20,6 +20,15 @@ export enum ApplicationStatus {
   WITHDRAWN = "WITHDRAWN",
   ADMITTED = "ADMITTED",
 }
+export enum AttendanceStatus {
+  PRESENT = "PRESENT",
+  ABSENT = "ABSENT",
+  LATE = "LATE",
+  LEAVE = "LEAVE",
+  MEDICAL = "MEDICAL",
+  HALF_DAY = "HALF_DAY",
+  EXCUSED = "EXCUSED",
+}
 export enum ConcessionKind {
   PERCENT = "PERCENT",
   FIXED = "FIXED",
@@ -532,6 +541,52 @@ export interface AssignClassTeacherVariables {
   details?: unknown | null;
 }
 
+export interface AttendanceDay_Key {
+  id: UUIDString;
+  __typename?: 'AttendanceDay_Key';
+}
+
+export interface AttendanceDaysOnData {
+  attendanceDays: ({
+    id: UUIDString;
+    classroomId: UUIDString;
+    locked: boolean;
+  } & AttendanceDay_Key)[];
+}
+
+export interface AttendanceDaysOnVariables {
+  schoolId: UUIDString;
+  date: DateString;
+}
+
+export interface AttendanceMark_Key {
+  id: UUIDString;
+  __typename?: 'AttendanceMark_Key';
+}
+
+export interface AttendanceOfStudentData {
+  attendanceMarks: ({
+    status: AttendanceStatus;
+    note?: string | null;
+    day: {
+      date: DateString;
+      classroomId: UUIDString;
+    };
+  })[];
+}
+
+export interface AttendanceOfStudentVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  from: DateString;
+  to: DateString;
+}
+
+export interface AttendanceStatusLabel_Key {
+  id: UUIDString;
+  __typename?: 'AttendanceStatusLabel_Key';
+}
+
 export interface AuditLog_Key {
   id: UUIDString;
   __typename?: 'AuditLog_Key';
@@ -561,6 +616,65 @@ export interface ChangeClassTeacherVariables {
   details?: unknown | null;
 }
 
+export interface CheckInStaffData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+  };
+  staffAttendance_insert: StaffAttendance_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CheckInStaffVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  staffId: UUIDString;
+  date: DateString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface CheckOutStaffData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    row: ({
+      id: UUIDString;
+    } & StaffAttendance_Key)[];
+  };
+  staffAttendance_update?: StaffAttendance_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CheckOutStaffVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface ClassRosterData {
+  studentEnrollments: ({
+    student: {
+      id: UUIDString;
+      enrollmentId: string;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+  })[];
+}
+
+export interface ClassRosterVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
+  classroomId: UUIDString;
+}
+
 export interface ClassTeacher_Key {
   id: UUIDString;
   __typename?: 'ClassTeacher_Key';
@@ -574,6 +688,30 @@ export interface Classroom_Key {
 export interface Concession_Key {
   id: UUIDString;
   __typename?: 'Concession_Key';
+}
+
+export interface CorrectStaffAttendanceData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+  };
+  staffAttendance_upsert: StaffAttendance_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CorrectStaffAttendanceVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  staffId: UUIDString;
+  date: DateString;
+  checkIn?: TimestampString | null;
+  checkOut?: TimestampString | null;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CountApplicationsData {
@@ -750,6 +888,26 @@ export interface CreateApplicationVariables {
   notes?: string | null;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface CreateAttendanceDayData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    classroom: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+  };
+  attendanceDay_insert: AttendanceDay_Key;
+}
+
+export interface CreateAttendanceDayVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  classroomId: UUIDString;
+  date: DateString;
+  actorId: string;
 }
 
 export interface CreateAuditLogData {
@@ -1251,6 +1409,19 @@ export interface CreateUserVariables {
   globalRole: GlobalRole;
 }
 
+export interface DaysOfClassData {
+  attendanceDays: ({
+    date: DateString;
+  })[];
+}
+
+export interface DaysOfClassVariables {
+  schoolId: UUIDString;
+  classroomId: UUIDString;
+  from: DateString;
+  to: DateString;
+}
+
 export interface DecideApplicationData {
   query?: {
     actor: ({
@@ -1590,6 +1761,48 @@ export interface FindPayrollRunVariables {
   month: number;
 }
 
+export interface FinishAttendanceCorrectionData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    day: ({
+      id: UUIDString;
+    } & AttendanceDay_Key)[];
+  };
+  attendanceDay_update?: AttendanceDay_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface FinishAttendanceCorrectionVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface FinishAttendanceSubmitData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    day: ({
+      id: UUIDString;
+    } & AttendanceDay_Key)[];
+  };
+  attendanceDay_update?: AttendanceDay_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface FinishAttendanceSubmitVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  submissionId?: string | null;
+  locked: boolean;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface FinishImportBatchData {
   query?: {
     actor: ({
@@ -1646,6 +1859,35 @@ export interface GetApplicationData {
 export interface GetApplicationVariables {
   schoolId: UUIDString;
   id: UUIDString;
+}
+
+export interface GetAttendanceDayData {
+  attendanceDays: ({
+    id: UUIDString;
+    date: DateString;
+    locked: boolean;
+    submittedAt: TimestampString;
+    submissionId?: string | null;
+    submittedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    marks: ({
+      id: UUIDString;
+      status: AttendanceStatus;
+      note?: string | null;
+      student: {
+        id: UUIDString;
+      } & Student_Key;
+    } & AttendanceMark_Key)[];
+  } & AttendanceDay_Key)[];
+}
+
+export interface GetAttendanceDayVariables {
+  schoolId: UUIDString;
+  classroomId: UUIDString;
+  date: DateString;
 }
 
 export interface GetFeeInstalmentData {
@@ -2076,6 +2318,21 @@ export interface GetSchoolVariables {
   schoolId: UUIDString;
 }
 
+export interface GetStaffAttendanceData {
+  staffAttendances: ({
+    id: UUIDString;
+    date: DateString;
+    checkIn?: TimestampString | null;
+    checkOut?: TimestampString | null;
+  } & StaffAttendance_Key)[];
+}
+
+export interface GetStaffAttendanceVariables {
+  schoolId: UUIDString;
+  staffId: UUIDString;
+  date: DateString;
+}
+
 export interface GetStaffProfileData {
   staffProfiles: ({
     id: UUIDString;
@@ -2332,6 +2589,35 @@ export interface ListApplicationsVariables {
   academicYearId?: UUIDString | null;
   limit: number;
   offset: number;
+}
+
+export interface ListAttendanceDaysData {
+  attendanceDays: ({
+    id: UUIDString;
+    date: DateString;
+    locked: boolean;
+    marks: ({
+      status: AttendanceStatus;
+    })[];
+  } & AttendanceDay_Key)[];
+}
+
+export interface ListAttendanceDaysVariables {
+  schoolId: UUIDString;
+  classroomId: UUIDString;
+  from: DateString;
+  to: DateString;
+}
+
+export interface ListAttendanceStatusLabelsData {
+  attendanceStatusLabels: ({
+    status: AttendanceStatus;
+    label: string;
+  })[];
+}
+
+export interface ListAttendanceStatusLabelsVariables {
+  schoolId: UUIDString;
 }
 
 export interface ListAuditLogData {
@@ -2924,6 +3210,26 @@ export interface ListTimetableForYearVariables {
   academicYearId: UUIDString;
 }
 
+export interface LockAttendanceDayData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    day: ({
+      id: UUIDString;
+    } & AttendanceDay_Key)[];
+  };
+  attendanceDay_update?: AttendanceDay_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface LockAttendanceDayVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface MarkPayrollRunPaidData {
   query?: {
     actor: ({
@@ -3254,6 +3560,29 @@ export interface RecordPaymentVariables {
   details?: unknown | null;
 }
 
+export interface RemoveAttendanceMarkData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    day: ({
+      id: UUIDString;
+    } & AttendanceDay_Key)[];
+    mark: ({
+      id: UUIDString;
+    } & AttendanceMark_Key)[];
+  };
+  attendanceMark_delete?: AttendanceMark_Key | null;
+}
+
+export interface RemoveAttendanceMarkVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  dayId: UUIDString;
+  lockedOk: boolean[];
+  actorId: string;
+}
+
 export interface RemoveClassTeacherData {
   query?: {
     actor: ({
@@ -3484,6 +3813,34 @@ export interface SalaryLine_Key {
   __typename?: 'SalaryLine_Key';
 }
 
+export interface SaveAttendanceMarkData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    day: ({
+      id: UUIDString;
+    } & AttendanceDay_Key)[];
+    placed: ({
+      id: UUIDString;
+    } & StudentEnrollment_Key)[];
+  };
+  attendanceMark_upsert: AttendanceMark_Key;
+}
+
+export interface SaveAttendanceMarkVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  dayId: UUIDString;
+  studentId: UUIDString;
+  classroomId: UUIDString;
+  academicYearId: UUIDString;
+  status: AttendanceStatus;
+  note?: string | null;
+  lockedOk: boolean[];
+  actorId: string;
+}
+
 export interface SchoolMember_Key {
   schoolId: UUIDString;
   userId: string;
@@ -3516,6 +3873,25 @@ export interface SchoolWorkingDaysVariables {
 export interface School_Key {
   id: UUIDString;
   __typename?: 'School_Key';
+}
+
+export interface SetAttendanceStatusLabelData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  attendanceStatusLabel_upsert: AttendanceStatusLabel_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetAttendanceStatusLabelVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  status: AttendanceStatus;
+  label: string;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface SetSchoolLogoData {
@@ -3613,6 +3989,39 @@ export interface SetWorkingDaysVariables {
   workingDays: string;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface StaffAttendanceOfStaffData {
+  staffAttendances: ({
+    date: DateString;
+    checkIn?: TimestampString | null;
+    checkOut?: TimestampString | null;
+  })[];
+}
+
+export interface StaffAttendanceOfStaffVariables {
+  schoolId: UUIDString;
+  staffId: UUIDString;
+  from: DateString;
+  to: DateString;
+}
+
+export interface StaffAttendanceOnData {
+  staffAttendances: ({
+    staffId: UUIDString;
+    checkIn?: TimestampString | null;
+    checkOut?: TimestampString | null;
+  })[];
+}
+
+export interface StaffAttendanceOnVariables {
+  schoolId: UUIDString;
+  date: DateString;
+}
+
+export interface StaffAttendance_Key {
+  id: UUIDString;
+  __typename?: 'StaffAttendance_Key';
 }
 
 export interface StaffDocument_Key {
@@ -4720,6 +5129,56 @@ export function deleteTimetableEntry(dc: DataConnect, vars: DeleteTimetableEntry
 /** Generated Node Admin SDK operation action function for the 'DeleteTimetableEntry' Mutation. Allow users to pass in custom DataConnect instances. */
 export function deleteTimetableEntry(vars: DeleteTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteTimetableEntryData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateAttendanceDay' Mutation. Allow users to execute without passing in DataConnect. */
+export function createAttendanceDay(dc: DataConnect, vars: CreateAttendanceDayVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateAttendanceDayData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateAttendanceDay' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createAttendanceDay(vars: CreateAttendanceDayVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateAttendanceDayData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SaveAttendanceMark' Mutation. Allow users to execute without passing in DataConnect. */
+export function saveAttendanceMark(dc: DataConnect, vars: SaveAttendanceMarkVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SaveAttendanceMarkData>>;
+/** Generated Node Admin SDK operation action function for the 'SaveAttendanceMark' Mutation. Allow users to pass in custom DataConnect instances. */
+export function saveAttendanceMark(vars: SaveAttendanceMarkVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SaveAttendanceMarkData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveAttendanceMark' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeAttendanceMark(dc: DataConnect, vars: RemoveAttendanceMarkVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveAttendanceMarkData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveAttendanceMark' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeAttendanceMark(vars: RemoveAttendanceMarkVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveAttendanceMarkData>>;
+
+/** Generated Node Admin SDK operation action function for the 'FinishAttendanceSubmit' Mutation. Allow users to execute without passing in DataConnect. */
+export function finishAttendanceSubmit(dc: DataConnect, vars: FinishAttendanceSubmitVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishAttendanceSubmitData>>;
+/** Generated Node Admin SDK operation action function for the 'FinishAttendanceSubmit' Mutation. Allow users to pass in custom DataConnect instances. */
+export function finishAttendanceSubmit(vars: FinishAttendanceSubmitVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishAttendanceSubmitData>>;
+
+/** Generated Node Admin SDK operation action function for the 'FinishAttendanceCorrection' Mutation. Allow users to execute without passing in DataConnect. */
+export function finishAttendanceCorrection(dc: DataConnect, vars: FinishAttendanceCorrectionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishAttendanceCorrectionData>>;
+/** Generated Node Admin SDK operation action function for the 'FinishAttendanceCorrection' Mutation. Allow users to pass in custom DataConnect instances. */
+export function finishAttendanceCorrection(vars: FinishAttendanceCorrectionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishAttendanceCorrectionData>>;
+
+/** Generated Node Admin SDK operation action function for the 'LockAttendanceDay' Mutation. Allow users to execute without passing in DataConnect. */
+export function lockAttendanceDay(dc: DataConnect, vars: LockAttendanceDayVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<LockAttendanceDayData>>;
+/** Generated Node Admin SDK operation action function for the 'LockAttendanceDay' Mutation. Allow users to pass in custom DataConnect instances. */
+export function lockAttendanceDay(vars: LockAttendanceDayVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<LockAttendanceDayData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetAttendanceStatusLabel' Mutation. Allow users to execute without passing in DataConnect. */
+export function setAttendanceStatusLabel(dc: DataConnect, vars: SetAttendanceStatusLabelVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetAttendanceStatusLabelData>>;
+/** Generated Node Admin SDK operation action function for the 'SetAttendanceStatusLabel' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setAttendanceStatusLabel(vars: SetAttendanceStatusLabelVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetAttendanceStatusLabelData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CheckInStaff' Mutation. Allow users to execute without passing in DataConnect. */
+export function checkInStaff(dc: DataConnect, vars: CheckInStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CheckInStaffData>>;
+/** Generated Node Admin SDK operation action function for the 'CheckInStaff' Mutation. Allow users to pass in custom DataConnect instances. */
+export function checkInStaff(vars: CheckInStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CheckInStaffData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CheckOutStaff' Mutation. Allow users to execute without passing in DataConnect. */
+export function checkOutStaff(dc: DataConnect, vars: CheckOutStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CheckOutStaffData>>;
+/** Generated Node Admin SDK operation action function for the 'CheckOutStaff' Mutation. Allow users to pass in custom DataConnect instances. */
+export function checkOutStaff(vars: CheckOutStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CheckOutStaffData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CorrectStaffAttendance' Mutation. Allow users to execute without passing in DataConnect. */
+export function correctStaffAttendance(dc: DataConnect, vars: CorrectStaffAttendanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CorrectStaffAttendanceData>>;
+/** Generated Node Admin SDK operation action function for the 'CorrectStaffAttendance' Mutation. Allow users to pass in custom DataConnect instances. */
+export function correctStaffAttendance(vars: CorrectStaffAttendanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CorrectStaffAttendanceData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -5109,4 +5568,54 @@ export function listTimetableForStaff(vars: ListTimetableForStaffVariables, opti
 export function countTimetableForPeriod(dc: DataConnect, vars: CountTimetableForPeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountTimetableForPeriodData>>;
 /** Generated Node Admin SDK operation action function for the 'CountTimetableForPeriod' Query. Allow users to pass in custom DataConnect instances. */
 export function countTimetableForPeriod(vars: CountTimetableForPeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountTimetableForPeriodData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetAttendanceDay' Query. Allow users to execute without passing in DataConnect. */
+export function getAttendanceDay(dc: DataConnect, vars: GetAttendanceDayVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetAttendanceDayData>>;
+/** Generated Node Admin SDK operation action function for the 'GetAttendanceDay' Query. Allow users to pass in custom DataConnect instances. */
+export function getAttendanceDay(vars: GetAttendanceDayVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetAttendanceDayData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListAttendanceDays' Query. Allow users to execute without passing in DataConnect. */
+export function listAttendanceDays(dc: DataConnect, vars: ListAttendanceDaysVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAttendanceDaysData>>;
+/** Generated Node Admin SDK operation action function for the 'ListAttendanceDays' Query. Allow users to pass in custom DataConnect instances. */
+export function listAttendanceDays(vars: ListAttendanceDaysVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAttendanceDaysData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AttendanceDaysOn' Query. Allow users to execute without passing in DataConnect. */
+export function attendanceDaysOn(dc: DataConnect, vars: AttendanceDaysOnVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AttendanceDaysOnData>>;
+/** Generated Node Admin SDK operation action function for the 'AttendanceDaysOn' Query. Allow users to pass in custom DataConnect instances. */
+export function attendanceDaysOn(vars: AttendanceDaysOnVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AttendanceDaysOnData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AttendanceOfStudent' Query. Allow users to execute without passing in DataConnect. */
+export function attendanceOfStudent(dc: DataConnect, vars: AttendanceOfStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AttendanceOfStudentData>>;
+/** Generated Node Admin SDK operation action function for the 'AttendanceOfStudent' Query. Allow users to pass in custom DataConnect instances. */
+export function attendanceOfStudent(vars: AttendanceOfStudentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AttendanceOfStudentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DaysOfClass' Query. Allow users to execute without passing in DataConnect. */
+export function daysOfClass(dc: DataConnect, vars: DaysOfClassVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DaysOfClassData>>;
+/** Generated Node Admin SDK operation action function for the 'DaysOfClass' Query. Allow users to pass in custom DataConnect instances. */
+export function daysOfClass(vars: DaysOfClassVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DaysOfClassData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListAttendanceStatusLabels' Query. Allow users to execute without passing in DataConnect. */
+export function listAttendanceStatusLabels(dc: DataConnect, vars: ListAttendanceStatusLabelsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAttendanceStatusLabelsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListAttendanceStatusLabels' Query. Allow users to pass in custom DataConnect instances. */
+export function listAttendanceStatusLabels(vars: ListAttendanceStatusLabelsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAttendanceStatusLabelsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ClassRoster' Query. Allow users to execute without passing in DataConnect. */
+export function classRoster(dc: DataConnect, vars: ClassRosterVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClassRosterData>>;
+/** Generated Node Admin SDK operation action function for the 'ClassRoster' Query. Allow users to pass in custom DataConnect instances. */
+export function classRoster(vars: ClassRosterVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClassRosterData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetStaffAttendance' Query. Allow users to execute without passing in DataConnect. */
+export function getStaffAttendance(dc: DataConnect, vars: GetStaffAttendanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStaffAttendanceData>>;
+/** Generated Node Admin SDK operation action function for the 'GetStaffAttendance' Query. Allow users to pass in custom DataConnect instances. */
+export function getStaffAttendance(vars: GetStaffAttendanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStaffAttendanceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StaffAttendanceOn' Query. Allow users to execute without passing in DataConnect. */
+export function staffAttendanceOn(dc: DataConnect, vars: StaffAttendanceOnVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffAttendanceOnData>>;
+/** Generated Node Admin SDK operation action function for the 'StaffAttendanceOn' Query. Allow users to pass in custom DataConnect instances. */
+export function staffAttendanceOn(vars: StaffAttendanceOnVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffAttendanceOnData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StaffAttendanceOfStaff' Query. Allow users to execute without passing in DataConnect. */
+export function staffAttendanceOfStaff(dc: DataConnect, vars: StaffAttendanceOfStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffAttendanceOfStaffData>>;
+/** Generated Node Admin SDK operation action function for the 'StaffAttendanceOfStaff' Query. Allow users to pass in custom DataConnect instances. */
+export function staffAttendanceOfStaff(vars: StaffAttendanceOfStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffAttendanceOfStaffData>>;
 
