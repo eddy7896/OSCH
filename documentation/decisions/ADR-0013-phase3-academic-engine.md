@@ -1,0 +1,24 @@
+# ADR-0013: Phase 3 product decisions (timetable, attendance, exams, substitution)
+
+- **Status:** Accepted (2026-10-26), owner answers to four questions (decisions 1 to 4); decisions 5 to 9 are defaults proposed by the build and take effect unless the owner changes them
+- **Builds on:** ADR-0004 (money), ADR-0005 (no dark mode), ADR-0006 (languages), ADR-0007 (roles), ADR-0008 (gateway), ADR-0012 (Phase 2)
+
+## Decided by the owner
+1. **One bell schedule per school.** The school defines its periods once (number, label, start, end, break or teaching) and every class uses them. Working days are a school setting (default Monday to Saturday). A timetable slot is a (day, period) pair of that schedule.
+2. **Attendance is taken once a day per class** by the class teacher, with the fixed seven statuses (present, absent, late, leave, medical, half day, excused); only the label of a status may be edited by a school, never its meaning or colour. The exception is entered and everyone else is present. Per-period attendance is not built.
+3. **Exam results are marks with grade bands the school sets.** An exam has a maximum per subject; teachers enter marks; the school defines its own bands (for example 90 to 100 is A1); the report card shows marks, percentage and grade. There is no built-in national scale (a convenience preset may be offered later, never forced).
+4. **Substitutes are suggested, never assigned automatically.** For each affected slot the candidates are teachers with no class in that slot on that date, not on approved leave and not already substituting then, who are linked to the subject; they are ranked by fewest substitutions this month, then by name. The Academic administrator confirms or picks another. Nothing is assigned or notified without that decision.
+
+## Proposed defaults (change on request)
+5. **The teacher in a timetable is a staff record** (`StaffProfile`), not an account, so a timetable can be built before every teacher has signed in. A person's `own` scope (a teacher's classes, students, marks, attendance) is resolved through the staff record linked to their account. Notifications reach only staff with an account.
+6. **Clashes are refused by the database**, not only by code: a teacher cannot hold two slots at the same (day, period) in a year, and a class cannot hold two. A refusal names what clashes. A substitution is the same rule for a date: one substitute per slot per date and a substitute cannot be in two places in one slot.
+7. **Leave needs the Principal, in the database too.** A leave request becomes approved only by the approve action and only by an active Principal (checked in the same transaction, as for payroll). No other route reaches APPROVED. HR manages leave types and balances and can never approve; the Bursar can read leave to prepare payroll (matrix, ADR-0007). Approval takes the days from the balance in the same transaction.
+8. **Unpaid leave raises both alerts** (guardrail section 4): the substitution board gets the affected slots, and the payroll run for the month gets a **proposed deduction line** per person (working days of unpaid leave times the person's monthly gross divided by the school's working days of that month, rounded down to the paisa; shown as an editable line, never applied silently). Both are in-app notifications in Phase 3.
+9. **Notifications are an in-app inbox in Phase 3.** Push (FCM) needs the mobile apps' device tokens, so the sender interface and templates are built now and the FCM adapter ships with the apps (Phase 4); SMS stays behind the same interface until a provider is chosen. **The full sync engine is Phase 4**; Phase 3 delivers the server pieces it needs (idempotent client-supplied ids on attendance and mark submission, tombstones where records can be removed) and the written conflict rules (`modules/offline-sync.md`).
+
+## Consequences
+- The Phase 0 tables `ClassSchedule`, `LeaveRequest` and `Exam` carry no feature and are replaced (a DROP on deploy, as `Payroll` was). **The `LeaveStatus` enum is not extended**: a new enum is created for the new table, because Postgres refuses to use a value added in the same deploy (`documentation/environment.md`).
+- Marks are stored as whole **tenths of a mark** (one decimal place at most) and percentages and bands are computed with integers only, from shared test vectors; no floating point (E-EXAM).
+- Grade bands, leave types and the bell schedule are school data with sensible empty defaults and a "start from a template" choice, so a new school is not blocked by setup.
+- Timetable auto-generation (a constraint solver) is **not** part of the first delivery: the manual editor with hard clash checks comes first, then a greedy generator the editor can override.
+- A per-day-rate rule for unpaid leave (decision 8) is a default; schools differ (30-day month, working-day month). It is a single pure function with tests, so changing it is local.

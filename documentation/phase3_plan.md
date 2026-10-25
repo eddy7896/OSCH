@@ -1,0 +1,106 @@
+# Phase 3 Plan: Academic Engine
+
+> Status: **proposed, 2026-10-26.** Product decisions are in ADR-0013. Task IDs follow `implementation_plan.md` Phase 3; changes are marked **CHANGED** / **NEW**. Update statuses here as work lands.
+
+**Phase goal (unchanged):** the system knows who teaches what, when, and handles absence correctly.
+
+## 1. Starting point (verified 2026-10-26)
+| Fact | Evidence |
+|---|---|
+| Phase 2 is functionally complete and proven on the emulators | `documentation/phase2_gate.md` |
+| The tables a teacher's day needs mostly do not exist | `schema.gql` has only the Phase 0 stubs `ClassSchedule` (string day and time, a `User` as teacher), `LeaveRequest` (status default PENDING, nullable substitute) and `Exam` (no marks); no period, bell schedule, teacher-subject link, class teacher, attendance, mark, grade band, leave type or balance, substitution, notification |
+| The stubs have operations that nothing calls | `CreateLeaveRequest`, `UpdateLeaveRequest`, `ListLeaveRequests`, `CreateExam` and an `exams` query in `erp-connector`; no gateway module uses them |
+| Roles and resources are already modelled | `packages/rbac`: `attendance`, `grades`, `substitution`, `leave`, `staff_attendance`, `academics`; Principal holds `leave:approve` only; Academic admin full on attendance, grades and substitution; HR manages leave balances and cannot approve; Bursar reads leave; Teacher and Staff hold `own` scope; Parent holds `linked` (read) |
+| `own` and `linked` scopes cannot be resolved yet | the gateway returns an empty list or 404 for them (a teacher has no link from account to staff record to classes); Phase 3 supplies the links |
+| Guardrails to honour | `guardrails.md` section 4: unpaid leave must raise a payroll deduction alert AND a substitution alert; leave goes through Principal approval with no bypass; attendance statuses are the fixed seven (label editable only) |
+| The platform to build on works | gateway guards and audit-in-transaction, typed client, 18 shared components, web-admin screens for every Phase 2 module, PDF kit, i18n with glossary evals, demo school (`npm run demo`) |
+
+## 2. How each module is built (same shape as Phase 2)
+1. **Data Connect operations**: take `$schoolId`, filter by it, `@auth(level: NO_ACCESS)`; every mutation writes its audit row in its own `@transaction`; unique keys wherever a duplicate or clash would be a bug (so a race cannot win).
+2. **Gateway module**: DTO classes, `@Permission`, `@Audit` or `@NoAudit`, closed error list; own/linked scopes resolved through the staff link, not guessed.
+3. **Tests**: unit and pure-rule tests (clash, free-teacher search, grade bands, leave days, deduction), real-emulator end-to-end, a mutation check on each rule; the generated matrix covers the new routes.
+4. **Contract**: `openapi.json` and the typed client regenerate.
+5. **Screens** (P3-11): shared components, words from `packages/i18n` with glossary terms, right to left checked, per-role proof extended (`role-scoped.test.tsx`).
+6. **Enum rule**: never add an enum value and use it in the same deploy. New enums, not extended ones (ADR-0013 consequences).
+
+## 3. Workstreams
+```mermaid
+graph TD
+  A[P3-1 bell schedule and calendar] --> B[P3-2 teachers: subjects, class teacher, own scope]
+  B --> C[P3-3 timetable and clash checks]
+  B --> D[P3-4 attendance]
+  B --> E[P3-5 exams and report cards]
+  B --> F[P3-6 leave types, balances, request, Principal approval]
+  C --> G[P3-7 substitution board]
+  F --> G
+  F --> H[P3-8 payroll link]
+  G --> I[P3-9 notifications inbox]
+  H --> I
+  C --> J[P3-11 screens]
+  D --> J
+  E --> J
+  G --> J
+  I --> J
+```
+
+### M0 Foundations
+| ID | Task | Size | Acceptance |
+|---|---|---|---|
+| P3-1 | **Bell schedule and working days** (**CHANGED**: Period/TimeSlot made concrete): school settings for working days (default Monday to Saturday) and an ordered list of periods (label, start, end, break or teaching); a "start from a template" choice; editing a period used by timetable entries is refused unless its times only | S | periods cannot overlap or run backwards; days are real weekdays; audit rows; screens in P3-11 |
+| P3-2 | **Teachers**: `TeacherSubject` (which staff teach which subject), `ClassTeacher` (one class teacher per class per year), and the **link account to staff record** that resolves `own` scope (a teacher's classes, students, marks, attendance) and `linked` scope for parents (their children) | M | a Teacher account sees only own classes; a Parent only their children; a class has at most one class teacher per year (unique key); matrix cases generated |
+
+### M1 Timetable
+| ID | Task | Size | Acceptance |
+|---|---|---|---|
+| P3-3 | **Timetable model and editor** (replaces `ClassSchedule`): `TimetableEntry` (year, class, subject, staff, day, period); views per class and per teacher; hard clash refusal naming the clash (teacher, class) | L | **E-ACAD-1**: two entries for one teacher or one class at the same (day, period, year) are impossible (database unique keys), proved with parallel requests; a teacher's weekly load is reported |
+| P3-3b | **Timetable auto-generation** (greedy then backtracking; manual cells always win) | L | optional second delivery: a generated timetable has zero clashes; the editor can override any cell |
+
+### M2 Attendance and exams
+| ID | Task | Size | Acceptance |
+|---|---|---|---|
+| P3-4 | **Attendance server model and APIs**: `AttendanceDay` (class, date, locked), `AttendanceMark` (student, one of 7 fixed statuses, note); exception-based bulk submit (everyone not listed is present); per-class daily lock; corrections audited with before and after; staff check-in and check-out (`StaffAttendance`); label-only status settings; idempotent submit (client-supplied id) | L | **E-ATT-1**: only the 7 keys exist, a label edit never changes a key or colour; a locked day refuses a teacher's edit, and the Academic admin's correction is audited with the old value; a replayed submit changes nothing; a teacher can mark only own class |
+| P3-5 | **Exams and grading** (replaces `Exam`): `AssessmentTerm`, `GradeBand` (school-defined), `Exam` (term, class, subject, date, maximum), `Mark` (tenths of a mark, absent flag); mark entry by the subject teacher or Academic admin; per-student result with percentage and grade by integer arithmetic; **report card** JSON and PDF (shared PDF kit, school language) | L | **E-EXAM-1**: marks and percentages never use floating point and equal the shared vectors; a mark above the maximum is refused; bands cannot overlap or leave gaps; the report card total equals its marks; Hindi and Urdu PDFs render |
+
+### M3 Leave, substitution, payroll
+| ID | Task | Size | Acceptance |
+|---|---|---|---|
+| P3-6 | **Leave**: `LeaveType` (paid or unpaid, yearly quota), `LeaveBalance`, new `LeaveRequest` (staff, type, dates, half days, reason; PENDING, APPROVED, REJECTED, CANCELLED); employees request their own (own scope); **only an active Principal approves, checked by the database**; approval takes the days from the balance in the same transaction | M | **E-ACAD-4**: no route or operation reaches APPROVED except the Principal's approve; HR, Bursar, Academic admin and the requester are refused (matrix plus database test); a refused approval changes nothing; overlapping requests of one person are refused |
+| P3-7 | **Substitution**: on approval, the affected slots (the teacher's timetable entries on working days in the range) become `Substitution` rows needing a substitute; a **suggestion search** (free in the slot on the date, not on leave, not already substituting, teaches the subject, fewest substitutions this month first); the Academic admin confirms or chooses | L | **E-ACAD-2**: a property test over random timetables and leave: every suggestion is free and qualified, and no assignment can double-book a substitute (database unique key); nothing is assigned without the Academic admin |
+| P3-8 | **Payroll link**: approved unpaid leave proposes a deduction line per person in the month's payroll run (rule in ADR-0013 decision 8, a pure function), editable by HR before approval | M | **E-ACAD-3**: an approved unpaid leave raises BOTH a substitution need and a payroll proposal in the same transaction (guardrail section 4); a paid leave raises only the substitution; the proposal is never applied silently; rounding follows the money rules |
+
+### M4 Notifications, sync groundwork, screens
+| ID | Task | Size | Acceptance |
+|---|---|---|---|
+| P3-9 | **Notification service** (**CHANGED**: FCM moves to Phase 4): in-app inbox, templates in the user's language, per-user preferences, a sender interface (FCM and SMS adapters later); events: leave decided, substitute assigned, unpaid-leave alerts | M | a notification is written in the same transaction as its cause; a user reads only their own; templates come from `packages/i18n` |
+| P3-10 | **Sync groundwork and `modules/offline-sync.md`** (**CHANGED**: the engine is Phase 4): conflict rules per entity written down; server pieces the engine needs: client-supplied ids make attendance and mark submission idempotent, tombstones for removable records | M | replaying any submission any number of times leaves one result; the document covers every Phase 3 entity |
+| P3-11 | **Web screens**: bell schedule and working days, timetable (class and teacher views, editor), attendance review and correction, exams and mark entry, report cards, leave requests and Principal approvals, leave types and balances, substitution board, notifications | XL | the role-scoped proof covers them (no call a role is not granted); per-slice, as in Phase 2 |
+| P3-12 | **Demo school extended** with a bell schedule, timetable, a month of attendance, an exam with marks and a report card, leave in every state and a substitution | S | `npm run demo` seeds them; `documentation/demo-school.md` updated |
+
+## 4. Gate (the phase closes only when all pass)
+- **E-ACAD-1:** no teacher and no class is double-booked, by database key, proved under parallel requests.
+- **E-ACAD-2:** a suggested or assigned substitute is free in the slot and qualified for the subject (property test).
+- **E-ACAD-3:** unpaid leave raises the payroll deduction proposal and the substitution need together (guardrail section 4); paid leave only the substitution.
+- **E-ACAD-4:** leave approval cannot be bypassed: only an active Principal, enforced in the database; every other role and route refused.
+- **E-ATT-1:** the seven statuses are fixed (label only editable), daily lock and audited corrections work, replay is idempotent.
+- **E-EXAM-1:** no floating point in marks, percentages or grades; shared vectors; bands without overlap or gap.
+- **E-RBAC-FULL and E-TEN-3:** the generated matrix covers every new route; own and linked scopes tested for Teacher and Parent.
+- **E-AUD-1:** every new write route audited in its own transaction.
+- Demo school extended (P3-12); docs, ADR and `CLAUDE.md` "Current reality" updated; a gate review page like `phase2_gate.md`.
+
+## 5. Risks
+| Risk | Mitigation |
+|---|---|
+| Clash rules enforced only in code can be raced | unique keys in the schema (decision 6); parallel-request test in the gate |
+| Free-teacher search is correct in the small and wrong in the large | it is a pure function with a property test over random timetables, separate from the HTTP layer |
+| `own` scope has never been resolved, so teacher routes could leak or hide | P3-2 first; the matrix gets own-scope cases for every attendance, mark and leave route |
+| Approval bypass through a new path (a patch, an import, a status field) | status changes only through named actions; database check on the Principal; a test lists every operation that can write the status |
+| Unpaid-leave deduction rule differs per school | one pure function with tests; shown as an editable proposal, never applied silently |
+| Enum and schema changes on tables that exist | new enums and new tables; DROP of the three stubs on deploy; `sql:diff` read before deploying |
+| Scope size (the phase is larger than Phase 2) | vertical slices: data, gateway, tests, screens per task; the solver (P3-3b) and FCM are deferred |
+
+## 6. Open items for the owner (none block P3-1)
+1. **Unpaid-leave deduction rule** (ADR-0013 decision 8): the proposed default is monthly gross divided by the working days of the month. Tell me if your schools use 30 days or another rule.
+2. **Half-day leave**: the plan allows half days; say if schools here do not use them.
+3. **Grade band template**: a preset such as "percentage bands A to E" can seed a new school; tell me if you want one and what it should say.
+4. **A real timetable and bell schedule** from a pilot school (even a photo) would test the editor against reality before it is built.
+5. **Firebase Cloud Messaging project** is needed in Phase 4, not now; the owner can create it any time.
