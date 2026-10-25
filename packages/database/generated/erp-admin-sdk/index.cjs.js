@@ -1059,6 +1059,27 @@ function clearSubstitute(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.clearSubstitute = clearSubstitute;
 
+function markNotificationRead(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('MarkNotificationRead', inputVars, inputOpts);
+}
+exports.markNotificationRead = markNotificationRead;
+
+function muteNotificationCategory(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('MuteNotificationCategory', inputVars, inputOpts);
+}
+exports.muteNotificationCategory = muteNotificationCategory;
+
+function unmuteNotificationCategory(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UnmuteNotificationCategory', inputVars, inputOpts);
+}
+exports.unmuteNotificationCategory = unmuteNotificationCategory;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1751,4 +1772,46 @@ function listSubstitutions(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListSubstitutions', inputVars, inputOpts);
 }
 exports.listSubstitutions = listSubstitutions;
+
+function listNotifications(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListNotifications', inputVars, inputOpts);
+}
+exports.listNotifications = listNotifications;
+
+function listNotificationMutes(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListNotificationMutes', inputVars, inputOpts);
+}
+exports.listNotificationMutes = listNotificationMutes;
+
+function listTombstones(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListTombstones', inputVars, inputOpts);
+}
+exports.listTombstones = listTombstones;
+
+function leaveRequestByClientId(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('LeaveRequestByClientId', inputVars, inputOpts);
+}
+exports.leaveRequestByClientId = leaveRequestByClientId;
+
+function getSubstitution(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetSubstitution', inputVars, inputOpts);
+}
+exports.getSubstitution = getSubstitution;
+
+function getTimetableEntry(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetTimetableEntry', inputVars, inputOpts);
+}
+exports.getTimetableEntry = getTimetableEntry;
 

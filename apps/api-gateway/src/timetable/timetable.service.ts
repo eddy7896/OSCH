@@ -88,8 +88,10 @@ export class TimetableService {
   }
 
   async clear(t: TenantContext, id: string): Promise<void> {
+    const row = (await this.db.getTimetableEntry({ schoolId: t.schoolId, id: dashed(id) })).data.timetableEntries[0];
+    if (!row) throw notFound();
     try {
-      await this.db.deleteTimetableEntry({ schoolId: t.schoolId, id: dashed(id), actorId: t.userId, details: { entryId: dashed(id) } });
+      await this.db.deleteTimetableEntry({ schoolId: t.schoolId, id: dashed(id), classroomId: dashed(row.classroomId), staffId: dashed(row.staffId), actorId: t.userId, details: { entryId: dashed(id) } });
     } catch (e) {
       if (kindOf(e) === 'FORBIDDEN_REFERENCE') throw notFound();
       throw e;

@@ -28,6 +28,7 @@ export const RESOURCES = [
   "staff", // staff profiles and HR records
   "staff_attendance", // staff check-in/out (own scope = self-service; school scope = HR/oversight)
   "leave", // leave requests (approve = Principal only, guardrail section 4)
+  "notifications", // the in-app inbox: everyone reads and marks read their own (P3-9)
   "recruitment",
   "reports_hr",
   // Operations
@@ -85,3 +86,6 @@ export const ACADEMIC_RESOURCES: readonly Resource[] = [
  * writes a read-only role may hold, and only on the user's own records.
  */
 export const SELF_SERVICE_RESOURCES: readonly Resource[] = ["staff_attendance", "leave"];
+
+/** Resources every role holds at `own` scope regardless of being an employee: today only the in-app inbox (ADR-0013 decision 9). Reading and marking read are the only writes a read-only role may have besides self-service. */
+export const INBOX_RESOURCES: readonly Resource[] = ["notifications"];

@@ -20,6 +20,8 @@ import { AttendanceModule } from './attendance/attendance.module.js';
 import { GradesModule } from './grades/grades.module.js';
 import { LeaveModule } from './leave/leave.module.js';
 import { SubstitutionModule } from './substitution/substitution.module.js';
+import { NotificationsModule } from './notifications/notifications.module.js';
+import { SyncModule } from './sync/sync.module.js';
 import { TimetableModule } from './timetable/timetable.module.js';
 import { TeachingModule } from './teaching/teaching.module.js';
 import { FeesModule } from './fees/fees.module.js';
@@ -79,6 +81,8 @@ import { HealthModule } from './health/health.module.js';
     GradesModule,
     LeaveModule,
     SubstitutionModule,
+    NotificationsModule,
+    SyncModule,
     TeachingModule,
     ImportsModule,
     AccountsModule,

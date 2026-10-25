@@ -102,9 +102,9 @@ describe.skipIf(!host)('Timetable (P3-3)', () => {
     await db.updateTimetableEntry({ schoolId: A, id: e.id, subjectId: sub2, staffId: s1, actorId: adminA, details: {} });
     await expect(db.updateTimetableEntry({ schoolId: A, id: e.id, subjectId: sub1, staffId: s2, actorId: adminA, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     await expect(db.updateTimetableEntry({ schoolId: B, id: e.id, subjectId: subB, staffId: sB, actorId: adminB, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
-    await expect(db.deleteTimetableEntry({ schoolId: B, id: e.id, actorId: adminB, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    await expect(db.deleteTimetableEntry({ schoolId: B, id: e.id, classroomId: c1, staffId: s1, actorId: adminB, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     expect((await db.listTimetableForClass({ schoolId: A, academicYearId: yearA, classroomId: c1 })).data.timetableEntries.find((r) => r.day === 'TUE')!.subject.code).toBe('A');
-    await db.deleteTimetableEntry({ schoolId: A, id: e.id, actorId: adminA, details: {} });
+    await db.deleteTimetableEntry({ schoolId: A, id: e.id, classroomId: c1, staffId: s1, actorId: adminA, details: {} });
     expect(await rows()).toHaveLength(3);
     expect((await audit(A, 'academic.timetable.clear')).length).toBe(1);
   });

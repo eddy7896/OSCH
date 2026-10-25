@@ -211,7 +211,7 @@ export class GradesService {
     for (const [sid, w] of wanted) {
       const have = existing.get(sid);
       if (!w) {
-        if (have) { changes.push({ studentId: sid, from: text(have), to: null }); jobs.push(() => this.db.removeMark({ schoolId: t.schoolId, id: dashed(have.id), examId, actorId: t.userId })); }
+        if (have) { changes.push({ studentId: sid, from: text(have), to: null }); jobs.push(() => this.db.removeMark({ schoolId: t.schoolId, id: dashed(have.id), examId, classroomId: klass, actorId: t.userId })); }
       } else if (!have || have.tenths !== w.tenths || have.absent !== w.absent) {
         changes.push({ studentId: sid, from: text(have), to: text(w) });
         jobs.push(() => this.db.saveMark({ schoolId: t.schoolId, id: markId(examId, sid), examId, studentId: sid, classroomId: klass, academicYearId: year, tenths: w.tenths, absent: w.absent, actorId: t.userId }));

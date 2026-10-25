@@ -716,6 +716,93 @@ class OruStringsUr extends OruStrings {
   String get reportTotal => 'کل';
 
   @override
+  String get notifLeaveRequestedTitle => 'فیصلے کے لیے رخصت';
+
+  @override
+  String notifLeaveRequestedBody(
+    String name,
+    String days,
+    String typeName,
+    String startDate,
+    String endDate,
+  ) {
+    return '$name نے $typeName کی $days دن کی رخصت مانگی ہے، $startDate سے $endDate تک۔';
+  }
+
+  @override
+  String get notifLeaveApprovedTitle => 'آپ کی رخصت منظور ہو گئی';
+
+  @override
+  String notifLeaveApprovedBody(
+    String typeName,
+    String startDate,
+    String endDate,
+    String days,
+  ) {
+    return '$typeName، $startDate سے $endDate ($days دن)۔';
+  }
+
+  @override
+  String get notifLeaveRejectedTitle => 'آپ کی رخصت منظور نہیں ہوئی';
+
+  @override
+  String notifLeaveRejectedBody(
+    String typeName,
+    String startDate,
+    String endDate,
+    String note,
+  ) {
+    return '$typeName، $startDate سے $endDate۔ $note';
+  }
+
+  @override
+  String get notifLeaveSubstitutionTitle =>
+      'جماعتوں کے لیے متبادل اساتذہ درکار ہیں';
+
+  @override
+  String notifLeaveSubstitutionBody(
+    String name,
+    String startDate,
+    String endDate,
+  ) {
+    return '$name $startDate سے $endDate تک رخصت پر ہیں۔ متبادل اساتذہ منتخب کریں۔';
+  }
+
+  @override
+  String get notifLeavePayrollTitle => 'کٹوتی کے لیے بلا تنخواہ رخصت';
+
+  @override
+  String notifLeavePayrollBody(String name, String startDate, String endDate) {
+    return '$name کی $startDate سے $endDate تک بلا تنخواہ رخصت منظور ہے۔ تنخواہ کے رن میں مجوزہ کٹوتی دیکھیں۔';
+  }
+
+  @override
+  String get notifSubstitutionAssignedTitle => 'آپ ایک جماعت سنبھال رہے ہیں';
+
+  @override
+  String notifSubstitutionAssignedBody(
+    String className,
+    String subjectName,
+    String periodLabel,
+    String date,
+    String name,
+  ) {
+    return '$className، $subjectName، $periodLabel، $date، $name کی جگہ۔';
+  }
+
+  @override
+  String get notifSubstitutionClearedTitle => 'متبادل ذمہ داری منسوخ';
+
+  @override
+  String notifSubstitutionClearedBody(
+    String className,
+    String subjectName,
+    String date,
+  ) {
+    return '$date کو $className، $subjectName میں اب آپ کی ضرورت نہیں۔';
+  }
+
+  @override
   String get gradesReportCardTitle => 'رپورٹ کارڈ';
 
   @override

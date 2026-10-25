@@ -112,7 +112,7 @@ export class AttendanceService {
     const lockedOk = correction ? [false, true] : [false];
     const jobs: Array<() => Promise<unknown>> = [
       ...save.map(([sid, w]) => () => this.db.saveAttendanceMark({ schoolId: t.schoolId, id: markId(dayId, sid), dayId, studentId: sid, classroomId: dashed(classId), academicYearId: year, status: w.status as never, ...(w.note ? { note: w.note } : {}), lockedOk, actorId: t.userId })),
-      ...remove.map(([, id]) => () => this.db.removeAttendanceMark({ schoolId: t.schoolId, id, dayId, lockedOk, actorId: t.userId })),
+      ...remove.map(([, id]) => () => this.db.removeAttendanceMark({ schoolId: t.schoolId, id, dayId, classroomId: dashed(classId), lockedOk, actorId: t.userId })),
     ];
     try {
       for (let i = 0; i < jobs.length; i += BATCH) await Promise.all(jobs.slice(i, i + BATCH).map((j) => j()));

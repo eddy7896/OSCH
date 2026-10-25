@@ -179,6 +179,11 @@ export class LeaveService {
   async create(t: TenantContext, dto: CreateRequestDto): Promise<LeaveRequestDto> {
     const staff = (await this.scope.mine(t)).staff;
     if (!staff) throw conflict('staff', 'noStaffRecord'); // the account is not linked to a staff record
+    if (dto.clientId) {
+      // the same request sent again (a retry from a device that did not hear the answer): the first one is the answer
+      const first = (await this.db.leaveRequestByClientId({ schoolId: t.schoolId, staffId: dashed(staff.id), clientId: dto.clientId })).data.leaveRequests[0];
+      if (first) return this.view(await this.rowOf(t, first.id));
+    }
     const type = await this.typeOf(t, dto.leaveTypeId).catch(() => { throw invalid('leaveTypeId', 'leaveTypeOfThisSchool'); });
     const working = daysFromText((await this.db.schoolWorkingDays({ schoolId: t.schoolId })).data.school?.workingDays ?? '');
     const counted = countHalfDays(dto.startDate, dto.endDate, dto.half, working);
@@ -195,11 +200,17 @@ export class LeaveService {
     const id = randomUUID();
     try {
       await this.db.createLeaveRequest({
-        schoolId: t.schoolId, id, staffId: dashed(staff.id), leaveTypeId: dashed(type.id), startDate: dto.startDate, endDate: dto.endDate, ...(dto.half ? { half: dto.half } : {}), halfDays: counted.halfDays, ...(dto.reason ? { reason: dto.reason } : {}),
+        schoolId: t.schoolId, id, staffId: dashed(staff.id), leaveTypeId: dashed(type.id), startDate: dto.startDate, endDate: dto.endDate, ...(dto.half ? { half: dto.half } : {}), halfDays: counted.halfDays, ...(dto.reason ? { reason: dto.reason } : {}), ...(dto.clientId ? { clientId: dto.clientId } : {}),
+        notice: { name: staff.name, typeName: type.name, startDate: dto.startDate, endDate: dto.endDate, days: formatHalfDays(counted.halfDays) },
         actorId: t.userId, details: { type: type.name, startDate: dto.startDate, endDate: dto.endDate, half: dto.half ?? null, days: formatHalfDays(counted.halfDays) },
       });
     } catch (e) {
       if (kindOf(e) === 'FORBIDDEN_REFERENCE') throw invalid('leaveTypeId', 'leaveTypeOfThisSchool');
+      if (kindOf(e) === 'CONFLICT' && dto.clientId) {
+        // two sends of the same request at once: the unique key let one through, and that one is the answer
+        const first = (await this.db.leaveRequestByClientId({ schoolId: t.schoolId, staffId: dashed(staff.id), clientId: dto.clientId })).data.leaveRequests[0];
+        if (first) return this.view(await this.rowOf(t, first.id));
+      }
       throw e;
     }
     return this.view(await this.rowOf(t, id));
@@ -226,15 +237,16 @@ export class LeaveService {
     const others = (await this.db.listLeaveRequests({ schoolId: t.schoolId, staffId: dashed(row.staff.id), status: 'APPROVED' as never, from: row.startDate, to: row.endDate })).data.leaveRequests;
     if (others.some((o) => !same(o.id, id) && overlaps(o, row))) throw conflict('id', 'overlapsApprovedLeave');
     const details = { staffId: dashed(row.staff.id), type: row.leaveType.name, paid: row.leaveType.paid, startDate: row.startDate, endDate: row.endDate, days: formatHalfDays(row.halfDays) };
+    const notice = { name: name(row.staff), typeName: row.leaveType.name, startDate: row.startDate, endDate: row.endDate, days: formatHalfDays(row.halfDays) };
     try {
       if (row.leaveType.paid) {
         const year = yearHolding(await this.years(t), row.startDate, row.endDate);
         if (!year) throw conflict('id', 'outsideAcademicYear');
         const balance = await this.balanceRow(t, row.staff.id, { id: row.leaveType.id, quotaHalfDays: row.leaveType.quotaHalfDays }, year.id);
         if (row.halfDays > balance.remainingHalfDays) throw conflict('id', 'overBalance');
-        await this.db.approveLeaveRequest({ schoolId: t.schoolId, id: dashed(id), balanceId: dashed(balance.id), halfDays: row.halfDays, expectedRemaining: balance.remainingHalfDays, newRemaining: balance.remainingHalfDays - row.halfDays, actorId: t.userId, details: { ...details, balanceBefore: formatHalfDays(balance.remainingHalfDays), balanceAfter: formatHalfDays(balance.remainingHalfDays - row.halfDays) } });
+        await this.db.approveLeaveRequest({ schoolId: t.schoolId, id: dashed(id), staffId: dashed(row.staff.id), notice, balanceId: dashed(balance.id), halfDays: row.halfDays, expectedRemaining: balance.remainingHalfDays, newRemaining: balance.remainingHalfDays - row.halfDays, actorId: t.userId, details: { ...details, balanceBefore: formatHalfDays(balance.remainingHalfDays), balanceAfter: formatHalfDays(balance.remainingHalfDays - row.halfDays) } });
       } else {
-        await this.db.approveUnpaidLeaveRequest({ schoolId: t.schoolId, id: dashed(id), actorId: t.userId, details });
+        await this.db.approveUnpaidLeaveRequest({ schoolId: t.schoolId, id: dashed(id), staffId: dashed(row.staff.id), notice, actorId: t.userId, details });
       }
     } catch (e) {
       if (kindOf(e) === 'FORBIDDEN_REFERENCE') throw conflict('id', 'changedMeanwhile'); // not pending any more, or the balance moved: read again
@@ -247,7 +259,7 @@ export class LeaveService {
     const row = await this.rowOf(t, id);
     if (row.status !== 'PENDING') throw conflict('id', 'notPending');
     try {
-      await this.db.rejectLeaveRequest({ schoolId: t.schoolId, id: dashed(id), ...(note ? { note } : {}), actorId: t.userId, details: { staffId: dashed(row.staff.id), startDate: row.startDate, endDate: row.endDate, note: note ?? null } });
+      await this.db.rejectLeaveRequest({ schoolId: t.schoolId, id: dashed(id), staffId: dashed(row.staff.id), notice: { typeName: row.leaveType.name, startDate: row.startDate, endDate: row.endDate, note: note ?? '' }, ...(note ? { note } : {}), actorId: t.userId, details: { staffId: dashed(row.staff.id), startDate: row.startDate, endDate: row.endDate, note: note ?? null } });
     } catch (e) {
       if (kindOf(e) === 'FORBIDDEN_REFERENCE') throw conflict('id', 'changedMeanwhile');
       throw e;

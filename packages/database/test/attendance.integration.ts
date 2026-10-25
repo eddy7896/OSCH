@@ -72,7 +72,7 @@ describe.skipIf(!host)('Attendance (P3-4)', () => {
     const marks = (await db.getAttendanceDay({ schoolId: A, classroomId: c1, date })).data.attendanceDays[0]!.marks;
     expect(marks).toHaveLength(1);
     expect(marks[0]!.status).toBe('LATE');
-    await db.removeAttendanceMark({ schoolId: A, id, dayId: d, lockedOk: [false], actorId: adminA });
+    await db.removeAttendanceMark({ schoolId: A, id, dayId: d, classroomId: c1, lockedOk: [false], actorId: adminA });
     expect((await db.getAttendanceDay({ schoolId: A, classroomId: c1, date })).data.attendanceDays[0]!.marks).toHaveLength(0);
   });
 
@@ -95,7 +95,7 @@ describe.skipIf(!host)('Attendance (P3-4)', () => {
     await db.lockAttendanceDay({ schoolId: A, id: d, actorId: adminA, details: {} });
     expect((await audit(A, 'attendance.lock')).length).toBe(1);
     await expect(mark({ day: d, student: st2 })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
-    await expect(db.removeAttendanceMark({ schoolId: A, id: randomUUID(), dayId: d, lockedOk: [false], actorId: adminA })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    await expect(db.removeAttendanceMark({ schoolId: A, id: randomUUID(), dayId: d, classroomId: c1, lockedOk: [false], actorId: adminA })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     await expect(db.finishAttendanceSubmit({ schoolId: A, id: d, locked: false, actorId: adminA, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     await mark({ day: d, student: st2, lockedOk: [false, true] }); // the correction path
     await db.finishAttendanceCorrection({ schoolId: A, id: d, actorId: adminA, details: { changes: [{ studentId: st2, from: 'PRESENT', to: 'ABSENT' }] } });

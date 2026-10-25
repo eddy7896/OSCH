@@ -422,6 +422,7 @@ export type CreatePeriodDto = {
 };
 
 export type CreateRequestDto = {
+    clientId?: string;
     endDate: string;
     half?: 'MORNING' | 'AFTERNOON';
     leaveTypeId: string;
@@ -1044,6 +1045,23 @@ export type NewInstalmentDto = {
     label?: string;
 };
 
+export type NotificationDto = {
+    body: string;
+    category: string;
+    createdAt: string;
+    entityId: string | null;
+    entityType: string | null;
+    id: string;
+    kind: string;
+    read: boolean;
+    title: string;
+};
+
+export type NotificationListDto = {
+    items: Array<NotificationDto>;
+    unreadCount: number;
+};
+
 export type OutstandingDto = {
     asOf: string;
     bands: Array<AgeingBandDto>;
@@ -1206,6 +1224,19 @@ export type PlacementRequestDto = {
     classroomId: string;
 };
 
+export type PreferenceDto = {
+    enabled: boolean;
+};
+
+export type PreferenceItemDto = {
+    category: string;
+    enabled: boolean;
+};
+
+export type PreferenceListDto = {
+    items: Array<PreferenceItemDto>;
+};
+
 export type ProposalDto = {
     applied: AppliedLineDto | null;
     days: string;
@@ -1249,6 +1280,10 @@ export type PublicSchoolDto = {
     id: string;
     name: string;
     subDomain: string;
+};
+
+export type ReadAllDto = {
+    marked: number;
 };
 
 export type ReceiptDto = {
@@ -1816,6 +1851,21 @@ export type TimetableSubjectDto = {
     code: string;
     id: string;
     name: string;
+};
+
+export type TombstoneDto = {
+    classId: string | null;
+    deletedAt: string;
+    entityId: string;
+    entityType: string;
+    id: string;
+    staffId: string | null;
+};
+
+export type TombstoneListDto = {
+    items: Array<TombstoneDto>;
+    more: boolean;
+    next: string;
 };
 
 export type TypeRefDto = {
@@ -7381,6 +7431,211 @@ export type MembershipsUpdateResponses = {
 
 export type MembershipsUpdateResponse = MembershipsUpdateResponses[keyof MembershipsUpdateResponses];
 
+export type NotificationsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        unread?: boolean;
+        limit?: number;
+    };
+    url: '/v1/notifications';
+};
+
+export type NotificationsListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NotificationsListError = NotificationsListErrors[keyof NotificationsListErrors];
+
+export type NotificationsListResponses = {
+    200: NotificationListDto;
+};
+
+export type NotificationsListResponse = NotificationsListResponses[keyof NotificationsListResponses];
+
+export type NotificationsPreferencesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/notifications/preferences';
+};
+
+export type NotificationsPreferencesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NotificationsPreferencesError = NotificationsPreferencesErrors[keyof NotificationsPreferencesErrors];
+
+export type NotificationsPreferencesResponses = {
+    200: PreferenceListDto;
+};
+
+export type NotificationsPreferencesResponse = NotificationsPreferencesResponses[keyof NotificationsPreferencesResponses];
+
+export type NotificationsSetPreferenceData = {
+    body: PreferenceDto;
+    path: {
+        category: 'leave' | 'substitution' | 'payroll';
+    };
+    query?: never;
+    url: '/v1/notifications/preferences/{category}';
+};
+
+export type NotificationsSetPreferenceErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NotificationsSetPreferenceError = NotificationsSetPreferenceErrors[keyof NotificationsSetPreferenceErrors];
+
+export type NotificationsSetPreferenceResponses = {
+    200: PreferenceListDto;
+};
+
+export type NotificationsSetPreferenceResponse = NotificationsSetPreferenceResponses[keyof NotificationsSetPreferenceResponses];
+
+export type NotificationsReadAllData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/notifications/read-all';
+};
+
+export type NotificationsReadAllErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NotificationsReadAllError = NotificationsReadAllErrors[keyof NotificationsReadAllErrors];
+
+export type NotificationsReadAllResponses = {
+    200: ReadAllDto;
+};
+
+export type NotificationsReadAllResponse = NotificationsReadAllResponses[keyof NotificationsReadAllResponses];
+
+export type NotificationsReadData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/notifications/{id}/read';
+};
+
+export type NotificationsReadErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NotificationsReadError = NotificationsReadErrors[keyof NotificationsReadErrors];
+
+export type NotificationsReadResponses = {
+    204: void;
+};
+
+export type NotificationsReadResponse = NotificationsReadResponses[keyof NotificationsReadResponses];
+
 export type PayrollRemovePayslipLineData = {
     body?: never;
     path: {
@@ -10372,6 +10627,48 @@ export type SubstitutionClearResponses = {
 };
 
 export type SubstitutionClearResponse = SubstitutionClearResponses[keyof SubstitutionClearResponses];
+
+export type SyncTombstonesData = {
+    body?: never;
+    path?: never;
+    query: {
+        since: string;
+        entityType?: 'TimetableEntry' | 'Substitution' | 'AttendanceMark' | 'Mark';
+        limit?: number;
+    };
+    url: '/v1/sync/tombstones';
+};
+
+export type SyncTombstonesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SyncTombstonesError = SyncTombstonesErrors[keyof SyncTombstonesErrors];
+
+export type SyncTombstonesResponses = {
+    200: TombstoneListDto;
+};
+
+export type SyncTombstonesResponse = SyncTombstonesResponses[keyof SyncTombstonesResponses];
 
 export type UploadsSchoolLogoData = {
     body: SchoolLogoUploadDto;

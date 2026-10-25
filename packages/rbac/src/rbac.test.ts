@@ -9,6 +9,7 @@ import {
   FINANCE_RESOURCES,
   GLOBAL_MATRIX,
   HR_RESOURCES,
+  INBOX_RESOURCES,
   SELF_SERVICE_RESOURCES,
   grantsOf,
   GLOBAL_ROLES,
@@ -45,7 +46,7 @@ describe("E-RBAC: SSOT §4 matrix cells (locked)", () => {
     const writes = permissionsOf(as("PRINCIPAL")).filter((p) => WRITE.includes(p.action));
     expect(writes.length).toBeGreaterThan(0); // check-in and own leave request
     for (const w of writes) {
-      expect(SELF_SERVICE_RESOURCES as readonly string[], `${w.resource}:${w.action}`).toContain(w.resource);
+      expect([...SELF_SERVICE_RESOURCES, ...INBOX_RESOURCES] as readonly string[], `${w.resource}:${w.action}`).toContain(w.resource);
       expect(w.scope, `${w.resource}:${w.action}`).toBe("own");
     }
     const approvals = permissionsOf(as("PRINCIPAL")).filter((p) => p.action === "approve");
@@ -298,7 +299,7 @@ describe("E-RBAC: extended roles (HR, Accountant, Admissions, Transport, Operati
     expect(can(as("MANAGEMENT"), "dashboard_school", "read")).toBe(true);
     expect(none("MANAGEMENT", ["finance", "payroll", "students", "grades", "attendance", "staff", "leave", "settings", "memberships", "audit_log", "recruitment", "admissions"].filter((r) => !SELF_SERVICE_RESOURCES.includes(r as Resource)) as Resource[])).toEqual([]);
     const writes = permissionsOf(as("MANAGEMENT")).filter((p) => WRITE.includes(p.action));
-    for (const w of writes) expect(SELF_SERVICE_RESOURCES as readonly string[]).toContain(w.resource);
+    for (const w of writes) expect([...SELF_SERVICE_RESOURCES, ...INBOX_RESOURCES] as readonly string[]).toContain(w.resource);
   });
 
   it("only System Admin can grant or change school roles (privilege-escalation guard)", () => {

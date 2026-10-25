@@ -11,7 +11,7 @@ describe.skipIf(!host)('Substitution (P3-7)', () => {
   const tag = A.slice(0, 8);
   const admin = `sa-${tag}`, adminB = `sb-${tag}`, principal = `sp-${tag}`, accX = `sx-${tag}`, accY = `sy-${tag}`;
   const audit = async (s: string, action: string) => (await db.listAuditLog({ schoolId: s, limit: 300, offset: 0 })).data.auditLogs.filter((a) => a.action === action);
-  const date = '2090-06-04'; // a Monday
+  const date = '2090-06-05'; // a Monday
   let year = '', maths = '', art = '', klass = '', klass2 = '', p1 = '', p2 = '', X = '', Y = '', Z = '', W = '', V = '', staffB = '', leaveX = '', entryX1 = '', entryX2 = '', entryW1 = '';
 
   const staff = async (school: string, actor: string, userId?: string) => {
@@ -61,7 +61,7 @@ describe.skipIf(!host)('Substitution (P3-7)', () => {
   it('nothing can be assigned for leave that is not APPROVED', async () => {
     await expect(cover()).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     expect(await rows()).toHaveLength(0);
-    await db.approveUnpaidLeaveRequest({ schoolId: A, id: leaveX, actorId: principal, details: {} });
+    await db.approveUnpaidLeaveRequest({ schoolId: A, id: leaveX, staffId: X, actorId: principal, details: {} });
   });
 
   it('refuses a lesson that is not the absent teacher\'s, a wrong period or weekday, a date outside the leave, and a leave of someone else', async () => {
@@ -85,7 +85,7 @@ describe.skipIf(!host)('Substitution (P3-7)', () => {
     await db.linkStaffAccount({ schoolId: A, id: V, userId: accV, actorId: admin, details: {} });
     const lv = randomUUID();
     await db.createLeaveRequest({ schoolId: A, id: lv, staffId: V, leaveTypeId: type2, startDate: date, endDate: date, halfDays: 2, actorId: accV, details: {} });
-    await db.approveUnpaidLeaveRequest({ schoolId: A, id: lv, actorId: principal, details: {} });
+    await db.approveUnpaidLeaveRequest({ schoolId: A, id: lv, staffId: V, actorId: principal, details: {} });
     await expect(cover({ sub: V })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     await expect(cover({ school: B, actor: adminB })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // A's lesson through school B
     await expect(cover({ actor: principal === 'x' ? '' : `nobody-${tag}` })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
@@ -108,7 +108,7 @@ describe.skipIf(!host)('Substitution (P3-7)', () => {
     const type3 = randomUUID(); await db.createLeaveType({ schoolId: A, id: type3, name: 'Unpaid 3', paid: false, quotaHalfDays: 0, actorId: admin, details: {} });
     const lw = randomUUID();
     await db.createLeaveRequest({ schoolId: A, id: lw, staffId: W, leaveTypeId: type3, startDate: date, endDate: date, halfDays: 2, actorId: accW, details: {} });
-    await db.approveUnpaidLeaveRequest({ schoolId: A, id: lw, actorId: principal, details: {} });
+    await db.approveUnpaidLeaveRequest({ schoolId: A, id: lw, staffId: W, actorId: principal, details: {} });
     await expect(cover({ entry: entryW1, absent: W, leave: lw, sub: other })).rejects.toMatchObject({ kind: 'CONFLICT' });
     // and the same lesson and date can hold only one substitute, however the id is chosen
     await expect(db.setSubstitute({ schoolId: A, id: randomUUID(), timetableEntryId: entryX1, date, day: 'MON', periodId: p1, subjectId: maths, absentStaffId: X, leaveRequestId: leaveX, substituteId: Y, actorId: admin, details: {} })).rejects.toMatchObject({ kind: 'CONFLICT' });
@@ -118,11 +118,11 @@ describe.skipIf(!host)('Substitution (P3-7)', () => {
 
   it('clearing is audited and scoped; changing or removing the lesson in the timetable takes its cover with it', async () => {
     const [first, second] = await rows();
-    await expect(db.clearSubstitute({ schoolId: B, id: first!.id, actorId: adminB, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
-    await db.clearSubstitute({ schoolId: A, id: first!.id, actorId: admin, details: {} });
+    await expect(db.clearSubstitute({ schoolId: B, id: first!.id, substituteId: first!.substitute.id, classroomId: first!.timetableEntry.classroom.id, actorId: adminB, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    await db.clearSubstitute({ schoolId: A, id: first!.id, substituteId: first!.substitute.id, classroomId: first!.timetableEntry.classroom.id, actorId: admin, details: {} });
     expect((await audit(A, 'academic.substitution.clear')).length).toBe(1);
     expect(await rows()).toHaveLength(1);
-    await db.deleteTimetableEntry({ schoolId: A, id: second!.timetableEntryId, actorId: admin, details: {} });
+    await db.deleteTimetableEntry({ schoolId: A, id: second!.timetableEntryId, classroomId: second!.timetableEntry.classroom.id, staffId: second!.timetableEntry.staffId, actorId: admin, details: {} });
     expect(await rows()).toHaveLength(0);
   });
 });

@@ -915,6 +915,157 @@
   "@reportTotal": {
     "description": "Label of the last row, which adds up the columns above it."
   },
+  "notifLeaveRequestedTitle": "Leave to decide",
+  "@notifLeaveRequestedTitle": {
+    "description": "Title of the notice to the Principal that a leave request is waiting."
+  },
+  "notifLeaveRequestedBody": "{name} asked for {days} day(s) of {typeName} leave from {startDate} to {endDate}.",
+  "@notifLeaveRequestedBody": {
+    "description": "Body of the notice to the Principal: who asked for how many days of which kind of leave, and when.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "days": {
+        "type": "String"
+      },
+      "typeName": {
+        "type": "String"
+      },
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "notifLeaveApprovedTitle": "Your leave was approved",
+  "@notifLeaveApprovedTitle": {
+    "description": "Title of the notice to a member of staff that the Principal approved their leave."
+  },
+  "notifLeaveApprovedBody": "{typeName}, {startDate} to {endDate} ({days} day(s)).",
+  "@notifLeaveApprovedBody": {
+    "description": "Body of the approval notice: the kind of leave, the dates and the number of days.",
+    "placeholders": {
+      "typeName": {
+        "type": "String"
+      },
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      },
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "notifLeaveRejectedTitle": "Your leave was not approved",
+  "@notifLeaveRejectedTitle": {
+    "description": "Title of the notice to a member of staff that the Principal did not approve their leave."
+  },
+  "notifLeaveRejectedBody": "{typeName}, {startDate} to {endDate}. {note}",
+  "@notifLeaveRejectedBody": {
+    "description": "Body of the notice that leave was not approved: the kind, the dates and the Principal's note, if any.",
+    "placeholders": {
+      "typeName": {
+        "type": "String"
+      },
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "notifLeaveSubstitutionTitle": "Lessons need a substitute",
+  "@notifLeaveSubstitutionTitle": {
+    "description": "Title of the notice to the Academic administrator that approved leave leaves lessons uncovered."
+  },
+  "notifLeaveSubstitutionBody": "{name} is on leave from {startDate} to {endDate}. Choose substitutes on the substitution board.",
+  "@notifLeaveSubstitutionBody": {
+    "description": "Body of that notice: who is away, when, and where to choose who covers.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "notifLeavePayrollTitle": "Unpaid leave to deduct",
+  "@notifLeavePayrollTitle": {
+    "description": "Title of the notice to HR that approved unpaid leave proposes a pay deduction."
+  },
+  "notifLeavePayrollBody": "{name} has approved unpaid leave from {startDate} to {endDate}. Review the proposed deduction in the payroll run.",
+  "@notifLeavePayrollBody": {
+    "description": "Body of that notice: who, when, and where to review the proposed deduction.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "notifSubstitutionAssignedTitle": "You are covering a class",
+  "@notifSubstitutionAssignedTitle": {
+    "description": "Title of the notice to a teacher that they were chosen to cover another teacher's lesson."
+  },
+  "notifSubstitutionAssignedBody": "{className}, {subjectName}, {periodLabel} on {date}, covering for {name}.",
+  "@notifSubstitutionAssignedBody": {
+    "description": "Body of that notice: which lesson, when, and for whom.",
+    "placeholders": {
+      "className": {
+        "type": "String"
+      },
+      "subjectName": {
+        "type": "String"
+      },
+      "periodLabel": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notifSubstitutionClearedTitle": "Cover cancelled",
+  "@notifSubstitutionClearedTitle": {
+    "description": "Title of the notice to a teacher that a cover duty they were given was taken away."
+  },
+  "notifSubstitutionClearedBody": "{className}, {subjectName} on {date} no longer needs you.",
+  "@notifSubstitutionClearedBody": {
+    "description": "Body of that notice: which lesson and when.",
+    "placeholders": {
+      "className": {
+        "type": "String"
+      },
+      "subjectName": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "gradesReportCardTitle": "Report card",
   "@gradesReportCardTitle": {
     "description": "Title of the printed report card of one student for one term."

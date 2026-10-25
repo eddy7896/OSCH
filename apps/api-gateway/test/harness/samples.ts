@@ -223,7 +223,7 @@ const coverSetupOfA = async (w: World): Promise<Record<string, string>> => {
   const type = await leaveTypeOfA(w, false);
   const leaveId = randomUUID();
   await w.db.createLeaveRequest({ schoolId: w.schools.A, id: leaveId, staffId: absent['id']!, leaveTypeId: type['id']!, startDate: date, endDate: date, halfDays: 2, actorId: userId, details: {} });
-  await w.db.approveUnpaidLeaveRequest({ schoolId: w.schools.A, id: leaveId, actorId: w.roles.A.PRINCIPAL.uid, details: {} });
+  await w.db.approveUnpaidLeaveRequest({ schoolId: w.schools.A, id: leaveId, staffId: absent['id']!, actorId: w.roles.A.PRINCIPAL.uid, details: {} });
   return { entryId: dash(entryId), date, substituteId: substitute['id']!, absentId: absent['id']!, leaveId: dash(leaveId), subjectId: dash(sub['id']!), periodId: dash(period['id']!) };
 };
 const coveredLessonOfA = async (w: World): Promise<Record<string, string>> => {
@@ -404,7 +404,7 @@ const unpaidLeaveRunOfA = async (w: World): Promise<Record<string, string>> => {
   const date = day.toISOString().slice(0, 10);
   const leaveId = randomUUID();
   await w.db.createLeaveRequest({ schoolId: w.schools.A, id: leaveId, staffId: staff, leaveTypeId: type['id']!, startDate: date, endDate: date, halfDays: 2, actorId: userId, details: {} });
-  await w.db.approveUnpaidLeaveRequest({ schoolId: w.schools.A, id: leaveId, actorId: w.roles.A.PRINCIPAL.uid, details: {} });
+  await w.db.approveUnpaidLeaveRequest({ schoolId: w.schools.A, id: leaveId, staffId: staff, actorId: w.roles.A.PRINCIPAL.uid, details: {} });
   return { id: dash(slip), run: dash(runId), staffId: dash(staff) };
 };
 /** A payroll run of school A with one payslip and one line, optionally approved, through the real operations. */

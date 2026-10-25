@@ -714,6 +714,92 @@ class OruStringsAs extends OruStrings {
   String get reportTotal => 'Total';
 
   @override
+  String get notifLeaveRequestedTitle => 'Leave to decide';
+
+  @override
+  String notifLeaveRequestedBody(
+    String name,
+    String days,
+    String typeName,
+    String startDate,
+    String endDate,
+  ) {
+    return '$name asked for $days day(s) of $typeName leave from $startDate to $endDate.';
+  }
+
+  @override
+  String get notifLeaveApprovedTitle => 'Your leave was approved';
+
+  @override
+  String notifLeaveApprovedBody(
+    String typeName,
+    String startDate,
+    String endDate,
+    String days,
+  ) {
+    return '$typeName, $startDate to $endDate ($days day(s)).';
+  }
+
+  @override
+  String get notifLeaveRejectedTitle => 'Your leave was not approved';
+
+  @override
+  String notifLeaveRejectedBody(
+    String typeName,
+    String startDate,
+    String endDate,
+    String note,
+  ) {
+    return '$typeName, $startDate to $endDate. $note';
+  }
+
+  @override
+  String get notifLeaveSubstitutionTitle => 'Lessons need a substitute';
+
+  @override
+  String notifLeaveSubstitutionBody(
+    String name,
+    String startDate,
+    String endDate,
+  ) {
+    return '$name is on leave from $startDate to $endDate. Choose substitutes on the substitution board.';
+  }
+
+  @override
+  String get notifLeavePayrollTitle => 'Unpaid leave to deduct';
+
+  @override
+  String notifLeavePayrollBody(String name, String startDate, String endDate) {
+    return '$name has approved unpaid leave from $startDate to $endDate. Review the proposed deduction in the payroll run.';
+  }
+
+  @override
+  String get notifSubstitutionAssignedTitle => 'You are covering a class';
+
+  @override
+  String notifSubstitutionAssignedBody(
+    String className,
+    String subjectName,
+    String periodLabel,
+    String date,
+    String name,
+  ) {
+    return '$className, $subjectName, $periodLabel on $date, covering for $name.';
+  }
+
+  @override
+  String get notifSubstitutionClearedTitle => 'Cover cancelled';
+
+  @override
+  String notifSubstitutionClearedBody(
+    String className,
+    String subjectName,
+    String date,
+  ) {
+    return '$className, $subjectName on $date no longer needs you.';
+  }
+
+  @override
   String get gradesReportCardTitle => 'Report card';
 
   @override

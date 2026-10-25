@@ -934,13 +934,14 @@ mutation UpdateTimetableEntry($schoolId: UUID!, $id: UUID!, $subjectId: UUID!, $
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.timetable.set", entityType: "TimetableEntry", entityId_expr: "request.variables.id", details: $details })
 }
 
-mutation DeleteTimetableEntry($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation DeleteTimetableEntry($schoolId: UUID!, $id: UUID!, $classroomId: UUID!, $staffId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
-    entry: timetableEntries(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "timetable entry not found in this school") { id }
+    entry: timetableEntries(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, staffId: {eq: $staffId}}) @check(expr: "this.size() == 1", message: "timetable entry not found in this school") { id }
   }
   substitution_deleteMany(where: {timetableEntryId: {eq: $id}, schoolId: {eq: $schoolId}})
   timetableEntry_delete(id: $id)
+  tombstone_insert(data: { schoolId: $schoolId, entityType: "TimetableEntry", entityId_expr: "request.variables.id", deletedById: $actorId, classroomId: $classroomId, staffId: $staffId })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.timetable.clear", entityType: "TimetableEntry", entityId_expr: "request.variables.id", details: $details })
 }
 
@@ -964,13 +965,14 @@ mutation SaveAttendanceMark($schoolId: UUID!, $id: UUID!, $dayId: UUID!, $studen
   attendanceMark_upsert(data: { id: $id, schoolId: $schoolId, dayId: $dayId, studentId: $studentId, status: $status, note: $note })
 }
 
-mutation RemoveAttendanceMark($schoolId: UUID!, $id: UUID!, $dayId: UUID!, $lockedOk: [Boolean!]!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+mutation RemoveAttendanceMark($schoolId: UUID!, $id: UUID!, $dayId: UUID!, $classroomId: UUID!, $lockedOk: [Boolean!]!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
-    day: attendanceDays(where: {id: {eq: $dayId}, schoolId: {eq: $schoolId}, locked: {in: $lockedOk}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school, or it is locked") { id }
+    day: attendanceDays(where: {id: {eq: $dayId}, schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, locked: {in: $lockedOk}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school, or it is locked") { id }
     mark: attendanceMarks(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, dayId: {eq: $dayId}}) @check(expr: "this.size() == 1", message: "mark not found on this day") { id }
   }
   attendanceMark_delete(id: $id)
+  tombstone_insert(data: { schoolId: $schoolId, entityType: "AttendanceMark", entityId_expr: "request.variables.id", deletedById: $actorId, classroomId: $classroomId })
 }
 
 mutation FinishAttendanceSubmit($schoolId: UUID!, $id: UUID!, $submissionId: String, $locked: Boolean!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
@@ -1118,12 +1120,14 @@ mutation SaveMark($schoolId: UUID!, $id: UUID!, $examId: UUID!, $studentId: UUID
   mark_upsert(data: { id: $id, schoolId: $schoolId, examId: $examId, studentId: $studentId, tenths: $tenths, absent: $absent })
 }
 
-mutation RemoveMark($schoolId: UUID!, $id: UUID!, $examId: UUID!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+mutation RemoveMark($schoolId: UUID!, $id: UUID!, $examId: UUID!, $classroomId: UUID!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    exam: exams(where: {id: {eq: $examId}, schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}}) @check(expr: "this.size() == 1", message: "exam not found for this class") { id }
     mark: marks(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, examId: {eq: $examId}}) @check(expr: "this.size() == 1", message: "mark not found on this exam") { id }
   }
   mark_delete(id: $id)
+  tombstone_insert(data: { schoolId: $schoolId, entityType: "Mark", entityId_expr: "request.variables.id", deletedById: $actorId, classroomId: $classroomId })
 }
 
 mutation FinishMarkEntry($schoolId: UUID!, $id: UUID!, $submissionId: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
@@ -1186,13 +1190,14 @@ mutation SetLeaveBalance($schoolId: UUID!, $id: UUID!, $expectedRemaining: Int!,
 }
 
 # A request is the requester's own: the staff record must be linked to the acting account.
-mutation CreateLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $leaveTypeId: UUID!, $startDate: Date!, $endDate: Date!, $half: String, $halfDays: Int!, $reason: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation CreateLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $leaveTypeId: UUID!, $startDate: Date!, $endDate: Date!, $half: String, $halfDays: Int!, $reason: String, $clientId: String, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "you can only ask for leave for your own staff record") { id }
     type: leaveTypes(where: {id: {eq: $leaveTypeId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "leave type not found in this school") { id }
   }
-  leaveRequest_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, leaveTypeId: $leaveTypeId, startDate: $startDate, endDate: $endDate, half: $half, halfDays: $halfDays, reason: $reason })
+  leaveRequest_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, leaveTypeId: $leaveTypeId, startDate: $startDate, endDate: $endDate, half: $half, halfDays: $halfDays, reason: $reason, clientId: $clientId })
+  notification_insert(data: { schoolId: $schoolId, kind: "leave.requested", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", audienceRole: PRINCIPAL })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.create", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
 }
 
@@ -1206,39 +1211,45 @@ mutation CancelLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $acto
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.cancel", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
 }
 
-mutation ApproveLeaveRequest($schoolId: UUID!, $id: UUID!, $balanceId: UUID!, $halfDays: Int!, $expectedRemaining: Int!, $newRemaining: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation ApproveLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $balanceId: UUID!, $halfDays: Int!, $expectedRemaining: Int!, $newRemaining: Int!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can decide leave") { userId }
-    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: PENDING}, halfDays: {eq: $halfDays}, leaveType: {paid: {eq: true}}}) @check(expr: "this.size() == 1", message: "paid request not found in this school or no longer pending") { id }
+    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: PENDING}, halfDays: {eq: $halfDays}, leaveType: {paid: {eq: true}}}) @check(expr: "this.size() == 1", message: "paid request not found in this school or no longer pending") { id }
     balance: leaveBalances(where: {id: {eq: $balanceId}, schoolId: {eq: $schoolId}, remainingHalfDays: {eq: $expectedRemaining}}) @check(expr: "this.size() == 1", message: "balance not found, or it changed since it was read") { id }
   }
   leaveBalance_update(id: $balanceId, data: { remainingHalfDays: $newRemaining })
   leaveRequest_update(id: $id, data: { status: APPROVED, decidedById: $actorId, decidedAt_expr: "request.time" })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: "leave.approved", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", recipientStaffId: $staffId })
+  n2: notification_insert(data: { schoolId: $schoolId, kind: "leave.substitution", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", audienceRole: ACADEMIC_ADMIN })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.approve", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
 }
 
-mutation ApproveUnpaidLeaveRequest($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation ApproveUnpaidLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can decide leave") { userId }
-    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: PENDING}, leaveType: {paid: {eq: false}}}) @check(expr: "this.size() == 1", message: "unpaid request not found in this school or no longer pending") { id }
+    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: PENDING}, leaveType: {paid: {eq: false}}}) @check(expr: "this.size() == 1", message: "unpaid request not found in this school or no longer pending") { id }
   }
   leaveRequest_update(id: $id, data: { status: APPROVED, decidedById: $actorId, decidedAt_expr: "request.time" })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: "leave.approved", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", recipientStaffId: $staffId })
+  n2: notification_insert(data: { schoolId: $schoolId, kind: "leave.substitution", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", audienceRole: ACADEMIC_ADMIN })
+  n3: notification_insert(data: { schoolId: $schoolId, kind: "leave.payroll", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", audienceRole: HR_MANAGER })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.approve", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
 }
 
-mutation RejectLeaveRequest($schoolId: UUID!, $id: UUID!, $note: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation RejectLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $note: String, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can decide leave") { userId }
-    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: PENDING}}) @check(expr: "this.size() == 1", message: "request not found in this school or no longer pending") { id }
+    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: PENDING}}) @check(expr: "this.size() == 1", message: "request not found in this school or no longer pending") { id }
   }
   leaveRequest_update(id: $id, data: { status: REJECTED, decidedById: $actorId, decidedAt_expr: "request.time", decisionNote: $note })
+  notification_insert(data: { schoolId: $schoolId, kind: "leave.rejected", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", recipientStaffId: $staffId })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.reject", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
 }
 
 # ---- Substitution (P3-7). Every rule the board applies is checked again here: the leave is APPROVED and covers the date for the absent teacher, the lesson is theirs on that
 # weekday and period, and the substitute is an active member of staff, someone else, qualified for the subject, free in that period (no lesson of their own, not on approved leave
 # that day). A second lesson in the same period on the same date is refused by the unique key.
-mutation SetSubstitute($schoolId: UUID!, $id: UUID!, $timetableEntryId: UUID!, $date: Date!, $day: String!, $periodId: UUID!, $subjectId: UUID!, $absentStaffId: UUID!, $leaveRequestId: UUID!, $substituteId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation SetSubstitute($schoolId: UUID!, $id: UUID!, $timetableEntryId: UUID!, $date: Date!, $day: String!, $periodId: UUID!, $subjectId: UUID!, $absentStaffId: UUID!, $leaveRequestId: UUID!, $substituteId: UUID!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     leave: leaveRequests(where: {id: {eq: $leaveRequestId}, schoolId: {eq: $schoolId}, staffId: {eq: $absentStaffId}, status: {eq: APPROVED}, startDate: {le: $date}, endDate: {ge: $date}}) @check(expr: "this.size() == 1", message: "no approved leave covers that date for the absent teacher") { id }
@@ -1249,14 +1260,40 @@ mutation SetSubstitute($schoolId: UUID!, $id: UUID!, $timetableEntryId: UUID!, $
     away: leaveRequests(where: {staffId: {eq: $substituteId}, schoolId: {eq: $schoolId}, status: {eq: APPROVED}, startDate: {le: $date}, endDate: {ge: $date}}) @check(expr: "this.size() == 0", message: "the substitute is on approved leave that day") { id }
   }
   substitution_upsert(data: { id: $id, schoolId: $schoolId, timetableEntryId: $timetableEntryId, date: $date, periodId: $periodId, substituteId: $substituteId, leaveRequestId: $leaveRequestId, assignedById: $actorId })
+  notification_insert(data: { schoolId: $schoolId, kind: "substitution.assigned", params: $notice, entityType: "Substitution", entityId_expr: "request.variables.id", recipientStaffId: $substituteId })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.substitution.set", entityType: "Substitution", entityId_expr: "request.variables.id", details: $details })
 }
 
-mutation ClearSubstitute($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation ClearSubstitute($schoolId: UUID!, $id: UUID!, $substituteId: UUID!, $classroomId: UUID!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
-    row: substitutions(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "substitution not found in this school") { id }
+    row: substitutions(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, substituteId: {eq: $substituteId}, timetableEntry: {classroomId: {eq: $classroomId}}}) @check(expr: "this.size() == 1", message: "substitution not found in this school") { id }
   }
   substitution_delete(id: $id)
+  notification_insert(data: { schoolId: $schoolId, kind: "substitution.cleared", params: $notice, entityType: "Substitution", entityId_expr: "request.variables.id", recipientStaffId: $substituteId })
+  tombstone_insert(data: { schoolId: $schoolId, entityType: "Substitution", entityId_expr: "request.variables.id", deletedById: $actorId, classroomId: $classroomId, staffId: $substituteId })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.substitution.clear", entityType: "Substitution", entityId_expr: "request.variables.id", details: $details })
+}
+
+# ---- Notifications (P3-9): the reader's own marker and preferences. Marking read changes nothing but the reader's own view.
+mutation MarkNotificationRead($schoolId: UUID!, $notificationId: UUID!, $role: SchoolRole!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: $role}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school with that role") { userId }
+    note: notifications(where: {_and: [{id: {eq: $notificationId}}, {schoolId: {eq: $schoolId}}, {_or: [{recipientStaff: {userId: {eq: $actorId}}}, {audienceRole: {eq: $role}}]}]}) @check(expr: "this.size() == 1", message: "that notification is not yours") { id }
+  }
+  notificationRead_upsert(data: { schoolId: $schoolId, notificationId: $notificationId, userId: $actorId })
+}
+
+mutation MuteNotificationCategory($schoolId: UUID!, $category: String!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  notificationMute_upsert(data: { schoolId: $schoolId, userId: $actorId, category: $category })
+}
+
+mutation UnmuteNotificationCategory($schoolId: UUID!, $category: String!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  notificationMute_delete(key: { schoolId: $schoolId, userId: $actorId, category: $category })
 }
