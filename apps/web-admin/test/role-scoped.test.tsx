@@ -31,6 +31,9 @@ const NEEDS: Record<string, [string, string]> = {
   gradesTerms: ["academics", "read"], gradesExams: ["academics", "read"], gradesBands: ["academics", "read"], gradesGrid: ["grades", "read"], gradesReportCard: ["grades", "read"], gradesReportCardPdf: ["grades", "read"],
   gradesSaveMarks: ["grades", "create"], gradesCreateTerm: ["academics", "create"], gradesCreateExam: ["academics", "create"], gradesSetBands: ["academics", "update"], gradesUpdateExam: ["academics", "update"], gradesUpdateTerm: ["academics", "update"],
   gradesDeleteTerm: ["academics", "delete"], gradesDeleteExam: ["academics", "delete"],
+  leaveRequests: ["leave", "read"], leaveTypes: ["leave", "read"], leaveBalances: ["leave", "read"], leaveApprove: ["leave", "approve"], leaveReject: ["leave", "approve"], leaveCreateType: ["leave", "create"], leaveDeleteType: ["leave", "update"], leaveSetBalance: ["leave", "update"], leaveUpdateType: ["leave", "update"],
+  substitutionNeeds: ["academics", "read"], substitutionSuggestions: ["academics", "read"], substitutionAssign: ["academics", "update"], substitutionClear: ["academics", "update"],
+  leaveDeductionProposals: ["payroll", "read"], leaveDeductionApply: ["payroll", "update"],
   admissionsList: ["admissions", "read"], admissionsGet: ["admissions", "read"], admissionsCreate: ["admissions", "create"], admissionsDecide: ["admissions", "update"], admissionsAdmit: ["admissions", "update"],
   payrollRuns: ["payroll", "read"], payrollRun: ["payroll", "read"], payrollSalary: ["payroll", "read"], payrollPayslipPdf: ["payroll", "read"],
   payrollCreateRun: ["payroll", "create"], payrollAddLine: ["payroll", "create"], payrollApprove: ["payroll", "approve"], payrollPay: ["payroll", "delete"], payrollDeleteRun: ["payroll", "delete"], payrollRemoveLine: ["payroll", "delete"],
@@ -51,6 +54,7 @@ const BUTTONS: Array<{ name: string; screen: string; needs: [string, string]; ta
   { name: "Bill fees", screen: "finance", needs: ["finance", "create"] },
   { name: "Add class", screen: "classes", needs: ["academics", "create"] },
   { name: "Add a period", screen: "timetable", needs: ["academics", "create"], tab: "Bell schedule" },
+  { name: "Add a leave type", screen: "leave", needs: ["leave", "create"], tab: "Types and allowances" },
   { name: "Create an account", screen: "memberships", needs: ["memberships", "create"] },
 ];
 
@@ -87,7 +91,7 @@ const asRole = (role: Role) => {
   return m;
 };
 const granted = (role: Role, [resource, action]: [string, string]) => permissionsOf({ schoolRole: role }).some((p) => p.resource === resource && p.action === action && p.scope === "school");
-const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", attendance: "Attendance", gradebook: "Gradebook", "staff-attendance": "Staff attendance", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
+const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", attendance: "Attendance", gradebook: "Gradebook", leave: "Leave", substitution: "Substitutions", "staff-attendance": "Staff attendance", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
 const settle = () => new Promise((r) => setTimeout(r, 100));
 
 afterEach(() => vi.restoreAllMocks());

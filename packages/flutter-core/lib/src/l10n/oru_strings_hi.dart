@@ -713,6 +713,275 @@ class OruStringsHi extends OruStrings {
   String get reportTotal => 'कुल';
 
   @override
+  String get sbPeriod => 'कालांश';
+
+  @override
+  String get lvViewLabel => 'छुट्टी का दृश्य';
+
+  @override
+  String get lvTabRequests => 'अनुरोध';
+
+  @override
+  String get lvTabTypes => 'प्रकार और सीमाएँ';
+
+  @override
+  String get lvAll => 'सभी';
+
+  @override
+  String get lvStatus => 'स्थिति';
+
+  @override
+  String get lvStatusPENDING => 'लंबित';
+
+  @override
+  String get lvStatusAPPROVED => 'स्वीकृत';
+
+  @override
+  String get lvStatusREJECTED => 'अस्वीकृत';
+
+  @override
+  String get lvStatusCANCELLED => 'रद्द';
+
+  @override
+  String get lvPerson => 'व्यक्ति';
+
+  @override
+  String get lvType => 'प्रकार';
+
+  @override
+  String get lvDates => 'तिथियाँ';
+
+  @override
+  String get lvDays => 'दिन';
+
+  @override
+  String get lvDecision => 'निर्णय';
+
+  @override
+  String get lvHalfMORNING => 'सुबह';
+
+  @override
+  String get lvHalfAFTERNOON => 'दोपहर';
+
+  @override
+  String get lvNoRequests => 'कोई छुट्टी का अनुरोध नहीं है।';
+
+  @override
+  String get lvApprove => 'स्वीकृत करें';
+
+  @override
+  String get lvReject => 'अस्वीकार करें';
+
+  @override
+  String lvRejectQuestion(String name) {
+    return '$name की छुट्टी अस्वीकार करें?';
+  }
+
+  @override
+  String get lvRejectNote => 'व्यक्ति के लिए टिप्पणी (वैकल्पिक)';
+
+  @override
+  String get lvApproved => 'छुट्टी स्वीकृत की गई';
+
+  @override
+  String get lvRejected => 'छुट्टी अस्वीकृत की गई';
+
+  @override
+  String get lvNotPending => 'इस अनुरोध पर पहले ही निर्णय हो चुका है।';
+
+  @override
+  String get lvOverBalance => 'यह बची हुई सीमा से अधिक है।';
+
+  @override
+  String get lvOverlap => 'यह उसी व्यक्ति की किसी दूसरी छुट्टी से टकराती है।';
+
+  @override
+  String get lvTypeName => 'नाम';
+
+  @override
+  String get lvPaid => 'वेतन सहित';
+
+  @override
+  String get lvUnpaid => 'बिना वेतन';
+
+  @override
+  String get lvQuota => 'प्रति वर्ष दिन';
+
+  @override
+  String get lvAddType => 'छुट्टी का प्रकार जोड़ें';
+
+  @override
+  String get lvTypeAdded => 'छुट्टी का प्रकार जोड़ा गया';
+
+  @override
+  String get lvIsPaid => 'वेतन सहित छुट्टी (वार्षिक सीमा से दिन कटते हैं)';
+
+  @override
+  String get lvNoTypes => 'अभी कोई छुट्टी का प्रकार नहीं है।';
+
+  @override
+  String get lvTypeInUse =>
+      'इस छुट्टी के प्रकार के अनुरोध हैं, इसे हटाया नहीं जा सकता।';
+
+  @override
+  String get lvPaidNeedsQuota =>
+      'वेतन सहित प्रकार के लिए प्रति वर्ष दिनों की संख्या चाहिए, पूरी या आधी।';
+
+  @override
+  String get lvAllowances => 'सीमाएँ';
+
+  @override
+  String get lvPickPerson => 'व्यक्ति';
+
+  @override
+  String get lvAllowed => 'अनुमत';
+
+  @override
+  String get lvRemaining => 'शेष';
+
+  @override
+  String lvAllowedFor(String type) {
+    return '$type के अनुमत दिन';
+  }
+
+  @override
+  String get lvAllowanceSaved => 'सीमा को सहेजा गया';
+
+  @override
+  String get lvBelowTaken => 'यह पहले ही ली जा चुकी छुट्टियों से कम है।';
+
+  @override
+  String get lvStandardHint =>
+      'प्रकार की वार्षिक सीमा, जब तक व्यक्ति उसे माँगता नहीं।';
+
+  @override
+  String get lvWholeOrHalf =>
+      'पूरे या आधे दिनों की संख्या लिखें, जैसे 12 या 7.5।';
+
+  @override
+  String get sbFrom => 'से';
+
+  @override
+  String get sbTo => 'तक';
+
+  @override
+  String get sbAway => 'अनुपस्थित शिक्षक';
+
+  @override
+  String get sbCover => 'स्थानापन्न';
+
+  @override
+  String get sbNotChosen => 'अभी चुना नहीं गया';
+
+  @override
+  String get sbChoose => 'चुनें';
+
+  @override
+  String get sbChange => 'बदलें';
+
+  @override
+  String get sbRemoveCover => 'स्थानापन्न हटाएँ';
+
+  @override
+  String sbSuggestionsTitle(String slot) {
+    return '$slot कौन संभाल सकता है';
+  }
+
+  @override
+  String sbThisMonth(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'इस महीने $count बार',
+      one: 'इस महीने $count बार',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String sbAssign(String name) {
+    return '$name को चुनें';
+  }
+
+  @override
+  String get sbNoCandidates =>
+      'इस पाठ के लिए कोई खाली और योग्य शिक्षक नहीं है।';
+
+  @override
+  String get sbAssigned => 'स्थानापन्न चुना गया';
+
+  @override
+  String get sbCleared => 'स्थानापन्न हटाया गया';
+
+  @override
+  String get sbNoNeeds =>
+      'इस अवधि में किसी पाठ के लिए स्थानापन्न की प्रतीक्षा नहीं है।';
+
+  @override
+  String get sbHasOwnLesson => 'उस समय उस शिक्षक का अपना पाठ है।';
+
+  @override
+  String get sbOnLeave => 'उस समय वह शिक्षक छुट्टी पर है।';
+
+  @override
+  String get sbAlreadyCovering =>
+      'उस समय वह शिक्षक पहले से दूसरी कक्षा संभाल रहा है।';
+
+  @override
+  String get sbSameAsAbsent =>
+      'जो शिक्षक अनुपस्थित है वह अपना पाठ नहीं संभाल सकता।';
+
+  @override
+  String get sbNoLongerNeeded => 'उस पाठ को अब स्थानापन्न की ज़रूरत नहीं।';
+
+  @override
+  String get sbChanged => 'इस बीच कुछ बदल गया। सूची फिर देखें।';
+
+  @override
+  String get plTitle => 'इस महीने की बिना वेतन छुट्टी';
+
+  @override
+  String get plNote =>
+      'बिना वेतन की स्वीकृत छुट्टी वाले हर व्यक्ति के लिए: मासिक वेतन गुणा दिन, भाग महीने के स्कूल के कार्य दिवस। जब तक एचआर लागू न करे, कुछ नहीं कटता।';
+
+  @override
+  String get plDays => 'बिना वेतन के दिन';
+
+  @override
+  String get plProposed => 'प्रस्तावित कटौती';
+
+  @override
+  String get plApply => 'लागू करें';
+
+  @override
+  String get plAmount => 'कटौती की राशि';
+
+  @override
+  String plApplied(String amount) {
+    return 'लागू: $amount';
+  }
+
+  @override
+  String get plDone => 'कटौती लागू की गई';
+
+  @override
+  String get plNone => 'इस महीने बिना वेतन की कोई स्वीकृत छुट्टी नहीं है।';
+
+  @override
+  String plWithout(String names) {
+    return 'बिना वेतन की छुट्टी है पर इस रन में वेतन पर्ची नहीं: $names';
+  }
+
+  @override
+  String get plAlready => 'यह कटौती पहले ही लागू हो चुकी है।';
+
+  @override
+  String get plAboveGross => 'यह महीने के वेतन से अधिक है।';
+
+  @override
+  String get plNotDraft => 'केवल मसौदा रन बदला जा सकता है।';
+
+  @override
   String get gbViewLabel => 'ग्रेडबुक का दृश्य';
 
   @override

@@ -915,6 +915,361 @@
   "@reportTotal": {
     "description": "Label of the last row, which adds up the columns above it."
   },
+  "sbPeriod": "Period",
+  "@sbPeriod": {
+    "description": "Column heading: the period of the school day."
+  },
+  "lvViewLabel": "Leave view",
+  "@lvViewLabel": {
+    "description": "Screen reader label of the switch between leave requests and leave types."
+  },
+  "lvTabRequests": "Requests",
+  "@lvTabRequests": {
+    "description": "Tab: leave requests."
+  },
+  "lvTabTypes": "Types and allowances",
+  "@lvTabTypes": {
+    "description": "Tab: the kinds of leave and what each person may take."
+  },
+  "lvAll": "All",
+  "@lvAll": {
+    "description": "Filter choice: every status."
+  },
+  "lvStatus": "Status",
+  "@lvStatus": {
+    "description": "Label of the status filter and column."
+  },
+  "lvStatusPENDING": "Pending",
+  "@lvStatusPENDING": {
+    "description": "Leave request status: waiting for the Principal."
+  },
+  "lvStatusAPPROVED": "Approved",
+  "@lvStatusAPPROVED": {
+    "description": "Leave request status: the Principal agreed."
+  },
+  "lvStatusREJECTED": "Rejected",
+  "@lvStatusREJECTED": {
+    "description": "Leave request status: the Principal did not agree."
+  },
+  "lvStatusCANCELLED": "Cancelled",
+  "@lvStatusCANCELLED": {
+    "description": "Leave request status: the person withdrew it."
+  },
+  "lvPerson": "Person",
+  "@lvPerson": {
+    "description": "Column heading: who asked for leave."
+  },
+  "lvType": "Type",
+  "@lvType": {
+    "description": "Column heading: the kind of leave."
+  },
+  "lvDates": "Dates",
+  "@lvDates": {
+    "description": "Column heading: the days of the leave."
+  },
+  "lvDays": "Days",
+  "@lvDays": {
+    "description": "Column heading: how many days."
+  },
+  "lvDecision": "Decision",
+  "@lvDecision": {
+    "description": "Column heading: who decided and when."
+  },
+  "lvHalfMORNING": "morning",
+  "@lvHalfMORNING": {
+    "description": "A half day of leave: the morning."
+  },
+  "lvHalfAFTERNOON": "afternoon",
+  "@lvHalfAFTERNOON": {
+    "description": "A half day of leave: the afternoon."
+  },
+  "lvNoRequests": "There are no leave requests.",
+  "@lvNoRequests": {
+    "description": "Shown when no leave request matches."
+  },
+  "lvApprove": "Approve",
+  "@lvApprove": {
+    "description": "Button: the Principal agrees to a leave request."
+  },
+  "lvReject": "Reject",
+  "@lvReject": {
+    "description": "Button: the Principal does not agree to a leave request."
+  },
+  "lvRejectQuestion": "Reject the leave of {name}?",
+  "@lvRejectQuestion": {
+    "description": "Question before a leave request is rejected.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "lvRejectNote": "Note for the person (optional)",
+  "@lvRejectNote": {
+    "description": "Label of the optional reason given when rejecting."
+  },
+  "lvApproved": "Leave approved",
+  "@lvApproved": {
+    "description": "Confirmation after a request was approved."
+  },
+  "lvRejected": "Leave rejected",
+  "@lvRejected": {
+    "description": "Confirmation after a request was rejected."
+  },
+  "lvNotPending": "This request was already decided.",
+  "@lvNotPending": {
+    "description": "Refusal: the request is no longer waiting."
+  },
+  "lvOverBalance": "That is more than the days left.",
+  "@lvOverBalance": {
+    "description": "Refusal: the leave is more than the person may still take."
+  },
+  "lvOverlap": "That overlaps other leave of the same person.",
+  "@lvOverlap": {
+    "description": "Refusal: the leave overlaps another request."
+  },
+  "lvTypeName": "Name",
+  "@lvTypeName": {
+    "description": "Label of a leave type's name."
+  },
+  "lvPaid": "Paid",
+  "@lvPaid": {
+    "description": "Leave type: the person is paid and the days come from a yearly allowance."
+  },
+  "lvUnpaid": "Unpaid",
+  "@lvUnpaid": {
+    "description": "Leave type: no pay; it proposes a deduction in payroll."
+  },
+  "lvQuota": "Days a year",
+  "@lvQuota": {
+    "description": "Column and field: the yearly allowance of a paid leave type."
+  },
+  "lvAddType": "Add a leave type",
+  "@lvAddType": {
+    "description": "Button and heading: add a kind of leave."
+  },
+  "lvTypeAdded": "Leave type added",
+  "@lvTypeAdded": {
+    "description": "Confirmation after a leave type was added."
+  },
+  "lvIsPaid": "Paid leave (takes days from a yearly allowance)",
+  "@lvIsPaid": {
+    "description": "Checkbox: the leave type is paid."
+  },
+  "lvNoTypes": "There are no leave types yet.",
+  "@lvNoTypes": {
+    "description": "Shown when the school has no leave types."
+  },
+  "lvTypeInUse": "This leave type has requests and cannot be removed.",
+  "@lvTypeInUse": {
+    "description": "Refusal: a leave type with requests cannot be removed."
+  },
+  "lvPaidNeedsQuota": "A paid type needs a number of days a year, whole or half.",
+  "@lvPaidNeedsQuota": {
+    "description": "Refusal: a paid type was given no yearly days."
+  },
+  "lvAllowances": "Allowances",
+  "@lvAllowances": {
+    "description": "Heading of what each person may take in a year."
+  },
+  "lvPickPerson": "Person",
+  "@lvPickPerson": {
+    "description": "Label of the choice of person."
+  },
+  "lvAllowed": "Allowed",
+  "@lvAllowed": {
+    "description": "Column heading: the days a person may take in the year."
+  },
+  "lvRemaining": "Left",
+  "@lvRemaining": {
+    "description": "Column heading: the days a person may still take."
+  },
+  "lvAllowedFor": "Allowed days for {type}",
+  "@lvAllowedFor": {
+    "description": "Label of the field where HR sets a person's yearly days for a type.",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "lvAllowanceSaved": "Allowance saved",
+  "@lvAllowanceSaved": {
+    "description": "Confirmation after an allowance was changed."
+  },
+  "lvBelowTaken": "That is less than the days already taken.",
+  "@lvBelowTaken": {
+    "description": "Refusal: the allowance is below what was taken."
+  },
+  "lvStandardHint": "The yearly allowance of the type, until the person asks for it.",
+  "@lvStandardHint": {
+    "description": "Shown beside an allowance the person has not used yet."
+  },
+  "lvWholeOrHalf": "Use a whole or half number of days, like 12 or 7.5.",
+  "@lvWholeOrHalf": {
+    "description": "Hint under the days field."
+  },
+  "sbFrom": "From",
+  "@sbFrom": {
+    "description": "Label of the first date of the range."
+  },
+  "sbTo": "To",
+  "@sbTo": {
+    "description": "Label of the last date of the range."
+  },
+  "sbAway": "Teacher away",
+  "@sbAway": {
+    "description": "Column heading: the teacher who is on leave."
+  },
+  "sbCover": "Cover",
+  "@sbCover": {
+    "description": "Column heading: who covers the lesson."
+  },
+  "sbNotChosen": "Not chosen yet",
+  "@sbNotChosen": {
+    "description": "Shown when nobody was chosen to cover a lesson."
+  },
+  "sbChoose": "Choose",
+  "@sbChoose": {
+    "description": "Button: choose who covers a lesson."
+  },
+  "sbChange": "Change",
+  "@sbChange": {
+    "description": "Button: choose another cover."
+  },
+  "sbRemoveCover": "Remove cover",
+  "@sbRemoveCover": {
+    "description": "Button: take the cover away from a lesson."
+  },
+  "sbSuggestionsTitle": "Who can cover {slot}",
+  "@sbSuggestionsTitle": {
+    "description": "Heading of the list of teachers who are free and qualified for a lesson.",
+    "placeholders": {
+      "slot": {
+        "type": "String"
+      }
+    }
+  },
+  "sbThisMonth": "{count, plural, one{{count} cover this month} other{{count} covers this month}}",
+  "@sbThisMonth": {
+    "description": "How many times a teacher covered lessons this month.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sbAssign": "Choose {name}",
+  "@sbAssign": {
+    "description": "Button: choose this teacher to cover the lesson.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "sbNoCandidates": "Nobody is free and qualified for this lesson.",
+  "@sbNoCandidates": {
+    "description": "Shown when no teacher can cover the lesson."
+  },
+  "sbAssigned": "Cover chosen",
+  "@sbAssigned": {
+    "description": "Confirmation after a cover was chosen."
+  },
+  "sbCleared": "Cover removed",
+  "@sbCleared": {
+    "description": "Confirmation after a cover was removed."
+  },
+  "sbNoNeeds": "No lessons are waiting for cover in this range.",
+  "@sbNoNeeds": {
+    "description": "Shown when approved leave leaves no lesson uncovered in the range."
+  },
+  "sbHasOwnLesson": "That teacher has a lesson of their own then.",
+  "@sbHasOwnLesson": {
+    "description": "Refusal: the chosen teacher teaches another class then."
+  },
+  "sbOnLeave": "That teacher is on leave then.",
+  "@sbOnLeave": {
+    "description": "Refusal: the chosen teacher is on leave."
+  },
+  "sbAlreadyCovering": "That teacher already covers another class then.",
+  "@sbAlreadyCovering": {
+    "description": "Refusal: the chosen teacher covers another lesson then."
+  },
+  "sbSameAsAbsent": "The teacher who is away cannot cover their own lesson.",
+  "@sbSameAsAbsent": {
+    "description": "Refusal: the absent teacher was chosen."
+  },
+  "sbNoLongerNeeded": "That lesson no longer needs cover.",
+  "@sbNoLongerNeeded": {
+    "description": "Refusal: the leave behind the need was changed."
+  },
+  "sbChanged": "Something changed meanwhile. Look at the list again.",
+  "@sbChanged": {
+    "description": "Refusal: the lesson or the teacher changed while choosing."
+  },
+  "plTitle": "Unpaid leave in this month",
+  "@plTitle": {
+    "description": "Heading of the proposals for unpaid leave in a pay run."
+  },
+  "plNote": "For each person with approved unpaid leave: the monthly pay times the days, divided by the school's working days in the month. Nothing is deducted until HR applies it.",
+  "@plNote": {
+    "description": "Explains the proposals for unpaid leave in a pay run."
+  },
+  "plDays": "Unpaid days",
+  "@plDays": {
+    "description": "Column heading: unpaid days inside the month."
+  },
+  "plProposed": "Proposed deduction",
+  "@plProposed": {
+    "description": "Column heading: the proposed pay deduction."
+  },
+  "plApply": "Apply",
+  "@plApply": {
+    "description": "Button: put the proposal on the payslip as a deduction."
+  },
+  "plAmount": "Amount to deduct",
+  "@plAmount": {
+    "description": "Label of the field where HR may change the proposed amount."
+  },
+  "plApplied": "Applied: {amount}",
+  "@plApplied": {
+    "description": "Shown when the deduction is already on the payslip.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "plDone": "Deduction applied",
+  "@plDone": {
+    "description": "Confirmation after the deduction was put on the payslip."
+  },
+  "plNone": "There is no approved unpaid leave in this month.",
+  "@plNone": {
+    "description": "Shown when there is nothing to propose."
+  },
+  "plWithout": "Unpaid leave but no payslip in this run: {names}",
+  "@plWithout": {
+    "description": "Lists people with unpaid leave who have no payslip in the pay run.",
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "plAlready": "This deduction was already applied.",
+  "@plAlready": {
+    "description": "Refusal: the deduction is already on the payslip."
+  },
+  "plAboveGross": "That is more than the month's pay.",
+  "@plAboveGross": {
+    "description": "Refusal: the amount is above the monthly pay."
+  },
+  "plNotDraft": "Only a draft run can change.",
+  "@plNotDraft": {
+    "description": "Refusal: the run is no longer a draft."
+  },
   "gbViewLabel": "Gradebook view",
   "@gbViewLabel": {
     "description": "Screen reader label of the switch between marks entry, exams and terms, grade bands and report cards."

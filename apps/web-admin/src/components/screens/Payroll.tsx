@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import type { PayrollRunDto, PayrollRunListDto, PayrollRunSummaryDto, PayslipDto } from "@oruschools/api-client";
+import type { PayrollRunDto, PayrollRunListDto, PayrollRunSummaryDto, PayslipDto, ProposalDto, ProposalListDto } from "@oruschools/api-client";
 import { Badge, Banner, Button, Card, EmptyState, StatCard, TextField } from "@oruschools/shared-ui";
 import { errorKey, useSession } from "@oruschools/web-auth";
-import { monthLabel, rupees, shortDate, todayIso } from "@/lib/display";
+import { monthLabel, rupees, rupeesToMinor, shortDate, todayIso } from "@/lib/display";
+import { ruleKey } from "@/lib/rules";
 import { useLoad } from "@/lib/use-load";
 import { DataTable, type Column } from "./DataTable";
 import { saveFile } from "./download";
@@ -20,6 +21,64 @@ export interface PayrollGrants {
   approve: boolean;
   /** The Bursar: paying and deleting a draft. */
   pay: boolean;
+  /** HR: change a draft run, for example apply the deduction proposed for unpaid leave (the payroll update grant). */
+  edit?: boolean;
+}
+
+const PROPOSAL_RULES: Readonly<Record<string, string>> = { alreadyApplied: "plAlready", aboveMonthlyGross: "plAboveGross", notADraft: "plNotDraft", noUnpaidLeave: "plNone", nothingToDeduct: "plNone" };
+
+/** The deduction proposed for each person with approved unpaid leave in the run's month; HR applies one, at the proposed amount or an edited one. Nothing is deducted until then. */
+function LeaveProposals({ runId, status, canApply, onApplied }: { runId: string; status: string; canApply: boolean; onApplied: () => void }) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const { api } = useSession();
+  const [state, reload] = useLoad<ProposalListDto>(api ? () => api.leaveDeductionProposals({ path: { id: runId } }) : null, `proposals-${runId}`);
+  const [typed, setTyped] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState(false);
+  const [note, setNote] = useState<{ tone: "saved" | "error"; text: string } | null>(null);
+  if (state.status === "loading") return null;
+  if (state.status === "error") return <Failed messageKey={state.messageKey} retry={reload} />;
+  const apply = async (p: ProposalDto) => {
+    const edited = typed[p.payslipId];
+    const minor = edited === undefined ? undefined : rupeesToMinor(edited);
+    setBusy(true);
+    setNote(null);
+    try {
+      if (edited !== undefined && minor === null) throw Object.assign(new Error("amount"), { amount: true });
+      await api!.leaveDeductionApply({ path: { id: p.payslipId }, body: minor ? { amountMinor: minor } : {} });
+      setNote({ tone: "saved", text: t("plDone") });
+      onApplied();
+      reload();
+    } catch (e) {
+      setNote({ tone: "error", text: t((e as { amount?: boolean }).amount ? "errorInvalidRequest" : ruleKey(e, PROPOSAL_RULES, errorKey)) });
+    } finally {
+      setBusy(false);
+    }
+  };
+  const columns: Column<ProposalDto>[] = [
+    { key: "who", header: t("lvPerson"), render: (p) => <span>{p.staff.name}<span className="block text-caption text-text-muted">{p.staff.employeeId}</span></span> },
+    { key: "days", header: t("plDays"), numeric: true, render: (p) => p.days },
+    { key: "gross", header: t("payslipGross"), numeric: true, render: (p) => rupees(p.monthlyGrossMinor, locale) },
+    { key: "proposed", header: t("plProposed"), numeric: true, render: (p) => rupees(p.proposedMinor, locale) },
+    { key: "act", header: t("plApply"), render: (p) => p.applied ? <Badge tone="success">{t("plApplied", { amount: rupees(p.applied.amountMinor, locale) })}</Badge> : canApply && status === "DRAFT" ? (
+      <span className="flex flex-wrap items-end gap-2">
+        <TextField size="compact" inputMode="decimal" aria-label={`${t("plAmount")}: ${p.staff.name}`} placeholder={rupees(p.proposedMinor, locale)} value={typed[p.payslipId] ?? ""} onChange={(e) => setTyped({ ...typed, [p.payslipId]: e.target.value })} />
+        <Button size="compact" variant="primary" disabled={busy} aria-label={`${t("plApply")}: ${p.staff.name}`} onClick={() => void apply(p)}>{t("plApply")}</Button>
+      </span>
+    ) : null },
+  ];
+  if (state.data.items.length === 0 && state.data.withoutPayslip.length === 0) return null;
+  return (
+    <Card title={t("plTitle")} headingLevel={2}>
+      <div className="flex flex-col gap-3">
+        <p className="text-caption text-text-muted">{t("plNote")}</p>
+        {note?.tone === "saved" && <Saved>{note.text}</Saved>}
+        {note?.tone === "error" && <Banner tone="danger" title={note.text} />}
+        {state.data.items.length > 0 && <DataTable caption={t("plProposed")} columns={columns} rows={state.data.items} rowKey={(p) => p.payslipId} />}
+        {state.data.withoutPayslip.length > 0 && <p className="text-caption text-text-muted">{t("plWithout", { names: state.data.withoutPayslip.map((p) => p.name).join(", ") })}</p>}
+      </div>
+    </Card>
+  );
 }
 
 type Pending = "approve" | "pay" | "delete" | null;
@@ -136,6 +195,7 @@ function Detail({ id, grants, onBack, onChanged }: { id: string; grants: Payroll
             </ConfirmBox>
           )}
           <DataTable caption={t("navPayroll")} columns={columns} rows={run.payslips} rowKey={(s) => s.id} />
+          <LeaveProposals runId={id} status={run.status} canApply={!!grants.edit} onApplied={() => { reload(); onChanged(); }} />
         </>
       )}
     </div>
