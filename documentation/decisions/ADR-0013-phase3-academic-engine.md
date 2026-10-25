@@ -1,6 +1,6 @@
 # ADR-0013: Phase 3 product decisions (timetable, attendance, exams, substitution)
 
-- **Status:** Accepted (2026-10-26), owner answers to four questions (decisions 1 to 4); decisions 5 to 9 are defaults proposed by the build and take effect unless the owner changes them
+- **Status:** Accepted (2026-10-26), owner answers to four questions (decisions 1 to 4) and four follow-up questions (decisions 10 to 13); decisions 5 to 9 are defaults proposed by the build and take effect unless the owner changes them
 - **Builds on:** ADR-0004 (money), ADR-0005 (no dark mode), ADR-0006 (languages), ADR-0007 (roles), ADR-0008 (gateway), ADR-0012 (Phase 2)
 
 ## Decided by the owner
@@ -15,6 +15,12 @@
 7. **Leave needs the Principal, in the database too.** A leave request becomes approved only by the approve action and only by an active Principal (checked in the same transaction, as for payroll). No other route reaches APPROVED. HR manages leave types and balances and can never approve; the Bursar can read leave to prepare payroll (matrix, ADR-0007). Approval takes the days from the balance in the same transaction.
 8. **Unpaid leave raises both alerts** (guardrail section 4): the substitution board gets the affected slots, and the payroll run for the month gets a **proposed deduction line** per person (working days of unpaid leave times the person's monthly gross divided by the school's working days of that month, rounded down to the paisa; shown as an editable line, never applied silently). Both are in-app notifications in Phase 3.
 9. **Notifications are an in-app inbox in Phase 3.** Push (FCM) needs the mobile apps' device tokens, so the sender interface and templates are built now and the FCM adapter ships with the apps (Phase 4); SMS stays behind the same interface until a provider is chosen. **The full sync engine is Phase 4**; Phase 3 delivers the server pieces it needs (idempotent client-supplied ids on attendance and mark submission, tombstones where records can be removed) and the written conflict rules (`modules/offline-sync.md`).
+
+## Decided by the owner, second round (2026-10-26)
+10. **The unpaid-leave cut per day is the person's monthly gross pay divided by the school's working days of that month** (decision 8's rule, confirmed). HR can edit the proposed amount before the payroll run is approved.
+11. **Half days of leave are allowed** (morning or afternoon). A half day uses half a day of the leave balance and, if unpaid, half the cut.
+12. **A new school is offered a starting set of grade bands** (a template such as 90 and above A1 down to below 33 E) that it can edit or replace. Nothing is forced and an empty set is allowed.
+13. **No real pilot timetable yet.** The editor is built and tested against made-up data (the demo school); a real timetable can be added later as a test case.
 
 ## Consequences
 - The Phase 0 tables `ClassSchedule`, `LeaveRequest` and `Exam` carry no feature and are replaced (a DROP on deploy, as `Payroll` was). **The `LeaveStatus` enum is not extended**: a new enum is created for the new table, because Postgres refuses to use a value added in the same deploy (`documentation/environment.md`).

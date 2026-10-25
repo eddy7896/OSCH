@@ -98,9 +98,10 @@ graph TD
 | Enum and schema changes on tables that exist | new enums and new tables; DROP of the three stubs on deploy; `sql:diff` read before deploying |
 | Scope size (the phase is larger than Phase 2) | vertical slices: data, gateway, tests, screens per task; the solver (P3-3b) and FCM are deferred |
 
-## 6. Open items for the owner (none block P3-1)
-1. **Unpaid-leave deduction rule** (ADR-0013 decision 8): the proposed default is monthly gross divided by the working days of the month. Tell me if your schools use 30 days or another rule.
-2. **Half-day leave**: the plan allows half days; say if schools here do not use them.
-3. **Grade band template**: a preset such as "percentage bands A to E" can seed a new school; tell me if you want one and what it should say.
-4. **A real timetable and bell schedule** from a pilot school (even a photo) would test the editor against reality before it is built.
+## 6. Open items for the owner
+Answered 2026-10-26 (ADR-0013 decisions 10 to 13); nothing blocks the build.
+1. ~~Unpaid-leave deduction rule~~ **decided:** monthly gross divided by the school's working days of that month; HR can edit the proposal.
+2. ~~Half-day leave~~ **decided:** allowed.
+3. ~~Grade band template~~ **decided:** a starting set is offered and is editable. (The exact starting values are mine to propose when P3-5 is built; the owner reviews them on the screen.)
+4. ~~A real timetable~~ **decided:** none yet; made-up data first. A real one can be added as a test case at any time.
 5. **Firebase Cloud Messaging project** is needed in Phase 4, not now; the owner can create it any time.
