@@ -68,12 +68,13 @@ const InvoiceStatus = {
 }
 exports.InvoiceStatus = InvoiceStatus;
 
-const LeaveStatus = {
+const LeaveRequestStatus = {
   PENDING: "PENDING",
   APPROVED: "APPROVED",
   REJECTED: "REJECTED",
+  CANCELLED: "CANCELLED",
 }
-exports.LeaveStatus = LeaveStatus;
+exports.LeaveRequestStatus = LeaveRequestStatus;
 
 const MembershipStatus = {
   ACTIVE: "ACTIVE",
@@ -189,20 +190,6 @@ function createSchoolMember(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('CreateSchoolMember', inputVars, inputOpts);
 }
 exports.createSchoolMember = createSchoolMember;
-
-function createLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateLeaveRequest', inputVars, inputOpts);
-}
-exports.createLeaveRequest = createLeaveRequest;
-
-function updateLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('UpdateLeaveRequest', inputVars, inputOpts);
-}
-exports.updateLeaveRequest = updateLeaveRequest;
 
 function createAuditLog(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -988,19 +975,82 @@ function finishMarkEntry(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.finishMarkEntry = finishMarkEntry;
 
+function createLeaveType(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateLeaveType', inputVars, inputOpts);
+}
+exports.createLeaveType = createLeaveType;
+
+function updateLeaveType(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateLeaveType', inputVars, inputOpts);
+}
+exports.updateLeaveType = updateLeaveType;
+
+function deleteLeaveType(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteLeaveType', inputVars, inputOpts);
+}
+exports.deleteLeaveType = deleteLeaveType;
+
+function createLeaveBalance(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateLeaveBalance', inputVars, inputOpts);
+}
+exports.createLeaveBalance = createLeaveBalance;
+
+function setLeaveBalance(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetLeaveBalance', inputVars, inputOpts);
+}
+exports.setLeaveBalance = setLeaveBalance;
+
+function createLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateLeaveRequest', inputVars, inputOpts);
+}
+exports.createLeaveRequest = createLeaveRequest;
+
+function cancelLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CancelLeaveRequest', inputVars, inputOpts);
+}
+exports.cancelLeaveRequest = cancelLeaveRequest;
+
+function approveLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ApproveLeaveRequest', inputVars, inputOpts);
+}
+exports.approveLeaveRequest = approveLeaveRequest;
+
+function approveUnpaidLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ApproveUnpaidLeaveRequest', inputVars, inputOpts);
+}
+exports.approveUnpaidLeaveRequest = approveUnpaidLeaveRequest;
+
+function rejectLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RejectLeaveRequest', inputVars, inputOpts);
+}
+exports.rejectLeaveRequest = rejectLeaveRequest;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeQuery('ListStaff', inputVars, inputOpts);
 }
 exports.listStaff = listStaff;
-
-function listLeaveRequests(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListLeaveRequests', inputVars, inputOpts);
-}
-exports.listLeaveRequests = listLeaveRequests;
 
 function getUser(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -1645,4 +1695,39 @@ function marksOfStudentInTerm(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('MarksOfStudentInTerm', inputVars, inputOpts);
 }
 exports.marksOfStudentInTerm = marksOfStudentInTerm;
+
+function listLeaveTypes(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListLeaveTypes', inputVars, inputOpts);
+}
+exports.listLeaveTypes = listLeaveTypes;
+
+function countLeaveOfType(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountLeaveOfType', inputVars, inputOpts);
+}
+exports.countLeaveOfType = countLeaveOfType;
+
+function listLeaveBalances(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListLeaveBalances', inputVars, inputOpts);
+}
+exports.listLeaveBalances = listLeaveBalances;
+
+function listLeaveRequests(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListLeaveRequests', inputVars, inputOpts);
+}
+exports.listLeaveRequests = listLeaveRequests;
+
+function getLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetLeaveRequest', inputVars, inputOpts);
+}
+exports.getLeaveRequest = getLeaveRequest;
 

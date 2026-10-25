@@ -2,5 +2,5 @@ export { DATABASE, DatabaseModule, FIREBASE_APP_NAME, createDatabase, type Datab
 export { DatabaseError, mapDataConnectError, type DatabaseErrorKind } from './errors.js';
 export { bindOperations, type Operations } from './operations.js';
 // Enums and variable/data types of the generated SDK, for callers that build operation arguments.
-export { AcademicYearStatus, GlobalRole, InvoiceStatus, LeaveStatus, PayrollRunStatus, SalaryLineKind, SchoolRole } from '@oruschools/erp-admin-sdk';
+export { AcademicYearStatus, GlobalRole, InvoiceStatus, LeaveRequestStatus, PayrollRunStatus, SalaryLineKind, SchoolRole } from '@oruschools/erp-admin-sdk';
 export type { Int64String, UUIDString, DateString, TimestampString } from '@oruschools/erp-admin-sdk';

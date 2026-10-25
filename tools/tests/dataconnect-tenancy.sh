@@ -46,12 +46,6 @@ out=$(run "$Q" ListInvoices --vars "{\"schoolId\":\"$A\",\"limit\":50,\"offset\"
 out=$(run "$Q" ListInvoices --vars "{\"schoolId\":\"$B\",\"limit\":50,\"offset\":0}"); check_lacks "B sees none of A's invoices" "$out" "amountMinor"
 out=$(run "$M" CreateInvoice --vars "{\"schoolId\":\"$A\",\"id\":\"$(uid)\",\"title\":\"Fee\",\"actorId\":\"u-$TAG\",\"studentId\":\"00000000-0000-4000-8000-000000000000\",\"amountMinor\":\"1\",\"dueDate\":\"2026-11-01\"}"); check_rejected "invoice for a non-existent student is ABORTED" "$out" "ABORTED"
 
-out=$(run "$M" CreateLeaveRequest --vars "{\"schoolId\":\"$A\",\"userId\":\"u-$TAG\",\"startDate\":\"2026-11-02\",\"endDate\":\"2026-11-03\",\"reason\":\"x\"}"); check_ok "create leave in A" "$out"
-out=$(run "$Q" ListLeaveRequests --vars "{\"schoolId\":\"$A\"}"); LID=$(first_id "$out"); check_has "leave defaults to PENDING" "$out" "PENDING"
-run "$M" UpdateLeaveRequest --vars "{\"schoolId\":\"$B\",\"id\":\"$LID\",\"status\":\"APPROVED\"}" >/dev/null
-out=$(run "$Q" ListLeaveRequests --vars "{\"schoolId\":\"$A\"}"); check_has "cross-tenant leave update had NO effect" "$out" "PENDING"; check_lacks "cross-tenant leave NOT approved" "$out" "APPROVED"
-run "$M" UpdateLeaveRequest --vars "{\"schoolId\":\"$A\",\"id\":\"$LID\",\"status\":\"APPROVED\"}" >/dev/null
-out=$(run "$Q" ListLeaveRequests --vars "{\"schoolId\":\"$A\"}"); check_has "same-tenant leave update applied" "$out" "APPROVED"
 
 out=$(run "$M" CreateAuditLog --vars "{\"actorId\":\"u-$TAG\",\"action\":\"school.create\",\"entityType\":\"School\",\"entityId\":\"$A\",\"details\":{\"note\":\"platform action\"}}"); check_ok "audit log accepts a null school (platform action)" "$out"
 out=$(run "$M" CreateAuditLog --vars "{\"schoolId\":\"$A\",\"actorId\":\"u-$TAG\",\"action\":\"invoice.create\",\"entityType\":\"Invoice\"}"); check_ok "audit log accepts a school-scoped entry" "$out"
@@ -70,11 +64,6 @@ CA=$(uid); out=$(run "$M" CreateClassroom --vars "{\"schoolId\":\"$A\",\"id\":\"
 CB=$(uid); out=$(run "$M" CreateClassroom --vars "{\"schoolId\":\"$B\",\"id\":\"$CB\",\"gradeLevelId\":\"$GLB\",\"section\":\"A\",\"name\":\"ClassB-$TAG\",\"capacity\":30,\"actorId\":\"$UB\"}"); check_ok "classroom in B" "$out"
 SA=$(uid); out=$(run "$M" CreateSubject --vars "{\"schoolId\":\"$A\",\"id\":\"$SA\",\"name\":\"SubjA-$TAG\",\"code\":\"SA\",\"actorId\":\"u-$TAG\"}"); check_ok "subject in A" "$out"
 SB=$(uid); out=$(run "$M" CreateSubject --vars "{\"schoolId\":\"$B\",\"id\":\"$SB\",\"name\":\"SubjB-$TAG\",\"code\":\"SB\",\"actorId\":\"$UB\"}"); check_ok "subject in B" "$out"
-out=$(run "$M" CreateLeaveRequest --vars "{\"schoolId\":\"$A\",\"userId\":\"$UB\",\"startDate\":\"2026-11-05\",\"endDate\":\"2026-11-06\"}"); check_rejected "leave request for a non-member is ABORTED" "$out" "ABORTED"
-out=$(run "$M" UpdateLeaveRequest --vars "{\"schoolId\":\"$A\",\"id\":\"$LID\",\"status\":\"APPROVED\",\"substituteId\":\"$UB\"}"); check_rejected "substitute from another school is ABORTED" "$out" "ABORTED"
-out=$(run "$Q" ListLeaveRequests --vars "{\"schoolId\":\"$A\"}"); check_lacks "B user's email never attached as substitute" "$out" "ub$TAG@example.com"
-out=$(run "$M" UpdateLeaveRequest --vars "{\"schoolId\":\"$A\",\"id\":\"$LID\",\"status\":\"APPROVED\",\"substituteId\":\"u-$TAG\"}"); check_ok "substitute who is a member of A is accepted" "$out"
-out=$(run "$M" UpdateLeaveRequest --vars "{\"schoolId\":\"$A\",\"id\":\"$LID\",\"status\":\"REJECTED\"}"); check_ok "no substitute (null) is still allowed" "$out"
 
 # ---- Every role in packages/rbac is a valid SchoolRole value (schema enum == rbac ROLES), and junk is rejected. ----
 for R in PRINCIPAL MANAGEMENT BURSAR ACADEMIC_ADMIN SYSTEM_ADMIN HR_MANAGER ACCOUNTANT ADMISSIONS_OFFICER TRANSPORT_MANAGER OPERATIONS_MANAGER TEACHER STAFF DRIVER PARENT; do

@@ -11,19 +11,6 @@ query ListStaff($schoolId: UUID!) @auth(level: NO_ACCESS) {
   }
 }
 
-# Academic: Get Leave Requests
-query ListLeaveRequests($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  leaveRequests(where: {schoolId: {eq: $schoolId}}) {
-    id
-    startDate
-    endDate
-    reason
-    status
-    user { email }
-    substitute { email }
-  }
-}
-
 # ---- Phase 1: identity, tenancy, platform and audit reads. Gateway-only (NO_ACCESS). ----
 
 # Identity sync / profile. $id is the Firebase UID from the VERIFIED token. Users are global, so this has no school.
@@ -548,4 +535,33 @@ query CountExamsOfTerm($schoolId: UUID!, $termId: UUID!) @auth(level: NO_ACCESS)
 
 query MarksOfStudentInTerm($schoolId: UUID!, $studentId: UUID!, $termId: UUID!) @auth(level: NO_ACCESS) {
   marks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, exam: {termId: {eq: $termId}}}, limit: 500) { examId tenths absent }
+}
+
+# ---- Leave (P3-6)
+query ListLeaveTypes($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  leaveTypes(where: {schoolId: {eq: $schoolId}}, orderBy: [{name: ASC}], limit: 100) { id name paid quotaHalfDays }
+}
+
+query CountLeaveOfType($schoolId: UUID!, $leaveTypeId: UUID!) @auth(level: NO_ACCESS) {
+  leaveRequests(where: {schoolId: {eq: $schoolId}, leaveTypeId: {eq: $leaveTypeId}}) { _count }
+}
+
+query ListLeaveBalances($schoolId: UUID!, $staffId: UUID, $academicYearId: UUID) @auth(level: NO_ACCESS) {
+  leaveBalances(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, academicYearId: {eq: $academicYearId}}, limit: 1000) {
+    id staffId academicYearId allowedHalfDays remainingHalfDays leaveType { id name paid }
+  }
+}
+
+query ListLeaveRequests($schoolId: UUID!, $staffId: UUID, $status: LeaveRequestStatus, $from: Date, $to: Date) @auth(level: NO_ACCESS) {
+  leaveRequests(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: $status}, startDate: {le: $to}, endDate: {ge: $from}}, orderBy: [{startDate: DESC}, {createdAt: DESC}], limit: 500) {
+    id startDate endDate half halfDays reason status decisionNote decidedAt createdAt
+    staff { id employeeId firstName lastName userId } leaveType { id name paid } decidedBy { id displayName email }
+  }
+}
+
+query GetLeaveRequest($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  leaveRequests(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id startDate endDate half halfDays reason status decisionNote decidedAt createdAt
+    staff { id employeeId firstName lastName userId } leaveType { id name paid quotaHalfDays } decidedBy { id displayName email }
+  }
 }

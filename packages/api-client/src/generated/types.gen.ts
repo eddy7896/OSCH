@@ -150,6 +150,19 @@ export type ApplyTemplateDto = {
     template: 'STANDARD' | 'SHORT_DAY';
 };
 
+export type BalanceDto = {
+    academicYearId: string;
+    allowedDays: string;
+    recorded: boolean;
+    remainingDays: string;
+    staffId: string;
+    type: TypeRefDto;
+};
+
+export type BalanceListDto = {
+    items: Array<BalanceDto>;
+};
+
 export type BandDto = {
     label: string;
     maxPercent: number;
@@ -378,6 +391,14 @@ export type CreatePeriodDto = {
     startTime: string;
 };
 
+export type CreateRequestDto = {
+    endDate: string;
+    half?: 'MORNING' | 'AFTERNOON';
+    leaveTypeId: string;
+    reason?: string;
+    startDate: string;
+};
+
 export type CreateSalaryLineDto = {
     amountMinor: string;
     kind: 'EARNING' | 'DEDUCTION';
@@ -445,6 +466,12 @@ export type CreateTermDto = {
     name: string;
 };
 
+export type CreateTypeDto = {
+    name: string;
+    paid: boolean;
+    quotaDays?: string;
+};
+
 export type CreatedInvitationDto = {
     acceptedAt: string | null;
     createdAt: string;
@@ -480,6 +507,12 @@ export type DayTotalDto = {
 export type DecideApplicationDto = {
     note?: string;
     status: 'UNDER_REVIEW' | 'ACCEPTED' | 'REJECTED' | 'WITHDRAWN';
+};
+
+export type DecisionDto = {
+    at: string;
+    by: string;
+    note: string | null;
 };
 
 export type DepartmentTotalDto = {
@@ -798,6 +831,35 @@ export type InvoiceTotalsDto = {
     count: number;
     outstandingMinor: string;
     paidMinor: string;
+};
+
+export type LeaveRequestDto = {
+    createdAt: string;
+    days: string;
+    decision: DecisionDto | null;
+    endDate: string;
+    half: string | null;
+    id: string;
+    reason: string | null;
+    staff: StaffRefDto;
+    startDate: string;
+    status: string;
+    type: TypeRefDto;
+};
+
+export type LeaveRequestListDto = {
+    items: Array<LeaveRequestDto>;
+};
+
+export type LeaveTypeDto = {
+    id: string;
+    name: string;
+    paid: boolean;
+    quotaDays: string;
+};
+
+export type LeaveTypeListDto = {
+    items: Array<LeaveTypeDto>;
 };
 
 export type LinkParentDto = {
@@ -1159,6 +1221,10 @@ export type RefDto = {
     name: string;
 };
 
+export type RejectDto = {
+    note?: string;
+};
+
 export type ReportCardDto = {
     academicYearId: string;
     class: RefDto;
@@ -1282,6 +1348,11 @@ export type SchoolProfileDto = {
 
 export type SchoolStatusDto = {
     reason?: string;
+};
+
+export type SetBalanceDto = {
+    academicYearId?: string;
+    allowedDays: string;
 };
 
 export type SetBandsDto = {
@@ -1630,6 +1701,12 @@ export type TimetableSubjectDto = {
     name: string;
 };
 
+export type TypeRefDto = {
+    id: string;
+    name: string;
+    paid: boolean;
+};
+
 export type UpdateAcademicYearDto = {
     endDate?: string;
     name?: string;
@@ -1758,6 +1835,11 @@ export type UpdateSubjectDto = {
 
 export type UpdateTermDto = {
     name: string;
+};
+
+export type UpdateTypeDto = {
+    name?: string;
+    quotaDays?: string;
 };
 
 export type UploadTicketDto = {
@@ -6442,6 +6524,469 @@ export type InvitationsRevokeResponses = {
 };
 
 export type InvitationsRevokeResponse = InvitationsRevokeResponses[keyof InvitationsRevokeResponses];
+
+export type LeaveBalancesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        staffId?: string;
+        academicYearId?: string;
+    };
+    url: '/v1/leave/balances';
+};
+
+export type LeaveBalancesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveBalancesError = LeaveBalancesErrors[keyof LeaveBalancesErrors];
+
+export type LeaveBalancesResponses = {
+    200: BalanceListDto;
+};
+
+export type LeaveBalancesResponse = LeaveBalancesResponses[keyof LeaveBalancesResponses];
+
+export type LeaveSetBalanceData = {
+    body: SetBalanceDto;
+    path: {
+        staffId: string;
+        typeId: string;
+    };
+    query?: never;
+    url: '/v1/leave/balances/{staffId}/{typeId}';
+};
+
+export type LeaveSetBalanceErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveSetBalanceError = LeaveSetBalanceErrors[keyof LeaveSetBalanceErrors];
+
+export type LeaveSetBalanceResponses = {
+    200: BalanceListDto;
+};
+
+export type LeaveSetBalanceResponse = LeaveSetBalanceResponses[keyof LeaveSetBalanceResponses];
+
+export type LeaveRequestsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        status?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+        staffId?: string;
+        from?: string;
+        to?: string;
+    };
+    url: '/v1/leave/requests';
+};
+
+export type LeaveRequestsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveRequestsError = LeaveRequestsErrors[keyof LeaveRequestsErrors];
+
+export type LeaveRequestsResponses = {
+    200: LeaveRequestListDto;
+};
+
+export type LeaveRequestsResponse = LeaveRequestsResponses[keyof LeaveRequestsResponses];
+
+export type LeaveCreateData = {
+    body: CreateRequestDto;
+    path?: never;
+    query?: never;
+    url: '/v1/leave/requests';
+};
+
+export type LeaveCreateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveCreateError = LeaveCreateErrors[keyof LeaveCreateErrors];
+
+export type LeaveCreateResponses = {
+    201: LeaveRequestDto;
+};
+
+export type LeaveCreateResponse = LeaveCreateResponses[keyof LeaveCreateResponses];
+
+export type LeaveApproveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/leave/requests/{id}/approve';
+};
+
+export type LeaveApproveErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveApproveError = LeaveApproveErrors[keyof LeaveApproveErrors];
+
+export type LeaveApproveResponses = {
+    200: LeaveRequestDto;
+};
+
+export type LeaveApproveResponse = LeaveApproveResponses[keyof LeaveApproveResponses];
+
+export type LeaveCancelData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/leave/requests/{id}/cancel';
+};
+
+export type LeaveCancelErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveCancelError = LeaveCancelErrors[keyof LeaveCancelErrors];
+
+export type LeaveCancelResponses = {
+    200: LeaveRequestDto;
+};
+
+export type LeaveCancelResponse = LeaveCancelResponses[keyof LeaveCancelResponses];
+
+export type LeaveRejectData = {
+    body: RejectDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/leave/requests/{id}/reject';
+};
+
+export type LeaveRejectErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveRejectError = LeaveRejectErrors[keyof LeaveRejectErrors];
+
+export type LeaveRejectResponses = {
+    200: LeaveRequestDto;
+};
+
+export type LeaveRejectResponse = LeaveRejectResponses[keyof LeaveRejectResponses];
+
+export type LeaveTypesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/leave/types';
+};
+
+export type LeaveTypesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveTypesError = LeaveTypesErrors[keyof LeaveTypesErrors];
+
+export type LeaveTypesResponses = {
+    200: LeaveTypeListDto;
+};
+
+export type LeaveTypesResponse = LeaveTypesResponses[keyof LeaveTypesResponses];
+
+export type LeaveCreateTypeData = {
+    body: CreateTypeDto;
+    path?: never;
+    query?: never;
+    url: '/v1/leave/types';
+};
+
+export type LeaveCreateTypeErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveCreateTypeError = LeaveCreateTypeErrors[keyof LeaveCreateTypeErrors];
+
+export type LeaveCreateTypeResponses = {
+    201: LeaveTypeDto;
+};
+
+export type LeaveCreateTypeResponse = LeaveCreateTypeResponses[keyof LeaveCreateTypeResponses];
+
+export type LeaveDeleteTypeData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/leave/types/{id}';
+};
+
+export type LeaveDeleteTypeErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveDeleteTypeError = LeaveDeleteTypeErrors[keyof LeaveDeleteTypeErrors];
+
+export type LeaveDeleteTypeResponses = {
+    204: void;
+};
+
+export type LeaveDeleteTypeResponse = LeaveDeleteTypeResponses[keyof LeaveDeleteTypeResponses];
+
+export type LeaveUpdateTypeData = {
+    body: UpdateTypeDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/leave/types/{id}';
+};
+
+export type LeaveUpdateTypeErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveUpdateTypeError = LeaveUpdateTypeErrors[keyof LeaveUpdateTypeErrors];
+
+export type LeaveUpdateTypeResponses = {
+    200: LeaveTypeDto;
+};
+
+export type LeaveUpdateTypeResponse = LeaveUpdateTypeResponses[keyof LeaveUpdateTypeResponses];
 
 export type MeGetData = {
     body?: never;

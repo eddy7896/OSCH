@@ -14,6 +14,7 @@ enum SubscriptionStatus { ACTIVE TRIAL SUSPENDED }
 enum AcademicYearStatus { PLANNED ACTIVE ARCHIVED }
 enum InvoiceStatus { PENDING PAID OVERDUE }
 enum LeaveStatus { PENDING APPROVED REJECTED }
+enum LeaveRequestStatus { PENDING APPROVED REJECTED CANCELLED } # a new enum, not LeaveStatus + CANCELLED: Postgres refuses to use an enum value added in the same deploy
 enum MembershipStatus { ACTIVE SUSPENDED }
 enum InvitationStatus { PENDING ACCEPTED REVOKED }
 
@@ -477,16 +478,41 @@ type TimetableEntry @table @unique(fields: ["academicYear", "classroom", "day", 
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
-# HR/Academic: Leave Request
+# Leave (P3-6, ADR-0013). Days are counted in HALF-DAYS (a whole day is 2), so a half day of leave needs no fractions. Replaces the Phase 0 stub `LeaveRequest`.
+type LeaveType @table @unique(fields: ["school", "name"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  name: String!
+  paid: Boolean! # unpaid leave takes nothing from a balance and raises a payroll deduction proposal (P3-8)
+  quotaHalfDays: Int! # yearly allowance of a paid type, in half-days; ignored for an unpaid type
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# What a member of staff may still take of a paid type in one academic year. Made from the type's quota at the first request; HR can change the allowance.
+type LeaveBalance @table @unique(fields: ["staff", "leaveType", "academicYear"]) {
+  id: UUID! # derived from staff, type and year
+  school: School!
+  staff: StaffProfile!
+  leaveType: LeaveType!
+  academicYear: AcademicYear!
+  allowedHalfDays: Int!
+  remainingHalfDays: Int!
+}
+
 type LeaveRequest @table {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
-  user: User! # The person taking leave
+  staff: StaffProfile!
+  leaveType: LeaveType!
   startDate: Date!
   endDate: Date!
+  half: String # MORNING or AFTERNOON for a half day (then start and end are the same day); null otherwise
+  halfDays: Int! # how much leave this is, in half-days, counting only the school's working days
   reason: String
-  status: LeaveStatus! @default(value: PENDING)
-  substitute: User # Nullable, assigned if approved
+  status: LeaveRequestStatus! @default(value: PENDING)
+  decidedBy: User # the Principal who approved or rejected
+  decidedAt: Timestamp
+  decisionNote: String
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
