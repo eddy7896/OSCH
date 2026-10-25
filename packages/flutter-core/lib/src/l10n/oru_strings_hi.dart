@@ -713,6 +713,179 @@ class OruStringsHi extends OruStrings {
   String get reportTotal => 'कुल';
 
   @override
+  String ttRemoveQuestion(String name) {
+    return '$name हटाएँ?';
+  }
+
+  @override
+  String get navTimetable => 'समय-सारणी';
+
+  @override
+  String get ttViewLabel => 'समय-सारणी का दृश्य';
+
+  @override
+  String get ttTabClass => 'कक्षा के अनुसार';
+
+  @override
+  String get ttTabTeacher => 'शिक्षक के अनुसार';
+
+  @override
+  String get ttTabSchedule => 'घंटी का समय';
+
+  @override
+  String get ttPickTeacher => 'शिक्षक';
+
+  @override
+  String get ttSubject => 'विषय';
+
+  @override
+  String get ttNoYearTitle => 'कोई शैक्षणिक वर्ष चालू नहीं है';
+
+  @override
+  String get ttNoYearBody => 'पहले एक शैक्षणिक वर्ष चालू करें।';
+
+  @override
+  String get ttNoClasses => 'अभी कोई कक्षा नहीं है।';
+
+  @override
+  String get ttNoTeachers => 'अभी कोई शिक्षक नहीं है।';
+
+  @override
+  String get ttNoPeriodsTitle => 'अभी कोई कालांश नहीं है';
+
+  @override
+  String get ttNoPeriodsBody =>
+      'मानक दिन या छोटे दिन से शुरू करें, या कालांश एक-एक करके जोड़ें।';
+
+  @override
+  String get ttEmptyCell => 'खाली';
+
+  @override
+  String get ttBreak => 'विराम';
+
+  @override
+  String ttEditorTitle(String slot) {
+    return '$slot का पाठ';
+  }
+
+  @override
+  String get ttSetLesson => 'पाठ तय करें';
+
+  @override
+  String get ttClearLesson => 'पाठ हटाएँ';
+
+  @override
+  String get ttSaved => 'पाठ सहेजा गया';
+
+  @override
+  String get ttCleared => 'पाठ हटाया गया';
+
+  @override
+  String get ttClassBusy => 'इस कक्षा में उस समय पहले से पाठ है।';
+
+  @override
+  String get ttTeacherBusy => 'ये शिक्षक उस समय दूसरी कक्षा में पढ़ा रहे हैं।';
+
+  @override
+  String get ttTeacherNotSubject => 'ये शिक्षक यह विषय नहीं पढ़ाते।';
+
+  @override
+  String get ttNotWorkingDay => 'स्कूल उस दिन काम नहीं करता।';
+
+  @override
+  String get ttPeriodInUse =>
+      'जिस कालांश में पाठ हैं, उसे हटाया नहीं जा सकता और न ही विराम बनाया जा सकता है।';
+
+  @override
+  String get ttPeriodOverlaps => 'यह समय किसी दूसरे कालांश से टकराता है।';
+
+  @override
+  String get ttPeriodLabelTaken => 'किसी दूसरे कालांश का यही नाम है।';
+
+  @override
+  String get ttPeriodStartTaken => 'किसी दूसरे कालांश का यही आरंभ समय है।';
+
+  @override
+  String get ttPeriodEnd => 'अंत का समय आरंभ के बाद होना चाहिए।';
+
+  @override
+  String get ttPeriodTime => 'समय इस तरह लिखें: 08:30।';
+
+  @override
+  String get ttLoadTitle => 'प्रति सप्ताह पाठ';
+
+  @override
+  String ttLoadCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count पाठ',
+      one: '$count पाठ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ttNoLoad => 'अभी कोई पाठ नहीं रखा गया है।';
+
+  @override
+  String get ttWorkingDays => 'कार्य दिवस';
+
+  @override
+  String get ttDaysSaved => 'कार्य दिवस सहेजे गए';
+
+  @override
+  String get ttPeriodName => 'नाम';
+
+  @override
+  String get ttStarts => 'आरंभ';
+
+  @override
+  String get ttEnds => 'अंत';
+
+  @override
+  String get ttNumber => 'क्र.';
+
+  @override
+  String get ttIsBreak => 'यह विराम है: इसमें कुछ नहीं पढ़ाया जाता';
+
+  @override
+  String get ttAddPeriod => 'कालांश जोड़ें';
+
+  @override
+  String get ttPeriodAdded => 'कालांश जोड़ा गया';
+
+  @override
+  String get ttStandard => 'मानक दिन से शुरू करें';
+
+  @override
+  String get ttShort => 'छोटे दिन से शुरू करें';
+
+  @override
+  String get ttTemplateApplied => 'घंटी का समय बन गया';
+
+  @override
+  String get ttDayMON => 'सोम';
+
+  @override
+  String get ttDayTUE => 'मंगल';
+
+  @override
+  String get ttDayWED => 'बुध';
+
+  @override
+  String get ttDayTHU => 'गुरु';
+
+  @override
+  String get ttDayFRI => 'शुक्र';
+
+  @override
+  String get ttDaySAT => 'शनि';
+
+  @override
+  String get ttDaySUN => 'रवि';
+
+  @override
   String get notifLeaveRequestedTitle => 'निर्णय के लिए छुट्टी';
 
   @override

@@ -714,6 +714,181 @@ class OruStringsGu extends OruStrings {
   String get reportTotal => 'Total';
 
   @override
+  String ttRemoveQuestion(String name) {
+    return 'Remove $name?';
+  }
+
+  @override
+  String get navTimetable => 'Timetable';
+
+  @override
+  String get ttViewLabel => 'Timetable view';
+
+  @override
+  String get ttTabClass => 'By class';
+
+  @override
+  String get ttTabTeacher => 'By teacher';
+
+  @override
+  String get ttTabSchedule => 'Bell schedule';
+
+  @override
+  String get ttPickTeacher => 'Teacher';
+
+  @override
+  String get ttSubject => 'Subject';
+
+  @override
+  String get ttNoYearTitle => 'There is no active academic year';
+
+  @override
+  String get ttNoYearBody => 'Make an academic year active first.';
+
+  @override
+  String get ttNoClasses => 'There are no classes yet.';
+
+  @override
+  String get ttNoTeachers => 'There are no teachers yet.';
+
+  @override
+  String get ttNoPeriodsTitle => 'There are no periods yet';
+
+  @override
+  String get ttNoPeriodsBody =>
+      'Start from a standard day or a short day, or add periods one by one.';
+
+  @override
+  String get ttEmptyCell => 'Free';
+
+  @override
+  String get ttBreak => 'Break';
+
+  @override
+  String ttEditorTitle(String slot) {
+    return 'Lesson on $slot';
+  }
+
+  @override
+  String get ttSetLesson => 'Set lesson';
+
+  @override
+  String get ttClearLesson => 'Clear lesson';
+
+  @override
+  String get ttSaved => 'Lesson saved';
+
+  @override
+  String get ttCleared => 'Lesson cleared';
+
+  @override
+  String get ttClassBusy => 'This class already has a lesson then.';
+
+  @override
+  String get ttTeacherBusy =>
+      'This teacher is already teaching another class then.';
+
+  @override
+  String get ttTeacherNotSubject => 'This teacher does not teach that subject.';
+
+  @override
+  String get ttNotWorkingDay => 'The school does not work on that day.';
+
+  @override
+  String get ttPeriodInUse =>
+      'A period that has lessons in it cannot be removed or made a break.';
+
+  @override
+  String get ttPeriodOverlaps => 'That time overlaps another period.';
+
+  @override
+  String get ttPeriodLabelTaken => 'Another period already has that name.';
+
+  @override
+  String get ttPeriodStartTaken =>
+      'Another period already starts at that time.';
+
+  @override
+  String get ttPeriodEnd => 'The end must be after the start.';
+
+  @override
+  String get ttPeriodTime => 'Write times like 08:30.';
+
+  @override
+  String get ttLoadTitle => 'Lessons per week';
+
+  @override
+  String ttLoadCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lessons',
+      one: '$count lesson',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ttNoLoad => 'No lessons have been placed yet.';
+
+  @override
+  String get ttWorkingDays => 'Working days';
+
+  @override
+  String get ttDaysSaved => 'Working days saved';
+
+  @override
+  String get ttPeriodName => 'Name';
+
+  @override
+  String get ttStarts => 'Starts';
+
+  @override
+  String get ttEnds => 'Ends';
+
+  @override
+  String get ttNumber => 'No.';
+
+  @override
+  String get ttIsBreak => 'This is a break: nothing is taught in it';
+
+  @override
+  String get ttAddPeriod => 'Add a period';
+
+  @override
+  String get ttPeriodAdded => 'Period added';
+
+  @override
+  String get ttStandard => 'Start with a standard day';
+
+  @override
+  String get ttShort => 'Start with a short day';
+
+  @override
+  String get ttTemplateApplied => 'Bell schedule created';
+
+  @override
+  String get ttDayMON => 'Mon';
+
+  @override
+  String get ttDayTUE => 'Tue';
+
+  @override
+  String get ttDayWED => 'Wed';
+
+  @override
+  String get ttDayTHU => 'Thu';
+
+  @override
+  String get ttDayFRI => 'Fri';
+
+  @override
+  String get ttDaySAT => 'Sat';
+
+  @override
+  String get ttDaySUN => 'Sun';
+
+  @override
   String get notifLeaveRequestedTitle => 'Leave to decide';
 
   @override

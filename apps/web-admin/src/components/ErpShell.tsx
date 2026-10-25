@@ -16,12 +16,13 @@ import { Settings } from "./screens/Settings";
 import { FinanceReports } from "./screens/FinanceReports";
 import { Payroll } from "./screens/Payroll";
 import { Staff } from "./screens/Staff";
+import { Timetable } from "./screens/Timetable";
 import { Users } from "./screens/Users";
 import { Students } from "./screens/Students";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 /** The navigation keys that have a screen. */
-const BUILT = new Set(["memberships", "students", "classes", "admissions", "staff", "payroll", "finance", "settings", "reports-finance", "reports-hr"]);
+const BUILT = new Set(["memberships", "students", "classes", "timetable", "admissions", "staff", "payroll", "finance", "settings", "reports-finance", "reports-hr"]);
 
 type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
@@ -69,6 +70,8 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
             <Students canCreate={access.permissions["students"]?.["create"] === "school"} />
           ) : current === "classes" ? (
             <Classes grants={{ create: access.permissions["academics"]?.["create"] === "school", remove: access.permissions["academics"]?.["delete"] === "school", update: access.permissions["academics"]?.["update"] === "school" }} />
+          ) : current === "timetable" ? (
+            <Timetable grants={{ edit: access.permissions["academics"]?.["update"] === "school", create: access.permissions["academics"]?.["create"] === "school", remove: access.permissions["academics"]?.["delete"] === "school" }} />
           ) : current === "admissions" ? (
             <Admissions canCreate={access.permissions["admissions"]?.["create"] === "school"} canUpdate={access.permissions["admissions"]?.["update"] === "school"} />
           ) : current === "finance" ? (
