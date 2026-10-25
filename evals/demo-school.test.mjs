@@ -67,3 +67,14 @@ test("E-DEMO-6 money is whole paise, phones are valid and distinct, payment plan
   assert.deepEqual(["FULL", "HALF", "NONE"].map((k) => plan.filter((x) => x === k).length), [60, 10, 30]);
   assert.match(dobFor("3", 5, new Date("2026-10-25T00:00:00Z")), /^\d{4}-\d{2}-\d{2}$/);
 });
+
+test("E-DEMO-7 an ambient FIREBASE_PROJECT_ID can never send the demo accounts to another emulator project, and a failed seed stops the demo", () => {
+  const seed = readFileSync("tools/seed-demo-school.mjs", "utf8");
+  const stack = readFileSync("tools/demo-stack.sh", "utf8");
+  assert.match(seed, /const PROJECT = "demo-oruschools";/);
+  assert.doesNotMatch(seed, /process\.env\.FIREBASE_PROJECT_ID|GCLOUD_PROJECT|GOOGLE_CLOUD_PROJECT/, "the seed must not read the project from the environment");
+  assert.match(stack, /set -o pipefail/);
+  assert.match(stack, /seed-demo-school\.mjs 2>&1 \| tee .*\|\| \{[^}]*exit 1/s, "a failing seed must stop the stack");
+  assert.match(stack, /GCLOUD_PROJECT=demo-oruschools/);
+  for (const app of ["web-admin", "saas-admin"]) assert.match(readFileSync(`apps/${app}/next.config.ts`, "utf8"), /NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST/, `${app} must hand the emulator host to the browser bundle`);
+});

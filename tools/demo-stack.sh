@@ -8,6 +8,7 @@
 # Next.js allows ONE dev server per app folder, so stop your normal `npm run dev` for web-admin and saas-admin first (the gateway on
 # 3000 can stay: the demo gateway uses 3100). Your .env.local is not changed: values set here win over it for these processes only.
 set -u
+set -o pipefail
 cd "$(dirname "$0")/.."
 AUTH=127.0.0.1:9099
 DC=127.0.0.1:9399
@@ -38,14 +39,17 @@ grep -q "All emulators ready" "$LOGS/emulators.log" || { echo "the emulators did
 
 echo "building and starting the gateway on 3100..."
 npx turbo run build --filter=api-gateway >"$LOGS/build.log" 2>&1 || { tail -20 "$LOGS/build.log"; exit 1; }
-(cd apps/api-gateway && PORT=3100 NODE_ENV=development FIREBASE_AUTH_EMULATOR_HOST=$AUTH DATA_CONNECT_EMULATOR_HOST=$DC FIREBASE_PROJECT_ID=demo-oruschools \
+(cd apps/api-gateway && PORT=3100 NODE_ENV=development FIREBASE_AUTH_EMULATOR_HOST=$AUTH DATA_CONNECT_EMULATOR_HOST=$DC FIREBASE_PROJECT_ID=demo-oruschools GCLOUD_PROJECT=demo-oruschools GOOGLE_CLOUD_PROJECT=demo-oruschools \
   THROTTLE_LIMIT=2000 THROTTLE_STRICT_LIMIT=2000 CORS_ORIGINS="http://localhost:3101,http://*.localhost:3102" node dist/main.js >"$LOGS/gateway.log" 2>&1) &
 PIDS+=($!)
 for _ in $(seq 1 60); do curl -s localhost:3100/health >/dev/null && break; sleep 1; done
 curl -s localhost:3100/health >/dev/null || { echo "the gateway did not start:"; tail -15 "$LOGS/gateway.log"; exit 1; }
 
 echo "making the demo school..."
-GATEWAY_URL=http://localhost:3100 FIREBASE_AUTH_EMULATOR_HOST=$AUTH node tools/seed-demo-school.mjs | tee "$LOGS/seed.log" || exit 1
+# Whatever project your shell or .env.local names, the emulators run as demo-oruschools: say so for every process that talks to them.
+GATEWAY_URL=http://localhost:3100 FIREBASE_AUTH_EMULATOR_HOST=$AUTH FIREBASE_PROJECT_ID=demo-oruschools GCLOUD_PROJECT=demo-oruschools GOOGLE_CLOUD_PROJECT=demo-oruschools \
+  node tools/seed-demo-school.mjs 2>&1 | tee "$LOGS/seed.log" || { echo; echo "the demo school could not be made (see above; the log is $LOGS/seed.log). Nothing else was started."; exit 1; }
+curl -sf localhost:3100/v1/public/schools/by-subdomain/greenfield >/dev/null || { echo "the demo school is not there after the seed ran: $LOGS/seed.log, $LOGS/gateway.log"; exit 1; }
 
 DEMO_ENV=(NEXT_PUBLIC_API_URL=http://localhost:3100 NEXT_PUBLIC_FIREBASE_API_KEY=demo-not-a-real-key NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=localhost
   NEXT_PUBLIC_FIREBASE_PROJECT_ID=demo-oruschools NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST=$AUTH NEXT_PUBLIC_BASE_DOMAIN=localhost)

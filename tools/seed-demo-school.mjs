@@ -30,7 +30,9 @@ if (process.env.NODE_ENV === "production") {
   process.exit(2);
 }
 const GATEWAY = (process.env.GATEWAY_URL ?? "http://localhost:3000").replace(/\/+$/, "");
-const PROJECT = process.env.FIREBASE_PROJECT_ID ?? "demo-oruschools";
+// The emulators run as this project. NEVER take it from the environment: a shell that exports FIREBASE_PROJECT_ID=<your real project>
+// would create the accounts under another project inside the emulator, where sign-in cannot find them ("could not find school").
+const PROJECT = "demo-oruschools";
 const auth = getAuth(getApps()[0] ?? initializeApp({ projectId: PROJECT }));
 const log = (m) => console.log(m);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
