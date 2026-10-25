@@ -60,7 +60,7 @@ describe.skipIf(!ready)('E-AUD-1 runtime: every audited write adds its audit row
       // The Principal holds no write grants (except to approve); for the route the Principal may call, an Accountant (no payroll, no HR) is the outsider.
       const outsider = sample.actor(w!, ctx) === w!.roles.A.PRINCIPAL.uid ? w!.roles.A.ACCOUNTANT : w!.roles.A.PRINCIPAL;
       const res = await send(route, outsider.token, w!.schools.A, ctx, (await sample.body?.(w!, ctx)) ?? {});
-      expect(res.status).toBe(403);
+      expect(res.status).toBe(sample.refusedStatus ?? 403);
       expect(await count()).toBe(before);
     });
   });

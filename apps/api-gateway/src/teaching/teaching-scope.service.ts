@@ -52,6 +52,14 @@ export class TeachingScope {
     };
   }
 
+  /** The classes the caller is class teacher of this year: the only classes whose daily attendance they take. */
+  async classTeacherClassIds(t: TenantContext): Promise<Set<string>> {
+    const [yearId, staff] = [await this.activeYearId(t.schoolId), await this.staffOf(t)];
+    if (!yearId || !staff) return new Set();
+    const rows = (await this.db.listClassTeachers({ schoolId: t.schoolId, academicYearId: yearId })).data.classTeachers;
+    return new Set(rows.filter((x) => dashed(x.staff.id) === dashed(staff.id)).map((x) => dashed(x.classroom.id)));
+  }
+
   /** The class ids a caller may see under `scope`: `null` means all of them (school scope). */
   async visibleClassIds(t: TenantContext, scope: Scope): Promise<Set<string> | null> {
     if (scope === 'school') return null;

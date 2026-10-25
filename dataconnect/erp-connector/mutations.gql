@@ -986,3 +986,97 @@ mutation DeleteTimetableEntry($schoolId: UUID!, $id: UUID!, $actorId: String!, $
   timetableEntry_delete(id: $id)
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.timetable.clear", entityType: "TimetableEntry", entityId_expr: "request.variables.id", details: $details })
 }
+
+# ---- Attendance (P3-4). A submit is: make the day if it is new, write the marks, then FINISH it. The finishing operation is the commit point and carries
+# the one audit row; replaying a submit repeats the same idempotent writes. $lockedOk is [false] for a teacher (a locked day refuses the write) and
+# [false, true] for the Academic admin's correction.
+mutation CreateAttendanceDay($schoolId: UUID!, $id: UUID!, $classroomId: UUID!, $date: Date!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    classroom: classrooms(where: {id: {eq: $classroomId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "class not found in this school") { id }
+  }
+  attendanceDay_insert(data: { id: $id, schoolId: $schoolId, classroomId: $classroomId, date: $date, submittedById: $actorId })
+}
+
+mutation SaveAttendanceMark($schoolId: UUID!, $id: UUID!, $dayId: UUID!, $studentId: UUID!, $classroomId: UUID!, $academicYearId: UUID!, $status: AttendanceStatus!, $note: String, $lockedOk: [Boolean!]!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    day: attendanceDays(where: {id: {eq: $dayId}, schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, locked: {in: $lockedOk}}) @check(expr: "this.size() == 1", message: "attendance day not found for this class, or it is locked") { id }
+    placed: studentEnrollments(where: {studentId: {eq: $studentId}, schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, academicYearId: {eq: $academicYearId}}) @check(expr: "this.size() == 1", message: "student is not in this class") { id }
+  }
+  attendanceMark_upsert(data: { id: $id, schoolId: $schoolId, dayId: $dayId, studentId: $studentId, status: $status, note: $note })
+}
+
+mutation RemoveAttendanceMark($schoolId: UUID!, $id: UUID!, $dayId: UUID!, $lockedOk: [Boolean!]!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    day: attendanceDays(where: {id: {eq: $dayId}, schoolId: {eq: $schoolId}, locked: {in: $lockedOk}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school, or it is locked") { id }
+    mark: attendanceMarks(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, dayId: {eq: $dayId}}) @check(expr: "this.size() == 1", message: "mark not found on this day") { id }
+  }
+  attendanceMark_delete(id: $id)
+}
+
+mutation FinishAttendanceSubmit($schoolId: UUID!, $id: UUID!, $submissionId: String, $locked: Boolean!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    day: attendanceDays(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, locked: {eq: false}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school, or it is locked") { id }
+  }
+  attendanceDay_update(id: $id, data: { submittedById: $actorId, submittedAt_expr: "request.time", submissionId: $submissionId, locked: $locked })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.submit", entityType: "AttendanceDay", entityId_expr: "request.variables.id", details: $details })
+}
+
+# The Academic admin's correction of any day, locked or not; the details carry the old and the new values.
+mutation FinishAttendanceCorrection($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    day: attendanceDays(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school") { id }
+  }
+  attendanceDay_update(id: $id, data: { submittedById: $actorId, submittedAt_expr: "request.time", submissionId: null })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.correct", entityType: "AttendanceDay", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation LockAttendanceDay($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    day: attendanceDays(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school") { id }
+  }
+  attendanceDay_update(id: $id, data: { locked: true })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.lock", entityType: "AttendanceDay", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation SetAttendanceStatusLabel($schoolId: UUID!, $id: UUID!, $status: AttendanceStatus!, $label: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  attendanceStatusLabel_upsert(data: { id: $id, schoolId: $schoolId, status: $status, label: $label })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.status.label", entityType: "AttendanceStatusLabel", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Staff check-in and check-out use the server's clock. One row per staff member per day (unique key).
+mutation CheckInStaff($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $date: Date!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "active staff member not found in this school") { id }
+  }
+  staffAttendance_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, date: $date, checkIn_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.staff.checkin", entityType: "StaffAttendance", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation CheckOutStaff($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    row: staffAttendances(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, checkOut: {isNull: true}}) @check(expr: "this.size() == 1", message: "no open check-in found") { id }
+  }
+  staffAttendance_update(id: $id, data: { checkOut_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.staff.checkout", entityType: "StaffAttendance", entityId_expr: "request.variables.id", details: $details })
+}
+
+# HR's correction of a member of staff's day (the old values are in the details).
+mutation CorrectStaffAttendance($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $date: Date!, $checkIn: Timestamp, $checkOut: Timestamp, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "staff member not found in this school") { id }
+  }
+  staffAttendance_upsert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, date: $date, checkIn: $checkIn, checkOut: $checkOut, correctedById: $actorId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.staff.correct", entityType: "StaffAttendance", entityId_expr: "request.variables.id", details: $details })
+}

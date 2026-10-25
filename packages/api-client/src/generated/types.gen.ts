@@ -158,6 +158,17 @@ export type ChildDto = {
     relationship: string;
 };
 
+export type ClassDayDto = {
+    classId: string;
+    counts: StatusCountsDto;
+    date: string;
+    locked: boolean;
+    students: Array<RosterEntryDto>;
+    submitted: boolean;
+    submittedAt: string | null;
+    submittedBy: string | null;
+};
+
 export type ClassDto = {
     capacity: number;
     gradeLevel: {
@@ -252,6 +263,11 @@ export type ConcessionDto = {
 
 export type ConcessionListDto = {
     items: Array<ConcessionDto>;
+};
+
+export type CorrectStaffDayDto = {
+    checkIn?: string | null;
+    checkOut?: string | null;
 };
 
 export type CreateAcademicYearDto = {
@@ -412,6 +428,16 @@ export type CreatedInvitationDto = {
     role: string;
     status: string;
     token: string;
+};
+
+export type DayListDto = {
+    items: Array<DaySummaryDto>;
+};
+
+export type DaySummaryDto = {
+    counts: StatusCountsDto;
+    date: string;
+    locked: boolean;
 };
 
 export type DayTotalDto = {
@@ -725,6 +751,12 @@ export type LoadByDayDto = {
     WED: number;
 };
 
+export type MarkInputDto = {
+    note?: string;
+    status: 'PRESENT' | 'ABSENT' | 'LATE' | 'LEAVE' | 'MEDICAL' | 'HALF_DAY' | 'EXCUSED';
+    studentId: string;
+};
+
 export type MeLanguageDto = {
     chosen: string | null;
     effective: string;
@@ -784,6 +816,16 @@ export type MineDto = {
     classes: Array<RefDto>;
     staff: StaffRefDto | null;
     subjects: Array<SubjectRefDto>;
+};
+
+export type MissingClassDto = {
+    id: string;
+    name: string;
+};
+
+export type MissingDto = {
+    date: string;
+    items: Array<MissingClassDto>;
 };
 
 export type NavItemDto = {
@@ -1042,6 +1084,14 @@ export type ReversePaymentDto = {
     reason: string;
 };
 
+export type RosterEntryDto = {
+    enrollmentId: string;
+    id: string;
+    name: string;
+    note: string | null;
+    status: string;
+};
+
 export type RunTotalsDto = {
     deductionsMinor: string;
     grossMinor: string;
@@ -1174,6 +1224,16 @@ export type StaffAccountDto = {
     userId: string;
 };
 
+export type StaffDayDto = {
+    checkIn: string | null;
+    checkOut: string | null;
+    date: string;
+};
+
+export type StaffDayListDto = {
+    items: Array<StaffDayDto>;
+};
+
 export type StaffDepartmentsDto = {
     items: Array<string>;
 };
@@ -1226,6 +1286,18 @@ export type StaffPhotoUploadRequestDto = {
     sizeBytes: number;
 };
 
+export type StaffPresenceDto = {
+    checkIn: string | null;
+    checkOut: string | null;
+    staff: StaffStaffDto;
+    state: string;
+};
+
+export type StaffPresenceListDto = {
+    date: string;
+    items: Array<StaffPresenceDto>;
+};
+
 export type StaffRefDto = {
     employeeId: string;
     id: string;
@@ -1242,6 +1314,12 @@ export type StaffSlotDto = {
     id: string;
     periodId: string;
     subject: TimetableSubjectDto;
+};
+
+export type StaffStaffDto = {
+    employeeId: string;
+    id: string;
+    name: string;
 };
 
 export type StaffSummaryDto = {
@@ -1269,6 +1347,39 @@ export type StatementDto = {
         name: string;
     };
     totals: InvoiceTotalsDto;
+};
+
+export type StatusCountsDto = {
+    ABSENT: number;
+    EXCUSED: number;
+    HALF_DAY: number;
+    LATE: number;
+    LEAVE: number;
+    MEDICAL: number;
+    PRESENT: number;
+};
+
+export type StatusDto = {
+    isDefault: boolean;
+    label: string;
+    status: string;
+};
+
+export type StatusLabelDto = {
+    label: string;
+};
+
+export type StatusListDto = {
+    items: Array<StatusDto>;
+};
+
+export type StudentAttendanceDto = {
+    counts: StatusCountsDto;
+    daysTaken: number;
+    from: string;
+    marks: Array<StudentMarkDto>;
+    studentId: string;
+    to: string;
 };
 
 export type StudentDocumentDto = {
@@ -1304,6 +1415,12 @@ export type StudentListDto = {
     total: number;
 };
 
+export type StudentMarkDto = {
+    date: string;
+    note: string | null;
+    status: string;
+};
+
 export type StudentSummaryDto = {
     dateOfBirth: string | null;
     enrollmentId: string;
@@ -1329,6 +1446,12 @@ export type SubjectRefDto = {
     code: string;
     id: string;
     name: string;
+};
+
+export type SubmitDayDto = {
+    lock?: boolean;
+    marks: Array<MarkInputDto>;
+    submissionId?: string;
 };
 
 export type TeacherDto = {
@@ -3411,6 +3534,604 @@ export type AdmissionsDecideResponses = {
 };
 
 export type AdmissionsDecideResponse = AdmissionsDecideResponses[keyof AdmissionsDecideResponses];
+
+export type AttendanceDaysData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/v1/attendance/classes/{id}/days';
+};
+
+export type AttendanceDaysErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceDaysError = AttendanceDaysErrors[keyof AttendanceDaysErrors];
+
+export type AttendanceDaysResponses = {
+    200: DayListDto;
+};
+
+export type AttendanceDaysResponse = AttendanceDaysResponses[keyof AttendanceDaysResponses];
+
+export type AttendanceDayData = {
+    body?: never;
+    path: {
+        id: string;
+        date: string;
+    };
+    query?: never;
+    url: '/v1/attendance/classes/{id}/days/{date}';
+};
+
+export type AttendanceDayErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceDayError = AttendanceDayErrors[keyof AttendanceDayErrors];
+
+export type AttendanceDayResponses = {
+    200: ClassDayDto;
+};
+
+export type AttendanceDayResponse = AttendanceDayResponses[keyof AttendanceDayResponses];
+
+export type AttendanceSubmitData = {
+    body: SubmitDayDto;
+    path: {
+        id: string;
+        date: string;
+    };
+    query?: never;
+    url: '/v1/attendance/classes/{id}/days/{date}';
+};
+
+export type AttendanceSubmitErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceSubmitError = AttendanceSubmitErrors[keyof AttendanceSubmitErrors];
+
+export type AttendanceSubmitResponses = {
+    200: ClassDayDto;
+};
+
+export type AttendanceSubmitResponse = AttendanceSubmitResponses[keyof AttendanceSubmitResponses];
+
+export type AttendanceCorrectData = {
+    body: SubmitDayDto;
+    path: {
+        id: string;
+        date: string;
+    };
+    query?: never;
+    url: '/v1/attendance/classes/{id}/days/{date}/correction';
+};
+
+export type AttendanceCorrectErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceCorrectError = AttendanceCorrectErrors[keyof AttendanceCorrectErrors];
+
+export type AttendanceCorrectResponses = {
+    200: ClassDayDto;
+};
+
+export type AttendanceCorrectResponse = AttendanceCorrectResponses[keyof AttendanceCorrectResponses];
+
+export type AttendanceLockData = {
+    body?: never;
+    path: {
+        id: string;
+        date: string;
+    };
+    query?: never;
+    url: '/v1/attendance/classes/{id}/days/{date}/lock';
+};
+
+export type AttendanceLockErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceLockError = AttendanceLockErrors[keyof AttendanceLockErrors];
+
+export type AttendanceLockResponses = {
+    200: ClassDayDto;
+};
+
+export type AttendanceLockResponse = AttendanceLockResponses[keyof AttendanceLockResponses];
+
+export type AttendanceMissingData = {
+    body?: never;
+    path?: never;
+    query?: {
+        date?: string;
+    };
+    url: '/v1/attendance/missing';
+};
+
+export type AttendanceMissingErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceMissingError = AttendanceMissingErrors[keyof AttendanceMissingErrors];
+
+export type AttendanceMissingResponses = {
+    200: MissingDto;
+};
+
+export type AttendanceMissingResponse = AttendanceMissingResponses[keyof AttendanceMissingResponses];
+
+export type StaffAttendancePresenceData = {
+    body?: never;
+    path?: never;
+    query?: {
+        date?: string;
+    };
+    url: '/v1/attendance/staff';
+};
+
+export type StaffAttendancePresenceErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffAttendancePresenceError = StaffAttendancePresenceErrors[keyof StaffAttendancePresenceErrors];
+
+export type StaffAttendancePresenceResponses = {
+    200: StaffPresenceListDto;
+};
+
+export type StaffAttendancePresenceResponse = StaffAttendancePresenceResponses[keyof StaffAttendancePresenceResponses];
+
+export type StaffAttendanceCheckInData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/attendance/staff/check-in';
+};
+
+export type StaffAttendanceCheckInErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffAttendanceCheckInError = StaffAttendanceCheckInErrors[keyof StaffAttendanceCheckInErrors];
+
+export type StaffAttendanceCheckInResponses = {
+    200: StaffDayDto;
+};
+
+export type StaffAttendanceCheckInResponse = StaffAttendanceCheckInResponses[keyof StaffAttendanceCheckInResponses];
+
+export type StaffAttendanceCheckOutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/attendance/staff/check-out';
+};
+
+export type StaffAttendanceCheckOutErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffAttendanceCheckOutError = StaffAttendanceCheckOutErrors[keyof StaffAttendanceCheckOutErrors];
+
+export type StaffAttendanceCheckOutResponses = {
+    200: StaffDayDto;
+};
+
+export type StaffAttendanceCheckOutResponse = StaffAttendanceCheckOutResponses[keyof StaffAttendanceCheckOutResponses];
+
+export type StaffAttendanceMineData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/v1/attendance/staff/mine';
+};
+
+export type StaffAttendanceMineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffAttendanceMineError = StaffAttendanceMineErrors[keyof StaffAttendanceMineErrors];
+
+export type StaffAttendanceMineResponses = {
+    200: StaffDayListDto;
+};
+
+export type StaffAttendanceMineResponse = StaffAttendanceMineResponses[keyof StaffAttendanceMineResponses];
+
+export type StaffAttendanceCorrectData = {
+    body: CorrectStaffDayDto;
+    path: {
+        staffId: string;
+        date: string;
+    };
+    query?: never;
+    url: '/v1/attendance/staff/{staffId}/days/{date}';
+};
+
+export type StaffAttendanceCorrectErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffAttendanceCorrectError = StaffAttendanceCorrectErrors[keyof StaffAttendanceCorrectErrors];
+
+export type StaffAttendanceCorrectResponses = {
+    200: StaffDayDto;
+};
+
+export type StaffAttendanceCorrectResponse = StaffAttendanceCorrectResponses[keyof StaffAttendanceCorrectResponses];
+
+export type AttendanceStatusesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/attendance/statuses';
+};
+
+export type AttendanceStatusesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceStatusesError = AttendanceStatusesErrors[keyof AttendanceStatusesErrors];
+
+export type AttendanceStatusesResponses = {
+    200: StatusListDto;
+};
+
+export type AttendanceStatusesResponse = AttendanceStatusesResponses[keyof AttendanceStatusesResponses];
+
+export type AttendanceSetLabelData = {
+    body: StatusLabelDto;
+    path: {
+        status: 'PRESENT' | 'ABSENT' | 'LATE' | 'LEAVE' | 'MEDICAL' | 'HALF_DAY' | 'EXCUSED';
+    };
+    query?: never;
+    url: '/v1/attendance/statuses/{status}';
+};
+
+export type AttendanceSetLabelErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceSetLabelError = AttendanceSetLabelErrors[keyof AttendanceSetLabelErrors];
+
+export type AttendanceSetLabelResponses = {
+    200: StatusListDto;
+};
+
+export type AttendanceSetLabelResponse = AttendanceSetLabelResponses[keyof AttendanceSetLabelResponses];
+
+export type AttendanceStudentData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/v1/attendance/students/{id}';
+};
+
+export type AttendanceStudentErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AttendanceStudentError = AttendanceStudentErrors[keyof AttendanceStudentErrors];
+
+export type AttendanceStudentResponses = {
+    200: StudentAttendanceDto;
+};
+
+export type AttendanceStudentResponse = AttendanceStudentResponses[keyof AttendanceStudentResponses];
 
 export type FeesConcessionsData = {
     body?: never;

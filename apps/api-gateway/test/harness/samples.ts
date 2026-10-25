@@ -16,6 +16,8 @@ export interface Sample {
   /** `X-School-Id` for school routes (platform routes send none). */
   school?: (w: World) => string;
   body?: (w: World, ctx: Record<string, string>) => Record<string, unknown> | Promise<Record<string, unknown>>;
+  /** Self-service routes are open to every role (ADR-0007), so the refused-call test sends an account with no staff record and expects this status instead of 403. */
+  refusedStatus?: number;
   /** The school whose audit log must receive the row. */
   auditSchool: (w: World, ctx: Record<string, string>, responseBody: Record<string, any>) => string;
 }
@@ -121,6 +123,35 @@ const lessonOfA = async (w: World): Promise<Record<string, string>> => {
   const id = randomUUID();
   await w.db.createTimetableEntry({ schoolId: w.schools.A, id, academicYearId: s['year']!, classroomId: s['id']!, subjectId: s['subjectId']!, staffId: s['staffId']!, day: 'MON', periodId: s['periodId']!, actorId: actorA(w), details: {} });
   return { id: dash(id) };
+};
+/** Attendance (P3-4): a class with one enrolled student in the active year, and a past Monday (a working day in every sample's schedule). */
+const lastMonday = (): string => { const d = new Date(Date.now() + 330 * 60_000); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
+const classWithStudentOfA = async (w: World): Promise<Record<string, string>> => {
+  const klass = await classOfA(w);
+  const year = await activeYearOfA(w);
+  const student = await studentOfA(w);
+  await w.db.placeStudent({ schoolId: w.schools.A, studentId: student['id']!, academicYearId: year, classroomId: klass['id']!, actorId: actorA(w) });
+  return { id: dash(klass['id']!), studentId: student['id']!, date: lastMonday(), year };
+};
+const attendanceDayOfA = async (w: World): Promise<Record<string, string>> => {
+  const ctx = await classWithStudentOfA(w);
+  await w.db.createAttendanceDay({ schoolId: w.schools.A, id: randomUUID(), classroomId: ctx['id']!, date: ctx['date']!, actorId: actorA(w) });
+  return ctx;
+};
+/** The STAFF account linked to a staff record of school A (once; later calls find it), so it can check in and out. */
+const linkedStaffOfA = async (w: World): Promise<Record<string, string>> => {
+  const have = (await w.db.staffOfUser({ schoolId: w.schools.A, userId: w.roles.A.STAFF.uid })).data.staffProfiles[0];
+  if (have) return { id: dash(have.id) };
+  const staff = await staffOfA(w);
+  await w.db.linkStaffAccount({ schoolId: w.schools.A, id: staff['id']!, userId: w.roles.A.STAFF.uid, actorId: w.roles.A.HR_MANAGER.uid, details: {} });
+  return staff;
+};
+const checkedInStaffOfA = async (w: World): Promise<Record<string, string>> => {
+  const staff = await linkedStaffOfA(w);
+  const date = new Date(Date.now() + 330 * 60_000).toISOString().slice(0, 10);
+  const row = (await w.db.getStaffAttendance({ schoolId: w.schools.A, staffId: staff['id']!, date })).data.staffAttendances[0];
+  if (!row) await w.db.checkInStaff({ schoolId: w.schools.A, id: randomUUID(), staffId: staff['id']!, date, actorId: w.roles.A.STAFF.uid, details: {} });
+  return staff;
 };
 const linkedParentOfA = async (w: World): Promise<Record<string, string>> => {
   const student = await studentOfA(w);
@@ -345,6 +376,13 @@ export const SAMPLES: Record<string, Sample> = {
   'DELETE /academics/classes/:id/teacher': { ...academicAdminOfA, prepare: classWithTeacherOfA },
   'PUT /academics/timetable/classes/:id/slots': { ...academicAdminOfA, prepare: lessonSetupOfA, body: (_w, ctx) => ({ day: 'MON', periodId: ctx['periodId'], subjectId: ctx['subjectId'], staffId: ctx['staffId'], academicYearId: ctx['year'] }) },
   'DELETE /academics/timetable/entries/:id': { ...academicAdminOfA, prepare: lessonOfA },
+  'PUT /attendance/statuses/:status': { ...academicAdminOfA, prepare: async () => ({ status: 'LATE' }), body: () => ({ label: `Tardy ${randomUUID().slice(0, 4)}` }) },
+  'PUT /attendance/classes/:id/days/:date': { ...academicAdminOfA, prepare: classWithStudentOfA, body: (_w, ctx) => ({ marks: [{ studentId: ctx['studentId'], status: 'ABSENT' }], submissionId: randomUUID() }) },
+  'POST /attendance/classes/:id/days/:date/lock': { ...academicAdminOfA, prepare: attendanceDayOfA },
+  'PUT /attendance/classes/:id/days/:date/correction': { ...academicAdminOfA, prepare: attendanceDayOfA, body: (_w, ctx) => ({ marks: [{ studentId: ctx['studentId'], status: 'MEDICAL', note: 'doctor' }] }) },
+  'POST /attendance/staff/check-in': { refusedStatus: 409, token: (w) => w.roles.A.STAFF.token, actor: (w) => w.roles.A.STAFF.uid, school: (w) => w.schools.A, auditSchool: (w) => w.schools.A, prepare: linkedStaffOfA },
+  'POST /attendance/staff/check-out': { refusedStatus: 409, token: (w) => w.roles.A.STAFF.token, actor: (w) => w.roles.A.STAFF.uid, school: (w) => w.schools.A, auditSchool: (w) => w.schools.A, prepare: checkedInStaffOfA },
+  'PUT /attendance/staff/:staffId/days/:date': { ...hrOfA, prepare: async (w) => ({ staffId: (await staffOfA(w))['id']!, date: lastMonday() }), body: (_w, ctx) => ({ checkIn: `${ctx['date']}T09:00:00Z`, checkOut: `${ctx['date']}T17:00:00Z` }) },
   'POST /students/:id/parent-accounts': { ...academicAdminOfA, prepare: studentOfA, body: (w) => ({ userId: w.roles.A.PARENT.uid, relationship: 'MOTHER' }) },
   'DELETE /students/:id/parent-accounts/:linkId': { ...academicAdminOfA, prepare: linkedParentOfA },
   'POST /academics/years': { ...academicAdminOfA, body: () => ({ name: `Year ${randomUUID().slice(0, 6)}`, startDate: '2042-04-01', endDate: '2043-03-31' }) },

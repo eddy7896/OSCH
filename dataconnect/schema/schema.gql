@@ -89,6 +89,7 @@ enum PaymentMethod { CASH CHEQUE BANK_TRANSFER UPI OTHER }
 enum ConcessionKind { PERCENT FIXED }
 enum ImportStatus { STARTED COMPLETED PARTIAL }
 enum ApplicationStatus { SUBMITTED UNDER_REVIEW ACCEPTED REJECTED WITHDRAWN ADMITTED }
+enum AttendanceStatus { PRESENT ABSENT LATE LEAVE MEDICAL HALF_DAY EXCUSED } # the seven fixed meanings (ADR-0013 decision 2); a school may relabel them, never add or remove one
 enum StaffStatus { ACTIVE INACTIVE LEFT }
 enum StaffDocumentKind { APPOINTMENT_LETTER ID_PROOF QUALIFICATION EXPERIENCE MEDICAL OTHER }
 enum StudentDocumentKind { BIRTH_CERTIFICATE TRANSFER_CERTIFICATE REPORT_CARD ID_PROOF MEDICAL OTHER }
@@ -511,4 +512,44 @@ type AuditLog @table {
   entityId: String
   details: Any # request metadata; never secrets or full payloads
   createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ---- Attendance (P3-4, ADR-0013). Taken once a day per class. Only the exceptions are stored: a student with no mark on a submitted day is present.
+type AttendanceDay @table @unique(fields: ["classroom", "date"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  classroom: Classroom!
+  date: Date!
+  submittedBy: User!
+  submittedAt: Timestamp! @default(expr: "request.time")
+  submissionId: String # the client's own id for the last submit: a replay of it changes nothing
+  locked: Boolean! @default(value: false) # a locked day refuses a teacher's edit; only the Academic admin corrects it, audited
+}
+
+type AttendanceMark @table @unique(fields: ["day", "student"]) {
+  id: UUID! # derived from day and student, so saving the same mark twice is one row
+  school: School!
+  day: AttendanceDay!
+  student: Student!
+  status: AttendanceStatus!
+  note: String
+}
+
+# A school's own wording for one of the seven statuses. Only the label is editable.
+type AttendanceStatusLabel @table @unique(fields: ["school", "status"]) {
+  id: UUID!
+  school: School!
+  status: AttendanceStatus!
+  label: String!
+}
+
+# A member of staff's day: when they checked in and out (server time).
+type StaffAttendance @table @unique(fields: ["staff", "date"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  staff: StaffProfile!
+  date: Date!
+  checkIn: Timestamp
+  checkOut: Timestamp
+  correctedBy: User
 }

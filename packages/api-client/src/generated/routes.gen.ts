@@ -261,6 +261,90 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Admissions_create"
   },
   {
+    "method": "PUT",
+    "path": "/v1/attendance/classes/{id}/days/{date}/correction",
+    "access": "tenant",
+    "operationId": "Attendance_correct"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/attendance/classes/{id}/days/{date}/lock",
+    "access": "tenant",
+    "operationId": "Attendance_lock"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/attendance/classes/{id}/days/{date}",
+    "access": "tenant",
+    "operationId": "Attendance_day"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/attendance/classes/{id}/days/{date}",
+    "access": "tenant",
+    "operationId": "Attendance_submit"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/attendance/classes/{id}/days",
+    "access": "tenant",
+    "operationId": "Attendance_days"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/attendance/missing",
+    "access": "tenant",
+    "operationId": "Attendance_missing"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/attendance/staff/{staffId}/days/{date}",
+    "access": "tenant",
+    "operationId": "StaffAttendance_correct"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/attendance/staff/check-in",
+    "access": "tenant",
+    "operationId": "StaffAttendance_checkIn"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/attendance/staff/check-out",
+    "access": "tenant",
+    "operationId": "StaffAttendance_checkOut"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/attendance/staff/mine",
+    "access": "tenant",
+    "operationId": "StaffAttendance_mine"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/attendance/staff",
+    "access": "tenant",
+    "operationId": "StaffAttendance_presence"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/attendance/statuses/{status}",
+    "access": "tenant",
+    "operationId": "Attendance_setLabel"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/attendance/statuses",
+    "access": "tenant",
+    "operationId": "Attendance_statuses"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/attendance/students/{id}",
+    "access": "tenant",
+    "operationId": "Attendance_student"
+  },
+  {
     "method": "DELETE",
     "path": "/v1/fees/concessions/{id}",
     "access": "tenant",

@@ -17,6 +17,17 @@ const ApplicationStatus = {
 }
 exports.ApplicationStatus = ApplicationStatus;
 
+const AttendanceStatus = {
+  PRESENT: "PRESENT",
+  ABSENT: "ABSENT",
+  LATE: "LATE",
+  LEAVE: "LEAVE",
+  MEDICAL: "MEDICAL",
+  HALF_DAY: "HALF_DAY",
+  EXCUSED: "EXCUSED",
+}
+exports.AttendanceStatus = AttendanceStatus;
+
 const ConcessionKind = {
   PERCENT: "PERCENT",
   FIXED: "FIXED",
@@ -844,6 +855,76 @@ function deleteTimetableEntry(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.deleteTimetableEntry = deleteTimetableEntry;
 
+function createAttendanceDay(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateAttendanceDay', inputVars, inputOpts);
+}
+exports.createAttendanceDay = createAttendanceDay;
+
+function saveAttendanceMark(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SaveAttendanceMark', inputVars, inputOpts);
+}
+exports.saveAttendanceMark = saveAttendanceMark;
+
+function removeAttendanceMark(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveAttendanceMark', inputVars, inputOpts);
+}
+exports.removeAttendanceMark = removeAttendanceMark;
+
+function finishAttendanceSubmit(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('FinishAttendanceSubmit', inputVars, inputOpts);
+}
+exports.finishAttendanceSubmit = finishAttendanceSubmit;
+
+function finishAttendanceCorrection(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('FinishAttendanceCorrection', inputVars, inputOpts);
+}
+exports.finishAttendanceCorrection = finishAttendanceCorrection;
+
+function lockAttendanceDay(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('LockAttendanceDay', inputVars, inputOpts);
+}
+exports.lockAttendanceDay = lockAttendanceDay;
+
+function setAttendanceStatusLabel(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetAttendanceStatusLabel', inputVars, inputOpts);
+}
+exports.setAttendanceStatusLabel = setAttendanceStatusLabel;
+
+function checkInStaff(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CheckInStaff', inputVars, inputOpts);
+}
+exports.checkInStaff = checkInStaff;
+
+function checkOutStaff(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CheckOutStaff', inputVars, inputOpts);
+}
+exports.checkOutStaff = checkOutStaff;
+
+function correctStaffAttendance(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CorrectStaffAttendance', inputVars, inputOpts);
+}
+exports.correctStaffAttendance = correctStaffAttendance;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1389,4 +1470,74 @@ function countTimetableForPeriod(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('CountTimetableForPeriod', inputVars, inputOpts);
 }
 exports.countTimetableForPeriod = countTimetableForPeriod;
+
+function getAttendanceDay(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetAttendanceDay', inputVars, inputOpts);
+}
+exports.getAttendanceDay = getAttendanceDay;
+
+function listAttendanceDays(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListAttendanceDays', inputVars, inputOpts);
+}
+exports.listAttendanceDays = listAttendanceDays;
+
+function attendanceDaysOn(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('AttendanceDaysOn', inputVars, inputOpts);
+}
+exports.attendanceDaysOn = attendanceDaysOn;
+
+function attendanceOfStudent(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('AttendanceOfStudent', inputVars, inputOpts);
+}
+exports.attendanceOfStudent = attendanceOfStudent;
+
+function daysOfClass(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('DaysOfClass', inputVars, inputOpts);
+}
+exports.daysOfClass = daysOfClass;
+
+function listAttendanceStatusLabels(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListAttendanceStatusLabels', inputVars, inputOpts);
+}
+exports.listAttendanceStatusLabels = listAttendanceStatusLabels;
+
+function classRoster(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ClassRoster', inputVars, inputOpts);
+}
+exports.classRoster = classRoster;
+
+function getStaffAttendance(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetStaffAttendance', inputVars, inputOpts);
+}
+exports.getStaffAttendance = getStaffAttendance;
+
+function staffAttendanceOn(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StaffAttendanceOn', inputVars, inputOpts);
+}
+exports.staffAttendanceOn = staffAttendanceOn;
+
+function staffAttendanceOfStaff(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StaffAttendanceOfStaff', inputVars, inputOpts);
+}
+exports.staffAttendanceOfStaff = staffAttendanceOfStaff;
 
