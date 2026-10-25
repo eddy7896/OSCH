@@ -48,7 +48,7 @@ describe.skipIf(!ready)('timetable against the real emulators (P3-3)', { timeout
     const yb = (await call('post', '/academics/years', w!.roles.B.ACADEMIC_ADMIN, B()).send({ name: `TB-${uniq()}`, startDate: '2090-04-01', endDate: '2091-03-31' }).expect(201)).body;
     await call('post', `/academics/years/${yb.id}/activate`, w!.roles.B.ACADEMIC_ADMIN, B()).send({}).expect(200);
     [c1, c2] = [(await makeClass('1')).id, (await makeClass('1')).id];
-  });
+  }, 120_000);
 
   it('places a lesson, shows it on the class and the teacher, replaces it, and clears it; each change is audited', async () => {
     const put = (await slot(c1, { day: 'MON', periodId: p1, subjectId: math, staffId: t1 }).expect(200)).body;
