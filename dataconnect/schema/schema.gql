@@ -31,6 +31,8 @@ type School @table {
   studentSeq: Int! @default(value: 0) # last student serial handed out
   staffSeq: Int! @default(value: 0) # last staff serial handed out
   applicationSeq: Int! @default(value: 0) # last admission application serial handed out
+  # The days the school works (P3-1, ADR-0013): comma-separated MON..SUN in week order, never empty (checked in the gateway).
+  workingDays: String! @default(value: "MON,TUE,WED,THU,FRI,SAT")
   # Profile and branding (P2-1). The colour is a validated #rrggbb (white text on it is at least 4.5:1); the logo key lives under schools/<id>/logo/.
   address: String
   contactPhone: String
@@ -421,6 +423,18 @@ type Subject @table @unique(fields: ["school", "code"]) {
   school: School!
   name: String!
   code: String!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# The school's ONE bell schedule (P3-1, ADR-0013): periods are defined once and every class uses them. Times are "HH:MM" (24 hour, zero padded, so
+# text order is time order). No two periods start at the same minute or share a label; that they do not overlap is checked in the gateway.
+type Period @table @unique(fields: ["school", "label"]) @unique(fields: ["school", "startTime"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  label: String!
+  startTime: String!
+  endTime: String!
+  isBreak: Boolean! @default(value: false) # a break or lunch: nothing is taught in it
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

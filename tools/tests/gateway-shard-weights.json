@@ -25,5 +25,6 @@
   "test/auth.integration.ts": 1,
   "test/harness/invoices.integration.ts": 150,
   "test/harness/payroll.integration.ts": 100,
-  "test/harness/reports.integration.ts": 40
+  "test/harness/reports.integration.ts": 40,
+  "test/harness/schedule.integration.ts": 40
 }

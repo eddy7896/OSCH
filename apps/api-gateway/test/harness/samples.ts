@@ -70,6 +70,19 @@ const subjectOfA = async (w: World): Promise<Record<string, string>> => {
   await w.db.createSubject({ schoolId: w.schools.A, id, name: `Subject ${id.slice(0, 6)}`, code: id.slice(0, 8).toUpperCase(), actorId: actorA(w) });
   return { id };
 };
+/** A period of school A, made through the real operation (its own start time, so samples never collide). */
+const periodOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  const minute = 600 + (parseInt(id.slice(0, 3), 16) % 600); // 10:00 to 19:59, one minute long
+  const t = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+  await w.db.createPeriod({ schoolId: w.schools.A, id, label: `P-${id.slice(0, 8)}`, startTime: t(minute), endTime: t(minute + 1), isBreak: false, actorId: actorA(w), details: {} });
+  return { id };
+};
+/** The starting schedule needs an empty school: take away whatever periods the other samples left. */
+const emptyScheduleOfA = async (w: World): Promise<Record<string, string>> => {
+  for (const p of (await w.db.listPeriods({ schoolId: w.schools.A })).data.periods) await w.db.deletePeriod({ schoolId: w.schools.A, id: p.id, actorId: actorA(w), details: { sample: true } });
+  return {};
+};
 const yearOfA = async (w: World): Promise<Record<string, string>> => {
   const id = randomUUID();
   await w.db.createAcademicYear({ schoolId: w.schools.A, id, name: `Y-${id.slice(0, 6)}`, startDate: '2040-04-01', endDate: '2041-03-31', actorId: actorA(w) });
@@ -276,6 +289,11 @@ export const SAMPLES: Record<string, Sample> = {
   'POST /academics/subjects': { ...academicAdminOfA, body: () => ({ name: 'Sample subject', code: randomUUID().slice(0, 8).toUpperCase() }) },
   'PATCH /academics/subjects/:id': { ...academicAdminOfA, prepare: subjectOfA, body: () => ({ name: 'Renamed subject' }) },
   'DELETE /academics/subjects/:id': { ...academicAdminOfA, prepare: subjectOfA },
+  'PATCH /academics/schedule/working-days': { ...academicAdminOfA, body: () => ({ days: ['MON', 'TUE', 'WED', 'THU', 'FRI'] }) },
+  'POST /academics/schedule/template': { ...academicAdminOfA, prepare: emptyScheduleOfA, body: () => ({ template: 'SHORT_DAY' }) },
+  'POST /academics/periods': { ...academicAdminOfA, body: () => { const m = 1200 + Math.floor(Math.random() * 200); const t = (x: number) => `${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`; return { label: `Sample ${randomUUID().slice(0, 6)}`, startTime: t(m), endTime: t(m + 1) }; } },
+  'PATCH /academics/periods/:id': { ...academicAdminOfA, prepare: periodOfA, body: () => ({ label: `Renamed ${randomUUID().slice(0, 6)}` }) },
+  'DELETE /academics/periods/:id': { ...academicAdminOfA, prepare: periodOfA },
   'POST /academics/years': { ...academicAdminOfA, body: () => ({ name: `Year ${randomUUID().slice(0, 6)}`, startDate: '2042-04-01', endDate: '2043-03-31' }) },
   'PATCH /academics/years/:id': { ...academicAdminOfA, prepare: yearOfA, body: () => ({ name: 'Renamed year' }) },
   'POST /academics/years/:id/activate': { ...academicAdminOfA, prepare: yearOfA, body: () => ({}) },

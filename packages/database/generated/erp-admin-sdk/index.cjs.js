@@ -739,6 +739,48 @@ function markPayrollRunPaid(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.markPayrollRunPaid = markPayrollRunPaid;
 
+function createPeriod(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreatePeriod', inputVars, inputOpts);
+}
+exports.createPeriod = createPeriod;
+
+function updatePeriod(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdatePeriod', inputVars, inputOpts);
+}
+exports.updatePeriod = updatePeriod;
+
+function deletePeriod(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeletePeriod', inputVars, inputOpts);
+}
+exports.deletePeriod = deletePeriod;
+
+function setWorkingDays(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetWorkingDays', inputVars, inputOpts);
+}
+exports.setWorkingDays = setWorkingDays;
+
+function applyStandardSchedule(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ApplyStandardSchedule', inputVars, inputOpts);
+}
+exports.applyStandardSchedule = applyStandardSchedule;
+
+function applyShortDaySchedule(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ApplyShortDaySchedule', inputVars, inputOpts);
+}
+exports.applyShortDaySchedule = applyShortDaySchedule;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1207,4 +1249,18 @@ function countDuesInvoices(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('CountDuesInvoices', inputVars, inputOpts);
 }
 exports.countDuesInvoices = countDuesInvoices;
+
+function listPeriods(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListPeriods', inputVars, inputOpts);
+}
+exports.listPeriods = listPeriods;
+
+function schoolWorkingDays(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('SchoolWorkingDays', inputVars, inputOpts);
+}
+exports.schoolWorkingDays = schoolWorkingDays;
 

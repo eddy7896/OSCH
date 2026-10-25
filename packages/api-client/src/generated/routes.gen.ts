@@ -64,6 +64,42 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "DELETE",
+    "path": "/v1/academics/periods/{id}",
+    "access": "tenant",
+    "operationId": "Schedule_remove"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/academics/periods/{id}",
+    "access": "tenant",
+    "operationId": "Schedule_update"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/academics/periods",
+    "access": "tenant",
+    "operationId": "Schedule_create"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/academics/schedule/template",
+    "access": "tenant",
+    "operationId": "Schedule_template"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/academics/schedule/working-days",
+    "access": "tenant",
+    "operationId": "Schedule_setWorkingDays"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/academics/schedule",
+    "access": "tenant",
+    "operationId": "Schedule_get"
+  },
+  {
+    "method": "DELETE",
     "path": "/v1/academics/subjects/{id}",
     "access": "tenant",
     "operationId": "Academics_deleteSubject"

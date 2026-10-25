@@ -629,6 +629,21 @@
         ],
         "type": "object"
       },
+      "ApplyTemplateDto": {
+        "properties": {
+          "template": {
+            "enum": [
+              "STANDARD",
+              "SHORT_DAY"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "template"
+        ],
+        "type": "object"
+      },
       "ClassDto": {
         "properties": {
           "capacity": {
@@ -1255,6 +1270,30 @@
         "required": [
           "year",
           "month"
+        ],
+        "type": "object"
+      },
+      "CreatePeriodDto": {
+        "properties": {
+          "endTime": {
+            "type": "string"
+          },
+          "isBreak": {
+            "type": "boolean"
+          },
+          "label": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "startTime",
+          "endTime"
         ],
         "type": "object"
       },
@@ -3366,6 +3405,38 @@
         ],
         "type": "object"
       },
+      "PeriodDto": {
+        "properties": {
+          "endTime": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "isBreak": {
+            "type": "boolean"
+          },
+          "label": {
+            "type": "string"
+          },
+          "number": {
+            "nullable": true,
+            "type": "number"
+          },
+          "startTime": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "startTime",
+          "endTime",
+          "isBreak",
+          "number"
+        ],
+        "type": "object"
+      },
       "PersonRefDto": {
         "properties": {
           "id": {
@@ -3882,83 +3953,22 @@
       },
       "ScheduleDto": {
         "properties": {
-          "academicYear": {
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "id",
-              "name"
-            ],
-            "type": "object"
-          },
-          "discountMinor": {
-            "type": "string"
-          },
-          "grossMinor": {
-            "type": "string"
-          },
-          "lines": {
+          "periods": {
             "items": {
-              "$ref": "#/components/schemas/ScheduleLineDto"
+              "$ref": "#/components/schemas/PeriodDto"
             },
             "type": "array"
           },
-          "netMinor": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          },
-          "structure": {
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              }
+          "workingDays": {
+            "items": {
+              "type": "string"
             },
-            "required": [
-              "id",
-              "name"
-            ],
-            "type": "object"
-          },
-          "student": {
-            "properties": {
-              "enrollmentId": {
-                "type": "string"
-              },
-              "id": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "id",
-              "enrollmentId",
-              "name"
-            ],
-            "type": "object"
+            "type": "array"
           }
         },
         "required": [
-          "status",
-          "student",
-          "academicYear",
-          "structure",
-          "lines",
-          "grossMinor",
-          "discountMinor",
-          "netMinor"
+          "workingDays",
+          "periods"
         ],
         "type": "object"
       },
@@ -4981,6 +4991,25 @@
         },
         "type": "object"
       },
+      "UpdatePeriodDto": {
+        "properties": {
+          "endTime": {
+            "type": "string"
+          },
+          "isBreak": {
+            "type": "boolean"
+          },
+          "label": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "UpdatePreferencesDto": {
         "properties": {
           "language": {
@@ -5289,6 +5318,31 @@
           "key",
           "publicUrl",
           "expiresInSeconds"
+        ],
+        "type": "object"
+      },
+      "WorkingDaysDto": {
+        "properties": {
+          "days": {
+            "items": {
+              "enum": [
+                "MON",
+                "TUE",
+                "WED",
+                "THU",
+                "FRI",
+                "SAT",
+                "SUN"
+              ],
+              "type": "string"
+            },
+            "maxItems": 7,
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "days"
         ],
         "type": "object"
       }
@@ -6270,6 +6324,379 @@
         "x-audit": {
           "action": "academic.gradelevel.update",
           "operation": "UpdateGradeLevel"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/periods": {
+      "post": {
+        "operationId": "Schedule_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePeriodDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedule"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.period.create",
+          "operation": "CreatePeriod"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/periods/{id}": {
+      "delete": {
+        "operationId": "Schedule_remove",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedule"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.period.delete",
+          "operation": "DeletePeriod"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      },
+      "patch": {
+        "operationId": "Schedule_update",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePeriodDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedule"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.period.update",
+          "operation": "UpdatePeriod"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/schedule": {
+      "get": {
+        "operationId": "Schedule_get",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedule"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/schedule/template": {
+      "post": {
+        "operationId": "Schedule_template",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplyTemplateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedule"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.schedule.template",
+          "operation": "ApplyStandardSchedule"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/academics/schedule/working-days": {
+      "patch": {
+        "operationId": "Schedule_setWorkingDays",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkingDaysDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Schedule"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.workingdays.set",
+          "operation": "SetWorkingDays"
         },
         "x-permission": {
           "action": "update",
