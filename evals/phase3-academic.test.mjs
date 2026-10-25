@@ -42,3 +42,11 @@ test("E-ACAD-1 the timetable's clash rules are unique keys in the database, not 
   assert.match(entry, /@unique\(fields: \["academicYear", "classroom", "day", "period"\]\)/);
   assert.match(entry, /@unique\(fields: \["academicYear", "staff", "day", "period"\]\)/);
 });
+
+test("E-ACAD-4 every operation that can set a leave request to APPROVED or REJECTED checks for an active Principal, and the route needs the approve grant", () => {
+  const ops = read("dataconnect/erp-connector/mutations.gql").split(/\n(?=mutation )/).filter((m) => /leaveRequest_update/.test(m) && /status: (APPROVED|REJECTED)/.test(m));
+  assert.ok(ops.length >= 3, "approve (paid), approve (unpaid) and reject");
+  for (const op of ops) assert.match(op, /schoolRole: \{eq: PRINCIPAL\}, status: \{eq: ACTIVE\}/, `${op.slice(0, 60)} must check for an active Principal`);
+  const controller = strip(read("apps/api-gateway/src/leave/leave.controller.ts"));
+  for (const route of ["requests/:id/approve", "requests/:id/reject"]) assert.match(controller, new RegExp(`@Permission\\('leave', 'approve'\\)[\\s\\S]{0,260}'${route}'`), `${route} needs the approve grant`);
+});

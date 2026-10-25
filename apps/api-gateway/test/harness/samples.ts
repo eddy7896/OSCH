@@ -178,6 +178,33 @@ const examWithStudentOfA = async (w: World): Promise<Record<string, string>> => 
   await w.db.placeStudent({ schoolId: w.schools.A, studentId: student['id']!, academicYearId: e['year']!, classroomId: e['classId']!, actorId: actorA(w) });
   return { ...e, studentId: student['id']! };
 };
+/** Leave (P3-6): a paid type with a big allowance, and a Monday inside the active year that no earlier sample used (the STAFF account asks again and again, and one person's requests may not overlap). */
+let leaveWeek = 0;
+const leaveTypeOfA = async (w: World, paid = true): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  await w.db.createLeaveType({ schoolId: w.schools.A, id, name: `Type ${id.slice(0, 6)}`, paid, quotaHalfDays: paid ? 200 : 0, actorId: w.roles.A.HR_MANAGER.uid, details: {} });
+  return { id: dash(id) };
+};
+const mondayInActiveYear = async (w: World): Promise<{ year: string; date: string }> => {
+  const year = await activeYearOfA(w);
+  const row = (await w.db.listAcademicYears({ schoolId: w.schools.A })).data.academicYears.find((y) => dash(y.id) === year)!;
+  const d = new Date(`${row.startDate}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + ((8 - d.getUTCDay()) % 7) + 7 * ++leaveWeek); // a Monday, one week further on each call
+  return { year, date: d.toISOString().slice(0, 10) };
+};
+const leaveSetupOfA = async (w: World): Promise<Record<string, string>> => {
+  const staff = await linkedStaffOfA(w);
+  const type = await leaveTypeOfA(w);
+  const { year, date } = await mondayInActiveYear(w);
+  return { staffId: staff['id']!, typeId: type['id']!, year, date };
+};
+const pendingLeaveOfA = async (w: World): Promise<Record<string, string>> => {
+  const s = await leaveSetupOfA(w);
+  const id = randomUUID();
+  await w.db.createLeaveRequest({ schoolId: w.schools.A, id, staffId: s['staffId']!, leaveTypeId: s['typeId']!, startDate: s['date']!, endDate: s['date']!, halfDays: 2, actorId: w.roles.A.STAFF.uid, details: {} });
+  return { ...s, id: dash(id) };
+};
+const staffA = { token: (w: World) => w.roles.A.STAFF.token, actor: (w: World) => w.roles.A.STAFF.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
 const linkedParentOfA = async (w: World): Promise<Record<string, string>> => {
   const student = await studentOfA(w);
   await w.db.linkParentAccount({ schoolId: w.schools.A, id: randomUUID(), studentId: student['id']!, userId: w.roles.A.PARENT.uid, relationship: 'MOTHER', actorId: actorA(w) });
@@ -416,6 +443,14 @@ export const SAMPLES: Record<string, Sample> = {
   'PATCH /grades/exams/:id': { ...academicAdminOfA, prepare: examOfA, body: () => ({ title: 'Renamed exam', maxMarks: '60' }) },
   'DELETE /grades/exams/:id': { ...academicAdminOfA, prepare: examOfA },
   'PUT /grades/exams/:id/marks': { ...academicAdminOfA, prepare: examWithStudentOfA, body: (_w, ctx) => ({ entries: [{ studentId: ctx['studentId'], marks: '42.5' }], submissionId: randomUUID() }) },
+  'POST /leave/types': { ...hrOfA, body: () => ({ name: `Casual ${randomUUID().slice(0, 6)}`, paid: true, quotaDays: '10' }) },
+  'PATCH /leave/types/:id': { ...hrOfA, prepare: leaveTypeOfA, body: () => ({ quotaDays: '8' }) },
+  'DELETE /leave/types/:id': { ...hrOfA, prepare: leaveTypeOfA },
+  'PUT /leave/balances/:staffId/:typeId': { ...hrOfA, prepare: leaveSetupOfA, body: (_w, ctx) => ({ allowedDays: '12', academicYearId: ctx['year'] }) },
+  'POST /leave/requests': { ...staffA, refusedStatus: 409, prepare: leaveSetupOfA, body: (_w, ctx) => ({ leaveTypeId: ctx['typeId'], startDate: ctx['date'], endDate: ctx['date'], reason: 'Family event' }) },
+  'POST /leave/requests/:id/cancel': { ...staffA, refusedStatus: 404, prepare: pendingLeaveOfA },
+  'POST /leave/requests/:id/approve': { ...principalOfA, prepare: pendingLeaveOfA },
+  'POST /leave/requests/:id/reject': { ...principalOfA, prepare: pendingLeaveOfA, body: () => ({ note: 'Exams that week' }) },
   'POST /students/:id/parent-accounts': { ...academicAdminOfA, prepare: studentOfA, body: (w) => ({ userId: w.roles.A.PARENT.uid, relationship: 'MOTHER' }) },
   'DELETE /students/:id/parent-accounts/:linkId': { ...academicAdminOfA, prepare: linkedParentOfA },
   'POST /academics/years': { ...academicAdminOfA, body: () => ({ name: `Year ${randomUUID().slice(0, 6)}`, startDate: '2042-04-01', endDate: '2043-03-31' }) },

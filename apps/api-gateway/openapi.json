@@ -644,6 +644,51 @@
         ],
         "type": "object"
       },
+      "BalanceDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "allowedDays": {
+            "type": "string"
+          },
+          "recorded": {
+            "type": "boolean"
+          },
+          "remainingDays": {
+            "type": "string"
+          },
+          "staffId": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TypeRefDto"
+          }
+        },
+        "required": [
+          "staffId",
+          "academicYearId",
+          "type",
+          "allowedDays",
+          "remainingDays",
+          "recorded"
+        ],
+        "type": "object"
+      },
+      "BalanceListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BalanceDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "BandDto": {
         "properties": {
           "label": {
@@ -1538,6 +1583,37 @@
         ],
         "type": "object"
       },
+      "CreateRequestDto": {
+        "properties": {
+          "endDate": {
+            "type": "string"
+          },
+          "half": {
+            "enum": [
+              "MORNING",
+              "AFTERNOON"
+            ],
+            "type": "string"
+          },
+          "leaveTypeId": {
+            "type": "string"
+          },
+          "reason": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "leaveTypeId",
+          "startDate",
+          "endDate"
+        ],
+        "type": "object"
+      },
       "CreateSalaryLineDto": {
         "properties": {
           "amountMinor": {
@@ -1827,6 +1903,26 @@
         ],
         "type": "object"
       },
+      "CreateTypeDto": {
+        "properties": {
+          "name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          },
+          "paid": {
+            "type": "boolean"
+          },
+          "quotaDays": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "paid"
+        ],
+        "type": "object"
+      },
       "CreatedInvitationDto": {
         "properties": {
           "acceptedAt": {
@@ -1959,6 +2055,26 @@
         },
         "required": [
           "status"
+        ],
+        "type": "object"
+      },
+      "DecisionDto": {
+        "properties": {
+          "at": {
+            "type": "string"
+          },
+          "by": {
+            "type": "string"
+          },
+          "note": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "by",
+          "at",
+          "note"
         ],
         "type": "object"
       },
@@ -3130,6 +3246,116 @@
           "amountMinor",
           "paidMinor",
           "outstandingMinor"
+        ],
+        "type": "object"
+      },
+      "LeaveRequestDto": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "days": {
+            "type": "string"
+          },
+          "decision": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DecisionDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "half": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "reason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/StaffRefDto"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TypeRefDto"
+          }
+        },
+        "required": [
+          "id",
+          "staff",
+          "type",
+          "startDate",
+          "endDate",
+          "half",
+          "days",
+          "reason",
+          "status",
+          "decision",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "LeaveRequestListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LeaveRequestDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "LeaveTypeDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "paid": {
+            "type": "boolean"
+          },
+          "quotaDays": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "paid",
+          "quotaDays"
+        ],
+        "type": "object"
+      },
+      "LeaveTypeListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LeaveTypeDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -4503,6 +4729,16 @@
         ],
         "type": "object"
       },
+      "RejectDto": {
+        "properties": {
+          "note": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "ReportCardDto": {
         "properties": {
           "academicYearId": {
@@ -4960,6 +5196,20 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "SetBalanceDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "allowedDays": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "allowedDays"
+        ],
         "type": "object"
       },
       "SetBandsDto": {
@@ -6229,6 +6479,25 @@
         ],
         "type": "object"
       },
+      "TypeRefDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "paid": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "paid"
+        ],
+        "type": "object"
+      },
       "UpdateAcademicYearDto": {
         "properties": {
           "endDate": {
@@ -6748,6 +7017,19 @@
         "required": [
           "name"
         ],
+        "type": "object"
+      },
+      "UpdateTypeDto": {
+        "properties": {
+          "name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          },
+          "quotaDays": {
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "UploadTicketDto": {
@@ -14325,6 +14607,753 @@
         "x-permission": {
           "action": "update",
           "resource": "memberships"
+        }
+      }
+    },
+    "/v1/leave/balances": {
+      "get": {
+        "operationId": "Leave_balances",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "staffId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "leave"
+        }
+      }
+    },
+    "/v1/leave/balances/{staffId}/{typeId}": {
+      "put": {
+        "operationId": "Leave_setBalance",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "staffId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "typeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetBalanceDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "leave.balance.set",
+          "operation": "SetLeaveBalance"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "leave"
+        }
+      }
+    },
+    "/v1/leave/requests": {
+      "get": {
+        "operationId": "Leave_requests",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "enum": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED",
+                "CANCELLED"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "staffId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaveRequestListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "leave"
+        }
+      },
+      "post": {
+        "operationId": "Leave_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaveRequestDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "leave.request.create",
+          "operation": "CreateLeaveRequest"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "leave"
+        }
+      }
+    },
+    "/v1/leave/requests/{id}/approve": {
+      "post": {
+        "operationId": "Leave_approve",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaveRequestDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "leave.request.approve",
+          "operation": "ApproveLeaveRequest"
+        },
+        "x-permission": {
+          "action": "approve",
+          "resource": "leave"
+        }
+      }
+    },
+    "/v1/leave/requests/{id}/cancel": {
+      "post": {
+        "operationId": "Leave_cancel",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaveRequestDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "leave.request.cancel",
+          "operation": "CancelLeaveRequest"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "leave"
+        }
+      }
+    },
+    "/v1/leave/requests/{id}/reject": {
+      "post": {
+        "operationId": "Leave_reject",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaveRequestDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "leave.request.reject",
+          "operation": "RejectLeaveRequest"
+        },
+        "x-permission": {
+          "action": "approve",
+          "resource": "leave"
+        }
+      }
+    },
+    "/v1/leave/types": {
+      "get": {
+        "operationId": "Leave_types",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaveTypeListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "leave"
+        }
+      },
+      "post": {
+        "operationId": "Leave_createType",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaveTypeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "leave.type.create",
+          "operation": "CreateLeaveType"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "leave"
+        }
+      }
+    },
+    "/v1/leave/types/{id}": {
+      "delete": {
+        "operationId": "Leave_deleteType",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "leave.type.delete",
+          "operation": "DeleteLeaveType"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "leave"
+        }
+      },
+      "patch": {
+        "operationId": "Leave_updateType",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaveTypeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "leave.type.update",
+          "operation": "UpdateLeaveType"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "leave"
         }
       }
     },

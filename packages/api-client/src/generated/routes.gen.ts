@@ -657,6 +657,72 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Invitations_create"
   },
   {
+    "method": "PUT",
+    "path": "/v1/leave/balances/{staffId}/{typeId}",
+    "access": "tenant",
+    "operationId": "Leave_setBalance"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/leave/balances",
+    "access": "tenant",
+    "operationId": "Leave_balances"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/leave/requests/{id}/approve",
+    "access": "tenant",
+    "operationId": "Leave_approve"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/leave/requests/{id}/cancel",
+    "access": "tenant",
+    "operationId": "Leave_cancel"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/leave/requests/{id}/reject",
+    "access": "tenant",
+    "operationId": "Leave_reject"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/leave/requests",
+    "access": "tenant",
+    "operationId": "Leave_requests"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/leave/requests",
+    "access": "tenant",
+    "operationId": "Leave_create"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/leave/types/{id}",
+    "access": "tenant",
+    "operationId": "Leave_deleteType"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/leave/types/{id}",
+    "access": "tenant",
+    "operationId": "Leave_updateType"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/leave/types",
+    "access": "tenant",
+    "operationId": "Leave_types"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/leave/types",
+    "access": "tenant",
+    "operationId": "Leave_createType"
+  },
+  {
     "method": "PATCH",
     "path": "/v1/me/preferences",
     "access": "user",

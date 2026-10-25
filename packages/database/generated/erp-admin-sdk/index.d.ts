@@ -57,10 +57,11 @@ export enum InvoiceStatus {
   PAID = "PAID",
   OVERDUE = "OVERDUE",
 }
-export enum LeaveStatus {
+export enum LeaveRequestStatus {
   PENDING = "PENDING",
   APPROVED = "APPROVED",
   REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED",
 }
 export enum MembershipStatus {
   ACTIVE = "ACTIVE",
@@ -492,6 +493,34 @@ export interface ApplyStandardScheduleVariables {
   details?: unknown | null;
 }
 
+export interface ApproveLeaveRequestData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    request: ({
+      id: UUIDString;
+    } & LeaveRequest_Key)[];
+    balance: ({
+      id: UUIDString;
+    } & LeaveBalance_Key)[];
+  };
+  leaveBalance_update?: LeaveBalance_Key | null;
+  leaveRequest_update?: LeaveRequest_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ApproveLeaveRequestVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  balanceId: UUIDString;
+  halfDays: number;
+  expectedRemaining: number;
+  newRemaining: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface ApprovePayrollRunData {
   query?: {
     actor: ({
@@ -506,6 +535,26 @@ export interface ApprovePayrollRunData {
 }
 
 export interface ApprovePayrollRunVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface ApproveUnpaidLeaveRequestData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    request: ({
+      id: UUIDString;
+    } & LeaveRequest_Key)[];
+  };
+  leaveRequest_update?: LeaveRequest_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ApproveUnpaidLeaveRequestVariables {
   schoolId: UUIDString;
   id: UUIDString;
   actorId: string;
@@ -595,6 +644,30 @@ export interface AttendanceStatusLabel_Key {
 export interface AuditLog_Key {
   id: UUIDString;
   __typename?: 'AuditLog_Key';
+}
+
+export interface CancelLeaveRequestData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    request: ({
+      id: UUIDString;
+    } & LeaveRequest_Key)[];
+  };
+  leaveRequest_update?: LeaveRequest_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CancelLeaveRequestVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  staffId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface ChangeClassTeacherData {
@@ -781,6 +854,17 @@ export interface CountInvoicesVariables {
   status?: InvoiceStatus | null;
   dueOnOrBefore?: DateString | null;
   dueOnOrAfter?: DateString | null;
+}
+
+export interface CountLeaveOfTypeData {
+  leaveRequests: ({
+    _count: number;
+  })[];
+}
+
+export interface CountLeaveOfTypeVariables {
+  schoolId: UUIDString;
+  leaveTypeId: UUIDString;
 }
 
 export interface CountMarksOfExamData {
@@ -1236,21 +1320,82 @@ export interface CreateItemConcessionVariables {
   details?: unknown | null;
 }
 
-export interface CreateLeaveRequestData {
+export interface CreateLeaveBalanceData {
   query?: {
-    schoolMembers: ({
+    actor: ({
       userId: string;
     })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    type: ({
+      id: UUIDString;
+    } & LeaveType_Key)[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+  };
+  leaveBalance_insert: LeaveBalance_Key;
+}
+
+export interface CreateLeaveBalanceVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  staffId: UUIDString;
+  leaveTypeId: UUIDString;
+  academicYearId: UUIDString;
+  allowedHalfDays: number;
+  actorId: string;
+}
+
+export interface CreateLeaveRequestData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    type: ({
+      id: UUIDString;
+    } & LeaveType_Key)[];
   };
   leaveRequest_insert: LeaveRequest_Key;
+  auditLog_insert: AuditLog_Key;
 }
 
 export interface CreateLeaveRequestVariables {
   schoolId: UUIDString;
-  userId: string;
+  id: UUIDString;
+  staffId: UUIDString;
+  leaveTypeId: UUIDString;
   startDate: DateString;
   endDate: DateString;
+  half?: string | null;
+  halfDays: number;
   reason?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface CreateLeaveTypeData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  leaveType_insert: LeaveType_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateLeaveTypeVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  name: string;
+  paid: boolean;
+  quotaHalfDays: number;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CreatePayrollRunData {
@@ -1691,6 +1836,30 @@ export interface DeleteGradeLevelData {
 }
 
 export interface DeleteGradeLevelVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeleteLeaveTypeData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    type: ({
+      id: UUIDString;
+    } & LeaveType_Key)[];
+    used: ({
+      id: UUIDString;
+    } & LeaveRequest_Key)[];
+  };
+  leaveBalance_deleteMany: number;
+  leaveType_delete?: LeaveType_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteLeaveTypeVariables {
   schoolId: UUIDString;
   id: UUIDString;
   actorId: string;
@@ -2196,6 +2365,44 @@ export interface GetInvoiceVariables {
   id: UUIDString;
 }
 
+export interface GetLeaveRequestData {
+  leaveRequests: ({
+    id: UUIDString;
+    startDate: DateString;
+    endDate: DateString;
+    half?: string | null;
+    halfDays: number;
+    reason?: string | null;
+    status: LeaveRequestStatus;
+    decisionNote?: string | null;
+    decidedAt?: TimestampString | null;
+    createdAt: TimestampString;
+    staff: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      userId?: string | null;
+    } & StaffProfile_Key;
+    leaveType: {
+      id: UUIDString;
+      name: string;
+      paid: boolean;
+      quotaHalfDays: number;
+    } & LeaveType_Key;
+    decidedBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & LeaveRequest_Key)[];
+}
+
+export interface GetLeaveRequestVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetMembershipData {
   schoolMembers: ({
     schoolRole: SchoolRole;
@@ -2655,9 +2862,19 @@ export interface InvoicedForYearVariables {
   offset: number;
 }
 
+export interface LeaveBalance_Key {
+  id: UUIDString;
+  __typename?: 'LeaveBalance_Key';
+}
+
 export interface LeaveRequest_Key {
   id: UUIDString;
   __typename?: 'LeaveRequest_Key';
+}
+
+export interface LeaveType_Key {
+  id: UUIDString;
+  __typename?: 'LeaveType_Key';
 }
 
 export interface LinkParentAccountData {
@@ -3029,23 +3246,77 @@ export interface ListInvoicesVariables {
   offset: number;
 }
 
+export interface ListLeaveBalancesData {
+  leaveBalances: ({
+    id: UUIDString;
+    staffId: UUIDString;
+    academicYearId: UUIDString;
+    allowedHalfDays: number;
+    remainingHalfDays: number;
+    leaveType: {
+      id: UUIDString;
+      name: string;
+      paid: boolean;
+    } & LeaveType_Key;
+  } & LeaveBalance_Key)[];
+}
+
+export interface ListLeaveBalancesVariables {
+  schoolId: UUIDString;
+  staffId?: UUIDString | null;
+  academicYearId?: UUIDString | null;
+}
+
 export interface ListLeaveRequestsData {
   leaveRequests: ({
     id: UUIDString;
     startDate: DateString;
     endDate: DateString;
+    half?: string | null;
+    halfDays: number;
     reason?: string | null;
-    status: LeaveStatus;
-    user: {
+    status: LeaveRequestStatus;
+    decisionNote?: string | null;
+    decidedAt?: TimestampString | null;
+    createdAt: TimestampString;
+    staff: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      userId?: string | null;
+    } & StaffProfile_Key;
+    leaveType: {
+      id: UUIDString;
+      name: string;
+      paid: boolean;
+    } & LeaveType_Key;
+    decidedBy?: {
+      id: string;
+      displayName?: string | null;
       email: string;
-    };
-    substitute?: {
-      email: string;
-    };
+    } & User_Key;
   } & LeaveRequest_Key)[];
 }
 
 export interface ListLeaveRequestsVariables {
+  schoolId: UUIDString;
+  staffId?: UUIDString | null;
+  status?: LeaveRequestStatus | null;
+  from?: DateString | null;
+  to?: DateString | null;
+}
+
+export interface ListLeaveTypesData {
+  leaveTypes: ({
+    id: UUIDString;
+    name: string;
+    paid: boolean;
+    quotaHalfDays: number;
+  } & LeaveType_Key)[];
+}
+
+export interface ListLeaveTypesVariables {
   schoolId: UUIDString;
 }
 
@@ -3767,6 +4038,27 @@ export interface RecordPaymentVariables {
   details?: unknown | null;
 }
 
+export interface RejectLeaveRequestData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    request: ({
+      id: UUIDString;
+    } & LeaveRequest_Key)[];
+  };
+  leaveRequest_update?: LeaveRequest_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RejectLeaveRequestVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  note?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface RemoveAttendanceMarkData {
   query?: {
     actor: ({
@@ -4170,6 +4462,29 @@ export interface SetGradeBandsData {
 export interface SetGradeBandsVariables {
   schoolId: UUIDString;
   bands: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface SetLeaveBalanceData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    balance: ({
+      id: UUIDString;
+    } & LeaveBalance_Key)[];
+  };
+  leaveBalance_update?: LeaveBalance_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetLeaveBalanceVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  expectedRemaining: number;
+  allowedHalfDays: number;
+  remainingHalfDays: number;
   actorId: string;
   details?: unknown | null;
 }
@@ -4723,20 +5038,26 @@ export interface UpdateGuardianVariables {
   details?: unknown | null;
 }
 
-export interface UpdateLeaveRequestData {
+export interface UpdateLeaveTypeData {
   query?: {
-    schoolMembers: ({
+    actor: ({
       userId: string;
     })[];
+    type: ({
+      id: UUIDString;
+    } & LeaveType_Key)[];
   };
-  leaveRequest_updateMany: number;
+  leaveType_update?: LeaveType_Key | null;
+  auditLog_insert: AuditLog_Key;
 }
 
-export interface UpdateLeaveRequestVariables {
+export interface UpdateLeaveTypeVariables {
   schoolId: UUIDString;
   id: UUIDString;
-  status: LeaveStatus;
-  substituteId?: string | null;
+  name: string;
+  quotaHalfDays: number;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface UpdateMembershipData {
@@ -4980,16 +5301,6 @@ export function createUser(vars: CreateUserVariables, options?: OperationOptions
 export function createSchoolMember(dc: DataConnect, vars: CreateSchoolMemberVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolMemberData>>;
 /** Generated Node Admin SDK operation action function for the 'CreateSchoolMember' Mutation. Allow users to pass in custom DataConnect instances. */
 export function createSchoolMember(vars: CreateSchoolMemberVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolMemberData>>;
-
-/** Generated Node Admin SDK operation action function for the 'CreateLeaveRequest' Mutation. Allow users to execute without passing in DataConnect. */
-export function createLeaveRequest(dc: DataConnect, vars: CreateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveRequestData>>;
-/** Generated Node Admin SDK operation action function for the 'CreateLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createLeaveRequest(vars: CreateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveRequestData>>;
-
-/** Generated Node Admin SDK operation action function for the 'UpdateLeaveRequest' Mutation. Allow users to execute without passing in DataConnect. */
-export function updateLeaveRequest(dc: DataConnect, vars: UpdateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateLeaveRequestData>>;
-/** Generated Node Admin SDK operation action function for the 'UpdateLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
-export function updateLeaveRequest(vars: UpdateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateLeaveRequestData>>;
 
 /** Generated Node Admin SDK operation action function for the 'CreateAuditLog' Mutation. Allow users to execute without passing in DataConnect. */
 export function createAuditLog(dc: DataConnect, vars: CreateAuditLogVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateAuditLogData>>;
@@ -5551,15 +5862,60 @@ export function finishMarkEntry(dc: DataConnect, vars: FinishMarkEntryVariables,
 /** Generated Node Admin SDK operation action function for the 'FinishMarkEntry' Mutation. Allow users to pass in custom DataConnect instances. */
 export function finishMarkEntry(vars: FinishMarkEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishMarkEntryData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateLeaveType' Mutation. Allow users to execute without passing in DataConnect. */
+export function createLeaveType(dc: DataConnect, vars: CreateLeaveTypeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveTypeData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateLeaveType' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createLeaveType(vars: CreateLeaveTypeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveTypeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateLeaveType' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateLeaveType(dc: DataConnect, vars: UpdateLeaveTypeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateLeaveTypeData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateLeaveType' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateLeaveType(vars: UpdateLeaveTypeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateLeaveTypeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteLeaveType' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteLeaveType(dc: DataConnect, vars: DeleteLeaveTypeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteLeaveTypeData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteLeaveType' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteLeaveType(vars: DeleteLeaveTypeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteLeaveTypeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateLeaveBalance' Mutation. Allow users to execute without passing in DataConnect. */
+export function createLeaveBalance(dc: DataConnect, vars: CreateLeaveBalanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveBalanceData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateLeaveBalance' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createLeaveBalance(vars: CreateLeaveBalanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveBalanceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetLeaveBalance' Mutation. Allow users to execute without passing in DataConnect. */
+export function setLeaveBalance(dc: DataConnect, vars: SetLeaveBalanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetLeaveBalanceData>>;
+/** Generated Node Admin SDK operation action function for the 'SetLeaveBalance' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setLeaveBalance(vars: SetLeaveBalanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetLeaveBalanceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateLeaveRequest' Mutation. Allow users to execute without passing in DataConnect. */
+export function createLeaveRequest(dc: DataConnect, vars: CreateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveRequestData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createLeaveRequest(vars: CreateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveRequestData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CancelLeaveRequest' Mutation. Allow users to execute without passing in DataConnect. */
+export function cancelLeaveRequest(dc: DataConnect, vars: CancelLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CancelLeaveRequestData>>;
+/** Generated Node Admin SDK operation action function for the 'CancelLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
+export function cancelLeaveRequest(vars: CancelLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CancelLeaveRequestData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ApproveLeaveRequest' Mutation. Allow users to execute without passing in DataConnect. */
+export function approveLeaveRequest(dc: DataConnect, vars: ApproveLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApproveLeaveRequestData>>;
+/** Generated Node Admin SDK operation action function for the 'ApproveLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
+export function approveLeaveRequest(vars: ApproveLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApproveLeaveRequestData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ApproveUnpaidLeaveRequest' Mutation. Allow users to execute without passing in DataConnect. */
+export function approveUnpaidLeaveRequest(dc: DataConnect, vars: ApproveUnpaidLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApproveUnpaidLeaveRequestData>>;
+/** Generated Node Admin SDK operation action function for the 'ApproveUnpaidLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
+export function approveUnpaidLeaveRequest(vars: ApproveUnpaidLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApproveUnpaidLeaveRequestData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RejectLeaveRequest' Mutation. Allow users to execute without passing in DataConnect. */
+export function rejectLeaveRequest(dc: DataConnect, vars: RejectLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RejectLeaveRequestData>>;
+/** Generated Node Admin SDK operation action function for the 'RejectLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
+export function rejectLeaveRequest(vars: RejectLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RejectLeaveRequestData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
 export function listStaff(vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
-
-/** Generated Node Admin SDK operation action function for the 'ListLeaveRequests' Query. Allow users to execute without passing in DataConnect. */
-export function listLeaveRequests(dc: DataConnect, vars: ListLeaveRequestsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveRequestsData>>;
-/** Generated Node Admin SDK operation action function for the 'ListLeaveRequests' Query. Allow users to pass in custom DataConnect instances. */
-export function listLeaveRequests(vars: ListLeaveRequestsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveRequestsData>>;
 
 /** Generated Node Admin SDK operation action function for the 'GetUser' Query. Allow users to execute without passing in DataConnect. */
 export function getUser(dc: DataConnect, vars: GetUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetUserData>>;
@@ -6020,4 +6376,29 @@ export function countExamsOfTerm(vars: CountExamsOfTermVariables, options?: Oper
 export function marksOfStudentInTerm(dc: DataConnect, vars: MarksOfStudentInTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarksOfStudentInTermData>>;
 /** Generated Node Admin SDK operation action function for the 'MarksOfStudentInTerm' Query. Allow users to pass in custom DataConnect instances. */
 export function marksOfStudentInTerm(vars: MarksOfStudentInTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarksOfStudentInTermData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListLeaveTypes' Query. Allow users to execute without passing in DataConnect. */
+export function listLeaveTypes(dc: DataConnect, vars: ListLeaveTypesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveTypesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListLeaveTypes' Query. Allow users to pass in custom DataConnect instances. */
+export function listLeaveTypes(vars: ListLeaveTypesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveTypesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountLeaveOfType' Query. Allow users to execute without passing in DataConnect. */
+export function countLeaveOfType(dc: DataConnect, vars: CountLeaveOfTypeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountLeaveOfTypeData>>;
+/** Generated Node Admin SDK operation action function for the 'CountLeaveOfType' Query. Allow users to pass in custom DataConnect instances. */
+export function countLeaveOfType(vars: CountLeaveOfTypeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountLeaveOfTypeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListLeaveBalances' Query. Allow users to execute without passing in DataConnect. */
+export function listLeaveBalances(dc: DataConnect, vars: ListLeaveBalancesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveBalancesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListLeaveBalances' Query. Allow users to pass in custom DataConnect instances. */
+export function listLeaveBalances(vars: ListLeaveBalancesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveBalancesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListLeaveRequests' Query. Allow users to execute without passing in DataConnect. */
+export function listLeaveRequests(dc: DataConnect, vars: ListLeaveRequestsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveRequestsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListLeaveRequests' Query. Allow users to pass in custom DataConnect instances. */
+export function listLeaveRequests(vars: ListLeaveRequestsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveRequestsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetLeaveRequest' Query. Allow users to execute without passing in DataConnect. */
+export function getLeaveRequest(dc: DataConnect, vars: GetLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetLeaveRequestData>>;
+/** Generated Node Admin SDK operation action function for the 'GetLeaveRequest' Query. Allow users to pass in custom DataConnect instances. */
+export function getLeaveRequest(vars: GetLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetLeaveRequestData>>;
 

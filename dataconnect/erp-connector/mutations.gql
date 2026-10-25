@@ -16,34 +16,6 @@ mutation CreateSchoolMember($schoolId: UUID!, $userId: String!, $schoolRole: Sch
   })
 }
 
-# Academic: Create a Leave Request
-# The requester must be a member of $schoolId.
-mutation CreateLeaveRequest($schoolId: UUID!, $userId: String!, $startDate: Date!, $endDate: Date!, $reason: String) @auth(level: NO_ACCESS) @transaction {
-  query {
-    schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}) @check(expr: "this.size() == 1", message: "user is not a member of this school") { userId }
-  }
-  leaveRequest_insert(data: {
-    schoolId: $schoolId,
-    userId: $userId,
-    startDate: $startDate,
-    endDate: $endDate,
-    reason: $reason
-  })
-}
-
-# Academic: Update Leave Request (Approve/Reject & Substitute)
-# Scoped to the school in the WHERE clause: a leave id from another tenant matches nothing (audit F4).
-# If a substitute is given they must be a member of $schoolId; the leave row itself is scoped by the WHERE clause.
-mutation UpdateLeaveRequest($schoolId: UUID!, $id: UUID!, $status: LeaveStatus!, $substituteId: String) @auth(level: NO_ACCESS) @transaction {
-  query {
-    schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $substituteId}}) @check(expr: "vars.substituteId == null || this.size() == 1", message: "substitute is not a member of this school") { userId }
-  }
-  leaveRequest_updateMany(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}, data: {
-    status: $status,
-    substituteId: $substituteId
-  })
-}
-
 # Audit: append one row per mutating gateway request (E-AUD-1). $schoolId is null only for platform-level actions.
 mutation CreateAuditLog($schoolId: UUID, $actorId: String!, $action: String!, $entityType: String!, $entityId: String, $details: Any) @auth(level: NO_ACCESS) {
   auditLog_insert(data: {
@@ -1159,4 +1131,104 @@ mutation FinishMarkEntry($schoolId: UUID!, $id: UUID!, $submissionId: String, $a
   }
   exam_update(id: $id, data: { lastSubmissionId: $submissionId })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "grades.marks.save", entityType: "Exam", entityId_expr: "request.variables.id", details: $details })
+}
+
+# ---- Leave (P3-6, ADR-0013 decision 7). Only an active Principal can move a request to APPROVED or REJECTED, checked here in the transaction. Approving a PAID request also
+# takes its half-days from the person's balance in the same transaction (the balance must still be what the caller saw). Unpaid leave takes nothing.
+mutation CreateLeaveType($schoolId: UUID!, $id: UUID!, $name: String!, $paid: Boolean!, $quotaHalfDays: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  leaveType_insert(data: { id: $id, schoolId: $schoolId, name: $name, paid: $paid, quotaHalfDays: $quotaHalfDays })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.type.create", entityType: "LeaveType", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateLeaveType($schoolId: UUID!, $id: UUID!, $name: String!, $quotaHalfDays: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    type: leaveTypes(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "leave type not found in this school") { id }
+  }
+  leaveType_update(id: $id, data: { name: $name, quotaHalfDays: $quotaHalfDays })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.type.update", entityType: "LeaveType", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeleteLeaveType($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    type: leaveTypes(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "leave type not found in this school") { id }
+    used: leaveRequests(where: {leaveTypeId: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 0", message: "the leave type has requests") { id }
+  }
+  leaveBalance_deleteMany(where: {leaveTypeId: {eq: $id}, schoolId: {eq: $schoolId}})
+  leaveType_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.type.delete", entityType: "LeaveType", entityId_expr: "request.variables.id", details: $details })
+}
+
+# HR sets what one person may take of a paid type in a year. The balance is made if it is new; otherwise it must still be what HR saw.
+mutation CreateLeaveBalance($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $leaveTypeId: UUID!, $academicYearId: UUID!, $allowedHalfDays: Int!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "staff member not found in this school") { id }
+    type: leaveTypes(where: {id: {eq: $leaveTypeId}, schoolId: {eq: $schoolId}, paid: {eq: true}}) @check(expr: "this.size() == 1", message: "paid leave type not found in this school") { id }
+    year: academicYears(where: {id: {eq: $academicYearId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "academic year not found in this school") { id }
+  }
+  leaveBalance_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, leaveTypeId: $leaveTypeId, academicYearId: $academicYearId, allowedHalfDays: $allowedHalfDays, remainingHalfDays: $allowedHalfDays })
+}
+
+mutation SetLeaveBalance($schoolId: UUID!, $id: UUID!, $expectedRemaining: Int!, $allowedHalfDays: Int!, $remainingHalfDays: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    balance: leaveBalances(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, remainingHalfDays: {eq: $expectedRemaining}}) @check(expr: "this.size() == 1", message: "balance not found in this school, or it changed since it was read") { id }
+  }
+  leaveBalance_update(id: $id, data: { allowedHalfDays: $allowedHalfDays, remainingHalfDays: $remainingHalfDays })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.balance.set", entityType: "LeaveBalance", entityId_expr: "request.variables.id", details: $details })
+}
+
+# A request is the requester's own: the staff record must be linked to the acting account.
+mutation CreateLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $leaveTypeId: UUID!, $startDate: Date!, $endDate: Date!, $half: String, $halfDays: Int!, $reason: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "you can only ask for leave for your own staff record") { id }
+    type: leaveTypes(where: {id: {eq: $leaveTypeId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "leave type not found in this school") { id }
+  }
+  leaveRequest_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, leaveTypeId: $leaveTypeId, startDate: $startDate, endDate: $endDate, half: $half, halfDays: $halfDays, reason: $reason })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.create", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation CancelLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}, userId: {eq: $actorId}}) @check(expr: "this.size() == 1", message: "only the person who asked can cancel") { id }
+    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: PENDING}}) @check(expr: "this.size() == 1", message: "request not found or no longer pending") { id }
+  }
+  leaveRequest_update(id: $id, data: { status: CANCELLED })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.cancel", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation ApproveLeaveRequest($schoolId: UUID!, $id: UUID!, $balanceId: UUID!, $halfDays: Int!, $expectedRemaining: Int!, $newRemaining: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can decide leave") { userId }
+    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: PENDING}, halfDays: {eq: $halfDays}, leaveType: {paid: {eq: true}}}) @check(expr: "this.size() == 1", message: "paid request not found in this school or no longer pending") { id }
+    balance: leaveBalances(where: {id: {eq: $balanceId}, schoolId: {eq: $schoolId}, remainingHalfDays: {eq: $expectedRemaining}}) @check(expr: "this.size() == 1", message: "balance not found, or it changed since it was read") { id }
+  }
+  leaveBalance_update(id: $balanceId, data: { remainingHalfDays: $newRemaining })
+  leaveRequest_update(id: $id, data: { status: APPROVED, decidedById: $actorId, decidedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.approve", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation ApproveUnpaidLeaveRequest($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can decide leave") { userId }
+    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: PENDING}, leaveType: {paid: {eq: false}}}) @check(expr: "this.size() == 1", message: "unpaid request not found in this school or no longer pending") { id }
+  }
+  leaveRequest_update(id: $id, data: { status: APPROVED, decidedById: $actorId, decidedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.approve", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation RejectLeaveRequest($schoolId: UUID!, $id: UUID!, $note: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can decide leave") { userId }
+    request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: PENDING}}) @check(expr: "this.size() == 1", message: "request not found in this school or no longer pending") { id }
+  }
+  leaveRequest_update(id: $id, data: { status: REJECTED, decidedById: $actorId, decidedAt_expr: "request.time", decisionNote: $note })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.reject", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
 }

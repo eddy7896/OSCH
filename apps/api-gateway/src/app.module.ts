@@ -18,6 +18,7 @@ import { ReportsModule } from './reports/reports.module.js';
 import { ScheduleModule } from './schedule/schedule.module.js';
 import { AttendanceModule } from './attendance/attendance.module.js';
 import { GradesModule } from './grades/grades.module.js';
+import { LeaveModule } from './leave/leave.module.js';
 import { TimetableModule } from './timetable/timetable.module.js';
 import { TeachingModule } from './teaching/teaching.module.js';
 import { FeesModule } from './fees/fees.module.js';
@@ -75,6 +76,7 @@ import { HealthModule } from './health/health.module.js';
     TimetableModule,
     AttendanceModule,
     GradesModule,
+    LeaveModule,
     TeachingModule,
     ImportsModule,
     AccountsModule,
