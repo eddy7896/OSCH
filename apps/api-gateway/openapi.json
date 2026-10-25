@@ -644,6 +644,71 @@
         ],
         "type": "object"
       },
+      "BandDto": {
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "maxPercent": {
+            "type": "number"
+          },
+          "minPercent": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "label",
+          "minPercent",
+          "maxPercent"
+        ],
+        "type": "object"
+      },
+      "BandInputDto": {
+        "properties": {
+          "label": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxPercent": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "number"
+          },
+          "minPercent": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "label",
+          "minPercent",
+          "maxPercent"
+        ],
+        "type": "object"
+      },
+      "BandsDto": {
+        "properties": {
+          "bands": {
+            "items": {
+              "$ref": "#/components/schemas/BandDto"
+            },
+            "type": "array"
+          },
+          "template": {
+            "items": {
+              "$ref": "#/components/schemas/BandDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "bands",
+          "template"
+        ],
+        "type": "object"
+      },
       "ChildDto": {
         "properties": {
           "class": {
@@ -1255,6 +1320,39 @@
         ],
         "type": "object"
       },
+      "CreateExamDto": {
+        "properties": {
+          "classId": {
+            "type": "string"
+          },
+          "examDate": {
+            "type": "string"
+          },
+          "maxMarks": {
+            "type": "string"
+          },
+          "subjectId": {
+            "type": "string"
+          },
+          "termId": {
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "termId",
+          "classId",
+          "subjectId",
+          "title",
+          "examDate",
+          "maxMarks"
+        ],
+        "type": "object"
+      },
       "CreateGradeLevelDto": {
         "properties": {
           "name": {
@@ -1713,6 +1811,22 @@
         ],
         "type": "object"
       },
+      "CreateTermDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
       "CreatedInvitationDto": {
         "properties": {
           "acceptedAt": {
@@ -2097,6 +2211,101 @@
         ],
         "type": "object"
       },
+      "ExamDto": {
+        "properties": {
+          "class": {
+            "$ref": "#/components/schemas/RefDto"
+          },
+          "examDate": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "maxMarks": {
+            "type": "string"
+          },
+          "maxTenths": {
+            "type": "number"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/SubjectRefDto"
+          },
+          "term": {
+            "$ref": "#/components/schemas/RefDto"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "examDate",
+          "term",
+          "class",
+          "subject",
+          "maxMarks",
+          "maxTenths"
+        ],
+        "type": "object"
+      },
+      "ExamLineDto": {
+        "properties": {
+          "absent": {
+            "type": "boolean"
+          },
+          "date": {
+            "type": "string"
+          },
+          "grade": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "marks": {
+            "nullable": true,
+            "type": "string"
+          },
+          "maxMarks": {
+            "type": "string"
+          },
+          "percent": {
+            "nullable": true,
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "date",
+          "maxMarks",
+          "marks",
+          "absent",
+          "percent",
+          "grade"
+        ],
+        "type": "object"
+      },
+      "ExamListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ExamDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "FeeItemDto": {
         "properties": {
           "id": {
@@ -2349,6 +2558,49 @@
         },
         "required": [
           "items"
+        ],
+        "type": "object"
+      },
+      "GridRowDto": {
+        "properties": {
+          "absent": {
+            "type": "boolean"
+          },
+          "enrollmentId": {
+            "type": "string"
+          },
+          "grade": {
+            "nullable": true,
+            "type": "string"
+          },
+          "marks": {
+            "nullable": true,
+            "type": "string"
+          },
+          "marksTenths": {
+            "nullable": true,
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "percent": {
+            "nullable": true,
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId",
+          "enrollmentId",
+          "name",
+          "marks",
+          "marksTenths",
+          "absent",
+          "percent",
+          "grade"
         ],
         "type": "object"
       },
@@ -2952,6 +3204,23 @@
         ],
         "type": "object"
       },
+      "MarkEntryDto": {
+        "properties": {
+          "absent": {
+            "type": "boolean"
+          },
+          "marks": {
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId"
+        ],
+        "type": "object"
+      },
       "MarkInputDto": {
         "properties": {
           "note": {
@@ -2978,6 +3247,24 @@
         "required": [
           "studentId",
           "status"
+        ],
+        "type": "object"
+      },
+      "MarksGridDto": {
+        "properties": {
+          "exam": {
+            "$ref": "#/components/schemas/ExamDto"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/GridRowDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "exam",
+          "rows"
         ],
         "type": "object"
       },
@@ -4216,6 +4503,57 @@
         ],
         "type": "object"
       },
+      "ReportCardDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "class": {
+            "$ref": "#/components/schemas/RefDto"
+          },
+          "grade": {
+            "nullable": true,
+            "type": "string"
+          },
+          "pending": {
+            "type": "number"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "student": {
+            "$ref": "#/components/schemas/StudentRefDto"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectLineDto"
+            },
+            "type": "array"
+          },
+          "term": {
+            "$ref": "#/components/schemas/RefDto"
+          },
+          "totalMarks": {
+            "type": "string"
+          },
+          "totalMaxMarks": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "student",
+          "class",
+          "term",
+          "academicYearId",
+          "subjects",
+          "totalMarks",
+          "totalMaxMarks",
+          "percent",
+          "grade",
+          "pending"
+        ],
+        "type": "object"
+      },
       "ReversePaymentDto": {
         "properties": {
           "reason": {
@@ -4369,6 +4707,25 @@
           "title",
           "dueDate",
           "amountMinor"
+        ],
+        "type": "object"
+      },
+      "SaveMarksDto": {
+        "properties": {
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/MarkEntryDto"
+            },
+            "maxItems": 1000,
+            "type": "array"
+          },
+          "submissionId": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "entries"
         ],
         "type": "object"
       },
@@ -4603,6 +4960,21 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "SetBandsDto": {
+        "properties": {
+          "bands": {
+            "items": {
+              "$ref": "#/components/schemas/BandInputDto"
+            },
+            "maxItems": 20,
+            "type": "array"
+          }
+        },
+        "required": [
+          "bands"
+        ],
         "type": "object"
       },
       "SetClassTeacherDto": {
@@ -5482,6 +5854,25 @@
         ],
         "type": "object"
       },
+      "StudentRefDto": {
+        "properties": {
+          "enrollmentId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "enrollmentId",
+          "name"
+        ],
+        "type": "object"
+      },
       "StudentSummaryDto": {
         "properties": {
           "dateOfBirth": {
@@ -5545,6 +5936,45 @@
           "id",
           "name",
           "code"
+        ],
+        "type": "object"
+      },
+      "SubjectLineDto": {
+        "properties": {
+          "exams": {
+            "items": {
+              "$ref": "#/components/schemas/ExamLineDto"
+            },
+            "type": "array"
+          },
+          "grade": {
+            "nullable": true,
+            "type": "string"
+          },
+          "marks": {
+            "type": "string"
+          },
+          "maxMarks": {
+            "type": "string"
+          },
+          "pending": {
+            "type": "number"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/SubjectRefDto"
+          }
+        },
+        "required": [
+          "subject",
+          "exams",
+          "marks",
+          "maxMarks",
+          "percent",
+          "grade",
+          "pending"
         ],
         "type": "object"
       },
@@ -5692,6 +6122,39 @@
         },
         "required": [
           "subjectId"
+        ],
+        "type": "object"
+      },
+      "TermDto": {
+        "properties": {
+          "academicYearId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "academicYearId"
+        ],
+        "type": "object"
+      },
+      "TermListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TermDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -5854,6 +6317,22 @@
           },
           "section": {
             "maxLength": 10,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateExamDto": {
+        "properties": {
+          "examDate": {
+            "type": "string"
+          },
+          "maxMarks": {
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 80,
             "minLength": 1,
             "type": "string"
           }
@@ -6256,6 +6735,19 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "UpdateTermDto": {
+        "properties": {
+          "name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
         "type": "object"
       },
       "UploadTicketDto": {
@@ -12314,6 +12806,919 @@
         "x-permission": {
           "action": "read",
           "resource": "finance"
+        }
+      }
+    },
+    "/v1/grades/bands": {
+      "get": {
+        "operationId": "Grades_bands",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BandsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      },
+      "put": {
+        "operationId": "Grades_setBands",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetBandsDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BandsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "grades.bands.set",
+          "operation": "SetGradeBands"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/grades/exams": {
+      "get": {
+        "operationId": "Grades_exams",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "termId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "classId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      },
+      "post": {
+        "operationId": "Grades_createExam",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExamDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "grades.exam.create",
+          "operation": "CreateExam"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/grades/exams/{id}": {
+      "delete": {
+        "operationId": "Grades_deleteExam",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "grades.exam.delete",
+          "operation": "DeleteExam"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      },
+      "patch": {
+        "operationId": "Grades_updateExam",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExamDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "grades.exam.update",
+          "operation": "UpdateExam"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/grades/exams/{id}/marks": {
+      "get": {
+        "operationId": "Grades_grid",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarksGridDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "grades"
+        }
+      },
+      "put": {
+        "operationId": "Grades_saveMarks",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveMarksDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarksGridDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "grades.marks.save",
+          "operation": "FinishMarkEntry"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "grades"
+        }
+      }
+    },
+    "/v1/grades/report-cards/students/{studentId}": {
+      "get": {
+        "operationId": "Grades_reportCard",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "studentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "termId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "pattern": "^[a-z]{2,3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportCardDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "grades"
+        }
+      }
+    },
+    "/v1/grades/report-cards/students/{studentId}/pdf": {
+      "get": {
+        "operationId": "Grades_reportCardPdf",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "studentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "termId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "pattern": "^[a-z]{2,3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "grades"
+        }
+      }
+    },
+    "/v1/grades/terms": {
+      "get": {
+        "operationId": "Grades_terms",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "academicYearId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      },
+      "post": {
+        "operationId": "Grades_createTerm",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTermDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "grades.term.create",
+          "operation": "CreateAssessmentTerm"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/grades/terms/{id}": {
+      "delete": {
+        "operationId": "Grades_deleteTerm",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "grades.term.delete",
+          "operation": "DeleteAssessmentTerm"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "academics"
+        }
+      },
+      "patch": {
+        "operationId": "Grades_updateTerm",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTermDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Grades"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "grades.term.update",
+          "operation": "UpdateAssessmentTerm"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
         }
       }
     },

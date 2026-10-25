@@ -33,6 +33,7 @@ type School @table {
   applicationSeq: Int! @default(value: 0) # last admission application serial handed out
   # The days the school works (P3-1, ADR-0013): comma-separated MON..SUN in week order, never empty (checked in the gateway).
   workingDays: String! @default(value: "MON,TUE,WED,THU,FRI,SAT")
+  gradeBands: String! @default(value: "") # the school's own grade bands as JSON text (empty: none set); validated by the gateway (no gaps, no overlap)
   # Profile and branding (P2-1). The colour is a validated #rrggbb (white text on it is at least 4.5:1); the logo key lives under schools/<id>/logo/.
   address: String
   contactPhone: String
@@ -489,16 +490,36 @@ type LeaveRequest @table {
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
-# Academic: Exam
-type Exam @table {
+# Exams and marks (P3-5, ADR-0013). Marks are whole TENTHS of a mark (one decimal place at most): no floating point anywhere. Replaces the Phase 0 stub `Exam`.
+type AssessmentTerm @table @unique(fields: ["academicYear", "name"]) {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
+  academicYear: AcademicYear!
+  name: String!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type Exam @table @unique(fields: ["term", "classroom", "subject", "title"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  term: AssessmentTerm!
   classroom: Classroom!
   subject: Subject!
   title: String!
   examDate: Date!
-  maxScore: Int!
+  maxTenths: Int! # the exam's maximum, in tenths of a mark: 1000 is 100
+  lastSubmissionId: String # the client's own id for the last marks submit: a replay of it changes nothing
   createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# One student's mark in one exam. An absent student has absent = true and tenths = 0.
+type Mark @table @unique(fields: ["exam", "student"]) {
+  id: UUID! # derived from exam and student, so saving the same mark twice is one row
+  school: School!
+  exam: Exam!
+  student: Student!
+  tenths: Int!
+  absent: Boolean!
 }
 
 # Append-only audit trail (E-AUD-1): the gateway writes one row per mutating request.

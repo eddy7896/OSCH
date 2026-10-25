@@ -513,6 +513,90 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Invoices_statement"
   },
   {
+    "method": "GET",
+    "path": "/v1/grades/bands",
+    "access": "tenant",
+    "operationId": "Grades_bands"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/grades/bands",
+    "access": "tenant",
+    "operationId": "Grades_setBands"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/grades/exams/{id}/marks",
+    "access": "tenant",
+    "operationId": "Grades_grid"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/grades/exams/{id}/marks",
+    "access": "tenant",
+    "operationId": "Grades_saveMarks"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/grades/exams/{id}",
+    "access": "tenant",
+    "operationId": "Grades_deleteExam"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/grades/exams/{id}",
+    "access": "tenant",
+    "operationId": "Grades_updateExam"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/grades/exams",
+    "access": "tenant",
+    "operationId": "Grades_exams"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/grades/exams",
+    "access": "tenant",
+    "operationId": "Grades_createExam"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/grades/report-cards/students/{studentId}/pdf",
+    "access": "tenant",
+    "operationId": "Grades_reportCardPdf"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/grades/report-cards/students/{studentId}",
+    "access": "tenant",
+    "operationId": "Grades_reportCard"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/grades/terms/{id}",
+    "access": "tenant",
+    "operationId": "Grades_deleteTerm"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/grades/terms/{id}",
+    "access": "tenant",
+    "operationId": "Grades_updateTerm"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/grades/terms",
+    "access": "tenant",
+    "operationId": "Grades_terms"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/grades/terms",
+    "access": "tenant",
+    "operationId": "Grades_createTerm"
+  },
+  {
     "method": "POST",
     "path": "/v1/imports/guardians/dry-run",
     "access": "tenant",

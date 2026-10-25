@@ -204,13 +204,6 @@ function updateLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.updateLeaveRequest = updateLeaveRequest;
 
-function createExam(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateExam', inputVars, inputOpts);
-}
-exports.createExam = createExam;
-
 function createAuditLog(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -925,6 +918,76 @@ function correctStaffAttendance(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.correctStaffAttendance = correctStaffAttendance;
 
+function createAssessmentTerm(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateAssessmentTerm', inputVars, inputOpts);
+}
+exports.createAssessmentTerm = createAssessmentTerm;
+
+function updateAssessmentTerm(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateAssessmentTerm', inputVars, inputOpts);
+}
+exports.updateAssessmentTerm = updateAssessmentTerm;
+
+function deleteAssessmentTerm(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteAssessmentTerm', inputVars, inputOpts);
+}
+exports.deleteAssessmentTerm = deleteAssessmentTerm;
+
+function setGradeBands(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetGradeBands', inputVars, inputOpts);
+}
+exports.setGradeBands = setGradeBands;
+
+function createExam(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateExam', inputVars, inputOpts);
+}
+exports.createExam = createExam;
+
+function updateExam(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateExam', inputVars, inputOpts);
+}
+exports.updateExam = updateExam;
+
+function deleteExam(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteExam', inputVars, inputOpts);
+}
+exports.deleteExam = deleteExam;
+
+function saveMark(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SaveMark', inputVars, inputOpts);
+}
+exports.saveMark = saveMark;
+
+function removeMark(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveMark', inputVars, inputOpts);
+}
+exports.removeMark = removeMark;
+
+function finishMarkEntry(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('FinishMarkEntry', inputVars, inputOpts);
+}
+exports.finishMarkEntry = finishMarkEntry;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -938,13 +1001,6 @@ function listLeaveRequests(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListLeaveRequests', inputVars, inputOpts);
 }
 exports.listLeaveRequests = listLeaveRequests;
-
-function listExams(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListExams', inputVars, inputOpts);
-}
-exports.listExams = listExams;
 
 function getUser(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -1540,4 +1596,53 @@ function staffAttendanceOfStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('StaffAttendanceOfStaff', inputVars, inputOpts);
 }
 exports.staffAttendanceOfStaff = staffAttendanceOfStaff;
+
+function schoolGradeBands(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('SchoolGradeBands', inputVars, inputOpts);
+}
+exports.schoolGradeBands = schoolGradeBands;
+
+function listAssessmentTerms(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListAssessmentTerms', inputVars, inputOpts);
+}
+exports.listAssessmentTerms = listAssessmentTerms;
+
+function listExams(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListExams', inputVars, inputOpts);
+}
+exports.listExams = listExams;
+
+function getExam(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetExam', inputVars, inputOpts);
+}
+exports.getExam = getExam;
+
+function countMarksOfExam(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountMarksOfExam', inputVars, inputOpts);
+}
+exports.countMarksOfExam = countMarksOfExam;
+
+function countExamsOfTerm(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountExamsOfTerm', inputVars, inputOpts);
+}
+exports.countExamsOfTerm = countExamsOfTerm;
+
+function marksOfStudentInTerm(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('MarksOfStudentInTerm', inputVars, inputOpts);
+}
+exports.marksOfStudentInTerm = marksOfStudentInTerm;
 

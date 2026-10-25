@@ -714,6 +714,27 @@ class OruStringsTa extends OruStrings {
   String get reportTotal => 'Total';
 
   @override
+  String get gradesReportCardTitle => 'Report card';
+
+  @override
+  String get gradesTerm => 'Term';
+
+  @override
+  String get gradesSubject => 'Subject';
+
+  @override
+  String get gradesMarks => 'Marks';
+
+  @override
+  String get gradesOutOf => 'Out of';
+
+  @override
+  String get gradesPercent => 'Percent';
+
+  @override
+  String get gradesGrade => 'Grade';
+
+  @override
   String get reportDueDate => 'Due date';
 
   @override
