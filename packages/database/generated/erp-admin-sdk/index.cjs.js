@@ -179,13 +179,6 @@ function createSchoolMember(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.createSchoolMember = createSchoolMember;
 
-function createSchedule(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateSchedule', inputVars, inputOpts);
-}
-exports.createSchedule = createSchedule;
-
 function createLeaveRequest(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -830,19 +823,33 @@ function unlinkParentAccount(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.unlinkParentAccount = unlinkParentAccount;
 
+function createTimetableEntry(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateTimetableEntry', inputVars, inputOpts);
+}
+exports.createTimetableEntry = createTimetableEntry;
+
+function updateTimetableEntry(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateTimetableEntry', inputVars, inputOpts);
+}
+exports.updateTimetableEntry = updateTimetableEntry;
+
+function deleteTimetableEntry(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteTimetableEntry', inputVars, inputOpts);
+}
+exports.deleteTimetableEntry = deleteTimetableEntry;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeQuery('ListStaff', inputVars, inputOpts);
 }
 exports.listStaff = listStaff;
-
-function listSchedules(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListSchedules', inputVars, inputOpts);
-}
-exports.listSchedules = listSchedules;
 
 function listLeaveRequests(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -1354,4 +1361,32 @@ function enrollmentsOfStudents(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('EnrollmentsOfStudents', inputVars, inputOpts);
 }
 exports.enrollmentsOfStudents = enrollmentsOfStudents;
+
+function listTimetableForYear(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListTimetableForYear', inputVars, inputOpts);
+}
+exports.listTimetableForYear = listTimetableForYear;
+
+function listTimetableForClass(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListTimetableForClass', inputVars, inputOpts);
+}
+exports.listTimetableForClass = listTimetableForClass;
+
+function listTimetableForStaff(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListTimetableForStaff', inputVars, inputOpts);
+}
+exports.listTimetableForStaff = listTimetableForStaff;
+
+function countTimetableForPeriod(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('CountTimetableForPeriod', inputVars, inputOpts);
+}
+exports.countTimetableForPeriod = countTimetableForPeriod;
 

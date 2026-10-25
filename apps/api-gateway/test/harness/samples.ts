@@ -109,6 +109,19 @@ const classWithTeacherOfA = async (w: World): Promise<Record<string, string>> =>
   await w.db.assignClassTeacher({ schoolId: w.schools.A, id: randomUUID(), classroomId: klass['id']!, academicYearId: await activeYearOfA(w), staffId: staff['id']!, actorId: actorA(w) });
   return { id: dash(klass['id']!), staffId: staff['id']! };
 };
+/** Timetable (P3-3): a fresh class, a teacher who teaches a fresh subject, a fresh period, and the active year; optionally a lesson already placed. */
+const lessonSetupOfA = async (w: World): Promise<Record<string, string>> => {
+  const taught = await taughtSubjectOfA(w);
+  const klass = await classOfA(w);
+  const period = await periodOfA(w);
+  return { id: dash(klass['id']!), staffId: taught['staffId']!, subjectId: taught['subjectId']!, periodId: dash(period['id']!), year: await activeYearOfA(w) };
+};
+const lessonOfA = async (w: World): Promise<Record<string, string>> => {
+  const s = await lessonSetupOfA(w);
+  const id = randomUUID();
+  await w.db.createTimetableEntry({ schoolId: w.schools.A, id, academicYearId: s['year']!, classroomId: s['id']!, subjectId: s['subjectId']!, staffId: s['staffId']!, day: 'MON', periodId: s['periodId']!, actorId: actorA(w), details: {} });
+  return { id: dash(id) };
+};
 const linkedParentOfA = async (w: World): Promise<Record<string, string>> => {
   const student = await studentOfA(w);
   await w.db.linkParentAccount({ schoolId: w.schools.A, id: randomUUID(), studentId: student['id']!, userId: w.roles.A.PARENT.uid, relationship: 'MOTHER', actorId: actorA(w) });
@@ -330,6 +343,8 @@ export const SAMPLES: Record<string, Sample> = {
   'DELETE /academics/teachers/:staffId/subjects/:subjectId': { ...academicAdminOfA, prepare: taughtSubjectOfA },
   'PUT /academics/classes/:id/teacher': { ...academicAdminOfA, prepare: classTeacherSetupOfA, body: (_w, ctx) => ({ staffId: ctx['staffId'], academicYearId: ctx['year'] }) },
   'DELETE /academics/classes/:id/teacher': { ...academicAdminOfA, prepare: classWithTeacherOfA },
+  'PUT /academics/timetable/classes/:id/slots': { ...academicAdminOfA, prepare: lessonSetupOfA, body: (_w, ctx) => ({ day: 'MON', periodId: ctx['periodId'], subjectId: ctx['subjectId'], staffId: ctx['staffId'], academicYearId: ctx['year'] }) },
+  'DELETE /academics/timetable/entries/:id': { ...academicAdminOfA, prepare: lessonOfA },
   'POST /students/:id/parent-accounts': { ...academicAdminOfA, prepare: studentOfA, body: (w) => ({ userId: w.roles.A.PARENT.uid, relationship: 'MOTHER' }) },
   'DELETE /students/:id/parent-accounts/:linkId': { ...academicAdminOfA, prepare: linkedParentOfA },
   'POST /academics/years': { ...academicAdminOfA, body: () => ({ name: `Year ${randomUUID().slice(0, 6)}`, startDate: '2042-04-01', endDate: '2043-03-31' }) },

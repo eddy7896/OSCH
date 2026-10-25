@@ -180,6 +180,20 @@ export type ClassSectionDto = {
     section: string;
 };
 
+export type ClassSlotDto = {
+    day: string;
+    id: string;
+    periodId: string;
+    staff: TimetableStaffDto;
+    subject: TimetableSubjectDto;
+};
+
+export type ClassTimetableDto = {
+    academicYearId: string;
+    classId: string;
+    entries: Array<ClassSlotDto>;
+};
+
 export type CollectionRowDto = {
     amountMinor: string;
     invoice: {
@@ -701,6 +715,16 @@ export type LinkStaffAccountDto = {
     userId: string;
 };
 
+export type LoadByDayDto = {
+    FRI: number;
+    MON: number;
+    SAT: number;
+    SUN: number;
+    THU: number;
+    TUE: number;
+    WED: number;
+};
+
 export type MeLanguageDto = {
     chosen: string | null;
     effective: string;
@@ -1126,6 +1150,14 @@ export type SetSchoolLogoDto = {
     key: string;
 };
 
+export type SetSlotDto = {
+    academicYearId?: string;
+    day: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
+    periodId: string;
+    staffId: string;
+    subjectId: string;
+};
+
 export type SignedReadDto = {
     expiresInSeconds: number;
     url: string;
@@ -1204,6 +1236,14 @@ export type StaffSetPhotoDto = {
     key: string;
 };
 
+export type StaffSlotDto = {
+    class: TimetableClassRefDto;
+    day: string;
+    id: string;
+    periodId: string;
+    subject: TimetableSubjectDto;
+};
+
 export type StaffSummaryDto = {
     department: string | null;
     designation: string | null;
@@ -1213,6 +1253,12 @@ export type StaffSummaryDto = {
     id: string;
     lastName: string;
     status: string;
+};
+
+export type StaffTimetableDto = {
+    academicYearId: string;
+    entries: Array<StaffSlotDto>;
+    staffId: string | null;
 };
 
 export type StatementDto = {
@@ -1295,6 +1341,12 @@ export type TeacherListDto = {
     items: Array<TeacherDto>;
 };
 
+export type TeacherLoadDto = {
+    byDay: LoadByDayDto;
+    staff: TimetableStaffDto;
+    total: number;
+};
+
 export type TeacherStaffDto = {
     employeeId: string;
     hasAccount: boolean;
@@ -1304,6 +1356,28 @@ export type TeacherStaffDto = {
 
 export type TeachesSubjectDto = {
     subjectId: string;
+};
+
+export type TimetableClassRefDto = {
+    id: string;
+    name: string;
+};
+
+export type TimetableLoadDto = {
+    academicYearId: string;
+    items: Array<TeacherLoadDto>;
+};
+
+export type TimetableStaffDto = {
+    employeeId: string;
+    id: string;
+    name: string;
+};
+
+export type TimetableSubjectDto = {
+    code: string;
+    id: string;
+    name: string;
 };
 
 export type UpdateAcademicYearDto = {
@@ -2611,6 +2685,266 @@ export type TeachingRemoveSubjectResponses = {
 };
 
 export type TeachingRemoveSubjectResponse = TeachingRemoveSubjectResponses[keyof TeachingRemoveSubjectResponses];
+
+export type TimetableForClassData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        academicYearId?: string;
+    };
+    url: '/v1/academics/timetable/classes/{id}';
+};
+
+export type TimetableForClassErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TimetableForClassError = TimetableForClassErrors[keyof TimetableForClassErrors];
+
+export type TimetableForClassResponses = {
+    200: ClassTimetableDto;
+};
+
+export type TimetableForClassResponse = TimetableForClassResponses[keyof TimetableForClassResponses];
+
+export type TimetableSetSlotData = {
+    body: SetSlotDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/academics/timetable/classes/{id}/slots';
+};
+
+export type TimetableSetSlotErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TimetableSetSlotError = TimetableSetSlotErrors[keyof TimetableSetSlotErrors];
+
+export type TimetableSetSlotResponses = {
+    200: ClassTimetableDto;
+};
+
+export type TimetableSetSlotResponse = TimetableSetSlotResponses[keyof TimetableSetSlotResponses];
+
+export type TimetableClearData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/academics/timetable/entries/{id}';
+};
+
+export type TimetableClearErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TimetableClearError = TimetableClearErrors[keyof TimetableClearErrors];
+
+export type TimetableClearResponses = {
+    204: void;
+};
+
+export type TimetableClearResponse = TimetableClearResponses[keyof TimetableClearResponses];
+
+export type TimetableLoadData = {
+    body?: never;
+    path?: never;
+    query?: {
+        academicYearId?: string;
+    };
+    url: '/v1/academics/timetable/load';
+};
+
+export type TimetableLoadErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TimetableLoadError = TimetableLoadErrors[keyof TimetableLoadErrors];
+
+export type TimetableLoadResponses = {
+    200: TimetableLoadDto;
+};
+
+export type TimetableLoadResponse = TimetableLoadResponses[keyof TimetableLoadResponses];
+
+export type TimetableMineData = {
+    body?: never;
+    path?: never;
+    query?: {
+        academicYearId?: string;
+    };
+    url: '/v1/academics/timetable/mine';
+};
+
+export type TimetableMineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TimetableMineError = TimetableMineErrors[keyof TimetableMineErrors];
+
+export type TimetableMineResponses = {
+    200: StaffTimetableDto;
+};
+
+export type TimetableMineResponse = TimetableMineResponses[keyof TimetableMineResponses];
+
+export type TimetableForStaffData = {
+    body?: never;
+    path: {
+        staffId: string;
+    };
+    query?: {
+        academicYearId?: string;
+    };
+    url: '/v1/academics/timetable/teachers/{staffId}';
+};
+
+export type TimetableForStaffErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TimetableForStaffError = TimetableForStaffErrors[keyof TimetableForStaffErrors];
+
+export type TimetableForStaffResponses = {
+    200: StaffTimetableDto;
+};
+
+export type TimetableForStaffResponse = TimetableForStaffResponses[keyof TimetableForStaffResponses];
 
 export type AcademicsYearsData = {
     body?: never;

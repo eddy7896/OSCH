@@ -70,15 +70,7 @@ CA=$(uid); out=$(run "$M" CreateClassroom --vars "{\"schoolId\":\"$A\",\"id\":\"
 CB=$(uid); out=$(run "$M" CreateClassroom --vars "{\"schoolId\":\"$B\",\"id\":\"$CB\",\"gradeLevelId\":\"$GLB\",\"section\":\"A\",\"name\":\"ClassB-$TAG\",\"capacity\":30,\"actorId\":\"$UB\"}"); check_ok "classroom in B" "$out"
 SA=$(uid); out=$(run "$M" CreateSubject --vars "{\"schoolId\":\"$A\",\"id\":\"$SA\",\"name\":\"SubjA-$TAG\",\"code\":\"SA\",\"actorId\":\"u-$TAG\"}"); check_ok "subject in A" "$out"
 SB=$(uid); out=$(run "$M" CreateSubject --vars "{\"schoolId\":\"$B\",\"id\":\"$SB\",\"name\":\"SubjB-$TAG\",\"code\":\"SB\",\"actorId\":\"$UB\"}"); check_ok "subject in B" "$out"
-sched() { run "$M" CreateSchedule --vars "{\"schoolId\":\"$A\",\"classroomId\":\"$1\",\"subjectId\":\"$2\",\"teacherId\":\"$3\",\"dayOfWeek\":\"MONDAY\",\"startTime\":\"09:00\",\"endTime\":\"10:00\"}"; }
 exam()  { run "$M" CreateExam --vars "{\"schoolId\":\"$A\",\"classroomId\":\"$1\",\"subjectId\":\"$2\",\"title\":\"T\",\"examDate\":\"2026-12-01\",\"maxScore\":50}"; }
-check_ok       "schedule with A's classroom, A's subject, A's teacher" "$(sched "$CA" "$SA" "u-$TAG")"
-check_rejected "schedule with B's classroom is ABORTED"          "$(sched "$CB" "$SA" "u-$TAG")" "ABORTED"
-check_rejected "schedule with B's subject is ABORTED"            "$(sched "$CA" "$SB" "u-$TAG")" "ABORTED"
-check_rejected "schedule with a teacher from school B is ABORTED" "$(sched "$CA" "$SA" "$UB")" "ABORTED"
-out=$(run "$Q" ListSchedules --vars "{\"schoolId\":\"$A\"}")
-[ "$(grep -c '"dayOfWeek"' <<<"$out")" = "1" ] && ok "exactly one schedule exists for A (rejected ones wrote nothing)" || bad "unexpected schedule count"
-check_lacks "A's schedule list never exposes B's classroom/subject names or B user's email" "$out" "ClassB-$TAG"; check_lacks "no B subject name" "$out" "SubjB-$TAG"; check_lacks "no B user email" "$out" "ub$TAG@example.com"
 check_ok       "exam with A's classroom and subject" "$(exam "$CA" "$SA")"
 check_rejected "exam with B's classroom is ABORTED" "$(exam "$CB" "$SA")" "ABORTED"
 check_rejected "exam with B's subject is ABORTED"   "$(exam "$CA" "$SB")" "ABORTED"

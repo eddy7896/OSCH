@@ -106,7 +106,6 @@
     "CreateSchoolMember": "Phase 0 seed/bootstrap (first administrator has no actor); use the audited AddMembership",
     "CreateLeaveRequest": "Phase 0 operation; audited when the Phase 3 module is built",
     "UpdateLeaveRequest": "Phase 0 operation; audited when the Phase 3 module is built",
-    "CreateExam": "Phase 0 operation; audited when the Phase 3 module is built",
-    "CreateSchedule": "Phase 0 operation; audited when the Phase 3 timetable module is built"
+    "CreateExam": "Phase 0 operation; audited when the Phase 3 module is built"
   }
 }

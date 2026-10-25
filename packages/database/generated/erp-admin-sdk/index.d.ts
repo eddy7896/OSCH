@@ -561,11 +561,6 @@ export interface ChangeClassTeacherVariables {
   details?: unknown | null;
 }
 
-export interface ClassSchedule_Key {
-  id: UUIDString;
-  __typename?: 'ClassSchedule_Key';
-}
-
 export interface ClassTeacher_Key {
   id: UUIDString;
   __typename?: 'ClassTeacher_Key';
@@ -682,6 +677,17 @@ export interface CountStudentsVariables {
   schoolId: UUIDString;
   search?: string | null;
   status?: StudentStatus | null;
+}
+
+export interface CountTimetableForPeriodData {
+  timetableEntries: ({
+    _count: number;
+  })[];
+}
+
+export interface CountTimetableForPeriodVariables {
+  schoolId: UUIDString;
+  periodId: UUIDString;
 }
 
 export interface CreateAcademicYearData {
@@ -1094,31 +1100,6 @@ export interface CreatePeriodVariables {
   details?: unknown | null;
 }
 
-export interface CreateScheduleData {
-  query?: {
-    classrooms: ({
-      id: UUIDString;
-    } & Classroom_Key)[];
-    subjects: ({
-      id: UUIDString;
-    } & Subject_Key)[];
-    schoolMembers: ({
-      userId: string;
-    })[];
-  };
-  classSchedule_insert: ClassSchedule_Key;
-}
-
-export interface CreateScheduleVariables {
-  schoolId: UUIDString;
-  classroomId: UUIDString;
-  subjectId: UUIDString;
-  teacherId: string;
-  dayOfWeek: string;
-  startTime: string;
-  endTime: string;
-}
-
 export interface CreateSchoolData {
   school_insert: School_Key;
 }
@@ -1218,6 +1199,44 @@ export interface CreateSubjectVariables {
   id: UUIDString;
   name: string;
   code: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface CreateTimetableEntryData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+    classroom: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    teaches: ({
+      id: UUIDString;
+    } & TeacherSubject_Key)[];
+    period: ({
+      id: UUIDString;
+    } & Period_Key)[];
+  };
+  timetableEntry_insert: TimetableEntry_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateTimetableEntryVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  academicYearId: UUIDString;
+  classroomId: UUIDString;
+  subjectId: UUIDString;
+  staffId: UUIDString;
+  day: string;
+  periodId: UUIDString;
   actorId: string;
   details?: unknown | null;
 }
@@ -1455,6 +1474,26 @@ export interface DeleteSubjectData {
 }
 
 export interface DeleteSubjectVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeleteTimetableEntryData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    entry: ({
+      id: UUIDString;
+    } & TimetableEntry_Key)[];
+  };
+  timetableEntry_delete?: TimetableEntry_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteTimetableEntryVariables {
   schoolId: UUIDString;
   id: UUIDString;
   actorId: string;
@@ -2681,28 +2720,6 @@ export interface ListSalaryLinesVariables {
   staffId: UUIDString;
 }
 
-export interface ListSchedulesData {
-  classSchedules: ({
-    id: UUIDString;
-    dayOfWeek: string;
-    startTime: string;
-    endTime: string;
-    classroom: {
-      name: string;
-    };
-    subject: {
-      name: string;
-    };
-    teacher: {
-      email: string;
-    };
-  } & ClassSchedule_Key)[];
-}
-
-export interface ListSchedulesVariables {
-  schoolId: UUIDString;
-}
-
 export interface ListSchoolsData {
   schools: ({
     id: UUIDString;
@@ -2834,6 +2851,77 @@ export interface ListTeacherSubjectsData {
 
 export interface ListTeacherSubjectsVariables {
   schoolId: UUIDString;
+}
+
+export interface ListTimetableForClassData {
+  timetableEntries: ({
+    id: UUIDString;
+    day: string;
+    periodId: UUIDString;
+    subject: {
+      id: UUIDString;
+      name: string;
+      code: string;
+    } & Subject_Key;
+    staff: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+    } & StaffProfile_Key;
+  } & TimetableEntry_Key)[];
+}
+
+export interface ListTimetableForClassVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
+  classroomId: UUIDString;
+}
+
+export interface ListTimetableForStaffData {
+  timetableEntries: ({
+    id: UUIDString;
+    day: string;
+    periodId: UUIDString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    subject: {
+      id: UUIDString;
+      name: string;
+      code: string;
+    } & Subject_Key;
+  } & TimetableEntry_Key)[];
+}
+
+export interface ListTimetableForStaffVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
+  staffId: UUIDString;
+}
+
+export interface ListTimetableForYearData {
+  timetableEntries: ({
+    id: UUIDString;
+    day: string;
+    periodId: UUIDString;
+    classroomId: UUIDString;
+    staffId: UUIDString;
+    subjectId: UUIDString;
+    staff: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      status: StaffStatus;
+    } & StaffProfile_Key;
+  } & TimetableEntry_Key)[];
+}
+
+export interface ListTimetableForYearVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
 }
 
 export interface MarkPayrollRunPaidData {
@@ -3670,6 +3758,11 @@ export interface TeacherSubject_Key {
   __typename?: 'TeacherSubject_Key';
 }
 
+export interface TimetableEntry_Key {
+  id: UUIDString;
+  __typename?: 'TimetableEntry_Key';
+}
+
 export interface UnlinkParentAccountData {
   query?: {
     actor: ({
@@ -4093,6 +4186,34 @@ export interface UpdateSubjectVariables {
   details?: unknown | null;
 }
 
+export interface UpdateTimetableEntryData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    entry: ({
+      id: UUIDString;
+    } & TimetableEntry_Key)[];
+    staff: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    teaches: ({
+      id: UUIDString;
+    } & TeacherSubject_Key)[];
+  };
+  timetableEntry_update?: TimetableEntry_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateTimetableEntryVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  subjectId: UUIDString;
+  staffId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface UpsertUserData {
   user_upsert: User_Key;
 }
@@ -4123,11 +4244,6 @@ export function createUser(vars: CreateUserVariables, options?: OperationOptions
 export function createSchoolMember(dc: DataConnect, vars: CreateSchoolMemberVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolMemberData>>;
 /** Generated Node Admin SDK operation action function for the 'CreateSchoolMember' Mutation. Allow users to pass in custom DataConnect instances. */
 export function createSchoolMember(vars: CreateSchoolMemberVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolMemberData>>;
-
-/** Generated Node Admin SDK operation action function for the 'CreateSchedule' Mutation. Allow users to execute without passing in DataConnect. */
-export function createSchedule(dc: DataConnect, vars: CreateScheduleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateScheduleData>>;
-/** Generated Node Admin SDK operation action function for the 'CreateSchedule' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createSchedule(vars: CreateScheduleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateScheduleData>>;
 
 /** Generated Node Admin SDK operation action function for the 'CreateLeaveRequest' Mutation. Allow users to execute without passing in DataConnect. */
 export function createLeaveRequest(dc: DataConnect, vars: CreateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateLeaveRequestData>>;
@@ -4589,15 +4705,25 @@ export function unlinkParentAccount(dc: DataConnect, vars: UnlinkParentAccountVa
 /** Generated Node Admin SDK operation action function for the 'UnlinkParentAccount' Mutation. Allow users to pass in custom DataConnect instances. */
 export function unlinkParentAccount(vars: UnlinkParentAccountVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnlinkParentAccountData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateTimetableEntry' Mutation. Allow users to execute without passing in DataConnect. */
+export function createTimetableEntry(dc: DataConnect, vars: CreateTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateTimetableEntryData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateTimetableEntry' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createTimetableEntry(vars: CreateTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateTimetableEntryData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateTimetableEntry' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateTimetableEntry(dc: DataConnect, vars: UpdateTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateTimetableEntryData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateTimetableEntry' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateTimetableEntry(vars: UpdateTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateTimetableEntryData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteTimetableEntry' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteTimetableEntry(dc: DataConnect, vars: DeleteTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteTimetableEntryData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteTimetableEntry' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteTimetableEntry(vars: DeleteTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteTimetableEntryData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
 export function listStaff(vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
-
-/** Generated Node Admin SDK operation action function for the 'ListSchedules' Query. Allow users to execute without passing in DataConnect. */
-export function listSchedules(dc: DataConnect, vars: ListSchedulesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSchedulesData>>;
-/** Generated Node Admin SDK operation action function for the 'ListSchedules' Query. Allow users to pass in custom DataConnect instances. */
-export function listSchedules(vars: ListSchedulesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSchedulesData>>;
 
 /** Generated Node Admin SDK operation action function for the 'ListLeaveRequests' Query. Allow users to execute without passing in DataConnect. */
 export function listLeaveRequests(dc: DataConnect, vars: ListLeaveRequestsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveRequestsData>>;
@@ -4963,4 +5089,24 @@ export function parentLinksOfStudent(vars: ParentLinksOfStudentVariables, option
 export function enrollmentsOfStudents(dc: DataConnect, vars: EnrollmentsOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EnrollmentsOfStudentsData>>;
 /** Generated Node Admin SDK operation action function for the 'EnrollmentsOfStudents' Query. Allow users to pass in custom DataConnect instances. */
 export function enrollmentsOfStudents(vars: EnrollmentsOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EnrollmentsOfStudentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListTimetableForYear' Query. Allow users to execute without passing in DataConnect. */
+export function listTimetableForYear(dc: DataConnect, vars: ListTimetableForYearVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTimetableForYearData>>;
+/** Generated Node Admin SDK operation action function for the 'ListTimetableForYear' Query. Allow users to pass in custom DataConnect instances. */
+export function listTimetableForYear(vars: ListTimetableForYearVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTimetableForYearData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListTimetableForClass' Query. Allow users to execute without passing in DataConnect. */
+export function listTimetableForClass(dc: DataConnect, vars: ListTimetableForClassVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTimetableForClassData>>;
+/** Generated Node Admin SDK operation action function for the 'ListTimetableForClass' Query. Allow users to pass in custom DataConnect instances. */
+export function listTimetableForClass(vars: ListTimetableForClassVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTimetableForClassData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListTimetableForStaff' Query. Allow users to execute without passing in DataConnect. */
+export function listTimetableForStaff(dc: DataConnect, vars: ListTimetableForStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTimetableForStaffData>>;
+/** Generated Node Admin SDK operation action function for the 'ListTimetableForStaff' Query. Allow users to pass in custom DataConnect instances. */
+export function listTimetableForStaff(vars: ListTimetableForStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTimetableForStaffData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountTimetableForPeriod' Query. Allow users to execute without passing in DataConnect. */
+export function countTimetableForPeriod(dc: DataConnect, vars: CountTimetableForPeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountTimetableForPeriodData>>;
+/** Generated Node Admin SDK operation action function for the 'CountTimetableForPeriod' Query. Allow users to pass in custom DataConnect instances. */
+export function countTimetableForPeriod(vars: CountTimetableForPeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountTimetableForPeriodData>>;
 

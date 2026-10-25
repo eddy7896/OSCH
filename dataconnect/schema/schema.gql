@@ -460,16 +460,18 @@ type ClassTeacher @table @unique(fields: ["classroom", "academicYear"]) {
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
-# Academic: Class Schedule (Timetable Entry)
-type ClassSchedule @table {
+# One slot of the timetable (P3-3, ADR-0013): a class has this subject, taught by this member of staff, on this day in this period of the bell schedule,
+# in this academic year. The two unique keys ARE the clash rules (decision 6): a class cannot be in two lessons and a teacher cannot teach two
+# classes in the same slot, however many requests arrive at once. Replaces the Phase 0 stub `ClassSchedule`.
+type TimetableEntry @table @unique(fields: ["academicYear", "classroom", "day", "period"]) @unique(fields: ["academicYear", "staff", "day", "period"]) {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
+  academicYear: AcademicYear!
   classroom: Classroom!
   subject: Subject!
-  teacher: User!
-  dayOfWeek: String! # e.g. "MONDAY"
-  startTime: String! # e.g. "09:00"
-  endTime: String! # e.g. "10:00"
+  staff: StaffProfile!
+  day: String! # MON .. SUN
+  period: Period!
   createdAt: Timestamp! @default(expr: "request.time")
 }
 

@@ -7,7 +7,7 @@ import type { ChildDto, MineDto } from './dto/teaching.dto.js';
 
 /**
  * What a caller's `own` and `linked` grants resolve to (P3-2, ADR-0013 decision 5). A teacher's own classes are the classes they are class
- * teacher of in the active year, through the staff record linked to their account (later also the classes in their timetable); a parent's
+ * teacher of in the active year, through the staff record linked to their account and the classes in their timetable; a parent's
  * linked classes are the classes their linked children are in. Nobody is guessed: no link means nothing visible.
  */
 @Injectable()
@@ -35,15 +35,19 @@ export class TeachingScope {
   async mine(t: TenantContext): Promise<MineDto> {
     const yearId = await this.activeYearId(t.schoolId);
     const staff = await this.staffOf(t);
-    const [subjects, classTeachers, children] = await Promise.all([
+    const [subjects, classTeachers, lessons, children] = await Promise.all([
       staff ? this.db.listTeacherSubjects({ schoolId: t.schoolId }) : null,
       staff && yearId ? this.db.listClassTeachers({ schoolId: t.schoolId, academicYearId: yearId }) : null,
+      staff && yearId ? this.db.listTimetableForStaff({ schoolId: t.schoolId, academicYearId: yearId, staffId: dashed(staff.id) }) : null,
       this.children(t, yearId),
     ]);
+    const classes = new Map<string, { id: string; name: string }>();
+    for (const x of classTeachers?.data.classTeachers ?? []) if (staff && dashed(x.staff.id) === dashed(staff.id)) classes.set(dashed(x.classroom.id), { id: dashed(x.classroom.id), name: x.classroom.name });
+    for (const x of lessons?.data.timetableEntries ?? []) classes.set(dashed(x.classroom.id), { id: dashed(x.classroom.id), name: x.classroom.name });
     return {
       staff: staff ? { id: dashed(staff.id), employeeId: staff.employeeId, name: `${staff.firstName} ${staff.lastName}` } : null,
       subjects: (subjects?.data.teacherSubjects ?? []).filter((x) => staff && dashed(x.staff.id) === dashed(staff.id)).map((x) => ({ id: dashed(x.subject.id), name: x.subject.name, code: x.subject.code })),
-      classes: (classTeachers?.data.classTeachers ?? []).filter((x) => staff && dashed(x.staff.id) === dashed(staff.id)).map((x) => ({ id: dashed(x.classroom.id), name: x.classroom.name })),
+      classes: [...classes.values()].sort((x, y) => x.name.localeCompare(y.name)),
       children,
     };
   }
