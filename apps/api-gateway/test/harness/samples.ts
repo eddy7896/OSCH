@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { createHash } from 'node:crypto';
+import { markId } from '../../src/attendance/attendance-rules.js';
 import { verifiedNewcomer, type World } from './fixtures.js';
 
 /**
@@ -205,6 +206,31 @@ const pendingLeaveOfA = async (w: World): Promise<Record<string, string>> => {
   return { ...s, id: dash(id) };
 };
 const staffA = { token: (w: World) => w.roles.A.STAFF.token, actor: (w: World) => w.roles.A.STAFF.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+/** Substitution (P3-7): a teacher on approved leave (a fresh account, so no earlier sample's leave overlaps), their Monday lesson, and a qualified free colleague. */
+const coverSetupOfA = async (w: World): Promise<Record<string, string>> => {
+  const { userId } = await memberOfA(w);
+  const absent = await staffOfA(w);
+  await w.db.linkStaffAccount({ schoolId: w.schools.A, id: absent['id']!, userId, actorId: w.roles.A.HR_MANAGER.uid, details: {} });
+  const sub = await subjectOfA(w);
+  const klass = await classOfA(w);
+  const period = await periodOfA(w);
+  const substitute = await staffOfA(w);
+  for (const staffId of [absent['id']!, substitute['id']!]) await w.db.addTeacherSubject({ schoolId: w.schools.A, id: randomUUID(), staffId, subjectId: sub['id']!, actorId: actorA(w), details: {} });
+  const { year, date } = await mondayInActiveYear(w);
+  const entryId = randomUUID();
+  await w.db.createTimetableEntry({ schoolId: w.schools.A, id: entryId, academicYearId: year, classroomId: klass['id']!, subjectId: sub['id']!, staffId: absent['id']!, day: 'MON', periodId: period['id']!, actorId: actorA(w), details: {} });
+  const type = await leaveTypeOfA(w, false);
+  const leaveId = randomUUID();
+  await w.db.createLeaveRequest({ schoolId: w.schools.A, id: leaveId, staffId: absent['id']!, leaveTypeId: type['id']!, startDate: date, endDate: date, halfDays: 2, actorId: userId, details: {} });
+  await w.db.approveUnpaidLeaveRequest({ schoolId: w.schools.A, id: leaveId, actorId: w.roles.A.PRINCIPAL.uid, details: {} });
+  return { entryId: dash(entryId), date, substituteId: substitute['id']!, absentId: absent['id']!, leaveId: dash(leaveId), subjectId: dash(sub['id']!), periodId: dash(period['id']!) };
+};
+const coveredLessonOfA = async (w: World): Promise<Record<string, string>> => {
+  const c = await coverSetupOfA(w);
+  const id = markId(`substitution-${c['date']}`, c['entryId']!);
+  await w.db.setSubstitute({ schoolId: w.schools.A, id, timetableEntryId: c['entryId']!, date: c['date']!, day: 'MON', periodId: c['periodId']!, subjectId: c['subjectId']!, absentStaffId: c['absentId']!, leaveRequestId: c['leaveId']!, substituteId: c['substituteId']!, actorId: actorA(w), details: {} });
+  return { id: dash(id) };
+};
 const linkedParentOfA = async (w: World): Promise<Record<string, string>> => {
   const student = await studentOfA(w);
   await w.db.linkParentAccount({ schoolId: w.schools.A, id: randomUUID(), studentId: student['id']!, userId: w.roles.A.PARENT.uid, relationship: 'MOTHER', actorId: actorA(w) });
@@ -451,6 +477,8 @@ export const SAMPLES: Record<string, Sample> = {
   'POST /leave/requests/:id/cancel': { ...staffA, refusedStatus: 404, prepare: pendingLeaveOfA },
   'POST /leave/requests/:id/approve': { ...principalOfA, prepare: pendingLeaveOfA },
   'POST /leave/requests/:id/reject': { ...principalOfA, prepare: pendingLeaveOfA, body: () => ({ note: 'Exams that week' }) },
+  'PUT /substitutions': { ...academicAdminOfA, prepare: coverSetupOfA, body: (_w, ctx) => ({ entryId: ctx['entryId'], date: ctx['date'], substituteStaffId: ctx['substituteId'] }) },
+  'DELETE /substitutions/:id': { ...academicAdminOfA, prepare: coveredLessonOfA },
   'POST /students/:id/parent-accounts': { ...academicAdminOfA, prepare: studentOfA, body: (w) => ({ userId: w.roles.A.PARENT.uid, relationship: 'MOTHER' }) },
   'DELETE /students/:id/parent-accounts/:linkId': { ...academicAdminOfA, prepare: linkedParentOfA },
   'POST /academics/years': { ...academicAdminOfA, body: () => ({ name: `Year ${randomUUID().slice(0, 6)}`, startDate: '2042-04-01', endDate: '2043-03-31' }) },

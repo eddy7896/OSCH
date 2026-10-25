@@ -50,3 +50,12 @@ test("E-ACAD-4 every operation that can set a leave request to APPROVED or REJEC
   const controller = strip(read("apps/api-gateway/src/leave/leave.controller.ts"));
   for (const route of ["requests/:id/approve", "requests/:id/reject"]) assert.match(controller, new RegExp(`@Permission\\('leave', 'approve'\\)[\\s\\S]{0,260}'${route}'`), `${route} needs the approve grant`);
 });
+
+test("E-ACAD-2 a substitution is unique per lesson and date and per substitute, date and period; the write operation re-checks every rule", () => {
+  const schema = read("dataconnect/schema/schema.gql");
+  const row = schema.match(/type Substitution @table[^\n]*/)[0];
+  assert.match(row, /@unique\(fields: \["timetableEntry", "date"\]\)/);
+  assert.match(row, /@unique\(fields: \["substitute", "date", "period"\]\)/);
+  const op = read("dataconnect/erp-connector/mutations.gql").split(/\n(?=mutation )/).find((m) => m.startsWith("mutation SetSubstitute"));
+  for (const rule of ["status: {eq: APPROVED}", "teacherSubjects(", "this.size() == 0\", message: \"the substitute has a lesson of their own", "the substitute is on approved leave", "id: {ne: $absentStaffId}"]) assert.ok(op.includes(rule), `SetSubstitute must check: ${rule}`);
+});

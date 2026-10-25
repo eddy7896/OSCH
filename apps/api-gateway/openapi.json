@@ -644,6 +644,25 @@
         ],
         "type": "object"
       },
+      "AssignDto": {
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "entryId": {
+            "type": "string"
+          },
+          "substituteStaffId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "entryId",
+          "date",
+          "substituteStaffId"
+        ],
+        "type": "object"
+      },
       "BalanceDto": {
         "properties": {
           "academicYearId": {
@@ -751,6 +770,21 @@
         "required": [
           "bands",
           "template"
+        ],
+        "type": "object"
+      },
+      "CandidateDto": {
+        "properties": {
+          "staff": {
+            "$ref": "#/components/schemas/StaffRefDto"
+          },
+          "substitutionsThisMonth": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "staff",
+          "substitutionsThisMonth"
         ],
         "type": "object"
       },
@@ -881,6 +915,21 @@
         },
         "required": [
           "items"
+        ],
+        "type": "object"
+      },
+      "ClassRefDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
         ],
         "type": "object"
       },
@@ -1207,6 +1256,21 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "CoverDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "substitute": {
+            "$ref": "#/components/schemas/StaffRefDto"
+          }
+        },
+        "required": [
+          "id",
+          "substitute"
+        ],
         "type": "object"
       },
       "CreateAcademicYearDto": {
@@ -2261,6 +2325,59 @@
           "total",
           "page",
           "pageSize"
+        ],
+        "type": "object"
+      },
+      "DutyDto": {
+        "properties": {
+          "class": {
+            "$ref": "#/components/schemas/ClassRefDto"
+          },
+          "covering": {
+            "$ref": "#/components/schemas/StaffRefDto"
+          },
+          "date": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "period": {
+            "$ref": "#/components/schemas/PeriodRefDto"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/SubjectRefDto"
+          }
+        },
+        "required": [
+          "id",
+          "date",
+          "period",
+          "class",
+          "subject",
+          "covering"
+        ],
+        "type": "object"
+      },
+      "DutyListDto": {
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DutyDto"
+            },
+            "type": "array"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "items"
         ],
         "type": "object"
       },
@@ -3800,6 +3917,61 @@
         ],
         "type": "object"
       },
+      "NeedDto": {
+        "properties": {
+          "absent": {
+            "$ref": "#/components/schemas/StaffRefDto"
+          },
+          "cover": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CoverDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "date": {
+            "type": "string"
+          },
+          "leaveRequestId": {
+            "type": "string"
+          },
+          "slot": {
+            "$ref": "#/components/schemas/SlotDto"
+          }
+        },
+        "required": [
+          "date",
+          "leaveRequestId",
+          "absent",
+          "slot",
+          "cover"
+        ],
+        "type": "object"
+      },
+      "NeedListDto": {
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NeedDto"
+            },
+            "type": "array"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "items"
+        ],
+        "type": "object"
+      },
       "NewInstalmentDto": {
         "properties": {
           "amountMinor": {
@@ -4325,6 +4497,29 @@
           "endTime",
           "isBreak",
           "number"
+        ],
+        "type": "object"
+      },
+      "PeriodRefDto": {
+        "properties": {
+          "endTime": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "startTime",
+          "endTime"
         ],
         "type": "object"
       },
@@ -5315,6 +5510,33 @@
         ],
         "type": "object"
       },
+      "SlotDto": {
+        "properties": {
+          "class": {
+            "$ref": "#/components/schemas/ClassRefDto"
+          },
+          "day": {
+            "type": "string"
+          },
+          "entryId": {
+            "type": "string"
+          },
+          "period": {
+            "$ref": "#/components/schemas/PeriodRefDto"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/SubjectRefDto"
+          }
+        },
+        "required": [
+          "entryId",
+          "day",
+          "period",
+          "class",
+          "subject"
+        ],
+        "type": "object"
+      },
       "StaffAccountDto": {
         "properties": {
           "displayName": {
@@ -6280,6 +6502,24 @@
         },
         "required": [
           "marks"
+        ],
+        "type": "object"
+      },
+      "SuggestionsDto": {
+        "properties": {
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateDto"
+            },
+            "type": "array"
+          },
+          "need": {
+            "$ref": "#/components/schemas/NeedDto"
+          }
+        },
+        "required": [
+          "need",
+          "candidates"
         ],
         "type": "object"
       },
@@ -20083,6 +20323,326 @@
         "x-permission": {
           "action": "update",
           "resource": "students"
+        }
+      }
+    },
+    "/v1/substitutions": {
+      "put": {
+        "operationId": "Substitution_assign",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NeedDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Substitution"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.substitution.set",
+          "operation": "SetSubstitute"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/substitutions/mine": {
+      "get": {
+        "operationId": "Substitution_mine",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DutyListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Substitution"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/substitutions/needs": {
+      "get": {
+        "operationId": "Substitution_needs",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NeedListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Substitution"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/substitutions/suggestions": {
+      "get": {
+        "operationId": "Substitution_suggestions",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "entryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Substitution"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "academics"
+        }
+      }
+    },
+    "/v1/substitutions/{id}": {
+      "delete": {
+        "operationId": "Substitution_clear",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Substitution"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "academic.substitution.clear",
+          "operation": "ClearSubstitute"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "academics"
         }
       }
     },

@@ -87,7 +87,7 @@ export class LeaveService {
 
   // ---- balances
   private async years(t: TenantContext) {
-    return (await this.db.listAcademicYears({ schoolId: t.schoolId })).data.academicYears.map((y) => ({ id: dashed(y.id), startDate: y.startDate, endDate: y.endDate }));
+    return [...(await this.db.listAcademicYears({ schoolId: t.schoolId })).data.academicYears].sort((a, b) => Number(b.status === 'ACTIVE') - Number(a.status === 'ACTIVE')).map((y) => ({ id: dashed(y.id), startDate: y.startDate, endDate: y.endDate }));
   }
   private async yearOrActive(t: TenantContext, explicit?: string): Promise<string> {
     const id = explicit ?? (await this.scope.activeYearId(t.schoolId));

@@ -150,6 +150,12 @@ export type ApplyTemplateDto = {
     template: 'STANDARD' | 'SHORT_DAY';
 };
 
+export type AssignDto = {
+    date: string;
+    entryId: string;
+    substituteStaffId: string;
+};
+
 export type BalanceDto = {
     academicYearId: string;
     allowedDays: string;
@@ -178,6 +184,11 @@ export type BandInputDto = {
 export type BandsDto = {
     bands: Array<BandDto>;
     template: Array<BandDto>;
+};
+
+export type CandidateDto = {
+    staff: StaffRefDto;
+    substitutionsThisMonth: number;
 };
 
 export type ChildDto = {
@@ -212,6 +223,11 @@ export type ClassDto = {
 
 export type ClassListDto = {
     items: Array<ClassDto>;
+};
+
+export type ClassRefDto = {
+    id: string;
+    name: string;
 };
 
 export type ClassSectionDto = {
@@ -298,6 +314,11 @@ export type ConcessionListDto = {
 export type CorrectStaffDayDto = {
     checkIn?: string | null;
     checkOut?: string | null;
+};
+
+export type CoverDto = {
+    id: string;
+    substitute: StaffRefDto;
 };
 
 export type CreateAcademicYearDto = {
@@ -562,6 +583,21 @@ export type DuesReportDto = {
     pageSize: number;
     paidMinor: string;
     total: number;
+};
+
+export type DutyDto = {
+    class: ClassRefDto;
+    covering: StaffRefDto;
+    date: string;
+    id: string;
+    period: PeriodRefDto;
+    subject: SubjectRefDto;
+};
+
+export type DutyListDto = {
+    from: string;
+    items: Array<DutyDto>;
+    to: string;
 };
 
 export type ErrorEnvelope = {
@@ -979,6 +1015,20 @@ export type NavSectionDto = {
     title: string;
 };
 
+export type NeedDto = {
+    absent: StaffRefDto;
+    cover: CoverDto | null;
+    date: string;
+    leaveRequestId: string;
+    slot: SlotDto;
+};
+
+export type NeedListDto = {
+    from: string;
+    items: Array<NeedDto>;
+    to: string;
+};
+
 export type NewInstalmentDto = {
     amountMinor: string;
     dueDate: string;
@@ -1111,6 +1161,13 @@ export type PeriodDto = {
     isBreak: boolean;
     label: string;
     number: number | null;
+    startTime: string;
+};
+
+export type PeriodRefDto = {
+    endTime: string;
+    id: string;
+    label: string;
     startTime: string;
 };
 
@@ -1385,6 +1442,14 @@ export type SignedReadDto = {
     url: string;
 };
 
+export type SlotDto = {
+    class: ClassRefDto;
+    day: string;
+    entryId: string;
+    period: PeriodRefDto;
+    subject: SubjectRefDto;
+};
+
 export type StaffAccountDto = {
     displayName: string;
     email: string | null;
@@ -1640,6 +1705,11 @@ export type SubmitDayDto = {
     lock?: boolean;
     marks: Array<MarkInputDto>;
     submissionId?: string;
+};
+
+export type SuggestionsDto = {
+    candidates: Array<CandidateDto>;
+    need: NeedDto;
 };
 
 export type TeacherDto = {
@@ -9962,6 +10032,211 @@ export type StudentsPlaceResponses = {
 };
 
 export type StudentsPlaceResponse = StudentsPlaceResponses[keyof StudentsPlaceResponses];
+
+export type SubstitutionAssignData = {
+    body: AssignDto;
+    path?: never;
+    query?: never;
+    url: '/v1/substitutions';
+};
+
+export type SubstitutionAssignErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SubstitutionAssignError = SubstitutionAssignErrors[keyof SubstitutionAssignErrors];
+
+export type SubstitutionAssignResponses = {
+    200: NeedDto;
+};
+
+export type SubstitutionAssignResponse = SubstitutionAssignResponses[keyof SubstitutionAssignResponses];
+
+export type SubstitutionMineData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/v1/substitutions/mine';
+};
+
+export type SubstitutionMineErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SubstitutionMineError = SubstitutionMineErrors[keyof SubstitutionMineErrors];
+
+export type SubstitutionMineResponses = {
+    200: DutyListDto;
+};
+
+export type SubstitutionMineResponse = SubstitutionMineResponses[keyof SubstitutionMineResponses];
+
+export type SubstitutionNeedsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/v1/substitutions/needs';
+};
+
+export type SubstitutionNeedsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SubstitutionNeedsError = SubstitutionNeedsErrors[keyof SubstitutionNeedsErrors];
+
+export type SubstitutionNeedsResponses = {
+    200: NeedListDto;
+};
+
+export type SubstitutionNeedsResponse = SubstitutionNeedsResponses[keyof SubstitutionNeedsResponses];
+
+export type SubstitutionSuggestionsData = {
+    body?: never;
+    path?: never;
+    query: {
+        entryId: string;
+        date: string;
+    };
+    url: '/v1/substitutions/suggestions';
+};
+
+export type SubstitutionSuggestionsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SubstitutionSuggestionsError = SubstitutionSuggestionsErrors[keyof SubstitutionSuggestionsErrors];
+
+export type SubstitutionSuggestionsResponses = {
+    200: SuggestionsDto;
+};
+
+export type SubstitutionSuggestionsResponse = SubstitutionSuggestionsResponses[keyof SubstitutionSuggestionsResponses];
+
+export type SubstitutionClearData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/substitutions/{id}';
+};
+
+export type SubstitutionClearErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SubstitutionClearError = SubstitutionClearErrors[keyof SubstitutionClearErrors];
+
+export type SubstitutionClearResponses = {
+    204: void;
+};
+
+export type SubstitutionClearResponse = SubstitutionClearResponses[keyof SubstitutionClearResponses];
 
 export type UploadsSchoolLogoData = {
     body: SchoolLogoUploadDto;

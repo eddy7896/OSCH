@@ -763,6 +763,26 @@ export interface Classroom_Key {
   __typename?: 'Classroom_Key';
 }
 
+export interface ClearSubstituteData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    row: ({
+      id: UUIDString;
+    } & Substitution_Key)[];
+  };
+  substitution_delete?: Substitution_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ClearSubstituteVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface Concession_Key {
   id: UUIDString;
   __typename?: 'Concession_Key';
@@ -1935,6 +1955,7 @@ export interface DeleteTimetableEntryData {
       id: UUIDString;
     } & TimetableEntry_Key)[];
   };
+  substitution_deleteMany: number;
   timetableEntry_delete?: TimetableEntry_Key | null;
   auditLog_insert: AuditLog_Key;
 }
@@ -3575,6 +3596,44 @@ export interface ListSubjectsVariables {
   schoolId: UUIDString;
 }
 
+export interface ListSubstitutionsData {
+  substitutions: ({
+    id: UUIDString;
+    date: DateString;
+    periodId: UUIDString;
+    timetableEntryId: UUIDString;
+    leaveRequestId: UUIDString;
+    substitute: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      status: StaffStatus;
+    } & StaffProfile_Key;
+    timetableEntry: {
+      id: UUIDString;
+      day: string;
+      classroom: {
+        id: UUIDString;
+        name: string;
+      } & Classroom_Key;
+      subject: {
+        id: UUIDString;
+        name: string;
+        code: string;
+      } & Subject_Key;
+      staffId: UUIDString;
+    } & TimetableEntry_Key;
+  } & Substitution_Key)[];
+}
+
+export interface ListSubstitutionsVariables {
+  schoolId: UUIDString;
+  from: DateString;
+  to: DateString;
+  substituteId?: UUIDString | null;
+}
+
 export interface ListTeacherSubjectsData {
   teacherSubjects: ({
     id: UUIDString;
@@ -3661,6 +3720,15 @@ export interface ListTimetableForYearData {
       lastName: string;
       status: StaffStatus;
     } & StaffProfile_Key;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    subject: {
+      id: UUIDString;
+      name: string;
+      code: string;
+    } & Subject_Key;
   } & TimetableEntry_Key)[];
 }
 
@@ -4560,6 +4628,49 @@ export interface SetSubscriptionStatusVariables {
   details?: unknown | null;
 }
 
+export interface SetSubstituteData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    leave: ({
+      id: UUIDString;
+    } & LeaveRequest_Key)[];
+    entry: ({
+      id: UUIDString;
+    } & TimetableEntry_Key)[];
+    substitute: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+    qualified: ({
+      id: UUIDString;
+    } & TeacherSubject_Key)[];
+    busy: ({
+      id: UUIDString;
+    } & TimetableEntry_Key)[];
+    away: ({
+      id: UUIDString;
+    } & LeaveRequest_Key)[];
+  };
+  substitution_upsert: Substitution_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetSubstituteVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  timetableEntryId: UUIDString;
+  date: DateString;
+  day: string;
+  periodId: UUIDString;
+  subjectId: UUIDString;
+  absentStaffId: UUIDString;
+  leaveRequestId: UUIDString;
+  substituteId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface SetUserLanguageData {
   user_update?: User_Key | null;
 }
@@ -4755,6 +4866,11 @@ export interface StudentsByEnrollmentIdsVariables {
 export interface Subject_Key {
   id: UUIDString;
   __typename?: 'Subject_Key';
+}
+
+export interface Substitution_Key {
+  id: UUIDString;
+  __typename?: 'Substitution_Key';
 }
 
 export interface TeacherSubject_Key {
@@ -5258,6 +5374,7 @@ export interface UpdateTimetableEntryData {
       id: UUIDString;
     } & TeacherSubject_Key)[];
   };
+  substitution_deleteMany: number;
   timetableEntry_update?: TimetableEntry_Key | null;
   auditLog_insert: AuditLog_Key;
 }
@@ -5912,6 +6029,16 @@ export function rejectLeaveRequest(dc: DataConnect, vars: RejectLeaveRequestVari
 /** Generated Node Admin SDK operation action function for the 'RejectLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
 export function rejectLeaveRequest(vars: RejectLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RejectLeaveRequestData>>;
 
+/** Generated Node Admin SDK operation action function for the 'SetSubstitute' Mutation. Allow users to execute without passing in DataConnect. */
+export function setSubstitute(dc: DataConnect, vars: SetSubstituteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetSubstituteData>>;
+/** Generated Node Admin SDK operation action function for the 'SetSubstitute' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setSubstitute(vars: SetSubstituteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetSubstituteData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ClearSubstitute' Mutation. Allow users to execute without passing in DataConnect. */
+export function clearSubstitute(dc: DataConnect, vars: ClearSubstituteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearSubstituteData>>;
+/** Generated Node Admin SDK operation action function for the 'ClearSubstitute' Mutation. Allow users to pass in custom DataConnect instances. */
+export function clearSubstitute(vars: ClearSubstituteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearSubstituteData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -6401,4 +6528,9 @@ export function listLeaveRequests(vars: ListLeaveRequestsVariables, options?: Op
 export function getLeaveRequest(dc: DataConnect, vars: GetLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetLeaveRequestData>>;
 /** Generated Node Admin SDK operation action function for the 'GetLeaveRequest' Query. Allow users to pass in custom DataConnect instances. */
 export function getLeaveRequest(vars: GetLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetLeaveRequestData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListSubstitutions' Query. Allow users to execute without passing in DataConnect. */
+export function listSubstitutions(dc: DataConnect, vars: ListSubstitutionsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSubstitutionsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListSubstitutions' Query. Allow users to pass in custom DataConnect instances. */
+export function listSubstitutions(vars: ListSubstitutionsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSubstitutionsData>>;
 
