@@ -832,3 +832,72 @@ mutation MarkPayrollRunPaid($schoolId: UUID!, $id: UUID!, $paidOn: Date!, $payme
   payrollRun_update(id: $id, data: { status: PAID, paidById: $actorId, paidAt_expr: "request.time", paidOn: $paidOn, paymentReference: $paymentReference })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "payroll.run.pay", entityType: "PayrollRun", entityId_expr: "request.variables.id", details: $details })
 }
+
+# ---- Bell schedule and working days (P3-1)
+mutation CreatePeriod($schoolId: UUID!, $id: UUID!, $label: String!, $startTime: String!, $endTime: String!, $isBreak: Boolean!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  period_insert(data: { id: $id, schoolId: $schoolId, label: $label, startTime: $startTime, endTime: $endTime, isBreak: $isBreak })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.period.create", entityType: "Period", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdatePeriod($schoolId: UUID!, $id: UUID!, $label: String, $startTime: String, $endTime: String, $isBreak: Boolean, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    period: periods(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "period not found in this school") { id }
+  }
+  period_update(id: $id, data: { label: $label, startTime: $startTime, endTime: $endTime, isBreak: $isBreak })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.period.update", entityType: "Period", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeletePeriod($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    period: periods(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "period not found in this school") { id }
+  }
+  period_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.period.delete", entityType: "Period", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation SetWorkingDays($schoolId: UUID!, $workingDays: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  school_update(id: $schoolId, data: { workingDays: $workingDays })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.workingdays.set", entityType: "School", entityId_expr: "request.variables.schoolId", details: $details })
+}
+
+# A starting bell schedule in ONE transaction (all or nothing, one audit row), only for a school that has no periods yet.
+mutation ApplyStandardSchedule($schoolId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    existing: periods(where: {schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 0", message: "the school already has periods") { id }
+  }
+  p1: period_insert(data: { schoolId: $schoolId, label: "Period 1", startTime: "08:30", endTime: "09:10", isBreak: false })
+  p2: period_insert(data: { schoolId: $schoolId, label: "Period 2", startTime: "09:10", endTime: "09:50", isBreak: false })
+  p3: period_insert(data: { schoolId: $schoolId, label: "Short break", startTime: "09:50", endTime: "10:10", isBreak: true })
+  p4: period_insert(data: { schoolId: $schoolId, label: "Period 3", startTime: "10:10", endTime: "10:50", isBreak: false })
+  p5: period_insert(data: { schoolId: $schoolId, label: "Period 4", startTime: "10:50", endTime: "11:30", isBreak: false })
+  p6: period_insert(data: { schoolId: $schoolId, label: "Period 5", startTime: "11:30", endTime: "12:10", isBreak: false })
+  p7: period_insert(data: { schoolId: $schoolId, label: "Lunch", startTime: "12:10", endTime: "12:50", isBreak: true })
+  p8: period_insert(data: { schoolId: $schoolId, label: "Period 6", startTime: "12:50", endTime: "13:30", isBreak: false })
+  p9: period_insert(data: { schoolId: $schoolId, label: "Period 7", startTime: "13:30", endTime: "14:10", isBreak: false })
+  p10: period_insert(data: { schoolId: $schoolId, label: "Period 8", startTime: "14:10", endTime: "14:50", isBreak: false })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.schedule.template", entityType: "School", entityId_expr: "request.variables.schoolId", details: $details })
+}
+
+# A starting bell schedule in ONE transaction (all or nothing, one audit row), only for a school that has no periods yet.
+mutation ApplyShortDaySchedule($schoolId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    existing: periods(where: {schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 0", message: "the school already has periods") { id }
+  }
+  p1: period_insert(data: { schoolId: $schoolId, label: "Period 1", startTime: "08:00", endTime: "08:40", isBreak: false })
+  p2: period_insert(data: { schoolId: $schoolId, label: "Period 2", startTime: "08:40", endTime: "09:20", isBreak: false })
+  p3: period_insert(data: { schoolId: $schoolId, label: "Break", startTime: "09:20", endTime: "09:40", isBreak: true })
+  p4: period_insert(data: { schoolId: $schoolId, label: "Period 3", startTime: "09:40", endTime: "10:20", isBreak: false })
+  p5: period_insert(data: { schoolId: $schoolId, label: "Period 4", startTime: "10:20", endTime: "11:00", isBreak: false })
+  p6: period_insert(data: { schoolId: $schoolId, label: "Period 5", startTime: "11:00", endTime: "11:40", isBreak: false })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.schedule.template", entityType: "School", entityId_expr: "request.variables.schoolId", details: $details })
+}

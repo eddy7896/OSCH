@@ -437,3 +437,12 @@ query DuesInvoices($schoolId: UUID!, $dueOnOrBefore: Date!, $academicYearId: UUI
 query CountDuesInvoices($schoolId: UUID!, $dueOnOrBefore: Date!, $academicYearId: UUID) @auth(level: NO_ACCESS) {
   invoices(where: {_and: [{schoolId: {eq: $schoolId}}, {status: {eq: PENDING}}, {dueDate: {le: $dueOnOrBefore}}, {academicYearId: {eq: $academicYearId}}]}) { _count }
 }
+
+# ---- Bell schedule and working days (P3-1)
+query ListPeriods($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  periods(where: {schoolId: {eq: $schoolId}}, orderBy: [{startTime: ASC}]) { id label startTime endTime isBreak }
+}
+
+query SchoolWorkingDays($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  school(id: $schoolId) { id workingDays }
+}

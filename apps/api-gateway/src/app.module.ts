@@ -15,6 +15,7 @@ import { PublicModule } from './public/public.module.js';
 import { PlatformModule } from './platform/platform.module.js';
 import { PayrollModule } from './payroll/payroll.module.js';
 import { ReportsModule } from './reports/reports.module.js';
+import { ScheduleModule } from './schedule/schedule.module.js';
 import { FeesModule } from './fees/fees.module.js';
 import { ImportsModule } from './imports/imports.module.js';
 import { AdmissionsModule } from './admissions/admissions.module.js';
@@ -66,6 +67,7 @@ import { HealthModule } from './health/health.module.js';
     FeesModule,
     PayrollModule,
     ReportsModule,
+    ScheduleModule,
     ImportsModule,
     AccountsModule,
     InvitationsModule,

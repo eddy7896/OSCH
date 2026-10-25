@@ -406,6 +406,58 @@ export interface Application_Key {
   __typename?: 'Application_Key';
 }
 
+export interface ApplyShortDayScheduleData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    existing: ({
+      id: UUIDString;
+    } & Period_Key)[];
+  };
+  p1: Period_Key;
+  p2: Period_Key;
+  p3: Period_Key;
+  p4: Period_Key;
+  p5: Period_Key;
+  p6: Period_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ApplyShortDayScheduleVariables {
+  schoolId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface ApplyStandardScheduleData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    existing: ({
+      id: UUIDString;
+    } & Period_Key)[];
+  };
+  p1: Period_Key;
+  p2: Period_Key;
+  p3: Period_Key;
+  p4: Period_Key;
+  p5: Period_Key;
+  p6: Period_Key;
+  p7: Period_Key;
+  p8: Period_Key;
+  p9: Period_Key;
+  p10: Period_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ApplyStandardScheduleVariables {
+  schoolId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface ApprovePayrollRunData {
   query?: {
     actor: ({
@@ -938,6 +990,27 @@ export interface CreatePayslipVariables {
   details?: unknown | null;
 }
 
+export interface CreatePeriodData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  period_insert: Period_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreatePeriodVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  label: string;
+  startTime: string;
+  endTime: string;
+  isBreak: boolean;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface CreateScheduleData {
   query?: {
     classrooms: ({
@@ -1259,6 +1332,26 @@ export interface DeletePayrollRunData {
 }
 
 export interface DeletePayrollRunVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeletePeriodData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    period: ({
+      id: UUIDString;
+    } & Period_Key)[];
+  };
+  period_delete?: Period_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeletePeriodVariables {
   schoolId: UUIDString;
   id: UUIDString;
   actorId: string;
@@ -2366,6 +2459,20 @@ export interface ListPayrollRunsVariables {
   offset: number;
 }
 
+export interface ListPeriodsData {
+  periods: ({
+    id: UUIDString;
+    label: string;
+    startTime: string;
+    endTime: string;
+    isBreak: boolean;
+  } & Period_Key)[];
+}
+
+export interface ListPeriodsVariables {
+  schoolId: UUIDString;
+}
+
 export interface ListReceiptsData {
   receipts: ({
     id: UUIDString;
@@ -2706,6 +2813,11 @@ export interface PayslipLine_Key {
 export interface Payslip_Key {
   id: UUIDString;
   __typename?: 'Payslip_Key';
+}
+
+export interface Period_Key {
+  id: UUIDString;
+  __typename?: 'Period_Key';
 }
 
 export interface PlaceStudentData {
@@ -3057,6 +3169,17 @@ export interface SchoolSeqVariables {
   schoolId: UUIDString;
 }
 
+export interface SchoolWorkingDaysData {
+  school?: {
+    id: UUIDString;
+    workingDays: string;
+  } & School_Key;
+}
+
+export interface SchoolWorkingDaysVariables {
+  schoolId: UUIDString;
+}
+
 export interface School_Key {
   id: UUIDString;
   __typename?: 'School_Key';
@@ -3140,6 +3263,23 @@ export interface SetUserLanguageData {
 export interface SetUserLanguageVariables {
   userId: string;
   language?: string | null;
+}
+
+export interface SetWorkingDaysData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  school_update?: School_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetWorkingDaysVariables {
+  schoolId: UUIDString;
+  workingDays: string;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface StaffDocument_Key {
@@ -3500,6 +3640,30 @@ export interface UpdateMembershipVariables {
   userId: string;
   schoolRole: SchoolRole;
   status: MembershipStatus;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface UpdatePeriodData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    period: ({
+      id: UUIDString;
+    } & Period_Key)[];
+  };
+  period_update?: Period_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdatePeriodVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  label?: string | null;
+  startTime?: string | null;
+  endTime?: string | null;
+  isBreak?: boolean | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -4075,6 +4239,36 @@ export function markPayrollRunPaid(dc: DataConnect, vars: MarkPayrollRunPaidVari
 /** Generated Node Admin SDK operation action function for the 'MarkPayrollRunPaid' Mutation. Allow users to pass in custom DataConnect instances. */
 export function markPayrollRunPaid(vars: MarkPayrollRunPaidVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkPayrollRunPaidData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreatePeriod' Mutation. Allow users to execute without passing in DataConnect. */
+export function createPeriod(dc: DataConnect, vars: CreatePeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePeriodData>>;
+/** Generated Node Admin SDK operation action function for the 'CreatePeriod' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createPeriod(vars: CreatePeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreatePeriodData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdatePeriod' Mutation. Allow users to execute without passing in DataConnect. */
+export function updatePeriod(dc: DataConnect, vars: UpdatePeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdatePeriodData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdatePeriod' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updatePeriod(vars: UpdatePeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdatePeriodData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeletePeriod' Mutation. Allow users to execute without passing in DataConnect. */
+export function deletePeriod(dc: DataConnect, vars: DeletePeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeletePeriodData>>;
+/** Generated Node Admin SDK operation action function for the 'DeletePeriod' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deletePeriod(vars: DeletePeriodVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeletePeriodData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetWorkingDays' Mutation. Allow users to execute without passing in DataConnect. */
+export function setWorkingDays(dc: DataConnect, vars: SetWorkingDaysVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetWorkingDaysData>>;
+/** Generated Node Admin SDK operation action function for the 'SetWorkingDays' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setWorkingDays(vars: SetWorkingDaysVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetWorkingDaysData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ApplyStandardSchedule' Mutation. Allow users to execute without passing in DataConnect. */
+export function applyStandardSchedule(dc: DataConnect, vars: ApplyStandardScheduleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApplyStandardScheduleData>>;
+/** Generated Node Admin SDK operation action function for the 'ApplyStandardSchedule' Mutation. Allow users to pass in custom DataConnect instances. */
+export function applyStandardSchedule(vars: ApplyStandardScheduleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApplyStandardScheduleData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ApplyShortDaySchedule' Mutation. Allow users to execute without passing in DataConnect. */
+export function applyShortDaySchedule(dc: DataConnect, vars: ApplyShortDayScheduleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApplyShortDayScheduleData>>;
+/** Generated Node Admin SDK operation action function for the 'ApplyShortDaySchedule' Mutation. Allow users to pass in custom DataConnect instances. */
+export function applyShortDaySchedule(vars: ApplyShortDayScheduleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApplyShortDayScheduleData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -4409,4 +4603,14 @@ export function duesInvoices(vars: DuesInvoicesVariables, options?: OperationOpt
 export function countDuesInvoices(dc: DataConnect, vars: CountDuesInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountDuesInvoicesData>>;
 /** Generated Node Admin SDK operation action function for the 'CountDuesInvoices' Query. Allow users to pass in custom DataConnect instances. */
 export function countDuesInvoices(vars: CountDuesInvoicesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountDuesInvoicesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListPeriods' Query. Allow users to execute without passing in DataConnect. */
+export function listPeriods(dc: DataConnect, vars: ListPeriodsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListPeriodsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListPeriods' Query. Allow users to pass in custom DataConnect instances. */
+export function listPeriods(vars: ListPeriodsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListPeriodsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SchoolWorkingDays' Query. Allow users to execute without passing in DataConnect. */
+export function schoolWorkingDays(dc: DataConnect, vars: SchoolWorkingDaysVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SchoolWorkingDaysData>>;
+/** Generated Node Admin SDK operation action function for the 'SchoolWorkingDays' Query. Allow users to pass in custom DataConnect instances. */
+export function schoolWorkingDays(vars: SchoolWorkingDaysVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SchoolWorkingDaysData>>;
 

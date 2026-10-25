@@ -146,6 +146,10 @@ export type ApplicationSummaryDto = {
     status: string;
 };
 
+export type ApplyTemplateDto = {
+    template: 'STANDARD' | 'SHORT_DAY';
+};
+
 export type ClassDto = {
     capacity: number;
     gradeLevel: {
@@ -301,6 +305,13 @@ export type CreateItemDto = {
 export type CreatePayrollRunDto = {
     month: number;
     year: number;
+};
+
+export type CreatePeriodDto = {
+    endTime: string;
+    isBreak?: boolean;
+    label: string;
+    startTime: string;
 };
 
 export type CreateSalaryLineDto = {
@@ -854,6 +865,15 @@ export type PayslipLineDto = {
     name: string;
 };
 
+export type PeriodDto = {
+    endTime: string;
+    id: string;
+    isBreak: boolean;
+    label: string;
+    number: number | null;
+    startTime: string;
+};
+
 export type PersonRefDto = {
     id: string;
     name: string;
@@ -994,24 +1014,8 @@ export type SampleInvoiceDto = {
 };
 
 export type ScheduleDto = {
-    academicYear: {
-        id: string;
-        name: string;
-    };
-    discountMinor: string;
-    grossMinor: string;
-    lines: Array<ScheduleLineDto>;
-    netMinor: string;
-    status: string;
-    structure: {
-        id: string;
-        name: string;
-    };
-    student: {
-        enrollmentId: string;
-        id: string;
-        name: string;
-    };
+    periods: Array<PeriodDto>;
+    workingDays: Array<string>;
 };
 
 export type ScheduleLineDto = {
@@ -1280,6 +1284,13 @@ export type UpdateMembershipDto = {
     status?: 'ACTIVE' | 'SUSPENDED';
 };
 
+export type UpdatePeriodDto = {
+    endTime?: string;
+    isBreak?: boolean;
+    label?: string;
+    startTime?: string;
+};
+
 export type UpdatePreferencesDto = {
     language: 'en' | 'hi' | 'ur' | 'ks' | 'sd' | 'ps' | 'fa' | 'ar' | 'bn' | 'as' | 'mr' | 'doi' | 'gu' | 'pa' | 'or' | 'ta' | 'te' | 'kn' | 'ml';
 };
@@ -1348,6 +1359,10 @@ export type UploadTicketDto = {
     method: 'PUT';
     publicUrl: string | null;
     uploadUrl: string;
+};
+
+export type WorkingDaysDto = {
+    days: Array<'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN'>;
 };
 
 export type HealthCheckData = {
@@ -1863,6 +1878,246 @@ export type AcademicsUpdateLevelResponses = {
 };
 
 export type AcademicsUpdateLevelResponse = AcademicsUpdateLevelResponses[keyof AcademicsUpdateLevelResponses];
+
+export type ScheduleCreateData = {
+    body: CreatePeriodDto;
+    path?: never;
+    query?: never;
+    url: '/v1/academics/periods';
+};
+
+export type ScheduleCreateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ScheduleCreateError = ScheduleCreateErrors[keyof ScheduleCreateErrors];
+
+export type ScheduleCreateResponses = {
+    201: PeriodDto;
+};
+
+export type ScheduleCreateResponse = ScheduleCreateResponses[keyof ScheduleCreateResponses];
+
+export type ScheduleRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/academics/periods/{id}';
+};
+
+export type ScheduleRemoveErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ScheduleRemoveError = ScheduleRemoveErrors[keyof ScheduleRemoveErrors];
+
+export type ScheduleRemoveResponses = {
+    204: void;
+};
+
+export type ScheduleRemoveResponse = ScheduleRemoveResponses[keyof ScheduleRemoveResponses];
+
+export type ScheduleUpdateData = {
+    body: UpdatePeriodDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/academics/periods/{id}';
+};
+
+export type ScheduleUpdateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ScheduleUpdateError = ScheduleUpdateErrors[keyof ScheduleUpdateErrors];
+
+export type ScheduleUpdateResponses = {
+    200: PeriodDto;
+};
+
+export type ScheduleUpdateResponse = ScheduleUpdateResponses[keyof ScheduleUpdateResponses];
+
+export type ScheduleGetData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/academics/schedule';
+};
+
+export type ScheduleGetErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ScheduleGetError = ScheduleGetErrors[keyof ScheduleGetErrors];
+
+export type ScheduleGetResponses = {
+    200: ScheduleDto;
+};
+
+export type ScheduleGetResponse = ScheduleGetResponses[keyof ScheduleGetResponses];
+
+export type ScheduleTemplateData = {
+    body: ApplyTemplateDto;
+    path?: never;
+    query?: never;
+    url: '/v1/academics/schedule/template';
+};
+
+export type ScheduleTemplateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ScheduleTemplateError = ScheduleTemplateErrors[keyof ScheduleTemplateErrors];
+
+export type ScheduleTemplateResponses = {
+    201: ScheduleDto;
+};
+
+export type ScheduleTemplateResponse = ScheduleTemplateResponses[keyof ScheduleTemplateResponses];
+
+export type ScheduleSetWorkingDaysData = {
+    body: WorkingDaysDto;
+    path?: never;
+    query?: never;
+    url: '/v1/academics/schedule/working-days';
+};
+
+export type ScheduleSetWorkingDaysErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ScheduleSetWorkingDaysError = ScheduleSetWorkingDaysErrors[keyof ScheduleSetWorkingDaysErrors];
+
+export type ScheduleSetWorkingDaysResponses = {
+    200: ScheduleDto;
+};
+
+export type ScheduleSetWorkingDaysResponse = ScheduleSetWorkingDaysResponses[keyof ScheduleSetWorkingDaysResponses];
 
 export type AcademicsSubjectsData = {
     body?: never;
