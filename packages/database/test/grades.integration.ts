@@ -106,7 +106,7 @@ describe.skipIf(!host)('Exams and marks (P3-5)', () => {
     await expect(db.deleteAssessmentTerm({ schoolId: A, id: termA, actorId: adminA, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     await expect(db.deleteExam({ schoolId: B, id: exam, actorId: adminB, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     const mark = (await db.getExam({ schoolId: A, id: exam })).data.exams[0]!.marks[0]!;
-    await db.removeMark({ schoolId: A, id: mark.id, examId: exam, actorId: adminA });
+    await db.removeMark({ schoolId: A, id: mark.id, examId: exam, classroomId: c1, actorId: adminA });
     await db.deleteExam({ schoolId: A, id: exam, actorId: adminA, details: {} });
     expect((await audit(A, 'grades.exam.delete')).length).toBe(1);
   });

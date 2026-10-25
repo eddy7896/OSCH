@@ -507,16 +507,20 @@ export interface ApproveLeaveRequestData {
   };
   leaveBalance_update?: LeaveBalance_Key | null;
   leaveRequest_update?: LeaveRequest_Key | null;
+  n1: Notification_Key;
+  n2: Notification_Key;
   auditLog_insert: AuditLog_Key;
 }
 
 export interface ApproveLeaveRequestVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  staffId: UUIDString;
   balanceId: UUIDString;
   halfDays: number;
   expectedRemaining: number;
   newRemaining: number;
+  notice?: unknown | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -551,12 +555,17 @@ export interface ApproveUnpaidLeaveRequestData {
     } & LeaveRequest_Key)[];
   };
   leaveRequest_update?: LeaveRequest_Key | null;
+  n1: Notification_Key;
+  n2: Notification_Key;
+  n3: Notification_Key;
   auditLog_insert: AuditLog_Key;
 }
 
 export interface ApproveUnpaidLeaveRequestVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  staffId: UUIDString;
+  notice?: unknown | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -773,12 +782,17 @@ export interface ClearSubstituteData {
     } & Substitution_Key)[];
   };
   substitution_delete?: Substitution_Key | null;
+  notification_insert: Notification_Key;
+  tombstone_insert: Tombstone_Key;
   auditLog_insert: AuditLog_Key;
 }
 
 export interface ClearSubstituteVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  substituteId: UUIDString;
+  classroomId: UUIDString;
+  notice?: unknown | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -1381,6 +1395,7 @@ export interface CreateLeaveRequestData {
     } & LeaveType_Key)[];
   };
   leaveRequest_insert: LeaveRequest_Key;
+  notification_insert: Notification_Key;
   auditLog_insert: AuditLog_Key;
 }
 
@@ -1394,6 +1409,8 @@ export interface CreateLeaveRequestVariables {
   half?: string | null;
   halfDays: number;
   reason?: string | null;
+  clientId?: string | null;
+  notice?: unknown | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -1957,12 +1974,15 @@ export interface DeleteTimetableEntryData {
   };
   substitution_deleteMany: number;
   timetableEntry_delete?: TimetableEntry_Key | null;
+  tombstone_insert: Tombstone_Key;
   auditLog_insert: AuditLog_Key;
 }
 
 export interface DeleteTimetableEntryVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  classroomId: UUIDString;
+  staffId: UUIDString;
   actorId: string;
   details?: unknown | null;
 }
@@ -2829,6 +2849,48 @@ export interface GetStudentVariables {
   id: UUIDString;
 }
 
+export interface GetSubstitutionData {
+  substitutions: ({
+    id: UUIDString;
+    date: DateString;
+    periodId: UUIDString;
+    substituteId: UUIDString;
+    timetableEntry: {
+      id: UUIDString;
+      classroomId: UUIDString;
+      day: string;
+      classroom: {
+        name: string;
+      };
+      subject: {
+        name: string;
+      };
+      staff: {
+        firstName: string;
+        lastName: string;
+      };
+    } & TimetableEntry_Key;
+  } & Substitution_Key)[];
+}
+
+export interface GetSubstitutionVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetTimetableEntryData {
+  timetableEntries: ({
+    id: UUIDString;
+    classroomId: UUIDString;
+    staffId: UUIDString;
+  } & TimetableEntry_Key)[];
+}
+
+export interface GetTimetableEntryVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetUserData {
   user?: {
     id: string;
@@ -2886,6 +2948,18 @@ export interface InvoicedForYearVariables {
 export interface LeaveBalance_Key {
   id: UUIDString;
   __typename?: 'LeaveBalance_Key';
+}
+
+export interface LeaveRequestByClientIdData {
+  leaveRequests: ({
+    id: UUIDString;
+  } & LeaveRequest_Key)[];
+}
+
+export interface LeaveRequestByClientIdVariables {
+  schoolId: UUIDString;
+  staffId: UUIDString;
+  clientId: string;
 }
 
 export interface LeaveRequest_Key {
@@ -3377,6 +3451,38 @@ export interface ListMembershipsVariables {
   schoolId: UUIDString;
 }
 
+export interface ListNotificationMutesData {
+  notificationMutes: ({
+    category: string;
+  })[];
+}
+
+export interface ListNotificationMutesVariables {
+  schoolId: UUIDString;
+  userId: string;
+}
+
+export interface ListNotificationsData {
+  notifications: ({
+    id: UUIDString;
+    kind: string;
+    params?: unknown | null;
+    entityType?: string | null;
+    entityId?: string | null;
+    createdAt: TimestampString;
+    reads: ({
+      readAt: TimestampString;
+    })[];
+  } & Notification_Key)[];
+}
+
+export interface ListNotificationsVariables {
+  schoolId: UUIDString;
+  userId: string;
+  role: SchoolRole;
+  limit: number;
+}
+
 export interface ListPayrollRunsData {
   payrollRuns: ({
     id: UUIDString;
@@ -3737,6 +3843,24 @@ export interface ListTimetableForYearVariables {
   academicYearId: UUIDString;
 }
 
+export interface ListTombstonesData {
+  tombstones: ({
+    id: UUIDString;
+    entityType: string;
+    entityId: string;
+    classroomId?: UUIDString | null;
+    staffId?: UUIDString | null;
+    deletedAt: TimestampString;
+  } & Tombstone_Key)[];
+}
+
+export interface ListTombstonesVariables {
+  schoolId: UUIDString;
+  since: TimestampString;
+  entityType?: string | null;
+  limit: number;
+}
+
 export interface LockAttendanceDayData {
   query?: {
     actor: ({
@@ -3755,6 +3879,25 @@ export interface LockAttendanceDayVariables {
   id: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface MarkNotificationReadData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    note: ({
+      id: UUIDString;
+    } & Notification_Key)[];
+  };
+  notificationRead_upsert: NotificationRead_Key;
+}
+
+export interface MarkNotificationReadVariables {
+  schoolId: UUIDString;
+  notificationId: UUIDString;
+  role: SchoolRole;
+  actorId: string;
 }
 
 export interface MarkPayrollRunPaidData {
@@ -3824,6 +3967,39 @@ export interface MoveStudentVariables {
   classroomId: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface MuteNotificationCategoryData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  notificationMute_upsert: NotificationMute_Key;
+}
+
+export interface MuteNotificationCategoryVariables {
+  schoolId: UUIDString;
+  category: string;
+  actorId: string;
+}
+
+export interface NotificationMute_Key {
+  schoolId: UUIDString;
+  userId: string;
+  category: string;
+  __typename?: 'NotificationMute_Key';
+}
+
+export interface NotificationRead_Key {
+  notificationId: UUIDString;
+  userId: string;
+  __typename?: 'NotificationRead_Key';
+}
+
+export interface Notification_Key {
+  id: UUIDString;
+  __typename?: 'Notification_Key';
 }
 
 export interface ParentLink_Key {
@@ -4116,13 +4292,16 @@ export interface RejectLeaveRequestData {
     } & LeaveRequest_Key)[];
   };
   leaveRequest_update?: LeaveRequest_Key | null;
+  notification_insert: Notification_Key;
   auditLog_insert: AuditLog_Key;
 }
 
 export interface RejectLeaveRequestVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  staffId: UUIDString;
   note?: string | null;
+  notice?: unknown | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -4140,12 +4319,14 @@ export interface RemoveAttendanceMarkData {
     } & AttendanceMark_Key)[];
   };
   attendanceMark_delete?: AttendanceMark_Key | null;
+  tombstone_insert: Tombstone_Key;
 }
 
 export interface RemoveAttendanceMarkVariables {
   schoolId: UUIDString;
   id: UUIDString;
   dayId: UUIDString;
+  classroomId: UUIDString;
   lockedOk: boolean[];
   actorId: string;
 }
@@ -4195,17 +4376,22 @@ export interface RemoveMarkData {
     actor: ({
       userId: string;
     })[];
+    exam: ({
+      id: UUIDString;
+    } & Exam_Key)[];
     mark: ({
       id: UUIDString;
     } & Mark_Key)[];
   };
   mark_delete?: Mark_Key | null;
+  tombstone_insert: Tombstone_Key;
 }
 
 export interface RemoveMarkVariables {
   schoolId: UUIDString;
   id: UUIDString;
   examId: UUIDString;
+  classroomId: UUIDString;
   actorId: string;
 }
 
@@ -4653,6 +4839,7 @@ export interface SetSubstituteData {
     } & LeaveRequest_Key)[];
   };
   substitution_upsert: Substitution_Key;
+  notification_insert: Notification_Key;
   auditLog_insert: AuditLog_Key;
 }
 
@@ -4667,6 +4854,7 @@ export interface SetSubstituteVariables {
   absentStaffId: UUIDString;
   leaveRequestId: UUIDString;
   substituteId: UUIDString;
+  notice?: unknown | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -4883,6 +5071,11 @@ export interface TimetableEntry_Key {
   __typename?: 'TimetableEntry_Key';
 }
 
+export interface Tombstone_Key {
+  id: UUIDString;
+  __typename?: 'Tombstone_Key';
+}
+
 export interface UnlinkParentAccountData {
   query?: {
     actor: ({
@@ -4901,6 +5094,21 @@ export interface UnlinkParentAccountVariables {
   id: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface UnmuteNotificationCategoryData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  notificationMute_delete?: NotificationMute_Key | null;
+}
+
+export interface UnmuteNotificationCategoryVariables {
+  schoolId: UUIDString;
+  category: string;
+  actorId: string;
 }
 
 export interface UnpaidTotalsData {
@@ -6039,6 +6247,21 @@ export function clearSubstitute(dc: DataConnect, vars: ClearSubstituteVariables,
 /** Generated Node Admin SDK operation action function for the 'ClearSubstitute' Mutation. Allow users to pass in custom DataConnect instances. */
 export function clearSubstitute(vars: ClearSubstituteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearSubstituteData>>;
 
+/** Generated Node Admin SDK operation action function for the 'MarkNotificationRead' Mutation. Allow users to execute without passing in DataConnect. */
+export function markNotificationRead(dc: DataConnect, vars: MarkNotificationReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkNotificationReadData>>;
+/** Generated Node Admin SDK operation action function for the 'MarkNotificationRead' Mutation. Allow users to pass in custom DataConnect instances. */
+export function markNotificationRead(vars: MarkNotificationReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkNotificationReadData>>;
+
+/** Generated Node Admin SDK operation action function for the 'MuteNotificationCategory' Mutation. Allow users to execute without passing in DataConnect. */
+export function muteNotificationCategory(dc: DataConnect, vars: MuteNotificationCategoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MuteNotificationCategoryData>>;
+/** Generated Node Admin SDK operation action function for the 'MuteNotificationCategory' Mutation. Allow users to pass in custom DataConnect instances. */
+export function muteNotificationCategory(vars: MuteNotificationCategoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MuteNotificationCategoryData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UnmuteNotificationCategory' Mutation. Allow users to execute without passing in DataConnect. */
+export function unmuteNotificationCategory(dc: DataConnect, vars: UnmuteNotificationCategoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnmuteNotificationCategoryData>>;
+/** Generated Node Admin SDK operation action function for the 'UnmuteNotificationCategory' Mutation. Allow users to pass in custom DataConnect instances. */
+export function unmuteNotificationCategory(vars: UnmuteNotificationCategoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnmuteNotificationCategoryData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -6533,4 +6756,34 @@ export function getLeaveRequest(vars: GetLeaveRequestVariables, options?: Operat
 export function listSubstitutions(dc: DataConnect, vars: ListSubstitutionsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSubstitutionsData>>;
 /** Generated Node Admin SDK operation action function for the 'ListSubstitutions' Query. Allow users to pass in custom DataConnect instances. */
 export function listSubstitutions(vars: ListSubstitutionsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListSubstitutionsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListNotifications' Query. Allow users to execute without passing in DataConnect. */
+export function listNotifications(dc: DataConnect, vars: ListNotificationsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListNotificationsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListNotifications' Query. Allow users to pass in custom DataConnect instances. */
+export function listNotifications(vars: ListNotificationsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListNotificationsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListNotificationMutes' Query. Allow users to execute without passing in DataConnect. */
+export function listNotificationMutes(dc: DataConnect, vars: ListNotificationMutesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListNotificationMutesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListNotificationMutes' Query. Allow users to pass in custom DataConnect instances. */
+export function listNotificationMutes(vars: ListNotificationMutesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListNotificationMutesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListTombstones' Query. Allow users to execute without passing in DataConnect. */
+export function listTombstones(dc: DataConnect, vars: ListTombstonesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTombstonesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListTombstones' Query. Allow users to pass in custom DataConnect instances. */
+export function listTombstones(vars: ListTombstonesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTombstonesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'LeaveRequestByClientId' Query. Allow users to execute without passing in DataConnect. */
+export function leaveRequestByClientId(dc: DataConnect, vars: LeaveRequestByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<LeaveRequestByClientIdData>>;
+/** Generated Node Admin SDK operation action function for the 'LeaveRequestByClientId' Query. Allow users to pass in custom DataConnect instances. */
+export function leaveRequestByClientId(vars: LeaveRequestByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<LeaveRequestByClientIdData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetSubstitution' Query. Allow users to execute without passing in DataConnect. */
+export function getSubstitution(dc: DataConnect, vars: GetSubstitutionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetSubstitutionData>>;
+/** Generated Node Admin SDK operation action function for the 'GetSubstitution' Query. Allow users to pass in custom DataConnect instances. */
+export function getSubstitution(vars: GetSubstitutionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetSubstitutionData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetTimetableEntry' Query. Allow users to execute without passing in DataConnect. */
+export function getTimetableEntry(dc: DataConnect, vars: GetTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTimetableEntryData>>;
+/** Generated Node Admin SDK operation action function for the 'GetTimetableEntry' Query. Allow users to pass in custom DataConnect instances. */
+export function getTimetableEntry(vars: GetTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTimetableEntryData>>;
 

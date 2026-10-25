@@ -33,5 +33,7 @@
   "test/harness/grades.integration.ts": 45,
   "test/harness/leave.integration.ts": 45,
   "test/harness/substitution.integration.ts": 45,
-  "test/harness/leave-payroll.integration.ts": 45
+  "test/harness/leave-payroll.integration.ts": 45,
+  "test/harness/notifications.integration.ts": 45,
+  "test/harness/sync.integration.ts": 45
 }

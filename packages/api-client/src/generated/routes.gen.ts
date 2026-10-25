@@ -765,6 +765,36 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Memberships_add"
   },
   {
+    "method": "POST",
+    "path": "/v1/notifications/{id}/read",
+    "access": "tenant",
+    "operationId": "Notifications_read"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/notifications/preferences/{category}",
+    "access": "tenant",
+    "operationId": "Notifications_setPreference"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/notifications/preferences",
+    "access": "tenant",
+    "operationId": "Notifications_preferences"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/notifications/read-all",
+    "access": "tenant",
+    "operationId": "Notifications_readAll"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/notifications",
+    "access": "tenant",
+    "operationId": "Notifications_list"
+  },
+  {
     "method": "DELETE",
     "path": "/v1/payroll/payslip-lines/{id}",
     "access": "tenant",
@@ -1183,6 +1213,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/substitutions",
     "access": "tenant",
     "operationId": "Substitution_assign"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/sync/tombstones",
+    "access": "tenant",
+    "operationId": "Sync_tombstones"
   },
   {
     "method": "POST",

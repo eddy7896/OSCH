@@ -70,3 +70,33 @@ test("E-ACAD-3 the unpaid-leave deduction is bigint paise rounded down, a propos
   assert.match(svc, /slip\.run\.status !== 'DRAFT'/, "applied only to a draft run");
   assert.doesNotMatch(strip(read("apps/api-gateway/src/leave/leave.service.ts")), /addPayslipLine|payslip/i, "approving leave never writes to payroll by itself");
 });
+
+test("P3-9 every notification kind a database operation writes has words in all three catalogues, and every operation that writes one also writes its cause in the same transaction", () => {
+  const mutations = read("dataconnect/erp-connector/mutations.gql").split(/\n(?=mutation )/);
+  const kinds = new Set();
+  for (const op of mutations.filter((m) => m.includes("notification_insert"))) {
+    for (const k of op.matchAll(/kind: "([a-z.]+)"/g)) kinds.add(k[1]);
+    assert.match(op, /@transaction/, `${op.slice(9, 40)} must run in one transaction`);
+    assert.match(op, /auditLog_insert/, `${op.slice(9, 40)} must be audited together with the notification`);
+  }
+  const rules = read("apps/api-gateway/src/notifications/notification-rules.ts");
+  for (const kind of kinds) assert.ok(rules.includes(`'${kind}'`), `${kind} must be in KINDS`);
+  for (const lang of ["en", "hi", "ur"]) {
+    const cat = JSON.parse(read(`packages/i18n/messages/${lang}.json`));
+    for (const kind of kinds) {
+      const key = "notif" + kind.split(".").map((p) => p[0].toUpperCase() + p.slice(1)).join("");
+      assert.ok(cat[key + "Title"] && cat[key + "Body"], `${lang} needs ${key}Title and ${key}Body`);
+    }
+  }
+  assert.ok(kinds.size >= 7);
+});
+
+test("P3-10 every removal that a device must learn about writes its tombstone in the same operation", () => {
+  const mutations = read("dataconnect/erp-connector/mutations.gql").split(/\n(?=mutation )/);
+  for (const [name, entity] of [["DeleteTimetableEntry", "TimetableEntry"], ["ClearSubstitute", "Substitution"], ["RemoveAttendanceMark", "AttendanceMark"], ["RemoveMark", "Mark"]]) {
+    const op = mutations.find((m) => m.startsWith(`mutation ${name}(`));
+    assert.ok(op, name);
+    assert.match(op, new RegExp(`tombstone_insert\\(data: \\{[^}]*entityType: "${entity}"`), `${name} must write a ${entity} tombstone`);
+  }
+  assert.ok(read("documentation/modules/offline-sync.md").includes("Conflict rule for every Phase 3 entity"));
+});

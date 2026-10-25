@@ -19,5 +19,8 @@ This directory contains modular, detailed documentation for specific feature set
 ### 5. Transport Utility
 - *(Placeholder)* Covers live bus tracking, GPS polling, and student manifest management.
 
+### 6. Offline sync
+- [offline-sync.md](offline-sync.md): the server pieces Phase 3 provides (idempotent submissions, tombstones) and the conflict rule for every Phase 3 entity. The engine is Phase 4.
+
 ## Contributing
 When adding a new module to the system, create a corresponding `[module_name].md` file in this directory and document its specific workflows, data models, and edge cases.

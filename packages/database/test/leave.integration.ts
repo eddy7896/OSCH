@@ -57,10 +57,10 @@ describe.skipIf(!host)('Leave (P3-6)', () => {
 
   it('E-ACAD-4: only an active Principal of this school reaches APPROVED or REJECTED; every other actor is refused and nothing changes', async () => {
     const id = await ask();
-    const approve = (actor: string, school = A) => db.approveLeaveRequest({ schoolId: school, id, balanceId, halfDays: 2, expectedRemaining: 6, newRemaining: 4, actorId: actor, details: {} });
+    const approve = (actor: string, school = A) => db.approveLeaveRequest({ schoolId: school, id, staffId: staffT, balanceId, halfDays: 2, expectedRemaining: 6, newRemaining: 4, actorId: actor, details: {} });
     for (const actor of [hrUser, bursar, academic, teacher, other, outsider]) {
       await expect(approve(actor), actor).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
-      await expect(db.rejectLeaveRequest({ schoolId: A, id, actorId: actor, details: {} }), actor).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+      await expect(db.rejectLeaveRequest({ schoolId: A, id, staffId: staffT, actorId: actor, details: {} }), actor).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     }
     await expect(approve(principalB, B)).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // another school's Principal
     await expect(approve(principalB)).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // not a member of this school
@@ -77,22 +77,22 @@ describe.skipIf(!host)('Leave (P3-6)', () => {
 
   it('a stale balance is refused, so two approvals cannot both spend the same days; unpaid approval takes nothing; a suspended Principal is refused', async () => {
     const id = await ask({ halfDays: 2 });
-    const spend = (expected: number) => db.approveLeaveRequest({ schoolId: A, id, balanceId, halfDays: 2, expectedRemaining: expected, newRemaining: expected - 2, actorId: principal, details: {} });
+    const spend = (expected: number) => db.approveLeaveRequest({ schoolId: A, id, staffId: staffT, balanceId, halfDays: 2, expectedRemaining: expected, newRemaining: expected - 2, actorId: principal, details: {} });
     await expect(spend(6)).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // the balance is 4 now, not 6
     expect(await status(id)).toBe('PENDING');
-    const wrongSize = db.approveLeaveRequest({ schoolId: A, id, balanceId, halfDays: 4, expectedRemaining: 4, newRemaining: 0, actorId: principal, details: {} });
+    const wrongSize = db.approveLeaveRequest({ schoolId: A, id, staffId: staffT, balanceId, halfDays: 4, expectedRemaining: 4, newRemaining: 0, actorId: principal, details: {} });
     await expect(wrongSize).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // the request is 2 half-days, not 4
-    await expect(db.approveUnpaidLeaveRequest({ schoolId: A, id, actorId: principal, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // a paid request is not an unpaid one
+    await expect(db.approveUnpaidLeaveRequest({ schoolId: A, id, staffId: staffT, actorId: principal, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // a paid request is not an unpaid one
     const u = await ask({ type: unpaid });
-    await expect(db.approveLeaveRequest({ schoolId: A, id: u, balanceId, halfDays: 2, expectedRemaining: 4, newRemaining: 2, actorId: principal, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // unpaid never touches a balance
-    await db.approveUnpaidLeaveRequest({ schoolId: A, id: u, actorId: principal, details: {} });
+    await expect(db.approveLeaveRequest({ schoolId: A, id: u, staffId: staffT, balanceId, halfDays: 2, expectedRemaining: 4, newRemaining: 2, actorId: principal, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // unpaid never touches a balance
+    await db.approveUnpaidLeaveRequest({ schoolId: A, id: u, staffId: staffT, actorId: principal, details: {} });
     expect(await status(u)).toBe('APPROVED');
     expect((await db.listLeaveBalances({ schoolId: A, staffId: staffT })).data.leaveBalances[0]!.remainingHalfDays).toBe(4);
     // a Principal whose membership is suspended can no longer decide
     await db.updateMembership({ schoolId: A, userId: principal, schoolRole: 'PRINCIPAL' as never, status: 'SUSPENDED' as never, actorId: hrUser, details: {} });
-    await expect(db.rejectLeaveRequest({ schoolId: A, id, note: 'No cover', actorId: principal, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    await expect(db.rejectLeaveRequest({ schoolId: A, id, staffId: staffT, note: 'No cover', actorId: principal, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     await db.updateMembership({ schoolId: A, userId: principal, schoolRole: 'PRINCIPAL' as never, status: 'ACTIVE' as never, actorId: hrUser, details: {} });
-    await db.rejectLeaveRequest({ schoolId: A, id, note: 'No cover', actorId: principal, details: {} });
+    await db.rejectLeaveRequest({ schoolId: A, id, staffId: staffT, note: 'No cover', actorId: principal, details: {} });
     expect(await status(id)).toBe('REJECTED');
   });
 

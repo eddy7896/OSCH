@@ -499,7 +499,7 @@ type LeaveBalance @table @unique(fields: ["staff", "leaveType", "academicYear"])
   remainingHalfDays: Int!
 }
 
-type LeaveRequest @table {
+type LeaveRequest @table @unique(fields: ["staff", "clientId"]) {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
   staff: StaffProfile!
@@ -509,6 +509,7 @@ type LeaveRequest @table {
   half: String # MORNING or AFTERNOON for a half day (then start and end are the same day); null otherwise
   halfDays: Int! # how much leave this is, in half-days, counting only the school's working days
   reason: String
+  clientId: String # the client's own id for this request: asking again with the same one returns the first (offline retries, P3-10)
   status: LeaveRequestStatus! @default(value: PENDING)
   decidedBy: User # the Principal who approved or rejected
   decidedAt: Timestamp
@@ -613,4 +614,45 @@ type Substitution @table @unique(fields: ["timetableEntry", "date"]) @unique(fie
   leaveRequest: LeaveRequest!
   assignedBy: User!
   createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# ---- Notifications (P3-9, ADR-0013 decision 9). An in-app inbox. A row is written in the SAME transaction as its cause. It is addressed to one member of staff (seen through the
+# account linked to that record, now or later) or to a ROLE (every active member with that role sees it). Reading is per user. Push (FCM) and SMS are Phase 4.
+type Notification @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  recipientStaff: StaffProfile
+  audienceRole: SchoolRole
+  kind: String! # for example leave.approved; the words come from packages/i18n, in the reader's language
+  params: Any # the values the words need: names, dates, a class
+  entityType: String
+  entityId: String
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type NotificationRead @table(key: ["notification", "user"]) {
+  school: School!
+  notification: Notification!
+  user: User!
+  readAt: Timestamp! @default(expr: "request.time")
+}
+
+# A category a person has switched off: those notifications are kept but not shown (the inbox filters them).
+type NotificationMute @table(key: ["school", "user", "category"]) {
+  school: School!
+  user: User!
+  category: String!
+}
+
+# ---- Sync groundwork (P3-10). A removed record leaves a tombstone so a device that was offline can learn it is gone. classroomId and staffId say whose it was, so a teacher's
+# device only hears about their own. Written in the same transaction as the removal.
+type Tombstone @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  entityType: String!
+  entityId: String!
+  classroomId: UUID
+  staffId: UUID
+  deletedBy: User!
+  deletedAt: Timestamp! @default(expr: "request.time")
 }

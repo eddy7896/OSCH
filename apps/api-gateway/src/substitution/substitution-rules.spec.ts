@@ -45,7 +45,7 @@ describe('who can cover', () => {
 describe('E-ACAD-2 property test', () => {
   const rng = (seed: number) => () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
   const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-  const dateOf = (day: string) => `2090-05-${String(7 + DAYS.indexOf(day)).padStart(2, '0')}`; // 7 May 2090 is a Monday
+  const dateOf = (day: string) => `2090-05-${String(8 + DAYS.indexOf(day)).padStart(2, '0')}`; // 8 May 2090 is a Monday
 
   it.each(Array.from({ length: 200 }, (_, i) => i + 1))('seed %i', (seed) => {
     const r = rng(seed * 7919);

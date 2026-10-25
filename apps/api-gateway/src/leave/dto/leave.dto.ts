@@ -41,6 +41,8 @@ export class CreateRequestDto {
   /** For half a day of leave: the start and end date are then the same day. */
   @IsOptional() @IsIn([...HALVES]) half?: string;
   @IsOptional() @Transform(trim) @IsString() @Length(1, 300) reason?: string;
+  /** The device's own id for this request. Sending the same one again returns the first request instead of making another. */
+  @IsOptional() @IsString() @Matches(/^[A-Za-z0-9_-]{1,64}$/) clientId?: string;
 }
 export class ListRequestsQueryDto {
   @IsOptional() @IsIn([...STATUSES]) status?: string;

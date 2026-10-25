@@ -1422,6 +1422,120 @@ abstract class OruStrings {
   /// **'Total'**
   String get reportTotal;
 
+  /// Title of the notice to the Principal that a leave request is waiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave to decide'**
+  String get notifLeaveRequestedTitle;
+
+  /// Body of the notice to the Principal: who asked for how many days of which kind of leave, and when.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} asked for {days} day(s) of {typeName} leave from {startDate} to {endDate}.'**
+  String notifLeaveRequestedBody(
+    String name,
+    String days,
+    String typeName,
+    String startDate,
+    String endDate,
+  );
+
+  /// Title of the notice to a member of staff that the Principal approved their leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave was approved'**
+  String get notifLeaveApprovedTitle;
+
+  /// Body of the approval notice: the kind of leave, the dates and the number of days.
+  ///
+  /// In en, this message translates to:
+  /// **'{typeName}, {startDate} to {endDate} ({days} day(s)).'**
+  String notifLeaveApprovedBody(
+    String typeName,
+    String startDate,
+    String endDate,
+    String days,
+  );
+
+  /// Title of the notice to a member of staff that the Principal did not approve their leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave was not approved'**
+  String get notifLeaveRejectedTitle;
+
+  /// Body of the notice that leave was not approved: the kind, the dates and the Principal's note, if any.
+  ///
+  /// In en, this message translates to:
+  /// **'{typeName}, {startDate} to {endDate}. {note}'**
+  String notifLeaveRejectedBody(
+    String typeName,
+    String startDate,
+    String endDate,
+    String note,
+  );
+
+  /// Title of the notice to the Academic administrator that approved leave leaves lessons uncovered.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons need a substitute'**
+  String get notifLeaveSubstitutionTitle;
+
+  /// Body of that notice: who is away, when, and where to choose who covers.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is on leave from {startDate} to {endDate}. Choose substitutes on the substitution board.'**
+  String notifLeaveSubstitutionBody(
+    String name,
+    String startDate,
+    String endDate,
+  );
+
+  /// Title of the notice to HR that approved unpaid leave proposes a pay deduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid leave to deduct'**
+  String get notifLeavePayrollTitle;
+
+  /// Body of that notice: who, when, and where to review the proposed deduction.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} has approved unpaid leave from {startDate} to {endDate}. Review the proposed deduction in the payroll run.'**
+  String notifLeavePayrollBody(String name, String startDate, String endDate);
+
+  /// Title of the notice to a teacher that they were chosen to cover another teacher's lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'You are covering a class'**
+  String get notifSubstitutionAssignedTitle;
+
+  /// Body of that notice: which lesson, when, and for whom.
+  ///
+  /// In en, this message translates to:
+  /// **'{className}, {subjectName}, {periodLabel} on {date}, covering for {name}.'**
+  String notifSubstitutionAssignedBody(
+    String className,
+    String subjectName,
+    String periodLabel,
+    String date,
+    String name,
+  );
+
+  /// Title of the notice to a teacher that a cover duty they were given was taken away.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover cancelled'**
+  String get notifSubstitutionClearedTitle;
+
+  /// Body of that notice: which lesson and when.
+  ///
+  /// In en, this message translates to:
+  /// **'{className}, {subjectName} on {date} no longer needs you.'**
+  String notifSubstitutionClearedBody(
+    String className,
+    String subjectName,
+    String date,
+  );
+
   /// Title of the printed report card of one student for one term.
   ///
   /// In en, this message translates to:

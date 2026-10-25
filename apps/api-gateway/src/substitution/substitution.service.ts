@@ -150,6 +150,7 @@ export class SubstitutionService {
     try {
       await this.db.setSubstitute({
         schoolId: t.schoolId, id, timetableEntryId: dashed(dto.entryId), date: dto.date, day: slot.day, periodId: slot.periodId, subjectId: slot.subjectId, absentStaffId: slot.staffId, leaveRequestId: dashed(need.leaveRequestId), substituteId: cand.staffId,
+        notice: { date: dto.date, className: need.slot.class.name, subjectName: need.slot.subject.name, periodLabel: need.slot.period.label, name: need.absent.name },
         actorId: t.userId, details: { date: dto.date, entryId: dashed(dto.entryId), absentStaffId: slot.staffId, substituteStaffId: cand.staffId, class: need.slot.class.name, subject: need.slot.subject.name, period: need.slot.period.label, was: need.cover?.substitute.id ?? null },
       });
     } catch (e) {
@@ -161,8 +162,12 @@ export class SubstitutionService {
   }
 
   async clear(t: TenantContext, id: string): Promise<void> {
+    const row = (await this.db.getSubstitution({ schoolId: t.schoolId, id: dashed(id) })).data.substitutions[0];
+    if (!row) throw notFound();
+    const entry = row.timetableEntry;
+    const notice = { date: row.date, className: entry.classroom.name, subjectName: entry.subject.name };
     try {
-      await this.db.clearSubstitute({ schoolId: t.schoolId, id: dashed(id), actorId: t.userId, details: { substitutionId: dashed(id) } });
+      await this.db.clearSubstitute({ schoolId: t.schoolId, id: dashed(id), substituteId: dashed(row.substituteId), classroomId: dashed(entry.classroomId), notice, actorId: t.userId, details: { substitutionId: dashed(id), ...notice } });
     } catch (e) {
       if (kindOf(e) === 'FORBIDDEN_REFERENCE') throw notFound();
       throw e;

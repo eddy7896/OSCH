@@ -573,3 +573,34 @@ query ListSubstitutions($schoolId: UUID!, $from: Date!, $to: Date!, $substituteI
     timetableEntry { id day classroom { id name } subject { id name code } staffId }
   }
 }
+
+# ---- Notifications (P3-9) and sync groundwork (P3-10)
+query ListNotifications($schoolId: UUID!, $userId: String!, $role: SchoolRole!, $limit: Int!) @auth(level: NO_ACCESS) {
+  notifications(where: {_and: [{schoolId: {eq: $schoolId}}, {_or: [{recipientStaff: {userId: {eq: $userId}}}, {audienceRole: {eq: $role}}]}]}, orderBy: [{createdAt: DESC}], limit: $limit) {
+    id kind params entityType entityId createdAt
+    reads: notificationReads_on_notification(where: {userId: {eq: $userId}}) { readAt }
+  }
+}
+
+query ListNotificationMutes($schoolId: UUID!, $userId: String!) @auth(level: NO_ACCESS) {
+  notificationMutes(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}, limit: 50) { category }
+}
+
+query ListTombstones($schoolId: UUID!, $since: Timestamp!, $entityType: String, $limit: Int!) @auth(level: NO_ACCESS) {
+  tombstones(where: {schoolId: {eq: $schoolId}, deletedAt: {gt: $since}, entityType: {eq: $entityType}}, orderBy: [{deletedAt: ASC}, {id: ASC}], limit: $limit) { id entityType entityId classroomId staffId deletedAt }
+}
+
+query LeaveRequestByClientId($schoolId: UUID!, $staffId: UUID!, $clientId: String!) @auth(level: NO_ACCESS) {
+  leaveRequests(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, clientId: {eq: $clientId}}, limit: 1) { id }
+}
+
+query GetSubstitution($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  substitutions(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id date periodId substituteId
+    timetableEntry { id classroomId day classroom { name } subject { name } staff { firstName lastName } }
+  }
+}
+
+query GetTimetableEntry($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  timetableEntries(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id classroomId staffId }
+}

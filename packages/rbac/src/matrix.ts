@@ -29,6 +29,11 @@ export const SELF_SERVICE: RoleGrants = {
   leave: own("read", "create"), // [DESIGN] Staff / Teacher apps: leave requests (approval is Principal only [GUARD §4])
 };
 
+/** The in-app inbox (ADR-0013 decision 9): EVERY role, parents included, reads and marks read their own notifications. It is not part of the employee baseline above. */
+export const INBOX: RoleGrants = {
+  notifications: own("read", "update"),
+};
+
 const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
   // [SSOT] Principal: global metrics full; financial, attendance, academics, settings READ-ONLY.
   // Read-only is absolute for data; the ONLY write-like power is approving requests ("approve"), [GUARD §4] / [SSOT §7].
@@ -187,7 +192,7 @@ function withSelfService(role: Role, grants: RoleGrants): RoleGrants {
 }
 
 export const MATRIX: Readonly<Record<Role, RoleGrants>> = Object.fromEntries(
-  (Object.keys(EXPLICIT) as Role[]).map((role) => [role, withSelfService(role, EXPLICIT[role])]),
+  (Object.keys(EXPLICIT) as Role[]).map((role) => [role, { ...withSelfService(role, EXPLICIT[role]), ...INBOX }]),
 ) as Record<Role, RoleGrants>;
 
 /** SUPER_ADMIN manages tenants only. It deliberately has NO access to any tenant's data. */
