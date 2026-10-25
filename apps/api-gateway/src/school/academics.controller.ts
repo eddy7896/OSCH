@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
 import { Audit } from '../audit/audit.decorators.js';
-import { Permission } from '../permission/permission.decorator.js';
+import { Granted, Permission, type GrantedPermission } from '../permission/permission.decorator.js';
+import { TeachingScope } from '../teaching/teaching-scope.service.js';
 import { Tenant, type TenantContext } from '../tenant/tenant.decorators.js';
 import { AcademicsService } from './academics.service.js';
 import {
@@ -8,15 +9,19 @@ import {
   GradeLevelListDto, IdParamDto, SubjectDto, SubjectListDto, UpdateAcademicYearDto, UpdateClassDto, UpdateGradeLevelDto, UpdateSubjectDto,
 } from './dto/academics.dto.js';
 
-/** Class levels, classes, subjects and academic years of the active school. School routes: `X-School-Id` + the `academics` grant (Academic Admin edits; Principal, Admissions and others read). */
+/** Class levels, classes, subjects and academic years of the active school. School routes: `X-School-Id` + the `academics` grant (Academic Admin edits; Principal, Admissions and others read). A Teacher (`own`) sees only their classes and a Parent (`linked`) only their children's classes (P3-2). */
 @Controller('academics')
 export class AcademicsController {
-  constructor(private readonly academics: AcademicsService) {}
+  constructor(private readonly academics: AcademicsService, private readonly scope: TeachingScope) {}
 
   @Permission('academics', 'read')
   @Get('levels')
-  async levels(@Tenant() tenant: TenantContext): Promise<GradeLevelListDto> {
-    return { items: await this.academics.levels(tenant) };
+  async levels(@Tenant() tenant: TenantContext, @Granted() g: GrantedPermission): Promise<GradeLevelListDto> {
+    const items = await this.academics.levels(tenant);
+    const visible = await this.scope.visibleClassIds(tenant, g.scope);
+    if (!visible) return { items };
+    // own and linked scopes see only the classes that are theirs, and the levels those classes belong to
+    return { items: items.map((l) => ({ ...l, classes: l.classes.filter((c) => visible.has(c.id)) })).filter((l) => l.classes.length > 0) };
   }
 
   @Permission('academics', 'create')
@@ -43,8 +48,10 @@ export class AcademicsController {
 
   @Permission('academics', 'read')
   @Get('classes')
-  async classes(@Tenant() tenant: TenantContext): Promise<ClassListDto> {
-    return { items: await this.academics.classes(tenant) };
+  async classes(@Tenant() tenant: TenantContext, @Granted() g: GrantedPermission): Promise<ClassListDto> {
+    const items = await this.academics.classes(tenant);
+    const visible = await this.scope.visibleClassIds(tenant, g.scope);
+    return { items: visible ? items.filter((c) => visible.has(c.id)) : items };
   }
 
   @Permission('academics', 'create')

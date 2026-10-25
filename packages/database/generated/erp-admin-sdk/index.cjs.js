@@ -781,6 +781,55 @@ function applyShortDaySchedule(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.applyShortDaySchedule = applyShortDaySchedule;
 
+function addTeacherSubject(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddTeacherSubject', inputVars, inputOpts);
+}
+exports.addTeacherSubject = addTeacherSubject;
+
+function removeTeacherSubject(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveTeacherSubject', inputVars, inputOpts);
+}
+exports.removeTeacherSubject = removeTeacherSubject;
+
+function assignClassTeacher(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AssignClassTeacher', inputVars, inputOpts);
+}
+exports.assignClassTeacher = assignClassTeacher;
+
+function changeClassTeacher(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ChangeClassTeacher', inputVars, inputOpts);
+}
+exports.changeClassTeacher = changeClassTeacher;
+
+function removeClassTeacher(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveClassTeacher', inputVars, inputOpts);
+}
+exports.removeClassTeacher = removeClassTeacher;
+
+function linkParentAccount(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('LinkParentAccount', inputVars, inputOpts);
+}
+exports.linkParentAccount = linkParentAccount;
+
+function unlinkParentAccount(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UnlinkParentAccount', inputVars, inputOpts);
+}
+exports.unlinkParentAccount = unlinkParentAccount;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1263,4 +1312,46 @@ function schoolWorkingDays(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('SchoolWorkingDays', inputVars, inputOpts);
 }
 exports.schoolWorkingDays = schoolWorkingDays;
+
+function listTeacherSubjects(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListTeacherSubjects', inputVars, inputOpts);
+}
+exports.listTeacherSubjects = listTeacherSubjects;
+
+function listClassTeachers(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListClassTeachers', inputVars, inputOpts);
+}
+exports.listClassTeachers = listClassTeachers;
+
+function staffOfUser(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StaffOfUser', inputVars, inputOpts);
+}
+exports.staffOfUser = staffOfUser;
+
+function parentLinksOfUser(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ParentLinksOfUser', inputVars, inputOpts);
+}
+exports.parentLinksOfUser = parentLinksOfUser;
+
+function parentLinksOfStudent(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ParentLinksOfStudent', inputVars, inputOpts);
+}
+exports.parentLinksOfStudent = parentLinksOfStudent;
+
+function enrollmentsOfStudents(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('EnrollmentsOfStudents', inputVars, inputOpts);
+}
+exports.enrollmentsOfStudents = enrollmentsOfStudents;
 

@@ -446,3 +446,28 @@ query ListPeriods($schoolId: UUID!) @auth(level: NO_ACCESS) {
 query SchoolWorkingDays($schoolId: UUID!) @auth(level: NO_ACCESS) {
   school(id: $schoolId) { id workingDays }
 }
+
+# ---- Teachers and own/linked scope (P3-2)
+query ListTeacherSubjects($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  teacherSubjects(where: {schoolId: {eq: $schoolId}}, orderBy: [{createdAt: ASC}], limit: 2000) { id staff { id employeeId firstName lastName status userId } subject { id name code } }
+}
+
+query ListClassTeachers($schoolId: UUID!, $academicYearId: UUID!) @auth(level: NO_ACCESS) {
+  classTeachers(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}}, limit: 2000) { id classroom { id name } staff { id employeeId firstName lastName status userId } }
+}
+
+query StaffOfUser($schoolId: UUID!, $userId: String!) @auth(level: NO_ACCESS) {
+  staffProfiles(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}, limit: 1) { id employeeId firstName lastName status }
+}
+
+query ParentLinksOfUser($schoolId: UUID!, $userId: String!) @auth(level: NO_ACCESS) {
+  parentLinks(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}, limit: 200) { id relationship student { id enrollmentId firstName lastName } }
+}
+
+query ParentLinksOfStudent($schoolId: UUID!, $studentId: UUID!) @auth(level: NO_ACCESS) {
+  parentLinks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}}, limit: 50) { id relationship user { id displayName email } }
+}
+
+query EnrollmentsOfStudents($schoolId: UUID!, $academicYearId: UUID!, $studentIds: [UUID!]!) @auth(level: NO_ACCESS) {
+  studentEnrollments(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, studentId: {in: $studentIds}}, limit: 1000) { studentId classroom { id name } }
+}

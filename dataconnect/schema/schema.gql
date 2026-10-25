@@ -226,11 +226,14 @@ type Guardian @table {
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
-# A join table mapping a User (Parent) to a Student
-type ParentGuardian @table(key: ["student", "user"]) {
+# Links a parent's sign-in account (a member of the school with the PARENT role) to a student (P3-2). It resolves the parent's `linked` scope:
+# which children, and so which classes, they may see. Not the same as `Guardian`, which is only a contact recorded against a student.
+type ParentLink @table @unique(fields: ["student", "user"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
   student: Student!
   user: User!
-  relationship: String! # "MOTHER", "FATHER", "GUARDIAN"
+  relationship: String! # MOTHER, FATHER, GUARDIAN, OTHER
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
@@ -435,6 +438,25 @@ type Period @table @unique(fields: ["school", "label"]) @unique(fields: ["school
   startTime: String!
   endTime: String!
   isBreak: Boolean! @default(value: false) # a break or lunch: nothing is taught in it
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# Which subjects a member of staff teaches (P3-2). Qualification for a timetable slot and for a substitute (ADR-0013).
+type TeacherSubject @table @unique(fields: ["staff", "subject"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  staff: StaffProfile!
+  subject: Subject!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# The class teacher of a class for an academic year (P3-2): at most one per class per year, by key.
+type ClassTeacher @table @unique(fields: ["classroom", "academicYear"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  classroom: Classroom!
+  academicYear: AcademicYear!
+  staff: StaffProfile!
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
