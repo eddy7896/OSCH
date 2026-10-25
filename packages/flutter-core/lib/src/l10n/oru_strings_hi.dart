@@ -713,6 +713,27 @@ class OruStringsHi extends OruStrings {
   String get reportTotal => 'कुल';
 
   @override
+  String get gradesReportCardTitle => 'रिपोर्ट कार्ड';
+
+  @override
+  String get gradesTerm => 'सत्र';
+
+  @override
+  String get gradesSubject => 'विषय';
+
+  @override
+  String get gradesMarks => 'अंक';
+
+  @override
+  String get gradesOutOf => 'पूर्णांक';
+
+  @override
+  String get gradesPercent => 'प्रतिशत';
+
+  @override
+  String get gradesGrade => 'ग्रेड';
+
+  @override
   String get reportDueDate => 'देय तिथि';
 
   @override

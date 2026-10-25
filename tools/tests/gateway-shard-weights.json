@@ -29,5 +29,6 @@
   "test/harness/schedule.integration.ts": 40,
   "test/harness/teaching.integration.ts": 45,
   "test/harness/timetable.integration.ts": 45,
-  "test/harness/attendance.integration.ts": 45
+  "test/harness/attendance.integration.ts": 45,
+  "test/harness/grades.integration.ts": 45
 }

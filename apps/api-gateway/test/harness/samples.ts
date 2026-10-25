@@ -153,6 +153,31 @@ const checkedInStaffOfA = async (w: World): Promise<Record<string, string>> => {
   if (!row) await w.db.checkInStaff({ schoolId: w.schools.A, id: randomUUID(), staffId: staff['id']!, date, actorId: w.roles.A.STAFF.uid, details: {} });
   return staff;
 };
+/** Terms and exams (P3-5), made through the real operations: a term of the active year, an exam of a fresh class and subject, optionally with a student in the class. */
+const termOfA = async (w: World): Promise<Record<string, string>> => {
+  const year = await activeYearOfA(w);
+  const id = randomUUID();
+  await w.db.createAssessmentTerm({ schoolId: w.schools.A, id, academicYearId: year, name: `T-${id.slice(0, 6)}`, actorId: actorA(w), details: {} });
+  return { id: dash(id), year };
+};
+const examSetupOfA = async (w: World): Promise<Record<string, string>> => {
+  const term = await termOfA(w);
+  const klass = await classOfA(w);
+  const subject = await subjectOfA(w);
+  return { termId: term['id']!, year: term['year']!, classId: dash(klass['id']!), subjectId: dash(subject['id']!) };
+};
+const examOfA = async (w: World): Promise<Record<string, string>> => {
+  const s = await examSetupOfA(w);
+  const id = randomUUID();
+  await w.db.createExam({ schoolId: w.schools.A, id, termId: s['termId']!, classroomId: s['classId']!, subjectId: s['subjectId']!, title: 'Unit test', examDate: '2090-05-05', maxTenths: 500, actorId: actorA(w), details: {} });
+  return { ...s, id: dash(id) };
+};
+const examWithStudentOfA = async (w: World): Promise<Record<string, string>> => {
+  const e = await examOfA(w);
+  const student = await studentOfA(w);
+  await w.db.placeStudent({ schoolId: w.schools.A, studentId: student['id']!, academicYearId: e['year']!, classroomId: e['classId']!, actorId: actorA(w) });
+  return { ...e, studentId: student['id']! };
+};
 const linkedParentOfA = async (w: World): Promise<Record<string, string>> => {
   const student = await studentOfA(w);
   await w.db.linkParentAccount({ schoolId: w.schools.A, id: randomUUID(), studentId: student['id']!, userId: w.roles.A.PARENT.uid, relationship: 'MOTHER', actorId: actorA(w) });
@@ -383,6 +408,14 @@ export const SAMPLES: Record<string, Sample> = {
   'POST /attendance/staff/check-in': { refusedStatus: 409, token: (w) => w.roles.A.STAFF.token, actor: (w) => w.roles.A.STAFF.uid, school: (w) => w.schools.A, auditSchool: (w) => w.schools.A, prepare: linkedStaffOfA },
   'POST /attendance/staff/check-out': { refusedStatus: 409, token: (w) => w.roles.A.STAFF.token, actor: (w) => w.roles.A.STAFF.uid, school: (w) => w.schools.A, auditSchool: (w) => w.schools.A, prepare: checkedInStaffOfA },
   'PUT /attendance/staff/:staffId/days/:date': { ...hrOfA, prepare: async (w) => ({ staffId: (await staffOfA(w))['id']!, date: lastMonday() }), body: (_w, ctx) => ({ checkIn: `${ctx['date']}T09:00:00Z`, checkOut: `${ctx['date']}T17:00:00Z` }) },
+  'POST /grades/terms': { ...academicAdminOfA, prepare: async (w) => ({ year: await activeYearOfA(w) }), body: (_w, ctx) => ({ name: `Term ${randomUUID().slice(0, 6)}`, academicYearId: ctx['year'] }) },
+  'PATCH /grades/terms/:id': { ...academicAdminOfA, prepare: termOfA, body: () => ({ name: `Renamed ${randomUUID().slice(0, 6)}` }) },
+  'DELETE /grades/terms/:id': { ...academicAdminOfA, prepare: termOfA },
+  'PUT /grades/bands': { ...academicAdminOfA, body: () => ({ bands: [{ label: 'Pass', minPercent: 33, maxPercent: 100 }, { label: 'Fail', minPercent: 0, maxPercent: 32 }] }) },
+  'POST /grades/exams': { ...academicAdminOfA, prepare: examSetupOfA, body: (_w, ctx) => ({ termId: ctx['termId'], classId: ctx['classId'], subjectId: ctx['subjectId'], title: 'Half yearly', examDate: '2090-09-01', maxMarks: '80' }) },
+  'PATCH /grades/exams/:id': { ...academicAdminOfA, prepare: examOfA, body: () => ({ title: 'Renamed exam', maxMarks: '60' }) },
+  'DELETE /grades/exams/:id': { ...academicAdminOfA, prepare: examOfA },
+  'PUT /grades/exams/:id/marks': { ...academicAdminOfA, prepare: examWithStudentOfA, body: (_w, ctx) => ({ entries: [{ studentId: ctx['studentId'], marks: '42.5' }], submissionId: randomUUID() }) },
   'POST /students/:id/parent-accounts': { ...academicAdminOfA, prepare: studentOfA, body: (w) => ({ userId: w.roles.A.PARENT.uid, relationship: 'MOTHER' }) },
   'DELETE /students/:id/parent-accounts/:linkId': { ...academicAdminOfA, prepare: linkedParentOfA },
   'POST /academics/years': { ...academicAdminOfA, body: () => ({ name: `Year ${randomUUID().slice(0, 6)}`, startDate: '2042-04-01', endDate: '2043-03-31' }) },

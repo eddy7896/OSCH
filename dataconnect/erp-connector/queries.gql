@@ -24,18 +24,6 @@ query ListLeaveRequests($schoolId: UUID!) @auth(level: NO_ACCESS) {
   }
 }
 
-# Academic: Get Exams
-query ListExams($schoolId: UUID!) @auth(level: NO_ACCESS) {
-  exams(where: {schoolId: {eq: $schoolId}}) {
-    id
-    title
-    examDate
-    maxScore
-    classroom { name }
-    subject { name }
-  }
-}
-
 # ---- Phase 1: identity, tenancy, platform and audit reads. Gateway-only (NO_ACCESS). ----
 
 # Identity sync / profile. $id is the Firebase UID from the VERIFIED token. Users are global, so this has no school.
@@ -526,4 +514,38 @@ query StaffAttendanceOn($schoolId: UUID!, $date: Date!) @auth(level: NO_ACCESS) 
 
 query StaffAttendanceOfStaff($schoolId: UUID!, $staffId: UUID!, $from: Date!, $to: Date!) @auth(level: NO_ACCESS) {
   staffAttendances(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, date: {ge: $from, le: $to}}, orderBy: [{date: DESC}], limit: 400) { date checkIn checkOut }
+}
+
+# ---- Exams and marks (P3-5)
+query SchoolGradeBands($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  school(id: $schoolId) { gradeBands }
+}
+
+query ListAssessmentTerms($schoolId: UUID!, $academicYearId: UUID) @auth(level: NO_ACCESS) {
+  assessmentTerms(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}}, orderBy: [{createdAt: ASC}], limit: 200) { id name academicYearId }
+}
+
+query ListExams($schoolId: UUID!, $termId: UUID, $classroomId: UUID, $subjectId: UUID) @auth(level: NO_ACCESS) {
+  exams(where: {schoolId: {eq: $schoolId}, termId: {eq: $termId}, classroomId: {eq: $classroomId}, subjectId: {eq: $subjectId}}, orderBy: [{examDate: DESC}, {title: ASC}], limit: 1000) {
+    id title examDate maxTenths termId term { id name academicYearId } classroom { id name } subject { id name code }
+  }
+}
+
+query GetExam($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  exams(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id title examDate maxTenths lastSubmissionId termId term { id name academicYearId } classroom { id name } subject { id name code }
+    marks: marks_on_exam(limit: 1000) { id tenths absent studentId }
+  }
+}
+
+query CountMarksOfExam($schoolId: UUID!, $examId: UUID!) @auth(level: NO_ACCESS) {
+  marks(where: {schoolId: {eq: $schoolId}, examId: {eq: $examId}}) { _count }
+}
+
+query CountExamsOfTerm($schoolId: UUID!, $termId: UUID!) @auth(level: NO_ACCESS) {
+  exams(where: {schoolId: {eq: $schoolId}, termId: {eq: $termId}}) { _count }
+}
+
+query MarksOfStudentInTerm($schoolId: UUID!, $studentId: UUID!, $termId: UUID!) @auth(level: NO_ACCESS) {
+  marks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, exam: {termId: {eq: $termId}}}, limit: 500) { examId tenths absent }
 }

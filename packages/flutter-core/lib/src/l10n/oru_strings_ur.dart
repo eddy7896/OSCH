@@ -716,6 +716,27 @@ class OruStringsUr extends OruStrings {
   String get reportTotal => 'کل';
 
   @override
+  String get gradesReportCardTitle => 'رپورٹ کارڈ';
+
+  @override
+  String get gradesTerm => 'ٹرم';
+
+  @override
+  String get gradesSubject => 'مضمون';
+
+  @override
+  String get gradesMarks => 'نمبر';
+
+  @override
+  String get gradesOutOf => 'کل نمبر';
+
+  @override
+  String get gradesPercent => 'فیصد';
+
+  @override
+  String get gradesGrade => 'گریڈ';
+
+  @override
   String get reportDueDate => 'آخری تاریخ';
 
   @override

@@ -915,6 +915,34 @@
   "@reportTotal": {
     "description": "Label of the last row, which adds up the columns above it."
   },
+  "gradesReportCardTitle": "Report card",
+  "@gradesReportCardTitle": {
+    "description": "Title of the printed report card of one student for one term."
+  },
+  "gradesTerm": "Term",
+  "@gradesTerm": {
+    "description": "Label before the name of the school term on a printed report card."
+  },
+  "gradesSubject": "Subject",
+  "@gradesSubject": {
+    "description": "Column heading: the subject on a report card."
+  },
+  "gradesMarks": "Marks",
+  "@gradesMarks": {
+    "description": "Column heading: the marks a student got."
+  },
+  "gradesOutOf": "Out of",
+  "@gradesOutOf": {
+    "description": "Column heading: the most marks that could be got."
+  },
+  "gradesPercent": "Percent",
+  "@gradesPercent": {
+    "description": "Column heading: marks as a percentage of the most possible."
+  },
+  "gradesGrade": "Grade",
+  "@gradesGrade": {
+    "description": "Column heading: the grade band the percentage falls in."
+  },
   "reportDueDate": "Due date",
   "@reportDueDate": {
     "description": "Column heading: the date an invoice has to be paid by."

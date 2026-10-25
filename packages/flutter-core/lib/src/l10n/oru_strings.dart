@@ -1422,6 +1422,48 @@ abstract class OruStrings {
   /// **'Total'**
   String get reportTotal;
 
+  /// Title of the printed report card of one student for one term.
+  ///
+  /// In en, this message translates to:
+  /// **'Report card'**
+  String get gradesReportCardTitle;
+
+  /// Label before the name of the school term on a printed report card.
+  ///
+  /// In en, this message translates to:
+  /// **'Term'**
+  String get gradesTerm;
+
+  /// Column heading: the subject on a report card.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get gradesSubject;
+
+  /// Column heading: the marks a student got.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks'**
+  String get gradesMarks;
+
+  /// Column heading: the most marks that could be got.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of'**
+  String get gradesOutOf;
+
+  /// Column heading: marks as a percentage of the most possible.
+  ///
+  /// In en, this message translates to:
+  /// **'Percent'**
+  String get gradesPercent;
+
+  /// Column heading: the grade band the percentage falls in.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade'**
+  String get gradesGrade;
+
   /// Column heading: the date an invoice has to be paid by.
   ///
   /// In en, this message translates to:

@@ -109,6 +109,7 @@
     "CreateAttendanceDay": "first step of an attendance submit; FinishAttendanceSubmit commits it and writes the audit row",
     "SaveAttendanceMark": "part of an attendance submit; FinishAttendanceSubmit or FinishAttendanceCorrection commits it and writes the audit row",
     "RemoveAttendanceMark": "part of an attendance submit; FinishAttendanceSubmit or FinishAttendanceCorrection commits it and writes the audit row",
-    "CreateExam": "Phase 0 operation; audited when the Phase 3 module is built"
+    "SaveMark": "part of a marks entry; FinishMarkEntry commits it and writes the audit row",
+    "RemoveMark": "part of a marks entry; FinishMarkEntry commits it and writes the audit row"
   }
 }

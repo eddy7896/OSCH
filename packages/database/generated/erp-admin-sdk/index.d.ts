@@ -512,6 +512,11 @@ export interface ApprovePayrollRunVariables {
   details?: unknown | null;
 }
 
+export interface AssessmentTerm_Key {
+  id: UUIDString;
+  __typename?: 'AssessmentTerm_Key';
+}
+
 export interface AssignClassTeacherData {
   query?: {
     actor: ({
@@ -739,6 +744,17 @@ export interface CountDuesInvoicesVariables {
   academicYearId?: UUIDString | null;
 }
 
+export interface CountExamsOfTermData {
+  exams: ({
+    _count: number;
+  })[];
+}
+
+export interface CountExamsOfTermVariables {
+  schoolId: UUIDString;
+  termId: UUIDString;
+}
+
 export interface CountInvoicesData {
   invoices: ({
     _count: number;
@@ -765,6 +781,17 @@ export interface CountInvoicesVariables {
   status?: InvoiceStatus | null;
   dueOnOrBefore?: DateString | null;
   dueOnOrAfter?: DateString | null;
+}
+
+export interface CountMarksOfExamData {
+  marks: ({
+    _count: number;
+  })[];
+}
+
+export interface CountMarksOfExamVariables {
+  schoolId: UUIDString;
+  examId: UUIDString;
 }
 
 export interface CountPaymentsInRangeData {
@@ -890,6 +917,28 @@ export interface CreateApplicationVariables {
   details?: unknown | null;
 }
 
+export interface CreateAssessmentTermData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+  };
+  assessmentTerm_insert: AssessmentTerm_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateAssessmentTermVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  academicYearId: UUIDString;
+  name: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface CreateAttendanceDayData {
   query?: {
     actor: ({
@@ -978,23 +1027,34 @@ export interface CreateConcessionVariables {
 
 export interface CreateExamData {
   query?: {
-    classrooms: ({
+    actor: ({
+      userId: string;
+    })[];
+    term: ({
+      id: UUIDString;
+    } & AssessmentTerm_Key)[];
+    classroom: ({
       id: UUIDString;
     } & Classroom_Key)[];
-    subjects: ({
+    subject: ({
       id: UUIDString;
     } & Subject_Key)[];
   };
   exam_insert: Exam_Key;
+  auditLog_insert: AuditLog_Key;
 }
 
 export interface CreateExamVariables {
   schoolId: UUIDString;
+  id: UUIDString;
+  termId: UUIDString;
   classroomId: UUIDString;
   subjectId: UUIDString;
   title: string;
   examDate: DateString;
-  maxScore: number;
+  maxTenths: number;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CreateFeeItemData {
@@ -1468,6 +1528,29 @@ export interface DeleteAcademicYearVariables {
   details?: unknown | null;
 }
 
+export interface DeleteAssessmentTermData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    term: ({
+      id: UUIDString;
+    } & AssessmentTerm_Key)[];
+    exams: ({
+      id: UUIDString;
+    } & Exam_Key)[];
+  };
+  assessmentTerm_delete?: AssessmentTerm_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteAssessmentTermVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface DeleteClassroomData {
   query?: {
     actor: ({
@@ -1502,6 +1585,29 @@ export interface DeleteConcessionData {
 }
 
 export interface DeleteConcessionVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeleteExamData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    exam: ({
+      id: UUIDString;
+    } & Exam_Key)[];
+    marks: ({
+      id: UUIDString;
+    } & Mark_Key)[];
+  };
+  exam_delete?: Exam_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteExamVariables {
   schoolId: UUIDString;
   id: UUIDString;
   actorId: string;
@@ -1826,6 +1932,27 @@ export interface FinishImportBatchVariables {
   details?: unknown | null;
 }
 
+export interface FinishMarkEntryData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    exam: ({
+      id: UUIDString;
+    } & Exam_Key)[];
+  };
+  exam_update?: Exam_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface FinishMarkEntryVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  submissionId?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface GetApplicationData {
   applications: ({
     id: UUIDString;
@@ -1888,6 +2015,42 @@ export interface GetAttendanceDayVariables {
   schoolId: UUIDString;
   classroomId: UUIDString;
   date: DateString;
+}
+
+export interface GetExamData {
+  exams: ({
+    id: UUIDString;
+    title: string;
+    examDate: DateString;
+    maxTenths: number;
+    lastSubmissionId?: string | null;
+    termId: UUIDString;
+    term: {
+      id: UUIDString;
+      name: string;
+      academicYearId: UUIDString;
+    } & AssessmentTerm_Key;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    subject: {
+      id: UUIDString;
+      name: string;
+      code: string;
+    } & Subject_Key;
+    marks: ({
+      id: UUIDString;
+      tenths: number;
+      absent: boolean;
+      studentId: UUIDString;
+    } & Mark_Key)[];
+  } & Exam_Key)[];
+}
+
+export interface GetExamVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
 }
 
 export interface GetFeeInstalmentData {
@@ -2591,6 +2754,19 @@ export interface ListApplicationsVariables {
   offset: number;
 }
 
+export interface ListAssessmentTermsData {
+  assessmentTerms: ({
+    id: UUIDString;
+    name: string;
+    academicYearId: UUIDString;
+  } & AssessmentTerm_Key)[];
+}
+
+export interface ListAssessmentTermsVariables {
+  schoolId: UUIDString;
+  academicYearId?: UUIDString | null;
+}
+
 export interface ListAttendanceDaysData {
   attendanceDays: ({
     id: UUIDString;
@@ -2719,18 +2895,30 @@ export interface ListExamsData {
     id: UUIDString;
     title: string;
     examDate: DateString;
-    maxScore: number;
+    maxTenths: number;
+    termId: UUIDString;
+    term: {
+      id: UUIDString;
+      name: string;
+      academicYearId: UUIDString;
+    } & AssessmentTerm_Key;
     classroom: {
+      id: UUIDString;
       name: string;
-    };
+    } & Classroom_Key;
     subject: {
+      id: UUIDString;
       name: string;
-    };
+      code: string;
+    } & Subject_Key;
   } & Exam_Key)[];
 }
 
 export interface ListExamsVariables {
   schoolId: UUIDString;
+  termId?: UUIDString | null;
+  classroomId?: UUIDString | null;
+  subjectId?: UUIDString | null;
 }
 
 export interface ListFeeStructuresData {
@@ -3252,6 +3440,25 @@ export interface MarkPayrollRunPaidVariables {
   details?: unknown | null;
 }
 
+export interface Mark_Key {
+  id: UUIDString;
+  __typename?: 'Mark_Key';
+}
+
+export interface MarksOfStudentInTermData {
+  marks: ({
+    examId: UUIDString;
+    tenths: number;
+    absent: boolean;
+  })[];
+}
+
+export interface MarksOfStudentInTermVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  termId: UUIDString;
+}
+
 export interface MoveStudentData {
   query?: {
     actor: ({
@@ -3623,6 +3830,25 @@ export interface RemoveGuardianVariables {
   details?: unknown | null;
 }
 
+export interface RemoveMarkData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    mark: ({
+      id: UUIDString;
+    } & Mark_Key)[];
+  };
+  mark_delete?: Mark_Key | null;
+}
+
+export interface RemoveMarkVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  examId: UUIDString;
+  actorId: string;
+}
+
 export interface RemoveMembershipData {
   query?: {
     target: ({
@@ -3841,6 +4067,43 @@ export interface SaveAttendanceMarkVariables {
   actorId: string;
 }
 
+export interface SaveMarkData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    exam: ({
+      id: UUIDString;
+    } & Exam_Key)[];
+    placed: ({
+      id: UUIDString;
+    } & StudentEnrollment_Key)[];
+  };
+  mark_upsert: Mark_Key;
+}
+
+export interface SaveMarkVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  examId: UUIDString;
+  studentId: UUIDString;
+  classroomId: UUIDString;
+  academicYearId: UUIDString;
+  tenths: number;
+  absent: boolean;
+  actorId: string;
+}
+
+export interface SchoolGradeBandsData {
+  school?: {
+    gradeBands: string;
+  };
+}
+
+export interface SchoolGradeBandsVariables {
+  schoolId: UUIDString;
+}
+
 export interface SchoolMember_Key {
   schoolId: UUIDString;
   userId: string;
@@ -3890,6 +4153,23 @@ export interface SetAttendanceStatusLabelVariables {
   id: UUIDString;
   status: AttendanceStatus;
   label: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface SetGradeBandsData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  school_update?: School_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetGradeBandsVariables {
+  schoolId: UUIDString;
+  bands: string;
   actorId: string;
   details?: unknown | null;
 }
@@ -4261,6 +4541,27 @@ export interface UpdateApplicationVariables {
   details?: unknown | null;
 }
 
+export interface UpdateAssessmentTermData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    term: ({
+      id: UUIDString;
+    } & AssessmentTerm_Key)[];
+  };
+  assessmentTerm_update?: AssessmentTerm_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateAssessmentTermVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  name: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface UpdateClassroomData {
   query?: {
     actor: ({
@@ -4280,6 +4581,32 @@ export interface UpdateClassroomVariables {
   section?: string | null;
   name?: string | null;
   capacity?: number | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface UpdateExamData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    exam: ({
+      id: UUIDString;
+    } & Exam_Key)[];
+    above: ({
+      id: UUIDString;
+    } & Mark_Key)[];
+  };
+  exam_update?: Exam_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateExamVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  title: string;
+  examDate: DateString;
+  maxTenths: number;
   actorId: string;
   details?: unknown | null;
 }
@@ -4663,11 +4990,6 @@ export function createLeaveRequest(vars: CreateLeaveRequestVariables, options?: 
 export function updateLeaveRequest(dc: DataConnect, vars: UpdateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateLeaveRequestData>>;
 /** Generated Node Admin SDK operation action function for the 'UpdateLeaveRequest' Mutation. Allow users to pass in custom DataConnect instances. */
 export function updateLeaveRequest(vars: UpdateLeaveRequestVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateLeaveRequestData>>;
-
-/** Generated Node Admin SDK operation action function for the 'CreateExam' Mutation. Allow users to execute without passing in DataConnect. */
-export function createExam(dc: DataConnect, vars: CreateExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateExamData>>;
-/** Generated Node Admin SDK operation action function for the 'CreateExam' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createExam(vars: CreateExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateExamData>>;
 
 /** Generated Node Admin SDK operation action function for the 'CreateAuditLog' Mutation. Allow users to execute without passing in DataConnect. */
 export function createAuditLog(dc: DataConnect, vars: CreateAuditLogVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateAuditLogData>>;
@@ -5179,6 +5501,56 @@ export function correctStaffAttendance(dc: DataConnect, vars: CorrectStaffAttend
 /** Generated Node Admin SDK operation action function for the 'CorrectStaffAttendance' Mutation. Allow users to pass in custom DataConnect instances. */
 export function correctStaffAttendance(vars: CorrectStaffAttendanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CorrectStaffAttendanceData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateAssessmentTerm' Mutation. Allow users to execute without passing in DataConnect. */
+export function createAssessmentTerm(dc: DataConnect, vars: CreateAssessmentTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateAssessmentTermData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateAssessmentTerm' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createAssessmentTerm(vars: CreateAssessmentTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateAssessmentTermData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateAssessmentTerm' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateAssessmentTerm(dc: DataConnect, vars: UpdateAssessmentTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateAssessmentTermData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateAssessmentTerm' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateAssessmentTerm(vars: UpdateAssessmentTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateAssessmentTermData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteAssessmentTerm' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteAssessmentTerm(dc: DataConnect, vars: DeleteAssessmentTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteAssessmentTermData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteAssessmentTerm' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteAssessmentTerm(vars: DeleteAssessmentTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteAssessmentTermData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetGradeBands' Mutation. Allow users to execute without passing in DataConnect. */
+export function setGradeBands(dc: DataConnect, vars: SetGradeBandsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetGradeBandsData>>;
+/** Generated Node Admin SDK operation action function for the 'SetGradeBands' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setGradeBands(vars: SetGradeBandsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetGradeBandsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateExam' Mutation. Allow users to execute without passing in DataConnect. */
+export function createExam(dc: DataConnect, vars: CreateExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateExamData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateExam' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createExam(vars: CreateExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateExamData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateExam' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateExam(dc: DataConnect, vars: UpdateExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateExamData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateExam' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateExam(vars: UpdateExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateExamData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteExam' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteExam(dc: DataConnect, vars: DeleteExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteExamData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteExam' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteExam(vars: DeleteExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteExamData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SaveMark' Mutation. Allow users to execute without passing in DataConnect. */
+export function saveMark(dc: DataConnect, vars: SaveMarkVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SaveMarkData>>;
+/** Generated Node Admin SDK operation action function for the 'SaveMark' Mutation. Allow users to pass in custom DataConnect instances. */
+export function saveMark(vars: SaveMarkVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SaveMarkData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveMark' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeMark(dc: DataConnect, vars: RemoveMarkVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveMarkData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveMark' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeMark(vars: RemoveMarkVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveMarkData>>;
+
+/** Generated Node Admin SDK operation action function for the 'FinishMarkEntry' Mutation. Allow users to execute without passing in DataConnect. */
+export function finishMarkEntry(dc: DataConnect, vars: FinishMarkEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishMarkEntryData>>;
+/** Generated Node Admin SDK operation action function for the 'FinishMarkEntry' Mutation. Allow users to pass in custom DataConnect instances. */
+export function finishMarkEntry(vars: FinishMarkEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<FinishMarkEntryData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -5188,11 +5560,6 @@ export function listStaff(vars: ListStaffVariables, options?: OperationOptions):
 export function listLeaveRequests(dc: DataConnect, vars: ListLeaveRequestsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveRequestsData>>;
 /** Generated Node Admin SDK operation action function for the 'ListLeaveRequests' Query. Allow users to pass in custom DataConnect instances. */
 export function listLeaveRequests(vars: ListLeaveRequestsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLeaveRequestsData>>;
-
-/** Generated Node Admin SDK operation action function for the 'ListExams' Query. Allow users to execute without passing in DataConnect. */
-export function listExams(dc: DataConnect, vars: ListExamsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListExamsData>>;
-/** Generated Node Admin SDK operation action function for the 'ListExams' Query. Allow users to pass in custom DataConnect instances. */
-export function listExams(vars: ListExamsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListExamsData>>;
 
 /** Generated Node Admin SDK operation action function for the 'GetUser' Query. Allow users to execute without passing in DataConnect. */
 export function getUser(dc: DataConnect, vars: GetUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetUserData>>;
@@ -5618,4 +5985,39 @@ export function staffAttendanceOn(vars: StaffAttendanceOnVariables, options?: Op
 export function staffAttendanceOfStaff(dc: DataConnect, vars: StaffAttendanceOfStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffAttendanceOfStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'StaffAttendanceOfStaff' Query. Allow users to pass in custom DataConnect instances. */
 export function staffAttendanceOfStaff(vars: StaffAttendanceOfStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffAttendanceOfStaffData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SchoolGradeBands' Query. Allow users to execute without passing in DataConnect. */
+export function schoolGradeBands(dc: DataConnect, vars: SchoolGradeBandsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SchoolGradeBandsData>>;
+/** Generated Node Admin SDK operation action function for the 'SchoolGradeBands' Query. Allow users to pass in custom DataConnect instances. */
+export function schoolGradeBands(vars: SchoolGradeBandsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SchoolGradeBandsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListAssessmentTerms' Query. Allow users to execute without passing in DataConnect. */
+export function listAssessmentTerms(dc: DataConnect, vars: ListAssessmentTermsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAssessmentTermsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListAssessmentTerms' Query. Allow users to pass in custom DataConnect instances. */
+export function listAssessmentTerms(vars: ListAssessmentTermsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAssessmentTermsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListExams' Query. Allow users to execute without passing in DataConnect. */
+export function listExams(dc: DataConnect, vars: ListExamsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListExamsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListExams' Query. Allow users to pass in custom DataConnect instances. */
+export function listExams(vars: ListExamsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListExamsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetExam' Query. Allow users to execute without passing in DataConnect. */
+export function getExam(dc: DataConnect, vars: GetExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetExamData>>;
+/** Generated Node Admin SDK operation action function for the 'GetExam' Query. Allow users to pass in custom DataConnect instances. */
+export function getExam(vars: GetExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetExamData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountMarksOfExam' Query. Allow users to execute without passing in DataConnect. */
+export function countMarksOfExam(dc: DataConnect, vars: CountMarksOfExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountMarksOfExamData>>;
+/** Generated Node Admin SDK operation action function for the 'CountMarksOfExam' Query. Allow users to pass in custom DataConnect instances. */
+export function countMarksOfExam(vars: CountMarksOfExamVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountMarksOfExamData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CountExamsOfTerm' Query. Allow users to execute without passing in DataConnect. */
+export function countExamsOfTerm(dc: DataConnect, vars: CountExamsOfTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountExamsOfTermData>>;
+/** Generated Node Admin SDK operation action function for the 'CountExamsOfTerm' Query. Allow users to pass in custom DataConnect instances. */
+export function countExamsOfTerm(vars: CountExamsOfTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CountExamsOfTermData>>;
+
+/** Generated Node Admin SDK operation action function for the 'MarksOfStudentInTerm' Query. Allow users to execute without passing in DataConnect. */
+export function marksOfStudentInTerm(dc: DataConnect, vars: MarksOfStudentInTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarksOfStudentInTermData>>;
+/** Generated Node Admin SDK operation action function for the 'MarksOfStudentInTerm' Query. Allow users to pass in custom DataConnect instances. */
+export function marksOfStudentInTerm(vars: MarksOfStudentInTermVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarksOfStudentInTermData>>;
 
