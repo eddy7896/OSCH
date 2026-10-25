@@ -629,6 +629,29 @@
         ],
         "type": "object"
       },
+      "AppliedLineDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          },
+          "lineId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "lineId",
+          "amountMinor"
+        ],
+        "type": "object"
+      },
+      "ApplyDeductionDto": {
+        "properties": {
+          "amountMinor": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "ApplyTemplateDto": {
         "properties": {
           "template": {
@@ -4610,6 +4633,149 @@
         },
         "required": [
           "classroomId"
+        ],
+        "type": "object"
+      },
+      "ProposalDto": {
+        "properties": {
+          "applied": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AppliedLineDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "days": {
+            "type": "string"
+          },
+          "leaves": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalLeaveDto"
+            },
+            "type": "array"
+          },
+          "monthlyGrossMinor": {
+            "type": "string"
+          },
+          "payslipId": {
+            "type": "string"
+          },
+          "proposedMinor": {
+            "type": "string"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/ProposalStaffDto"
+          }
+        },
+        "required": [
+          "staff",
+          "payslipId",
+          "monthlyGrossMinor",
+          "days",
+          "proposedMinor",
+          "leaves",
+          "applied"
+        ],
+        "type": "object"
+      },
+      "ProposalLeaveDto": {
+        "properties": {
+          "days": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "half": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "startDate",
+          "endDate",
+          "half",
+          "days"
+        ],
+        "type": "object"
+      },
+      "ProposalListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalDto"
+            },
+            "type": "array"
+          },
+          "run": {
+            "$ref": "#/components/schemas/ProposalRunDto"
+          },
+          "withoutPayslip": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalStaffDto"
+            },
+            "type": "array"
+          },
+          "workingDays": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "run",
+          "workingDays",
+          "items",
+          "withoutPayslip"
+        ],
+        "type": "object"
+      },
+      "ProposalRunDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "month": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "year",
+          "month",
+          "status"
+        ],
+        "type": "object"
+      },
+      "ProposalStaffDto": {
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "name"
         ],
         "type": "object"
       },
@@ -16125,6 +16291,81 @@
         }
       }
     },
+    "/v1/payroll/payslips/{id}/leave-deduction": {
+      "post": {
+        "operationId": "LeaveDeduction_apply",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplyDeductionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "LeaveDeduction"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "payroll.payslipline.add",
+          "operation": "AddPayslipLine"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "payroll"
+        }
+      }
+    },
     "/v1/payroll/payslips/{id}/lines": {
       "post": {
         "operationId": "Payroll_addPayslipLine",
@@ -16563,6 +16804,67 @@
         },
         "x-permission": {
           "action": "approve",
+          "resource": "payroll"
+        }
+      }
+    },
+    "/v1/payroll/runs/{id}/leave-proposals": {
+      "get": {
+        "operationId": "LeaveDeduction_proposals",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "LeaveDeduction"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
           "resource": "payroll"
         }
       }

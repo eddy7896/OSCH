@@ -146,6 +146,15 @@ export type ApplicationSummaryDto = {
     status: string;
 };
 
+export type AppliedLineDto = {
+    amountMinor: string;
+    lineId: string;
+};
+
+export type ApplyDeductionDto = {
+    amountMinor?: string;
+};
+
 export type ApplyTemplateDto = {
     template: 'STANDARD' | 'SHORT_DAY';
 };
@@ -1195,6 +1204,44 @@ export type PlacementDto = {
 export type PlacementRequestDto = {
     academicYearId?: string;
     classroomId: string;
+};
+
+export type ProposalDto = {
+    applied: AppliedLineDto | null;
+    days: string;
+    leaves: Array<ProposalLeaveDto>;
+    monthlyGrossMinor: string;
+    payslipId: string;
+    proposedMinor: string;
+    staff: ProposalStaffDto;
+};
+
+export type ProposalLeaveDto = {
+    days: string;
+    endDate: string;
+    half: string | null;
+    id: string;
+    startDate: string;
+};
+
+export type ProposalListDto = {
+    items: Array<ProposalDto>;
+    run: ProposalRunDto;
+    withoutPayslip: Array<ProposalStaffDto>;
+    workingDays: number;
+};
+
+export type ProposalRunDto = {
+    id: string;
+    month: number;
+    status: string;
+    year: number;
+};
+
+export type ProposalStaffDto = {
+    employeeId: string;
+    id: string;
+    name: string;
 };
 
 export type PublicSchoolDto = {
@@ -7422,6 +7469,50 @@ export type PayrollPayslipResponses = {
 
 export type PayrollPayslipResponse = PayrollPayslipResponses[keyof PayrollPayslipResponses];
 
+export type LeaveDeductionApplyData = {
+    body: ApplyDeductionDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/payslips/{id}/leave-deduction';
+};
+
+export type LeaveDeductionApplyErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveDeductionApplyError = LeaveDeductionApplyErrors[keyof LeaveDeductionApplyErrors];
+
+export type LeaveDeductionApplyResponses = {
+    200: ProposalListDto;
+};
+
+export type LeaveDeductionApplyResponse = LeaveDeductionApplyResponses[keyof LeaveDeductionApplyResponses];
+
 export type PayrollAddPayslipLineData = {
     body: AddPayslipLineDto;
     path: {
@@ -7719,6 +7810,50 @@ export type PayrollApproveResponses = {
 };
 
 export type PayrollApproveResponse = PayrollApproveResponses[keyof PayrollApproveResponses];
+
+export type LeaveDeductionProposalsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/payroll/runs/{id}/leave-proposals';
+};
+
+export type LeaveDeductionProposalsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type LeaveDeductionProposalsError = LeaveDeductionProposalsErrors[keyof LeaveDeductionProposalsErrors];
+
+export type LeaveDeductionProposalsResponses = {
+    200: ProposalListDto;
+};
+
+export type LeaveDeductionProposalsResponse = LeaveDeductionProposalsResponses[keyof LeaveDeductionProposalsResponses];
 
 export type PayrollPayData = {
     body: PayRunDto;

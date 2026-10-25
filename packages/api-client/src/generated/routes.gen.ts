@@ -772,6 +772,12 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "POST",
+    "path": "/v1/payroll/payslips/{id}/leave-deduction",
+    "access": "tenant",
+    "operationId": "LeaveDeduction_apply"
+  },
+  {
+    "method": "POST",
     "path": "/v1/payroll/payslips/{id}/lines",
     "access": "tenant",
     "operationId": "Payroll_addPayslipLine"
@@ -793,6 +799,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/payroll/runs/{id}/approve",
     "access": "tenant",
     "operationId": "Payroll_approve"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/payroll/runs/{id}/leave-proposals",
+    "access": "tenant",
+    "operationId": "LeaveDeduction_proposals"
   },
   {
     "method": "POST",
