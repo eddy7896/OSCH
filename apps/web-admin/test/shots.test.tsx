@@ -283,3 +283,23 @@ describe.skipIf(!DIR)("screen pictures: leave and substitution (P3-11d)", () => 
     });
   }
 });
+
+// ---- P3-11e: the notification bell
+// The gateway writes these words in the reader's language from the same catalogue; the pictures do the same with sample values.
+const words = (locale: string, key: string, p: Record<string, string>) => (getMessages(locale)[key] ?? "").replace(/\{(\w+)\}/g, (_m, k: string) => { const v = p[k] ?? ""; return locale === "ur" && /^\d\d-\d\d-\d{4}$/.test(v) ? `\u2066${v.replaceAll("-", "\u2011")}\u2069` : v; });
+const notes = (locale: string) => ({ unreadCount: 3, items: [
+  { id: "n1", kind: "leave.requested", category: "leave", title: words(locale, "notifLeaveRequestedTitle", {}), body: words(locale, "notifLeaveRequestedBody", { name: "Asha Rao", days: "2", typeName: "Casual", startDate: "26-10-2026", endDate: "27-10-2026" }), createdAt: "2026-10-26T08:30:00Z", read: false, entityType: "LeaveRequest", entityId: "r1" },
+  { id: "n3", kind: "leave.substitution", category: "substitution", title: words(locale, "notifLeaveSubstitutionTitle", {}), body: words(locale, "notifLeaveSubstitutionBody", { name: "Chitra Nair", startDate: "19-10-2026", endDate: "19-10-2026" }), createdAt: "2026-10-18T07:00:00Z", read: false, entityType: "LeaveRequest", entityId: "r3" },
+  { id: "n4", kind: "leave.payroll", category: "payroll", title: words(locale, "notifLeavePayrollTitle", {}), body: words(locale, "notifLeavePayrollBody", { name: "Dev Patel", startDate: "12-10-2026", endDate: "14-10-2026" }), createdAt: "2026-10-10T07:00:00Z", read: true, entityType: "LeaveRequest", entityId: "r4" },
+] });
+describe.skipIf(!DIR)("screen pictures: notification bell (P3-11e)", () => {
+  for (const locale of ["en", "ur"]) {
+    it(`the inbox panel (${locale})`, async () => {
+      if (!wanted("web-admin-notifications")) return;
+      await shoot("web-admin-notifications", locale, fakeApi({ meGet: vi.fn(async () => as("ACADEMIC_ADMIN", ACAD)), notificationsList: vi.fn(async () => notes(locale)), notificationsPreferences: vi.fn(async () => ({ items: [{ category: "leave", enabled: true }, { category: "substitution", enabled: true }, { category: "payroll", enabled: false }] })) }), "navDashboard", async () => {
+        fireEvent.click(await waitFor(() => { const b = document.querySelector<HTMLButtonElement>("button[aria-haspopup=dialog]"); if (!b) throw new Error("wait"); return b; }));
+        await waitFor(() => { if (!document.querySelector("[role=dialog] details")) throw new Error("wait"); });
+      });
+    });
+  }
+});

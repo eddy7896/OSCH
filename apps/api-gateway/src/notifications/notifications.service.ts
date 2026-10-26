@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE, type Database } from '@oruschools/database';
-import { getMessages, matchLanguageTag } from '@oruschools/i18n';
+import { getMessages, isRtl, matchLanguageTag } from '@oruschools/i18n';
 import { ApiException, ErrorCode } from '../common/errors.js';
 import { dashed } from '../common/uuid.js';
 import type { TenantContext } from '../tenant/tenant.decorators.js';
@@ -31,7 +31,7 @@ export class NotificationsService {
     const [rows, muted, code] = await Promise.all([this.rows(t), this.muted(t), this.language(t)]);
     const messages = getMessages(code), english = getMessages('en');
     const shown = rows.filter((n) => { const c = categoryOf(n.kind); return !c || !muted.has(c); }).map((n) => {
-      const words = render(n.kind, n.params, messages, english);
+      const words = render(n.kind, n.params, messages, english, isRtl(code));
       return { id: dashed(n.id), kind: n.kind, category: categoryOf(n.kind) ?? 'other', title: words.title, body: words.body, createdAt: n.createdAt, read: n.reads.length > 0, entityType: n.entityType ?? null, entityId: n.entityId ?? null };
     });
     return { unreadCount: shown.filter((n) => !n.read).length, items: shown.filter((n) => !unreadOnly || !n.read).slice(0, limit) };

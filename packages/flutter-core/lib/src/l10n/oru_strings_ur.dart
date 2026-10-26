@@ -716,6 +716,50 @@ class OruStringsUr extends OruStrings {
   String get reportTotal => 'کل';
 
   @override
+  String get ntBell => 'اطلاعات';
+
+  @override
+  String ntBellUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ناپڑھی اطلاعات',
+      one: '$count ناپڑھی اطلاع',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ntEmpty => 'آپ کے پاس کوئی اطلاع نہیں ہے۔';
+
+  @override
+  String get ntMarkAll => 'سب کو پڑھا ہوا نشان زد کریں';
+
+  @override
+  String get ntClose => 'بند کریں';
+
+  @override
+  String get ntSettings => 'منتخب کریں کہ آپ کیا دیکھیں';
+
+  @override
+  String get ntSettingsHint => 'چھپائی گئی اقسام ہٹتی نہیں، محفوظ رہتی ہیں۔';
+
+  @override
+  String get ntCatleave => 'رخصت';
+
+  @override
+  String get ntCatsubstitution => 'متبادل اساتذہ';
+
+  @override
+  String get ntCatpayroll => 'تنخواہ';
+
+  @override
+  String get ntUnread => 'ناپڑھی';
+
+  @override
+  String get ntLoadFailed => 'اطلاعات لوڈ نہیں ہو سکیں۔';
+
+  @override
   String get sbPeriod => 'پیریڈ';
 
   @override

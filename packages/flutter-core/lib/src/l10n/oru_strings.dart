@@ -1422,6 +1422,78 @@ abstract class OruStrings {
   /// **'Total'**
   String get reportTotal;
 
+  /// Name of the bell button in the top bar that opens the notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get ntBell;
+
+  /// Said after the word Notifications on the bell button when some are unread: how many.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} unread notification} other{{count} unread notifications}}'**
+  String ntBellUnread(int count);
+
+  /// Shown when the inbox is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no notifications.'**
+  String get ntEmpty;
+
+  /// Button: mark every notification as read.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get ntMarkAll;
+
+  /// Button: close the notifications panel.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get ntClose;
+
+  /// Heading of the choice of which kinds of notification to show.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what you see'**
+  String get ntSettings;
+
+  /// Explains the choice of which kinds of notification to show.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden kinds are kept, not deleted.'**
+  String get ntSettingsHint;
+
+  /// Kind of notification: about leave requests and decisions.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get ntCatleave;
+
+  /// Kind of notification: about covering lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Substitutions'**
+  String get ntCatsubstitution;
+
+  /// Kind of notification: about pay.
+  ///
+  /// In en, this message translates to:
+  /// **'Payroll'**
+  String get ntCatpayroll;
+
+  /// Screen reader word before an unread notification.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get ntUnread;
+
+  /// Shown in the panel when loading failed.
+  ///
+  /// In en, this message translates to:
+  /// **'The notifications could not be loaded.'**
+  String get ntLoadFailed;
+
   /// Column heading: the period of the school day.
   ///
   /// In en, this message translates to:

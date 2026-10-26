@@ -25,6 +25,7 @@ import { Timetable } from "./screens/Timetable";
 import { Users } from "./screens/Users";
 import { Students } from "./screens/Students";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { NotificationBell } from "./NotificationBell";
 
 /** The navigation keys that have a screen. */
 const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "leave", "substitution", "admissions", "staff", "payroll", "finance", "settings", "reports-finance", "reports-hr"]);
@@ -58,6 +59,7 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-surface px-4 py-3">
           <LanguageSwitcher />
           <div className="flex items-center gap-3">
+            <NotificationBell />
             <span className="text-body text-text-muted">{name}</span>
             <Button size="comfortable" variant="ghost" onClick={() => void port?.signOut()}>
               {t("actionSignOut")}
