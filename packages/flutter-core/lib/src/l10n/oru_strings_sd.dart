@@ -714,6 +714,162 @@ class OruStringsSd extends OruStrings {
   String get reportTotal => 'Total';
 
   @override
+  String get attLockDone => 'Day locked';
+
+  @override
+  String get attViewLabel => 'Attendance view';
+
+  @override
+  String get attTabRegister => 'Daily register';
+
+  @override
+  String get attTabMissing => 'Not taken yet';
+
+  @override
+  String get attTabNames => 'Status names';
+
+  @override
+  String get attDate => 'Date';
+
+  @override
+  String get attStatusPRESENT => 'Present';
+
+  @override
+  String get attStatusABSENT => 'Absent';
+
+  @override
+  String get attStatusLATE => 'Late';
+
+  @override
+  String get attStatusLEAVE => 'On leave';
+
+  @override
+  String get attStatusMEDICAL => 'Medical';
+
+  @override
+  String get attStatusHALF_DAY => 'Half day';
+
+  @override
+  String get attStatusEXCUSED => 'Excused';
+
+  @override
+  String attCount(String label, String count) {
+    return '$label: $count';
+  }
+
+  @override
+  String get attNotTaken =>
+      'Attendance has not been taken for this class on this date. Everyone is shown as present until it is.';
+
+  @override
+  String attTakenBy(String name) {
+    return 'Taken by $name';
+  }
+
+  @override
+  String get attLocked => 'Locked';
+
+  @override
+  String get attLockedNote =>
+      'This day is locked. Only a correction can change it, and the old and new values are recorded.';
+
+  @override
+  String get attStudent => 'Student';
+
+  @override
+  String get attStatus => 'Status';
+
+  @override
+  String get attNote => 'Note';
+
+  @override
+  String get attNoStudents => 'This class has no students yet.';
+
+  @override
+  String get attSave => 'Save attendance';
+
+  @override
+  String get attSaveCorrection => 'Save correction';
+
+  @override
+  String get attLock => 'Lock the day';
+
+  @override
+  String get attSaved => 'Attendance saved';
+
+  @override
+  String get attCorrected => 'Correction saved';
+
+  @override
+  String get attDayLocked =>
+      'This day is locked. Ask the Academic administrator for a correction.';
+
+  @override
+  String get attFutureDate => 'That date has not come yet.';
+
+  @override
+  String get attMissingEmpty => 'Nothing is waiting for this date.';
+
+  @override
+  String attMissingTitle(String date) {
+    return 'Classes without attendance on $date';
+  }
+
+  @override
+  String get attNamesHint =>
+      'Rename a status for your school. What it means and its colour stay the same.';
+
+  @override
+  String attNameFor(String status) {
+    return 'Name for $status';
+  }
+
+  @override
+  String get attNameSaved => 'Name saved';
+
+  @override
+  String get attNameDefault => 'Standard name';
+
+  @override
+  String get satTitleNote =>
+      'Who is at work on a date. Times are in Indian Standard Time.';
+
+  @override
+  String get satIn => 'In';
+
+  @override
+  String get satOut => 'Out';
+
+  @override
+  String get satStateIN => 'At work';
+
+  @override
+  String get satStateOUT => 'Left for the day';
+
+  @override
+  String get satStateNONE => 'Not in yet';
+
+  @override
+  String get satCorrect => 'Correct';
+
+  @override
+  String satCorrectTitle(String name) {
+    return 'Correct the times for $name';
+  }
+
+  @override
+  String get satTimeHint => 'Write times like 09:15.';
+
+  @override
+  String get satSaved => 'Times saved';
+
+  @override
+  String get satNeedsIn => 'Enter the time in as well.';
+
+  @override
+  String get satNone => 'Nobody is on the staff list yet.';
+
+  @override
   String ttRemoveQuestion(String name) {
     return 'Remove $name?';
   }

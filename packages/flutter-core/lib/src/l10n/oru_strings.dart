@@ -1422,6 +1422,288 @@ abstract class OruStrings {
   /// **'Total'**
   String get reportTotal;
 
+  /// Confirmation after a day was locked.
+  ///
+  /// In en, this message translates to:
+  /// **'Day locked'**
+  String get attLockDone;
+
+  /// Screen reader label of the switch between the daily register, the classes not taken yet and the status names.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance view'**
+  String get attViewLabel;
+
+  /// Tab: one class's attendance on one date.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily register'**
+  String get attTabRegister;
+
+  /// Tab: the classes that have not taken attendance on a date.
+  ///
+  /// In en, this message translates to:
+  /// **'Not taken yet'**
+  String get attTabMissing;
+
+  /// Tab: the school's own wording for the seven attendance statuses.
+  ///
+  /// In en, this message translates to:
+  /// **'Status names'**
+  String get attTabNames;
+
+  /// Label of the date field.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get attDate;
+
+  /// Attendance status: came to school.
+  ///
+  /// In en, this message translates to:
+  /// **'Present'**
+  String get attStatusPRESENT;
+
+  /// Attendance status: did not come.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent'**
+  String get attStatusABSENT;
+
+  /// Attendance status: came after the start.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get attStatusLATE;
+
+  /// Attendance status: away on approved leave.
+  ///
+  /// In en, this message translates to:
+  /// **'On leave'**
+  String get attStatusLEAVE;
+
+  /// Attendance status: away for a medical reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get attStatusMEDICAL;
+
+  /// Attendance status: came for half the day.
+  ///
+  /// In en, this message translates to:
+  /// **'Half day'**
+  String get attStatusHALF_DAY;
+
+  /// Attendance status: away with the school's permission.
+  ///
+  /// In en, this message translates to:
+  /// **'Excused'**
+  String get attStatusEXCUSED;
+
+  /// One count in the summary line above the register: the status word and how many students.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {count}'**
+  String attCount(String label, String count);
+
+  /// Shown when no attendance exists yet for the class and date.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance has not been taken for this class on this date. Everyone is shown as present until it is.'**
+  String get attNotTaken;
+
+  /// Who took the attendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken by {name}'**
+  String attTakenBy(String name);
+
+  /// Badge: the day is locked, a teacher can no longer change it.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get attLocked;
+
+  /// Shown on a locked day for the Academic administrator.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is locked. Only a correction can change it, and the old and new values are recorded.'**
+  String get attLockedNote;
+
+  /// Column heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Student'**
+  String get attStudent;
+
+  /// Column heading: the attendance status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get attStatus;
+
+  /// Column heading and field: a short note on an exception.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get attNote;
+
+  /// Shown when the class has no students.
+  ///
+  /// In en, this message translates to:
+  /// **'This class has no students yet.'**
+  String get attNoStudents;
+
+  /// Button: save the register.
+  ///
+  /// In en, this message translates to:
+  /// **'Save attendance'**
+  String get attSave;
+
+  /// Button: save a correction to a locked day.
+  ///
+  /// In en, this message translates to:
+  /// **'Save correction'**
+  String get attSaveCorrection;
+
+  /// Button: lock the register so a teacher can no longer change it.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock the day'**
+  String get attLock;
+
+  /// Confirmation after the register was saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance saved'**
+  String get attSaved;
+
+  /// Confirmation after a correction was saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction saved'**
+  String get attCorrected;
+
+  /// Refusal: a teacher tried to change a locked day.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is locked. Ask the Academic administrator for a correction.'**
+  String get attDayLocked;
+
+  /// Refusal: attendance cannot be taken for a future date.
+  ///
+  /// In en, this message translates to:
+  /// **'That date has not come yet.'**
+  String get attFutureDate;
+
+  /// Shown when every class has taken attendance (or the school does not work on the date).
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is waiting for this date.'**
+  String get attMissingEmpty;
+
+  /// Heading of the list of classes that have not taken attendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes without attendance on {date}'**
+  String attMissingTitle(String date);
+
+  /// Explains the status names tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename a status for your school. What it means and its colour stay the same.'**
+  String get attNamesHint;
+
+  /// Label of the field where a school types its own word for a status.
+  ///
+  /// In en, this message translates to:
+  /// **'Name for {status}'**
+  String attNameFor(String status);
+
+  /// Confirmation after a status was renamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Name saved'**
+  String get attNameSaved;
+
+  /// Shown beside a status that still has its standard name.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard name'**
+  String get attNameDefault;
+
+  /// Explains the staff attendance screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is at work on a date. Times are in Indian Standard Time.'**
+  String get satTitleNote;
+
+  /// Column heading: when a member of staff checked in.
+  ///
+  /// In en, this message translates to:
+  /// **'In'**
+  String get satIn;
+
+  /// Column heading: when a member of staff checked out.
+  ///
+  /// In en, this message translates to:
+  /// **'Out'**
+  String get satOut;
+
+  /// Staff state: checked in, not yet out.
+  ///
+  /// In en, this message translates to:
+  /// **'At work'**
+  String get satStateIN;
+
+  /// Staff state: checked in and out.
+  ///
+  /// In en, this message translates to:
+  /// **'Left for the day'**
+  String get satStateOUT;
+
+  /// Staff state: no check-in.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in yet'**
+  String get satStateNONE;
+
+  /// Button: correct a member of staff's times.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get satCorrect;
+
+  /// Heading of the correction form.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct the times for {name}'**
+  String satCorrectTitle(String name);
+
+  /// Hint under the time fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Write times like 09:15.'**
+  String get satTimeHint;
+
+  /// Confirmation after times were corrected.
+  ///
+  /// In en, this message translates to:
+  /// **'Times saved'**
+  String get satSaved;
+
+  /// Refusal: a check-out time needs a check-in time.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the time in as well.'**
+  String get satNeedsIn;
+
+  /// Shown when there is no member of staff.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody is on the staff list yet.'**
+  String get satNone;
+
   /// Question before a period is removed from the bell schedule.
   ///
   /// In en, this message translates to:
