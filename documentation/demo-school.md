@@ -39,14 +39,29 @@ production build `config.authEmulatorHost` is always empty.
 | academic@demo.oruschools.example | Academic administrator | students, classes, subjects, years, admissions |
 | hr@demo.oruschools.example | HR manager | staff, salaries, pay runs, HR reports (cannot approve or pay) |
 | admissions@demo.oruschools.example | Admissions officer | applications, decisions, admitting |
-| teacher@demo.oruschools.example | Teacher | the "your role works in the mobile app" notice |
+| teacher@demo.oruschools.example | Teacher (Tara Teacher) | the "your role works in the mobile app" notice; her half-day sick leave is pending, one request rejected, one cancelled |
+| sunita@ / vikram@ / farida@demo.oruschools.example | Teachers | the same notice; Sunita has leave asked for and one approved, Vikram's approved leave needs cover, Farida's unpaid leave proposes a deduction |
 
 ## What is in it
 
 Academic year of today's school year (April to March); classes 1 to 5 in sections A and B (10 classes) and 6 subjects; 30 students with
 guardians (31 once the admitted applicant counts), placed in classes; 4 admission applications (submitted, under review, accepted,
-admitted); 8 staff with salary lines; a fee structure per level (Tuition in three terms, Annual charges), two concessions, invoices up to
+admitted); 9 staff with salary lines (four of them teachers who can sign in, with their subjects and class teacher links); a fee structure per level (Tuition in three terms, Annual charges), two concessions, invoices up to
 today (about 90), about 60% paid in full, 10% half paid, 30% unpaid, one payment reversed, receipts numbered; last month's pay run
 approved by the Principal and paid by the Bursar, this month's left as a draft.
+
+**Phase 3 (the academic engine):** the standard bell schedule (8 teaching periods, Monday to Saturday); a timetable of about 150 lessons for the first
+four classes (the gateway refuses clashes, so the seed tries the next teacher of a subject); 20 working days of attendance for those classes, with
+a few absences, late arrivals, medical and half days (days older than five are locked and one locked day was corrected, so the audit log has a
+correction); staff check-in and out times for two days (one person not in today); the standard grade bands, two terms, nine exams in Term 1
+with marks (one student absent, one not yet marked, so a report card shows a pending note); three leave types (Casual 12 days, Sick 7.5, Unpaid)
+and leave in every state: approved in the past (balance reduced), approved in the future (its lessons need cover on the Substitutions board, the
+first lesson already has a substitute), approved unpaid in this month (a deduction is proposed in the draft pay run for HR to apply), pending,
+a pending half day, rejected with a note and cancelled; and the notices all of this caused (the Principal's inbox, the Academic administrator's,
+HR's, and Tara's: "You are covering a class").
+
+Try, as the Academic administrator: Timetable, Attendance (today is "not taken yet" for every class), Gradebook (marks, report cards), Substitutions;
+as the Principal: Leave (approve or reject the pending ones); as HR: the draft pay run (apply the proposed unpaid-leave deduction), Leave, Staff attendance;
+as anyone: the bell in the top bar.
 
 Running the script again on a school that exists changes nothing and prints the logins.

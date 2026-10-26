@@ -6,7 +6,7 @@ import test from "node:test";
 
 // Read the roles from source: this eval runs before any package is built.
 const ROLES = [...readFileSync("packages/rbac/src/roles.ts", "utf8").match(/export const ROLES = \[([\s\S]*?)\] as const/)[1].matchAll(/"([A-Z_]+)"/g)].map((m) => m[1]);
-import { DEMO_PEOPLE, DEMO_SUBDOMAIN, dobFor, loginTable, paymentPlan, payMonths, phoneFor, schoolYear, termAmount, termDates } from "../tools/lib/demo-school.mjs";
+import { DEMO_PEOPLE, DEMO_SUBDOMAIN, STAFF, SUBJECTS, addDays, dobFor, exceptionFor, futureWorkingDay, isWorking, loginTable, markFor, marksText, pastWorkingDays, paymentPlan, payMonths, phoneFor, rotationSubject, schoolToday, schoolYear, termAmount, termDates, thisMonthWorkingDay } from "../tools/lib/demo-school.mjs";
 
 test("E-DEMO-1 the seed script refuses to run without the Auth emulator, and with NODE_ENV=production", () => {
   const clean = { ...process.env };
@@ -28,10 +28,11 @@ test("E-DEMO-2 the script and its stack script can only point at local emulators
   assert.doesNotMatch(stack, /--project oruschools\b/);
 });
 
-test("E-DEMO-3 every demo role is a real role, each once, and the platform owner is the only one without a school role", () => {
+test("E-DEMO-3 every demo role is a real role, each once (except the teachers), and the platform owner is the only one without a school role", () => {
   const roles = DEMO_PEOPLE.filter((p) => p.role).map((p) => p.role);
   for (const r of roles) assert.ok(ROLES.includes(r), r);
-  assert.equal(new Set(roles).size, roles.length);
+  assert.equal(new Set(roles.filter((r) => r !== "TEACHER")).size, roles.filter((r) => r !== "TEACHER").length);
+  assert.equal(roles.filter((r) => r === "TEACHER").length, 4);
   assert.equal(DEMO_PEOPLE.filter((p) => !p.role).map((p) => p.key).join(), "owner");
   assert.equal(new Set(DEMO_PEOPLE.map((p) => p.email)).size, DEMO_PEOPLE.length);
   for (const must of ["SYSTEM_ADMIN", "PRINCIPAL", "BURSAR", "ACCOUNTANT", "ACADEMIC_ADMIN", "HR_MANAGER", "ADMISSIONS_OFFICER", "MANAGEMENT"]) assert.ok(roles.includes(must), must);
@@ -77,4 +78,41 @@ test("E-DEMO-7 an ambient FIREBASE_PROJECT_ID can never send the demo accounts t
   assert.match(stack, /seed-demo-school\.mjs 2>&1 \| tee .*\|\| \{[^}]*exit 1/s, "a failing seed must stop the stack");
   assert.match(stack, /GCLOUD_PROJECT=demo-oruschools/);
   for (const app of ["web-admin", "saas-admin"]) assert.match(readFileSync(`apps/${app}/next.config.ts`, "utf8"), /NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST/, `${app} must hand the emulator host to the browser bundle`);
+});
+
+test("E-DEMO-8 Phase 3 data: every staff member who signs in is a demo person, every subject a teacher teaches exists, every subject has a teacher", () => {
+  const keys = new Set(DEMO_PEOPLE.map((p) => p.key));
+  for (const m of STAFF) if (m.account) assert.ok(keys.has(m.account), m.account);
+  const codes = new Set(SUBJECTS.map(([, c]) => c));
+  const taught = new Set(STAFF.flatMap((m) => m.teaches ?? []));
+  for (const c of taught) assert.ok(codes.has(c), c);
+  for (const c of codes) assert.ok(taught.has(c), `${c} has no teacher`);
+});
+
+test("E-DEMO-9 dates: working days skip Sunday, the past and future counts are exact, this month's day stays in the month", () => {
+  assert.equal(isWorking("2026-10-25"), false); // a Sunday
+  assert.equal(isWorking("2026-10-26"), true);
+  assert.deepEqual(pastWorkingDays("2026-10-26", 3), ["2026-10-22", "2026-10-23", "2026-10-24"]);
+  assert.equal(futureWorkingDay("2026-10-24", 1), "2026-10-26"); // Saturday to Monday
+  assert.equal(futureWorkingDay("2026-10-26", 3), "2026-10-29");
+  assert.equal(addDays("2026-12-31", 1), "2027-01-01");
+  assert.equal(thisMonthWorkingDay("2026-10-26"), "2026-10-26");
+  assert.equal(thisMonthWorkingDay("2026-11-01"), "2026-11-02"); // the 1st is a Sunday: no working day yet in November, so the next one
+  assert.equal(schoolToday(new Date("2026-10-25T20:00:00Z")), "2026-10-26"); // already the next morning in India
+});
+
+test("E-DEMO-10 attendance, marks and the timetable rotation are deterministic and sensible", () => {
+  const same = Array.from({ length: 200 }, (_, i) => exceptionFor(i % 30, i % 20));
+  assert.deepEqual(same, Array.from({ length: 200 }, (_, i) => exceptionFor(i % 30, i % 20)));
+  const exceptions = same.filter(Boolean).length;
+  assert.ok(exceptions > 5 && exceptions < 40, `${exceptions} exceptions out of 200`);
+  for (const s of same.filter(Boolean)) assert.ok(["ABSENT", "LATE", "MEDICAL", "HALF_DAY"].includes(s));
+  for (let n = 0; n < 3; n++) for (let e = 0; e < 3; e++) { const m = markFor(n, e, 500); if (m && !m.absent) { assert.ok(m.tenths >= 0 && m.tenths <= 500 && m.tenths % 10 === 0, String(m.tenths)); } }
+  assert.deepEqual(markFor(1, 0, 500), { absent: true });
+  assert.equal(markFor(2, 2, 500), null);
+  assert.equal(marksText(445), "44.5");
+  assert.equal(marksText(450), "45");
+  for (let c = 0; c < 4; c++) for (let d = 0; d < 6; d++) for (let p = 0; p < 8; p++) assert.ok(rotationSubject(SUBJECTS.length, c, d, p) < SUBJECTS.length);
+  // two classes in one slot want different subjects, so they seldom want the same teacher
+  assert.notEqual(rotationSubject(6, 0, 1, 2), rotationSubject(6, 1, 1, 2));
 });

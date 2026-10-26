@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Makes a DEMO SCHOOL on your own machine, with people to sign in as, so you can click through the whole ERP: classes, students with
 // guardians, staff and salaries, admissions at every stage, fee structures, invoices, payments (one reversed), receipts and a paid
-// pay run. Everything goes through the REAL gateway, so the data obeys the same rules as real data.
+// pay run, and the Phase 3 academic engine: bell schedule, timetable, a month of attendance, exams with marks and a report card, leave in every
+// state, a substitution, and the notices they cause. Everything goes through the REAL gateway, so the data obeys the same rules as real data.
 //
 // LOCAL EMULATORS ONLY. Every demo account shares one password that is written down in the project hub, so this script REFUSES to
 // run unless the Firebase Auth emulator is configured: it can never create those accounts in a real project.
@@ -18,6 +19,7 @@ import { getAuth } from "firebase-admin/auth";
 import {
   DEMO_PHRASE, DEMO_PEOPLE, DEMO_SCHOOL_NAME, DEMO_SUBDOMAIN, FIRST_NAMES, LAST_NAMES, LEVELS_WITH_CLASSES, METHODS, SECTIONS, STAFF, SUBJECTS,
   dobFor, loginTable, paymentPlan, payMonths, phoneFor, schoolYear, termAmount, termDates,
+  exceptionFor, futureWorkingDay, marksText, markFor, pastWorkingDays, rotationSubject, schoolToday, thisMonthWorkingDay,
 } from "./lib/demo-school.mjs";
 
 const AUTH_HOST = process.env.FIREBASE_AUTH_EMULATOR_HOST;
@@ -56,6 +58,105 @@ async function call(method, path, { token, school, body, ok = [200, 201, 204] } 
     if (!ok.includes(res.status)) throw new Error(`${method} ${path} -> ${res.status} ${text.slice(0, 300)}`);
     return json;
   }
+}
+
+/** The bell schedule, teachers, timetable, a month of attendance, exams with marks and grade bands, leave in every state, a substitution and the notices they cause. */
+async function phase3({ as, classes, students, subjects, staff }) {
+  const today = schoolToday();
+  const academic = as("academic");
+  const subjectId = new Map(subjects.map((s, i) => [SUBJECTS[i][1], s.id]));
+  const byName = new Map(staff.map((s) => [`${s.firstName} ${s.lastName}`, s]));
+
+  // ---- bell schedule, who teaches what, class teachers
+  await call("POST", "/v1/academics/schedule/template", { ...academic, body: { template: "STANDARD" } });
+  const schedule = await call("GET", "/v1/academics/schedule", academic);
+  const periods = schedule.periods.filter((p) => !p.isBreak);
+  const days = schedule.workingDays;
+  const pool = new Map();
+  for (const m of staff) for (const code of m.spec.teaches ?? []) {
+    await call("POST", `/v1/academics/teachers/${m.id}/subjects`, { ...academic, body: { subjectId: subjectId.get(code) } });
+    pool.set(code, [...(pool.get(code) ?? []), m.id]);
+  }
+  const classTeachers = ["Tara Teacher", "Sunita Rao", "Vikram Chopra", "Farida Begum", "Rekha Pillai"];
+  for (const [i, who] of classTeachers.entries()) await call("PUT", `/v1/academics/classes/${classes[i].id}/teacher`, { ...academic, body: { staffId: byName.get(who).id } });
+  log(`Bell schedule (${periods.length} teaching periods, ${days.length} days), teachers' subjects, ${classTeachers.length} class teachers`);
+
+  // ---- a timetable for the first four classes: the rotation picks the subject, and the gateway refuses a clash, so the next teacher of the subject is tried
+  let lessons = 0;
+  for (const [ci, klass] of classes.slice(0, 4).entries())
+    for (const [di, day] of days.entries())
+      for (const [pi, period] of periods.entries()) {
+        const code = SUBJECTS[rotationSubject(SUBJECTS.length, ci, di, pi)][1];
+        for (const teacher of pool.get(code) ?? []) {
+          const res = await call("PUT", `/v1/academics/timetable/classes/${klass.id}/slots`, { ...academic, body: { day, periodId: period.id, subjectId: subjectId.get(code), staffId: teacher }, ok: [200, 409] });
+          if (res && !res.error) { lessons += 1; break; }
+        }
+      }
+  log(`Timetable: ${lessons} lessons in 4 classes`);
+
+  // ---- a month of attendance for the first four classes (school-wide: the Academic administrator). Older days are locked; one is corrected.
+  const past = pastWorkingDays(today, 20);
+  const roster = (k) => students.filter((_, i) => i % classes.length === k);
+  for (const [k, klass] of classes.slice(0, 4).entries()) {
+    const kids = roster(k);
+    for (const [di, date] of past.entries()) {
+      const marks = kids.flatMap((st, n) => { const status = exceptionFor(n + k * 10, di); return status ? [{ studentId: st.id, status }] : []; });
+      await call("PUT", `/v1/attendance/classes/${klass.id}/days/${date}`, { ...academic, body: { marks, lock: di < past.length - 5 } });
+    }
+  }
+  const fixed = roster(0);
+  await call("PUT", `/v1/attendance/classes/${classes[0].id}/days/${past[0]}/correction`, { ...academic, body: { marks: [{ studentId: fixed[0].id, status: "EXCUSED", note: "Medical note brought the next day" }] } });
+  for (const [i, m] of staff.slice(0, 6).entries())
+    for (const [off, date] of [[1, past.at(-1)], [0, today]]) {
+      if (off === 0 && i === 5) continue; // one person is not in today
+      await call("PUT", `/v1/attendance/staff/${m.id}/days/${date}`, { ...as("hr"), body: { checkIn: `${date}T03:${String(30 + i * 3).padStart(2, "0")}:00.000Z`, ...(off === 1 || i % 2 ? { checkOut: `${date}T11:00:00.000Z` } : {}) } });
+    }
+  log(`Attendance: ${past.length} days for 4 classes (older days locked, one corrected), staff times for 2 days`);
+
+  // ---- grade bands, two terms, exams with marks (one student absent, one not yet marked)
+  const bands = await call("GET", "/v1/grades/bands", academic);
+  await call("PUT", "/v1/grades/bands", { ...academic, body: { bands: bands.template } });
+  const term1 = await call("POST", "/v1/grades/terms", { ...academic, body: { name: "Term 1" } });
+  await call("POST", "/v1/grades/terms", { ...academic, body: { name: "Term 2" } });
+  let examNo = 0;
+  for (const [k, klass] of classes.slice(0, 3).entries())
+    for (const [title, code, max] of [["Unit test 1", "MATH", "50"], ["Unit test 1", "ENG", "50"], ["Half yearly", "SCI", "100"]]) {
+      const exam = await call("POST", "/v1/grades/exams", { ...academic, body: { termId: term1.id, classId: klass.id, subjectId: subjectId.get(code), title, examDate: past[2], maxMarks: max } });
+      const entries = roster(k).flatMap((st, n) => { const m = markFor(n, examNo % 3, Number(max) * 10); return m === null ? [] : m.absent ? [{ studentId: st.id, absent: true }] : [{ studentId: st.id, marks: marksText(m.tenths) }]; });
+      await call("PUT", `/v1/grades/exams/${exam.id}/marks`, { ...academic, body: { entries } });
+      examNo += 1;
+    }
+  log(`Grade bands (standard set), 2 terms, ${examNo} exams with marks`);
+
+  // ---- leave: types, then requests in every state
+  const type = {};
+  for (const [name, paid, quotaDays] of [["Casual", true, "12"], ["Sick", true, "7.5"], ["Unpaid", false, undefined]])
+    type[name] = (await call("POST", "/v1/leave/types", { ...as("hr"), body: { name, paid, ...(quotaDays ? { quotaDays } : {}) } })).id;
+  const ask = (who, name, startDate, endDate, extra = {}) => call("POST", "/v1/leave/requests", { ...as(who), body: { leaveTypeId: type[name], startDate, endDate, ...extra } });
+  const D = (n) => futureWorkingDay(today, n);
+  const approve = (r) => call("POST", `/v1/leave/requests/${r.id}/approve`, { ...as("principal"), body: {} });
+
+  await approve(await ask("sunita", "Casual", past[10], past[11], { reason: "Family wedding" })); // approved, in the past: the balance went down
+  const vikram = await ask("vikram", "Casual", D(3), D(3), { reason: "Court date" });
+  await approve(vikram); // approved, in the future: the lessons that day need cover
+  const farida = await ask("farida", "Unpaid", thisMonthWorkingDay(today), thisMonthWorkingDay(today), { reason: "Personal work" });
+  await approve(farida); // approved unpaid leave: a deduction is proposed in this month's draft pay run
+  await ask("sunita", "Casual", D(8), D(9), { reason: "Travel" }); // pending
+  await ask("teacher", "Sick", D(5), D(5), { half: "MORNING", reason: "Doctor's appointment" }); // pending, half a day
+  const rej = await ask("teacher", "Casual", past[14], past[14], { reason: "Shopping" });
+  await call("POST", `/v1/leave/requests/${rej.id}/reject`, { ...as("principal"), body: { note: "Examinations that day" } });
+  const cancelled = await ask("teacher", "Casual", D(12), D(12));
+  await call("POST", `/v1/leave/requests/${cancelled.id}/cancel`, as("teacher"));
+  log("Leave: 3 types, requests approved (past, future, unpaid), pending, a half day, rejected and cancelled");
+
+  // ---- substitution: the first lesson of Vikram's leave day gets a cover, the rest wait for the Academic administrator
+  const needs = await call("GET", `/v1/substitutions/needs?from=${D(3)}&to=${D(3)}`, academic);
+  if (needs.items.length > 0) {
+    const first = needs.items[0];
+    const sug = await call("GET", `/v1/substitutions/suggestions?entryId=${first.slot.entryId}&date=${first.date}`, academic);
+    if (sug.candidates[0]) await call("PUT", "/v1/substitutions", { ...academic, body: { entryId: first.slot.entryId, date: first.date, substituteStaffId: sug.candidates[0].staff.id } });
+  }
+  log(`Substitution board: ${needs.items.length} lessons need cover on ${D(3)}, 1 chosen`);
 }
 
 try {
@@ -104,7 +205,8 @@ try {
   const classes = [];
   for (const name of LEVELS_WITH_CLASSES)
     for (const section of SECTIONS) classes.push({ level: name, ...(await call("POST", "/v1/academics/classes", { ...as("academic"), body: { gradeLevelId: levelByName.get(name).id, section, capacity: 40 } })) });
-  for (const [name, code] of SUBJECTS) await call("POST", "/v1/academics/subjects", { ...as("academic"), body: { name, code } });
+  const subjects = [];
+  for (const [name, code] of SUBJECTS) subjects.push(await call("POST", "/v1/academics/subjects", { ...as("academic"), body: { name, code } }));
   log(`Academic year ${yr.name}, ${classes.length} classes, ${SUBJECTS.length} subjects`);
 
   // ---- students with guardians, placed in classes
@@ -133,7 +235,8 @@ try {
   const staff = [];
   for (const [i, m] of STAFF.entries()) {
     const s = await call("POST", "/v1/staff", { ...as("hr"), body: { firstName: m.firstName, lastName: m.lastName, department: m.department, designation: m.designation, phone: phoneFor(2000 + i), dateOfJoining: "2022-06-01" } });
-    staff.push(s);
+    staff.push({ ...s, spec: m });
+    if (m.account) await call("PUT", `/v1/staff/${s.id}/account`, { ...as("hr"), body: { userId: people[m.account].uid } }); // the person who signs in as this teacher
     await call("POST", `/v1/payroll/staff/${s.id}/salary-lines`, { ...as("hr"), body: { kind: "EARNING", name: "Basic pay", amountMinor: String(m.basic) } });
     await call("POST", `/v1/payroll/staff/${s.id}/salary-lines`, { ...as("hr"), body: { kind: "EARNING", name: "House rent allowance", amountMinor: String(Math.round(m.basic * 0.2)) } });
     if (i % 4 === 0) await call("POST", `/v1/payroll/staff/${s.id}/salary-lines`, { ...as("hr"), body: { kind: "DEDUCTION", name: "Advance recovery", amountMinor: "250000" } });
@@ -184,6 +287,9 @@ try {
   await call("POST", `/v1/payroll/runs/${run.id}/pay`, { ...as("bursar"), body: { reference: "NEFT-DEMO-1", paidOn: today } });
   await call("POST", "/v1/payroll/runs", { ...as("hr"), body: pm.current });
   log(`Pay run ${pm.last.month}/${pm.last.year} approved and paid; ${pm.current.month}/${pm.current.year} left as a draft`);
+
+  // ======================================================== Phase 3: the academic engine
+  await phase3({ as, classes, students, subjects, staff });
 
   log(`\nDone. Sign in as any of these:\n\n${loginTable()}`);
 } catch (e) {
