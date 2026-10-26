@@ -23,6 +23,9 @@ const NEEDS: Record<string, [string, string]> = {
   academicsClasses: ["academics", "read"], academicsLevels: ["academics", "read"], academicsYears: ["academics", "read"], academicsSubjects: ["academics", "read"],
   academicsCreateClass: ["academics", "create"], academicsCreateSubject: ["academics", "create"], academicsCreateYear: ["academics", "create"],
   academicsDeleteClass: ["academics", "delete"], academicsDeleteSubject: ["academics", "delete"], academicsActivateYear: ["academics", "update"],
+  scheduleGet: ["academics", "read"], teachingTeachers: ["academics", "read"], timetableForClass: ["academics", "read"], timetableForStaff: ["academics", "read"], timetableLoad: ["academics", "read"],
+  scheduleCreate: ["academics", "create"], scheduleTemplate: ["academics", "create"], scheduleUpdate: ["academics", "update"], scheduleSetWorkingDays: ["academics", "update"], timetableSetSlot: ["academics", "update"],
+  scheduleRemove: ["academics", "delete"], timetableClear: ["academics", "delete"],
   admissionsList: ["admissions", "read"], admissionsGet: ["admissions", "read"], admissionsCreate: ["admissions", "create"], admissionsDecide: ["admissions", "update"], admissionsAdmit: ["admissions", "update"],
   payrollRuns: ["payroll", "read"], payrollRun: ["payroll", "read"], payrollSalary: ["payroll", "read"], payrollPayslipPdf: ["payroll", "read"],
   payrollCreateRun: ["payroll", "create"], payrollAddLine: ["payroll", "create"], payrollApprove: ["payroll", "approve"], payrollPay: ["payroll", "delete"], payrollDeleteRun: ["payroll", "delete"], payrollRemoveLine: ["payroll", "delete"],
@@ -34,7 +37,7 @@ const NEEDS: Record<string, [string, string]> = {
   invitationsList: ["memberships", "read"], invitationsCreate: ["memberships", "create"], invitationsRevoke: ["memberships", "update"],
 };
 /** Buttons that start an action, and the grant that must be held for the button to exist. */
-const BUTTONS: Array<{ name: string; screen: string; needs: [string, string] }> = [
+const BUTTONS: Array<{ name: string; screen: string; needs: [string, string]; tab?: string }> = [
   { name: "Add student", screen: "students", needs: ["students", "create"] },
   { name: "Add staff member", screen: "staff", needs: ["staff", "create"] },
   { name: "New application", screen: "admissions", needs: ["admissions", "create"] },
@@ -42,6 +45,7 @@ const BUTTONS: Array<{ name: string; screen: string; needs: [string, string] }> 
   { name: "New invoice", screen: "finance", needs: ["finance", "create"] },
   { name: "Bill fees", screen: "finance", needs: ["finance", "create"] },
   { name: "Add class", screen: "classes", needs: ["academics", "create"] },
+  { name: "Add a period", screen: "timetable", needs: ["academics", "create"], tab: "Bell schedule" },
   { name: "Create an account", screen: "memberships", needs: ["memberships", "create"] },
 ];
 
@@ -49,6 +53,7 @@ const BUTTONS: Array<{ name: string; screen: string; needs: [string, string] }> 
 const EMPTY = {
   items: [], total: 0, count: 0, page: 1, pageSize: 25, limit: 100, detail: true, totals: { count: 0, amountMinor: "0", paidMinor: "0", outstandingMinor: "0" }, totalAmountMinor: "0", collectedMinor: "0", reversedMinor: "0",
   outstandingMinor: "0", amountMinor: "0", paidMinor: "0", byMethod: [], byDay: [], bands: [], months: [], byDepartment: [], grossMinor: "0", deductionsMinor: "0", netMinor: "0", year: 2027,
+  periods: [], workingDays: ["MON", "TUE", "WED", "THU", "FRI", "SAT"],
   id: SCHOOL.id, name: "Greenfield School", subDomain: "greenfield", defaultLanguage: "en", address: null, contactPhone: null, contactEmail: null, primaryColor: null,
 };
 function recordingApi() {
@@ -76,7 +81,7 @@ const asRole = (role: Role) => {
   return m;
 };
 const granted = (role: Role, [resource, action]: [string, string]) => permissionsOf({ schoolRole: role }).some((p) => p.resource === resource && p.action === action && p.scope === "school");
-const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
+const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
 const settle = () => new Promise((r) => setTimeout(r, 100));
 
 afterEach(() => vi.restoreAllMocks());
@@ -133,6 +138,7 @@ describe.each(ROLES)("role %s", { timeout: 30_000 }, (role) => {
       fireEvent.click(await screen.findByRole("button", { name: SCREENS[key]! }));
       await settle();
       for (const b of BUTTONS.filter((x) => x.screen === key)) {
+        if (b.tab) { fireEvent.click(await screen.findByRole("radio", { name: b.tab })); await settle(); }
         const present = screen.queryByRole("button", { name: b.name }) !== null;
         expect(present, `${role} on ${key}: "${b.name}" should be ${granted(role, b.needs) ? "present" : "absent"}`).toBe(granted(role, b.needs));
       }

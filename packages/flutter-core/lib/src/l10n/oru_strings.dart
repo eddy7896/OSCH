@@ -1422,6 +1422,324 @@ abstract class OruStrings {
   /// **'Total'**
   String get reportTotal;
 
+  /// Question before a period is removed from the bell schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name}?'**
+  String ttRemoveQuestion(String name);
+
+  /// Sidebar item: the timetable and the bell schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Timetable'**
+  String get navTimetable;
+
+  /// Screen reader label of the switch between the timetable by class, by teacher and the bell schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Timetable view'**
+  String get ttViewLabel;
+
+  /// Tab: the timetable of one class.
+  ///
+  /// In en, this message translates to:
+  /// **'By class'**
+  String get ttTabClass;
+
+  /// Tab: the timetable of one teacher.
+  ///
+  /// In en, this message translates to:
+  /// **'By teacher'**
+  String get ttTabTeacher;
+
+  /// Tab: the school's periods and working days.
+  ///
+  /// In en, this message translates to:
+  /// **'Bell schedule'**
+  String get ttTabSchedule;
+
+  /// Label of the choice of teacher.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher'**
+  String get ttPickTeacher;
+
+  /// Label of the choice of subject in the lesson editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get ttSubject;
+
+  /// Title shown when the timetable cannot be shown because no academic year is active.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no active academic year'**
+  String get ttNoYearTitle;
+
+  /// Body shown with the no-year title.
+  ///
+  /// In en, this message translates to:
+  /// **'Make an academic year active first.'**
+  String get ttNoYearBody;
+
+  /// Shown when the school has no classes to pick.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no classes yet.'**
+  String get ttNoClasses;
+
+  /// Shown when no member of staff teaches a subject yet.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no teachers yet.'**
+  String get ttNoTeachers;
+
+  /// Title shown when the bell schedule is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no periods yet'**
+  String get ttNoPeriodsTitle;
+
+  /// Body shown with the no-periods title.
+  ///
+  /// In en, this message translates to:
+  /// **'Start from a standard day or a short day, or add periods one by one.'**
+  String get ttNoPeriodsBody;
+
+  /// Shown in a timetable cell that has no lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get ttEmptyCell;
+
+  /// Shown in place of a period that is a break, nothing is taught in it.
+  ///
+  /// In en, this message translates to:
+  /// **'Break'**
+  String get ttBreak;
+
+  /// Title of the lesson editor; slot is the day and the period, for example Mon, Period 1.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson on {slot}'**
+  String ttEditorTitle(String slot);
+
+  /// Button: put the chosen subject and teacher in the cell.
+  ///
+  /// In en, this message translates to:
+  /// **'Set lesson'**
+  String get ttSetLesson;
+
+  /// Button: empty the cell.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear lesson'**
+  String get ttClearLesson;
+
+  /// Confirmation after a lesson was set.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson saved'**
+  String get ttSaved;
+
+  /// Confirmation after a lesson was cleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson cleared'**
+  String get ttCleared;
+
+  /// Refusal: the class already has a lesson in that period.
+  ///
+  /// In en, this message translates to:
+  /// **'This class already has a lesson then.'**
+  String get ttClassBusy;
+
+  /// Refusal: the teacher already teaches another class in that period.
+  ///
+  /// In en, this message translates to:
+  /// **'This teacher is already teaching another class then.'**
+  String get ttTeacherBusy;
+
+  /// Refusal: the teacher is not linked to the subject.
+  ///
+  /// In en, this message translates to:
+  /// **'This teacher does not teach that subject.'**
+  String get ttTeacherNotSubject;
+
+  /// Refusal: the day is not a working day.
+  ///
+  /// In en, this message translates to:
+  /// **'The school does not work on that day.'**
+  String get ttNotWorkingDay;
+
+  /// Refusal: a period used by the timetable cannot be deleted or turned into a break.
+  ///
+  /// In en, this message translates to:
+  /// **'A period that has lessons in it cannot be removed or made a break.'**
+  String get ttPeriodInUse;
+
+  /// Refusal: the new period overlaps another one.
+  ///
+  /// In en, this message translates to:
+  /// **'That time overlaps another period.'**
+  String get ttPeriodOverlaps;
+
+  /// Refusal: the name is taken.
+  ///
+  /// In en, this message translates to:
+  /// **'Another period already has that name.'**
+  String get ttPeriodLabelTaken;
+
+  /// Refusal: the start time is taken.
+  ///
+  /// In en, this message translates to:
+  /// **'Another period already starts at that time.'**
+  String get ttPeriodStartTaken;
+
+  /// Refusal: the period ends before it starts.
+  ///
+  /// In en, this message translates to:
+  /// **'The end must be after the start.'**
+  String get ttPeriodEnd;
+
+  /// Refusal: a time was not in the form HH:MM.
+  ///
+  /// In en, this message translates to:
+  /// **'Write times like 08:30.'**
+  String get ttPeriodTime;
+
+  /// Heading of the list of how many lessons each teacher has in a week.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons per week'**
+  String get ttLoadTitle;
+
+  /// The number of lessons a teacher has in a week.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} lesson} other{{count} lessons}}'**
+  String ttLoadCount(int count);
+
+  /// Shown when the timetable is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons have been placed yet.'**
+  String get ttNoLoad;
+
+  /// Heading of the choice of the days the school works.
+  ///
+  /// In en, this message translates to:
+  /// **'Working days'**
+  String get ttWorkingDays;
+
+  /// Confirmation after the working days were changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Working days saved'**
+  String get ttDaysSaved;
+
+  /// Label of a period's name, for example Period 1.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get ttPeriodName;
+
+  /// Column and field: when a period starts.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get ttStarts;
+
+  /// Column and field: when a period ends.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get ttEnds;
+
+  /// Column heading: the number of a teaching period in the day.
+  ///
+  /// In en, this message translates to:
+  /// **'No.'**
+  String get ttNumber;
+
+  /// Checkbox: the period is a break or lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a break: nothing is taught in it'**
+  String get ttIsBreak;
+
+  /// Button and heading: add one period to the bell schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a period'**
+  String get ttAddPeriod;
+
+  /// Confirmation after a period was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Period added'**
+  String get ttPeriodAdded;
+
+  /// Button: fill an empty bell schedule with a standard school day.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with a standard day'**
+  String get ttStandard;
+
+  /// Button: fill an empty bell schedule with a short school day.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with a short day'**
+  String get ttShort;
+
+  /// Confirmation after a starting bell schedule was applied.
+  ///
+  /// In en, this message translates to:
+  /// **'Bell schedule created'**
+  String get ttTemplateApplied;
+
+  /// Short name of Monday.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get ttDayMON;
+
+  /// Short name of Tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get ttDayTUE;
+
+  /// Short name of Wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get ttDayWED;
+
+  /// Short name of Thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get ttDayTHU;
+
+  /// Short name of Friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get ttDayFRI;
+
+  /// Short name of Saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get ttDaySAT;
+
+  /// Short name of Sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get ttDaySUN;
+
   /// Title of the notice to the Principal that a leave request is waiting.
   ///
   /// In en, this message translates to:

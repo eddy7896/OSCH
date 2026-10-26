@@ -716,6 +716,179 @@ class OruStringsUr extends OruStrings {
   String get reportTotal => 'کل';
 
   @override
+  String ttRemoveQuestion(String name) {
+    return '$name ہٹائیں؟';
+  }
+
+  @override
+  String get navTimetable => 'ٹائم ٹیبل';
+
+  @override
+  String get ttViewLabel => 'ٹائم ٹیبل کا منظر';
+
+  @override
+  String get ttTabClass => 'جماعت کے لحاظ سے';
+
+  @override
+  String get ttTabTeacher => 'استاد کے لحاظ سے';
+
+  @override
+  String get ttTabSchedule => 'گھنٹی کا نظام الاوقات';
+
+  @override
+  String get ttPickTeacher => 'استاد';
+
+  @override
+  String get ttSubject => 'مضمون';
+
+  @override
+  String get ttNoYearTitle => 'کوئی تعلیمی سال فعال نہیں';
+
+  @override
+  String get ttNoYearBody => 'پہلے ایک تعلیمی سال فعال کریں۔';
+
+  @override
+  String get ttNoClasses => 'ابھی کوئی جماعت نہیں ہے۔';
+
+  @override
+  String get ttNoTeachers => 'ابھی کوئی استاد نہیں ہے۔';
+
+  @override
+  String get ttNoPeriodsTitle => 'ابھی کوئی پیریڈ نہیں ہے';
+
+  @override
+  String get ttNoPeriodsBody =>
+      'معیاری دن یا مختصر دن سے شروع کریں، یا پیریڈ ایک ایک کر کے شامل کریں۔';
+
+  @override
+  String get ttEmptyCell => 'خالی';
+
+  @override
+  String get ttBreak => 'وقفہ';
+
+  @override
+  String ttEditorTitle(String slot) {
+    return '$slot کا سبق';
+  }
+
+  @override
+  String get ttSetLesson => 'سبق طے کریں';
+
+  @override
+  String get ttClearLesson => 'سبق ہٹائیں';
+
+  @override
+  String get ttSaved => 'سبق محفوظ ہو گیا';
+
+  @override
+  String get ttCleared => 'سبق ہٹا دیا گیا';
+
+  @override
+  String get ttClassBusy => 'اس جماعت میں اس وقت پہلے سے سبق ہے۔';
+
+  @override
+  String get ttTeacherBusy => 'یہ استاد اس وقت دوسری جماعت میں پڑھا رہے ہیں۔';
+
+  @override
+  String get ttTeacherNotSubject => 'یہ استاد یہ مضمون نہیں پڑھاتے۔';
+
+  @override
+  String get ttNotWorkingDay => 'اسکول اس دن کام نہیں کرتا۔';
+
+  @override
+  String get ttPeriodInUse =>
+      'جس پیریڈ میں سبق ہوں اسے ہٹایا نہیں جا سکتا اور نہ وقفہ بنایا جا سکتا ہے۔';
+
+  @override
+  String get ttPeriodOverlaps => 'یہ وقت کسی دوسرے پیریڈ سے ٹکراتا ہے۔';
+
+  @override
+  String get ttPeriodLabelTaken => 'کسی دوسرے پیریڈ کا یہی نام ہے۔';
+
+  @override
+  String get ttPeriodStartTaken => 'کسی دوسرے پیریڈ کا یہی آغاز کا وقت ہے۔';
+
+  @override
+  String get ttPeriodEnd => 'اختتام کا وقت آغاز کے بعد ہونا چاہیے۔';
+
+  @override
+  String get ttPeriodTime => 'وقت اس طرح لکھیں: 08:30۔';
+
+  @override
+  String get ttLoadTitle => 'فی ہفتہ اسباق';
+
+  @override
+  String ttLoadCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count سبق',
+      one: '$count سبق',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ttNoLoad => 'ابھی کوئی سبق نہیں رکھا گیا۔';
+
+  @override
+  String get ttWorkingDays => 'کام کے دن';
+
+  @override
+  String get ttDaysSaved => 'کام کے دن محفوظ ہو گئے';
+
+  @override
+  String get ttPeriodName => 'نام';
+
+  @override
+  String get ttStarts => 'آغاز';
+
+  @override
+  String get ttEnds => 'اختتام';
+
+  @override
+  String get ttNumber => 'نمبر';
+
+  @override
+  String get ttIsBreak => 'یہ وقفہ ہے: اس میں کچھ نہیں پڑھایا جاتا';
+
+  @override
+  String get ttAddPeriod => 'پیریڈ شامل کریں';
+
+  @override
+  String get ttPeriodAdded => 'پیریڈ شامل ہو گیا';
+
+  @override
+  String get ttStandard => 'معیاری دن سے شروع کریں';
+
+  @override
+  String get ttShort => 'مختصر دن سے شروع کریں';
+
+  @override
+  String get ttTemplateApplied => 'گھنٹی کا نظام الاوقات بن گیا';
+
+  @override
+  String get ttDayMON => 'پیر';
+
+  @override
+  String get ttDayTUE => 'منگل';
+
+  @override
+  String get ttDayWED => 'بدھ';
+
+  @override
+  String get ttDayTHU => 'جمعرات';
+
+  @override
+  String get ttDayFRI => 'جمعہ';
+
+  @override
+  String get ttDaySAT => 'ہفتہ';
+
+  @override
+  String get ttDaySUN => 'اتوار';
+
+  @override
   String get notifLeaveRequestedTitle => 'فیصلے کے لیے رخصت';
 
   @override
