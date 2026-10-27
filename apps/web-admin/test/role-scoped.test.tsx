@@ -28,6 +28,9 @@ const NEEDS: Record<string, [string, string]> = {
   scheduleRemove: ["academics", "delete"], timetableClear: ["academics", "delete"],
   attendanceDay: ["attendance", "read"], attendanceStatuses: ["attendance", "read"], attendanceMissing: ["attendance", "read"], attendanceSubmit: ["attendance", "create"], attendanceLock: ["attendance", "update"], attendanceCorrect: ["attendance", "update"], attendanceSetLabel: ["attendance", "update"],
   staffAttendancePresence: ["staff_attendance", "read"], staffAttendanceCorrect: ["staff_attendance", "update"],
+  gradesTerms: ["academics", "read"], gradesExams: ["academics", "read"], gradesBands: ["academics", "read"], gradesGrid: ["grades", "read"], gradesReportCard: ["grades", "read"], gradesReportCardPdf: ["grades", "read"],
+  gradesSaveMarks: ["grades", "create"], gradesCreateTerm: ["academics", "create"], gradesCreateExam: ["academics", "create"], gradesSetBands: ["academics", "update"], gradesUpdateExam: ["academics", "update"], gradesUpdateTerm: ["academics", "update"],
+  gradesDeleteTerm: ["academics", "delete"], gradesDeleteExam: ["academics", "delete"],
   admissionsList: ["admissions", "read"], admissionsGet: ["admissions", "read"], admissionsCreate: ["admissions", "create"], admissionsDecide: ["admissions", "update"], admissionsAdmit: ["admissions", "update"],
   payrollRuns: ["payroll", "read"], payrollRun: ["payroll", "read"], payrollSalary: ["payroll", "read"], payrollPayslipPdf: ["payroll", "read"],
   payrollCreateRun: ["payroll", "create"], payrollAddLine: ["payroll", "create"], payrollApprove: ["payroll", "approve"], payrollPay: ["payroll", "delete"], payrollDeleteRun: ["payroll", "delete"], payrollRemoveLine: ["payroll", "delete"],
@@ -84,7 +87,7 @@ const asRole = (role: Role) => {
   return m;
 };
 const granted = (role: Role, [resource, action]: [string, string]) => permissionsOf({ schoolRole: role }).some((p) => p.resource === resource && p.action === action && p.scope === "school");
-const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", attendance: "Attendance", "staff-attendance": "Staff attendance", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
+const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", attendance: "Attendance", gradebook: "Gradebook", "staff-attendance": "Staff attendance", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
 const settle = () => new Promise((r) => setTimeout(r, 100));
 
 afterEach(() => vi.restoreAllMocks());

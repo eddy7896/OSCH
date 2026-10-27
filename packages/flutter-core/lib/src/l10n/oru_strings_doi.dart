@@ -714,6 +714,177 @@ class OruStringsDoi extends OruStrings {
   String get reportTotal => 'Total';
 
   @override
+  String get gbViewLabel => 'Gradebook view';
+
+  @override
+  String get gbTabMarks => 'Marks entry';
+
+  @override
+  String get gbTabExams => 'Exams and terms';
+
+  @override
+  String get gbTabBands => 'Grade bands';
+
+  @override
+  String get gbTabCards => 'Report cards';
+
+  @override
+  String get gbPickTerm => 'Term';
+
+  @override
+  String get gbPickExam => 'Exam';
+
+  @override
+  String get gbNoTermsTitle => 'There are no terms yet';
+
+  @override
+  String get gbNoTermsBody => 'Add a term under Exams and terms first.';
+
+  @override
+  String get gbNoExams => 'There are no exams in this term yet.';
+
+  @override
+  String gbOutOf(String max) {
+    return 'Out of $max';
+  }
+
+  @override
+  String gbMarksFor(String name) {
+    return 'Marks: $name';
+  }
+
+  @override
+  String gbAbsentFor(String name) {
+    return 'Absent: $name';
+  }
+
+  @override
+  String get gbSaveMarks => 'Save marks';
+
+  @override
+  String get gbMarksSaved => 'Marks saved';
+
+  @override
+  String get gbAboveMax => 'A mark is above the most possible for this exam.';
+
+  @override
+  String get gbNotAMark => 'A mark must be a number with at most one decimal.';
+
+  @override
+  String get gbAbsentNoMarks => 'A student who is absent cannot have marks.';
+
+  @override
+  String get gbAddTerm => 'Add a term';
+
+  @override
+  String get gbTermName => 'Term name';
+
+  @override
+  String get gbTermAdded => 'Term added';
+
+  @override
+  String get gbNameTaken => 'That name is already used.';
+
+  @override
+  String get gbTermHasExams => 'This term still has exams.';
+
+  @override
+  String get gbAddExam => 'Add an exam';
+
+  @override
+  String get gbExamName => 'Exam name';
+
+  @override
+  String get gbExamAdded => 'Exam added';
+
+  @override
+  String get gbExamExists =>
+      'This class already has an exam with that name for this subject and term.';
+
+  @override
+  String get gbExamHasMarks => 'This exam already has marks.';
+
+  @override
+  String get gbBelowMark =>
+      'The most marks cannot be below a mark already given.';
+
+  @override
+  String get gbMarksField => 'Out of (marks)';
+
+  @override
+  String get gbBandsNone =>
+      'No grade bands are set. Marks show a percentage without a grade.';
+
+  @override
+  String get gbBandsHint =>
+      'Together the bands must cover 0 to 100 with no gap and no overlap. A percentage is never rounded up into a better band.';
+
+  @override
+  String get gbFrom => 'From (%)';
+
+  @override
+  String get gbTo => 'To (%)';
+
+  @override
+  String get gbAddBand => 'Add a band';
+
+  @override
+  String get gbUseStandard => 'Use the standard set';
+
+  @override
+  String get gbSaveBands => 'Save grade bands';
+
+  @override
+  String get gbBandsSaved => 'Grade bands saved';
+
+  @override
+  String gbRemoveBand(String label) {
+    return 'Remove band $label';
+  }
+
+  @override
+  String get gbBandOverlap => 'Two bands cover the same percentages.';
+
+  @override
+  String get gbBandGap => 'There is a gap between two bands.';
+
+  @override
+  String get gbBandStart => 'The lowest band must start at 0.';
+
+  @override
+  String get gbBandEnd => 'The highest band must end at 100.';
+
+  @override
+  String get gbBandLabelTaken => 'Two bands have the same grade.';
+
+  @override
+  String get gbBandBad =>
+      'Each band needs whole numbers from 0 to 100, and a grade name.';
+
+  @override
+  String get gbPickStudent => 'Student';
+
+  @override
+  String gbPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exams have no mark yet and are left out',
+      one: '$count exam has no mark yet and is left out',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gbPdf => 'Download the report card (PDF)';
+
+  @override
+  String get gbNoCard => 'This student has no report card for this term.';
+
+  @override
+  String get gbMarkAbsent => 'Absent';
+
+  @override
   String get attLockDone => 'Day locked';
 
   @override

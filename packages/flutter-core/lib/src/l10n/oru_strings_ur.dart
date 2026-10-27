@@ -716,6 +716,178 @@ class OruStringsUr extends OruStrings {
   String get reportTotal => 'کل';
 
   @override
+  String get gbViewLabel => 'گریڈ بک کا منظر';
+
+  @override
+  String get gbTabMarks => 'نمبر درج کرنا';
+
+  @override
+  String get gbTabExams => 'امتحانات اور ٹرم';
+
+  @override
+  String get gbTabBands => 'گریڈ کی حدیں';
+
+  @override
+  String get gbTabCards => 'رپورٹ کارڈ';
+
+  @override
+  String get gbPickTerm => 'ٹرم';
+
+  @override
+  String get gbPickExam => 'امتحان';
+
+  @override
+  String get gbNoTermsTitle => 'ابھی کوئی ٹرم نہیں ہے';
+
+  @override
+  String get gbNoTermsBody => 'پہلے امتحانات اور ٹرم میں ایک ٹرم شامل کریں۔';
+
+  @override
+  String get gbNoExams => 'اس ٹرم میں ابھی کوئی امتحان نہیں ہے۔';
+
+  @override
+  String gbOutOf(String max) {
+    return 'کل $max';
+  }
+
+  @override
+  String gbMarksFor(String name) {
+    return 'نمبر: $name';
+  }
+
+  @override
+  String gbAbsentFor(String name) {
+    return 'غیر حاضر: $name';
+  }
+
+  @override
+  String get gbSaveMarks => 'نمبر محفوظ کریں';
+
+  @override
+  String get gbMarksSaved => 'نمبر محفوظ ہو گئے';
+
+  @override
+  String get gbAboveMax =>
+      'کسی کا نمبر اس امتحان کے زیادہ سے زیادہ نمبر سے اوپر ہے۔';
+
+  @override
+  String get gbNotAMark => 'نمبر ایک اعشاریہ تک کا عدد ہونا چاہیے۔';
+
+  @override
+  String get gbAbsentNoMarks => 'غیر حاضر طالب علم کے نمبر نہیں ہو سکتے۔';
+
+  @override
+  String get gbAddTerm => 'ٹرم شامل کریں';
+
+  @override
+  String get gbTermName => 'ٹرم کا نام';
+
+  @override
+  String get gbTermAdded => 'ٹرم شامل ہو گئی';
+
+  @override
+  String get gbNameTaken => 'یہ نام پہلے سے استعمال میں ہے۔';
+
+  @override
+  String get gbTermHasExams => 'اس ٹرم میں ابھی امتحانات ہیں۔';
+
+  @override
+  String get gbAddExam => 'امتحان شامل کریں';
+
+  @override
+  String get gbExamName => 'امتحان کا نام';
+
+  @override
+  String get gbExamAdded => 'امتحان شامل ہو گیا';
+
+  @override
+  String get gbExamExists =>
+      'اس جماعت میں اس مضمون اور ٹرم کے لیے اسی نام کا امتحان پہلے سے ہے۔';
+
+  @override
+  String get gbExamHasMarks => 'اس امتحان کے نمبر پہلے سے درج ہیں۔';
+
+  @override
+  String get gbBelowMark =>
+      'زیادہ سے زیادہ نمبر پہلے سے دیے گئے کسی نمبر سے کم نہیں ہو سکتے۔';
+
+  @override
+  String get gbMarksField => 'کل نمبر';
+
+  @override
+  String get gbBandsNone =>
+      'کوئی گریڈ کی حد طے نہیں۔ نمبر بغیر گریڈ کے فیصد کے ساتھ دکھائے جاتے ہیں۔';
+
+  @override
+  String get gbBandsHint =>
+      'حدوں کو مل کر 0 سے 100 تک بغیر خالی جگہ اور بغیر دہرائے پورا ہونا چاہیے۔ فیصد کو کبھی اوپر کی حد میں گول نہیں کیا جاتا۔';
+
+  @override
+  String get gbFrom => 'سے (%)';
+
+  @override
+  String get gbTo => 'تک (%)';
+
+  @override
+  String get gbAddBand => 'حد شامل کریں';
+
+  @override
+  String get gbUseStandard => 'معیاری سیٹ اپنائیں';
+
+  @override
+  String get gbSaveBands => 'گریڈ کی حدیں محفوظ کریں';
+
+  @override
+  String get gbBandsSaved => 'گریڈ کی حدیں محفوظ ہو گئیں';
+
+  @override
+  String gbRemoveBand(String label) {
+    return 'حد $label ہٹائیں';
+  }
+
+  @override
+  String get gbBandOverlap => 'دو حدیں ایک ہی فیصد کو ڈھانپتی ہیں۔';
+
+  @override
+  String get gbBandGap => 'دو حدوں کے درمیان خالی جگہ ہے۔';
+
+  @override
+  String get gbBandStart => 'سب سے نچلی حد 0 سے شروع ہونی چاہیے۔';
+
+  @override
+  String get gbBandEnd => 'سب سے اونچی حد 100 پر ختم ہونی چاہیے۔';
+
+  @override
+  String get gbBandLabelTaken => 'دو حدوں کا گریڈ ایک ہی ہے۔';
+
+  @override
+  String get gbBandBad =>
+      'ہر حد میں 0 سے 100 تک پورے اعداد اور ایک گریڈ کا نام چاہیے۔';
+
+  @override
+  String get gbPickStudent => 'طالب علم';
+
+  @override
+  String gbPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count امتحانات کے نمبر ابھی نہیں ہیں اور چھوڑے گئے ہیں',
+      one: '$count امتحان کا نمبر ابھی نہیں ہے اور چھوڑا گیا ہے',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gbPdf => 'رپورٹ کارڈ ڈاؤن لوڈ کریں (PDF)';
+
+  @override
+  String get gbNoCard => 'اس طالب علم کا اس ٹرم کا کوئی رپورٹ کارڈ نہیں ہے۔';
+
+  @override
+  String get gbMarkAbsent => 'غیر حاضر';
+
+  @override
   String get attLockDone => 'دن مقفل کر دیا گیا';
 
   @override

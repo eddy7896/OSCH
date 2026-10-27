@@ -713,6 +713,177 @@ class OruStringsHi extends OruStrings {
   String get reportTotal => 'कुल';
 
   @override
+  String get gbViewLabel => 'ग्रेडबुक का दृश्य';
+
+  @override
+  String get gbTabMarks => 'अंक दर्ज करना';
+
+  @override
+  String get gbTabExams => 'परीक्षाएँ और सत्र';
+
+  @override
+  String get gbTabBands => 'ग्रेड श्रेणियाँ';
+
+  @override
+  String get gbTabCards => 'रिपोर्ट कार्ड';
+
+  @override
+  String get gbPickTerm => 'सत्र';
+
+  @override
+  String get gbPickExam => 'परीक्षा';
+
+  @override
+  String get gbNoTermsTitle => 'अभी कोई सत्र नहीं है';
+
+  @override
+  String get gbNoTermsBody => 'पहले परीक्षाएँ और सत्र में एक सत्र जोड़ें।';
+
+  @override
+  String get gbNoExams => 'इस सत्र में अभी कोई परीक्षा नहीं है।';
+
+  @override
+  String gbOutOf(String max) {
+    return 'कुल $max';
+  }
+
+  @override
+  String gbMarksFor(String name) {
+    return 'अंक: $name';
+  }
+
+  @override
+  String gbAbsentFor(String name) {
+    return 'अनुपस्थित: $name';
+  }
+
+  @override
+  String get gbSaveMarks => 'अंक सहेजें';
+
+  @override
+  String get gbMarksSaved => 'अंक सहेजे गए';
+
+  @override
+  String get gbAboveMax => 'किसी का अंक इस परीक्षा के अधिकतम अंक से ऊपर है।';
+
+  @override
+  String get gbNotAMark => 'अंक अधिकतम एक दशमलव वाली संख्या होना चाहिए।';
+
+  @override
+  String get gbAbsentNoMarks => 'अनुपस्थित छात्र के अंक नहीं हो सकते।';
+
+  @override
+  String get gbAddTerm => 'सत्र जोड़ें';
+
+  @override
+  String get gbTermName => 'सत्र का नाम';
+
+  @override
+  String get gbTermAdded => 'सत्र जोड़ा गया';
+
+  @override
+  String get gbNameTaken => 'यह नाम पहले से उपयोग में है।';
+
+  @override
+  String get gbTermHasExams => 'इस सत्र में अभी परीक्षाएँ हैं।';
+
+  @override
+  String get gbAddExam => 'परीक्षा जोड़ें';
+
+  @override
+  String get gbExamName => 'परीक्षा का नाम';
+
+  @override
+  String get gbExamAdded => 'परीक्षा जोड़ी गई';
+
+  @override
+  String get gbExamExists =>
+      'इस कक्षा में इस विषय और सत्र के लिए इसी नाम की परीक्षा पहले से है।';
+
+  @override
+  String get gbExamHasMarks => 'इस परीक्षा के अंक पहले से दर्ज हैं।';
+
+  @override
+  String get gbBelowMark =>
+      'अधिकतम अंक, पहले से दिए गए किसी अंक से कम नहीं हो सकते।';
+
+  @override
+  String get gbMarksField => 'कुल अंक';
+
+  @override
+  String get gbBandsNone =>
+      'कोई ग्रेड श्रेणी तय नहीं है। अंक बिना ग्रेड के प्रतिशत के साथ दिखते हैं।';
+
+  @override
+  String get gbBandsHint =>
+      'श्रेणियों को मिलाकर 0 से 100 तक बिना खाली जगह और बिना दोहराव के पूरा होना चाहिए। प्रतिशत को कभी ऊपर की श्रेणी में पूर्णांकित नहीं किया जाता।';
+
+  @override
+  String get gbFrom => 'से (%)';
+
+  @override
+  String get gbTo => 'तक (%)';
+
+  @override
+  String get gbAddBand => 'श्रेणी जोड़ें';
+
+  @override
+  String get gbUseStandard => 'मानक सेट अपनाएँ';
+
+  @override
+  String get gbSaveBands => 'ग्रेड श्रेणियाँ सहेजें';
+
+  @override
+  String get gbBandsSaved => 'ग्रेड श्रेणियों को सहेजा गया';
+
+  @override
+  String gbRemoveBand(String label) {
+    return 'श्रेणी $label हटाएँ';
+  }
+
+  @override
+  String get gbBandOverlap => 'दो श्रेणियाँ एक ही प्रतिशत को ढकती हैं।';
+
+  @override
+  String get gbBandGap => 'दो श्रेणियों के बीच खाली जगह है।';
+
+  @override
+  String get gbBandStart => 'सबसे निचली श्रेणी 0 से शुरू होनी चाहिए।';
+
+  @override
+  String get gbBandEnd => 'सबसे ऊँची श्रेणी 100 पर खत्म होनी चाहिए।';
+
+  @override
+  String get gbBandLabelTaken => 'दो श्रेणियों का ग्रेड एक ही है।';
+
+  @override
+  String get gbBandBad =>
+      'हर श्रेणी में 0 से 100 तक पूर्ण संख्याएँ और एक ग्रेड का नाम चाहिए।';
+
+  @override
+  String get gbPickStudent => 'छात्र';
+
+  @override
+  String gbPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count परीक्षाओं के अंक अभी नहीं हैं और छोड़ी गई हैं',
+      one: '$count परीक्षा का अंक अभी नहीं है और छोड़ी गई है',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gbPdf => 'रिपोर्ट कार्ड डाउनलोड करें (PDF)';
+
+  @override
+  String get gbNoCard => 'इस छात्र का इस सत्र का कोई रिपोर्ट कार्ड नहीं है।';
+
+  @override
+  String get gbMarkAbsent => 'अनुपस्थित';
+
+  @override
   String get attLockDone => 'दिन बंद किया गया';
 
   @override
