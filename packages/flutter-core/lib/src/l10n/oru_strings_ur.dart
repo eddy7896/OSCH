@@ -716,6 +716,816 @@ class OruStringsUr extends OruStrings {
   String get reportTotal => 'کل';
 
   @override
+  String get ntBell => 'اطلاعات';
+
+  @override
+  String ntBellUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ناپڑھی اطلاعات',
+      one: '$count ناپڑھی اطلاع',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ntEmpty => 'آپ کے پاس کوئی اطلاع نہیں ہے۔';
+
+  @override
+  String get ntMarkAll => 'سب کو پڑھا ہوا نشان زد کریں';
+
+  @override
+  String get ntClose => 'بند کریں';
+
+  @override
+  String get ntSettings => 'منتخب کریں کہ آپ کیا دیکھیں';
+
+  @override
+  String get ntSettingsHint => 'چھپائی گئی اقسام ہٹتی نہیں، محفوظ رہتی ہیں۔';
+
+  @override
+  String get ntCatleave => 'رخصت';
+
+  @override
+  String get ntCatsubstitution => 'متبادل اساتذہ';
+
+  @override
+  String get ntCatpayroll => 'تنخواہ';
+
+  @override
+  String get ntUnread => 'ناپڑھی';
+
+  @override
+  String get ntLoadFailed => 'اطلاعات لوڈ نہیں ہو سکیں۔';
+
+  @override
+  String get sbPeriod => 'پیریڈ';
+
+  @override
+  String get lvViewLabel => 'رخصت کا منظر';
+
+  @override
+  String get lvTabRequests => 'درخواستیں';
+
+  @override
+  String get lvTabTypes => 'اقسام اور حدیں';
+
+  @override
+  String get lvAll => 'سب';
+
+  @override
+  String get lvStatus => 'کیفیت';
+
+  @override
+  String get lvStatusPENDING => 'زیر التوا';
+
+  @override
+  String get lvStatusAPPROVED => 'منظور شدہ';
+
+  @override
+  String get lvStatusREJECTED => 'مسترد';
+
+  @override
+  String get lvStatusCANCELLED => 'منسوخ';
+
+  @override
+  String get lvPerson => 'فرد';
+
+  @override
+  String get lvType => 'قسم';
+
+  @override
+  String get lvDates => 'تاریخیں';
+
+  @override
+  String get lvDays => 'دن';
+
+  @override
+  String get lvDecision => 'فیصلہ';
+
+  @override
+  String get lvHalfMORNING => 'صبح';
+
+  @override
+  String get lvHalfAFTERNOON => 'دوپہر';
+
+  @override
+  String get lvNoRequests => 'رخصت کی کوئی درخواست نہیں ہے۔';
+
+  @override
+  String get lvApprove => 'منظور کریں';
+
+  @override
+  String get lvReject => 'مسترد کریں';
+
+  @override
+  String lvRejectQuestion(String name) {
+    return '$name کی رخصت مسترد کریں؟';
+  }
+
+  @override
+  String get lvRejectNote => 'فرد کے لیے نوٹ (اختیاری)';
+
+  @override
+  String get lvApproved => 'رخصت منظور کر دی گئی';
+
+  @override
+  String get lvRejected => 'رخصت مسترد کر دی گئی';
+
+  @override
+  String get lvNotPending => 'اس درخواست پر پہلے ہی فیصلہ ہو چکا ہے۔';
+
+  @override
+  String get lvOverBalance => 'یہ باقی حد سے زیادہ ہے۔';
+
+  @override
+  String get lvOverlap => 'یہ اسی فرد کی کسی دوسری رخصت سے ٹکراتی ہے۔';
+
+  @override
+  String get lvTypeName => 'نام';
+
+  @override
+  String get lvPaid => 'تنخواہ کے ساتھ';
+
+  @override
+  String get lvUnpaid => 'بلا تنخواہ';
+
+  @override
+  String get lvQuota => 'سالانہ دن';
+
+  @override
+  String get lvAddType => 'رخصت کی قسم شامل کریں';
+
+  @override
+  String get lvTypeAdded => 'رخصت کی قسم شامل ہو گئی';
+
+  @override
+  String get lvIsPaid => 'تنخواہ کے ساتھ رخصت (سالانہ حد سے دن کٹتے ہیں)';
+
+  @override
+  String get lvNoTypes => 'ابھی رخصت کی کوئی قسم نہیں ہے۔';
+
+  @override
+  String get lvTypeInUse =>
+      'اس رخصت کی قسم کی درخواستیں ہیں، اسے ہٹایا نہیں جا سکتا۔';
+
+  @override
+  String get lvPaidNeedsQuota =>
+      'تنخواہ والی قسم کے لیے سالانہ دنوں کی تعداد چاہیے، پوری یا آدھی۔';
+
+  @override
+  String get lvAllowances => 'حدیں';
+
+  @override
+  String get lvPickPerson => 'فرد';
+
+  @override
+  String get lvAllowed => 'مجاز';
+
+  @override
+  String get lvRemaining => 'باقی';
+
+  @override
+  String lvAllowedFor(String type) {
+    return '$type کے مجاز دن';
+  }
+
+  @override
+  String get lvAllowanceSaved => 'حد محفوظ ہو گئی';
+
+  @override
+  String get lvBelowTaken => 'یہ پہلے ہی لی جا چکی رخصتوں سے کم ہے۔';
+
+  @override
+  String get lvStandardHint => 'قسم کی سالانہ حد، جب تک فرد اسے نہ مانگے۔';
+
+  @override
+  String get lvWholeOrHalf =>
+      'پورے یا آدھے دنوں کی تعداد لکھیں، جیسے 12 یا 7.5۔';
+
+  @override
+  String get sbFrom => 'سے';
+
+  @override
+  String get sbTo => 'تک';
+
+  @override
+  String get sbAway => 'غیر حاضر استاد';
+
+  @override
+  String get sbCover => 'متبادل';
+
+  @override
+  String get sbNotChosen => 'ابھی منتخب نہیں ہوا';
+
+  @override
+  String get sbChoose => 'منتخب کریں';
+
+  @override
+  String get sbChange => 'بدلیں';
+
+  @override
+  String get sbRemoveCover => 'متبادل ہٹائیں';
+
+  @override
+  String sbSuggestionsTitle(String slot) {
+    return '$slot کون سنبھال سکتا ہے';
+  }
+
+  @override
+  String sbThisMonth(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'اس مہینے $count بار',
+      one: 'اس مہینے $count بار',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String sbAssign(String name) {
+    return '$name کو منتخب کریں';
+  }
+
+  @override
+  String get sbNoCandidates => 'اس سبق کے لیے کوئی خالی اور اہل استاد نہیں ہے۔';
+
+  @override
+  String get sbAssigned => 'متبادل منتخب ہو گیا';
+
+  @override
+  String get sbCleared => 'متبادل ہٹا دیا گیا';
+
+  @override
+  String get sbNoNeeds => 'اس مدت میں کسی سبق کو متبادل کا انتظار نہیں۔';
+
+  @override
+  String get sbHasOwnLesson => 'اس وقت اس استاد کا اپنا سبق ہے۔';
+
+  @override
+  String get sbOnLeave => 'اس وقت وہ استاد رخصت پر ہے۔';
+
+  @override
+  String get sbAlreadyCovering =>
+      'اس وقت وہ استاد پہلے سے دوسری جماعت سنبھال رہا ہے۔';
+
+  @override
+  String get sbSameAsAbsent =>
+      'جو استاد غیر حاضر ہے وہ اپنا سبق نہیں سنبھال سکتا۔';
+
+  @override
+  String get sbNoLongerNeeded => 'اس سبق کو اب متبادل کی ضرورت نہیں۔';
+
+  @override
+  String get sbChanged => 'اس دوران کچھ بدل گیا۔ فہرست دوبارہ دیکھیں۔';
+
+  @override
+  String get plTitle => 'اس مہینے کی بلا تنخواہ رخصت';
+
+  @override
+  String get plNote =>
+      'بلا تنخواہ منظور شدہ رخصت والے ہر فرد کے لیے: ماہانہ تنخواہ ضرب دن، تقسیم مہینے کے اسکول کے کام کے دن۔ جب تک ایچ آر لاگو نہ کرے، کچھ نہیں کٹتا۔';
+
+  @override
+  String get plDays => 'بلا تنخواہ دن';
+
+  @override
+  String get plProposed => 'مجوزہ کٹوتی';
+
+  @override
+  String get plApply => 'لاگو کریں';
+
+  @override
+  String get plAmount => 'کٹوتی کی رقم';
+
+  @override
+  String plApplied(String amount) {
+    return 'لاگو: $amount';
+  }
+
+  @override
+  String get plDone => 'کٹوتی لاگو کر دی گئی';
+
+  @override
+  String get plNone => 'اس مہینے بلا تنخواہ کوئی منظور شدہ رخصت نہیں ہے۔';
+
+  @override
+  String plWithout(String names) {
+    return 'بلا تنخواہ رخصت ہے مگر اس رن میں تنخواہ کی پرچی نہیں: $names';
+  }
+
+  @override
+  String get plAlready => 'یہ کٹوتی پہلے ہی لاگو ہو چکی ہے۔';
+
+  @override
+  String get plAboveGross => 'یہ مہینے کی تنخواہ سے زیادہ ہے۔';
+
+  @override
+  String get plNotDraft => 'صرف مسودہ رن بدلا جا سکتا ہے۔';
+
+  @override
+  String get gbViewLabel => 'گریڈ بک کا منظر';
+
+  @override
+  String get gbTabMarks => 'نمبر درج کرنا';
+
+  @override
+  String get gbTabExams => 'امتحانات اور ٹرم';
+
+  @override
+  String get gbTabBands => 'گریڈ کی حدیں';
+
+  @override
+  String get gbTabCards => 'رپورٹ کارڈ';
+
+  @override
+  String get gbPickTerm => 'ٹرم';
+
+  @override
+  String get gbPickExam => 'امتحان';
+
+  @override
+  String get gbNoTermsTitle => 'ابھی کوئی ٹرم نہیں ہے';
+
+  @override
+  String get gbNoTermsBody => 'پہلے امتحانات اور ٹرم میں ایک ٹرم شامل کریں۔';
+
+  @override
+  String get gbNoExams => 'اس ٹرم میں ابھی کوئی امتحان نہیں ہے۔';
+
+  @override
+  String gbOutOf(String max) {
+    return 'کل $max';
+  }
+
+  @override
+  String gbMarksFor(String name) {
+    return 'نمبر: $name';
+  }
+
+  @override
+  String gbAbsentFor(String name) {
+    return 'غیر حاضر: $name';
+  }
+
+  @override
+  String get gbSaveMarks => 'نمبر محفوظ کریں';
+
+  @override
+  String get gbMarksSaved => 'نمبر محفوظ ہو گئے';
+
+  @override
+  String get gbAboveMax =>
+      'کسی کا نمبر اس امتحان کے زیادہ سے زیادہ نمبر سے اوپر ہے۔';
+
+  @override
+  String get gbNotAMark => 'نمبر ایک اعشاریہ تک کا عدد ہونا چاہیے۔';
+
+  @override
+  String get gbAbsentNoMarks => 'غیر حاضر طالب علم کے نمبر نہیں ہو سکتے۔';
+
+  @override
+  String get gbAddTerm => 'ٹرم شامل کریں';
+
+  @override
+  String get gbTermName => 'ٹرم کا نام';
+
+  @override
+  String get gbTermAdded => 'ٹرم شامل ہو گئی';
+
+  @override
+  String get gbNameTaken => 'یہ نام پہلے سے استعمال میں ہے۔';
+
+  @override
+  String get gbTermHasExams => 'اس ٹرم میں ابھی امتحانات ہیں۔';
+
+  @override
+  String get gbAddExam => 'امتحان شامل کریں';
+
+  @override
+  String get gbExamName => 'امتحان کا نام';
+
+  @override
+  String get gbExamAdded => 'امتحان شامل ہو گیا';
+
+  @override
+  String get gbExamExists =>
+      'اس جماعت میں اس مضمون اور ٹرم کے لیے اسی نام کا امتحان پہلے سے ہے۔';
+
+  @override
+  String get gbExamHasMarks => 'اس امتحان کے نمبر پہلے سے درج ہیں۔';
+
+  @override
+  String get gbBelowMark =>
+      'زیادہ سے زیادہ نمبر پہلے سے دیے گئے کسی نمبر سے کم نہیں ہو سکتے۔';
+
+  @override
+  String get gbMarksField => 'کل نمبر';
+
+  @override
+  String get gbBandsNone =>
+      'کوئی گریڈ کی حد طے نہیں۔ نمبر بغیر گریڈ کے فیصد کے ساتھ دکھائے جاتے ہیں۔';
+
+  @override
+  String get gbBandsHint =>
+      'حدوں کو مل کر 0 سے 100 تک بغیر خالی جگہ اور بغیر دہرائے پورا ہونا چاہیے۔ فیصد کو کبھی اوپر کی حد میں گول نہیں کیا جاتا۔';
+
+  @override
+  String get gbFrom => 'سے (%)';
+
+  @override
+  String get gbTo => 'تک (%)';
+
+  @override
+  String get gbAddBand => 'حد شامل کریں';
+
+  @override
+  String get gbUseStandard => 'معیاری سیٹ اپنائیں';
+
+  @override
+  String get gbSaveBands => 'گریڈ کی حدیں محفوظ کریں';
+
+  @override
+  String get gbBandsSaved => 'گریڈ کی حدیں محفوظ ہو گئیں';
+
+  @override
+  String gbRemoveBand(String label) {
+    return 'حد $label ہٹائیں';
+  }
+
+  @override
+  String get gbBandOverlap => 'دو حدیں ایک ہی فیصد کو ڈھانپتی ہیں۔';
+
+  @override
+  String get gbBandGap => 'دو حدوں کے درمیان خالی جگہ ہے۔';
+
+  @override
+  String get gbBandStart => 'سب سے نچلی حد 0 سے شروع ہونی چاہیے۔';
+
+  @override
+  String get gbBandEnd => 'سب سے اونچی حد 100 پر ختم ہونی چاہیے۔';
+
+  @override
+  String get gbBandLabelTaken => 'دو حدوں کا گریڈ ایک ہی ہے۔';
+
+  @override
+  String get gbBandBad =>
+      'ہر حد میں 0 سے 100 تک پورے اعداد اور ایک گریڈ کا نام چاہیے۔';
+
+  @override
+  String get gbPickStudent => 'طالب علم';
+
+  @override
+  String gbPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count امتحانات کے نمبر ابھی نہیں ہیں اور چھوڑے گئے ہیں',
+      one: '$count امتحان کا نمبر ابھی نہیں ہے اور چھوڑا گیا ہے',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gbPdf => 'رپورٹ کارڈ ڈاؤن لوڈ کریں (PDF)';
+
+  @override
+  String get gbNoCard => 'اس طالب علم کا اس ٹرم کا کوئی رپورٹ کارڈ نہیں ہے۔';
+
+  @override
+  String get gbMarkAbsent => 'غیر حاضر';
+
+  @override
+  String get attLockDone => 'دن مقفل کر دیا گیا';
+
+  @override
+  String get attViewLabel => 'حاضری کا منظر';
+
+  @override
+  String get attTabRegister => 'روزانہ حاضری';
+
+  @override
+  String get attTabMissing => 'ابھی تک نہیں لی گئی';
+
+  @override
+  String get attTabNames => 'کیفیت کے نام';
+
+  @override
+  String get attDate => 'تاریخ';
+
+  @override
+  String get attStatusPRESENT => 'حاضر';
+
+  @override
+  String get attStatusABSENT => 'غیر حاضر';
+
+  @override
+  String get attStatusLATE => 'دیر سے';
+
+  @override
+  String get attStatusLEAVE => 'رخصت پر';
+
+  @override
+  String get attStatusMEDICAL => 'طبی';
+
+  @override
+  String get attStatusHALF_DAY => 'آدھا دن';
+
+  @override
+  String get attStatusEXCUSED => 'معافی';
+
+  @override
+  String attCount(String label, String count) {
+    return '$label: $count';
+  }
+
+  @override
+  String get attNotTaken =>
+      'اس جماعت کی اس تاریخ کی حاضری ابھی نہیں لی گئی۔ جب تک نہ لی جائے، سب حاضر دکھائے جاتے ہیں۔';
+
+  @override
+  String attTakenBy(String name) {
+    return '$name نے لی';
+  }
+
+  @override
+  String get attLocked => 'مقفل';
+
+  @override
+  String get attLockedNote =>
+      'یہ دن مقفل ہے۔ صرف اصلاح سے بدلا جا سکتا ہے، اور پرانی اور نئی قدر درج ہوتی ہے۔';
+
+  @override
+  String get attStudent => 'طالب علم';
+
+  @override
+  String get attStatus => 'کیفیت';
+
+  @override
+  String get attNote => 'نوٹ';
+
+  @override
+  String get attNoStudents => 'اس جماعت میں ابھی کوئی طالب علم نہیں ہے۔';
+
+  @override
+  String get attSave => 'حاضری محفوظ کریں';
+
+  @override
+  String get attSaveCorrection => 'اصلاح محفوظ کریں';
+
+  @override
+  String get attLock => 'دن مقفل کریں';
+
+  @override
+  String get attSaved => 'حاضری محفوظ ہو گئی';
+
+  @override
+  String get attCorrected => 'اصلاح محفوظ ہو گئی';
+
+  @override
+  String get attDayLocked => 'یہ دن مقفل ہے۔ تعلیمی منتظم سے اصلاح کروائیں۔';
+
+  @override
+  String get attFutureDate => 'وہ تاریخ ابھی نہیں آئی۔';
+
+  @override
+  String get attMissingEmpty => 'اس تاریخ کے لیے کچھ باقی نہیں۔';
+
+  @override
+  String attMissingTitle(String date) {
+    return '$date کو بغیر حاضری والی جماعتیں';
+  }
+
+  @override
+  String get attNamesHint =>
+      'اپنے اسکول کے لیے کسی کیفیت کا نام بدلیں۔ اس کا مطلب اور رنگ وہی رہتے ہیں۔';
+
+  @override
+  String attNameFor(String status) {
+    return '$status کا نام';
+  }
+
+  @override
+  String get attNameSaved => 'نام محفوظ ہو گیا';
+
+  @override
+  String get attNameDefault => 'معیاری نام';
+
+  @override
+  String get satTitleNote =>
+      'کسی تاریخ کو کون کام پر ہے۔ وقت بھارتی معیاری وقت میں ہیں۔';
+
+  @override
+  String get satIn => 'آمد';
+
+  @override
+  String get satOut => 'روانگی';
+
+  @override
+  String get satStateIN => 'کام پر';
+
+  @override
+  String get satStateOUT => 'آج کے لیے جا چکے';
+
+  @override
+  String get satStateNONE => 'ابھی نہیں آئے';
+
+  @override
+  String get satCorrect => 'درست کریں';
+
+  @override
+  String satCorrectTitle(String name) {
+    return '$name کے وقت درست کریں';
+  }
+
+  @override
+  String get satTimeHint => 'وقت اس طرح لکھیں: 09:15۔';
+
+  @override
+  String get satSaved => 'وقت محفوظ ہو گئے';
+
+  @override
+  String get satNeedsIn => 'آمد کا وقت بھی لکھیں۔';
+
+  @override
+  String get satNone => 'فہرست میں ابھی کوئی عملہ نہیں۔';
+
+  @override
+  String ttRemoveQuestion(String name) {
+    return '$name ہٹائیں؟';
+  }
+
+  @override
+  String get navTimetable => 'ٹائم ٹیبل';
+
+  @override
+  String get ttViewLabel => 'ٹائم ٹیبل کا منظر';
+
+  @override
+  String get ttTabClass => 'جماعت کے لحاظ سے';
+
+  @override
+  String get ttTabTeacher => 'استاد کے لحاظ سے';
+
+  @override
+  String get ttTabSchedule => 'گھنٹی کا نظام الاوقات';
+
+  @override
+  String get ttPickTeacher => 'استاد';
+
+  @override
+  String get ttSubject => 'مضمون';
+
+  @override
+  String get ttNoYearTitle => 'کوئی تعلیمی سال فعال نہیں';
+
+  @override
+  String get ttNoYearBody => 'پہلے ایک تعلیمی سال فعال کریں۔';
+
+  @override
+  String get ttNoClasses => 'ابھی کوئی جماعت نہیں ہے۔';
+
+  @override
+  String get ttNoTeachers => 'ابھی کوئی استاد نہیں ہے۔';
+
+  @override
+  String get ttNoPeriodsTitle => 'ابھی کوئی پیریڈ نہیں ہے';
+
+  @override
+  String get ttNoPeriodsBody =>
+      'معیاری دن یا مختصر دن سے شروع کریں، یا پیریڈ ایک ایک کر کے شامل کریں۔';
+
+  @override
+  String get ttEmptyCell => 'خالی';
+
+  @override
+  String get ttBreak => 'وقفہ';
+
+  @override
+  String ttEditorTitle(String slot) {
+    return '$slot کا سبق';
+  }
+
+  @override
+  String get ttSetLesson => 'سبق طے کریں';
+
+  @override
+  String get ttClearLesson => 'سبق ہٹائیں';
+
+  @override
+  String get ttSaved => 'سبق محفوظ ہو گیا';
+
+  @override
+  String get ttCleared => 'سبق ہٹا دیا گیا';
+
+  @override
+  String get ttClassBusy => 'اس جماعت میں اس وقت پہلے سے سبق ہے۔';
+
+  @override
+  String get ttTeacherBusy => 'یہ استاد اس وقت دوسری جماعت میں پڑھا رہے ہیں۔';
+
+  @override
+  String get ttTeacherNotSubject => 'یہ استاد یہ مضمون نہیں پڑھاتے۔';
+
+  @override
+  String get ttNotWorkingDay => 'اسکول اس دن کام نہیں کرتا۔';
+
+  @override
+  String get ttPeriodInUse =>
+      'جس پیریڈ میں سبق ہوں اسے ہٹایا نہیں جا سکتا اور نہ وقفہ بنایا جا سکتا ہے۔';
+
+  @override
+  String get ttPeriodOverlaps => 'یہ وقت کسی دوسرے پیریڈ سے ٹکراتا ہے۔';
+
+  @override
+  String get ttPeriodLabelTaken => 'کسی دوسرے پیریڈ کا یہی نام ہے۔';
+
+  @override
+  String get ttPeriodStartTaken => 'کسی دوسرے پیریڈ کا یہی آغاز کا وقت ہے۔';
+
+  @override
+  String get ttPeriodEnd => 'اختتام کا وقت آغاز کے بعد ہونا چاہیے۔';
+
+  @override
+  String get ttPeriodTime => 'وقت اس طرح لکھیں: 08:30۔';
+
+  @override
+  String get ttLoadTitle => 'فی ہفتہ اسباق';
+
+  @override
+  String ttLoadCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count سبق',
+      one: '$count سبق',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ttNoLoad => 'ابھی کوئی سبق نہیں رکھا گیا۔';
+
+  @override
+  String get ttWorkingDays => 'کام کے دن';
+
+  @override
+  String get ttDaysSaved => 'کام کے دن محفوظ ہو گئے';
+
+  @override
+  String get ttPeriodName => 'نام';
+
+  @override
+  String get ttStarts => 'آغاز';
+
+  @override
+  String get ttEnds => 'اختتام';
+
+  @override
+  String get ttNumber => 'نمبر';
+
+  @override
+  String get ttIsBreak => 'یہ وقفہ ہے: اس میں کچھ نہیں پڑھایا جاتا';
+
+  @override
+  String get ttAddPeriod => 'پیریڈ شامل کریں';
+
+  @override
+  String get ttPeriodAdded => 'پیریڈ شامل ہو گیا';
+
+  @override
+  String get ttStandard => 'معیاری دن سے شروع کریں';
+
+  @override
+  String get ttShort => 'مختصر دن سے شروع کریں';
+
+  @override
+  String get ttTemplateApplied => 'گھنٹی کا نظام الاوقات بن گیا';
+
+  @override
+  String get ttDayMON => 'پیر';
+
+  @override
+  String get ttDayTUE => 'منگل';
+
+  @override
+  String get ttDayWED => 'بدھ';
+
+  @override
+  String get ttDayTHU => 'جمعرات';
+
+  @override
+  String get ttDayFRI => 'جمعہ';
+
+  @override
+  String get ttDaySAT => 'ہفتہ';
+
+  @override
+  String get ttDaySUN => 'اتوار';
+
+  @override
   String get notifLeaveRequestedTitle => 'فیصلے کے لیے رخصت';
 
   @override

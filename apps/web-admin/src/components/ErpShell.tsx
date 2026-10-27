@@ -9,19 +9,26 @@ import { isDashboard, ITEM, SECTION_KEY } from "@/lib/nav";
 import { Dashboard } from "./Dashboard";
 import { Glance, hasGlance } from "./screens/Glance";
 import { Admissions } from "./screens/Admissions";
+import { Attendance } from "./screens/Attendance";
+import { StaffAttendance } from "./screens/StaffAttendance";
 import { Classes } from "./screens/Classes";
 import { Fees } from "./screens/Fees";
+import { Gradebook } from "./screens/Gradebook";
 import { HrReports } from "./screens/HrReports";
+import { Leave } from "./screens/Leave";
+import { Substitutions } from "./screens/Substitutions";
 import { Settings } from "./screens/Settings";
 import { FinanceReports } from "./screens/FinanceReports";
 import { Payroll } from "./screens/Payroll";
 import { Staff } from "./screens/Staff";
+import { Timetable } from "./screens/Timetable";
 import { Users } from "./screens/Users";
 import { Students } from "./screens/Students";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { NotificationBell } from "./NotificationBell";
 
 /** The navigation keys that have a screen. */
-const BUILT = new Set(["memberships", "students", "classes", "admissions", "staff", "payroll", "finance", "settings", "reports-finance", "reports-hr"]);
+const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "leave", "substitution", "admissions", "staff", "payroll", "finance", "settings", "reports-finance", "reports-hr"]);
 
 type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
@@ -52,6 +59,7 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-surface px-4 py-3">
           <LanguageSwitcher />
           <div className="flex items-center gap-3">
+            <NotificationBell />
             <span className="text-body text-text-muted">{name}</span>
             <Button size="comfortable" variant="ghost" onClick={() => void port?.signOut()}>
               {t("actionSignOut")}
@@ -69,6 +77,18 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
             <Students canCreate={access.permissions["students"]?.["create"] === "school"} />
           ) : current === "classes" ? (
             <Classes grants={{ create: access.permissions["academics"]?.["create"] === "school", remove: access.permissions["academics"]?.["delete"] === "school", update: access.permissions["academics"]?.["update"] === "school" }} />
+          ) : current === "timetable" ? (
+            <Timetable grants={{ edit: access.permissions["academics"]?.["update"] === "school", create: access.permissions["academics"]?.["create"] === "school", remove: access.permissions["academics"]?.["delete"] === "school" }} />
+          ) : current === "attendance" ? (
+            <Attendance grants={{ submit: access.permissions["attendance"]?.["create"] === "school", edit: access.permissions["attendance"]?.["update"] === "school" }} />
+          ) : current === "gradebook" ? (
+            <Gradebook grants={{ enter: access.permissions["grades"]?.["create"] === "school", create: access.permissions["academics"]?.["create"] === "school", update: access.permissions["academics"]?.["update"] === "school", remove: access.permissions["academics"]?.["delete"] === "school" }} />
+          ) : current === "leave" ? (
+            <Leave grants={{ approve: access.permissions["leave"]?.["approve"] === "school", create: access.permissions["leave"]?.["create"] === "school", manage: access.permissions["leave"]?.["update"] === "school" }} />
+          ) : current === "substitution" ? (
+            <Substitutions grants={{ assign: access.permissions["academics"]?.["update"] === "school" }} />
+          ) : current === "staff-attendance" ? (
+            <StaffAttendance grants={{ correct: access.permissions["staff_attendance"]?.["update"] === "school" }} />
           ) : current === "admissions" ? (
             <Admissions canCreate={access.permissions["admissions"]?.["create"] === "school"} canUpdate={access.permissions["admissions"]?.["update"] === "school"} />
           ) : current === "finance" ? (
@@ -76,7 +96,7 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
           ) : current === "staff" ? (
             <Staff grants={{ create: access.permissions["staff"]?.["create"] === "school", salaryRead: access.permissions["payroll"]?.["read"] === "school", salaryAdd: access.permissions["payroll"]?.["create"] === "school", salaryRemove: access.permissions["payroll"]?.["delete"] === "school" }} />
           ) : current === "payroll" ? (
-            <Payroll grants={{ create: access.permissions["payroll"]?.["create"] === "school", approve: access.permissions["payroll"]?.["approve"] === "school", pay: access.permissions["payroll"]?.["delete"] === "school" }} />
+            <Payroll grants={{ create: access.permissions["payroll"]?.["create"] === "school", edit: access.permissions["payroll"]?.["update"] === "school", approve: access.permissions["payroll"]?.["approve"] === "school", pay: access.permissions["payroll"]?.["delete"] === "school" }} />
           ) : current === "memberships" ? (
             <Users selfId={me.user.id} grants={{ create: access.permissions["memberships"]?.["create"] === "school", update: access.permissions["memberships"]?.["update"] === "school", remove: access.permissions["memberships"]?.["delete"] === "school" }} />
           ) : current === "settings" ? (

@@ -24,6 +24,7 @@ export const ITEM: Record<string, { label: string; icon: IconName }> = {
   "dashboard-operations": { label: "navDashboard", icon: "home" },
   students: { label: "navStudents", icon: "users" },
   classes: { label: "navClasses", icon: "book" },
+  timetable: { label: "navTimetable", icon: "calendar" },
   attendance: { label: "navAttendance", icon: "calendar" },
   gradebook: { label: "navGradebook", icon: "chart" },
   substitution: { label: "navSubstitution", icon: "user-minus" },

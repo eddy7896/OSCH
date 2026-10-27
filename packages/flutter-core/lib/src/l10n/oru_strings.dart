@@ -1422,6 +1422,1458 @@ abstract class OruStrings {
   /// **'Total'**
   String get reportTotal;
 
+  /// Name of the bell button in the top bar that opens the notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get ntBell;
+
+  /// Said after the word Notifications on the bell button when some are unread: how many.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} unread notification} other{{count} unread notifications}}'**
+  String ntBellUnread(int count);
+
+  /// Shown when the inbox is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no notifications.'**
+  String get ntEmpty;
+
+  /// Button: mark every notification as read.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get ntMarkAll;
+
+  /// Button: close the notifications panel.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get ntClose;
+
+  /// Heading of the choice of which kinds of notification to show.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what you see'**
+  String get ntSettings;
+
+  /// Explains the choice of which kinds of notification to show.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden kinds are kept, not deleted.'**
+  String get ntSettingsHint;
+
+  /// Kind of notification: about leave requests and decisions.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get ntCatleave;
+
+  /// Kind of notification: about covering lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Substitutions'**
+  String get ntCatsubstitution;
+
+  /// Kind of notification: about pay.
+  ///
+  /// In en, this message translates to:
+  /// **'Payroll'**
+  String get ntCatpayroll;
+
+  /// Screen reader word before an unread notification.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get ntUnread;
+
+  /// Shown in the panel when loading failed.
+  ///
+  /// In en, this message translates to:
+  /// **'The notifications could not be loaded.'**
+  String get ntLoadFailed;
+
+  /// Column heading: the period of the school day.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get sbPeriod;
+
+  /// Screen reader label of the switch between leave requests and leave types.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave view'**
+  String get lvViewLabel;
+
+  /// Tab: leave requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get lvTabRequests;
+
+  /// Tab: the kinds of leave and what each person may take.
+  ///
+  /// In en, this message translates to:
+  /// **'Types and allowances'**
+  String get lvTabTypes;
+
+  /// Filter choice: every status.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get lvAll;
+
+  /// Label of the status filter and column.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get lvStatus;
+
+  /// Leave request status: waiting for the Principal.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get lvStatusPENDING;
+
+  /// Leave request status: the Principal agreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get lvStatusAPPROVED;
+
+  /// Leave request status: the Principal did not agree.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get lvStatusREJECTED;
+
+  /// Leave request status: the person withdrew it.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get lvStatusCANCELLED;
+
+  /// Column heading: who asked for leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get lvPerson;
+
+  /// Column heading: the kind of leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get lvType;
+
+  /// Column heading: the days of the leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates'**
+  String get lvDates;
+
+  /// Column heading: how many days.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get lvDays;
+
+  /// Column heading: who decided and when.
+  ///
+  /// In en, this message translates to:
+  /// **'Decision'**
+  String get lvDecision;
+
+  /// A half day of leave: the morning.
+  ///
+  /// In en, this message translates to:
+  /// **'morning'**
+  String get lvHalfMORNING;
+
+  /// A half day of leave: the afternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'afternoon'**
+  String get lvHalfAFTERNOON;
+
+  /// Shown when no leave request matches.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no leave requests.'**
+  String get lvNoRequests;
+
+  /// Button: the Principal agrees to a leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get lvApprove;
+
+  /// Button: the Principal does not agree to a leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get lvReject;
+
+  /// Question before a leave request is rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject the leave of {name}?'**
+  String lvRejectQuestion(String name);
+
+  /// Label of the optional reason given when rejecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for the person (optional)'**
+  String get lvRejectNote;
+
+  /// Confirmation after a request was approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave approved'**
+  String get lvApproved;
+
+  /// Confirmation after a request was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave rejected'**
+  String get lvRejected;
+
+  /// Refusal: the request is no longer waiting.
+  ///
+  /// In en, this message translates to:
+  /// **'This request was already decided.'**
+  String get lvNotPending;
+
+  /// Refusal: the leave is more than the person may still take.
+  ///
+  /// In en, this message translates to:
+  /// **'That is more than the days left.'**
+  String get lvOverBalance;
+
+  /// Refusal: the leave overlaps another request.
+  ///
+  /// In en, this message translates to:
+  /// **'That overlaps other leave of the same person.'**
+  String get lvOverlap;
+
+  /// Label of a leave type's name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get lvTypeName;
+
+  /// Leave type: the person is paid and the days come from a yearly allowance.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get lvPaid;
+
+  /// Leave type: no pay; it proposes a deduction in payroll.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get lvUnpaid;
+
+  /// Column and field: the yearly allowance of a paid leave type.
+  ///
+  /// In en, this message translates to:
+  /// **'Days a year'**
+  String get lvQuota;
+
+  /// Button and heading: add a kind of leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a leave type'**
+  String get lvAddType;
+
+  /// Confirmation after a leave type was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave type added'**
+  String get lvTypeAdded;
+
+  /// Checkbox: the leave type is paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid leave (takes days from a yearly allowance)'**
+  String get lvIsPaid;
+
+  /// Shown when the school has no leave types.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no leave types yet.'**
+  String get lvNoTypes;
+
+  /// Refusal: a leave type with requests cannot be removed.
+  ///
+  /// In en, this message translates to:
+  /// **'This leave type has requests and cannot be removed.'**
+  String get lvTypeInUse;
+
+  /// Refusal: a paid type was given no yearly days.
+  ///
+  /// In en, this message translates to:
+  /// **'A paid type needs a number of days a year, whole or half.'**
+  String get lvPaidNeedsQuota;
+
+  /// Heading of what each person may take in a year.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowances'**
+  String get lvAllowances;
+
+  /// Label of the choice of person.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get lvPickPerson;
+
+  /// Column heading: the days a person may take in the year.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed'**
+  String get lvAllowed;
+
+  /// Column heading: the days a person may still take.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get lvRemaining;
+
+  /// Label of the field where HR sets a person's yearly days for a type.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed days for {type}'**
+  String lvAllowedFor(String type);
+
+  /// Confirmation after an allowance was changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowance saved'**
+  String get lvAllowanceSaved;
+
+  /// Refusal: the allowance is below what was taken.
+  ///
+  /// In en, this message translates to:
+  /// **'That is less than the days already taken.'**
+  String get lvBelowTaken;
+
+  /// Shown beside an allowance the person has not used yet.
+  ///
+  /// In en, this message translates to:
+  /// **'The yearly allowance of the type, until the person asks for it.'**
+  String get lvStandardHint;
+
+  /// Hint under the days field.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a whole or half number of days, like 12 or 7.5.'**
+  String get lvWholeOrHalf;
+
+  /// Label of the first date of the range.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get sbFrom;
+
+  /// Label of the last date of the range.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get sbTo;
+
+  /// Column heading: the teacher who is on leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher away'**
+  String get sbAway;
+
+  /// Column heading: who covers the lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover'**
+  String get sbCover;
+
+  /// Shown when nobody was chosen to cover a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Not chosen yet'**
+  String get sbNotChosen;
+
+  /// Button: choose who covers a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose'**
+  String get sbChoose;
+
+  /// Button: choose another cover.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get sbChange;
+
+  /// Button: take the cover away from a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove cover'**
+  String get sbRemoveCover;
+
+  /// Heading of the list of teachers who are free and qualified for a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can cover {slot}'**
+  String sbSuggestionsTitle(String slot);
+
+  /// How many times a teacher covered lessons this month.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} cover this month} other{{count} covers this month}}'**
+  String sbThisMonth(int count);
+
+  /// Button: choose this teacher to cover the lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose {name}'**
+  String sbAssign(String name);
+
+  /// Shown when no teacher can cover the lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody is free and qualified for this lesson.'**
+  String get sbNoCandidates;
+
+  /// Confirmation after a cover was chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover chosen'**
+  String get sbAssigned;
+
+  /// Confirmation after a cover was removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover removed'**
+  String get sbCleared;
+
+  /// Shown when approved leave leaves no lesson uncovered in the range.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons are waiting for cover in this range.'**
+  String get sbNoNeeds;
+
+  /// Refusal: the chosen teacher teaches another class then.
+  ///
+  /// In en, this message translates to:
+  /// **'That teacher has a lesson of their own then.'**
+  String get sbHasOwnLesson;
+
+  /// Refusal: the chosen teacher is on leave.
+  ///
+  /// In en, this message translates to:
+  /// **'That teacher is on leave then.'**
+  String get sbOnLeave;
+
+  /// Refusal: the chosen teacher covers another lesson then.
+  ///
+  /// In en, this message translates to:
+  /// **'That teacher already covers another class then.'**
+  String get sbAlreadyCovering;
+
+  /// Refusal: the absent teacher was chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'The teacher who is away cannot cover their own lesson.'**
+  String get sbSameAsAbsent;
+
+  /// Refusal: the leave behind the need was changed.
+  ///
+  /// In en, this message translates to:
+  /// **'That lesson no longer needs cover.'**
+  String get sbNoLongerNeeded;
+
+  /// Refusal: the lesson or the teacher changed while choosing.
+  ///
+  /// In en, this message translates to:
+  /// **'Something changed meanwhile. Look at the list again.'**
+  String get sbChanged;
+
+  /// Heading of the proposals for unpaid leave in a pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid leave in this month'**
+  String get plTitle;
+
+  /// Explains the proposals for unpaid leave in a pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'For each person with approved unpaid leave: the monthly pay times the days, divided by the school\'s working days in the month. Nothing is deducted until HR applies it.'**
+  String get plNote;
+
+  /// Column heading: unpaid days inside the month.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid days'**
+  String get plDays;
+
+  /// Column heading: the proposed pay deduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed deduction'**
+  String get plProposed;
+
+  /// Button: put the proposal on the payslip as a deduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get plApply;
+
+  /// Label of the field where HR may change the proposed amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount to deduct'**
+  String get plAmount;
+
+  /// Shown when the deduction is already on the payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied: {amount}'**
+  String plApplied(String amount);
+
+  /// Confirmation after the deduction was put on the payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduction applied'**
+  String get plDone;
+
+  /// Shown when there is nothing to propose.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no approved unpaid leave in this month.'**
+  String get plNone;
+
+  /// Lists people with unpaid leave who have no payslip in the pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid leave but no payslip in this run: {names}'**
+  String plWithout(String names);
+
+  /// Refusal: the deduction is already on the payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'This deduction was already applied.'**
+  String get plAlready;
+
+  /// Refusal: the amount is above the monthly pay.
+  ///
+  /// In en, this message translates to:
+  /// **'That is more than the month\'s pay.'**
+  String get plAboveGross;
+
+  /// Refusal: the run is no longer a draft.
+  ///
+  /// In en, this message translates to:
+  /// **'Only a draft run can change.'**
+  String get plNotDraft;
+
+  /// Screen reader label of the switch between marks entry, exams and terms, grade bands and report cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Gradebook view'**
+  String get gbViewLabel;
+
+  /// Tab: enter the marks of one exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks entry'**
+  String get gbTabMarks;
+
+  /// Tab: the school's terms and exams.
+  ///
+  /// In en, this message translates to:
+  /// **'Exams and terms'**
+  String get gbTabExams;
+
+  /// Tab: the school's own grade bands, for example 90 to 100 is A1.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade bands'**
+  String get gbTabBands;
+
+  /// Tab: a student's report card for a term.
+  ///
+  /// In en, this message translates to:
+  /// **'Report cards'**
+  String get gbTabCards;
+
+  /// Label of the choice of term.
+  ///
+  /// In en, this message translates to:
+  /// **'Term'**
+  String get gbPickTerm;
+
+  /// Label of the choice of exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam'**
+  String get gbPickExam;
+
+  /// Title shown when the school has no terms.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no terms yet'**
+  String get gbNoTermsTitle;
+
+  /// Body shown with the no-terms title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a term under Exams and terms first.'**
+  String get gbNoTermsBody;
+
+  /// Shown when the chosen term has no exams.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no exams in this term yet.'**
+  String get gbNoExams;
+
+  /// Under the exam name: the most marks that can be got.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of {max}'**
+  String gbOutOf(String max);
+
+  /// Screen reader label of a student's marks field.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks: {name}'**
+  String gbMarksFor(String name);
+
+  /// Screen reader label of a student's absent checkbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent: {name}'**
+  String gbAbsentFor(String name);
+
+  /// Button: save the marks that were changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Save marks'**
+  String get gbSaveMarks;
+
+  /// Confirmation after marks were saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks saved'**
+  String get gbMarksSaved;
+
+  /// Refusal: a mark is higher than the exam's maximum.
+  ///
+  /// In en, this message translates to:
+  /// **'A mark is above the most possible for this exam.'**
+  String get gbAboveMax;
+
+  /// Refusal: a mark was not a number with at most one decimal.
+  ///
+  /// In en, this message translates to:
+  /// **'A mark must be a number with at most one decimal.'**
+  String get gbNotAMark;
+
+  /// Refusal: absent was ticked and marks were also typed.
+  ///
+  /// In en, this message translates to:
+  /// **'A student who is absent cannot have marks.'**
+  String get gbAbsentNoMarks;
+
+  /// Button and heading: add a term to the academic year.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a term'**
+  String get gbAddTerm;
+
+  /// Label of the term name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Term name'**
+  String get gbTermName;
+
+  /// Confirmation after a term was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Term added'**
+  String get gbTermAdded;
+
+  /// Refusal: a term or exam name is taken.
+  ///
+  /// In en, this message translates to:
+  /// **'That name is already used.'**
+  String get gbNameTaken;
+
+  /// Refusal: a term with exams cannot be removed.
+  ///
+  /// In en, this message translates to:
+  /// **'This term still has exams.'**
+  String get gbTermHasExams;
+
+  /// Button and heading: add an exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an exam'**
+  String get gbAddExam;
+
+  /// Label of the exam name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam name'**
+  String get gbExamName;
+
+  /// Confirmation after an exam was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam added'**
+  String get gbExamAdded;
+
+  /// Refusal: the exam already exists.
+  ///
+  /// In en, this message translates to:
+  /// **'This class already has an exam with that name for this subject and term.'**
+  String get gbExamExists;
+
+  /// Refusal: an exam with marks cannot be removed.
+  ///
+  /// In en, this message translates to:
+  /// **'This exam already has marks.'**
+  String get gbExamHasMarks;
+
+  /// Refusal: the exam's maximum was lowered below a mark.
+  ///
+  /// In en, this message translates to:
+  /// **'The most marks cannot be below a mark already given.'**
+  String get gbBelowMark;
+
+  /// Label of the field for the most marks of an exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of (marks)'**
+  String get gbMarksField;
+
+  /// Shown when the school has set no grade bands.
+  ///
+  /// In en, this message translates to:
+  /// **'No grade bands are set. Marks show a percentage without a grade.'**
+  String get gbBandsNone;
+
+  /// Explains the grade bands editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Together the bands must cover 0 to 100 with no gap and no overlap. A percentage is never rounded up into a better band.'**
+  String get gbBandsHint;
+
+  /// Label of the lowest percentage of a band.
+  ///
+  /// In en, this message translates to:
+  /// **'From (%)'**
+  String get gbFrom;
+
+  /// Label of the highest percentage of a band.
+  ///
+  /// In en, this message translates to:
+  /// **'To (%)'**
+  String get gbTo;
+
+  /// Button: add a row to the grade bands.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a band'**
+  String get gbAddBand;
+
+  /// Button: fill the editor with the standard starting grade bands.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the standard set'**
+  String get gbUseStandard;
+
+  /// Button: save the grade bands.
+  ///
+  /// In en, this message translates to:
+  /// **'Save grade bands'**
+  String get gbSaveBands;
+
+  /// Confirmation after the bands were saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade bands saved'**
+  String get gbBandsSaved;
+
+  /// Screen reader label of the remove button of a band.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove band {label}'**
+  String gbRemoveBand(String label);
+
+  /// Refusal: bands overlap.
+  ///
+  /// In en, this message translates to:
+  /// **'Two bands cover the same percentages.'**
+  String get gbBandOverlap;
+
+  /// Refusal: bands leave a gap.
+  ///
+  /// In en, this message translates to:
+  /// **'There is a gap between two bands.'**
+  String get gbBandGap;
+
+  /// Refusal: the lowest band does not start at 0.
+  ///
+  /// In en, this message translates to:
+  /// **'The lowest band must start at 0.'**
+  String get gbBandStart;
+
+  /// Refusal: the highest band does not end at 100.
+  ///
+  /// In en, this message translates to:
+  /// **'The highest band must end at 100.'**
+  String get gbBandEnd;
+
+  /// Refusal: two bands share a grade.
+  ///
+  /// In en, this message translates to:
+  /// **'Two bands have the same grade.'**
+  String get gbBandLabelTaken;
+
+  /// Refusal: a band is not valid.
+  ///
+  /// In en, this message translates to:
+  /// **'Each band needs whole numbers from 0 to 100, and a grade name.'**
+  String get gbBandBad;
+
+  /// Label of the choice of student.
+  ///
+  /// In en, this message translates to:
+  /// **'Student'**
+  String get gbPickStudent;
+
+  /// Under a report card: exams without a mark are not counted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} exam has no mark yet and is left out} other{{count} exams have no mark yet and are left out}}'**
+  String gbPending(int count);
+
+  /// Button: download the report card as a PDF.
+  ///
+  /// In en, this message translates to:
+  /// **'Download the report card (PDF)'**
+  String get gbPdf;
+
+  /// Shown when the student was in no class that term.
+  ///
+  /// In en, this message translates to:
+  /// **'This student has no report card for this term.'**
+  String get gbNoCard;
+
+  /// Shown in a report card line for an exam the student missed.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent'**
+  String get gbMarkAbsent;
+
+  /// Confirmation after a day was locked.
+  ///
+  /// In en, this message translates to:
+  /// **'Day locked'**
+  String get attLockDone;
+
+  /// Screen reader label of the switch between the daily register, the classes not taken yet and the status names.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance view'**
+  String get attViewLabel;
+
+  /// Tab: one class's attendance on one date.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily register'**
+  String get attTabRegister;
+
+  /// Tab: the classes that have not taken attendance on a date.
+  ///
+  /// In en, this message translates to:
+  /// **'Not taken yet'**
+  String get attTabMissing;
+
+  /// Tab: the school's own wording for the seven attendance statuses.
+  ///
+  /// In en, this message translates to:
+  /// **'Status names'**
+  String get attTabNames;
+
+  /// Label of the date field.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get attDate;
+
+  /// Attendance status: came to school.
+  ///
+  /// In en, this message translates to:
+  /// **'Present'**
+  String get attStatusPRESENT;
+
+  /// Attendance status: did not come.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent'**
+  String get attStatusABSENT;
+
+  /// Attendance status: came after the start.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get attStatusLATE;
+
+  /// Attendance status: away on approved leave.
+  ///
+  /// In en, this message translates to:
+  /// **'On leave'**
+  String get attStatusLEAVE;
+
+  /// Attendance status: away for a medical reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get attStatusMEDICAL;
+
+  /// Attendance status: came for half the day.
+  ///
+  /// In en, this message translates to:
+  /// **'Half day'**
+  String get attStatusHALF_DAY;
+
+  /// Attendance status: away with the school's permission.
+  ///
+  /// In en, this message translates to:
+  /// **'Excused'**
+  String get attStatusEXCUSED;
+
+  /// One count in the summary line above the register: the status word and how many students.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {count}'**
+  String attCount(String label, String count);
+
+  /// Shown when no attendance exists yet for the class and date.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance has not been taken for this class on this date. Everyone is shown as present until it is.'**
+  String get attNotTaken;
+
+  /// Who took the attendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken by {name}'**
+  String attTakenBy(String name);
+
+  /// Badge: the day is locked, a teacher can no longer change it.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get attLocked;
+
+  /// Shown on a locked day for the Academic administrator.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is locked. Only a correction can change it, and the old and new values are recorded.'**
+  String get attLockedNote;
+
+  /// Column heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Student'**
+  String get attStudent;
+
+  /// Column heading: the attendance status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get attStatus;
+
+  /// Column heading and field: a short note on an exception.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get attNote;
+
+  /// Shown when the class has no students.
+  ///
+  /// In en, this message translates to:
+  /// **'This class has no students yet.'**
+  String get attNoStudents;
+
+  /// Button: save the register.
+  ///
+  /// In en, this message translates to:
+  /// **'Save attendance'**
+  String get attSave;
+
+  /// Button: save a correction to a locked day.
+  ///
+  /// In en, this message translates to:
+  /// **'Save correction'**
+  String get attSaveCorrection;
+
+  /// Button: lock the register so a teacher can no longer change it.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock the day'**
+  String get attLock;
+
+  /// Confirmation after the register was saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance saved'**
+  String get attSaved;
+
+  /// Confirmation after a correction was saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction saved'**
+  String get attCorrected;
+
+  /// Refusal: a teacher tried to change a locked day.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is locked. Ask the Academic administrator for a correction.'**
+  String get attDayLocked;
+
+  /// Refusal: attendance cannot be taken for a future date.
+  ///
+  /// In en, this message translates to:
+  /// **'That date has not come yet.'**
+  String get attFutureDate;
+
+  /// Shown when every class has taken attendance (or the school does not work on the date).
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is waiting for this date.'**
+  String get attMissingEmpty;
+
+  /// Heading of the list of classes that have not taken attendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes without attendance on {date}'**
+  String attMissingTitle(String date);
+
+  /// Explains the status names tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename a status for your school. What it means and its colour stay the same.'**
+  String get attNamesHint;
+
+  /// Label of the field where a school types its own word for a status.
+  ///
+  /// In en, this message translates to:
+  /// **'Name for {status}'**
+  String attNameFor(String status);
+
+  /// Confirmation after a status was renamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Name saved'**
+  String get attNameSaved;
+
+  /// Shown beside a status that still has its standard name.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard name'**
+  String get attNameDefault;
+
+  /// Explains the staff attendance screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is at work on a date. Times are in Indian Standard Time.'**
+  String get satTitleNote;
+
+  /// Column heading: when a member of staff checked in.
+  ///
+  /// In en, this message translates to:
+  /// **'In'**
+  String get satIn;
+
+  /// Column heading: when a member of staff checked out.
+  ///
+  /// In en, this message translates to:
+  /// **'Out'**
+  String get satOut;
+
+  /// Staff state: checked in, not yet out.
+  ///
+  /// In en, this message translates to:
+  /// **'At work'**
+  String get satStateIN;
+
+  /// Staff state: checked in and out.
+  ///
+  /// In en, this message translates to:
+  /// **'Left for the day'**
+  String get satStateOUT;
+
+  /// Staff state: no check-in.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in yet'**
+  String get satStateNONE;
+
+  /// Button: correct a member of staff's times.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get satCorrect;
+
+  /// Heading of the correction form.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct the times for {name}'**
+  String satCorrectTitle(String name);
+
+  /// Hint under the time fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Write times like 09:15.'**
+  String get satTimeHint;
+
+  /// Confirmation after times were corrected.
+  ///
+  /// In en, this message translates to:
+  /// **'Times saved'**
+  String get satSaved;
+
+  /// Refusal: a check-out time needs a check-in time.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the time in as well.'**
+  String get satNeedsIn;
+
+  /// Shown when there is no member of staff.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody is on the staff list yet.'**
+  String get satNone;
+
+  /// Question before a period is removed from the bell schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name}?'**
+  String ttRemoveQuestion(String name);
+
+  /// Sidebar item: the timetable and the bell schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Timetable'**
+  String get navTimetable;
+
+  /// Screen reader label of the switch between the timetable by class, by teacher and the bell schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Timetable view'**
+  String get ttViewLabel;
+
+  /// Tab: the timetable of one class.
+  ///
+  /// In en, this message translates to:
+  /// **'By class'**
+  String get ttTabClass;
+
+  /// Tab: the timetable of one teacher.
+  ///
+  /// In en, this message translates to:
+  /// **'By teacher'**
+  String get ttTabTeacher;
+
+  /// Tab: the school's periods and working days.
+  ///
+  /// In en, this message translates to:
+  /// **'Bell schedule'**
+  String get ttTabSchedule;
+
+  /// Label of the choice of teacher.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher'**
+  String get ttPickTeacher;
+
+  /// Label of the choice of subject in the lesson editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get ttSubject;
+
+  /// Title shown when the timetable cannot be shown because no academic year is active.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no active academic year'**
+  String get ttNoYearTitle;
+
+  /// Body shown with the no-year title.
+  ///
+  /// In en, this message translates to:
+  /// **'Make an academic year active first.'**
+  String get ttNoYearBody;
+
+  /// Shown when the school has no classes to pick.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no classes yet.'**
+  String get ttNoClasses;
+
+  /// Shown when no member of staff teaches a subject yet.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no teachers yet.'**
+  String get ttNoTeachers;
+
+  /// Title shown when the bell schedule is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no periods yet'**
+  String get ttNoPeriodsTitle;
+
+  /// Body shown with the no-periods title.
+  ///
+  /// In en, this message translates to:
+  /// **'Start from a standard day or a short day, or add periods one by one.'**
+  String get ttNoPeriodsBody;
+
+  /// Shown in a timetable cell that has no lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get ttEmptyCell;
+
+  /// Shown in place of a period that is a break, nothing is taught in it.
+  ///
+  /// In en, this message translates to:
+  /// **'Break'**
+  String get ttBreak;
+
+  /// Title of the lesson editor; slot is the day and the period, for example Mon, Period 1.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson on {slot}'**
+  String ttEditorTitle(String slot);
+
+  /// Button: put the chosen subject and teacher in the cell.
+  ///
+  /// In en, this message translates to:
+  /// **'Set lesson'**
+  String get ttSetLesson;
+
+  /// Button: empty the cell.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear lesson'**
+  String get ttClearLesson;
+
+  /// Confirmation after a lesson was set.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson saved'**
+  String get ttSaved;
+
+  /// Confirmation after a lesson was cleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson cleared'**
+  String get ttCleared;
+
+  /// Refusal: the class already has a lesson in that period.
+  ///
+  /// In en, this message translates to:
+  /// **'This class already has a lesson then.'**
+  String get ttClassBusy;
+
+  /// Refusal: the teacher already teaches another class in that period.
+  ///
+  /// In en, this message translates to:
+  /// **'This teacher is already teaching another class then.'**
+  String get ttTeacherBusy;
+
+  /// Refusal: the teacher is not linked to the subject.
+  ///
+  /// In en, this message translates to:
+  /// **'This teacher does not teach that subject.'**
+  String get ttTeacherNotSubject;
+
+  /// Refusal: the day is not a working day.
+  ///
+  /// In en, this message translates to:
+  /// **'The school does not work on that day.'**
+  String get ttNotWorkingDay;
+
+  /// Refusal: a period used by the timetable cannot be deleted or turned into a break.
+  ///
+  /// In en, this message translates to:
+  /// **'A period that has lessons in it cannot be removed or made a break.'**
+  String get ttPeriodInUse;
+
+  /// Refusal: the new period overlaps another one.
+  ///
+  /// In en, this message translates to:
+  /// **'That time overlaps another period.'**
+  String get ttPeriodOverlaps;
+
+  /// Refusal: the name is taken.
+  ///
+  /// In en, this message translates to:
+  /// **'Another period already has that name.'**
+  String get ttPeriodLabelTaken;
+
+  /// Refusal: the start time is taken.
+  ///
+  /// In en, this message translates to:
+  /// **'Another period already starts at that time.'**
+  String get ttPeriodStartTaken;
+
+  /// Refusal: the period ends before it starts.
+  ///
+  /// In en, this message translates to:
+  /// **'The end must be after the start.'**
+  String get ttPeriodEnd;
+
+  /// Refusal: a time was not in the form HH:MM.
+  ///
+  /// In en, this message translates to:
+  /// **'Write times like 08:30.'**
+  String get ttPeriodTime;
+
+  /// Heading of the list of how many lessons each teacher has in a week.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons per week'**
+  String get ttLoadTitle;
+
+  /// The number of lessons a teacher has in a week.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} lesson} other{{count} lessons}}'**
+  String ttLoadCount(int count);
+
+  /// Shown when the timetable is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons have been placed yet.'**
+  String get ttNoLoad;
+
+  /// Heading of the choice of the days the school works.
+  ///
+  /// In en, this message translates to:
+  /// **'Working days'**
+  String get ttWorkingDays;
+
+  /// Confirmation after the working days were changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Working days saved'**
+  String get ttDaysSaved;
+
+  /// Label of a period's name, for example Period 1.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get ttPeriodName;
+
+  /// Column and field: when a period starts.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get ttStarts;
+
+  /// Column and field: when a period ends.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get ttEnds;
+
+  /// Column heading: the number of a teaching period in the day.
+  ///
+  /// In en, this message translates to:
+  /// **'No.'**
+  String get ttNumber;
+
+  /// Checkbox: the period is a break or lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a break: nothing is taught in it'**
+  String get ttIsBreak;
+
+  /// Button and heading: add one period to the bell schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a period'**
+  String get ttAddPeriod;
+
+  /// Confirmation after a period was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Period added'**
+  String get ttPeriodAdded;
+
+  /// Button: fill an empty bell schedule with a standard school day.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with a standard day'**
+  String get ttStandard;
+
+  /// Button: fill an empty bell schedule with a short school day.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with a short day'**
+  String get ttShort;
+
+  /// Confirmation after a starting bell schedule was applied.
+  ///
+  /// In en, this message translates to:
+  /// **'Bell schedule created'**
+  String get ttTemplateApplied;
+
+  /// Short name of Monday.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get ttDayMON;
+
+  /// Short name of Tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get ttDayTUE;
+
+  /// Short name of Wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get ttDayWED;
+
+  /// Short name of Thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get ttDayTHU;
+
+  /// Short name of Friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get ttDayFRI;
+
+  /// Short name of Saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get ttDaySAT;
+
+  /// Short name of Sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get ttDaySUN;
+
   /// Title of the notice to the Principal that a leave request is waiting.
   ///
   /// In en, this message translates to:

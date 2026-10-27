@@ -34,6 +34,7 @@ export const NAV: readonly NavSectionDef[] = [
   { title: "Academics", items: [
     { key: "students", label: "Students", requires: "students" },
     { key: "classes", label: "Classes and subjects", requires: "academics" },
+    { key: "timetable", label: "Timetable", requires: "academics" },
     { key: "attendance", label: "Attendance", requires: "attendance" },
     { key: "gradebook", label: "Gradebook", requires: "grades" },
     { key: "substitution", label: "Substitutions", requires: "substitution" },

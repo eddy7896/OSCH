@@ -714,6 +714,820 @@ class OruStringsEn extends OruStrings {
   String get reportTotal => 'Total';
 
   @override
+  String get ntBell => 'Notifications';
+
+  @override
+  String ntBellUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread notifications',
+      one: '$count unread notification',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ntEmpty => 'You have no notifications.';
+
+  @override
+  String get ntMarkAll => 'Mark all as read';
+
+  @override
+  String get ntClose => 'Close';
+
+  @override
+  String get ntSettings => 'Choose what you see';
+
+  @override
+  String get ntSettingsHint => 'Hidden kinds are kept, not deleted.';
+
+  @override
+  String get ntCatleave => 'Leave';
+
+  @override
+  String get ntCatsubstitution => 'Substitutions';
+
+  @override
+  String get ntCatpayroll => 'Payroll';
+
+  @override
+  String get ntUnread => 'Unread';
+
+  @override
+  String get ntLoadFailed => 'The notifications could not be loaded.';
+
+  @override
+  String get sbPeriod => 'Period';
+
+  @override
+  String get lvViewLabel => 'Leave view';
+
+  @override
+  String get lvTabRequests => 'Requests';
+
+  @override
+  String get lvTabTypes => 'Types and allowances';
+
+  @override
+  String get lvAll => 'All';
+
+  @override
+  String get lvStatus => 'Status';
+
+  @override
+  String get lvStatusPENDING => 'Pending';
+
+  @override
+  String get lvStatusAPPROVED => 'Approved';
+
+  @override
+  String get lvStatusREJECTED => 'Rejected';
+
+  @override
+  String get lvStatusCANCELLED => 'Cancelled';
+
+  @override
+  String get lvPerson => 'Person';
+
+  @override
+  String get lvType => 'Type';
+
+  @override
+  String get lvDates => 'Dates';
+
+  @override
+  String get lvDays => 'Days';
+
+  @override
+  String get lvDecision => 'Decision';
+
+  @override
+  String get lvHalfMORNING => 'morning';
+
+  @override
+  String get lvHalfAFTERNOON => 'afternoon';
+
+  @override
+  String get lvNoRequests => 'There are no leave requests.';
+
+  @override
+  String get lvApprove => 'Approve';
+
+  @override
+  String get lvReject => 'Reject';
+
+  @override
+  String lvRejectQuestion(String name) {
+    return 'Reject the leave of $name?';
+  }
+
+  @override
+  String get lvRejectNote => 'Note for the person (optional)';
+
+  @override
+  String get lvApproved => 'Leave approved';
+
+  @override
+  String get lvRejected => 'Leave rejected';
+
+  @override
+  String get lvNotPending => 'This request was already decided.';
+
+  @override
+  String get lvOverBalance => 'That is more than the days left.';
+
+  @override
+  String get lvOverlap => 'That overlaps other leave of the same person.';
+
+  @override
+  String get lvTypeName => 'Name';
+
+  @override
+  String get lvPaid => 'Paid';
+
+  @override
+  String get lvUnpaid => 'Unpaid';
+
+  @override
+  String get lvQuota => 'Days a year';
+
+  @override
+  String get lvAddType => 'Add a leave type';
+
+  @override
+  String get lvTypeAdded => 'Leave type added';
+
+  @override
+  String get lvIsPaid => 'Paid leave (takes days from a yearly allowance)';
+
+  @override
+  String get lvNoTypes => 'There are no leave types yet.';
+
+  @override
+  String get lvTypeInUse =>
+      'This leave type has requests and cannot be removed.';
+
+  @override
+  String get lvPaidNeedsQuota =>
+      'A paid type needs a number of days a year, whole or half.';
+
+  @override
+  String get lvAllowances => 'Allowances';
+
+  @override
+  String get lvPickPerson => 'Person';
+
+  @override
+  String get lvAllowed => 'Allowed';
+
+  @override
+  String get lvRemaining => 'Left';
+
+  @override
+  String lvAllowedFor(String type) {
+    return 'Allowed days for $type';
+  }
+
+  @override
+  String get lvAllowanceSaved => 'Allowance saved';
+
+  @override
+  String get lvBelowTaken => 'That is less than the days already taken.';
+
+  @override
+  String get lvStandardHint =>
+      'The yearly allowance of the type, until the person asks for it.';
+
+  @override
+  String get lvWholeOrHalf =>
+      'Use a whole or half number of days, like 12 or 7.5.';
+
+  @override
+  String get sbFrom => 'From';
+
+  @override
+  String get sbTo => 'To';
+
+  @override
+  String get sbAway => 'Teacher away';
+
+  @override
+  String get sbCover => 'Cover';
+
+  @override
+  String get sbNotChosen => 'Not chosen yet';
+
+  @override
+  String get sbChoose => 'Choose';
+
+  @override
+  String get sbChange => 'Change';
+
+  @override
+  String get sbRemoveCover => 'Remove cover';
+
+  @override
+  String sbSuggestionsTitle(String slot) {
+    return 'Who can cover $slot';
+  }
+
+  @override
+  String sbThisMonth(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count covers this month',
+      one: '$count cover this month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String sbAssign(String name) {
+    return 'Choose $name';
+  }
+
+  @override
+  String get sbNoCandidates => 'Nobody is free and qualified for this lesson.';
+
+  @override
+  String get sbAssigned => 'Cover chosen';
+
+  @override
+  String get sbCleared => 'Cover removed';
+
+  @override
+  String get sbNoNeeds => 'No lessons are waiting for cover in this range.';
+
+  @override
+  String get sbHasOwnLesson => 'That teacher has a lesson of their own then.';
+
+  @override
+  String get sbOnLeave => 'That teacher is on leave then.';
+
+  @override
+  String get sbAlreadyCovering =>
+      'That teacher already covers another class then.';
+
+  @override
+  String get sbSameAsAbsent =>
+      'The teacher who is away cannot cover their own lesson.';
+
+  @override
+  String get sbNoLongerNeeded => 'That lesson no longer needs cover.';
+
+  @override
+  String get sbChanged =>
+      'Something changed meanwhile. Look at the list again.';
+
+  @override
+  String get plTitle => 'Unpaid leave in this month';
+
+  @override
+  String get plNote =>
+      'For each person with approved unpaid leave: the monthly pay times the days, divided by the school\'s working days in the month. Nothing is deducted until HR applies it.';
+
+  @override
+  String get plDays => 'Unpaid days';
+
+  @override
+  String get plProposed => 'Proposed deduction';
+
+  @override
+  String get plApply => 'Apply';
+
+  @override
+  String get plAmount => 'Amount to deduct';
+
+  @override
+  String plApplied(String amount) {
+    return 'Applied: $amount';
+  }
+
+  @override
+  String get plDone => 'Deduction applied';
+
+  @override
+  String get plNone => 'There is no approved unpaid leave in this month.';
+
+  @override
+  String plWithout(String names) {
+    return 'Unpaid leave but no payslip in this run: $names';
+  }
+
+  @override
+  String get plAlready => 'This deduction was already applied.';
+
+  @override
+  String get plAboveGross => 'That is more than the month\'s pay.';
+
+  @override
+  String get plNotDraft => 'Only a draft run can change.';
+
+  @override
+  String get gbViewLabel => 'Gradebook view';
+
+  @override
+  String get gbTabMarks => 'Marks entry';
+
+  @override
+  String get gbTabExams => 'Exams and terms';
+
+  @override
+  String get gbTabBands => 'Grade bands';
+
+  @override
+  String get gbTabCards => 'Report cards';
+
+  @override
+  String get gbPickTerm => 'Term';
+
+  @override
+  String get gbPickExam => 'Exam';
+
+  @override
+  String get gbNoTermsTitle => 'There are no terms yet';
+
+  @override
+  String get gbNoTermsBody => 'Add a term under Exams and terms first.';
+
+  @override
+  String get gbNoExams => 'There are no exams in this term yet.';
+
+  @override
+  String gbOutOf(String max) {
+    return 'Out of $max';
+  }
+
+  @override
+  String gbMarksFor(String name) {
+    return 'Marks: $name';
+  }
+
+  @override
+  String gbAbsentFor(String name) {
+    return 'Absent: $name';
+  }
+
+  @override
+  String get gbSaveMarks => 'Save marks';
+
+  @override
+  String get gbMarksSaved => 'Marks saved';
+
+  @override
+  String get gbAboveMax => 'A mark is above the most possible for this exam.';
+
+  @override
+  String get gbNotAMark => 'A mark must be a number with at most one decimal.';
+
+  @override
+  String get gbAbsentNoMarks => 'A student who is absent cannot have marks.';
+
+  @override
+  String get gbAddTerm => 'Add a term';
+
+  @override
+  String get gbTermName => 'Term name';
+
+  @override
+  String get gbTermAdded => 'Term added';
+
+  @override
+  String get gbNameTaken => 'That name is already used.';
+
+  @override
+  String get gbTermHasExams => 'This term still has exams.';
+
+  @override
+  String get gbAddExam => 'Add an exam';
+
+  @override
+  String get gbExamName => 'Exam name';
+
+  @override
+  String get gbExamAdded => 'Exam added';
+
+  @override
+  String get gbExamExists =>
+      'This class already has an exam with that name for this subject and term.';
+
+  @override
+  String get gbExamHasMarks => 'This exam already has marks.';
+
+  @override
+  String get gbBelowMark =>
+      'The most marks cannot be below a mark already given.';
+
+  @override
+  String get gbMarksField => 'Out of (marks)';
+
+  @override
+  String get gbBandsNone =>
+      'No grade bands are set. Marks show a percentage without a grade.';
+
+  @override
+  String get gbBandsHint =>
+      'Together the bands must cover 0 to 100 with no gap and no overlap. A percentage is never rounded up into a better band.';
+
+  @override
+  String get gbFrom => 'From (%)';
+
+  @override
+  String get gbTo => 'To (%)';
+
+  @override
+  String get gbAddBand => 'Add a band';
+
+  @override
+  String get gbUseStandard => 'Use the standard set';
+
+  @override
+  String get gbSaveBands => 'Save grade bands';
+
+  @override
+  String get gbBandsSaved => 'Grade bands saved';
+
+  @override
+  String gbRemoveBand(String label) {
+    return 'Remove band $label';
+  }
+
+  @override
+  String get gbBandOverlap => 'Two bands cover the same percentages.';
+
+  @override
+  String get gbBandGap => 'There is a gap between two bands.';
+
+  @override
+  String get gbBandStart => 'The lowest band must start at 0.';
+
+  @override
+  String get gbBandEnd => 'The highest band must end at 100.';
+
+  @override
+  String get gbBandLabelTaken => 'Two bands have the same grade.';
+
+  @override
+  String get gbBandBad =>
+      'Each band needs whole numbers from 0 to 100, and a grade name.';
+
+  @override
+  String get gbPickStudent => 'Student';
+
+  @override
+  String gbPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exams have no mark yet and are left out',
+      one: '$count exam has no mark yet and is left out',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gbPdf => 'Download the report card (PDF)';
+
+  @override
+  String get gbNoCard => 'This student has no report card for this term.';
+
+  @override
+  String get gbMarkAbsent => 'Absent';
+
+  @override
+  String get attLockDone => 'Day locked';
+
+  @override
+  String get attViewLabel => 'Attendance view';
+
+  @override
+  String get attTabRegister => 'Daily register';
+
+  @override
+  String get attTabMissing => 'Not taken yet';
+
+  @override
+  String get attTabNames => 'Status names';
+
+  @override
+  String get attDate => 'Date';
+
+  @override
+  String get attStatusPRESENT => 'Present';
+
+  @override
+  String get attStatusABSENT => 'Absent';
+
+  @override
+  String get attStatusLATE => 'Late';
+
+  @override
+  String get attStatusLEAVE => 'On leave';
+
+  @override
+  String get attStatusMEDICAL => 'Medical';
+
+  @override
+  String get attStatusHALF_DAY => 'Half day';
+
+  @override
+  String get attStatusEXCUSED => 'Excused';
+
+  @override
+  String attCount(String label, String count) {
+    return '$label: $count';
+  }
+
+  @override
+  String get attNotTaken =>
+      'Attendance has not been taken for this class on this date. Everyone is shown as present until it is.';
+
+  @override
+  String attTakenBy(String name) {
+    return 'Taken by $name';
+  }
+
+  @override
+  String get attLocked => 'Locked';
+
+  @override
+  String get attLockedNote =>
+      'This day is locked. Only a correction can change it, and the old and new values are recorded.';
+
+  @override
+  String get attStudent => 'Student';
+
+  @override
+  String get attStatus => 'Status';
+
+  @override
+  String get attNote => 'Note';
+
+  @override
+  String get attNoStudents => 'This class has no students yet.';
+
+  @override
+  String get attSave => 'Save attendance';
+
+  @override
+  String get attSaveCorrection => 'Save correction';
+
+  @override
+  String get attLock => 'Lock the day';
+
+  @override
+  String get attSaved => 'Attendance saved';
+
+  @override
+  String get attCorrected => 'Correction saved';
+
+  @override
+  String get attDayLocked =>
+      'This day is locked. Ask the Academic administrator for a correction.';
+
+  @override
+  String get attFutureDate => 'That date has not come yet.';
+
+  @override
+  String get attMissingEmpty => 'Nothing is waiting for this date.';
+
+  @override
+  String attMissingTitle(String date) {
+    return 'Classes without attendance on $date';
+  }
+
+  @override
+  String get attNamesHint =>
+      'Rename a status for your school. What it means and its colour stay the same.';
+
+  @override
+  String attNameFor(String status) {
+    return 'Name for $status';
+  }
+
+  @override
+  String get attNameSaved => 'Name saved';
+
+  @override
+  String get attNameDefault => 'Standard name';
+
+  @override
+  String get satTitleNote =>
+      'Who is at work on a date. Times are in Indian Standard Time.';
+
+  @override
+  String get satIn => 'In';
+
+  @override
+  String get satOut => 'Out';
+
+  @override
+  String get satStateIN => 'At work';
+
+  @override
+  String get satStateOUT => 'Left for the day';
+
+  @override
+  String get satStateNONE => 'Not in yet';
+
+  @override
+  String get satCorrect => 'Correct';
+
+  @override
+  String satCorrectTitle(String name) {
+    return 'Correct the times for $name';
+  }
+
+  @override
+  String get satTimeHint => 'Write times like 09:15.';
+
+  @override
+  String get satSaved => 'Times saved';
+
+  @override
+  String get satNeedsIn => 'Enter the time in as well.';
+
+  @override
+  String get satNone => 'Nobody is on the staff list yet.';
+
+  @override
+  String ttRemoveQuestion(String name) {
+    return 'Remove $name?';
+  }
+
+  @override
+  String get navTimetable => 'Timetable';
+
+  @override
+  String get ttViewLabel => 'Timetable view';
+
+  @override
+  String get ttTabClass => 'By class';
+
+  @override
+  String get ttTabTeacher => 'By teacher';
+
+  @override
+  String get ttTabSchedule => 'Bell schedule';
+
+  @override
+  String get ttPickTeacher => 'Teacher';
+
+  @override
+  String get ttSubject => 'Subject';
+
+  @override
+  String get ttNoYearTitle => 'There is no active academic year';
+
+  @override
+  String get ttNoYearBody => 'Make an academic year active first.';
+
+  @override
+  String get ttNoClasses => 'There are no classes yet.';
+
+  @override
+  String get ttNoTeachers => 'There are no teachers yet.';
+
+  @override
+  String get ttNoPeriodsTitle => 'There are no periods yet';
+
+  @override
+  String get ttNoPeriodsBody =>
+      'Start from a standard day or a short day, or add periods one by one.';
+
+  @override
+  String get ttEmptyCell => 'Free';
+
+  @override
+  String get ttBreak => 'Break';
+
+  @override
+  String ttEditorTitle(String slot) {
+    return 'Lesson on $slot';
+  }
+
+  @override
+  String get ttSetLesson => 'Set lesson';
+
+  @override
+  String get ttClearLesson => 'Clear lesson';
+
+  @override
+  String get ttSaved => 'Lesson saved';
+
+  @override
+  String get ttCleared => 'Lesson cleared';
+
+  @override
+  String get ttClassBusy => 'This class already has a lesson then.';
+
+  @override
+  String get ttTeacherBusy =>
+      'This teacher is already teaching another class then.';
+
+  @override
+  String get ttTeacherNotSubject => 'This teacher does not teach that subject.';
+
+  @override
+  String get ttNotWorkingDay => 'The school does not work on that day.';
+
+  @override
+  String get ttPeriodInUse =>
+      'A period that has lessons in it cannot be removed or made a break.';
+
+  @override
+  String get ttPeriodOverlaps => 'That time overlaps another period.';
+
+  @override
+  String get ttPeriodLabelTaken => 'Another period already has that name.';
+
+  @override
+  String get ttPeriodStartTaken =>
+      'Another period already starts at that time.';
+
+  @override
+  String get ttPeriodEnd => 'The end must be after the start.';
+
+  @override
+  String get ttPeriodTime => 'Write times like 08:30.';
+
+  @override
+  String get ttLoadTitle => 'Lessons per week';
+
+  @override
+  String ttLoadCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lessons',
+      one: '$count lesson',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ttNoLoad => 'No lessons have been placed yet.';
+
+  @override
+  String get ttWorkingDays => 'Working days';
+
+  @override
+  String get ttDaysSaved => 'Working days saved';
+
+  @override
+  String get ttPeriodName => 'Name';
+
+  @override
+  String get ttStarts => 'Starts';
+
+  @override
+  String get ttEnds => 'Ends';
+
+  @override
+  String get ttNumber => 'No.';
+
+  @override
+  String get ttIsBreak => 'This is a break: nothing is taught in it';
+
+  @override
+  String get ttAddPeriod => 'Add a period';
+
+  @override
+  String get ttPeriodAdded => 'Period added';
+
+  @override
+  String get ttStandard => 'Start with a standard day';
+
+  @override
+  String get ttShort => 'Start with a short day';
+
+  @override
+  String get ttTemplateApplied => 'Bell schedule created';
+
+  @override
+  String get ttDayMON => 'Mon';
+
+  @override
+  String get ttDayTUE => 'Tue';
+
+  @override
+  String get ttDayWED => 'Wed';
+
+  @override
+  String get ttDayTHU => 'Thu';
+
+  @override
+  String get ttDayFRI => 'Fri';
+
+  @override
+  String get ttDaySAT => 'Sat';
+
+  @override
+  String get ttDaySUN => 'Sun';
+
+  @override
   String get notifLeaveRequestedTitle => 'Leave to decide';
 
   @override

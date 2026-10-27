@@ -915,6 +915,1082 @@
   "@reportTotal": {
     "description": "Label of the last row, which adds up the columns above it."
   },
+  "ntBell": "Notifications",
+  "@ntBell": {
+    "description": "Name of the bell button in the top bar that opens the notifications."
+  },
+  "ntBellUnread": "{count, plural, one{{count} unread notification} other{{count} unread notifications}}",
+  "@ntBellUnread": {
+    "description": "Said after the word Notifications on the bell button when some are unread: how many.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ntEmpty": "You have no notifications.",
+  "@ntEmpty": {
+    "description": "Shown when the inbox is empty."
+  },
+  "ntMarkAll": "Mark all as read",
+  "@ntMarkAll": {
+    "description": "Button: mark every notification as read."
+  },
+  "ntClose": "Close",
+  "@ntClose": {
+    "description": "Button: close the notifications panel."
+  },
+  "ntSettings": "Choose what you see",
+  "@ntSettings": {
+    "description": "Heading of the choice of which kinds of notification to show."
+  },
+  "ntSettingsHint": "Hidden kinds are kept, not deleted.",
+  "@ntSettingsHint": {
+    "description": "Explains the choice of which kinds of notification to show."
+  },
+  "ntCatleave": "Leave",
+  "@ntCatleave": {
+    "description": "Kind of notification: about leave requests and decisions."
+  },
+  "ntCatsubstitution": "Substitutions",
+  "@ntCatsubstitution": {
+    "description": "Kind of notification: about covering lessons."
+  },
+  "ntCatpayroll": "Payroll",
+  "@ntCatpayroll": {
+    "description": "Kind of notification: about pay."
+  },
+  "ntUnread": "Unread",
+  "@ntUnread": {
+    "description": "Screen reader word before an unread notification."
+  },
+  "ntLoadFailed": "The notifications could not be loaded.",
+  "@ntLoadFailed": {
+    "description": "Shown in the panel when loading failed."
+  },
+  "sbPeriod": "Period",
+  "@sbPeriod": {
+    "description": "Column heading: the period of the school day."
+  },
+  "lvViewLabel": "Leave view",
+  "@lvViewLabel": {
+    "description": "Screen reader label of the switch between leave requests and leave types."
+  },
+  "lvTabRequests": "Requests",
+  "@lvTabRequests": {
+    "description": "Tab: leave requests."
+  },
+  "lvTabTypes": "Types and allowances",
+  "@lvTabTypes": {
+    "description": "Tab: the kinds of leave and what each person may take."
+  },
+  "lvAll": "All",
+  "@lvAll": {
+    "description": "Filter choice: every status."
+  },
+  "lvStatus": "Status",
+  "@lvStatus": {
+    "description": "Label of the status filter and column."
+  },
+  "lvStatusPENDING": "Pending",
+  "@lvStatusPENDING": {
+    "description": "Leave request status: waiting for the Principal."
+  },
+  "lvStatusAPPROVED": "Approved",
+  "@lvStatusAPPROVED": {
+    "description": "Leave request status: the Principal agreed."
+  },
+  "lvStatusREJECTED": "Rejected",
+  "@lvStatusREJECTED": {
+    "description": "Leave request status: the Principal did not agree."
+  },
+  "lvStatusCANCELLED": "Cancelled",
+  "@lvStatusCANCELLED": {
+    "description": "Leave request status: the person withdrew it."
+  },
+  "lvPerson": "Person",
+  "@lvPerson": {
+    "description": "Column heading: who asked for leave."
+  },
+  "lvType": "Type",
+  "@lvType": {
+    "description": "Column heading: the kind of leave."
+  },
+  "lvDates": "Dates",
+  "@lvDates": {
+    "description": "Column heading: the days of the leave."
+  },
+  "lvDays": "Days",
+  "@lvDays": {
+    "description": "Column heading: how many days."
+  },
+  "lvDecision": "Decision",
+  "@lvDecision": {
+    "description": "Column heading: who decided and when."
+  },
+  "lvHalfMORNING": "morning",
+  "@lvHalfMORNING": {
+    "description": "A half day of leave: the morning."
+  },
+  "lvHalfAFTERNOON": "afternoon",
+  "@lvHalfAFTERNOON": {
+    "description": "A half day of leave: the afternoon."
+  },
+  "lvNoRequests": "There are no leave requests.",
+  "@lvNoRequests": {
+    "description": "Shown when no leave request matches."
+  },
+  "lvApprove": "Approve",
+  "@lvApprove": {
+    "description": "Button: the Principal agrees to a leave request."
+  },
+  "lvReject": "Reject",
+  "@lvReject": {
+    "description": "Button: the Principal does not agree to a leave request."
+  },
+  "lvRejectQuestion": "Reject the leave of {name}?",
+  "@lvRejectQuestion": {
+    "description": "Question before a leave request is rejected.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "lvRejectNote": "Note for the person (optional)",
+  "@lvRejectNote": {
+    "description": "Label of the optional reason given when rejecting."
+  },
+  "lvApproved": "Leave approved",
+  "@lvApproved": {
+    "description": "Confirmation after a request was approved."
+  },
+  "lvRejected": "Leave rejected",
+  "@lvRejected": {
+    "description": "Confirmation after a request was rejected."
+  },
+  "lvNotPending": "This request was already decided.",
+  "@lvNotPending": {
+    "description": "Refusal: the request is no longer waiting."
+  },
+  "lvOverBalance": "That is more than the days left.",
+  "@lvOverBalance": {
+    "description": "Refusal: the leave is more than the person may still take."
+  },
+  "lvOverlap": "That overlaps other leave of the same person.",
+  "@lvOverlap": {
+    "description": "Refusal: the leave overlaps another request."
+  },
+  "lvTypeName": "Name",
+  "@lvTypeName": {
+    "description": "Label of a leave type's name."
+  },
+  "lvPaid": "Paid",
+  "@lvPaid": {
+    "description": "Leave type: the person is paid and the days come from a yearly allowance."
+  },
+  "lvUnpaid": "Unpaid",
+  "@lvUnpaid": {
+    "description": "Leave type: no pay; it proposes a deduction in payroll."
+  },
+  "lvQuota": "Days a year",
+  "@lvQuota": {
+    "description": "Column and field: the yearly allowance of a paid leave type."
+  },
+  "lvAddType": "Add a leave type",
+  "@lvAddType": {
+    "description": "Button and heading: add a kind of leave."
+  },
+  "lvTypeAdded": "Leave type added",
+  "@lvTypeAdded": {
+    "description": "Confirmation after a leave type was added."
+  },
+  "lvIsPaid": "Paid leave (takes days from a yearly allowance)",
+  "@lvIsPaid": {
+    "description": "Checkbox: the leave type is paid."
+  },
+  "lvNoTypes": "There are no leave types yet.",
+  "@lvNoTypes": {
+    "description": "Shown when the school has no leave types."
+  },
+  "lvTypeInUse": "This leave type has requests and cannot be removed.",
+  "@lvTypeInUse": {
+    "description": "Refusal: a leave type with requests cannot be removed."
+  },
+  "lvPaidNeedsQuota": "A paid type needs a number of days a year, whole or half.",
+  "@lvPaidNeedsQuota": {
+    "description": "Refusal: a paid type was given no yearly days."
+  },
+  "lvAllowances": "Allowances",
+  "@lvAllowances": {
+    "description": "Heading of what each person may take in a year."
+  },
+  "lvPickPerson": "Person",
+  "@lvPickPerson": {
+    "description": "Label of the choice of person."
+  },
+  "lvAllowed": "Allowed",
+  "@lvAllowed": {
+    "description": "Column heading: the days a person may take in the year."
+  },
+  "lvRemaining": "Left",
+  "@lvRemaining": {
+    "description": "Column heading: the days a person may still take."
+  },
+  "lvAllowedFor": "Allowed days for {type}",
+  "@lvAllowedFor": {
+    "description": "Label of the field where HR sets a person's yearly days for a type.",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "lvAllowanceSaved": "Allowance saved",
+  "@lvAllowanceSaved": {
+    "description": "Confirmation after an allowance was changed."
+  },
+  "lvBelowTaken": "That is less than the days already taken.",
+  "@lvBelowTaken": {
+    "description": "Refusal: the allowance is below what was taken."
+  },
+  "lvStandardHint": "The yearly allowance of the type, until the person asks for it.",
+  "@lvStandardHint": {
+    "description": "Shown beside an allowance the person has not used yet."
+  },
+  "lvWholeOrHalf": "Use a whole or half number of days, like 12 or 7.5.",
+  "@lvWholeOrHalf": {
+    "description": "Hint under the days field."
+  },
+  "sbFrom": "From",
+  "@sbFrom": {
+    "description": "Label of the first date of the range."
+  },
+  "sbTo": "To",
+  "@sbTo": {
+    "description": "Label of the last date of the range."
+  },
+  "sbAway": "Teacher away",
+  "@sbAway": {
+    "description": "Column heading: the teacher who is on leave."
+  },
+  "sbCover": "Cover",
+  "@sbCover": {
+    "description": "Column heading: who covers the lesson."
+  },
+  "sbNotChosen": "Not chosen yet",
+  "@sbNotChosen": {
+    "description": "Shown when nobody was chosen to cover a lesson."
+  },
+  "sbChoose": "Choose",
+  "@sbChoose": {
+    "description": "Button: choose who covers a lesson."
+  },
+  "sbChange": "Change",
+  "@sbChange": {
+    "description": "Button: choose another cover."
+  },
+  "sbRemoveCover": "Remove cover",
+  "@sbRemoveCover": {
+    "description": "Button: take the cover away from a lesson."
+  },
+  "sbSuggestionsTitle": "Who can cover {slot}",
+  "@sbSuggestionsTitle": {
+    "description": "Heading of the list of teachers who are free and qualified for a lesson.",
+    "placeholders": {
+      "slot": {
+        "type": "String"
+      }
+    }
+  },
+  "sbThisMonth": "{count, plural, one{{count} cover this month} other{{count} covers this month}}",
+  "@sbThisMonth": {
+    "description": "How many times a teacher covered lessons this month.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sbAssign": "Choose {name}",
+  "@sbAssign": {
+    "description": "Button: choose this teacher to cover the lesson.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "sbNoCandidates": "Nobody is free and qualified for this lesson.",
+  "@sbNoCandidates": {
+    "description": "Shown when no teacher can cover the lesson."
+  },
+  "sbAssigned": "Cover chosen",
+  "@sbAssigned": {
+    "description": "Confirmation after a cover was chosen."
+  },
+  "sbCleared": "Cover removed",
+  "@sbCleared": {
+    "description": "Confirmation after a cover was removed."
+  },
+  "sbNoNeeds": "No lessons are waiting for cover in this range.",
+  "@sbNoNeeds": {
+    "description": "Shown when approved leave leaves no lesson uncovered in the range."
+  },
+  "sbHasOwnLesson": "That teacher has a lesson of their own then.",
+  "@sbHasOwnLesson": {
+    "description": "Refusal: the chosen teacher teaches another class then."
+  },
+  "sbOnLeave": "That teacher is on leave then.",
+  "@sbOnLeave": {
+    "description": "Refusal: the chosen teacher is on leave."
+  },
+  "sbAlreadyCovering": "That teacher already covers another class then.",
+  "@sbAlreadyCovering": {
+    "description": "Refusal: the chosen teacher covers another lesson then."
+  },
+  "sbSameAsAbsent": "The teacher who is away cannot cover their own lesson.",
+  "@sbSameAsAbsent": {
+    "description": "Refusal: the absent teacher was chosen."
+  },
+  "sbNoLongerNeeded": "That lesson no longer needs cover.",
+  "@sbNoLongerNeeded": {
+    "description": "Refusal: the leave behind the need was changed."
+  },
+  "sbChanged": "Something changed meanwhile. Look at the list again.",
+  "@sbChanged": {
+    "description": "Refusal: the lesson or the teacher changed while choosing."
+  },
+  "plTitle": "Unpaid leave in this month",
+  "@plTitle": {
+    "description": "Heading of the proposals for unpaid leave in a pay run."
+  },
+  "plNote": "For each person with approved unpaid leave: the monthly pay times the days, divided by the school's working days in the month. Nothing is deducted until HR applies it.",
+  "@plNote": {
+    "description": "Explains the proposals for unpaid leave in a pay run."
+  },
+  "plDays": "Unpaid days",
+  "@plDays": {
+    "description": "Column heading: unpaid days inside the month."
+  },
+  "plProposed": "Proposed deduction",
+  "@plProposed": {
+    "description": "Column heading: the proposed pay deduction."
+  },
+  "plApply": "Apply",
+  "@plApply": {
+    "description": "Button: put the proposal on the payslip as a deduction."
+  },
+  "plAmount": "Amount to deduct",
+  "@plAmount": {
+    "description": "Label of the field where HR may change the proposed amount."
+  },
+  "plApplied": "Applied: {amount}",
+  "@plApplied": {
+    "description": "Shown when the deduction is already on the payslip.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "plDone": "Deduction applied",
+  "@plDone": {
+    "description": "Confirmation after the deduction was put on the payslip."
+  },
+  "plNone": "There is no approved unpaid leave in this month.",
+  "@plNone": {
+    "description": "Shown when there is nothing to propose."
+  },
+  "plWithout": "Unpaid leave but no payslip in this run: {names}",
+  "@plWithout": {
+    "description": "Lists people with unpaid leave who have no payslip in the pay run.",
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "plAlready": "This deduction was already applied.",
+  "@plAlready": {
+    "description": "Refusal: the deduction is already on the payslip."
+  },
+  "plAboveGross": "That is more than the month's pay.",
+  "@plAboveGross": {
+    "description": "Refusal: the amount is above the monthly pay."
+  },
+  "plNotDraft": "Only a draft run can change.",
+  "@plNotDraft": {
+    "description": "Refusal: the run is no longer a draft."
+  },
+  "gbViewLabel": "Gradebook view",
+  "@gbViewLabel": {
+    "description": "Screen reader label of the switch between marks entry, exams and terms, grade bands and report cards."
+  },
+  "gbTabMarks": "Marks entry",
+  "@gbTabMarks": {
+    "description": "Tab: enter the marks of one exam."
+  },
+  "gbTabExams": "Exams and terms",
+  "@gbTabExams": {
+    "description": "Tab: the school's terms and exams."
+  },
+  "gbTabBands": "Grade bands",
+  "@gbTabBands": {
+    "description": "Tab: the school's own grade bands, for example 90 to 100 is A1."
+  },
+  "gbTabCards": "Report cards",
+  "@gbTabCards": {
+    "description": "Tab: a student's report card for a term."
+  },
+  "gbPickTerm": "Term",
+  "@gbPickTerm": {
+    "description": "Label of the choice of term."
+  },
+  "gbPickExam": "Exam",
+  "@gbPickExam": {
+    "description": "Label of the choice of exam."
+  },
+  "gbNoTermsTitle": "There are no terms yet",
+  "@gbNoTermsTitle": {
+    "description": "Title shown when the school has no terms."
+  },
+  "gbNoTermsBody": "Add a term under Exams and terms first.",
+  "@gbNoTermsBody": {
+    "description": "Body shown with the no-terms title."
+  },
+  "gbNoExams": "There are no exams in this term yet.",
+  "@gbNoExams": {
+    "description": "Shown when the chosen term has no exams."
+  },
+  "gbOutOf": "Out of {max}",
+  "@gbOutOf": {
+    "description": "Under the exam name: the most marks that can be got.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "gbMarksFor": "Marks: {name}",
+  "@gbMarksFor": {
+    "description": "Screen reader label of a student's marks field.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gbAbsentFor": "Absent: {name}",
+  "@gbAbsentFor": {
+    "description": "Screen reader label of a student's absent checkbox.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gbSaveMarks": "Save marks",
+  "@gbSaveMarks": {
+    "description": "Button: save the marks that were changed."
+  },
+  "gbMarksSaved": "Marks saved",
+  "@gbMarksSaved": {
+    "description": "Confirmation after marks were saved."
+  },
+  "gbAboveMax": "A mark is above the most possible for this exam.",
+  "@gbAboveMax": {
+    "description": "Refusal: a mark is higher than the exam's maximum."
+  },
+  "gbNotAMark": "A mark must be a number with at most one decimal.",
+  "@gbNotAMark": {
+    "description": "Refusal: a mark was not a number with at most one decimal."
+  },
+  "gbAbsentNoMarks": "A student who is absent cannot have marks.",
+  "@gbAbsentNoMarks": {
+    "description": "Refusal: absent was ticked and marks were also typed."
+  },
+  "gbAddTerm": "Add a term",
+  "@gbAddTerm": {
+    "description": "Button and heading: add a term to the academic year."
+  },
+  "gbTermName": "Term name",
+  "@gbTermName": {
+    "description": "Label of the term name field."
+  },
+  "gbTermAdded": "Term added",
+  "@gbTermAdded": {
+    "description": "Confirmation after a term was added."
+  },
+  "gbNameTaken": "That name is already used.",
+  "@gbNameTaken": {
+    "description": "Refusal: a term or exam name is taken."
+  },
+  "gbTermHasExams": "This term still has exams.",
+  "@gbTermHasExams": {
+    "description": "Refusal: a term with exams cannot be removed."
+  },
+  "gbAddExam": "Add an exam",
+  "@gbAddExam": {
+    "description": "Button and heading: add an exam."
+  },
+  "gbExamName": "Exam name",
+  "@gbExamName": {
+    "description": "Label of the exam name field."
+  },
+  "gbExamAdded": "Exam added",
+  "@gbExamAdded": {
+    "description": "Confirmation after an exam was added."
+  },
+  "gbExamExists": "This class already has an exam with that name for this subject and term.",
+  "@gbExamExists": {
+    "description": "Refusal: the exam already exists."
+  },
+  "gbExamHasMarks": "This exam already has marks.",
+  "@gbExamHasMarks": {
+    "description": "Refusal: an exam with marks cannot be removed."
+  },
+  "gbBelowMark": "The most marks cannot be below a mark already given.",
+  "@gbBelowMark": {
+    "description": "Refusal: the exam's maximum was lowered below a mark."
+  },
+  "gbMarksField": "Out of (marks)",
+  "@gbMarksField": {
+    "description": "Label of the field for the most marks of an exam."
+  },
+  "gbBandsNone": "No grade bands are set. Marks show a percentage without a grade.",
+  "@gbBandsNone": {
+    "description": "Shown when the school has set no grade bands."
+  },
+  "gbBandsHint": "Together the bands must cover 0 to 100 with no gap and no overlap. A percentage is never rounded up into a better band.",
+  "@gbBandsHint": {
+    "description": "Explains the grade bands editor."
+  },
+  "gbFrom": "From (%)",
+  "@gbFrom": {
+    "description": "Label of the lowest percentage of a band."
+  },
+  "gbTo": "To (%)",
+  "@gbTo": {
+    "description": "Label of the highest percentage of a band."
+  },
+  "gbAddBand": "Add a band",
+  "@gbAddBand": {
+    "description": "Button: add a row to the grade bands."
+  },
+  "gbUseStandard": "Use the standard set",
+  "@gbUseStandard": {
+    "description": "Button: fill the editor with the standard starting grade bands."
+  },
+  "gbSaveBands": "Save grade bands",
+  "@gbSaveBands": {
+    "description": "Button: save the grade bands."
+  },
+  "gbBandsSaved": "Grade bands saved",
+  "@gbBandsSaved": {
+    "description": "Confirmation after the bands were saved."
+  },
+  "gbRemoveBand": "Remove band {label}",
+  "@gbRemoveBand": {
+    "description": "Screen reader label of the remove button of a band.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "gbBandOverlap": "Two bands cover the same percentages.",
+  "@gbBandOverlap": {
+    "description": "Refusal: bands overlap."
+  },
+  "gbBandGap": "There is a gap between two bands.",
+  "@gbBandGap": {
+    "description": "Refusal: bands leave a gap."
+  },
+  "gbBandStart": "The lowest band must start at 0.",
+  "@gbBandStart": {
+    "description": "Refusal: the lowest band does not start at 0."
+  },
+  "gbBandEnd": "The highest band must end at 100.",
+  "@gbBandEnd": {
+    "description": "Refusal: the highest band does not end at 100."
+  },
+  "gbBandLabelTaken": "Two bands have the same grade.",
+  "@gbBandLabelTaken": {
+    "description": "Refusal: two bands share a grade."
+  },
+  "gbBandBad": "Each band needs whole numbers from 0 to 100, and a grade name.",
+  "@gbBandBad": {
+    "description": "Refusal: a band is not valid."
+  },
+  "gbPickStudent": "Student",
+  "@gbPickStudent": {
+    "description": "Label of the choice of student."
+  },
+  "gbPending": "{count, plural, one{{count} exam has no mark yet and is left out} other{{count} exams have no mark yet and are left out}}",
+  "@gbPending": {
+    "description": "Under a report card: exams without a mark are not counted.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gbPdf": "Download the report card (PDF)",
+  "@gbPdf": {
+    "description": "Button: download the report card as a PDF."
+  },
+  "gbNoCard": "This student has no report card for this term.",
+  "@gbNoCard": {
+    "description": "Shown when the student was in no class that term."
+  },
+  "gbMarkAbsent": "Absent",
+  "@gbMarkAbsent": {
+    "description": "Shown in a report card line for an exam the student missed."
+  },
+  "attLockDone": "Day locked",
+  "@attLockDone": {
+    "description": "Confirmation after a day was locked."
+  },
+  "attViewLabel": "Attendance view",
+  "@attViewLabel": {
+    "description": "Screen reader label of the switch between the daily register, the classes not taken yet and the status names."
+  },
+  "attTabRegister": "Daily register",
+  "@attTabRegister": {
+    "description": "Tab: one class's attendance on one date."
+  },
+  "attTabMissing": "Not taken yet",
+  "@attTabMissing": {
+    "description": "Tab: the classes that have not taken attendance on a date."
+  },
+  "attTabNames": "Status names",
+  "@attTabNames": {
+    "description": "Tab: the school's own wording for the seven attendance statuses."
+  },
+  "attDate": "Date",
+  "@attDate": {
+    "description": "Label of the date field."
+  },
+  "attStatusPRESENT": "Present",
+  "@attStatusPRESENT": {
+    "description": "Attendance status: came to school."
+  },
+  "attStatusABSENT": "Absent",
+  "@attStatusABSENT": {
+    "description": "Attendance status: did not come."
+  },
+  "attStatusLATE": "Late",
+  "@attStatusLATE": {
+    "description": "Attendance status: came after the start."
+  },
+  "attStatusLEAVE": "On leave",
+  "@attStatusLEAVE": {
+    "description": "Attendance status: away on approved leave."
+  },
+  "attStatusMEDICAL": "Medical",
+  "@attStatusMEDICAL": {
+    "description": "Attendance status: away for a medical reason."
+  },
+  "attStatusHALF_DAY": "Half day",
+  "@attStatusHALF_DAY": {
+    "description": "Attendance status: came for half the day."
+  },
+  "attStatusEXCUSED": "Excused",
+  "@attStatusEXCUSED": {
+    "description": "Attendance status: away with the school's permission."
+  },
+  "attCount": "{label}: {count}",
+  "@attCount": {
+    "description": "One count in the summary line above the register: the status word and how many students.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "attNotTaken": "Attendance has not been taken for this class on this date. Everyone is shown as present until it is.",
+  "@attNotTaken": {
+    "description": "Shown when no attendance exists yet for the class and date."
+  },
+  "attTakenBy": "Taken by {name}",
+  "@attTakenBy": {
+    "description": "Who took the attendance.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "attLocked": "Locked",
+  "@attLocked": {
+    "description": "Badge: the day is locked, a teacher can no longer change it."
+  },
+  "attLockedNote": "This day is locked. Only a correction can change it, and the old and new values are recorded.",
+  "@attLockedNote": {
+    "description": "Shown on a locked day for the Academic administrator."
+  },
+  "attStudent": "Student",
+  "@attStudent": {
+    "description": "Column heading."
+  },
+  "attStatus": "Status",
+  "@attStatus": {
+    "description": "Column heading: the attendance status."
+  },
+  "attNote": "Note",
+  "@attNote": {
+    "description": "Column heading and field: a short note on an exception."
+  },
+  "attNoStudents": "This class has no students yet.",
+  "@attNoStudents": {
+    "description": "Shown when the class has no students."
+  },
+  "attSave": "Save attendance",
+  "@attSave": {
+    "description": "Button: save the register."
+  },
+  "attSaveCorrection": "Save correction",
+  "@attSaveCorrection": {
+    "description": "Button: save a correction to a locked day."
+  },
+  "attLock": "Lock the day",
+  "@attLock": {
+    "description": "Button: lock the register so a teacher can no longer change it."
+  },
+  "attSaved": "Attendance saved",
+  "@attSaved": {
+    "description": "Confirmation after the register was saved."
+  },
+  "attCorrected": "Correction saved",
+  "@attCorrected": {
+    "description": "Confirmation after a correction was saved."
+  },
+  "attDayLocked": "This day is locked. Ask the Academic administrator for a correction.",
+  "@attDayLocked": {
+    "description": "Refusal: a teacher tried to change a locked day."
+  },
+  "attFutureDate": "That date has not come yet.",
+  "@attFutureDate": {
+    "description": "Refusal: attendance cannot be taken for a future date."
+  },
+  "attMissingEmpty": "Nothing is waiting for this date.",
+  "@attMissingEmpty": {
+    "description": "Shown when every class has taken attendance (or the school does not work on the date)."
+  },
+  "attMissingTitle": "Classes without attendance on {date}",
+  "@attMissingTitle": {
+    "description": "Heading of the list of classes that have not taken attendance.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "attNamesHint": "Rename a status for your school. What it means and its colour stay the same.",
+  "@attNamesHint": {
+    "description": "Explains the status names tab."
+  },
+  "attNameFor": "Name for {status}",
+  "@attNameFor": {
+    "description": "Label of the field where a school types its own word for a status.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "attNameSaved": "Name saved",
+  "@attNameSaved": {
+    "description": "Confirmation after a status was renamed."
+  },
+  "attNameDefault": "Standard name",
+  "@attNameDefault": {
+    "description": "Shown beside a status that still has its standard name."
+  },
+  "satTitleNote": "Who is at work on a date. Times are in Indian Standard Time.",
+  "@satTitleNote": {
+    "description": "Explains the staff attendance screen."
+  },
+  "satIn": "In",
+  "@satIn": {
+    "description": "Column heading: when a member of staff checked in."
+  },
+  "satOut": "Out",
+  "@satOut": {
+    "description": "Column heading: when a member of staff checked out."
+  },
+  "satStateIN": "At work",
+  "@satStateIN": {
+    "description": "Staff state: checked in, not yet out."
+  },
+  "satStateOUT": "Left for the day",
+  "@satStateOUT": {
+    "description": "Staff state: checked in and out."
+  },
+  "satStateNONE": "Not in yet",
+  "@satStateNONE": {
+    "description": "Staff state: no check-in."
+  },
+  "satCorrect": "Correct",
+  "@satCorrect": {
+    "description": "Button: correct a member of staff's times."
+  },
+  "satCorrectTitle": "Correct the times for {name}",
+  "@satCorrectTitle": {
+    "description": "Heading of the correction form.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "satTimeHint": "Write times like 09:15.",
+  "@satTimeHint": {
+    "description": "Hint under the time fields."
+  },
+  "satSaved": "Times saved",
+  "@satSaved": {
+    "description": "Confirmation after times were corrected."
+  },
+  "satNeedsIn": "Enter the time in as well.",
+  "@satNeedsIn": {
+    "description": "Refusal: a check-out time needs a check-in time."
+  },
+  "satNone": "Nobody is on the staff list yet.",
+  "@satNone": {
+    "description": "Shown when there is no member of staff."
+  },
+  "ttRemoveQuestion": "Remove {name}?",
+  "@ttRemoveQuestion": {
+    "description": "Question before a period is removed from the bell schedule.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "navTimetable": "Timetable",
+  "@navTimetable": {
+    "description": "Sidebar item: the timetable and the bell schedule."
+  },
+  "ttViewLabel": "Timetable view",
+  "@ttViewLabel": {
+    "description": "Screen reader label of the switch between the timetable by class, by teacher and the bell schedule."
+  },
+  "ttTabClass": "By class",
+  "@ttTabClass": {
+    "description": "Tab: the timetable of one class."
+  },
+  "ttTabTeacher": "By teacher",
+  "@ttTabTeacher": {
+    "description": "Tab: the timetable of one teacher."
+  },
+  "ttTabSchedule": "Bell schedule",
+  "@ttTabSchedule": {
+    "description": "Tab: the school's periods and working days."
+  },
+  "ttPickTeacher": "Teacher",
+  "@ttPickTeacher": {
+    "description": "Label of the choice of teacher."
+  },
+  "ttSubject": "Subject",
+  "@ttSubject": {
+    "description": "Label of the choice of subject in the lesson editor."
+  },
+  "ttNoYearTitle": "There is no active academic year",
+  "@ttNoYearTitle": {
+    "description": "Title shown when the timetable cannot be shown because no academic year is active."
+  },
+  "ttNoYearBody": "Make an academic year active first.",
+  "@ttNoYearBody": {
+    "description": "Body shown with the no-year title."
+  },
+  "ttNoClasses": "There are no classes yet.",
+  "@ttNoClasses": {
+    "description": "Shown when the school has no classes to pick."
+  },
+  "ttNoTeachers": "There are no teachers yet.",
+  "@ttNoTeachers": {
+    "description": "Shown when no member of staff teaches a subject yet."
+  },
+  "ttNoPeriodsTitle": "There are no periods yet",
+  "@ttNoPeriodsTitle": {
+    "description": "Title shown when the bell schedule is empty."
+  },
+  "ttNoPeriodsBody": "Start from a standard day or a short day, or add periods one by one.",
+  "@ttNoPeriodsBody": {
+    "description": "Body shown with the no-periods title."
+  },
+  "ttEmptyCell": "Free",
+  "@ttEmptyCell": {
+    "description": "Shown in a timetable cell that has no lesson."
+  },
+  "ttBreak": "Break",
+  "@ttBreak": {
+    "description": "Shown in place of a period that is a break, nothing is taught in it."
+  },
+  "ttEditorTitle": "Lesson on {slot}",
+  "@ttEditorTitle": {
+    "description": "Title of the lesson editor; slot is the day and the period, for example Mon, Period 1.",
+    "placeholders": {
+      "slot": {
+        "type": "String"
+      }
+    }
+  },
+  "ttSetLesson": "Set lesson",
+  "@ttSetLesson": {
+    "description": "Button: put the chosen subject and teacher in the cell."
+  },
+  "ttClearLesson": "Clear lesson",
+  "@ttClearLesson": {
+    "description": "Button: empty the cell."
+  },
+  "ttSaved": "Lesson saved",
+  "@ttSaved": {
+    "description": "Confirmation after a lesson was set."
+  },
+  "ttCleared": "Lesson cleared",
+  "@ttCleared": {
+    "description": "Confirmation after a lesson was cleared."
+  },
+  "ttClassBusy": "This class already has a lesson then.",
+  "@ttClassBusy": {
+    "description": "Refusal: the class already has a lesson in that period."
+  },
+  "ttTeacherBusy": "This teacher is already teaching another class then.",
+  "@ttTeacherBusy": {
+    "description": "Refusal: the teacher already teaches another class in that period."
+  },
+  "ttTeacherNotSubject": "This teacher does not teach that subject.",
+  "@ttTeacherNotSubject": {
+    "description": "Refusal: the teacher is not linked to the subject."
+  },
+  "ttNotWorkingDay": "The school does not work on that day.",
+  "@ttNotWorkingDay": {
+    "description": "Refusal: the day is not a working day."
+  },
+  "ttPeriodInUse": "A period that has lessons in it cannot be removed or made a break.",
+  "@ttPeriodInUse": {
+    "description": "Refusal: a period used by the timetable cannot be deleted or turned into a break."
+  },
+  "ttPeriodOverlaps": "That time overlaps another period.",
+  "@ttPeriodOverlaps": {
+    "description": "Refusal: the new period overlaps another one."
+  },
+  "ttPeriodLabelTaken": "Another period already has that name.",
+  "@ttPeriodLabelTaken": {
+    "description": "Refusal: the name is taken."
+  },
+  "ttPeriodStartTaken": "Another period already starts at that time.",
+  "@ttPeriodStartTaken": {
+    "description": "Refusal: the start time is taken."
+  },
+  "ttPeriodEnd": "The end must be after the start.",
+  "@ttPeriodEnd": {
+    "description": "Refusal: the period ends before it starts."
+  },
+  "ttPeriodTime": "Write times like 08:30.",
+  "@ttPeriodTime": {
+    "description": "Refusal: a time was not in the form HH:MM."
+  },
+  "ttLoadTitle": "Lessons per week",
+  "@ttLoadTitle": {
+    "description": "Heading of the list of how many lessons each teacher has in a week."
+  },
+  "ttLoadCount": "{count, plural, one{{count} lesson} other{{count} lessons}}",
+  "@ttLoadCount": {
+    "description": "The number of lessons a teacher has in a week.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ttNoLoad": "No lessons have been placed yet.",
+  "@ttNoLoad": {
+    "description": "Shown when the timetable is empty."
+  },
+  "ttWorkingDays": "Working days",
+  "@ttWorkingDays": {
+    "description": "Heading of the choice of the days the school works."
+  },
+  "ttDaysSaved": "Working days saved",
+  "@ttDaysSaved": {
+    "description": "Confirmation after the working days were changed."
+  },
+  "ttPeriodName": "Name",
+  "@ttPeriodName": {
+    "description": "Label of a period's name, for example Period 1."
+  },
+  "ttStarts": "Starts",
+  "@ttStarts": {
+    "description": "Column and field: when a period starts."
+  },
+  "ttEnds": "Ends",
+  "@ttEnds": {
+    "description": "Column and field: when a period ends."
+  },
+  "ttNumber": "No.",
+  "@ttNumber": {
+    "description": "Column heading: the number of a teaching period in the day."
+  },
+  "ttIsBreak": "This is a break: nothing is taught in it",
+  "@ttIsBreak": {
+    "description": "Checkbox: the period is a break or lunch."
+  },
+  "ttAddPeriod": "Add a period",
+  "@ttAddPeriod": {
+    "description": "Button and heading: add one period to the bell schedule."
+  },
+  "ttPeriodAdded": "Period added",
+  "@ttPeriodAdded": {
+    "description": "Confirmation after a period was added."
+  },
+  "ttStandard": "Start with a standard day",
+  "@ttStandard": {
+    "description": "Button: fill an empty bell schedule with a standard school day."
+  },
+  "ttShort": "Start with a short day",
+  "@ttShort": {
+    "description": "Button: fill an empty bell schedule with a short school day."
+  },
+  "ttTemplateApplied": "Bell schedule created",
+  "@ttTemplateApplied": {
+    "description": "Confirmation after a starting bell schedule was applied."
+  },
+  "ttDayMON": "Mon",
+  "@ttDayMON": {
+    "description": "Short name of Monday."
+  },
+  "ttDayTUE": "Tue",
+  "@ttDayTUE": {
+    "description": "Short name of Tuesday."
+  },
+  "ttDayWED": "Wed",
+  "@ttDayWED": {
+    "description": "Short name of Wednesday."
+  },
+  "ttDayTHU": "Thu",
+  "@ttDayTHU": {
+    "description": "Short name of Thursday."
+  },
+  "ttDayFRI": "Fri",
+  "@ttDayFRI": {
+    "description": "Short name of Friday."
+  },
+  "ttDaySAT": "Sat",
+  "@ttDaySAT": {
+    "description": "Short name of Saturday."
+  },
+  "ttDaySUN": "Sun",
+  "@ttDaySUN": {
+    "description": "Short name of Sunday."
+  },
   "notifLeaveRequestedTitle": "Leave to decide",
   "@notifLeaveRequestedTitle": {
     "description": "Title of the notice to the Principal that a leave request is waiting."
