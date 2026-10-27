@@ -20,19 +20,24 @@ export const DEMO_PEOPLE = [
   { key: "academic", role: "ACADEMIC_ADMIN", name: "Anita Academic", where: "web-admin" },
   { key: "hr", role: "HR_MANAGER", name: "Hema HR", where: "web-admin" },
   { key: "admissions", role: "ADMISSIONS_OFFICER", name: "Imran Admissions", where: "web-admin" },
-  { key: "teacher", role: "TEACHER", name: "Tara Teacher", where: "web-admin (shows the mobile-app notice)" },
+  { key: "teacher", role: "TEACHER", name: "Tara Teacher", where: "web-admin (shows the mobile-app notice; her leave and timetable are in the data)" },
+  { key: "sunita", role: "TEACHER", name: "Sunita Rao", where: "web-admin (a teacher with leave asked for)" },
+  { key: "vikram", role: "TEACHER", name: "Vikram Chopra", where: "web-admin (a teacher whose approved leave needs cover)" },
+  { key: "farida", role: "TEACHER", name: "Farida Begum", where: "web-admin (a teacher with approved unpaid leave)" },
 ].map((p) => ({ ...p, email: `${p.key}@${DOMAIN}` }));
 
 export const FIRST_NAMES = ["Aarav", "Diya", "Vihaan", "Ananya", "Arjun", "Meera", "Rohan", "Sana", "Kabir", "Ishita", "Aditya", "Zoya", "Reyansh", "Kavya", "Ayaan", "Riya", "Vivaan", "Nisha", "Dev", "Tanvi", "Imran", "Pooja", "Yash", "Farah", "Rahul", "Lakshmi", "Omar", "Neha", "Karan", "Aisha"];
 export const LAST_NAMES = ["Sharma", "Khan", "Patel", "Iyer", "Nair", "Singh", "Menon", "Reddy", "Gupta", "Ahmed", "Das", "Joshi", "Bhat", "Dar", "Verma"];
+/** `account` is the demo person who signs in as this member of staff; `teaches` are subject codes. */
 export const STAFF = [
-  { firstName: "Sunita", lastName: "Rao", department: "Science", designation: "Teacher", basic: 4600000 },
-  { firstName: "Vikram", lastName: "Chopra", department: "Mathematics", designation: "Teacher", basic: 4400000 },
-  { firstName: "Farida", lastName: "Begum", department: "Languages", designation: "Teacher", basic: 4200000 },
+  { firstName: "Sunita", lastName: "Rao", department: "Science", designation: "Teacher", basic: 4600000, account: "sunita", teaches: ["SCI"] },
+  { firstName: "Vikram", lastName: "Chopra", department: "Mathematics", designation: "Teacher", basic: 4400000, account: "vikram", teaches: ["MATH"] },
+  { firstName: "Farida", lastName: "Begum", department: "Languages", designation: "Teacher", basic: 4200000, account: "farida", teaches: ["ENG", "HIN"] },
+  { firstName: "Tara", lastName: "Teacher", department: "Mathematics", designation: "Teacher", basic: 4500000, account: "teacher", teaches: ["MATH", "ART"] },
   { firstName: "Joseph", lastName: "Mathew", department: "Science", designation: "Lab assistant", basic: 2600000 },
   { firstName: "Geeta", lastName: "Kulkarni", department: "Office", designation: "Clerk", basic: 2800000 },
   { firstName: "Mohan", lastName: "Lal", department: "Support", designation: "Peon", basic: 1800000 },
-  { firstName: "Rekha", lastName: "Pillai", department: "Languages", designation: "Teacher", basic: 4300000 },
+  { firstName: "Rekha", lastName: "Pillai", department: "Languages", designation: "Teacher", basic: 4300000, teaches: ["HIN", "SST"] },
   { firstName: "Salim", lastName: "Dar", department: "Transport", designation: "Driver", basic: 2200000 },
 ];
 export const SUBJECTS = [["Mathematics", "MATH"], ["English", "ENG"], ["Hindi", "HIN"], ["Science", "SCI"], ["Social Studies", "SST"], ["Art", "ART"]];
@@ -75,3 +80,43 @@ export function loginTable({ webAdmin = `http://${DEMO_SUBDOMAIN}.localhost:3002
   const rows = DEMO_PEOPLE.map((p) => `${p.email.padEnd(36)} ${(p.role ?? "PLATFORM OWNER").padEnd(20)} ${p.name.padEnd(20)} ${p.where}`);
   return [`School:            ${webAdmin}`, `Platform owner app: ${saasAdmin}`, `Password for every account below: ${DEMO_PHRASE}`, "", ...rows].join("\n");
 }
+
+// ---- Phase 3 (P3-12): dates and rules for the timetable, attendance, marks and leave. Pure, so the evals can test them.
+const DAY_MS = 86_400_000;
+export const addDays = (date, n) => iso(new Date(Date.parse(`${date}T00:00:00Z`) + n * DAY_MS));
+/** The demo school works Monday to Saturday (the gateway's default). */
+export const isWorking = (date) => new Date(`${date}T00:00:00Z`).getUTCDay() !== 0;
+/** Today in India Standard Time, the day the gateway reckons attendance by. */
+export const schoolToday = (now = new Date()) => iso(new Date(now.getTime() + 330 * 60_000));
+/** The `n` working days before `today`, oldest first. */
+export function pastWorkingDays(today, n) {
+  const out = [];
+  for (let d = addDays(today, -1); out.length < n; d = addDays(d, -1)) if (isWorking(d)) out.unshift(d);
+  return out;
+}
+/** The working day `n` working days after `today` (n 1 is the next one). */
+export function futureWorkingDay(today, n) {
+  let d = today;
+  for (let left = n; left > 0; ) { d = addDays(d, 1); if (isWorking(d)) left -= 1; }
+  return d;
+}
+/** The latest working day on or before today that is in today's month (else the first working day on or after today). */
+export function thisMonthWorkingDay(today) {
+  for (let d = today; d.slice(0, 7) === today.slice(0, 7); d = addDays(d, -1)) if (isWorking(d)) return d;
+  return futureWorkingDay(today, 1);
+}
+/** What a student's day was like: mostly present, now and then something else. The same student and day always give the same answer. */
+export function exceptionFor(student, day) {
+  const h = (student * 7 + day * 13) % 31;
+  return h === 0 ? "ABSENT" : h === 5 ? "LATE" : h === 11 ? "MEDICAL" : h === 17 ? "HALF_DAY" : null;
+}
+/** A mark out of `max` tenths for the n-th student: spread over the range, one student absent and one not yet marked. */
+export function markFor(n, examNo, maxTenths) {
+  if (n === 1 && examNo === 0) return { absent: true };
+  if (n === 2 && examNo === 2) return null;
+  return { tenths: Math.round(((((n * 37 + examNo * 11) % 61) + 35) / 100) * maxTenths / 10) * 10 };
+}
+/** The index of the subject taught in a period: a rotation that differs by class, so two classes seldom want the same teacher at once. */
+export const rotationSubject = (subjectCount, classIndex, dayIndex, periodIndex) => (periodIndex + dayIndex + classIndex * 2) % subjectCount;
+/** Marks as the text the gateway takes: `4450` tenths is `44.5`... */
+export const marksText = (tenths) => (tenths % 10 === 0 ? String(tenths / 10) : `${Math.floor(tenths / 10)}.${tenths % 10}`);
