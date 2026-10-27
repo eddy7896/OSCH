@@ -9,3 +9,7 @@ export 'src/localization.dart';
 export 'src/theme.dart';
 export 'src/tokens.g.dart';
 export 'src/format/oru_format.dart';
+export 'src/api/api_transport.dart';
+export 'src/api/generated/api.g.dart';
+export 'src/api/generated/error_codes.g.dart';
+export 'src/api/generated/models.g.dart';

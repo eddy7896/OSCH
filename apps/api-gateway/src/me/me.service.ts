@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE, type Database } from '@oruschools/database';
 import { DEFAULT_LOCALE } from '@oruschools/i18n';
 import { isRole, navigationFor, permissionsOf, type Subject } from '@oruschools/rbac';
+import { dashed } from '../common/uuid.js';
 import type { AuthenticatedUser } from '../auth/authenticated-user.js';
 import { UserSyncService } from '../users/user-sync.service.js';
 import type { AccessDto, MeResponseDto } from './dto/me-response.dto.js';
@@ -27,7 +28,7 @@ export class MeService {
     const memberships = (await this.db.listMembershipsForUser({ userId: user.uid })).data.schoolMembers;
 
     const mapped = memberships.map((m) => ({
-      school: { id: m.school.id, name: m.school.name, subDomain: m.school.subDomain, defaultLanguage: m.school.defaultLanguage, status: m.school.subscriptionStatus as string },
+      school: { id: dashed(m.school.id), name: m.school.name, subDomain: m.school.subDomain, defaultLanguage: m.school.defaultLanguage, status: m.school.subscriptionStatus as string },
       role: m.schoolRole as string,
       status: m.status as string,
     }));

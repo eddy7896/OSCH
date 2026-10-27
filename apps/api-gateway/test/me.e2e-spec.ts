@@ -37,7 +37,8 @@ describe('GET /v1/me and PATCH /v1/me/preferences (P1-6a)', () => {
   it('returns the profile and memberships without needing any school', async () => {
     const res = await get('teacher').expect(200);
     expect(res.body.user).toMatchObject({ id: 'u-teacher', email: 'teacher@example.com', globalRole: 'USER' });
-    expect(res.body.memberships).toEqual([{ school: { id: S1.replaceAll('-', ''), name: 'School One', subDomain: 'one', defaultLanguage: 'hi', status: 'ACTIVE' }, role: 'TEACHER', status: 'ACTIVE' }]);
+    // The id is the canonical dashed one (what the caller sends back as X-School-Id), though the database hands it over without dashes.
+    expect(res.body.memberships).toEqual([{ school: { id: S1, name: 'School One', subDomain: 'one', defaultLanguage: 'hi', status: 'ACTIVE' }, role: 'TEACHER', status: 'ACTIVE' }]);
     expect(res.body.activeSchool).toBeNull();
     expect(res.body.language).toEqual({ chosen: null, effective: 'en' });
   });

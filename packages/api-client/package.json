@@ -21,7 +21,8 @@
     "lint": "oxlint src test",
     "test": "vitest run --passWithNoTests && npm run check",
     "generate": "node scripts/generate.mjs",
-    "check": "node scripts/generate.mjs --check"
+    "generate:dart": "node scripts/generate-dart.mjs",
+    "check": "node scripts/generate.mjs --check && node scripts/generate-dart.mjs --check"
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.99.0",
