@@ -11,6 +11,7 @@ workspace:
   - apps/mobile-parent
   - apps/mobile-driver
   - packages/flutter-core
+  - packages/flutter-sync
 
 dev_dependencies:
   melos: ^8.9.0
