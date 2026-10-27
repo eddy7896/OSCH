@@ -714,6 +714,50 @@ class OruStringsDoi extends OruStrings {
   String get reportTotal => 'Total';
 
   @override
+  String get ntBell => 'Notifications';
+
+  @override
+  String ntBellUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread notifications',
+      one: '$count unread notification',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ntEmpty => 'You have no notifications.';
+
+  @override
+  String get ntMarkAll => 'Mark all as read';
+
+  @override
+  String get ntClose => 'Close';
+
+  @override
+  String get ntSettings => 'Choose what you see';
+
+  @override
+  String get ntSettingsHint => 'Hidden kinds are kept, not deleted.';
+
+  @override
+  String get ntCatleave => 'Leave';
+
+  @override
+  String get ntCatsubstitution => 'Substitutions';
+
+  @override
+  String get ntCatpayroll => 'Payroll';
+
+  @override
+  String get ntUnread => 'Unread';
+
+  @override
+  String get ntLoadFailed => 'The notifications could not be loaded.';
+
+  @override
   String get sbPeriod => 'Period';
 
   @override

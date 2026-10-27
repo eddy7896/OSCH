@@ -12,6 +12,11 @@ describe('notification words', () => {
     expect(render('leave.approved', { type: 'Casual', startDate: '2026-10-26' }, hi, en)).toEqual({ title: 'छुट्टी स्वीकृत', body: 'Casual: 26-10-2026.' });
     expect(render('nope.kind', {}, {}, {})).toEqual({ title: 'nope.kind', body: '' });
   });
+  it('in right-to-left text a date is isolated so its digits keep their order; in left-to-right text nothing is added', () => {
+    expect(fill('{startDate}', { startDate: '2026-10-26' }, true)).toBe('\u206626\u201110\u20112026\u2069');
+    expect(fill('{startDate}', { startDate: '2026-10-26' })).toBe('26-10-2026');
+    expect(fill('{name}', { name: 'Asha' }, true)).toBe('Asha');
+  });
   it('every kind has a category and its words', () => {
     for (const [kind, info] of Object.entries(KINDS)) { expect(categoryOf(kind)).toBe(info.category); expect(info.title).toMatch(/^notif/); expect(info.body).toMatch(/^notif/); }
     expect(categoryOf('x.y')).toBeNull();

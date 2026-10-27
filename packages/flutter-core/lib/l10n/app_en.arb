@@ -915,6 +915,59 @@
   "@reportTotal": {
     "description": "Label of the last row, which adds up the columns above it."
   },
+  "ntBell": "Notifications",
+  "@ntBell": {
+    "description": "Name of the bell button in the top bar that opens the notifications."
+  },
+  "ntBellUnread": "{count, plural, one{{count} unread notification} other{{count} unread notifications}}",
+  "@ntBellUnread": {
+    "description": "Said after the word Notifications on the bell button when some are unread: how many.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ntEmpty": "You have no notifications.",
+  "@ntEmpty": {
+    "description": "Shown when the inbox is empty."
+  },
+  "ntMarkAll": "Mark all as read",
+  "@ntMarkAll": {
+    "description": "Button: mark every notification as read."
+  },
+  "ntClose": "Close",
+  "@ntClose": {
+    "description": "Button: close the notifications panel."
+  },
+  "ntSettings": "Choose what you see",
+  "@ntSettings": {
+    "description": "Heading of the choice of which kinds of notification to show."
+  },
+  "ntSettingsHint": "Hidden kinds are kept, not deleted.",
+  "@ntSettingsHint": {
+    "description": "Explains the choice of which kinds of notification to show."
+  },
+  "ntCatleave": "Leave",
+  "@ntCatleave": {
+    "description": "Kind of notification: about leave requests and decisions."
+  },
+  "ntCatsubstitution": "Substitutions",
+  "@ntCatsubstitution": {
+    "description": "Kind of notification: about covering lessons."
+  },
+  "ntCatpayroll": "Payroll",
+  "@ntCatpayroll": {
+    "description": "Kind of notification: about pay."
+  },
+  "ntUnread": "Unread",
+  "@ntUnread": {
+    "description": "Screen reader word before an unread notification."
+  },
+  "ntLoadFailed": "The notifications could not be loaded.",
+  "@ntLoadFailed": {
+    "description": "Shown in the panel when loading failed."
+  },
   "sbPeriod": "Period",
   "@sbPeriod": {
     "description": "Column heading: the period of the school day."

@@ -713,6 +713,50 @@ class OruStringsHi extends OruStrings {
   String get reportTotal => 'कुल';
 
   @override
+  String get ntBell => 'सूचनाएँ';
+
+  @override
+  String ntBellUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count अपठित सूचनाएँ',
+      one: '$count अपठित सूचना',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ntEmpty => 'आपके पास कोई सूचना नहीं है।';
+
+  @override
+  String get ntMarkAll => 'सभी को पढ़ा हुआ चिह्नित करें';
+
+  @override
+  String get ntClose => 'बंद करें';
+
+  @override
+  String get ntSettings => 'चुनें कि आप क्या देखें';
+
+  @override
+  String get ntSettingsHint => 'छिपाई गई किस्में हटती नहीं, सुरक्षित रहती हैं।';
+
+  @override
+  String get ntCatleave => 'छुट्टी';
+
+  @override
+  String get ntCatsubstitution => 'स्थानापन्न शिक्षक';
+
+  @override
+  String get ntCatpayroll => 'वेतन';
+
+  @override
+  String get ntUnread => 'अपठित';
+
+  @override
+  String get ntLoadFailed => 'सूचनाएँ लोड नहीं हो सकीं।';
+
+  @override
   String get sbPeriod => 'कालांश';
 
   @override

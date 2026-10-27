@@ -34,6 +34,7 @@ const NEEDS: Record<string, [string, string]> = {
   leaveRequests: ["leave", "read"], leaveTypes: ["leave", "read"], leaveBalances: ["leave", "read"], leaveApprove: ["leave", "approve"], leaveReject: ["leave", "approve"], leaveCreateType: ["leave", "create"], leaveDeleteType: ["leave", "update"], leaveSetBalance: ["leave", "update"], leaveUpdateType: ["leave", "update"],
   substitutionNeeds: ["academics", "read"], substitutionSuggestions: ["academics", "read"], substitutionAssign: ["academics", "update"], substitutionClear: ["academics", "update"],
   leaveDeductionProposals: ["payroll", "read"], leaveDeductionApply: ["payroll", "update"],
+  notificationsList: ["notifications", "read"], notificationsPreferences: ["notifications", "read"], notificationsRead: ["notifications", "update"], notificationsReadAll: ["notifications", "update"], notificationsSetPreference: ["notifications", "update"],
   admissionsList: ["admissions", "read"], admissionsGet: ["admissions", "read"], admissionsCreate: ["admissions", "create"], admissionsDecide: ["admissions", "update"], admissionsAdmit: ["admissions", "update"],
   payrollRuns: ["payroll", "read"], payrollRun: ["payroll", "read"], payrollSalary: ["payroll", "read"], payrollPayslipPdf: ["payroll", "read"],
   payrollCreateRun: ["payroll", "create"], payrollAddLine: ["payroll", "create"], payrollApprove: ["payroll", "approve"], payrollPay: ["payroll", "delete"], payrollDeleteRun: ["payroll", "delete"], payrollRemoveLine: ["payroll", "delete"],
@@ -90,7 +91,8 @@ const asRole = (role: Role) => {
   };
   return m;
 };
-const granted = (role: Role, [resource, action]: [string, string]) => permissionsOf({ schoolRole: role }).some((p) => p.resource === resource && p.action === action && p.scope === "school");
+/** The school-wide grant, except for what everyone has only for themselves (the inbox): any scope will do there. */
+const granted = (role: Role, [resource, action]: [string, string]) => permissionsOf({ schoolRole: role }).some((p) => p.resource === resource && p.action === action && (p.scope === "school" || resource === "notifications"));
 const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", attendance: "Attendance", gradebook: "Gradebook", leave: "Leave", substitution: "Substitutions", "staff-attendance": "Staff attendance", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles" };
 const settle = () => new Promise((r) => setTimeout(r, 100));
 
