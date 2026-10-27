@@ -1,0 +1,10 @@
+[
+  "Me_get", "Me_preferences",
+  "Teaching_mine", "Timetable_mine", "Schedule_get", "Academics_classes", "Academics_subjects", "Academics_years",
+  "Attendance_statuses", "Attendance_day", "Attendance_days", "Attendance_submit", "Attendance_student",
+  "StaffAttendance_mine", "StaffAttendance_checkIn", "StaffAttendance_checkOut",
+  "Grades_bands", "Grades_terms", "Grades_exams", "Grades_grid", "Grades_saveMarks", "Grades_reportCard",
+  "Leave_types", "Leave_balances", "Leave_requests", "Leave_create", "Leave_cancel", "Leave_approve", "Leave_reject",
+  "Notifications_list", "Notifications_preferences", "Notifications_setPreference", "Notifications_read", "Notifications_readAll",
+  "School_profile", "Students_list", "Substitution_mine", "Sync_tombstones"
+]

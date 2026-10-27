@@ -27,6 +27,8 @@ describe.skipIf(!ready)('/v1/me against the real emulators (P1-6a)', () => {
     const res = await me(teacher, w!.schools.A).expect(200);
     expect(res.body.user).toMatchObject({ id: teacher.uid, email: teacher.email, globalRole: 'USER' });
     expect(res.body.memberships).toHaveLength(1);
+    // The school id is the one the caller sends back as X-School-Id: canonical and dashed, like every other id the API speaks.
+    expect(res.body.memberships[0].school.id).toMatch(/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/);
     expect(res.body.memberships[0]).toMatchObject({ role: 'TEACHER', status: 'ACTIVE', school: { name: 'School A', status: 'ACTIVE', defaultLanguage: 'en' } });
     expect(res.body.activeSchool).toMatchObject({ schoolId: w!.schools.A, role: 'TEACHER' });
     const flat = Object.entries(res.body.activeSchool.permissions as Record<string, Record<string, string>>).flatMap(([resource, acts]) => Object.entries(acts).map(([action, scope]) => `${resource}:${action}:${scope}`)).sort();
