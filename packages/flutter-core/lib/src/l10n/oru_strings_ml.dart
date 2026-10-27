@@ -714,6 +714,274 @@ class OruStringsMl extends OruStrings {
   String get reportTotal => 'Total';
 
   @override
+  String get sbPeriod => 'Period';
+
+  @override
+  String get lvViewLabel => 'Leave view';
+
+  @override
+  String get lvTabRequests => 'Requests';
+
+  @override
+  String get lvTabTypes => 'Types and allowances';
+
+  @override
+  String get lvAll => 'All';
+
+  @override
+  String get lvStatus => 'Status';
+
+  @override
+  String get lvStatusPENDING => 'Pending';
+
+  @override
+  String get lvStatusAPPROVED => 'Approved';
+
+  @override
+  String get lvStatusREJECTED => 'Rejected';
+
+  @override
+  String get lvStatusCANCELLED => 'Cancelled';
+
+  @override
+  String get lvPerson => 'Person';
+
+  @override
+  String get lvType => 'Type';
+
+  @override
+  String get lvDates => 'Dates';
+
+  @override
+  String get lvDays => 'Days';
+
+  @override
+  String get lvDecision => 'Decision';
+
+  @override
+  String get lvHalfMORNING => 'morning';
+
+  @override
+  String get lvHalfAFTERNOON => 'afternoon';
+
+  @override
+  String get lvNoRequests => 'There are no leave requests.';
+
+  @override
+  String get lvApprove => 'Approve';
+
+  @override
+  String get lvReject => 'Reject';
+
+  @override
+  String lvRejectQuestion(String name) {
+    return 'Reject the leave of $name?';
+  }
+
+  @override
+  String get lvRejectNote => 'Note for the person (optional)';
+
+  @override
+  String get lvApproved => 'Leave approved';
+
+  @override
+  String get lvRejected => 'Leave rejected';
+
+  @override
+  String get lvNotPending => 'This request was already decided.';
+
+  @override
+  String get lvOverBalance => 'That is more than the days left.';
+
+  @override
+  String get lvOverlap => 'That overlaps other leave of the same person.';
+
+  @override
+  String get lvTypeName => 'Name';
+
+  @override
+  String get lvPaid => 'Paid';
+
+  @override
+  String get lvUnpaid => 'Unpaid';
+
+  @override
+  String get lvQuota => 'Days a year';
+
+  @override
+  String get lvAddType => 'Add a leave type';
+
+  @override
+  String get lvTypeAdded => 'Leave type added';
+
+  @override
+  String get lvIsPaid => 'Paid leave (takes days from a yearly allowance)';
+
+  @override
+  String get lvNoTypes => 'There are no leave types yet.';
+
+  @override
+  String get lvTypeInUse =>
+      'This leave type has requests and cannot be removed.';
+
+  @override
+  String get lvPaidNeedsQuota =>
+      'A paid type needs a number of days a year, whole or half.';
+
+  @override
+  String get lvAllowances => 'Allowances';
+
+  @override
+  String get lvPickPerson => 'Person';
+
+  @override
+  String get lvAllowed => 'Allowed';
+
+  @override
+  String get lvRemaining => 'Left';
+
+  @override
+  String lvAllowedFor(String type) {
+    return 'Allowed days for $type';
+  }
+
+  @override
+  String get lvAllowanceSaved => 'Allowance saved';
+
+  @override
+  String get lvBelowTaken => 'That is less than the days already taken.';
+
+  @override
+  String get lvStandardHint =>
+      'The yearly allowance of the type, until the person asks for it.';
+
+  @override
+  String get lvWholeOrHalf =>
+      'Use a whole or half number of days, like 12 or 7.5.';
+
+  @override
+  String get sbFrom => 'From';
+
+  @override
+  String get sbTo => 'To';
+
+  @override
+  String get sbAway => 'Teacher away';
+
+  @override
+  String get sbCover => 'Cover';
+
+  @override
+  String get sbNotChosen => 'Not chosen yet';
+
+  @override
+  String get sbChoose => 'Choose';
+
+  @override
+  String get sbChange => 'Change';
+
+  @override
+  String get sbRemoveCover => 'Remove cover';
+
+  @override
+  String sbSuggestionsTitle(String slot) {
+    return 'Who can cover $slot';
+  }
+
+  @override
+  String sbThisMonth(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count covers this month',
+      one: '$count cover this month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String sbAssign(String name) {
+    return 'Choose $name';
+  }
+
+  @override
+  String get sbNoCandidates => 'Nobody is free and qualified for this lesson.';
+
+  @override
+  String get sbAssigned => 'Cover chosen';
+
+  @override
+  String get sbCleared => 'Cover removed';
+
+  @override
+  String get sbNoNeeds => 'No lessons are waiting for cover in this range.';
+
+  @override
+  String get sbHasOwnLesson => 'That teacher has a lesson of their own then.';
+
+  @override
+  String get sbOnLeave => 'That teacher is on leave then.';
+
+  @override
+  String get sbAlreadyCovering =>
+      'That teacher already covers another class then.';
+
+  @override
+  String get sbSameAsAbsent =>
+      'The teacher who is away cannot cover their own lesson.';
+
+  @override
+  String get sbNoLongerNeeded => 'That lesson no longer needs cover.';
+
+  @override
+  String get sbChanged =>
+      'Something changed meanwhile. Look at the list again.';
+
+  @override
+  String get plTitle => 'Unpaid leave in this month';
+
+  @override
+  String get plNote =>
+      'For each person with approved unpaid leave: the monthly pay times the days, divided by the school\'s working days in the month. Nothing is deducted until HR applies it.';
+
+  @override
+  String get plDays => 'Unpaid days';
+
+  @override
+  String get plProposed => 'Proposed deduction';
+
+  @override
+  String get plApply => 'Apply';
+
+  @override
+  String get plAmount => 'Amount to deduct';
+
+  @override
+  String plApplied(String amount) {
+    return 'Applied: $amount';
+  }
+
+  @override
+  String get plDone => 'Deduction applied';
+
+  @override
+  String get plNone => 'There is no approved unpaid leave in this month.';
+
+  @override
+  String plWithout(String names) {
+    return 'Unpaid leave but no payslip in this run: $names';
+  }
+
+  @override
+  String get plAlready => 'This deduction was already applied.';
+
+  @override
+  String get plAboveGross => 'That is more than the month\'s pay.';
+
+  @override
+  String get plNotDraft => 'Only a draft run can change.';
+
+  @override
   String get gbViewLabel => 'Gradebook view';
 
   @override

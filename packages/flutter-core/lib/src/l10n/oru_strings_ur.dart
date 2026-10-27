@@ -716,6 +716,272 @@ class OruStringsUr extends OruStrings {
   String get reportTotal => 'کل';
 
   @override
+  String get sbPeriod => 'پیریڈ';
+
+  @override
+  String get lvViewLabel => 'رخصت کا منظر';
+
+  @override
+  String get lvTabRequests => 'درخواستیں';
+
+  @override
+  String get lvTabTypes => 'اقسام اور حدیں';
+
+  @override
+  String get lvAll => 'سب';
+
+  @override
+  String get lvStatus => 'کیفیت';
+
+  @override
+  String get lvStatusPENDING => 'زیر التوا';
+
+  @override
+  String get lvStatusAPPROVED => 'منظور شدہ';
+
+  @override
+  String get lvStatusREJECTED => 'مسترد';
+
+  @override
+  String get lvStatusCANCELLED => 'منسوخ';
+
+  @override
+  String get lvPerson => 'فرد';
+
+  @override
+  String get lvType => 'قسم';
+
+  @override
+  String get lvDates => 'تاریخیں';
+
+  @override
+  String get lvDays => 'دن';
+
+  @override
+  String get lvDecision => 'فیصلہ';
+
+  @override
+  String get lvHalfMORNING => 'صبح';
+
+  @override
+  String get lvHalfAFTERNOON => 'دوپہر';
+
+  @override
+  String get lvNoRequests => 'رخصت کی کوئی درخواست نہیں ہے۔';
+
+  @override
+  String get lvApprove => 'منظور کریں';
+
+  @override
+  String get lvReject => 'مسترد کریں';
+
+  @override
+  String lvRejectQuestion(String name) {
+    return '$name کی رخصت مسترد کریں؟';
+  }
+
+  @override
+  String get lvRejectNote => 'فرد کے لیے نوٹ (اختیاری)';
+
+  @override
+  String get lvApproved => 'رخصت منظور کر دی گئی';
+
+  @override
+  String get lvRejected => 'رخصت مسترد کر دی گئی';
+
+  @override
+  String get lvNotPending => 'اس درخواست پر پہلے ہی فیصلہ ہو چکا ہے۔';
+
+  @override
+  String get lvOverBalance => 'یہ باقی حد سے زیادہ ہے۔';
+
+  @override
+  String get lvOverlap => 'یہ اسی فرد کی کسی دوسری رخصت سے ٹکراتی ہے۔';
+
+  @override
+  String get lvTypeName => 'نام';
+
+  @override
+  String get lvPaid => 'تنخواہ کے ساتھ';
+
+  @override
+  String get lvUnpaid => 'بلا تنخواہ';
+
+  @override
+  String get lvQuota => 'سالانہ دن';
+
+  @override
+  String get lvAddType => 'رخصت کی قسم شامل کریں';
+
+  @override
+  String get lvTypeAdded => 'رخصت کی قسم شامل ہو گئی';
+
+  @override
+  String get lvIsPaid => 'تنخواہ کے ساتھ رخصت (سالانہ حد سے دن کٹتے ہیں)';
+
+  @override
+  String get lvNoTypes => 'ابھی رخصت کی کوئی قسم نہیں ہے۔';
+
+  @override
+  String get lvTypeInUse =>
+      'اس رخصت کی قسم کی درخواستیں ہیں، اسے ہٹایا نہیں جا سکتا۔';
+
+  @override
+  String get lvPaidNeedsQuota =>
+      'تنخواہ والی قسم کے لیے سالانہ دنوں کی تعداد چاہیے، پوری یا آدھی۔';
+
+  @override
+  String get lvAllowances => 'حدیں';
+
+  @override
+  String get lvPickPerson => 'فرد';
+
+  @override
+  String get lvAllowed => 'مجاز';
+
+  @override
+  String get lvRemaining => 'باقی';
+
+  @override
+  String lvAllowedFor(String type) {
+    return '$type کے مجاز دن';
+  }
+
+  @override
+  String get lvAllowanceSaved => 'حد محفوظ ہو گئی';
+
+  @override
+  String get lvBelowTaken => 'یہ پہلے ہی لی جا چکی رخصتوں سے کم ہے۔';
+
+  @override
+  String get lvStandardHint => 'قسم کی سالانہ حد، جب تک فرد اسے نہ مانگے۔';
+
+  @override
+  String get lvWholeOrHalf =>
+      'پورے یا آدھے دنوں کی تعداد لکھیں، جیسے 12 یا 7.5۔';
+
+  @override
+  String get sbFrom => 'سے';
+
+  @override
+  String get sbTo => 'تک';
+
+  @override
+  String get sbAway => 'غیر حاضر استاد';
+
+  @override
+  String get sbCover => 'متبادل';
+
+  @override
+  String get sbNotChosen => 'ابھی منتخب نہیں ہوا';
+
+  @override
+  String get sbChoose => 'منتخب کریں';
+
+  @override
+  String get sbChange => 'بدلیں';
+
+  @override
+  String get sbRemoveCover => 'متبادل ہٹائیں';
+
+  @override
+  String sbSuggestionsTitle(String slot) {
+    return '$slot کون سنبھال سکتا ہے';
+  }
+
+  @override
+  String sbThisMonth(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'اس مہینے $count بار',
+      one: 'اس مہینے $count بار',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String sbAssign(String name) {
+    return '$name کو منتخب کریں';
+  }
+
+  @override
+  String get sbNoCandidates => 'اس سبق کے لیے کوئی خالی اور اہل استاد نہیں ہے۔';
+
+  @override
+  String get sbAssigned => 'متبادل منتخب ہو گیا';
+
+  @override
+  String get sbCleared => 'متبادل ہٹا دیا گیا';
+
+  @override
+  String get sbNoNeeds => 'اس مدت میں کسی سبق کو متبادل کا انتظار نہیں۔';
+
+  @override
+  String get sbHasOwnLesson => 'اس وقت اس استاد کا اپنا سبق ہے۔';
+
+  @override
+  String get sbOnLeave => 'اس وقت وہ استاد رخصت پر ہے۔';
+
+  @override
+  String get sbAlreadyCovering =>
+      'اس وقت وہ استاد پہلے سے دوسری جماعت سنبھال رہا ہے۔';
+
+  @override
+  String get sbSameAsAbsent =>
+      'جو استاد غیر حاضر ہے وہ اپنا سبق نہیں سنبھال سکتا۔';
+
+  @override
+  String get sbNoLongerNeeded => 'اس سبق کو اب متبادل کی ضرورت نہیں۔';
+
+  @override
+  String get sbChanged => 'اس دوران کچھ بدل گیا۔ فہرست دوبارہ دیکھیں۔';
+
+  @override
+  String get plTitle => 'اس مہینے کی بلا تنخواہ رخصت';
+
+  @override
+  String get plNote =>
+      'بلا تنخواہ منظور شدہ رخصت والے ہر فرد کے لیے: ماہانہ تنخواہ ضرب دن، تقسیم مہینے کے اسکول کے کام کے دن۔ جب تک ایچ آر لاگو نہ کرے، کچھ نہیں کٹتا۔';
+
+  @override
+  String get plDays => 'بلا تنخواہ دن';
+
+  @override
+  String get plProposed => 'مجوزہ کٹوتی';
+
+  @override
+  String get plApply => 'لاگو کریں';
+
+  @override
+  String get plAmount => 'کٹوتی کی رقم';
+
+  @override
+  String plApplied(String amount) {
+    return 'لاگو: $amount';
+  }
+
+  @override
+  String get plDone => 'کٹوتی لاگو کر دی گئی';
+
+  @override
+  String get plNone => 'اس مہینے بلا تنخواہ کوئی منظور شدہ رخصت نہیں ہے۔';
+
+  @override
+  String plWithout(String names) {
+    return 'بلا تنخواہ رخصت ہے مگر اس رن میں تنخواہ کی پرچی نہیں: $names';
+  }
+
+  @override
+  String get plAlready => 'یہ کٹوتی پہلے ہی لاگو ہو چکی ہے۔';
+
+  @override
+  String get plAboveGross => 'یہ مہینے کی تنخواہ سے زیادہ ہے۔';
+
+  @override
+  String get plNotDraft => 'صرف مسودہ رن بدلا جا سکتا ہے۔';
+
+  @override
   String get gbViewLabel => 'گریڈ بک کا منظر';
 
   @override

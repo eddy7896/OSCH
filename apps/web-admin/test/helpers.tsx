@@ -48,6 +48,8 @@ export function fakeApi(overrides: Record<string, unknown> = {}) {
   return {
     publicSchoolsBySubdomain: vi.fn(async () => SCHOOL),
     meGet: vi.fn(async () => me()),
+    // a pay run's page also asks for the unpaid-leave proposals; most tests do not care about them
+    leaveDeductionProposals: vi.fn(async () => ({ run: { id: "r", year: 2027, month: 4, status: "DRAFT" }, workingDays: 26, items: [], withoutPayslip: [] })),
     ...overrides,
   } as unknown as Api & Record<string, ReturnType<typeof vi.fn>>;
 }

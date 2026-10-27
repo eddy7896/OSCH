@@ -219,3 +219,67 @@ describe.skipIf(!DIR)("screen pictures: gradebook (P3-11c)", () => {
     });
   }
 });
+
+// ---- P3-11d: leave, substitution, payroll proposals
+const REQ = (id: string, name: string, eid: string, o: Record<string, unknown> = {}) => ({ id, staff: { id: `s-${id}`, employeeId: eid, name }, type: { id: "ty1", name: "Casual", paid: true }, startDate: "2026-10-26", endDate: "2026-10-27", half: null, days: "2", reason: "Family event", status: "PENDING", decision: null, createdAt: "2026-10-20T08:00:00Z", ...o });
+const LEAVE_REQS = { items: [
+  REQ("1", "Asha Rao", "E0001"), REQ("2", "Bilal Khan", "E0002", { type: { id: "ty2", name: "Unpaid", paid: false }, startDate: "2026-10-28", endDate: "2026-10-28", half: "MORNING", days: "0.5", reason: null }),
+  REQ("3", "Chitra Nair", "E0003", { status: "APPROVED", startDate: "2026-10-19", endDate: "2026-10-19", days: "1", decision: { by: "Principal Sharma", at: "2026-10-18T07:00:00Z", note: null } }),
+  REQ("4", "Dev Patel", "E0004", { status: "REJECTED", startDate: "2026-10-12", endDate: "2026-10-14", days: "3", decision: { by: "Principal Sharma", at: "2026-10-10T07:00:00Z", note: "Exams that week" } }),
+] };
+const LEAVE_TYPES = { items: [{ id: "ty1", name: "Casual", paid: true, quotaDays: "12" }, { id: "ty3", name: "Sick", paid: true, quotaDays: "7.5" }, { id: "ty2", name: "Unpaid", paid: false, quotaDays: "0" }] };
+const PEOPLE = { items: [{ id: "p1", employeeId: "E0001", firstName: "Asha", lastName: "Rao", department: "Maths", designation: "Teacher", hasAccount: true, status: "ACTIVE" }, { id: "p2", employeeId: "E0002", firstName: "Bilal", lastName: "Khan", department: null, designation: null, hasAccount: true, status: "ACTIVE" }], total: 2, page: 1, pageSize: 100 };
+const BALS = { items: [{ staffId: "p1", academicYearId: "y1", type: { id: "ty1", name: "Casual", paid: true }, allowedDays: "12", remainingDays: "9.5", recorded: true }, { staffId: "p1", academicYearId: "y1", type: { id: "ty3", name: "Sick", paid: true }, allowedDays: "7.5", remainingDays: "7.5", recorded: false }] };
+const lvBase = (over: Record<string, unknown> = {}) => ({ leaveRequests: vi.fn(async () => LEAVE_REQS), leaveTypes: vi.fn(async () => LEAVE_TYPES), staffList: vi.fn(async () => PEOPLE), leaveBalances: vi.fn(async () => BALS), ...over });
+const NEED = (n: number, cover: unknown = null) => ({ date: "2026-10-26", leaveRequestId: "l1", absent: T.asha, slot: { entryId: `e${n}`, day: "MON", period: P[n - 1 < 2 ? n - 1 : n]!, class: { id: "c1", name: "5 B" }, subject: SUBJ.maths }, cover });
+const NEEDS = { from: "2026-10-26", to: "2026-11-08", items: [NEED(1), NEED(2, { id: "cv1", substitute: T.chitra }), { ...NEED(3), date: "2026-10-27", slot: { ...NEED(3).slot, entryId: "e9", class: { id: "c2", name: "6 A" } } }] };
+const SUGG = { need: NEED(1), candidates: [{ staff: T.bilal, substitutionsThisMonth: 0 }, { staff: T.chitra, substitutionsThisMonth: 2 }] };
+const PRUN = { id: "r1", year: 2026, month: 10, status: "DRAFT", preparedBy: { id: "u", name: "Hema Iyer" }, approvedBy: null, approvedAt: null, paidBy: null, paidOn: null, paymentReference: null, totals: { payslips: 3, grossMinor: "9000000", deductionsMinor: "0", netMinor: "9000000" },
+  payslips: [T.asha, T.bilal, T.chitra].map((s, i) => ({ id: `ps${i}`, staff: { ...s, department: null, designation: null }, lines: [], grossMinor: "3000000", deductionsMinor: "0", netMinor: "3000000" })) };
+const PPROP = { run: { id: "r1", year: 2026, month: 10, status: "DRAFT" }, workingDays: 27, withoutPayslip: [{ id: "x", employeeId: "E0009", name: "Dev Patel" }], items: [
+  { staff: T.bilal, payslipId: "ps1", monthlyGrossMinor: "3000000", days: "1.5", proposedMinor: "166666", leaves: [], applied: null },
+  { staff: T.chitra, payslipId: "ps2", monthlyGrossMinor: "3000000", days: "1", proposedMinor: "111111", leaves: [], applied: { lineId: "l9", amountMinor: "100000" } },
+] };
+
+describe.skipIf(!DIR)("screen pictures: leave and substitution (P3-11d)", () => {
+  const PRIN: Perms = { leave: { read: "school", approve: "school" }, staff: { read: "school" } };
+  const HRP: Perms = { leave: { read: "school", create: "school", update: "school" }, staff: { read: "school" } };
+  for (const locale of ["en", "ur"]) {
+    it(`leave requests (${locale})`, async () => {
+      if (!wanted("web-admin-leave-requests")) return;
+      await shoot("web-admin-leave-requests", locale, fakeApi({ meGet: vi.fn(async () => as("PRINCIPAL", PRIN)), ...lvBase() }), "navLeave", async () => { await table(); });
+    });
+    it(`rejecting a leave request (${locale})`, async () => {
+      if (!wanted("web-admin-leave-reject")) return;
+      await shoot("web-admin-leave-reject", locale, fakeApi({ meGet: vi.fn(async () => as("PRINCIPAL", PRIN)), ...lvBase() }), "navLeave", async () => {
+        await table();
+        fireEvent.click(document.querySelectorAll("table button")[1]!);
+        await waitFor(() => { if (!document.querySelector("[role=alertdialog]")) throw new Error("wait"); });
+        fireEvent.change(document.querySelector("[role=alertdialog] input")!, { target: { value: "Exams that day" } });
+      });
+    });
+    it(`leave types and allowances (${locale})`, async () => {
+      if (!wanted("web-admin-leave-types")) return;
+      await shoot("web-admin-leave-types", locale, fakeApi({ meGet: vi.fn(async () => as("HR_MANAGER", HRP)), ...lvBase() }), "navLeave", async () => {
+        fireEvent.click(screen.getAllByRole("radio")[1]!);
+        await waitFor(() => { if (document.querySelectorAll("form").length < 3) throw new Error("wait"); });
+      });
+    });
+    it(`substitution board with the suggestions (${locale})`, async () => {
+      if (!wanted("web-admin-substitution")) return;
+      await shoot("web-admin-substitution", locale, fakeApi({ meGet: vi.fn(async () => as("ACADEMIC_ADMIN", { academics: { read: "school", update: "school" } })), substitutionNeeds: vi.fn(async () => NEEDS), substitutionSuggestions: vi.fn(async () => SUGG) }), "navSubstitution", async () => {
+        await table();
+        fireEvent.click(document.querySelectorAll("table button")[0]!);
+        await waitFor(() => { if (document.querySelectorAll("li button").length < 2) throw new Error("wait"); });
+      });
+    });
+    it(`payroll: unpaid leave proposals (${locale})`, async () => {
+      if (!wanted("web-admin-payroll-leave")) return;
+      await shoot("web-admin-payroll-leave", locale, fakeApi({ meGet: vi.fn(async () => as("HR_MANAGER", { payroll: { read: "school", create: "school", update: "school" } }, [{ title: "HR", items: [{ key: "payroll", label: "Payroll" }] }])), payrollRuns: vi.fn(async () => ({ items: [{ ...PRUN, payslips: undefined, totals: undefined }] })), payrollRun: vi.fn(async () => PRUN), leaveDeductionProposals: vi.fn(async () => PPROP) }), "navPayroll", async () => {
+        await table();
+        fireEvent.click(document.querySelector("table button")!);
+        await waitFor(() => { if (document.querySelectorAll("table").length < 2) throw new Error("wait"); });
+      });
+    });
+  }
+});

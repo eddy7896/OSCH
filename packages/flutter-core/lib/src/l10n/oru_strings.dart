@@ -1422,6 +1422,486 @@ abstract class OruStrings {
   /// **'Total'**
   String get reportTotal;
 
+  /// Column heading: the period of the school day.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get sbPeriod;
+
+  /// Screen reader label of the switch between leave requests and leave types.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave view'**
+  String get lvViewLabel;
+
+  /// Tab: leave requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get lvTabRequests;
+
+  /// Tab: the kinds of leave and what each person may take.
+  ///
+  /// In en, this message translates to:
+  /// **'Types and allowances'**
+  String get lvTabTypes;
+
+  /// Filter choice: every status.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get lvAll;
+
+  /// Label of the status filter and column.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get lvStatus;
+
+  /// Leave request status: waiting for the Principal.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get lvStatusPENDING;
+
+  /// Leave request status: the Principal agreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get lvStatusAPPROVED;
+
+  /// Leave request status: the Principal did not agree.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get lvStatusREJECTED;
+
+  /// Leave request status: the person withdrew it.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get lvStatusCANCELLED;
+
+  /// Column heading: who asked for leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get lvPerson;
+
+  /// Column heading: the kind of leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get lvType;
+
+  /// Column heading: the days of the leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates'**
+  String get lvDates;
+
+  /// Column heading: how many days.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get lvDays;
+
+  /// Column heading: who decided and when.
+  ///
+  /// In en, this message translates to:
+  /// **'Decision'**
+  String get lvDecision;
+
+  /// A half day of leave: the morning.
+  ///
+  /// In en, this message translates to:
+  /// **'morning'**
+  String get lvHalfMORNING;
+
+  /// A half day of leave: the afternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'afternoon'**
+  String get lvHalfAFTERNOON;
+
+  /// Shown when no leave request matches.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no leave requests.'**
+  String get lvNoRequests;
+
+  /// Button: the Principal agrees to a leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get lvApprove;
+
+  /// Button: the Principal does not agree to a leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get lvReject;
+
+  /// Question before a leave request is rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject the leave of {name}?'**
+  String lvRejectQuestion(String name);
+
+  /// Label of the optional reason given when rejecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for the person (optional)'**
+  String get lvRejectNote;
+
+  /// Confirmation after a request was approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave approved'**
+  String get lvApproved;
+
+  /// Confirmation after a request was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave rejected'**
+  String get lvRejected;
+
+  /// Refusal: the request is no longer waiting.
+  ///
+  /// In en, this message translates to:
+  /// **'This request was already decided.'**
+  String get lvNotPending;
+
+  /// Refusal: the leave is more than the person may still take.
+  ///
+  /// In en, this message translates to:
+  /// **'That is more than the days left.'**
+  String get lvOverBalance;
+
+  /// Refusal: the leave overlaps another request.
+  ///
+  /// In en, this message translates to:
+  /// **'That overlaps other leave of the same person.'**
+  String get lvOverlap;
+
+  /// Label of a leave type's name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get lvTypeName;
+
+  /// Leave type: the person is paid and the days come from a yearly allowance.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get lvPaid;
+
+  /// Leave type: no pay; it proposes a deduction in payroll.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get lvUnpaid;
+
+  /// Column and field: the yearly allowance of a paid leave type.
+  ///
+  /// In en, this message translates to:
+  /// **'Days a year'**
+  String get lvQuota;
+
+  /// Button and heading: add a kind of leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a leave type'**
+  String get lvAddType;
+
+  /// Confirmation after a leave type was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave type added'**
+  String get lvTypeAdded;
+
+  /// Checkbox: the leave type is paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid leave (takes days from a yearly allowance)'**
+  String get lvIsPaid;
+
+  /// Shown when the school has no leave types.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no leave types yet.'**
+  String get lvNoTypes;
+
+  /// Refusal: a leave type with requests cannot be removed.
+  ///
+  /// In en, this message translates to:
+  /// **'This leave type has requests and cannot be removed.'**
+  String get lvTypeInUse;
+
+  /// Refusal: a paid type was given no yearly days.
+  ///
+  /// In en, this message translates to:
+  /// **'A paid type needs a number of days a year, whole or half.'**
+  String get lvPaidNeedsQuota;
+
+  /// Heading of what each person may take in a year.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowances'**
+  String get lvAllowances;
+
+  /// Label of the choice of person.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get lvPickPerson;
+
+  /// Column heading: the days a person may take in the year.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed'**
+  String get lvAllowed;
+
+  /// Column heading: the days a person may still take.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get lvRemaining;
+
+  /// Label of the field where HR sets a person's yearly days for a type.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed days for {type}'**
+  String lvAllowedFor(String type);
+
+  /// Confirmation after an allowance was changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowance saved'**
+  String get lvAllowanceSaved;
+
+  /// Refusal: the allowance is below what was taken.
+  ///
+  /// In en, this message translates to:
+  /// **'That is less than the days already taken.'**
+  String get lvBelowTaken;
+
+  /// Shown beside an allowance the person has not used yet.
+  ///
+  /// In en, this message translates to:
+  /// **'The yearly allowance of the type, until the person asks for it.'**
+  String get lvStandardHint;
+
+  /// Hint under the days field.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a whole or half number of days, like 12 or 7.5.'**
+  String get lvWholeOrHalf;
+
+  /// Label of the first date of the range.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get sbFrom;
+
+  /// Label of the last date of the range.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get sbTo;
+
+  /// Column heading: the teacher who is on leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher away'**
+  String get sbAway;
+
+  /// Column heading: who covers the lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover'**
+  String get sbCover;
+
+  /// Shown when nobody was chosen to cover a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Not chosen yet'**
+  String get sbNotChosen;
+
+  /// Button: choose who covers a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose'**
+  String get sbChoose;
+
+  /// Button: choose another cover.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get sbChange;
+
+  /// Button: take the cover away from a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove cover'**
+  String get sbRemoveCover;
+
+  /// Heading of the list of teachers who are free and qualified for a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can cover {slot}'**
+  String sbSuggestionsTitle(String slot);
+
+  /// How many times a teacher covered lessons this month.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} cover this month} other{{count} covers this month}}'**
+  String sbThisMonth(int count);
+
+  /// Button: choose this teacher to cover the lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose {name}'**
+  String sbAssign(String name);
+
+  /// Shown when no teacher can cover the lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody is free and qualified for this lesson.'**
+  String get sbNoCandidates;
+
+  /// Confirmation after a cover was chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover chosen'**
+  String get sbAssigned;
+
+  /// Confirmation after a cover was removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover removed'**
+  String get sbCleared;
+
+  /// Shown when approved leave leaves no lesson uncovered in the range.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons are waiting for cover in this range.'**
+  String get sbNoNeeds;
+
+  /// Refusal: the chosen teacher teaches another class then.
+  ///
+  /// In en, this message translates to:
+  /// **'That teacher has a lesson of their own then.'**
+  String get sbHasOwnLesson;
+
+  /// Refusal: the chosen teacher is on leave.
+  ///
+  /// In en, this message translates to:
+  /// **'That teacher is on leave then.'**
+  String get sbOnLeave;
+
+  /// Refusal: the chosen teacher covers another lesson then.
+  ///
+  /// In en, this message translates to:
+  /// **'That teacher already covers another class then.'**
+  String get sbAlreadyCovering;
+
+  /// Refusal: the absent teacher was chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'The teacher who is away cannot cover their own lesson.'**
+  String get sbSameAsAbsent;
+
+  /// Refusal: the leave behind the need was changed.
+  ///
+  /// In en, this message translates to:
+  /// **'That lesson no longer needs cover.'**
+  String get sbNoLongerNeeded;
+
+  /// Refusal: the lesson or the teacher changed while choosing.
+  ///
+  /// In en, this message translates to:
+  /// **'Something changed meanwhile. Look at the list again.'**
+  String get sbChanged;
+
+  /// Heading of the proposals for unpaid leave in a pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid leave in this month'**
+  String get plTitle;
+
+  /// Explains the proposals for unpaid leave in a pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'For each person with approved unpaid leave: the monthly pay times the days, divided by the school\'s working days in the month. Nothing is deducted until HR applies it.'**
+  String get plNote;
+
+  /// Column heading: unpaid days inside the month.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid days'**
+  String get plDays;
+
+  /// Column heading: the proposed pay deduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed deduction'**
+  String get plProposed;
+
+  /// Button: put the proposal on the payslip as a deduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get plApply;
+
+  /// Label of the field where HR may change the proposed amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount to deduct'**
+  String get plAmount;
+
+  /// Shown when the deduction is already on the payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied: {amount}'**
+  String plApplied(String amount);
+
+  /// Confirmation after the deduction was put on the payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduction applied'**
+  String get plDone;
+
+  /// Shown when there is nothing to propose.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no approved unpaid leave in this month.'**
+  String get plNone;
+
+  /// Lists people with unpaid leave who have no payslip in the pay run.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid leave but no payslip in this run: {names}'**
+  String plWithout(String names);
+
+  /// Refusal: the deduction is already on the payslip.
+  ///
+  /// In en, this message translates to:
+  /// **'This deduction was already applied.'**
+  String get plAlready;
+
+  /// Refusal: the amount is above the monthly pay.
+  ///
+  /// In en, this message translates to:
+  /// **'That is more than the month\'s pay.'**
+  String get plAboveGross;
+
+  /// Refusal: the run is no longer a draft.
+  ///
+  /// In en, this message translates to:
+  /// **'Only a draft run can change.'**
+  String get plNotDraft;
+
   /// Screen reader label of the switch between marks entry, exams and terms, grade bands and report cards.
   ///
   /// In en, this message translates to:
