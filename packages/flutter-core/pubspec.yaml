@@ -15,6 +15,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
+  lucide_icons_flutter: ^4.0.1
 
 dev_dependencies:
   flutter_test:

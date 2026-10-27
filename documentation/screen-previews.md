@@ -7,3 +7,5 @@ The Hub's **Screens** tab shows each screen as built, in English and Urdu, captu
 3. The pictures are added to the Hub's `screensdata` with the pull request they belong to.
 
 The pictures are a review aid, not a test: the role-scoped proof and the screen tests are what the build depends on.
+
+**Flutter widgets.** `packages/flutter-core/test/shots_test.dart` draws the widget gallery in English and Urdu with the bundled fonts. It is skipped unless `SHOTS_DIR` and `LUCIDE_TTF` (the path of `lucide.ttf` in the `lucide_icons_flutter` package) are set: `SHOTS_DIR=<dir> LUCIDE_TTF=<path> flutter test test/shots_test.dart` writes `<dir>/gallery-en.png` and `gallery-ur.png`. The sample words in the Urdu picture are English except the six sync states, which come from the Urdu draft catalogue.
