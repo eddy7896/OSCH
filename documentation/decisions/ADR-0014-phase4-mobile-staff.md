@@ -1,0 +1,25 @@
+# ADR-0014: Phase 4 product decisions (teacher and staff mobile apps, sync)
+
+- **Status:** Accepted (2026-10-27): decisions 1 to 8 are build defaults, 9 to 11 were answered by the owner on 2026-10-27 (decision 9's rings confirmed by the owner).
+- **Builds on:** ADR-0003 (Drift and an outbox), ADR-0005 (no dark mode), ADR-0006 (languages), ADR-0007 (roles), ADR-0013 (Phase 3; `documentation/modules/offline-sync.md`)
+
+## Proposed defaults
+1. **Who uses which app.** `mobile-teacher` is for the Teacher role; `mobile-staff` is for every other staff role that needs a phone (Staff, HR, Bursar, Academic admin, Principal for approving leave). Both sign in with the school login of ADR-0009; the roles decide what each screen may do, in the gateway, as on the web. Parents and drivers are Phase 5.
+2. **Sync is a pull of the normal list endpoints plus tombstones, not a new protocol.** The gateway gains no event log. A device pulls the entities its screens show (this week's timetable, its classes, its own leave, its inbox), then asks `GET /v1/sync/tombstones`. Where a list is too large to pull whole, the endpoint gains an `updatedSince` filter (server time, never the device clock). Rules: `documentation/modules/offline-sync.md`.
+3. **Writes the app queues** (the only ones): attendance for a class day, marks for an exam, a leave request, a staff check-in or check-out, marking a notice read. Everything else is online-only and shown as such (decisions are the Principal's and are online-only by the Phase 3 rule).
+4. **Six visible states** as in the design system (`synced`, `saved`, `pending`, `syncing`, `offline`, `failed`). A refused change (a 4xx) stays visible with its reason until the person dismisses it; it is never retried and never silently dropped.
+5. **Local data is per school and per account.** Signing out, or switching school, deletes the local database. A device that is lost is covered by revoking the account on the web (the next refresh fails) and by encrypting nothing beyond the operating system's own storage protection in v1.
+6. **Biometric or screen-lock re-entry is optional**, off by default, and never replaces the Firebase sign-in.
+7. **Push (FCM)** carries only "you have a notice" and its id; the words are fetched from the inbox, in the reader's language, once the app is open. The gateway keeps a table of device tokens per account, removed on sign-out.
+8. **Languages.** Every string is a `packages/i18n` key; the language is an explicit choice made in the app (a picker on first run and in More), never the device language (ADR-0006). Urdu right-to-left is part of the physical-phone test.
+
+## Answered by the owner (2026-10-27)
+9. **Geofenced check-in: record the position, never block, and ask for a reason when outside.** The check-in is always accepted. The phone sends its position; the server stamps it `inside`, `outside` or `unknown` and keeps the distance from the school point. There are **two rings** (owner, 2026-10-27): the **soft ring** is the school grounds plus a feathered margin around the school's radius (the school sets the point and the radius; the margin is a setting, default 50 m); the **hard ring** is **500 m** from the school point. Inside the soft ring: no question. Between the soft ring and 500 m: the app asks for a short reason before sending, and the check-in is accepted. Beyond 500 m: a reason is required and HR must confirm the check-in. A phone with no position (`unknown`) is asked for a reason like the middle case. The reason is stored with the check-in for HR. A phone can fake its position, so the stamp is evidence for HR, not proof.
+10. **Offline check-in time: the server decides; the phone's time is kept as a note.** The record's time is the moment the server receives it. The phone's own time is stored beside it as `deviceTime` (display only, never used to decide anything), and HR sees both.
+11. **Staff app announcements: read-only announcements only.** Written by the Principal and the Academic admin on the web, delivered as notices (decision 7). Tasks wait for Phase 5.
+12. **Accounts and phones: none yet.** No Firebase project for push, no Apple or Google Play account, no physical phones. The apps are built and proven on simulators, emulators and the real gateway; push delivery, the physical-phone gate (P4-7) and the store pipeline (P4-8) stay open until the owner creates them. This is stated in the gate review, not hidden.
+
+## Consequences
+- The Phase 3 server pieces are the contract; changing a conflict rule means editing `modules/offline-sync.md` and this ADR together.
+- New server work is small and listed in the plan (device tokens, `updatedSince` filters, check-in stamp, announcements). Each follows the Phase 3 shape (database operation with the audit row in its transaction, tests, generated matrix).
+- Drift, a connectivity package, secure storage and Firebase Messaging are new dependencies of the Flutter workspace: each is checked against its installed version and docs before use (no memory of an API counts).
