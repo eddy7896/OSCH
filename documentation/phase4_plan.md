@@ -57,7 +57,7 @@ graph TD
 |---|---|---|---|
 | P4-S1 **NEW** | `updatedSince` (server time) on the list endpoints a device pulls: class day attendance, marks of an exam, own leave requests, notifications, timetable | M | a list with `updatedSince` returns only what changed; rows removed appear as tombstones; the matrix covers the changed routes |
 | P4-S2 **NEW** | **Device tokens and the push sender**: `POST/DELETE /v1/devices`, a table of tokens per account, an FCM sender behind the existing notification sender interface, a notice also triggers a push (best effort, never blocks the cause) | M | a token belongs to its account only; sign-out removes it; a failing sender cannot roll back the notice (test); push carries the id only (ADR-0014 decision 7) |
-| P4-S3 **NEW** | **School geofence, check-in stamp and reason**: a point and two radii (soft and hard) in the school settings; check-in and check-out accept an optional position, the phone's own time (`deviceTime`, a note) and a reason; the server stores `inside`, `outside` or `unknown`; outside the hard ring HR must confirm (ADR-0014 decision 9) | M | a repeat check-in is still the same answer; a stamp other than `inside` without a reason is refused by the gateway; HR sees stamp, reason and both times; no position is kept beyond the stamp and its distance |
+| P4-S3 **NEW** | **School geofence, check-in stamp and reason**: a point, a radius and a feathered margin (soft ring, default margin 50 m) in the school settings, and a fixed hard ring of 500 m; check-in and check-out accept an optional position, the phone's own time (`deviceTime`, a note) and a reason; the server stores `inside`, `outside` or `unknown`; beyond 500 m HR must confirm (ADR-0014 decision 9) | M | a repeat check-in is still the same answer; a stamp other than `inside` without a reason is refused by the gateway; HR sees stamp, reason and both times; no position is kept beyond the stamp and its distance |
 | P4-S4 **NEW** | **Announcements**: written by the Principal and the Academic admin on the web, read by every staff role, delivered as notices | M | write is Principal/Academic admin only; every role reads; a notice per reader is written in the same transaction |
 
 ### M3 The apps
@@ -95,6 +95,6 @@ graph TD
 
 ## 7. Open items for the owner
 Answered 2026-10-27 (ADR-0014 decisions 9 to 12); nothing blocks the build.
-1. **To confirm:** the two-ring reading of "hard and soft geofence" and what a reason is asked for (ADR-0014 decision 9).
+1. ~~Two rings~~ **confirmed:** soft ring is the school plus a feathered margin, hard ring is 500 m (ADR-0014 decision 9).
 2. **Later, when the app is ready for phones:** a Firebase project with Cloud Messaging, Apple and Google Play accounts, two real phones (one low-end Android, one iPhone). Until then P4-6 push delivery, P4-7 and P4-8 stay open.
 3. From the Phase 3 gate: browser click-through of the web screens, the production schema deploy, Hindi and Urdu review.
