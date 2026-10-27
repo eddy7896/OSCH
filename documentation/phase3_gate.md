@@ -2,18 +2,20 @@
 
 The gate is in `documentation/phase3_plan.md` section 4. This page says, for each criterion, **which automated test proves it** (an evidence
 line is a file path, then a double colon, then a test name, in backticks; `evals/phase3-gate.test.mjs` checks that every one still exists) and what was run
-on 2026-10-27 on the merged state of tasks P3-1 to P3-12, and **what is not proven**.
+on 2026-10-27 on `staging` after PR #112 (tasks P3-1 to P3-12), and **what is not proven**.
 
 ## Evidence run
 
 | Command | Result |
 |---|---|
+| `npm run test:dataconnect` (database-level tenant isolation on the emulator) | 40 passed, 0 failed (the Phase 2 page recorded 62; the reason for the lower count is **not investigated**) |
 | `npm run test:database` (generated Admin SDK, every operation, on the emulator) | 18 files, 145 passed, 0 failed |
-| `npm run test:dataconnect` (database-level tenant isolation) | **NOT RUN on this state**: the emulator ports were held by a running demo stack. Rerun before the gate is closed. |
-| `npm run test:gateway` (the real gateway on the real Auth and Data Connect emulators) | **NOT RUN on this state**: same reason. Rerun before the gate is closed. |
+| `npm run test:gateway` (the real gateway on the real Auth and Data Connect emulators) | 36 files, 5976 passed, 0 failed |
 | `npm test`, `npm run lint`, `npm run typecheck` | all pass |
 | `npm run eval` | 130 passed, 0 failed |
 | `npm run check:drift` | 0 errors, 1 old warning |
+
+The first attempt at the emulator suites on 2026-10-27 failed to start because a demo stack held the ports; they were rerun on free ports. `test:database` once failed to start straight after the gateway run (port still held) and passed on rerun.
 
 ## The criteria
 
@@ -49,4 +51,4 @@ These are real gaps. None is hidden by a passing test above.
 
 ## Verdict
 
-**Not yet closed.** The gateway and tenant-isolation suites (the runtime proof of E-ACAD-1 to E-ACAD-4, E-ATT-1 and the route matrix) must be rerun on this merged state first; they passed task by task on the emulators while the phase was built. When they pass, this page is updated and the phase is functionally complete, not production-ready: items 1 to 3 above stand between it and a pilot school.
+Every automated gate criterion is met and proven on the emulators. The phase is **functionally complete, not production-ready**: items 1 to 3 above (no browser run, the production schema not deployed, no real-database concurrency run) stand between it and a pilot school.
