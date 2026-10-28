@@ -43,6 +43,10 @@ Tests: `apps/api-gateway/test/harness/sync.integration.ts` ("replaying any submi
 | Leave types, allowances | HR (web) | Last write wins; an allowance cannot go below days taken (409). | n/a |
 | Notifications | The server | Read-only for devices; "read" markers are per person and merge by union. | safe |
 
+## What the phone's engine does with these rules (P4-2b, built)
+
+`packages/flutter-sync`: the outbox id is the `submissionId`/`clientId` (rule 1); changes go one at a time, oldest first, a child only after its parent was accepted (rule 2); a 4xx is final, shown, and fails whatever depended on it (rule 5); the device clock only times retries (rule 4). A 5xx, rate limit, timeout or lost connection keeps the change and backs it off (2 s doubling to 5 min, half random), and never holds up the changes behind it. Tested against the real gateway: `packages/flutter-sync/test/real_gateway_sync_test.dart` (E-SYNC-1, 3, 4).
+
 ## Not decided yet (Phase 4)
 
 - The shape of the pull for each entity ("changes since") beyond tombstones; today a device reads the normal list endpoints.
