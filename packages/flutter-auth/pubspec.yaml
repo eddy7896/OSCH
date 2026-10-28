@@ -9,6 +9,8 @@ environment:
   sdk: ^3.13.4
 
 dependencies:
+  flutter:
+    sdk: flutter
   flutter_core: ^0.0.1
   http: ^1.6.0
 

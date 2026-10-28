@@ -2410,4 +2410,90 @@ class OruStringsHi extends OruStrings {
   @override
   String get errorOwnMembership =>
       'आप अपनी भूमिका नहीं बदल सकते। किसी दूसरे सिस्टम एडमिनिस्ट्रेटर से कहें।';
+
+  @override
+  String get mobSchoolChoiceTitle => 'अपना स्कूल चुनें';
+
+  @override
+  String get mobSchoolChoiceBody =>
+      'आपका खाता एक से अधिक स्कूलों में चलता है। जिसे खोलना है उसे चुनें।';
+
+  @override
+  String get mobNoAccessTitle => 'यह खाता इस ऐप का उपयोग नहीं कर सकता';
+
+  @override
+  String get mobOpening => 'खुल रहा है…';
+
+  @override
+  String get mobLockTitle => 'बंद है';
+
+  @override
+  String get mobLockBody => 'OruSchools खोलने के लिए पुष्टि करें कि यह आप हैं।';
+
+  @override
+  String get mobActionUnlock => 'खोलें';
+
+  @override
+  String get mobUnlockFailed =>
+      'हम पुष्टि नहीं कर सके कि यह आप हैं। फिर कोशिश करें।';
+
+  @override
+  String get mobSignOutTitle => 'इस फ़ोन से साइन आउट करें?';
+
+  @override
+  String get mobSignOutBody =>
+      'इस स्कूल के लिए इस फ़ोन में सहेजा गया सब कुछ हटा दिया जाएगा।';
+
+  @override
+  String mobSignOutOwed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count बदलाव अभी स्कूल तक नहीं पहुँचे हैं और खो जाएँगे।',
+      one: '$count बदलाव अभी स्कूल तक नहीं पहुँचा है और खो जाएगा।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobActionStaySignedIn => 'साइन इन रहें';
+
+  @override
+  String get mobActionSignOutAnyway => 'फिर भी साइन आउट करें';
+
+  @override
+  String get mobAppLockTitle =>
+      'मेरा फ़िंगरप्रिंट, चेहरा या स्क्रीन लॉक माँगें';
+
+  @override
+  String get mobAppLockBody =>
+      'ऐप के एक मिनट पृष्ठभूमि में रहने के बाद फिर माँगा जाएगा।';
+
+  @override
+  String get mobAppLockUnavailable => 'इस फ़ोन में स्क्रीन लॉक सेट नहीं है।';
+
+  @override
+  String mobSignedInAs(String name) {
+    return '$name के रूप में साइन इन';
+  }
+
+  @override
+  String mobSchoolRole(String role, String school) {
+    return '$school में $role';
+  }
+
+  @override
+  String get mobHomeSoonTitle => 'आपका काम यहाँ दिखेगा';
+
+  @override
+  String get mobHomeSoonBody =>
+      'कक्षाएँ, उपस्थिति और छुट्टी अगले अपडेट में आएँगी।';
+
+  @override
+  String mobCodeSentTo(String phone) {
+    return 'हमने $phone पर कोड भेजा है।';
+  }
+
+  @override
+  String get mobActionChangeNumber => 'दूसरा नंबर उपयोग करें';
 }

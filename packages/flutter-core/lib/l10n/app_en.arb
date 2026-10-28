@@ -3270,5 +3270,116 @@
   "errorOwnMembership": "You cannot change your own role. Ask another system administrator.",
   "@errorOwnMembership": {
     "description": "Error: someone tried to change their own role."
+  },
+  "mobSchoolChoiceTitle": "Choose your school",
+  "@mobSchoolChoiceTitle": {
+    "description": "Title of the screen where a person with accounts at several schools picks one."
+  },
+  "mobSchoolChoiceBody": "Your account works at more than one school. Choose the one to open.",
+  "@mobSchoolChoiceBody": {
+    "description": "Explains why the school list appears."
+  },
+  "mobNoAccessTitle": "This account cannot use this app",
+  "@mobNoAccessTitle": {
+    "description": "Shown when sign-in worked but the person has no school with a role this app is for (for example a driver in the teacher app)."
+  },
+  "mobOpening": "Opening…",
+  "@mobOpening": {
+    "description": "Shown briefly while the app restores a saved sign-in."
+  },
+  "mobLockTitle": "Locked",
+  "@mobLockTitle": {
+    "description": "Title of the screen shown when the optional app lock asks the person to confirm."
+  },
+  "mobLockBody": "Confirm it is you to open OruSchools.",
+  "@mobLockBody": {
+    "description": "Explains the lock screen. The person uses the phone's own fingerprint, face or screen lock."
+  },
+  "mobActionUnlock": "Unlock",
+  "@mobActionUnlock": {
+    "description": "Button on the lock screen; asks the phone to check the person."
+  },
+  "mobUnlockFailed": "We could not confirm it is you. Try again.",
+  "@mobUnlockFailed": {
+    "description": "Shown after the phone's check failed or was cancelled."
+  },
+  "mobSignOutTitle": "Sign out of this phone?",
+  "@mobSignOutTitle": {
+    "description": "Title of the confirmation before signing out."
+  },
+  "mobSignOutBody": "Everything saved on this phone for this school will be removed.",
+  "@mobSignOutBody": {
+    "description": "Explains that signing out deletes the local data."
+  },
+  "mobSignOutOwed": "{count, plural, one{{count} change has not reached the school yet and will be lost.} other{{count} changes have not reached the school yet and will be lost.}}",
+  "@mobSignOutOwed": {
+    "description": "Warning in the sign-out confirmation when the phone still owes the server some changes. {count} is that number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mobActionStaySignedIn": "Stay signed in",
+  "@mobActionStaySignedIn": {
+    "description": "Safe choice in the sign-out confirmation."
+  },
+  "mobActionSignOutAnyway": "Sign out anyway",
+  "@mobActionSignOutAnyway": {
+    "description": "Destructive choice in the sign-out confirmation when changes would be lost."
+  },
+  "mobAppLockTitle": "Ask for my fingerprint, face or screen lock",
+  "@mobAppLockTitle": {
+    "description": "Setting label for the optional app lock."
+  },
+  "mobAppLockBody": "Asked again after the app has been in the background for a minute.",
+  "@mobAppLockBody": {
+    "description": "Explains when the app lock asks again."
+  },
+  "mobAppLockUnavailable": "This phone has no screen lock set up.",
+  "@mobAppLockUnavailable": {
+    "description": "Shown when the app lock cannot be switched on because the phone has no lock."
+  },
+  "mobSignedInAs": "Signed in as {name}",
+  "@mobSignedInAs": {
+    "description": "Shows who is signed in. {name} is the person's name or email.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobSchoolRole": "{role} at {school}",
+  "@mobSchoolRole": {
+    "description": "Role and school of the open session. {role} is a role name, {school} a school name.",
+    "placeholders": {
+      "role": {
+        "type": "String"
+      },
+      "school": {
+        "type": "String"
+      }
+    }
+  },
+  "mobHomeSoonTitle": "Your work will appear here",
+  "@mobHomeSoonTitle": {
+    "description": "Placeholder on the first home screen until the feature screens ship."
+  },
+  "mobHomeSoonBody": "Classes, attendance and leave arrive in the next updates.",
+  "@mobHomeSoonBody": {
+    "description": "Placeholder text; replaced when the feature screens ship."
+  },
+  "mobCodeSentTo": "We sent a code to {phone}.",
+  "@mobCodeSentTo": {
+    "description": "Shown after a one-time code was requested. {phone} is the number.",
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "mobActionChangeNumber": "Use a different number",
+  "@mobActionChangeNumber": {
+    "description": "Goes back from the code box to the number box."
   }
 }

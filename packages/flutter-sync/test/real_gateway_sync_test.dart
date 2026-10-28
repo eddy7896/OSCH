@@ -279,4 +279,16 @@ void main() {
     expect(states, containsAll([SyncState.synced, SyncState.offline]));
     await sub.cancel();
   }, skip: skip);
+
+  test('a staff-app role that may not read academics (HR) syncs without error: no removals to hear about is not a failed sync', () async {
+    final token = await signIn('hr@demo.oruschools.example');
+    String? school;
+    final inner = OruHttpTransport(baseUrl: Uri.parse(gateway!), getToken: (_) => token, getSchoolId: () => school);
+    school = (await OruApi(inner).meGet()).memberships.firstWhere((m) => m.school.subDomain == 'greenfield').school.id;
+    final t = Phone(FlakyTransport(inner), OruApi(inner));
+    final c = SyncCoordinator(store: t.store, engine: t.engine, tombstones: OruApiTombstones(t.api), nowMs: () => t.clock);
+    await c.syncNow();
+    expect(c.pullStatus, isA<PullOk>());
+    expect((await c.snapshot()).state, SyncState.synced);
+  }, skip: skip);
 }

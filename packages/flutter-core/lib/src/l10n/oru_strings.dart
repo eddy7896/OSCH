@@ -4439,6 +4439,138 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'You cannot change your own role. Ask another system administrator.'**
   String get errorOwnMembership;
+
+  /// Title of the screen where a person with accounts at several schools picks one.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your school'**
+  String get mobSchoolChoiceTitle;
+
+  /// Explains why the school list appears.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account works at more than one school. Choose the one to open.'**
+  String get mobSchoolChoiceBody;
+
+  /// Shown when sign-in worked but the person has no school with a role this app is for (for example a driver in the teacher app).
+  ///
+  /// In en, this message translates to:
+  /// **'This account cannot use this app'**
+  String get mobNoAccessTitle;
+
+  /// Shown briefly while the app restores a saved sign-in.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening…'**
+  String get mobOpening;
+
+  /// Title of the screen shown when the optional app lock asks the person to confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get mobLockTitle;
+
+  /// Explains the lock screen. The person uses the phone's own fingerprint, face or screen lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm it is you to open OruSchools.'**
+  String get mobLockBody;
+
+  /// Button on the lock screen; asks the phone to check the person.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get mobActionUnlock;
+
+  /// Shown after the phone's check failed or was cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not confirm it is you. Try again.'**
+  String get mobUnlockFailed;
+
+  /// Title of the confirmation before signing out.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out of this phone?'**
+  String get mobSignOutTitle;
+
+  /// Explains that signing out deletes the local data.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything saved on this phone for this school will be removed.'**
+  String get mobSignOutBody;
+
+  /// Warning in the sign-out confirmation when the phone still owes the server some changes. {count} is that number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} change has not reached the school yet and will be lost.} other{{count} changes have not reached the school yet and will be lost.}}'**
+  String mobSignOutOwed(int count);
+
+  /// Safe choice in the sign-out confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay signed in'**
+  String get mobActionStaySignedIn;
+
+  /// Destructive choice in the sign-out confirmation when changes would be lost.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out anyway'**
+  String get mobActionSignOutAnyway;
+
+  /// Setting label for the optional app lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for my fingerprint, face or screen lock'**
+  String get mobAppLockTitle;
+
+  /// Explains when the app lock asks again.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked again after the app has been in the background for a minute.'**
+  String get mobAppLockBody;
+
+  /// Shown when the app lock cannot be switched on because the phone has no lock.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone has no screen lock set up.'**
+  String get mobAppLockUnavailable;
+
+  /// Shows who is signed in. {name} is the person's name or email.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as {name}'**
+  String mobSignedInAs(String name);
+
+  /// Role and school of the open session. {role} is a role name, {school} a school name.
+  ///
+  /// In en, this message translates to:
+  /// **'{role} at {school}'**
+  String mobSchoolRole(String role, String school);
+
+  /// Placeholder on the first home screen until the feature screens ship.
+  ///
+  /// In en, this message translates to:
+  /// **'Your work will appear here'**
+  String get mobHomeSoonTitle;
+
+  /// Placeholder text; replaced when the feature screens ship.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes, attendance and leave arrive in the next updates.'**
+  String get mobHomeSoonBody;
+
+  /// Shown after a one-time code was requested. {phone} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a code to {phone}.'**
+  String mobCodeSentTo(String phone);
+
+  /// Goes back from the code box to the number box.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a different number'**
+  String get mobActionChangeNumber;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

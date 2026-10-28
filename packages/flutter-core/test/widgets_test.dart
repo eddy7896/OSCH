@@ -28,6 +28,13 @@ void expectTouchTargets(WidgetTester tester, Finder f, {double min = 48}) {
 }
 
 void main() {
+  testWidgets('a field for left-to-right text (a phone number) keeps its direction on a right-to-left screen', (tester) async {
+    await tester.pumpWidget(host(const OruTextField(label: 'Phone', textDirection: TextDirection.ltr), locale: 'ur'));
+    expect(tester.widget<TextField>(find.byType(TextField)).textDirection, TextDirection.ltr);
+    await tester.pumpWidget(host(const OruTextField(label: 'Phone'), locale: 'ur'));
+    expect(tester.widget<TextField>(find.byType(TextField)).textDirection, isNull, reason: 'by default it follows the language');
+  });
+
   group('icons', () {
     test('every design-system icon name has a glyph', () {
       expect(OruIconName.values.length, 38);

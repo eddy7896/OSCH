@@ -13,6 +13,7 @@ workspace:
   - packages/flutter-core
   - packages/flutter-sync
   - packages/flutter-auth
+  - packages/flutter-app
 
 dev_dependencies:
   melos: ^8.9.0
