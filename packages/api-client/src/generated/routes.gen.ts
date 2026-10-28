@@ -346,6 +346,24 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "DELETE",
+    "path": "/v1/devices",
+    "access": "user",
+    "operationId": "Devices_remove"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/devices",
+    "access": "user",
+    "operationId": "Devices_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/devices",
+    "access": "user",
+    "operationId": "Devices_register"
+  },
+  {
+    "method": "DELETE",
     "path": "/v1/fees/concessions/{id}",
     "access": "tenant",
     "operationId": "Fees_deleteConcession"

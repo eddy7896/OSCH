@@ -1297,3 +1297,21 @@ mutation UnmuteNotificationCategory($schoolId: UUID!, $category: String!, $actor
   }
   notificationMute_delete(key: { schoolId: $schoolId, userId: $actorId, category: $category })
 }
+
+# ---- Devices and push (P4-S2)
+mutation RegisterDevice($id: UUID!, $userId: String!, $token: String!, $platform: DevicePlatform!) @auth(level: NO_ACCESS) {
+  deviceToken_upsert(data: { id: $id, userId: $userId, token: $token, platform: $platform, lastSeenAt_expr: "request.time" })
+}
+
+mutation RemoveDevice($id: UUID!, $userId: String!) @auth(level: NO_ACCESS) {
+  deviceToken_deleteMany(where: {id: {eq: $id}, userId: {eq: $userId}})
+}
+
+mutation RemoveDevicesById($ids: [UUID!]!) @auth(level: NO_ACCESS) {
+  deviceToken_deleteMany(where: {id: {in: $ids}})
+}
+
+# The one gateway instance that gets the count of 1 sends the push; a second one that asks finds nothing to claim.
+mutation ClaimNotificationPush($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  notification_updateMany(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, pushedAt: {isNull: true}}, data: { pushedAt_expr: "request.time" })
+}

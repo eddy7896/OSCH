@@ -604,3 +604,21 @@ query GetSubstitution($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
 query GetTimetableEntry($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
   timetableEntries(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) { id classroomId staffId }
 }
+
+# ---- Devices and push (P4-S2)
+query ListUnpushedNotifications($schoolId: UUID!, $since: Timestamp!, $limit: Int!) @auth(level: NO_ACCESS) {
+  notifications(where: {schoolId: {eq: $schoolId}, pushedAt: {isNull: true}, createdAt: {ge: $since}}, orderBy: [{createdAt: ASC}], limit: $limit) {
+    id kind audienceRole recipientStaff { userId }
+  }
+}
+
+# Only members of this school: a device of someone who has left is never sent this school's notices.
+query ListDevicesForUsers($schoolId: UUID!, $userIds: [String!]!) @auth(level: NO_ACCESS) {
+  deviceTokens(where: {userId: {in: $userIds}, user: {schoolMembers_on_user: {exist: {schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}}}}, limit: 2000) {
+    id token platform userId
+  }
+}
+
+query ListDevicesOfUser($userId: String!) @auth(level: NO_ACCESS) {
+  deviceTokens(where: {userId: {eq: $userId}}, limit: 100) { id platform lastSeenAt }
+}

@@ -41,6 +41,10 @@
     "ListMembershipsForUser": "keyed by user across schools for /me and the school picker; returns only that user's own memberships",
     "GetSchoolBySubDomain": "public subdomain lookup before any school is known; returns minimal fields only",
     "ListSchools": "platform (SUPER_ADMIN) listing of all tenants; routed under /v1/platform",
+    "RegisterDevice": "a phone's push address on the caller's own account (P4-S2); devices belong to the person, not to a school",
+    "RemoveDevice": "removes one of the caller's own phones (P4-S2); matches on the caller's user id as well",
+    "RemoveDevicesById": "forgets tokens the push provider itself reported dead (P4-S2); the ids come from the dispatcher, never from a request",
+    "ListDevicesOfUser": "the caller's own phones (P4-S2), by the verified token's UID",
     "GetInvitationByTokenHash": "invitee knows only the secret token, not the school; lookup is by hash of an unguessable token"
   },
   "knownDebt": {},
@@ -98,6 +102,10 @@
     }
   ],
   "auditExemptOperations": {
+    "RegisterDevice": "a phone's push address on the caller's own account (P4-S2); no tenant data and no privilege change",
+    "RemoveDevice": "removes the caller's own phone address (P4-S2); no tenant data and no privilege change",
+    "RemoveDevicesById": "forgets tokens the push provider reported dead (P4-S2); system housekeeping, no person acted",
+    "ClaimNotificationPush": "marks a notice as pushed (P4-S2); delivery bookkeeping, the notice itself is already audited with its cause",
     "CreateUser": "Phase 0 seed operation; replaced by UpsertUser/Phase 2 modules",
     "CreateSchool": "Phase 0 seed/bootstrap operation; platform provisioning uses the audited ProvisionSchool",
     "UpsertUser": "the user row is the actor of every audit entry, so it cannot audit its own creation; the gateway records sign-in as a security event",

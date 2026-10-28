@@ -33,6 +33,10 @@ export enum ConcessionKind {
   PERCENT = "PERCENT",
   FIXED = "FIXED",
 }
+export enum DevicePlatform {
+  IOS = "IOS",
+  ANDROID = "ANDROID",
+}
 export enum Gender {
   FEMALE = "FEMALE",
   MALE = "MALE",
@@ -743,6 +747,15 @@ export interface CheckOutStaffVariables {
   id: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface ClaimNotificationPushData {
+  notification_updateMany: number;
+}
+
+export interface ClaimNotificationPushVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
 }
 
 export interface ClassRosterData {
@@ -1987,6 +2000,11 @@ export interface DeleteTimetableEntryVariables {
   details?: unknown | null;
 }
 
+export interface DeviceToken_Key {
+  id: UUIDString;
+  __typename?: 'DeviceToken_Key';
+}
+
 export interface DuesInvoicesData {
   invoices: ({
     id: UUIDString;
@@ -3205,6 +3223,32 @@ export interface ListConcessionsVariables {
   academicYearId?: UUIDString | null;
 }
 
+export interface ListDevicesForUsersData {
+  deviceTokens: ({
+    id: UUIDString;
+    token: string;
+    platform: DevicePlatform;
+    userId: string;
+  } & DeviceToken_Key)[];
+}
+
+export interface ListDevicesForUsersVariables {
+  schoolId: UUIDString;
+  userIds: string[];
+}
+
+export interface ListDevicesOfUserData {
+  deviceTokens: ({
+    id: UUIDString;
+    platform: DevicePlatform;
+    lastSeenAt: TimestampString;
+  } & DeviceToken_Key)[];
+}
+
+export interface ListDevicesOfUserVariables {
+  userId: string;
+}
+
 export interface ListExamsData {
   exams: ({
     id: UUIDString;
@@ -3869,6 +3913,23 @@ export interface ListTombstonesVariables {
   limit: number;
 }
 
+export interface ListUnpushedNotificationsData {
+  notifications: ({
+    id: UUIDString;
+    kind: string;
+    audienceRole?: SchoolRole | null;
+    recipientStaff?: {
+      userId?: string | null;
+    };
+  } & Notification_Key)[];
+}
+
+export interface ListUnpushedNotificationsVariables {
+  schoolId: UUIDString;
+  since: TimestampString;
+  limit: number;
+}
+
 export interface LockAttendanceDayData {
   query?: {
     actor: ({
@@ -4290,6 +4351,17 @@ export interface RecordPaymentVariables {
   details?: unknown | null;
 }
 
+export interface RegisterDeviceData {
+  deviceToken_upsert: DeviceToken_Key;
+}
+
+export interface RegisterDeviceVariables {
+  id: UUIDString;
+  userId: string;
+  token: string;
+  platform: DevicePlatform;
+}
+
 export interface RejectLeaveRequestData {
   query?: {
     actor: ({
@@ -4357,6 +4429,23 @@ export interface RemoveClassTeacherVariables {
   id: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface RemoveDeviceData {
+  deviceToken_deleteMany: number;
+}
+
+export interface RemoveDeviceVariables {
+  id: UUIDString;
+  userId: string;
+}
+
+export interface RemoveDevicesByIdData {
+  deviceToken_deleteMany: number;
+}
+
+export interface RemoveDevicesByIdVariables {
+  ids: UUIDString[];
 }
 
 export interface RemoveGuardianData {
@@ -6270,6 +6359,26 @@ export function unmuteNotificationCategory(dc: DataConnect, vars: UnmuteNotifica
 /** Generated Node Admin SDK operation action function for the 'UnmuteNotificationCategory' Mutation. Allow users to pass in custom DataConnect instances. */
 export function unmuteNotificationCategory(vars: UnmuteNotificationCategoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UnmuteNotificationCategoryData>>;
 
+/** Generated Node Admin SDK operation action function for the 'RegisterDevice' Mutation. Allow users to execute without passing in DataConnect. */
+export function registerDevice(dc: DataConnect, vars: RegisterDeviceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RegisterDeviceData>>;
+/** Generated Node Admin SDK operation action function for the 'RegisterDevice' Mutation. Allow users to pass in custom DataConnect instances. */
+export function registerDevice(vars: RegisterDeviceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RegisterDeviceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveDevice' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeDevice(dc: DataConnect, vars: RemoveDeviceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveDeviceData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveDevice' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeDevice(vars: RemoveDeviceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveDeviceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveDevicesById' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeDevicesById(dc: DataConnect, vars: RemoveDevicesByIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveDevicesByIdData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveDevicesById' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeDevicesById(vars: RemoveDevicesByIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveDevicesByIdData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ClaimNotificationPush' Mutation. Allow users to execute without passing in DataConnect. */
+export function claimNotificationPush(dc: DataConnect, vars: ClaimNotificationPushVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClaimNotificationPushData>>;
+/** Generated Node Admin SDK operation action function for the 'ClaimNotificationPush' Mutation. Allow users to pass in custom DataConnect instances. */
+export function claimNotificationPush(vars: ClaimNotificationPushVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClaimNotificationPushData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -6794,4 +6903,19 @@ export function getSubstitution(vars: GetSubstitutionVariables, options?: Operat
 export function getTimetableEntry(dc: DataConnect, vars: GetTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTimetableEntryData>>;
 /** Generated Node Admin SDK operation action function for the 'GetTimetableEntry' Query. Allow users to pass in custom DataConnect instances. */
 export function getTimetableEntry(vars: GetTimetableEntryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTimetableEntryData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListUnpushedNotifications' Query. Allow users to execute without passing in DataConnect. */
+export function listUnpushedNotifications(dc: DataConnect, vars: ListUnpushedNotificationsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListUnpushedNotificationsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListUnpushedNotifications' Query. Allow users to pass in custom DataConnect instances. */
+export function listUnpushedNotifications(vars: ListUnpushedNotificationsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListUnpushedNotificationsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListDevicesForUsers' Query. Allow users to execute without passing in DataConnect. */
+export function listDevicesForUsers(dc: DataConnect, vars: ListDevicesForUsersVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListDevicesForUsersData>>;
+/** Generated Node Admin SDK operation action function for the 'ListDevicesForUsers' Query. Allow users to pass in custom DataConnect instances. */
+export function listDevicesForUsers(vars: ListDevicesForUsersVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListDevicesForUsersData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListDevicesOfUser' Query. Allow users to execute without passing in DataConnect. */
+export function listDevicesOfUser(dc: DataConnect, vars: ListDevicesOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListDevicesOfUserData>>;
+/** Generated Node Admin SDK operation action function for the 'ListDevicesOfUser' Query. Allow users to pass in custom DataConnect instances. */
+export function listDevicesOfUser(vars: ListDevicesOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListDevicesOfUserData>>;
 

@@ -74,6 +74,18 @@ export class Env {
   @Min(1)
   THROTTLE_LIMIT: number = 120;
 
+  /** Push notifications (FCM) to the phones of people a notice is for. Off until a Firebase project with messaging is set up (ADR-0014 decision 12). */
+  @Transform(({ value }) => (value === undefined || value === '' ? false : value === 'true' || value === true ? true : value === 'false' || value === false ? false : value))
+  @IsBoolean()
+  PUSH_ENABLED: boolean = false;
+
+  /** A notice is pushed only if it was written within this many minutes (a gateway that was down must not send old notices as new). */
+  @Transform(({ value }) => (value === undefined || value === '' ? 10 : Number(value)))
+  @IsInt()
+  @Min(1)
+  @Max(1440)
+  PUSH_WINDOW_MINUTES: number = 10;
+
   /** Cloudflare R2 (S3 compatible), used only to hand out time-limited upload URLs. All four of the first group, or none. */
   @IsOptional() @IsString() R2_ACCOUNT_ID?: string;
   @IsOptional() @IsString() R2_ACCESS_KEY?: string;
