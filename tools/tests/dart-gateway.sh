@@ -3,7 +3,7 @@
 #   bash tools/tests/dart-gateway.sh
 # Starts the emulators and the gateway (port 3200, so a demo on 3100 is left alone), seeds the demo school, runs
 # packages/flutter-core/test/real_gateway_test.dart and packages/flutter-sync/test/real_gateway_sync_test.dart (the sync engine:
-# E-SYNC-1 to E-SYNC-4), and stops what it started. Local emulators only; it refuses to run
+# E-SYNC-1 to E-SYNC-5) and packages/flutter-auth/test/real_auth_test.dart (device sign-in), and stops what it started. Local emulators only; it refuses to run
 # if the emulator ports are taken (it would be talking to someone else's data).
 set -u
 set -o pipefail
@@ -41,5 +41,6 @@ if [ "${ORU_KEEP:-}" = 1 ]; then echo "ready: gateway http://localhost:$PORT, au
 (cd packages/flutter-core && ORU_GATEWAY_URL=http://localhost:$PORT ORU_AUTH_EMULATOR=$AUTH flutter test test/real_gateway_test.dart)
 STATUS=$?
 (cd packages/flutter-sync && ORU_GATEWAY_URL=http://localhost:$PORT ORU_AUTH_EMULATOR=$AUTH flutter test test/real_gateway_sync_test.dart) || STATUS=$?
+(cd packages/flutter-auth && ORU_GATEWAY_URL=http://localhost:$PORT ORU_AUTH_EMULATOR=$AUTH flutter test test/real_auth_test.dart) || STATUS=$?
 echo "logs: $LOGS"
 exit $STATUS
