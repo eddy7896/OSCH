@@ -93,6 +93,24 @@ export type AgeingBandDto = {
     paidMinor: string;
 };
 
+export type AnnouncementDto = {
+    author: {
+        id: string;
+        name: string;
+    };
+    body: string;
+    createdAt: string;
+    id: string;
+    title: string;
+    updatedAt: string;
+    withdrawn: boolean;
+};
+
+export type AnnouncementListDto = {
+    items: Array<AnnouncementDto>;
+    next: string | null;
+};
+
 export type ApplicationDto = {
     academicYear: {
         id: string;
@@ -2093,6 +2111,11 @@ export type WorkingDaysDto = {
     days: Array<'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN'>;
 };
 
+export type WriteAnnouncementDto = {
+    body: string;
+    title: string;
+};
+
 export type HealthCheckData = {
     body?: never;
     path?: never;
@@ -3990,6 +4013,216 @@ export type AdmissionsDecideResponses = {
 };
 
 export type AdmissionsDecideResponse = AdmissionsDecideResponses[keyof AdmissionsDecideResponses];
+
+export type AnnouncementsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        updatedSince?: string;
+    };
+    url: '/v1/announcements';
+};
+
+export type AnnouncementsListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AnnouncementsListError = AnnouncementsListErrors[keyof AnnouncementsListErrors];
+
+export type AnnouncementsListResponses = {
+    200: AnnouncementListDto;
+};
+
+export type AnnouncementsListResponse = AnnouncementsListResponses[keyof AnnouncementsListResponses];
+
+export type AnnouncementsPostData = {
+    body: WriteAnnouncementDto;
+    path?: never;
+    query?: never;
+    url: '/v1/announcements';
+};
+
+export type AnnouncementsPostErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AnnouncementsPostError = AnnouncementsPostErrors[keyof AnnouncementsPostErrors];
+
+export type AnnouncementsPostResponses = {
+    201: AnnouncementDto;
+};
+
+export type AnnouncementsPostResponse = AnnouncementsPostResponses[keyof AnnouncementsPostResponses];
+
+export type AnnouncementsOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/announcements/{id}';
+};
+
+export type AnnouncementsOneErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AnnouncementsOneError = AnnouncementsOneErrors[keyof AnnouncementsOneErrors];
+
+export type AnnouncementsOneResponses = {
+    200: AnnouncementDto;
+};
+
+export type AnnouncementsOneResponse = AnnouncementsOneResponses[keyof AnnouncementsOneResponses];
+
+export type AnnouncementsEditData = {
+    body: WriteAnnouncementDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/announcements/{id}';
+};
+
+export type AnnouncementsEditErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AnnouncementsEditError = AnnouncementsEditErrors[keyof AnnouncementsEditErrors];
+
+export type AnnouncementsEditResponses = {
+    200: AnnouncementDto;
+};
+
+export type AnnouncementsEditResponse = AnnouncementsEditResponses[keyof AnnouncementsEditResponses];
+
+export type AnnouncementsWithdrawData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/announcements/{id}/withdraw';
+};
+
+export type AnnouncementsWithdrawErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type AnnouncementsWithdrawError = AnnouncementsWithdrawErrors[keyof AnnouncementsWithdrawErrors];
+
+export type AnnouncementsWithdrawResponses = {
+    200: AnnouncementDto;
+};
+
+export type AnnouncementsWithdrawResponse = AnnouncementsWithdrawResponses[keyof AnnouncementsWithdrawResponses];
 
 export type AttendanceDaysData = {
     body?: never;
@@ -7781,7 +8014,7 @@ export type NotificationsPreferencesResponse = NotificationsPreferencesResponses
 export type NotificationsSetPreferenceData = {
     body: PreferenceDto;
     path: {
-        category: 'leave' | 'substitution' | 'payroll';
+        category: 'leave' | 'substitution' | 'payroll' | 'announcement';
     };
     query?: never;
     url: '/v1/notifications/preferences/{category}';

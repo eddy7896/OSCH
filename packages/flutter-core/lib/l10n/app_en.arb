@@ -960,6 +960,23 @@
   "@ntCatpayroll": {
     "description": "Kind of notification: about pay."
   },
+  "ntCatannouncement": "Announcements",
+  "@ntCatannouncement": {
+    "description": "Name of the notification category switch for announcements from the school."
+  },
+  "notifAnnouncementPostedTitle": "New announcement",
+  "@notifAnnouncementPostedTitle": {
+    "description": "Title of the notice sent to staff when the Principal or the Academic administrator posts an announcement."
+  },
+  "notifAnnouncementPostedBody": "{title}",
+  "@notifAnnouncementPostedBody": {
+    "description": "Body of that notice: the announcement's own title, written by its author in their language.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "ntUnread": "Unread",
   "@ntUnread": {
     "description": "Screen reader word before an unread notification."

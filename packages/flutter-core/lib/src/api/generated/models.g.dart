@@ -79,6 +79,69 @@ class ActiveSchoolDto {
       };
 }
 
+class AnnouncementDto {
+  const AnnouncementDto({required this.author, required this.body, required this.createdAt, required this.id, required this.title, required this.updatedAt, required this.withdrawn});
+  final AnnouncementDtoAuthor author;
+  final String body;
+  final String createdAt;
+  final String id;
+  final String title;
+  final String updatedAt;
+  final bool withdrawn;
+
+  factory AnnouncementDto.fromJson(Map<String, dynamic> j) => AnnouncementDto(
+        author: AnnouncementDtoAuthor.fromJson(j['author'] as Map<String, dynamic>),
+        body: j['body'] as String,
+        createdAt: j['createdAt'] as String,
+        id: j['id'] as String,
+        title: j['title'] as String,
+        updatedAt: j['updatedAt'] as String,
+        withdrawn: j['withdrawn'] as bool,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'author': author.toJson(),
+        'body': body,
+        'createdAt': createdAt,
+        'id': id,
+        'title': title,
+        'updatedAt': updatedAt,
+        'withdrawn': withdrawn,
+      };
+}
+
+class AnnouncementDtoAuthor {
+  const AnnouncementDtoAuthor({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory AnnouncementDtoAuthor.fromJson(Map<String, dynamic> j) => AnnouncementDtoAuthor(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class AnnouncementListDto {
+  const AnnouncementListDto({required this.items, required this.next});
+  final List<AnnouncementDto> items;
+  final String? next;
+
+  factory AnnouncementListDto.fromJson(Map<String, dynamic> j) => AnnouncementListDto(
+        items: (j['items'] as List<dynamic>).map((e) => AnnouncementDto.fromJson(e as Map<String, dynamic>)).toList(),
+        next: j['next'] == null ? null : j['next'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+        if (next != null) 'next': next!,
+      };
+}
+
 class BalanceDto {
   const BalanceDto({required this.academicYearId, required this.allowedDays, required this.recorded, required this.remainingDays, required this.staffId, required this.type});
   final String academicYearId;

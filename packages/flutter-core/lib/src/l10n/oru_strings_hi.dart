@@ -751,6 +751,17 @@ class OruStringsHi extends OruStrings {
   String get ntCatpayroll => 'वेतन';
 
   @override
+  String get ntCatannouncement => 'घोषणाएँ';
+
+  @override
+  String get notifAnnouncementPostedTitle => 'नई घोषणा';
+
+  @override
+  String notifAnnouncementPostedBody(String title) {
+    return '$title';
+  }
+
+  @override
   String get ntUnread => 'अपठित';
 
   @override

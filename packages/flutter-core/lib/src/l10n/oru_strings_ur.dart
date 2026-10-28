@@ -754,6 +754,17 @@ class OruStringsUr extends OruStrings {
   String get ntCatpayroll => 'تنخواہ';
 
   @override
+  String get ntCatannouncement => 'اعلانات';
+
+  @override
+  String get notifAnnouncementPostedTitle => 'نیا اعلان';
+
+  @override
+  String notifAnnouncementPostedBody(String title) {
+    return '$title';
+  }
+
+  @override
   String get ntUnread => 'ناپڑھی';
 
   @override
