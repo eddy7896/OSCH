@@ -1,3 +1,4 @@
+import { UpdatedSince } from '../../common/updated-since.js';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Matches, Max, Min } from 'class-validator';
 import { CATEGORIES } from '../notification-rules.js';
@@ -11,6 +12,8 @@ export class ListQueryDto {
   /** `true` shows only what you have not read. */
   @IsOptional() @Transform(({ value }) => (value === 'true' ? true : value === 'false' ? false : value)) @IsBoolean() unread?: boolean;
   @IsOptional() @Transform(({ value }) => (typeof value === 'string' ? Number(value) : value)) @IsInt() @Min(1) @Max(200) limit?: number;
+  /** Only notices written at or after this moment (the `next` of an earlier answer). Then `unreadCount` counts those only. */
+  @UpdatedSince() updatedSince?: string;
 }
 export class CategoryParamDto {
   @IsIn([...CATEGORIES]) category!: string;
@@ -35,6 +38,8 @@ export class NotificationListDto {
   /** Unread among the latest 200, after your preferences. */
   unreadCount!: number;
   items!: NotificationDto[];
+  /** Ask from here next time (the server's clock); null when there is nothing to anchor to yet. */
+  next!: string | null;
 }
 export class PreferenceItemDto {
   category!: string;

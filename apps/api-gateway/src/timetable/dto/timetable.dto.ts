@@ -1,3 +1,4 @@
+import { UpdatedSince } from '../../common/updated-since.js';
 import { IsIn, IsOptional, IsString, Matches } from 'class-validator';
 import { DAYS } from '../../schedule/schedule-rules.js';
 
@@ -11,6 +12,12 @@ export class TimetableStaffParamDto {
 }
 export class TimetableEntryParamDto {
   @IsString() @Matches(UUID) id!: string;
+}
+export class MineTimetableQueryDto {
+  /** Defaults to the active academic year. */
+  @IsOptional() @Matches(UUID) academicYearId?: string;
+  /** Only lessons added or changed at or after this moment (the `next` of an earlier answer); removed lessons arrive as tombstones. */
+  @UpdatedSince() updatedSince?: string;
 }
 export class TimetableYearQueryDto {
   /** Defaults to the active academic year. */
@@ -61,6 +68,8 @@ export class StaffTimetableDto {
   academicYearId!: string;
   staffId!: string | null;
   entries!: StaffSlotDto[];
+  /** Ask from here next time (the server's clock); null when there is nothing to anchor to yet. */
+  next!: string | null;
 }
 export class LoadByDayDto {
   MON!: number;

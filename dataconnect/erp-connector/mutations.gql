@@ -930,7 +930,7 @@ mutation UpdateTimetableEntry($schoolId: UUID!, $id: UUID!, $subjectId: UUID!, $
     teaches: teacherSubjects(where: {staffId: {eq: $staffId}, subjectId: {eq: $subjectId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "that staff member does not teach that subject") { id }
   }
   substitution_deleteMany(where: {timetableEntryId: {eq: $id}, schoolId: {eq: $schoolId}})
-  timetableEntry_update(id: $id, data: { subjectId: $subjectId, staffId: $staffId })
+  timetableEntry_update(id: $id, data: { subjectId: $subjectId, staffId: $staffId, updatedAt_expr: "request.time" })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "academic.timetable.set", entityType: "TimetableEntry", entityId_expr: "request.variables.id", details: $details })
 }
 
@@ -980,7 +980,7 @@ mutation FinishAttendanceSubmit($schoolId: UUID!, $id: UUID!, $submissionId: Str
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     day: attendanceDays(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, locked: {eq: false}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school, or it is locked") { id }
   }
-  attendanceDay_update(id: $id, data: { submittedById: $actorId, submittedAt_expr: "request.time", submissionId: $submissionId, locked: $locked })
+  attendanceDay_update(id: $id, data: { submittedById: $actorId, submittedAt_expr: "request.time", submissionId: $submissionId, locked: $locked, updatedAt_expr: "request.time" })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.submit", entityType: "AttendanceDay", entityId_expr: "request.variables.id", details: $details })
 }
 
@@ -990,7 +990,7 @@ mutation FinishAttendanceCorrection($schoolId: UUID!, $id: UUID!, $actorId: Stri
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     day: attendanceDays(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school") { id }
   }
-  attendanceDay_update(id: $id, data: { submittedById: $actorId, submittedAt_expr: "request.time", submissionId: null })
+  attendanceDay_update(id: $id, data: { submittedById: $actorId, submittedAt_expr: "request.time", submissionId: null, updatedAt_expr: "request.time" })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.correct", entityType: "AttendanceDay", entityId_expr: "request.variables.id", details: $details })
 }
 
@@ -999,7 +999,7 @@ mutation LockAttendanceDay($schoolId: UUID!, $id: UUID!, $actorId: String!, $det
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     day: attendanceDays(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "attendance day not found in this school") { id }
   }
-  attendanceDay_update(id: $id, data: { locked: true })
+  attendanceDay_update(id: $id, data: { locked: true, updatedAt_expr: "request.time" })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.lock", entityType: "AttendanceDay", entityId_expr: "request.variables.id", details: $details })
 }
 
@@ -1117,7 +1117,7 @@ mutation SaveMark($schoolId: UUID!, $id: UUID!, $examId: UUID!, $studentId: UUID
     exam: exams(where: {id: {eq: $examId}, schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, term: {academicYearId: {eq: $academicYearId}}, maxTenths: {ge: $tenths}}) @check(expr: "this.size() == 1", message: "exam not found for this class, or the mark is above its maximum") { id }
     placed: studentEnrollments(where: {studentId: {eq: $studentId}, schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, academicYearId: {eq: $academicYearId}}) @check(expr: "this.size() == 1", message: "student is not in this class") { id }
   }
-  mark_upsert(data: { id: $id, schoolId: $schoolId, examId: $examId, studentId: $studentId, tenths: $tenths, absent: $absent })
+  mark_upsert(data: { id: $id, schoolId: $schoolId, examId: $examId, studentId: $studentId, tenths: $tenths, absent: $absent, updatedAt_expr: "request.time" })
 }
 
 mutation RemoveMark($schoolId: UUID!, $id: UUID!, $examId: UUID!, $classroomId: UUID!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
@@ -1207,7 +1207,7 @@ mutation CancelLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $acto
     staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}, userId: {eq: $actorId}}) @check(expr: "this.size() == 1", message: "only the person who asked can cancel") { id }
     request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: PENDING}}) @check(expr: "this.size() == 1", message: "request not found or no longer pending") { id }
   }
-  leaveRequest_update(id: $id, data: { status: CANCELLED })
+  leaveRequest_update(id: $id, data: { status: CANCELLED, updatedAt_expr: "request.time" })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.cancel", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
 }
 
@@ -1218,7 +1218,7 @@ mutation ApproveLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $bal
     balance: leaveBalances(where: {id: {eq: $balanceId}, schoolId: {eq: $schoolId}, remainingHalfDays: {eq: $expectedRemaining}}) @check(expr: "this.size() == 1", message: "balance not found, or it changed since it was read") { id }
   }
   leaveBalance_update(id: $balanceId, data: { remainingHalfDays: $newRemaining })
-  leaveRequest_update(id: $id, data: { status: APPROVED, decidedById: $actorId, decidedAt_expr: "request.time" })
+  leaveRequest_update(id: $id, data: { status: APPROVED, decidedById: $actorId, decidedAt_expr: "request.time", updatedAt_expr: "request.time" })
   n1: notification_insert(data: { schoolId: $schoolId, kind: "leave.approved", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", recipientStaffId: $staffId })
   n2: notification_insert(data: { schoolId: $schoolId, kind: "leave.substitution", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", audienceRole: ACADEMIC_ADMIN })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.approve", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
@@ -1229,7 +1229,7 @@ mutation ApproveUnpaidLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can decide leave") { userId }
     request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: PENDING}, leaveType: {paid: {eq: false}}}) @check(expr: "this.size() == 1", message: "unpaid request not found in this school or no longer pending") { id }
   }
-  leaveRequest_update(id: $id, data: { status: APPROVED, decidedById: $actorId, decidedAt_expr: "request.time" })
+  leaveRequest_update(id: $id, data: { status: APPROVED, decidedById: $actorId, decidedAt_expr: "request.time", updatedAt_expr: "request.time" })
   n1: notification_insert(data: { schoolId: $schoolId, kind: "leave.approved", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", recipientStaffId: $staffId })
   n2: notification_insert(data: { schoolId: $schoolId, kind: "leave.substitution", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", audienceRole: ACADEMIC_ADMIN })
   n3: notification_insert(data: { schoolId: $schoolId, kind: "leave.payroll", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", audienceRole: HR_MANAGER })
@@ -1241,7 +1241,7 @@ mutation RejectLeaveRequest($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $note
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PRINCIPAL}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal of this school can decide leave") { userId }
     request: leaveRequests(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: PENDING}}) @check(expr: "this.size() == 1", message: "request not found in this school or no longer pending") { id }
   }
-  leaveRequest_update(id: $id, data: { status: REJECTED, decidedById: $actorId, decidedAt_expr: "request.time", decisionNote: $note })
+  leaveRequest_update(id: $id, data: { status: REJECTED, decidedById: $actorId, decidedAt_expr: "request.time", decisionNote: $note, updatedAt_expr: "request.time" })
   notification_insert(data: { schoolId: $schoolId, kind: "leave.rejected", params: $notice, entityType: "LeaveRequest", entityId_expr: "request.variables.id", recipientStaffId: $staffId })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "leave.request.reject", entityType: "LeaveRequest", entityId_expr: "request.variables.id", details: $details })
 }

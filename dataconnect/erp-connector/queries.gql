@@ -445,9 +445,9 @@ query ListTimetableForClass($schoolId: UUID!, $academicYearId: UUID!, $classroom
   }
 }
 
-query ListTimetableForStaff($schoolId: UUID!, $academicYearId: UUID!, $staffId: UUID!) @auth(level: NO_ACCESS) {
-  timetableEntries(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, staffId: {eq: $staffId}}, limit: 1000) {
-    id day periodId classroom { id name } subject { id name code }
+query ListTimetableForStaff($schoolId: UUID!, $academicYearId: UUID!, $staffId: UUID!, $updatedSince: Timestamp) @auth(level: NO_ACCESS) {
+  timetableEntries(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, staffId: {eq: $staffId}, updatedAt: {ge: $updatedSince}}, limit: 1000) {
+    id day periodId updatedAt classroom { id name } subject { id name code }
   }
 }
 
@@ -463,9 +463,9 @@ query GetAttendanceDay($schoolId: UUID!, $classroomId: UUID!, $date: Date!) @aut
   }
 }
 
-query ListAttendanceDays($schoolId: UUID!, $classroomId: UUID!, $from: Date!, $to: Date!) @auth(level: NO_ACCESS) {
-  attendanceDays(where: {schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, date: {ge: $from, le: $to}}, orderBy: [{date: DESC}], limit: 400) {
-    id date locked marks: attendanceMarks_on_day(limit: 1000) { status }
+query ListAttendanceDays($schoolId: UUID!, $classroomId: UUID!, $from: Date!, $to: Date!, $updatedSince: Timestamp) @auth(level: NO_ACCESS) {
+  attendanceDays(where: {schoolId: {eq: $schoolId}, classroomId: {eq: $classroomId}, date: {ge: $from, le: $to}, updatedAt: {ge: $updatedSince}}, orderBy: [{date: DESC}], limit: 400) {
+    id date locked updatedAt marks: attendanceMarks_on_day(limit: 1000) { status }
   }
 }
 
@@ -521,7 +521,7 @@ query ListExams($schoolId: UUID!, $termId: UUID, $classroomId: UUID, $subjectId:
 query GetExam($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
   exams(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
     id title examDate maxTenths lastSubmissionId termId term { id name academicYearId } classroom { id name } subject { id name code }
-    marks: marks_on_exam(limit: 1000) { id tenths absent studentId }
+    marks: marks_on_exam(limit: 1000) { id tenths absent studentId updatedAt }
   }
 }
 
@@ -552,9 +552,9 @@ query ListLeaveBalances($schoolId: UUID!, $staffId: UUID, $academicYearId: UUID)
   }
 }
 
-query ListLeaveRequests($schoolId: UUID!, $staffId: UUID, $status: LeaveRequestStatus, $from: Date, $to: Date) @auth(level: NO_ACCESS) {
-  leaveRequests(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: $status}, startDate: {le: $to}, endDate: {ge: $from}}, orderBy: [{startDate: DESC}, {createdAt: DESC}], limit: 500) {
-    id startDate endDate half halfDays reason status decisionNote decidedAt createdAt
+query ListLeaveRequests($schoolId: UUID!, $staffId: UUID, $status: LeaveRequestStatus, $from: Date, $to: Date, $updatedSince: Timestamp) @auth(level: NO_ACCESS) {
+  leaveRequests(where: {schoolId: {eq: $schoolId}, staffId: {eq: $staffId}, status: {eq: $status}, startDate: {le: $to}, endDate: {ge: $from}, updatedAt: {ge: $updatedSince}}, orderBy: [{startDate: DESC}, {createdAt: DESC}], limit: 500) {
+    id startDate endDate half halfDays reason status decisionNote decidedAt createdAt updatedAt
     staff { id employeeId firstName lastName userId } leaveType { id name paid } decidedBy { id displayName email }
   }
 }
@@ -575,8 +575,8 @@ query ListSubstitutions($schoolId: UUID!, $from: Date!, $to: Date!, $substituteI
 }
 
 # ---- Notifications (P3-9) and sync groundwork (P3-10)
-query ListNotifications($schoolId: UUID!, $userId: String!, $role: SchoolRole!, $limit: Int!) @auth(level: NO_ACCESS) {
-  notifications(where: {_and: [{schoolId: {eq: $schoolId}}, {_or: [{recipientStaff: {userId: {eq: $userId}}}, {audienceRole: {eq: $role}}]}]}, orderBy: [{createdAt: DESC}], limit: $limit) {
+query ListNotifications($schoolId: UUID!, $userId: String!, $role: SchoolRole!, $limit: Int!, $updatedSince: Timestamp) @auth(level: NO_ACCESS) {
+  notifications(where: {_and: [{schoolId: {eq: $schoolId}}, {createdAt: {ge: $updatedSince}}, {_or: [{recipientStaff: {userId: {eq: $userId}}}, {audienceRole: {eq: $role}}]}]}, orderBy: [{createdAt: DESC}], limit: $limit) {
     id kind params entityType entityId createdAt
     reads: notificationReads_on_notification(where: {userId: {eq: $userId}}) { readAt }
   }

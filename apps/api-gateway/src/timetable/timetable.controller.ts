@@ -3,7 +3,7 @@ import { Audit } from '../audit/audit.decorators.js';
 import { Granted, Permission, type GrantedPermission } from '../permission/permission.decorator.js';
 import { Tenant, type TenantContext } from '../tenant/tenant.decorators.js';
 import { TeachingScope } from '../teaching/teaching-scope.service.js';
-import { ClassTimetableDto, SetSlotDto, StaffTimetableDto, TimetableClassParamDto, TimetableEntryParamDto, TimetableLoadDto, TimetableStaffParamDto, TimetableYearQueryDto } from './dto/timetable.dto.js';
+import { ClassTimetableDto, SetSlotDto, StaffTimetableDto, TimetableClassParamDto, TimetableEntryParamDto, TimetableLoadDto, TimetableStaffParamDto, TimetableYearQueryDto, MineTimetableQueryDto } from './dto/timetable.dto.js';
 import { TimetableService } from './timetable.service.js';
 
 /**
@@ -40,8 +40,8 @@ export class TimetableController {
   /** The caller's own week (empty for an account with no staff record). */
   @Permission('academics', 'read')
   @Get('mine')
-  async mine(@Tenant() t: TenantContext, @Query() q: TimetableYearQueryDto): Promise<StaffTimetableDto> {
-    return this.timetable.forStaff(t, (await this.scope.mine(t)).staff?.id ?? null, q.academicYearId);
+  async mine(@Tenant() t: TenantContext, @Query() q: MineTimetableQueryDto): Promise<StaffTimetableDto> {
+    return this.timetable.forStaff(t, (await this.scope.mine(t)).staff?.id ?? null, q.academicYearId, q.updatedSince);
   }
 
   @Permission('academics', 'read')

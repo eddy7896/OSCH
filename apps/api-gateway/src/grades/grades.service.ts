@@ -1,3 +1,4 @@
+import { nextCursor } from '../common/updated-since.js';
 import { randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE, type Database } from '@oruschools/database';
@@ -166,14 +167,18 @@ export class GradesService {
     return new Map(rows.map((r) => [dashed(r.student.id), { enrollmentId: r.student.enrollmentId, name: `${r.student.firstName} ${r.student.lastName}` }]));
   }
 
-  async grid(t: TenantContext, scope: Scope, id: string): Promise<MarksGridDto> {
+  async grid(t: TenantContext, scope: Scope, id: string, updatedSince?: string): Promise<MarksGridDto> {
     const row = await this.examRow(t, id);
     if (!(await this.mayEnter(t, scope, row))) throw notFound();
     const [roster, bands] = await Promise.all([this.roster(t, row.classroom.id, row.term.academicYearId), this.bandList(t)]);
-    const marks = new Map(row.marks.map((m) => [dashed(m.studentId), m]));
+    // Filtered here, not in the query: a `where` on the exam's marks relation in Data Connect replaces the link to the exam instead of adding to it.
+    const since = updatedSince ? new Date(updatedSince).getTime() : null;
+    const changed = row.marks.filter((m) => since === null || new Date(m.updatedAt).getTime() >= since);
+    const marks = new Map(changed.map((m) => [dashed(m.studentId), m]));
     return {
       exam: this.view(row as unknown as ExamRow),
-      rows: [...roster].map(([studentId, s]) => {
+      next: nextCursor(changed, updatedSince),
+      rows: [...roster].filter(([studentId]) => !updatedSince || marks.has(studentId)).map(([studentId, s]) => {
         const m = marks.get(studentId);
         const p = m && !m.absent ? percentOf(m.tenths, row.maxTenths) : null;
         return { studentId, enrollmentId: s.enrollmentId, name: s.name, marks: m ? formatTenths(m.tenths) : null, marksTenths: m ? m.tenths : null, absent: m?.absent ?? false, percent: m ? (p ? p.display : '0.0') : null, grade: m ? gradeFor(bands, p ? p.whole : 0) : null };

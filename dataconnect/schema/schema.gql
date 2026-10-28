@@ -476,6 +476,7 @@ type TimetableEntry @table @unique(fields: ["academicYear", "classroom", "day", 
   day: String! # MON .. SUN
   period: Period!
   createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time") # set again by every change: devices ask for what changed since (updatedSince, P4-S1)
 }
 
 # Leave (P3-6, ADR-0013). Days are counted in HALF-DAYS (a whole day is 2), so a half day of leave needs no fractions. Replaces the Phase 0 stub `LeaveRequest`.
@@ -515,6 +516,7 @@ type LeaveRequest @table @unique(fields: ["staff", "clientId"]) {
   decidedAt: Timestamp
   decisionNote: String
   createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time") # set again by every change: devices ask for what changed since (updatedSince, P4-S1)
 }
 
 # Exams and marks (P3-5, ADR-0013). Marks are whole TENTHS of a mark (one decimal place at most): no floating point anywhere. Replaces the Phase 0 stub `Exam`.
@@ -547,6 +549,7 @@ type Mark @table @unique(fields: ["exam", "student"]) {
   student: Student!
   tenths: Int!
   absent: Boolean!
+  updatedAt: Timestamp! @default(expr: "request.time") # set again by every change: devices ask for what changed since (updatedSince, P4-S1)
 }
 
 # Append-only audit trail (E-AUD-1): the gateway writes one row per mutating request.
@@ -572,6 +575,7 @@ type AttendanceDay @table @unique(fields: ["classroom", "date"]) {
   submittedAt: Timestamp! @default(expr: "request.time")
   submissionId: String # the client's own id for the last submit: a replay of it changes nothing
   locked: Boolean! @default(value: false) # a locked day refuses a teacher's edit; only the Academic admin corrects it, audited
+  updatedAt: Timestamp! @default(expr: "request.time") # set again by every change: devices ask for what changed since (updatedSince, P4-S1)
 }
 
 type AttendanceMark @table @unique(fields: ["day", "student"]) {

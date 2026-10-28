@@ -1,3 +1,4 @@
+import { UpdatedSince } from '../../common/updated-since.js';
 import { Transform, Type } from 'class-transformer';
 import { ArrayMaxSize, IsArray, IsBoolean, IsIn, IsOptional, IsString, Length, Matches, ValidateNested } from 'class-validator';
 import { STATUSES } from '../attendance-rules.js';
@@ -16,6 +17,10 @@ export class StudentParamDto {
 export class RangeQueryDto {
   @IsOptional() @Matches(DATE) from?: string;
   @IsOptional() @Matches(DATE) to?: string;
+}
+export class DaysQueryDto extends RangeQueryDto {
+  /** Only days submitted, corrected or locked at or after this moment (the `next` of an earlier answer). */
+  @UpdatedSince() updatedSince?: string;
 }
 export class DateQueryDto {
   @IsOptional() @Matches(DATE) date?: string;
@@ -92,6 +97,8 @@ export class DaySummaryDto {
 }
 export class DayListDto {
   items!: DaySummaryDto[];
+  /** Ask from here next time (the server's clock); null when there is nothing to anchor to yet. */
+  next!: string | null;
 }
 export class MissingClassDto {
   id!: string;

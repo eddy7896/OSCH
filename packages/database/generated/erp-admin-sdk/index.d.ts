@@ -2254,6 +2254,7 @@ export interface GetExamData {
       tenths: number;
       absent: boolean;
       studentId: UUIDString;
+      updatedAt: TimestampString;
     } & Mark_Key)[];
   } & Exam_Key)[];
 }
@@ -3084,6 +3085,7 @@ export interface ListAttendanceDaysData {
     id: UUIDString;
     date: DateString;
     locked: boolean;
+    updatedAt: TimestampString;
     marks: ({
       status: AttendanceStatus;
     })[];
@@ -3095,6 +3097,7 @@ export interface ListAttendanceDaysVariables {
   classroomId: UUIDString;
   from: DateString;
   to: DateString;
+  updatedSince?: TimestampString | null;
 }
 
 export interface ListAttendanceStatusLabelsData {
@@ -3374,6 +3377,7 @@ export interface ListLeaveRequestsData {
     decisionNote?: string | null;
     decidedAt?: TimestampString | null;
     createdAt: TimestampString;
+    updatedAt: TimestampString;
     staff: {
       id: UUIDString;
       employeeId: string;
@@ -3400,6 +3404,7 @@ export interface ListLeaveRequestsVariables {
   status?: LeaveRequestStatus | null;
   from?: DateString | null;
   to?: DateString | null;
+  updatedSince?: TimestampString | null;
 }
 
 export interface ListLeaveTypesData {
@@ -3481,6 +3486,7 @@ export interface ListNotificationsVariables {
   userId: string;
   role: SchoolRole;
   limit: number;
+  updatedSince?: TimestampString | null;
 }
 
 export interface ListPayrollRunsData {
@@ -3793,6 +3799,7 @@ export interface ListTimetableForStaffData {
     id: UUIDString;
     day: string;
     periodId: UUIDString;
+    updatedAt: TimestampString;
     classroom: {
       id: UUIDString;
       name: string;
@@ -3809,6 +3816,7 @@ export interface ListTimetableForStaffVariables {
   schoolId: UUIDString;
   academicYearId: UUIDString;
   staffId: UUIDString;
+  updatedSince?: TimestampString | null;
 }
 
 export interface ListTimetableForYearData {

@@ -7,8 +7,7 @@ import { TeachingScope } from '../teaching/teaching-scope.service.js';
 import { AttendanceService } from './attendance.service.js';
 import {
   ClassDayDto, ClassDayParamDto, CorrectStaffDayDto, DateQueryDto, DayListDto, MissingDto, RangeQueryDto, StaffDayDto, StaffDayListDto, StaffDayParamDto, StaffPresenceListDto,
-  StatusLabelDto, StatusListDto, StatusParamDto, StudentAttendanceDto, StudentParamDto, SubmitDayDto,
-} from './dto/attendance.dto.js';
+  StatusLabelDto, StatusListDto, StatusParamDto, StudentAttendanceDto, StudentParamDto, SubmitDayDto, DaysQueryDto } from './dto/attendance.dto.js';
 
 /**
  * Student attendance, once a day per class (P3-4). School routes: `X-School-Id` + the `attendance` grant. The Academic admin has the school; a Teacher only the
@@ -52,9 +51,9 @@ export class AttendanceController {
 
   @Permission('attendance', 'read')
   @Get('classes/:id/days')
-  async days(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Param() p: StudentParamDto, @Query() q: RangeQueryDto): Promise<DayListDto> {
+  async days(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Param() p: StudentParamDto, @Query() q: DaysQueryDto): Promise<DayListDto> {
     await this.mayUse(t, g, p.id);
-    return this.attendance.days(t, p.id, q.from, q.to);
+    return this.attendance.days(t, p.id, q.from, q.to, q.updatedSince);
   }
 
   @Permission('attendance', 'read')

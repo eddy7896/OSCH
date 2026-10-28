@@ -1,3 +1,4 @@
+import { UpdatedSince } from '../../common/updated-since.js';
 import { Transform, Type } from 'class-transformer';
 import { ArrayMaxSize, IsArray, IsBoolean, IsInt, IsOptional, IsString, Length, Matches, Max, Min, ValidateNested } from 'class-validator';
 
@@ -122,9 +123,16 @@ export class GridRowDto {
   percent!: string | null;
   grade!: string | null;
 }
+export class GridQueryDto {
+  /** Only the students whose mark was entered, changed or cleared at or after this moment (the `next` of an earlier answer). */
+  @UpdatedSince() updatedSince?: string;
+}
+
 export class MarksGridDto {
   exam!: ExamDto;
   rows!: GridRowDto[];
+  /** Ask from here next time (the server's clock); null when there is nothing to anchor to yet. */
+  next!: string | null;
 }
 
 export class ExamLineDto {

@@ -1,3 +1,4 @@
+import { nextCursor } from '../common/updated-since.js';
 import { randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE, type Database } from '@oruschools/database';
@@ -138,11 +139,11 @@ export class AttendanceService {
     return this.classDay(t, classId, date);
   }
 
-  async days(t: TenantContext, classId: string, from?: string, to?: string): Promise<DayListDto> {
+  async days(t: TenantContext, classId: string, from?: string, to?: string, updatedSince?: string): Promise<DayListDto> {
     const [f, e] = this.range(from, to);
     await this.requireClass(t, classId);
-    const [roster, rows] = await Promise.all([this.roster(t, classId, await this.yearOf(t)), this.db.listAttendanceDays({ schoolId: t.schoolId, classroomId: dashed(classId), from: f, to: e })]);
-    return { items: rows.data.attendanceDays.map((d) => ({ date: d.date, locked: d.locked, counts: countStatuses(d.marks, roster.size) })) };
+    const [roster, rows] = await Promise.all([this.roster(t, classId, await this.yearOf(t)), this.db.listAttendanceDays({ schoolId: t.schoolId, classroomId: dashed(classId), from: f, to: e, ...(updatedSince ? { updatedSince } : {}) })]);
+    return { items: rows.data.attendanceDays.map((d) => ({ date: d.date, locked: d.locked, counts: countStatuses(d.marks, roster.size) })), next: nextCursor(rows.data.attendanceDays, updatedSince) };
   }
 
   /** Classes that have not submitted on a date (a working day). */

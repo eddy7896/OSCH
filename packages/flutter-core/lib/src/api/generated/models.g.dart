@@ -314,15 +314,18 @@ class CreateRequestDto {
 }
 
 class DayListDto {
-  const DayListDto({required this.items});
+  const DayListDto({required this.items, required this.next});
   final List<DaySummaryDto> items;
+  final String? next;
 
   factory DayListDto.fromJson(Map<String, dynamic> j) => DayListDto(
         items: (j['items'] as List<dynamic>).map((e) => DaySummaryDto.fromJson(e as Map<String, dynamic>)).toList(),
+        next: j['next'] == null ? null : j['next'] as String,
       );
 
   Map<String, dynamic> toJson() => {
         'items': items.map((e) => e.toJson()).toList(),
+        if (next != null) 'next': next!,
       };
 }
 
@@ -570,15 +573,18 @@ class LeaveRequestDto {
 }
 
 class LeaveRequestListDto {
-  const LeaveRequestListDto({required this.items});
+  const LeaveRequestListDto({required this.items, required this.next});
   final List<LeaveRequestDto> items;
+  final String? next;
 
   factory LeaveRequestListDto.fromJson(Map<String, dynamic> j) => LeaveRequestListDto(
         items: (j['items'] as List<dynamic>).map((e) => LeaveRequestDto.fromJson(e as Map<String, dynamic>)).toList(),
+        next: j['next'] == null ? null : j['next'] as String,
       );
 
   Map<String, dynamic> toJson() => {
         'items': items.map((e) => e.toJson()).toList(),
+        if (next != null) 'next': next!,
       };
 }
 
@@ -657,17 +663,20 @@ class MarkInputDto {
 }
 
 class MarksGridDto {
-  const MarksGridDto({required this.exam, required this.rows});
+  const MarksGridDto({required this.exam, required this.next, required this.rows});
   final ExamDto exam;
+  final String? next;
   final List<GridRowDto> rows;
 
   factory MarksGridDto.fromJson(Map<String, dynamic> j) => MarksGridDto(
         exam: ExamDto.fromJson(j['exam'] as Map<String, dynamic>),
+        next: j['next'] == null ? null : j['next'] as String,
         rows: (j['rows'] as List<dynamic>).map((e) => GridRowDto.fromJson(e as Map<String, dynamic>)).toList(),
       );
 
   Map<String, dynamic> toJson() => {
         'exam': exam.toJson(),
+        if (next != null) 'next': next!,
         'rows': rows.map((e) => e.toJson()).toList(),
       };
 }
@@ -872,17 +881,20 @@ class NotificationDto {
 }
 
 class NotificationListDto {
-  const NotificationListDto({required this.items, required this.unreadCount});
+  const NotificationListDto({required this.items, required this.next, required this.unreadCount});
   final List<NotificationDto> items;
+  final String? next;
   final num unreadCount;
 
   factory NotificationListDto.fromJson(Map<String, dynamic> j) => NotificationListDto(
         items: (j['items'] as List<dynamic>).map((e) => NotificationDto.fromJson(e as Map<String, dynamic>)).toList(),
+        next: j['next'] == null ? null : j['next'] as String,
         unreadCount: j['unreadCount'] as num,
       );
 
   Map<String, dynamic> toJson() => {
         'items': items.map((e) => e.toJson()).toList(),
+        if (next != null) 'next': next!,
         'unreadCount': unreadCount,
       };
 }
@@ -1305,20 +1317,23 @@ class StaffSlotDto {
 }
 
 class StaffTimetableDto {
-  const StaffTimetableDto({required this.academicYearId, required this.entries, required this.staffId});
+  const StaffTimetableDto({required this.academicYearId, required this.entries, required this.next, required this.staffId});
   final String academicYearId;
   final List<StaffSlotDto> entries;
+  final String? next;
   final String? staffId;
 
   factory StaffTimetableDto.fromJson(Map<String, dynamic> j) => StaffTimetableDto(
         academicYearId: j['academicYearId'] as String,
         entries: (j['entries'] as List<dynamic>).map((e) => StaffSlotDto.fromJson(e as Map<String, dynamic>)).toList(),
+        next: j['next'] == null ? null : j['next'] as String,
         staffId: j['staffId'] == null ? null : j['staffId'] as String,
       );
 
   Map<String, dynamic> toJson() => {
         'academicYearId': academicYearId,
         'entries': entries.map((e) => e.toJson()).toList(),
+        if (next != null) 'next': next!,
         if (staffId != null) 'staffId': staffId!,
       };
 }

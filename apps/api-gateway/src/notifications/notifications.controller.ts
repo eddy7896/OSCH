@@ -16,7 +16,7 @@ export class NotificationsController {
   @Permission('notifications', 'read')
   @Get()
   list(@Tenant() t: TenantContext, @Query() q: ListQueryDto): Promise<NotificationListDto> {
-    return this.notifications.list(t, q.unread ?? false, q.limit);
+    return this.notifications.list(t, q.unread ?? false, q.limit, q.updatedSince);
   }
 
   @Permission('notifications', 'read')

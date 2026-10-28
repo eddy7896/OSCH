@@ -2083,10 +2083,15 @@
               "$ref": "#/components/schemas/DaySummaryDto"
             },
             "type": "array"
+          },
+          "next": {
+            "nullable": true,
+            "type": "string"
           }
         },
         "required": [
-          "items"
+          "items",
+          "next"
         ],
         "type": "object"
       },
@@ -3459,10 +3464,15 @@
               "$ref": "#/components/schemas/LeaveRequestDto"
             },
             "type": "array"
+          },
+          "next": {
+            "nullable": true,
+            "type": "string"
           }
         },
         "required": [
-          "items"
+          "items",
+          "next"
         ],
         "type": "object"
       },
@@ -3625,6 +3635,10 @@
           "exam": {
             "$ref": "#/components/schemas/ExamDto"
           },
+          "next": {
+            "nullable": true,
+            "type": "string"
+          },
           "rows": {
             "items": {
               "$ref": "#/components/schemas/GridRowDto"
@@ -3634,7 +3648,8 @@
         },
         "required": [
           "exam",
-          "rows"
+          "rows",
+          "next"
         ],
         "type": "object"
       },
@@ -4072,13 +4087,18 @@
             },
             "type": "array"
           },
+          "next": {
+            "nullable": true,
+            "type": "string"
+          },
           "unreadCount": {
             "type": "number"
           }
         },
         "required": [
           "unreadCount",
-          "items"
+          "items",
+          "next"
         ],
         "type": "object"
       },
@@ -6286,6 +6306,10 @@
             },
             "type": "array"
           },
+          "next": {
+            "nullable": true,
+            "type": "string"
+          },
           "staffId": {
             "nullable": true,
             "type": "string"
@@ -6294,7 +6318,8 @@
         "required": [
           "academicYearId",
           "staffId",
-          "entries"
+          "entries",
+          "next"
         ],
         "type": "object"
       },
@@ -9922,6 +9947,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "updatedSince",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -10804,6 +10837,14 @@
             "in": "path",
             "name": "id",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updatedSince",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -14063,6 +14104,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "updatedSince",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -15347,6 +15396,14 @@
           },
           {
             "in": "query",
+            "name": "updatedSince",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "status",
             "required": false,
             "schema": {
@@ -16361,6 +16418,14 @@
               "maximum": 200,
               "minimum": 1,
               "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updatedSince",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],

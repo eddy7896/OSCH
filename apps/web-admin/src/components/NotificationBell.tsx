@@ -46,11 +46,11 @@ export function NotificationBell() {
 
   const unread = data?.unreadCount ?? 0;
   const read = async (id: string) => {
-    setData((d) => (d ? { unreadCount: Math.max(0, d.unreadCount - (d.items.find((n) => n.id === id && !n.read) ? 1 : 0)), items: d.items.map((n) => (n.id === id ? { ...n, read: true } : n)) } : d));
+    setData((d) => (d ? { ...d, unreadCount: Math.max(0, d.unreadCount - (d.items.find((n) => n.id === id && !n.read) ? 1 : 0)), items: d.items.map((n) => (n.id === id ? { ...n, read: true } : n)) } : d));
     await api?.notificationsRead({ path: { id } }).catch(() => undefined);
   };
   const readAll = async () => {
-    setData((d) => (d ? { unreadCount: 0, items: d.items.map((n) => ({ ...n, read: true })) } : d));
+    setData((d) => (d ? { ...d, unreadCount: 0, items: d.items.map((n) => ({ ...n, read: true })) } : d));
     await api?.notificationsReadAll({}).catch(() => undefined);
   };
   const toggle = async (category: string, enabled: boolean) => {
