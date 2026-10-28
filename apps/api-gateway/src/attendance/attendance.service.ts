@@ -8,10 +8,10 @@ import { dashed } from '../common/uuid.js';
 import { daysFromText } from '../schedule/schedule-rules.js';
 import type { TenantContext } from '../tenant/tenant.decorators.js';
 import { TeachingScope } from '../teaching/teaching-scope.service.js';
+import { DEFAULT_MARGIN_M, HARD_RING_M, judge, type Geofence } from './geofence.js';
 import { addDays, countStatuses, DEFAULT_LABELS, diffMarks, isDate, markId, staffDayId, STATUSES, today, weekday, type Existing, type Status, type Wanted } from './attendance-rules.js';
 import type {
-  ClassDayDto, CorrectStaffDayDto, DayListDto, MissingDto, StaffDayDto, StaffDayListDto, StaffPresenceListDto, StatusListDto, StudentAttendanceDto, SubmitDayDto,
-} from './dto/attendance.dto.js';
+  ClassDayDto, CorrectStaffDayDto, DayListDto, MissingDto, StaffDayDto, StaffDayListDto, StaffPresenceListDto, StatusListDto, StudentAttendanceDto, SubmitDayDto, GeofenceDto, StampDto } from './dto/attendance.dto.js';
 
 const notFound = () => new ApiException(ErrorCode.NOT_FOUND, 404);
 const invalid = (field: string, rule: string) => new ApiException(ErrorCode.INVALID_REQUEST, 400, [{ field, rule }]);
@@ -25,6 +25,12 @@ const BATCH = 20;
  * Attendance (P3-4, ADR-0013): once a day per class, by the class teacher, with the fixed seven statuses; only the exceptions are stored. Staff check in and out.
  * A submit makes the day if it is new, writes the marks, then finishes the day in one audited step; a replay of the same submit changes nothing.
  */
+/** A day of a member of staff as the database gives it. */
+interface StaffRow {
+  date: string; checkIn?: string | null; checkOut?: string | null; checkInStamp?: string | null; checkInDistanceM?: number | null; checkInReason?: string | null; checkInDeviceTime?: string | null;
+  needsConfirm?: boolean | null; confirmedAt?: string | null; checkOutStamp?: string | null; checkOutDistanceM?: number | null; checkOutReason?: string | null; checkOutDeviceTime?: string | null;
+}
+
 @Injectable()
 export class AttendanceService {
   constructor(@Inject(DATABASE) private readonly db: Database, private readonly scope: TeachingScope) {}
@@ -185,8 +191,33 @@ export class AttendanceService {
   }
 
   // ---- staff
-  private day(r: { date: string; checkIn?: string | null; checkOut?: string | null }): StaffDayDto {
-    return { date: r.date, checkIn: r.checkIn ?? null, checkOut: r.checkOut ?? null };
+  private day(r: StaffRow): StaffDayDto {
+    return {
+      date: r.date, checkIn: r.checkIn ?? null, checkOut: r.checkOut ?? null,
+      checkInStamp: r.checkInStamp ?? null, checkInDistanceM: r.checkInDistanceM ?? null, checkInReason: r.checkInReason ?? null, checkInDeviceTime: r.checkInDeviceTime ?? null,
+      needsConfirmation: !!r.needsConfirm && !r.confirmedAt, confirmedAt: r.confirmedAt ?? null,
+      checkOutStamp: r.checkOutStamp ?? null, checkOutDistanceM: r.checkOutDistanceM ?? null, checkOutReason: r.checkOutReason ?? null, checkOutDeviceTime: r.checkOutDeviceTime ?? null,
+    };
+  }
+
+  /** The school's point, radius and margin, or null when none is set. */
+  private async fence(t: TenantContext): Promise<Geofence | null> {
+    const s = (await this.db.getSchoolGeofence({ schoolId: t.schoolId })).data.school;
+    if (!s || s.geoLatMicro == null || s.geoLngMicro == null || s.geoRadiusM == null) return null;
+    return { lat: s.geoLatMicro / 1e6, lng: s.geoLngMicro / 1e6, radiusM: s.geoRadiusM, marginM: s.geoMarginM ?? DEFAULT_MARGIN_M };
+  }
+
+  async geofence(t: TenantContext): Promise<GeofenceDto> {
+    const f = await this.fence(t);
+    return { configured: !!f, lat: f?.lat ?? null, lng: f?.lng ?? null, radiusM: f?.radiusM ?? null, marginM: f?.marginM ?? DEFAULT_MARGIN_M, hardRingM: HARD_RING_M };
+  }
+
+  /** Judges where a phone is and refuses only when a reason is missing that the rules require (never because of where the person is). */
+  private async stamp(t: TenantContext, dto: StampDto | undefined): Promise<{ stamp: string; distanceM: number | null; reason: string | null; deviceTime: string | null; needsConfirm: boolean }> {
+    const verdict = judge(await this.fence(t), dto?.position ? { lat: dto.position.lat, lng: dto.position.lng } : null);
+    const reason = dto?.reason?.trim() || null;
+    if (verdict.reasonRequired && !reason) throw invalid('reason', 'reasonRequired');
+    return { stamp: verdict.stamp, distanceM: verdict.distanceM, reason, deviceTime: dto?.deviceTime ? new Date(dto.deviceTime).toISOString() : null, needsConfirm: verdict.needsConfirm };
   }
   private async myStaffId(t: TenantContext): Promise<string> {
     const staff = (await this.scope.mine(t)).staff;
@@ -197,25 +228,27 @@ export class AttendanceService {
     return (await this.db.getStaffAttendance({ schoolId: t.schoolId, staffId: dashed(staffId), date })).data.staffAttendances[0] ?? null;
   }
 
-  async checkIn(t: TenantContext): Promise<StaffDayDto> {
+  async checkIn(t: TenantContext, dto?: StampDto): Promise<StaffDayDto> {
     const [staffId, date] = [await this.myStaffId(t), today()];
     const have = await this.staffDay(t, staffId, date);
-    if (have?.checkIn) return this.day(have); // already in: the same answer
+    if (have?.checkIn) return this.day(have); // already in: the same answer, whatever a repeat sends (the first stamp stands)
+    const s = await this.stamp(t, dto);
     try {
-      await this.db.checkInStaff({ schoolId: t.schoolId, id: randomUUID(), staffId, date, actorId: t.userId, details: { date } });
+      await this.db.checkInStaff({ schoolId: t.schoolId, id: randomUUID(), staffId, date, stamp: s.stamp, ...(s.distanceM !== null ? { distanceM: s.distanceM } : {}), ...(s.reason ? { reason: s.reason } : {}), ...(s.deviceTime ? { deviceTime: s.deviceTime } : {}), needsConfirm: s.needsConfirm, actorId: t.userId, details: { date, stamp: s.stamp, distanceM: s.distanceM, needsConfirm: s.needsConfirm } });
     } catch (e) {
       if (kindOf(e) !== 'CONFLICT') throw e;
     }
     return this.day((await this.staffDay(t, staffId, date))!);
   }
 
-  async checkOut(t: TenantContext): Promise<StaffDayDto> {
+  async checkOut(t: TenantContext, dto?: StampDto): Promise<StaffDayDto> {
     const [staffId, date] = [await this.myStaffId(t), today()];
     const have = await this.staffDay(t, staffId, date);
     if (!have?.checkIn) throw conflict('checkIn', 'notCheckedIn');
     if (have.checkOut) return this.day(have);
+    const s = await this.stamp(t, dto);
     try {
-      await this.db.checkOutStaff({ schoolId: t.schoolId, id: dashed(have.id), actorId: t.userId, details: { date } });
+      await this.db.checkOutStaff({ schoolId: t.schoolId, id: dashed(have.id), stamp: s.stamp, ...(s.distanceM !== null ? { distanceM: s.distanceM } : {}), ...(s.reason ? { reason: s.reason } : {}), ...(s.deviceTime ? { deviceTime: s.deviceTime } : {}), actorId: t.userId, details: { date, stamp: s.stamp, distanceM: s.distanceM } });
     } catch (e) {
       if (kindOf(e) !== 'FORBIDDEN_REFERENCE') throw e; // already out an instant ago
     }
@@ -239,9 +272,24 @@ export class AttendanceService {
       date: d,
       items: staff.data.staffProfiles.map((s) => {
         const r = by.get(dashed(s.id));
-        return { staff: { id: dashed(s.id), employeeId: s.employeeId, name: `${s.firstName} ${s.lastName}` }, checkIn: r?.checkIn ?? null, checkOut: r?.checkOut ?? null, state: !r?.checkIn ? 'NONE' : r.checkOut ? 'OUT' : 'IN' };
+        return { staff: { id: dashed(s.id), employeeId: s.employeeId, name: `${s.firstName} ${s.lastName}` }, checkIn: r?.checkIn ?? null, checkOut: r?.checkOut ?? null, checkInStamp: r?.checkInStamp ?? null, checkInDistanceM: r?.checkInDistanceM ?? null, checkInReason: r?.checkInReason ?? null, checkInDeviceTime: r?.checkInDeviceTime ?? null, needsConfirmation: !!r?.needsConfirm && !r.confirmedAt, confirmedAt: r?.confirmedAt ?? null, checkOutReason: r?.checkOutReason ?? null, state: !r?.checkIn ? 'NONE' : r.checkOut ? 'OUT' : 'IN' };
       }),
     };
+  }
+
+  /** HR confirms a check-in that was beyond the hard ring. A day that needs no confirmation, or has been confirmed, is a 409. */
+  async confirmStaffDay(t: TenantContext, staffId: string, date: string): Promise<StaffDayDto> {
+    this.checkDate(date);
+    const have = await this.staffDay(t, staffId, date);
+    if (!have) throw notFound();
+    if (have.needsConfirm && have.confirmedAt) return this.day(have); // already confirmed: the same answer
+    if (!have.needsConfirm) throw conflict('date', 'nothingToConfirm');
+    try {
+      await this.db.confirmStaffCheckIn({ schoolId: t.schoolId, id: dashed(have.id), actorId: t.userId, details: { staffId: dashed(staffId), date, stamp: have.checkInStamp ?? null, distanceM: have.checkInDistanceM ?? null, reason: have.checkInReason ?? null } });
+    } catch (e) {
+      if (kindOf(e) !== 'FORBIDDEN_REFERENCE') throw e; // confirmed an instant ago by someone else
+    }
+    return this.day((await this.staffDay(t, staffId, date))!);
   }
 
   /** HR's correction of a member of staff's day, audited with the old values. */

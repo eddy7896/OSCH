@@ -728,6 +728,15 @@ export type GenerateResultDto = {
     truncated: boolean;
 };
 
+export type GeofenceDto = {
+    configured: boolean;
+    hardRingM: number;
+    lat: number | null;
+    lng: number | null;
+    marginM: number;
+    radiusM: number | null;
+};
+
 export type GradeLevelDto = {
     classes: Array<ClassSectionDto>;
     id: string;
@@ -1238,6 +1247,12 @@ export type PlacementRequestDto = {
     classroomId: string;
 };
 
+export type PositionDto = {
+    accuracyM?: number;
+    lat: number;
+    lng: number;
+};
+
 export type PreferenceDto = {
     enabled: boolean;
 };
@@ -1526,6 +1541,13 @@ export type SetClassTeacherDto = {
     staffId: string;
 };
 
+export type SetGeofenceDto = {
+    lat: number;
+    lng: number;
+    marginM?: number;
+    radiusM: number;
+};
+
 export type SetPhotoDto = {
     key: string;
 };
@@ -1568,8 +1590,18 @@ export type StaffAccountDto = {
 
 export type StaffDayDto = {
     checkIn: string | null;
+    checkInDeviceTime: string | null;
+    checkInDistanceM: number | null;
+    checkInReason: string | null;
+    checkInStamp: string | null;
     checkOut: string | null;
+    checkOutDeviceTime: string | null;
+    checkOutDistanceM: number | null;
+    checkOutReason: string | null;
+    checkOutStamp: string | null;
+    confirmedAt: string | null;
     date: string;
+    needsConfirmation: boolean;
 };
 
 export type StaffDayListDto = {
@@ -1630,7 +1662,14 @@ export type StaffPhotoUploadRequestDto = {
 
 export type StaffPresenceDto = {
     checkIn: string | null;
+    checkInDeviceTime: string | null;
+    checkInDistanceM: number | null;
+    checkInReason: string | null;
+    checkInStamp: string | null;
     checkOut: string | null;
+    checkOutReason: string | null;
+    confirmedAt: string | null;
+    needsConfirmation: boolean;
     staff: StaffStaffDto;
     state: string;
 };
@@ -1680,6 +1719,12 @@ export type StaffTimetableDto = {
     entries: Array<StaffSlotDto>;
     next: string | null;
     staffId: string | null;
+};
+
+export type StampDto = {
+    deviceTime?: string;
+    position?: PositionDto;
+    reason?: string;
 };
 
 export type StatementDto = {
@@ -4255,7 +4300,7 @@ export type StaffAttendancePresenceResponses = {
 export type StaffAttendancePresenceResponse = StaffAttendancePresenceResponses[keyof StaffAttendancePresenceResponses];
 
 export type StaffAttendanceCheckInData = {
-    body?: never;
+    body: StampDto;
     path?: never;
     query?: never;
     url: '/v1/attendance/staff/check-in';
@@ -4293,7 +4338,7 @@ export type StaffAttendanceCheckInResponses = {
 export type StaffAttendanceCheckInResponse = StaffAttendanceCheckInResponses[keyof StaffAttendanceCheckInResponses];
 
 export type StaffAttendanceCheckOutData = {
-    body?: never;
+    body: StampDto;
     path?: never;
     query?: never;
     url: '/v1/attendance/staff/check-out';
@@ -4329,6 +4374,44 @@ export type StaffAttendanceCheckOutResponses = {
 };
 
 export type StaffAttendanceCheckOutResponse = StaffAttendanceCheckOutResponses[keyof StaffAttendanceCheckOutResponses];
+
+export type StaffAttendanceGeofenceData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/attendance/staff/geofence';
+};
+
+export type StaffAttendanceGeofenceErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffAttendanceGeofenceError = StaffAttendanceGeofenceErrors[keyof StaffAttendanceGeofenceErrors];
+
+export type StaffAttendanceGeofenceResponses = {
+    200: GeofenceDto;
+};
+
+export type StaffAttendanceGeofenceResponse = StaffAttendanceGeofenceResponses[keyof StaffAttendanceGeofenceResponses];
 
 export type StaffAttendanceMineData = {
     body?: never;
@@ -4415,6 +4498,51 @@ export type StaffAttendanceCorrectResponses = {
 };
 
 export type StaffAttendanceCorrectResponse = StaffAttendanceCorrectResponses[keyof StaffAttendanceCorrectResponses];
+
+export type StaffAttendanceConfirmData = {
+    body?: never;
+    path: {
+        staffId: string;
+        date: string;
+    };
+    query?: never;
+    url: '/v1/attendance/staff/{staffId}/days/{date}/confirm';
+};
+
+export type StaffAttendanceConfirmErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type StaffAttendanceConfirmError = StaffAttendanceConfirmErrors[keyof StaffAttendanceConfirmErrors];
+
+export type StaffAttendanceConfirmResponses = {
+    200: StaffDayDto;
+};
+
+export type StaffAttendanceConfirmResponse = StaffAttendanceConfirmResponses[keyof StaffAttendanceConfirmResponses];
 
 export type AttendanceStatusesData = {
     body?: never;
@@ -9052,6 +9180,82 @@ export type ReportsPayrollExportError = ReportsPayrollExportErrors[keyof Reports
 export type ReportsPayrollExportResponses = {
     200: unknown;
 };
+
+export type SchoolClearGeofenceData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/school/geofence';
+};
+
+export type SchoolClearGeofenceErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SchoolClearGeofenceError = SchoolClearGeofenceErrors[keyof SchoolClearGeofenceErrors];
+
+export type SchoolClearGeofenceResponses = {
+    200: GeofenceDto;
+};
+
+export type SchoolClearGeofenceResponse = SchoolClearGeofenceResponses[keyof SchoolClearGeofenceResponses];
+
+export type SchoolSetGeofenceData = {
+    body: SetGeofenceDto;
+    path?: never;
+    query?: never;
+    url: '/v1/school/geofence';
+};
+
+export type SchoolSetGeofenceErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SchoolSetGeofenceError = SchoolSetGeofenceErrors[keyof SchoolSetGeofenceErrors];
+
+export type SchoolSetGeofenceResponses = {
+    200: GeofenceDto;
+};
+
+export type SchoolSetGeofenceResponse = SchoolSetGeofenceResponses[keyof SchoolSetGeofenceResponses];
 
 export type SchoolSetLogoData = {
     body: SetSchoolLogoDto;

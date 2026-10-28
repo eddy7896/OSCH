@@ -152,7 +152,7 @@ const checkedInStaffOfA = async (w: World): Promise<Record<string, string>> => {
   const staff = await linkedStaffOfA(w);
   const date = new Date(Date.now() + 330 * 60_000).toISOString().slice(0, 10);
   const row = (await w.db.getStaffAttendance({ schoolId: w.schools.A, staffId: staff['id']!, date })).data.staffAttendances[0];
-  if (!row) await w.db.checkInStaff({ schoolId: w.schools.A, id: randomUUID(), staffId: staff['id']!, date, actorId: w.roles.A.STAFF.uid, details: {} });
+  if (!row) await w.db.checkInStaff({ schoolId: w.schools.A, id: randomUUID(), staffId: staff['id']!, date, needsConfirm: false, actorId: w.roles.A.STAFF.uid, details: {} });
   return staff;
 };
 /** Terms and exams (P3-5), made through the real operations: a term of the active year, an exam of a fresh class and subject, optionally with a student in the class. */
@@ -454,6 +454,8 @@ export const SAMPLES: Record<string, Sample> = {
     auditSchool: (w) => w.schools.A,
   },
   'PATCH /school/profile': { ...systemAdminOfA, body: () => ({ address: '1 Sample Road' }) },
+  'PUT /school/geofence': { ...systemAdminOfA, body: () => ({ lat: 12.9716, lng: 77.5946, radiusM: 150 }) },
+  'DELETE /school/geofence': { ...systemAdminOfA },
   'PUT /school/logo': { ...systemAdminOfA, body: (w) => ({ key: `schools/${w.schools.A}/logo/${randomUUID()}.png` }) },
   'POST /academics/levels': { ...academicAdminOfA, body: () => ({ name: `Level ${randomUUID().slice(0, 8)}`, position: 600 }) },
   'PATCH /academics/levels/:id': { ...academicAdminOfA, prepare: levelOfA, body: () => ({ position: 501 }) },
@@ -481,6 +483,13 @@ export const SAMPLES: Record<string, Sample> = {
   'PUT /attendance/classes/:id/days/:date/correction': { ...academicAdminOfA, prepare: attendanceDayOfA, body: (_w, ctx) => ({ marks: [{ studentId: ctx['studentId'], status: 'MEDICAL', note: 'doctor' }] }) },
   'POST /attendance/staff/check-in': { refusedStatus: 409, token: (w) => w.roles.A.STAFF.token, actor: (w) => w.roles.A.STAFF.uid, school: (w) => w.schools.A, auditSchool: (w) => w.schools.A, prepare: linkedStaffOfA },
   'POST /attendance/staff/check-out': { refusedStatus: 409, token: (w) => w.roles.A.STAFF.token, actor: (w) => w.roles.A.STAFF.uid, school: (w) => w.schools.A, auditSchool: (w) => w.schools.A, prepare: checkedInStaffOfA },
+  // a day made through the real operation with a check-in beyond the hard ring, waiting for HR (a fresh member of staff each time)
+  'POST /attendance/staff/:staffId/days/:date/confirm': { ...hrOfA, prepare: async (w) => {
+    const staff = await staffOfA(w);
+    const date = new Date(Date.now() + 330 * 60_000).toISOString().slice(0, 10);
+    await w.db.checkInStaff({ schoolId: w.schools.A, id: randomUUID(), staffId: staff['id']!, date, stamp: 'OUTSIDE', distanceM: 2500, reason: 'Sample', needsConfirm: true, actorId: w.roles.A.HR_MANAGER.uid, details: {} });
+    return { staffId: staff['id']!, date };
+  } },
   'PUT /attendance/staff/:staffId/days/:date': { ...hrOfA, prepare: async (w) => ({ staffId: (await staffOfA(w))['id']!, date: lastMonday() }), body: (_w, ctx) => ({ checkIn: `${ctx['date']}T09:00:00Z`, checkOut: `${ctx['date']}T17:00:00Z` }) },
   'POST /grades/terms': { ...academicAdminOfA, prepare: async (w) => ({ year: await activeYearOfA(w) }), body: (_w, ctx) => ({ name: `Term ${randomUUID().slice(0, 6)}`, academicYearId: ctx['year'] }) },
   'PATCH /grades/terms/:id': { ...academicAdminOfA, prepare: termOfA, body: () => ({ name: `Renamed ${randomUUID().slice(0, 6)}` }) },

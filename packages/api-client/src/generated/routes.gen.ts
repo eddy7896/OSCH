@@ -297,6 +297,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Attendance_missing"
   },
   {
+    "method": "POST",
+    "path": "/v1/attendance/staff/{staffId}/days/{date}/confirm",
+    "access": "tenant",
+    "operationId": "StaffAttendance_confirm"
+  },
+  {
     "method": "PUT",
     "path": "/v1/attendance/staff/{staffId}/days/{date}",
     "access": "tenant",
@@ -313,6 +319,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/attendance/staff/check-out",
     "access": "tenant",
     "operationId": "StaffAttendance_checkOut"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/attendance/staff/geofence",
+    "access": "tenant",
+    "operationId": "StaffAttendance_geofence"
   },
   {
     "method": "GET",
@@ -991,6 +1003,18 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/reports/hr/payroll-summary",
     "access": "tenant",
     "operationId": "Reports_payroll"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/school/geofence",
+    "access": "tenant",
+    "operationId": "School_clearGeofence"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/school/geofence",
+    "access": "tenant",
+    "operationId": "School_setGeofence"
   },
   {
     "method": "PUT",

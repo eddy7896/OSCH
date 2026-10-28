@@ -271,14 +271,14 @@ class OruApi {
   }
 
   /// POST /v1/attendance/staff/check-in
-  Future<StaffDayDto> staffAttendanceCheckIn() async {
-    final j = await _t.send(_rStaffAttendanceCheckIn, "/v1/attendance/staff/check-in");
+  Future<StaffDayDto> staffAttendanceCheckIn({required StampDto body}) async {
+    final j = await _t.send(_rStaffAttendanceCheckIn, "/v1/attendance/staff/check-in", body: body.toJson());
     return StaffDayDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// POST /v1/attendance/staff/check-out
-  Future<StaffDayDto> staffAttendanceCheckOut() async {
-    final j = await _t.send(_rStaffAttendanceCheckOut, "/v1/attendance/staff/check-out");
+  Future<StaffDayDto> staffAttendanceCheckOut({required StampDto body}) async {
+    final j = await _t.send(_rStaffAttendanceCheckOut, "/v1/attendance/staff/check-out", body: body.toJson());
     return StaffDayDto.fromJson(j as Map<String, dynamic>);
   }
 

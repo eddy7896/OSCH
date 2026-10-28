@@ -4,7 +4,9 @@ import { ApiException, ErrorCode } from '../common/errors.js';
 import { dashed } from '../common/uuid.js';
 import type { TenantContext } from '../tenant/tenant.decorators.js';
 import { contrastWithWhite, isUsableBrandColor, MIN_CONTRAST } from './brand.js';
-import type { SchoolProfileDto, SetSchoolLogoDto, UpdateSchoolProfileDto } from './dto/school.dto.js';
+import { DEFAULT_MARGIN_M, HARD_RING_M } from '../attendance/geofence.js';
+import type { GeofenceDto } from '../attendance/dto/attendance.dto.js';
+import type { SchoolProfileDto, SetGeofenceDto, SetSchoolLogoDto, UpdateSchoolProfileDto } from './dto/school.dto.js';
 
 const FIELDS = ['name', 'address', 'contactPhone', 'contactEmail', 'primaryColor', 'defaultLanguage'] as const;
 
@@ -45,5 +47,22 @@ export class SchoolService {
     }
     await this.db.setSchoolLogo({ schoolId: tenant.schoolId, actorId: tenant.userId, logoKey: dto.key, details: { logoKey: dto.key } });
     return this.profile(tenant);
+  }
+
+  private fenceView(s: { geoLatMicro?: number | null; geoLngMicro?: number | null; geoRadiusM?: number | null; geoMarginM?: number | null } | null | undefined): GeofenceDto {
+    const on = !!s && s.geoLatMicro != null && s.geoLngMicro != null && s.geoRadiusM != null;
+    return { configured: on, lat: on ? s!.geoLatMicro! / 1e6 : null, lng: on ? s!.geoLngMicro! / 1e6 : null, radiusM: on ? s!.geoRadiusM! : null, marginM: s?.geoMarginM ?? DEFAULT_MARGIN_M, hardRingM: HARD_RING_M };
+  }
+
+  /** Sets where the school is. Coordinates are only as exact as the person who typed them; the point is a school's public location, not a person's. */
+  async setGeofence(t: TenantContext, dto: SetGeofenceDto): Promise<GeofenceDto> {
+    const marginM = dto.marginM ?? DEFAULT_MARGIN_M;
+    await this.db.setSchoolGeofence({ schoolId: t.schoolId, latMicro: Math.round(dto.lat * 1e6), lngMicro: Math.round(dto.lng * 1e6), radiusM: dto.radiusM, marginM, actorId: t.userId, details: { radiusM: dto.radiusM, marginM } });
+    return this.fenceView((await this.db.getSchoolGeofence({ schoolId: t.schoolId })).data.school);
+  }
+
+  async clearGeofence(t: TenantContext): Promise<GeofenceDto> {
+    await this.db.clearSchoolGeofence({ schoolId: t.schoolId, actorId: t.userId, details: {} });
+    return this.fenceView((await this.db.getSchoolGeofence({ schoolId: t.schoolId })).data.school);
   }
 }

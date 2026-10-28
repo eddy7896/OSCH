@@ -7,7 +7,7 @@ import { TeachingScope } from '../teaching/teaching-scope.service.js';
 import { AttendanceService } from './attendance.service.js';
 import {
   ClassDayDto, ClassDayParamDto, CorrectStaffDayDto, DateQueryDto, DayListDto, MissingDto, RangeQueryDto, StaffDayDto, StaffDayListDto, StaffDayParamDto, StaffPresenceListDto,
-  StatusLabelDto, StatusListDto, StatusParamDto, StudentAttendanceDto, StudentParamDto, SubmitDayDto, DaysQueryDto } from './dto/attendance.dto.js';
+  StatusLabelDto, StatusListDto, StatusParamDto, StudentAttendanceDto, StudentParamDto, SubmitDayDto, DaysQueryDto, GeofenceDto, StampDto } from './dto/attendance.dto.js';
 
 /**
  * Student attendance, once a day per class (P3-4). School routes: `X-School-Id` + the `attendance` grant. The Academic admin has the school; a Teacher only the
@@ -106,16 +106,23 @@ export class StaffAttendanceController {
   @Audit({ action: 'attendance.staff.checkin', operation: 'CheckInStaff' })
   @HttpCode(200)
   @Post('check-in')
-  checkIn(@Tenant() t: TenantContext): Promise<StaffDayDto> {
-    return this.attendance.checkIn(t);
+  checkIn(@Tenant() t: TenantContext, @Body() dto: StampDto): Promise<StaffDayDto> {
+    return this.attendance.checkIn(t, dto);
   }
 
   @Permission('staff_attendance', 'create')
   @Audit({ action: 'attendance.staff.checkout', operation: 'CheckOutStaff' })
   @HttpCode(200)
   @Post('check-out')
-  checkOut(@Tenant() t: TenantContext): Promise<StaffDayDto> {
-    return this.attendance.checkOut(t);
+  checkOut(@Tenant() t: TenantContext, @Body() dto: StampDto): Promise<StaffDayDto> {
+    return this.attendance.checkOut(t, dto);
+  }
+
+  /** Where the school is, so the phone can ask for a reason BEFORE sending. The gateway decides again on every check-in. */
+  @Permission('staff_attendance', 'read')
+  @Get('geofence')
+  geofence(@Tenant() t: TenantContext): Promise<GeofenceDto> {
+    return this.attendance.geofence(t);
   }
 
   @Permission('staff_attendance', 'read')
@@ -129,6 +136,16 @@ export class StaffAttendanceController {
   presence(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Query() q: DateQueryDto): Promise<StaffPresenceListDto> {
     if (g.scope !== 'school') throw new NotFoundException();
     return this.attendance.presence(t, q.date);
+  }
+
+  /** HR confirms a check-in made beyond the hard ring (ADR-0014 decision 9). */
+  @Permission('staff_attendance', 'update')
+  @Audit({ action: 'attendance.staff.confirm', operation: 'ConfirmStaffCheckIn' })
+  @HttpCode(200)
+  @Post(':staffId/days/:date/confirm')
+  confirm(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Param() p: StaffDayParamDto): Promise<StaffDayDto> {
+    if (g.scope !== 'school') throw new ForbiddenException();
+    return this.attendance.confirmStaffDay(t, p.staffId, p.date);
   }
 
   @Permission('staff_attendance', 'update')

@@ -904,6 +904,27 @@ function checkOutStaff(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.checkOutStaff = checkOutStaff;
 
+function confirmStaffCheckIn(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ConfirmStaffCheckIn', inputVars, inputOpts);
+}
+exports.confirmStaffCheckIn = confirmStaffCheckIn;
+
+function setSchoolGeofence(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetSchoolGeofence', inputVars, inputOpts);
+}
+exports.setSchoolGeofence = setSchoolGeofence;
+
+function clearSchoolGeofence(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ClearSchoolGeofence', inputVars, inputOpts);
+}
+exports.clearSchoolGeofence = clearSchoolGeofence;
+
 function correctStaffAttendance(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1869,4 +1890,11 @@ function listDevicesOfUser(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListDevicesOfUser', inputVars, inputOpts);
 }
 exports.listDevicesOfUser = listDevicesOfUser;
+
+function getSchoolGeofence(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetSchoolGeofence', inputVars, inputOpts);
+}
+exports.getSchoolGeofence = getSchoolGeofence;
 
