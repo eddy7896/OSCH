@@ -47,6 +47,8 @@ Tests: `apps/api-gateway/test/harness/sync.integration.ts` ("replaying any submi
 
 `packages/flutter-sync`: the outbox id is the `submissionId`/`clientId` (rule 1); changes go one at a time, oldest first, a child only after its parent was accepted (rule 2); a 4xx is final, shown, and fails whatever depended on it (rule 5); the device clock only times retries (rule 4). A 5xx, rate limit, timeout or lost connection keeps the change and backs it off (2 s doubling to 5 min, half random), and never holds up the changes behind it. Tested against the real gateway: `packages/flutter-sync/test/real_gateway_sync_test.dart` (E-SYNC-1, 3, 4).
 
+The pull side (P4-2c): `SyncCoordinator.syncNow()` pushes, pulls the lists a screen needs, then asks for tombstones from the saved cursor, page by page, applying each page and moving the cursor in one transaction (rule 3). A fresh install asks from the beginning of history because the phone's clock is not trusted (rule 4). Local record types use the gateway's own names and ids (`TimetableEntry`, `Substitution`, `AttendanceMark`, `Mark`) so a tombstone finds its record, and a record tied to a parent goes with it. Screens show owed changes on top of pulled records. Tested against the real gateway: `real_gateway_sync_test.dart` (E-SYNC-5).
+
 ## Not decided yet (Phase 4)
 
 - The shape of the pull for each entity ("changes since") beyond tombstones; today a device reads the normal list endpoints.
