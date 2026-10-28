@@ -1,3 +1,4 @@
+import { UpdatedSince } from '../../common/updated-since.js';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsIn, IsOptional, IsString, Length, Matches } from 'class-validator';
 import { HALVES, STATUSES } from '../leave-rules.js';
@@ -45,6 +46,8 @@ export class CreateRequestDto {
   @IsOptional() @IsString() @Matches(/^[A-Za-z0-9_-]{1,64}$/) clientId?: string;
 }
 export class ListRequestsQueryDto {
+  /** Only requests created or decided at or after this moment (the `next` of an earlier answer). */
+  @UpdatedSince() updatedSince?: string;
   @IsOptional() @IsIn([...STATUSES]) status?: string;
   @IsOptional() @Matches(UUID) staffId?: string;
   @IsOptional() @Matches(DATE) from?: string;
@@ -105,4 +108,6 @@ export class LeaveRequestDto {
 }
 export class LeaveRequestListDto {
   items!: LeaveRequestDto[];
+  /** Ask from here next time (the server's clock); null when there is nothing to anchor to yet. */
+  next!: string | null;
 }

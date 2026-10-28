@@ -49,8 +49,11 @@ Tests: `apps/api-gateway/test/harness/sync.integration.ts` ("replaying any submi
 
 The pull side (P4-2c): `SyncCoordinator.syncNow()` pushes, pulls the lists a screen needs, then asks for tombstones from the saved cursor, page by page, applying each page and moving the cursor in one transaction (rule 3). A fresh install asks from the beginning of history because the phone's clock is not trusted (rule 4). Local record types use the gateway's own names and ids (`TimetableEntry`, `Substitution`, `AttendanceMark`, `Mark`) so a tombstone finds its record, and a record tied to a parent goes with it. Screens show owed changes on top of pulled records. Tested against the real gateway: `real_gateway_sync_test.dart` (E-SYNC-5).
 
+## "Changes since" (P4-S1, built)
+
+The lists a phone pulls take `updatedSince` and answer with `next`: own leave requests (`GET /v1/leave/requests`), the week's lessons (`GET /v1/academics/timetable/mine`), a class's attendance days (`GET /v1/attendance/classes/:id/days`), an exam's marks grid (`GET /v1/grades/exams/:id/marks`) and notifications (`GET /v1/notifications`). `next` is the newest change in the answer, by the database's clock and floored to the millisecond; the phone stores it and sends it back as `updatedSince`. The answer holds what changed at or after that moment, so the newest row may come again (a phone replaces a record with itself); nothing is missed. A quiet list returns the same `next`; the first ask, with no moment, is the whole list. A removal is not in these lists: it arrives as a tombstone. A notice's moment is when it was written: a notice read on another phone does not come again. Tests: `apps/api-gateway/test/harness/updated-since.integration.ts`.
+
 ## Not decided yet (Phase 4)
 
-- The shape of the pull for each entity ("changes since") beyond tombstones; today a device reads the normal list endpoints.
 - Compaction: tombstones are kept for now; a retention rule comes with the engine.
 - Push delivery (FCM) of notifications, which needs the apps' device tokens (ADR-0013 decision 9).

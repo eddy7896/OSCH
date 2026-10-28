@@ -4,8 +4,7 @@ import { Granted, Permission, type GrantedPermission } from '../permission/permi
 import { Tenant, type TenantContext } from '../tenant/tenant.decorators.js';
 import {
   BandsDto, CreateExamDto, CreateTermDto, ExamDto, ExamListDto, ExamsQueryDto, IdParamDto, MarksGridDto, ReportCardDto, ReportCardQueryDto, SaveMarksDto, SetBandsDto, StudentIdParamDto,
-  TermDto, TermListDto, TermsQueryDto, UpdateExamDto, UpdateTermDto,
-} from './dto/grades.dto.js';
+  TermDto, TermListDto, TermsQueryDto, UpdateExamDto, UpdateTermDto, GridQueryDto } from './dto/grades.dto.js';
 import { GradesService } from './grades.service.js';
 
 /**
@@ -97,8 +96,8 @@ export class GradesController {
   /** The marks entry grid: every student of the class with their mark, percentage and grade. */
   @Permission('grades', 'read')
   @Get('exams/:id/marks')
-  grid(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Param() p: IdParamDto): Promise<MarksGridDto> {
-    return this.grades.grid(t, g.scope, p.id);
+  grid(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Param() p: IdParamDto, @Query() q: GridQueryDto): Promise<MarksGridDto> {
+    return this.grades.grid(t, g.scope, p.id, q.updatedSince);
   }
 
   /** Enters or changes marks for the students listed (others are untouched). A mark above the exam's maximum is refused. */

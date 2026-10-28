@@ -1,3 +1,4 @@
+import { nextCursor } from '../common/updated-since.js';
 import { randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE, type Database } from '@oruschools/database';
@@ -168,12 +169,12 @@ export class LeaveService {
     let staffId = q.staffId;
     if (scope === 'own') {
       const mine = (await this.scope.mine(t)).staff?.id;
-      if (!mine) return { items: [] };
+      if (!mine) return { items: [], next: null };
       if (staffId && !same(staffId, mine)) throw notFound();
       staffId = mine;
     }
-    const rows = (await this.db.listLeaveRequests({ schoolId: t.schoolId, ...(staffId ? { staffId: dashed(staffId) } : {}), ...(q.status ? { status: q.status as never } : {}), ...(q.from ? { from: q.from } : {}), ...(q.to ? { to: q.to } : {}) })).data.leaveRequests;
-    return { items: (rows as unknown as RequestRow[]).map((r) => this.view(r)) };
+    const rows = (await this.db.listLeaveRequests({ schoolId: t.schoolId, ...(staffId ? { staffId: dashed(staffId) } : {}), ...(q.status ? { status: q.status as never } : {}), ...(q.from ? { from: q.from } : {}), ...(q.to ? { to: q.to } : {}), ...(q.updatedSince ? { updatedSince: q.updatedSince } : {}) })).data.leaveRequests;
+    return { items: (rows as unknown as RequestRow[]).map((r) => this.view(r)), next: nextCursor(rows, q.updatedSince) };
   }
 
   async create(t: TenantContext, dto: CreateRequestDto): Promise<LeaveRequestDto> {

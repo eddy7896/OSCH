@@ -1,3 +1,4 @@
+import { nextCursor } from '../common/updated-since.js';
 import { randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE, type Database } from '@oruschools/database';
@@ -39,12 +40,12 @@ export class TimetableService {
     };
   }
 
-  async forStaff(t: TenantContext, staffId: string | null, academicYearId?: string): Promise<StaffTimetableDto> {
+  async forStaff(t: TenantContext, staffId: string | null, academicYearId?: string, updatedSince?: string): Promise<StaffTimetableDto> {
     const year = await this.yearOf(t, academicYearId);
-    if (!staffId) return { academicYearId: year, staffId: null, entries: [] };
-    const rows = (await this.db.listTimetableForStaff({ schoolId: t.schoolId, academicYearId: year, staffId: dashed(staffId) })).data.timetableEntries;
+    if (!staffId) return { academicYearId: year, staffId: null, entries: [], next: null };
+    const rows = (await this.db.listTimetableForStaff({ schoolId: t.schoolId, academicYearId: year, staffId: dashed(staffId), ...(updatedSince ? { updatedSince } : {}) })).data.timetableEntries;
     return {
-      academicYearId: year, staffId: dashed(staffId),
+      academicYearId: year, staffId: dashed(staffId), next: nextCursor(rows, updatedSince),
       entries: rows.map((r) => ({ id: dashed(r.id), day: r.day, periodId: dashed(r.periodId), class: { id: dashed(r.classroom.id), name: r.classroom.name }, subject: { id: dashed(r.subject.id), name: r.subject.name, code: r.subject.code } })),
     };
   }

@@ -521,6 +521,7 @@ export type CreatedInvitationDto = {
 
 export type DayListDto = {
     items: Array<DaySummaryDto>;
+    next: string | null;
 };
 
 export type DaySummaryDto = {
@@ -895,6 +896,7 @@ export type LeaveRequestDto = {
 
 export type LeaveRequestListDto = {
     items: Array<LeaveRequestDto>;
+    next: string | null;
 };
 
 export type LeaveTypeDto = {
@@ -941,6 +943,7 @@ export type MarkInputDto = {
 
 export type MarksGridDto = {
     exam: ExamDto;
+    next: string | null;
     rows: Array<GridRowDto>;
 };
 
@@ -1059,6 +1062,7 @@ export type NotificationDto = {
 
 export type NotificationListDto = {
     items: Array<NotificationDto>;
+    next: string | null;
     unreadCount: number;
 };
 
@@ -1655,6 +1659,7 @@ export type StaffSummaryDto = {
 export type StaffTimetableDto = {
     academicYearId: string;
     entries: Array<StaffSlotDto>;
+    next: string | null;
     staffId: string | null;
 };
 
@@ -3374,6 +3379,7 @@ export type TimetableMineData = {
     path?: never;
     query?: {
         academicYearId?: string;
+        updatedSince?: string;
     };
     url: '/v1/academics/timetable/mine';
 };
@@ -3927,6 +3933,7 @@ export type AttendanceDaysData = {
         id: string;
     };
     query?: {
+        updatedSince?: string;
         from?: string;
         to?: string;
     };
@@ -5965,7 +5972,9 @@ export type GradesGridData = {
     path: {
         id: string;
     };
-    query?: never;
+    query?: {
+        updatedSince?: string;
+    };
     url: '/v1/grades/exams/{id}/marks';
 };
 
@@ -6782,6 +6791,7 @@ export type LeaveRequestsData = {
     body?: never;
     path?: never;
     query?: {
+        updatedSince?: string;
         status?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
         staffId?: string;
         from?: string;
@@ -7437,6 +7447,7 @@ export type NotificationsListData = {
     query?: {
         unread?: boolean;
         limit?: number;
+        updatedSince?: string;
     };
     url: '/v1/notifications';
 };

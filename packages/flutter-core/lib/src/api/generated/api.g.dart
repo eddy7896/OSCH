@@ -117,8 +117,8 @@ class OruApi {
   }
 
   /// GET /v1/attendance/classes/{id}/days
-  Future<DayListDto> attendanceDays({required String id, String? from, String? to}) async {
-    final j = await _t.send(_rAttendanceDays, "/v1/attendance/classes/${Uri.encodeComponent(id)}/days", query: {'from': from, 'to': to});
+  Future<DayListDto> attendanceDays({required String id, String? updatedSince, String? from, String? to}) async {
+    final j = await _t.send(_rAttendanceDays, "/v1/attendance/classes/${Uri.encodeComponent(id)}/days", query: {'updatedSince': updatedSince, 'from': from, 'to': to});
     return DayListDto.fromJson(j as Map<String, dynamic>);
   }
 
@@ -153,8 +153,8 @@ class OruApi {
   }
 
   /// GET /v1/grades/exams/{id}/marks
-  Future<MarksGridDto> gradesGrid({required String id}) async {
-    final j = await _t.send(_rGradesGrid, "/v1/grades/exams/${Uri.encodeComponent(id)}/marks");
+  Future<MarksGridDto> gradesGrid({required String id, String? updatedSince}) async {
+    final j = await _t.send(_rGradesGrid, "/v1/grades/exams/${Uri.encodeComponent(id)}/marks", query: {'updatedSince': updatedSince});
     return MarksGridDto.fromJson(j as Map<String, dynamic>);
   }
 
@@ -207,8 +207,8 @@ class OruApi {
   }
 
   /// GET /v1/leave/requests
-  Future<LeaveRequestListDto> leaveRequests({String? status, String? staffId, String? from, String? to}) async {
-    final j = await _t.send(_rLeaveRequests, "/v1/leave/requests", query: {'status': status, 'staffId': staffId, 'from': from, 'to': to});
+  Future<LeaveRequestListDto> leaveRequests({String? updatedSince, String? status, String? staffId, String? from, String? to}) async {
+    final j = await _t.send(_rLeaveRequests, "/v1/leave/requests", query: {'updatedSince': updatedSince, 'status': status, 'staffId': staffId, 'from': from, 'to': to});
     return LeaveRequestListDto.fromJson(j as Map<String, dynamic>);
   }
 
@@ -230,8 +230,8 @@ class OruApi {
   }
 
   /// GET /v1/notifications
-  Future<NotificationListDto> notificationsList({bool? unread, num? limit}) async {
-    final j = await _t.send(_rNotificationsList, "/v1/notifications", query: {'unread': unread, 'limit': limit});
+  Future<NotificationListDto> notificationsList({bool? unread, num? limit, String? updatedSince}) async {
+    final j = await _t.send(_rNotificationsList, "/v1/notifications", query: {'unread': unread, 'limit': limit, 'updatedSince': updatedSince});
     return NotificationListDto.fromJson(j as Map<String, dynamic>);
   }
 
@@ -313,8 +313,8 @@ class OruApi {
   }
 
   /// GET /v1/academics/timetable/mine
-  Future<StaffTimetableDto> timetableMine({String? academicYearId}) async {
-    final j = await _t.send(_rTimetableMine, "/v1/academics/timetable/mine", query: {'academicYearId': academicYearId});
+  Future<StaffTimetableDto> timetableMine({String? academicYearId, String? updatedSince}) async {
+    final j = await _t.send(_rTimetableMine, "/v1/academics/timetable/mine", query: {'academicYearId': academicYearId, 'updatedSince': updatedSince});
     return StaffTimetableDto.fromJson(j as Map<String, dynamic>);
   }
 
