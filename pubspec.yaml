@@ -12,6 +12,7 @@ workspace:
   - apps/mobile-driver
   - packages/flutter-core
   - packages/flutter-sync
+  - packages/flutter-auth
 
 dev_dependencies:
   melos: ^8.9.0

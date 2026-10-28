@@ -1,0 +1,18 @@
+name: flutter_auth
+description: "OruSchools device sign-in for the phone apps: Firebase Auth over its REST interface, the session (secure storage, school choice, offline survival, sign-out wipe) and the optional app lock. Pure Dart logic; the platform pieces (secure storage, biometrics) are ports the apps fill in."
+version: 0.0.1
+publish_to: none
+
+resolution: workspace
+
+environment:
+  sdk: ^3.13.4
+
+dependencies:
+  flutter_core: ^0.0.1
+  http: ^1.6.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
