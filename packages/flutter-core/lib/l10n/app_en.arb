@@ -3493,5 +3493,111 @@
   "actionBack": "Back",
   "@actionBack": {
     "description": "Button that goes back to the previous screen."
+  },
+  "mobTabAttendance": "Attendance",
+  "@mobTabAttendance": {
+    "description": "Name of the Attendance tab in the Teacher app's bottom navigation."
+  },
+  "mobTabMore": "More",
+  "@mobTabMore": {
+    "description": "Name of the tab with the account, the app lock and sign out."
+  },
+  "mobAttClassesTitle": "Your classes",
+  "@mobAttClassesTitle": {
+    "description": "Heading of the list of classes the teacher takes attendance for."
+  },
+  "mobAttNoClasses": "You are not the class teacher of any class, so you do not take attendance.",
+  "@mobAttNoClasses": {
+    "description": "Shown when the teacher is not class teacher of any class."
+  },
+  "mobAttStateDone": "Taken",
+  "@mobAttStateDone": {
+    "description": "State of a class today: attendance has been taken and the school has it."
+  },
+  "mobAttStateSaved": "Saved on this phone",
+  "@mobAttStateSaved": {
+    "description": "State of a class today: attendance is saved on the phone and not yet sent."
+  },
+  "mobAttStateTodo": "Not taken yet",
+  "@mobAttStateTodo": {
+    "description": "State of a class today: no attendance yet."
+  },
+  "mobAttStateLocked": "Locked",
+  "@mobAttStateLocked": {
+    "description": "State of a class today: the day is locked and only the Academic administrator can change it."
+  },
+  "mobAttStateFailed": "Not accepted",
+  "@mobAttStateFailed": {
+    "description": "State of a class today: the school refused the attendance sent from this phone."
+  },
+  "mobAttMarkAllPresent": "Mark all present",
+  "@mobAttMarkAllPresent": {
+    "description": "Button that sets every student to present before the teacher marks the exceptions."
+  },
+  "mobAttSave": "Save attendance",
+  "@mobAttSave": {
+    "description": "Primary button of the attendance screen. It saves on the phone at once and sends when there is a connection."
+  },
+  "mobAttSavedNotSent": "Saved on this phone. It reaches the school when you are connected.",
+  "@mobAttSavedNotSent": {
+    "description": "Banner shown after saving attendance that has not reached the school yet."
+  },
+  "mobAttLocked": "This day is locked. Only the Academic administrator can change it.",
+  "@mobAttLocked": {
+    "description": "Banner on a day that is locked."
+  },
+  "mobAttRefused": "The school did not accept this attendance.",
+  "@mobAttRefused": {
+    "description": "Banner when the school refused attendance sent from the phone."
+  },
+  "mobAttRefusedLocked": "The day was locked before it arrived. Ask the Academic administrator to correct it.",
+  "@mobAttRefusedLocked": {
+    "description": "Explains a refusal because the day was locked."
+  },
+  "actionDismiss": "Dismiss",
+  "@actionDismiss": {
+    "description": "Button that removes a message the person has read."
+  },
+  "mobAttExceptions": "{count, plural, one{{count} exception} other{{count} exceptions}}",
+  "@mobAttExceptions": {
+    "description": "How many students are marked as something other than present. {count} is the number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mobAttEveryonePresent": "Everyone is present",
+  "@mobAttEveryonePresent": {
+    "description": "Shown when no student is marked as an exception."
+  },
+  "mobAttPickStatus": "Mark {name}",
+  "@mobAttPickStatus": {
+    "description": "Title of the list of statuses for one student. {name} is the student.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobAttNoStudents": "There are no students in this class yet.",
+  "@mobAttNoStudents": {
+    "description": "Shown when a class has no students."
+  },
+  "mobAttNotLoaded": "Connect once to load this class.",
+  "@mobAttNotLoaded": {
+    "description": "Shown when the class list has not been loaded onto the phone yet."
+  },
+  "mobAttDateLine": "{className}, {date}",
+  "@mobAttDateLine": {
+    "description": "Title of the attendance screen: the class and the date. {className} is the class name, {date} the date.",
+    "placeholders": {
+      "className": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

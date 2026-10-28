@@ -15,6 +15,7 @@ dependencies:
   flutter_app: ^0.0.1
 
 dev_dependencies:
+  flutter_sync: ^0.0.1 # the integration tests read the phone's local database and the sync engine
   flutter_test:
     sdk: flutter
   integration_test:

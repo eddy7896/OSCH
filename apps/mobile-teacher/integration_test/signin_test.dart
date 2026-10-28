@@ -55,11 +55,11 @@ void main() {
     await until(tester, find.text('Leave'));
     await until(tester, find.text('Synced'));
     expect(find.text('Connect once to load your day. After that it works without a connection.'), findsNothing);
-    await tester.tap(find.text('Account'));
+    await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
     expect(find.textContaining('Signed in as'), findsOneWidget);
     expect(find.textContaining('Teacher at'), findsOneWidget);
-    await tester.tap(find.text('Back'));
+    await tester.tap(find.text('Today').last);
     await tester.pumpAndSettle();
 
     // The app is closed and opened again: the Keychain still holds the session, the database file is still there.
@@ -72,7 +72,7 @@ void main() {
     // the day is still there, from the phone's own database, before the network has been asked
     expect(find.text('Leave'), findsOneWidget);
     await until(tester, find.text('Synced'));
-    await tester.tap(find.text('Account'));
+    await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
 
     // Sign out: asked first, then the sign-in screen is back and the phone holds nothing of her.

@@ -23,9 +23,12 @@ String _isolate(String text) => '\u2066$text\u2069';
 /// The Teacher's first screen: what is next today, which classes still need attendance, and her leave. It reads only what is on the
 /// phone, so it works with the network off after one sync; the sync state is always in view. Pull down to refresh.
 class OruTodayScreen extends StatefulWidget {
-  const OruTodayScreen({super.key, required this.services, required this.onOpenAccount, this.now});
+  const OruTodayScreen({super.key, required this.services, required this.onOpenAccount, this.onOpenAttendance, this.now});
   final OruServices services;
   final VoidCallback onOpenAccount;
+
+  /// Makes the attendance card a way in (the Teacher app switches to its Attendance tab).
+  final VoidCallback? onOpenAttendance;
 
   /// For tests: the clock the screen believes in.
   final DateTime Function()? now;
@@ -108,6 +111,7 @@ class _OruTodayScreenState extends State<OruTodayScreen> {
         OruCard(
           title: s.mobTodayAttendanceTitle,
           icon: OruIconName.check,
+          action: widget.onOpenAttendance == null ? null : OruLinkAction(label: s.mobTabAttendance, onPressed: widget.onOpenAttendance!),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             if (m.classesWithoutAttendance.isEmpty && m.attendanceSaved.isEmpty)
               Padding(padding: const EdgeInsets.all(OruSpacing.space4), child: Text(s.mobTodayAttendanceAllDone))

@@ -63,7 +63,7 @@ void main() {
     test('a class with a day on the server is done; one saved on the phone is "saved"; the rest still need it', () {
       final m = build(
         classes: classes,
-        days: [{'classId': 'c-5A', 'date': '2026-10-26', 'locked': false}],
+        days: [{'classId': 'c-5A', 'date': '2026-10-26', 'submitted': true, 'locked': false}],
         box: [outbox('attendance.submit', {'classId': 'c-6B', 'date': '2026-10-26'})],
       );
       expect(m.classesWithoutAttendance.map((c) => c.name), ['7C']);
@@ -73,7 +73,7 @@ void main() {
     test('yesterday\'s day and another date\'s saved change do not count as today', () {
       final m = build(
         classes: classes,
-        days: [{'classId': 'c-5A', 'date': '2026-10-25', 'locked': true}],
+        days: [{'classId': 'c-5A', 'date': '2026-10-25', 'submitted': true, 'locked': true}],
         box: [outbox('attendance.submit', {'classId': 'c-6B', 'date': '2026-10-25'})],
       );
       expect(m.classesWithoutAttendance, hasLength(3));
@@ -92,8 +92,13 @@ void main() {
       expect(m.attendanceSaved.map((c) => c.name), ['6B']);
     });
 
+    test('a day that exists but was not submitted does not count as taken', () {
+      final m = build(classes: classes, days: [{'classId': 'c-5A', 'date': '2026-10-26', 'submitted': false, 'locked': false}]);
+      expect(m.classesWithoutAttendance, hasLength(3));
+    });
+
     test('all done means the lists are empty', () {
-      final m = build(classes: classes, days: [for (final c in classes) {'classId': c['id'], 'date': '2026-10-26', 'locked': true}]);
+      final m = build(classes: classes, days: [for (final c in classes) {'classId': c['id'], 'date': '2026-10-26', 'submitted': true, 'locked': true}]);
       expect(m.classesWithoutAttendance, isEmpty);
       expect(m.attendanceSaved, isEmpty);
     });

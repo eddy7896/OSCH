@@ -40,7 +40,7 @@ Future<void> pumpFor(WidgetTester tester, [int steps = 30]) async {
 void main() {
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
 
-  testWidgets('sign in lands on Today; Account opens the account page; signing out from it brings the sign-in screen back on top', (tester) async {
+  testWidgets('sign in lands on Today with three tabs; More holds the account; signing out brings the sign-in screen back', (tester) async {
     tester.view.physicalSize = const Size(360 * 2, 780 * 2);
     tester.view.devicePixelRatio = 2;
     addTearDown(tester.view.reset);
@@ -52,21 +52,16 @@ void main() {
       await tester.enterText(find.byType(TextField).at(1), 'pw');
       await tester.tap(find.text('Sign in'));
       await pumpFor(tester);
-      expect(find.text('Today'), findsOneWidget);
+      expect(find.text('Today'), findsWidgets);
       expect(find.text('Leave'), findsOneWidget);
       expect(find.text('Synced'), findsOneWidget);
 
-      await tester.tap(find.text('Account'));
-      await pumpFor(tester, 10);
+      // three tabs; More holds the account
+      expect(find.text('Attendance'), findsWidgets);
+      await tester.tap(find.text('More'));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       expect(find.text('Signed in as Tara Teacher'), findsOneWidget);
       expect(find.text('Teacher at Greenfield'), findsOneWidget);
-      await tester.tap(find.text('Back'));
-      await tester.pumpAndSettle(const Duration(milliseconds: 100));
-      expect(find.text('Signed in as Tara Teacher'), findsNothing, reason: 'the account page was closed');
-      expect(find.text('Today'), findsOneWidget);
-
-      await tester.tap(find.text('Account'));
-      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       await tester.tap(find.text('Sign out'));
       await pumpFor(tester, 10);
       await tester.tap(find.descendant(of: find.byType(AlertDialog), matching: find.text('Sign out')));
@@ -74,6 +69,7 @@ void main() {
       expect(find.text('Email address'), findsOneWidget, reason: 'the sign-in screen, not the account page left on top of it');
       expect(find.text('Signed in as Tara Teacher'), findsNothing);
       expect(find.text('Today'), findsNothing);
+      expect(find.byType(BottomNavigationBar), findsNothing);
       await svc.dispose();
     });
   });

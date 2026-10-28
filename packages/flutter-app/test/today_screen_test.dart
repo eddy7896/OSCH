@@ -100,7 +100,7 @@ void main() {
       expect(find.text('1 class has no attendance yet'), findsOneWidget);
       expect(find.text('1 class saved on this phone, not sent yet'), findsOneWidget);
       expect(find.text('1 leave request saved on this phone, not sent yet'), findsOneWidget);
-      await svc.store.upsertRecords(kAttendanceDay, [(id: 'c6|2026-10-26', parentId: 'c6', json: {'classId': 'c6', 'date': '2026-10-26', 'locked': false})]);
+      await svc.store.upsertRecords(kAttendanceDay, [(id: 'c6|2026-10-26', parentId: 'c6', json: {'classId': 'c6', 'date': '2026-10-26', 'submitted': true, 'locked': false})]);
       await pumpFor(tester);
       expect(find.text('Attendance is taken for all your classes'), findsNothing, reason: 'Class 5A is only saved, not sent');
       expect(find.text('1 class has no attendance yet'), findsNothing);

@@ -28,6 +28,25 @@ void expectTouchTargets(WidgetTester tester, Finder f, {double min = 48}) {
 }
 
 void main() {
+  testWidgets('the bottom navigation is as tall as its items, not the whole screen, when it is a Scaffold\'s bottom bar', (tester) async {
+    tester.view.physicalSize = const Size(360 * 2, 780 * 2);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(MaterialApp(
+      theme: OruTheme.light(),
+      home: Scaffold(
+        body: const SizedBox.expand(),
+        bottomNavigationBar: OruBottomNav(label: 'Main', active: 'a', onChanged: (_) {}, items: const [
+          OruNavItem(key: 'a', label: 'Today', icon: OruIconName.home),
+          OruNavItem(key: 'b', label: 'Attendance', icon: OruIconName.check),
+          OruNavItem(key: 'c', label: 'More', icon: OruIconName.more),
+        ]),
+      ),
+    ));
+    expect(tester.getSize(find.byType(OruBottomNav)).height, lessThan(100));
+    expect(tester.getSize(find.byType(SizedBox).first).height, greaterThan(600), reason: 'the body keeps the rest of the screen');
+  });
+
   testWidgets('a field for left-to-right text (a phone number) keeps its direction on a right-to-left screen', (tester) async {
     await tester.pumpWidget(host(const OruTextField(label: 'Phone', textDirection: TextDirection.ltr), locale: 'ur'));
     expect(tester.widget<TextField>(find.byType(TextField)).textDirection, TextDirection.ltr);
