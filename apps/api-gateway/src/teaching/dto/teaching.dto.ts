@@ -78,6 +78,8 @@ export class MineDto {
   staff!: StaffRefDto | null;
   subjects!: SubjectRefDto[];
   classes!: RefDto[];
+  /** The classes the caller is class teacher of this year: the only classes whose daily attendance they take. */
+  classTeacherOf!: RefDto[];
   /** Children linked to the caller's account (a parent). */
   children!: ChildDto[];
 }

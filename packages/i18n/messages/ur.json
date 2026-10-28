@@ -736,5 +736,21 @@
   "mobHomeSoonTitle": "آپ کا کام یہاں نظر آئے گا",
   "mobHomeSoonBody": "جماعتیں، حاضری اور رخصت اگلی اپ ڈیٹس میں آئیں گی۔",
   "mobCodeSentTo": "ہم نے {phone} پر کوڈ بھیجا ہے۔",
-  "mobActionChangeNumber": "دوسرا نمبر استعمال کریں"
+  "mobActionChangeNumber": "دوسرا نمبر استعمال کریں",
+  "mobTodayTitle": "آج",
+  "mobAccountLink": "اکاؤنٹ",
+  "mobTodayNextLessons": "اگلے اسباق",
+  "mobTodayNoMoreLessons": "آج مزید کوئی سبق نہیں",
+  "mobTodayNotSchoolDay": "آج اسکول کا دن نہیں ہے",
+  "mobTodayLessonLine": "{className}، {start} سے {end} تک",
+  "mobTodayAttendanceTitle": "حاضری",
+  "mobTodayAttendanceMissing": "{count, plural, one{{count} جماعت کی حاضری ابھی نہیں لی گئی} other{{count} جماعتوں کی حاضری ابھی نہیں لی گئی}}",
+  "mobTodayAttendanceAllDone": "آپ کی تمام جماعتوں کی حاضری لی جا چکی ہے",
+  "mobTodayAttendanceSaved": "{count, plural, one{{count} جماعت اس فون میں محفوظ ہے، ابھی بھیجی نہیں گئی} other{{count} جماعتیں اس فون میں محفوظ ہیں، ابھی بھیجی نہیں گئیں}}",
+  "mobTodayLeaveTitle": "رخصت",
+  "mobTodayLeaveWaiting": "{count, plural, one{{count} رخصت کی درخواست پرنسپل کے انتظار میں} other{{count} رخصت کی درخواستیں پرنسپل کے انتظار میں}}",
+  "mobTodayLeaveNone": "کوئی رخصت کی درخواست انتظار میں نہیں",
+  "mobTodayLeaveSaved": "{count, plural, one{{count} رخصت کی درخواست اس فون میں محفوظ ہے، ابھی بھیجی نہیں گئی} other{{count} رخصت کی درخواستیں اس فون میں محفوظ ہیں، ابھی بھیجی نہیں گئیں}}",
+  "mobTodayFirstLoad": "اپنا دن لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔ اس کے بعد یہ بغیر کنکشن کے چلتا ہے۔",
+  "actionBack": "واپس"
 }

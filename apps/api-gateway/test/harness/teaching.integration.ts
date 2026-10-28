@@ -89,7 +89,7 @@ describe.skipIf(!ready)('teachers, class teachers, parent links and scopes again
     // before any link: nothing is theirs
     expect((await call('get', '/academics/classes', teacher).expect(200)).body.items).toEqual([]);
     expect((await call('get', '/academics/levels', teacher).expect(200)).body.items).toEqual([]);
-    expect((await call('get', '/academics/mine', teacher).expect(200)).body).toEqual({ staff: null, subjects: [], classes: [], children: [] });
+    expect((await call('get', '/academics/mine', teacher).expect(200)).body).toEqual({ staff: null, subjects: [], classes: [], classTeacherOf: [], children: [] });
     // HR makes the staff record, the System admin... links the teacher's account to it, the Academic admin names them class teacher and gives a subject
     const staff = await makeStaff('Tara');
     await call('put', `/staff/${staff.id}/account`, hr()).send({ userId: teacher.uid }).expect(200);
@@ -105,6 +105,7 @@ describe.skipIf(!ready)('teachers, class teachers, parent links and scopes again
     expect(levels[0]!.classes.map((c) => c.id)).toEqual([c2.id]);
     const me = (await call('get', '/academics/mine', teacher).expect(200)).body;
     expect(me.staff).toMatchObject({ id: staff.id }); expect(me.subjects.map((s: { id: string }) => s.id)).toEqual([sub.id]); expect(me.classes.map((c: { id: string }) => c.id)).toEqual([c2.id]);
+    expect(me.classTeacherOf.map((c: { id: string }) => c.id)).toEqual([c2.id]); // class teacher: the only class whose daily attendance she takes
     // the school-wide view is unchanged for the Academic admin
     expect(((await call('get', '/academics/classes').expect(200)).body.items as unknown[]).length).toBeGreaterThan(2);
     // a teacher cannot see the school's teachers, or change anything

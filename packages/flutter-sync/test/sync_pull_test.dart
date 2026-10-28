@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:drift/drift.dart' show driftRuntimeOptions;
@@ -135,6 +136,24 @@ void main() {
       })]);
       await c.syncNow();
       expect(order, ['push:owed', 'list', 'tombstones:$tombstoneBeginning']);
+    });
+
+    test('a second call while a sync is running waits for that one: when it returns the data has arrived (pull-to-refresh)', () async {
+      final t = Rig();
+      final gate = Completer<void>();
+      final c = t.coordinator([PullTask.list('X', () async {
+        await gate.future;
+        return [rec('a')];
+      })]);
+      final first = c.syncNow();
+      var secondDone = false;
+      final second = c.syncNow().then((_) => secondDone = true);
+      await pumpEventQueue();
+      expect(secondDone, isFalse, reason: 'the pull has not finished');
+      gate.complete();
+      await Future.wait([first, second]);
+      expect((await t.store.records('X')).length, 1);
+      expect(c.pullStatus, isA<PullOk>());
     });
 
     test('E-SYNC-5: a removal on the server removes the record on the device, and what hung off it', () async {

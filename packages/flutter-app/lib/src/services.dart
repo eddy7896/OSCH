@@ -55,6 +55,7 @@ class OruServices {
     IdentityPort? identity,
     AccountSource? accountSource,
     http.Client? httpClient,
+    List<PullTask> Function(OruApi api)? pullTasks,
   }) async {
     final secure = storage ?? PlatformSecureStorage();
     final db = OruLocalDatabase(executor ?? driftDatabase(name: 'oruschools'));
@@ -78,7 +79,7 @@ class OruServices {
       onlineChanges: online ?? connectivity.onConnectivityChanged.map((r) => !r.contains(ConnectivityResult.none)),
       isOnline: isOnline ?? () async => !(await connectivity.checkConnectivity()).contains(ConnectivityResult.none),
     );
-    final coordinator = SyncCoordinator(store: store, engine: engine, tombstones: OruApiTombstones(api));
+    final coordinator = SyncCoordinator(store: store, engine: engine, tombstones: OruApiTombstones(api), tasks: pullTasks?.call(api) ?? const []);
     final lock = AppLock(port: lockPort ?? PlatformDeviceLock(reason: () => reason.value), storage: secure);
     final s = OruServices._(config: config, session: session, db: db, store: store, engine: engine, coordinator: coordinator, lock: lock, api: api, lockReason: reason);
     s._watch = session.changes.listen(s._onSession);

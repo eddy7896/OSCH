@@ -5,3 +5,8 @@ export 'src/app.dart';
 export 'src/config.dart';
 export 'src/platform.dart';
 export 'src/services.dart';
+export 'src/sync_pill.dart';
+export 'src/teacher_home.dart';
+export 'src/today/today_data.dart';
+export 'src/today/today_model.dart';
+export 'src/today/today_screen.dart';

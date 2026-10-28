@@ -3398,5 +3398,100 @@
   "mobActionChangeNumber": "Use a different number",
   "@mobActionChangeNumber": {
     "description": "Goes back from the code box to the number box."
+  },
+  "mobTodayTitle": "Today",
+  "@mobTodayTitle": {
+    "description": "Title of the Teacher app's first screen: what the teacher has to do today."
+  },
+  "mobAccountLink": "Account",
+  "@mobAccountLink": {
+    "description": "Link at the top of the home screen that opens the person's account, the app lock switch and sign out."
+  },
+  "mobTodayNextLessons": "Next lessons",
+  "@mobTodayNextLessons": {
+    "description": "Heading of the list of the teacher's remaining lessons today."
+  },
+  "mobTodayNoMoreLessons": "No more lessons today",
+  "@mobTodayNoMoreLessons": {
+    "description": "Shown when the teacher has no lessons left today."
+  },
+  "mobTodayNotSchoolDay": "Today is not a school day",
+  "@mobTodayNotSchoolDay": {
+    "description": "Shown on a day the school does not work, such as a Sunday."
+  },
+  "mobTodayLessonLine": "{className}, {start} to {end}",
+  "@mobTodayLessonLine": {
+    "description": "One lesson in the list: the class, and when it starts and ends. {className} is a class name; {start} and {end} are times.",
+    "placeholders": {
+      "className": {
+        "type": "String"
+      },
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "mobTodayAttendanceTitle": "Attendance",
+  "@mobTodayAttendanceTitle": {
+    "description": "Heading of the card about taking student attendance today."
+  },
+  "mobTodayAttendanceMissing": "{count, plural, one{{count} class has no attendance yet} other{{count} classes have no attendance yet}}",
+  "@mobTodayAttendanceMissing": {
+    "description": "How many of the teacher's classes still have no attendance today. {count} is the number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mobTodayAttendanceAllDone": "Attendance is taken for all your classes",
+  "@mobTodayAttendanceAllDone": {
+    "description": "Shown when every class of the teacher has its attendance today."
+  },
+  "mobTodayAttendanceSaved": "{count, plural, one{{count} class saved on this phone, not sent yet} other{{count} classes saved on this phone, not sent yet}}",
+  "@mobTodayAttendanceSaved": {
+    "description": "How many classes have attendance saved on the phone that has not reached the school yet. {count} is the number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mobTodayLeaveTitle": "Leave",
+  "@mobTodayLeaveTitle": {
+    "description": "Heading of the card about the teacher's own leave requests."
+  },
+  "mobTodayLeaveWaiting": "{count, plural, one{{count} leave request waiting for the Principal} other{{count} leave requests waiting for the Principal}}",
+  "@mobTodayLeaveWaiting": {
+    "description": "How many of the teacher's leave requests the Principal has not decided yet. {count} is the number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mobTodayLeaveNone": "No leave requests waiting",
+  "@mobTodayLeaveNone": {
+    "description": "Shown when the teacher has no leave request waiting for a decision."
+  },
+  "mobTodayLeaveSaved": "{count, plural, one{{count} leave request saved on this phone, not sent yet} other{{count} leave requests saved on this phone, not sent yet}}",
+  "@mobTodayLeaveSaved": {
+    "description": "How many leave requests are saved on the phone and have not reached the school yet. {count} is the number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mobTodayFirstLoad": "Connect once to load your day. After that it works without a connection.",
+  "@mobTodayFirstLoad": {
+    "description": "Shown on the first day, before any data has been loaded from the school."
+  },
+  "actionBack": "Back",
+  "@actionBack": {
+    "description": "Button that goes back to the previous screen."
   }
 }
