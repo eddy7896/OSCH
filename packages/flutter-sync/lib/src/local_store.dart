@@ -173,6 +173,9 @@ class OruLocalStore {
 
   Future<void> markSending(String id) => (db.update(db.outboxItems)..where((t) => t.id.equals(id))).write(const OutboxItemsCompanion(state: Value(OutboxState.sending)));
 
+  /// The send was cut short without an answer (sign-in needed): back to the queue, and it does not count as an attempt.
+  Future<void> release(String id) => (db.update(db.outboxItems)..where((t) => t.id.equals(id) & t.state.equals(OutboxState.sending))).write(const OutboxItemsCompanion(state: Value(OutboxState.queued)));
+
   /// The server accepted it (or answered that it already had it): the change is no longer owed, so the row goes.
   Future<void> markDone(String id) => (db.delete(db.outboxItems)..where((t) => t.id.equals(id))).go();
 
