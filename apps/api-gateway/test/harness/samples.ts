@@ -155,6 +155,12 @@ const checkedInStaffOfA = async (w: World): Promise<Record<string, string>> => {
   if (!row) await w.db.checkInStaff({ schoolId: w.schools.A, id: randomUUID(), staffId: staff['id']!, date, needsConfirm: false, actorId: w.roles.A.STAFF.uid, details: {} });
   return staff;
 };
+/** An announcement of school A, made through the real operation (P4-S4). */
+const announcementOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  await w.db.postAnnouncement({ schoolId: w.schools.A, id, title: 'Sample', body: 'Sample announcement.', notice: { title: 'Sample' }, actorId: w.roles.A.ACADEMIC_ADMIN.uid, details: {} });
+  return { id: dash(id) };
+};
 /** Terms and exams (P3-5), made through the real operations: a term of the active year, an exam of a fresh class and subject, optionally with a student in the class. */
 const termOfA = async (w: World): Promise<Record<string, string>> => {
   const year = await activeYearOfA(w);
@@ -454,6 +460,9 @@ export const SAMPLES: Record<string, Sample> = {
     auditSchool: (w) => w.schools.A,
   },
   'PATCH /school/profile': { ...systemAdminOfA, body: () => ({ address: '1 Sample Road' }) },
+  'POST /announcements': { ...academicAdminOfA, body: () => ({ title: 'Staff meeting on Friday', body: 'All staff meet in the hall at 3 pm.' }) },
+  'PATCH /announcements/:id': { ...principalOfA, prepare: announcementOfA, body: () => ({ title: 'Staff meeting moved', body: 'Now at 4 pm.' }) },
+  'POST /announcements/:id/withdraw': { ...academicAdminOfA, prepare: announcementOfA },
   'PUT /school/geofence': { ...systemAdminOfA, body: () => ({ lat: 12.9716, lng: 77.5946, radiusM: 150 }) },
   'DELETE /school/geofence': { ...systemAdminOfA },
   'PUT /school/logo': { ...systemAdminOfA, body: (w) => ({ key: `schools/${w.schools.A}/logo/${randomUUID()}.png` }) },

@@ -734,5 +734,8 @@
   "mobHomeSoonTitle": "Placeholder on the first home screen until the feature screens ship.",
   "mobHomeSoonBody": "Placeholder text; replaced when the feature screens ship.",
   "mobCodeSentTo": "Shown after a one-time code was requested. {phone} is the number.",
-  "mobActionChangeNumber": "Goes back from the code box to the number box."
+  "mobActionChangeNumber": "Goes back from the code box to the number box.",
+  "ntCatannouncement": "Name of the notification category switch for announcements from the school.",
+  "notifAnnouncementPostedTitle": "Title of the notice sent to staff when the Principal or the Academic administrator posts an announcement.",
+  "notifAnnouncementPostedBody": "Body of that notice: the announcement's own title, written by its author in their language."
 }

@@ -1135,6 +1135,27 @@ function claimNotificationPush(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.claimNotificationPush = claimNotificationPush;
 
+function postAnnouncement(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('PostAnnouncement', inputVars, inputOpts);
+}
+exports.postAnnouncement = postAnnouncement;
+
+function editAnnouncement(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('EditAnnouncement', inputVars, inputOpts);
+}
+exports.editAnnouncement = editAnnouncement;
+
+function withdrawAnnouncement(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('WithdrawAnnouncement', inputVars, inputOpts);
+}
+exports.withdrawAnnouncement = withdrawAnnouncement;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1897,4 +1918,18 @@ function getSchoolGeofence(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetSchoolGeofence', inputVars, inputOpts);
 }
 exports.getSchoolGeofence = getSchoolGeofence;
+
+function listAnnouncements(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListAnnouncements', inputVars, inputOpts);
+}
+exports.listAnnouncements = listAnnouncements;
+
+function getAnnouncement(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetAnnouncement', inputVars, inputOpts);
+}
+exports.getAnnouncement = getAnnouncement;
 

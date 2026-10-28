@@ -1482,6 +1482,24 @@ abstract class OruStrings {
   /// **'Payroll'**
   String get ntCatpayroll;
 
+  /// Name of the notification category switch for announcements from the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get ntCatannouncement;
+
+  /// Title of the notice sent to staff when the Principal or the Academic administrator posts an announcement.
+  ///
+  /// In en, this message translates to:
+  /// **'New announcement'**
+  String get notifAnnouncementPostedTitle;
+
+  /// Body of that notice: the announcement's own title, written by its author in their language.
+  ///
+  /// In en, this message translates to:
+  /// **'{title}'**
+  String notifAnnouncementPostedBody(String title);
+
   /// Screen reader word before an unread notification.
   ///
   /// In en, this message translates to:

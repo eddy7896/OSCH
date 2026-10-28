@@ -45,10 +45,12 @@ describe("E-RBAC: SSOT §4 matrix cells (locked)", () => {
     expect(can(as("PRINCIPAL"), "payroll", "approve")).toBe(true);
     const writes = permissionsOf(as("PRINCIPAL")).filter((p) => WRITE.includes(p.action));
     expect(writes.length).toBeGreaterThan(0); // check-in and own leave request
-    for (const w of writes) {
+    // The one other write is writing announcements, which the owner gave the Principal and the Academic admin (ADR-0014 decision 11).
+    for (const w of writes.filter((x) => x.resource !== "announcements")) {
       expect([...SELF_SERVICE_RESOURCES, ...INBOX_RESOURCES] as readonly string[], `${w.resource}:${w.action}`).toContain(w.resource);
       expect(w.scope, `${w.resource}:${w.action}`).toBe("own");
     }
+    expect(writes.filter((x) => x.resource === "announcements").map((x) => x.action).sort()).toEqual(["create", "update"]);
     const approvals = permissionsOf(as("PRINCIPAL")).filter((p) => p.action === "approve");
     expect(approvals.map((p) => p.resource).sort()).toEqual(["leave", "payroll"]); // leave requests and the monthly payroll run (ADR-0012)
   });
@@ -220,7 +222,7 @@ describe("E-RBAC: matrix integrity", () => {
     const listed = new Set(ASSUMED_GRANTS.map(([r, res]) => `${r}/${res}`));
     expect([...tagged].filter((x) => !listed.has(x)), "tagged [ASSUMED] but missing from ASSUMED_GRANTS").toEqual([]);
     expect([...listed].filter((x) => !tagged.has(x)), "listed in ASSUMED_GRANTS but not tagged [ASSUMED] in the matrix").toEqual([]);
-    expect(tagged.size).toBeGreaterThan(30);
+    expect(tagged.size).toBeGreaterThan(25);
   });
 });
 

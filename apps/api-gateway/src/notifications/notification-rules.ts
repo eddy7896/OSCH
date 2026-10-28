@@ -1,6 +1,6 @@
 /** Pure rules of the in-app inbox (P3-9, ADR-0013 decision 9): which category a notification is in, and how its words are made in the reader's language. */
 
-export const CATEGORIES = ['leave', 'substitution', 'payroll'] as const;
+export const CATEGORIES = ['leave', 'substitution', 'payroll', 'announcement'] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 interface KindInfo { category: Category; title: string; body: string }
@@ -12,6 +12,7 @@ export const KINDS: Readonly<Record<string, KindInfo>> = {
   'leave.substitution': { category: 'substitution', title: 'notifLeaveSubstitutionTitle', body: 'notifLeaveSubstitutionBody' },
   'leave.payroll': { category: 'payroll', title: 'notifLeavePayrollTitle', body: 'notifLeavePayrollBody' },
   'substitution.assigned': { category: 'substitution', title: 'notifSubstitutionAssignedTitle', body: 'notifSubstitutionAssignedBody' },
+  'announcement.posted': { category: 'announcement', title: 'notifAnnouncementPostedTitle', body: 'notifAnnouncementPostedBody' },
   'substitution.cleared': { category: 'substitution', title: 'notifSubstitutionClearedTitle', body: 'notifSubstitutionClearedBody' },
 };
 

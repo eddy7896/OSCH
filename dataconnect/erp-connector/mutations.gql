@@ -1340,3 +1340,44 @@ mutation RemoveDevicesById($ids: [UUID!]!) @auth(level: NO_ACCESS) {
 mutation ClaimNotificationPush($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
   notification_updateMany(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, pushedAt: {isNull: true}}, data: { pushedAt_expr: "request.time" })
 }
+
+# ---- Announcements (P4-S4)
+# One notice per staff role (not parents), in the same transaction as the announcement: all of it or none of it.
+mutation PostAnnouncement($schoolId: UUID!, $id: UUID!, $title: String!, $body: String!, $notice: Any!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  announcement_insert(data: { id: $id, schoolId: $schoolId, title: $title, body: $body, authorId: $actorId })
+  n0: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: PRINCIPAL })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: MANAGEMENT })
+  n2: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: BURSAR })
+  n3: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: ACADEMIC_ADMIN })
+  n4: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: SYSTEM_ADMIN })
+  n5: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: HR_MANAGER })
+  n6: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: ACCOUNTANT })
+  n7: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: ADMISSIONS_OFFICER })
+  n8: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: TRANSPORT_MANAGER })
+  n9: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: OPERATIONS_MANAGER })
+  n10: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: TEACHER })
+  n11: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: STAFF })
+  n12: notification_insert(data: { schoolId: $schoolId, kind: "announcement.posted", params: $notice, entityType: "Announcement", entityId_expr: "request.variables.id", audienceRole: DRIVER })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "announcement.post", entityType: "Announcement", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation EditAnnouncement($schoolId: UUID!, $id: UUID!, $title: String!, $body: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    row: announcements(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, withdrawnAt: {isNull: true}}) @check(expr: "this.size() == 1", message: "announcement not found in this school, or withdrawn") { id }
+  }
+  announcement_update(id: $id, data: { title: $title, body: $body, updatedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "announcement.edit", entityType: "Announcement", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation WithdrawAnnouncement($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    row: announcements(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, withdrawnAt: {isNull: true}}) @check(expr: "this.size() == 1", message: "announcement not found in this school, or already withdrawn") { id }
+  }
+  announcement_update(id: $id, data: { withdrawnAt_expr: "request.time", updatedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "announcement.withdraw", entityType: "Announcement", entityId_expr: "request.variables.id", details: $details })
+}

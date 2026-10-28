@@ -752,6 +752,17 @@ class OruStringsSd extends OruStrings {
   String get ntCatpayroll => 'Payroll';
 
   @override
+  String get ntCatannouncement => 'Announcements';
+
+  @override
+  String get notifAnnouncementPostedTitle => 'New announcement';
+
+  @override
+  String notifAnnouncementPostedBody(String title) {
+    return '$title';
+  }
+
+  @override
   String get ntUnread => 'Unread';
 
   @override

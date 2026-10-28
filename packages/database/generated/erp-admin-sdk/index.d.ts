@@ -427,6 +427,11 @@ export interface AdmitApplicationVariables {
   details?: unknown | null;
 }
 
+export interface Announcement_Key {
+  id: UUIDString;
+  __typename?: 'Announcement_Key';
+}
+
 export interface ApplicationSeqInfoData {
   school?: {
     id: UUIDString;
@@ -2074,6 +2079,28 @@ export interface DuesInvoicesVariables {
   offset: number;
 }
 
+export interface EditAnnouncementData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    row: ({
+      id: UUIDString;
+    } & Announcement_Key)[];
+  };
+  announcement_update?: Announcement_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface EditAnnouncementVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  title: string;
+  body: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface EnrollmentsOfStudentsData {
   studentEnrollments: ({
     studentId: UUIDString;
@@ -2224,6 +2251,27 @@ export interface FinishMarkEntryVariables {
   submissionId?: string | null;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface GetAnnouncementData {
+  announcements: ({
+    id: UUIDString;
+    title: string;
+    body: string;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    withdrawnAt?: TimestampString | null;
+    author: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & Announcement_Key)[];
+}
+
+export interface GetAnnouncementVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
 }
 
 export interface GetApplicationData {
@@ -3122,6 +3170,27 @@ export interface ListAcademicYearsData {
 
 export interface ListAcademicYearsVariables {
   schoolId: UUIDString;
+}
+
+export interface ListAnnouncementsData {
+  announcements: ({
+    id: UUIDString;
+    title: string;
+    body: string;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    withdrawnAt?: TimestampString | null;
+    author: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & Announcement_Key)[];
+}
+
+export interface ListAnnouncementsVariables {
+  schoolId: UUIDString;
+  updatedSince?: TimestampString | null;
 }
 
 export interface ListApplicationsData {
@@ -4323,6 +4392,39 @@ export interface PlacedStudentsVariables {
   classroomId?: UUIDString | null;
   limit: number;
   offset: number;
+}
+
+export interface PostAnnouncementData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  announcement_insert: Announcement_Key;
+  n0: Notification_Key;
+  n1: Notification_Key;
+  n2: Notification_Key;
+  n3: Notification_Key;
+  n4: Notification_Key;
+  n5: Notification_Key;
+  n6: Notification_Key;
+  n7: Notification_Key;
+  n8: Notification_Key;
+  n9: Notification_Key;
+  n10: Notification_Key;
+  n11: Notification_Key;
+  n12: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface PostAnnouncementVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  title: string;
+  body: string;
+  notice: unknown;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface ProvisionSchoolAdminData {
@@ -5818,6 +5920,26 @@ export interface User_Key {
   __typename?: 'User_Key';
 }
 
+export interface WithdrawAnnouncementData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    row: ({
+      id: UUIDString;
+    } & Announcement_Key)[];
+  };
+  announcement_update?: Announcement_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface WithdrawAnnouncementVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 /** Generated Node Admin SDK operation action function for the 'CreateSchool' Mutation. Allow users to execute without passing in DataConnect. */
 export function createSchool(dc: DataConnect, vars: CreateSchoolVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSchoolData>>;
 /** Generated Node Admin SDK operation action function for the 'CreateSchool' Mutation. Allow users to pass in custom DataConnect instances. */
@@ -6503,6 +6625,21 @@ export function claimNotificationPush(dc: DataConnect, vars: ClaimNotificationPu
 /** Generated Node Admin SDK operation action function for the 'ClaimNotificationPush' Mutation. Allow users to pass in custom DataConnect instances. */
 export function claimNotificationPush(vars: ClaimNotificationPushVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClaimNotificationPushData>>;
 
+/** Generated Node Admin SDK operation action function for the 'PostAnnouncement' Mutation. Allow users to execute without passing in DataConnect. */
+export function postAnnouncement(dc: DataConnect, vars: PostAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PostAnnouncementData>>;
+/** Generated Node Admin SDK operation action function for the 'PostAnnouncement' Mutation. Allow users to pass in custom DataConnect instances. */
+export function postAnnouncement(vars: PostAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PostAnnouncementData>>;
+
+/** Generated Node Admin SDK operation action function for the 'EditAnnouncement' Mutation. Allow users to execute without passing in DataConnect. */
+export function editAnnouncement(dc: DataConnect, vars: EditAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EditAnnouncementData>>;
+/** Generated Node Admin SDK operation action function for the 'EditAnnouncement' Mutation. Allow users to pass in custom DataConnect instances. */
+export function editAnnouncement(vars: EditAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EditAnnouncementData>>;
+
+/** Generated Node Admin SDK operation action function for the 'WithdrawAnnouncement' Mutation. Allow users to execute without passing in DataConnect. */
+export function withdrawAnnouncement(dc: DataConnect, vars: WithdrawAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<WithdrawAnnouncementData>>;
+/** Generated Node Admin SDK operation action function for the 'WithdrawAnnouncement' Mutation. Allow users to pass in custom DataConnect instances. */
+export function withdrawAnnouncement(vars: WithdrawAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<WithdrawAnnouncementData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -7047,4 +7184,14 @@ export function listDevicesOfUser(vars: ListDevicesOfUserVariables, options?: Op
 export function getSchoolGeofence(dc: DataConnect, vars: GetSchoolGeofenceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetSchoolGeofenceData>>;
 /** Generated Node Admin SDK operation action function for the 'GetSchoolGeofence' Query. Allow users to pass in custom DataConnect instances. */
 export function getSchoolGeofence(vars: GetSchoolGeofenceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetSchoolGeofenceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListAnnouncements' Query. Allow users to execute without passing in DataConnect. */
+export function listAnnouncements(dc: DataConnect, vars: ListAnnouncementsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAnnouncementsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListAnnouncements' Query. Allow users to pass in custom DataConnect instances. */
+export function listAnnouncements(vars: ListAnnouncementsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListAnnouncementsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetAnnouncement' Query. Allow users to execute without passing in DataConnect. */
+export function getAnnouncement(dc: DataConnect, vars: GetAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetAnnouncementData>>;
+/** Generated Node Admin SDK operation action function for the 'GetAnnouncement' Query. Allow users to pass in custom DataConnect instances. */
+export function getAnnouncement(vars: GetAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetAnnouncementData>>;
 

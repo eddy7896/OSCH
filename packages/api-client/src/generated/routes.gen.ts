@@ -261,6 +261,36 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Admissions_create"
   },
   {
+    "method": "POST",
+    "path": "/v1/announcements/{id}/withdraw",
+    "access": "tenant",
+    "operationId": "Announcements_withdraw"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/announcements/{id}",
+    "access": "tenant",
+    "operationId": "Announcements_one"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/announcements/{id}",
+    "access": "tenant",
+    "operationId": "Announcements_edit"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/announcements",
+    "access": "tenant",
+    "operationId": "Announcements_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/announcements",
+    "access": "tenant",
+    "operationId": "Announcements_post"
+  },
+  {
     "method": "PUT",
     "path": "/v1/attendance/classes/{id}/days/{date}/correction",
     "access": "tenant",

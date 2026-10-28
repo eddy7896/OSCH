@@ -10,6 +10,8 @@ const List<OruRoute> kOruRoutes = [
   _rAcademicsClasses,
   _rAcademicsSubjects,
   _rAcademicsYears,
+  _rAnnouncementsList,
+  _rAnnouncementsOne,
   _rAttendanceDay,
   _rAttendanceDays,
   _rAttendanceStatuses,
@@ -50,6 +52,8 @@ const List<OruRoute> kOruRoutes = [
 const _rAcademicsClasses = OruRoute('GET', '/v1/academics/classes', OruAccess.tenant, 'Academics_classes');
 const _rAcademicsSubjects = OruRoute('GET', '/v1/academics/subjects', OruAccess.tenant, 'Academics_subjects');
 const _rAcademicsYears = OruRoute('GET', '/v1/academics/years', OruAccess.tenant, 'Academics_years');
+const _rAnnouncementsList = OruRoute('GET', '/v1/announcements', OruAccess.tenant, 'Announcements_list');
+const _rAnnouncementsOne = OruRoute('GET', '/v1/announcements/{id}', OruAccess.tenant, 'Announcements_one');
 const _rAttendanceDay = OruRoute('GET', '/v1/attendance/classes/{id}/days/{date}', OruAccess.tenant, 'Attendance_day');
 const _rAttendanceDays = OruRoute('GET', '/v1/attendance/classes/{id}/days', OruAccess.tenant, 'Attendance_days');
 const _rAttendanceStatuses = OruRoute('GET', '/v1/attendance/statuses', OruAccess.tenant, 'Attendance_statuses');
@@ -108,6 +112,18 @@ class OruApi {
   Future<AcademicYearListDto> academicsYears() async {
     final j = await _t.send(_rAcademicsYears, "/v1/academics/years");
     return AcademicYearListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/announcements
+  Future<AnnouncementListDto> announcementsList({String? updatedSince}) async {
+    final j = await _t.send(_rAnnouncementsList, "/v1/announcements", query: {'updatedSince': updatedSince});
+    return AnnouncementListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/announcements/{id}
+  Future<AnnouncementDto> announcementsOne({required String id}) async {
+    final j = await _t.send(_rAnnouncementsOne, "/v1/announcements/${Uri.encodeComponent(id)}");
+    return AnnouncementDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// GET /v1/attendance/classes/{id}/days/{date}

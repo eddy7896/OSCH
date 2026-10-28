@@ -626,3 +626,16 @@ query ListDevicesOfUser($userId: String!) @auth(level: NO_ACCESS) {
 query GetSchoolGeofence($schoolId: UUID!) @auth(level: NO_ACCESS) {
   school(id: $schoolId) { geoLatMicro geoLngMicro geoRadiusM geoMarginM }
 }
+
+# ---- Announcements (P4-S4)
+query ListAnnouncements($schoolId: UUID!, $updatedSince: Timestamp) @auth(level: NO_ACCESS) {
+  announcements(where: {schoolId: {eq: $schoolId}, updatedAt: {ge: $updatedSince}}, orderBy: [{createdAt: DESC}], limit: 200) {
+    id title body createdAt updatedAt withdrawnAt author { id displayName email }
+  }
+}
+
+query GetAnnouncement($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  announcements(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id title body createdAt updatedAt withdrawnAt author { id displayName email }
+  }
+}

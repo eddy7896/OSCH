@@ -21,6 +21,7 @@ import { GradesModule } from './grades/grades.module.js';
 import { LeaveModule } from './leave/leave.module.js';
 import { SubstitutionModule } from './substitution/substitution.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
+import { AnnouncementsModule } from './announcements/announcements.module.js';
 import { DevicesModule } from './devices/devices.module.js';
 import { PushModule } from './push/push.module.js';
 import { SyncModule } from './sync/sync.module.js';
@@ -84,6 +85,7 @@ import { HealthModule } from './health/health.module.js';
     LeaveModule,
     SubstitutionModule,
     NotificationsModule,
+    AnnouncementsModule,
     DevicesModule,
     PushModule,
     SyncModule,

@@ -661,6 +661,19 @@ type NotificationRead @table(key: ["notification", "user"]) {
   readAt: Timestamp! @default(expr: "request.time")
 }
 
+# An announcement from the school to its staff (P4-S4): written by the Principal or the Academic admin on the web, read by every staff role, delivered as a notice per role in the
+# same transaction. Withdrawing keeps the row (a phone that has it must hear that it is gone) and clears nothing: the gateway shows a withdrawn one without its words.
+type Announcement @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  title: String!
+  body: String!
+  author: User!
+  withdrawnAt: Timestamp
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time")
+}
+
 enum DevicePlatform {
   IOS
   ANDROID

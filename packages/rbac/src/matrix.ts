@@ -55,7 +55,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     operations: school("read"), // [ASSUMED]
     leave: school("read", "approve"), // [GUARD §4] leave goes through Principal approval
     transport: school("read"), // [DESIGN] principal dashboard shows transport
-    announcements: school("read"), // [ASSUMED]
+    announcements: school("read", "create", "update"), // [ADR-0014 decision 11] the Principal and the Academic admin write announcements
     settings: school("read"),
   },
 
@@ -75,6 +75,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     payroll: school(...CRUD_EXPORT),
     reports_finance: school("read", "export"),
     leave: school("read"), // [ASSUMED] needs approved unpaid leave to compute payroll deductions [GUARD §4]
+    announcements: school("read"), // [ADR-0014 decision 11] every staff role reads announcements
   },
 
   // [SSOT] Academic Admin: attendance + academics full CRUD; NO finance, settings.
@@ -89,7 +90,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     reports_academic: school("read", "export"),
     leave: school("read"), // [ASSUMED] must see leave to plan substitutes
     staff: school("read"), // [ASSUMED] must see teachers to assign substitutes
-    announcements: school("read", "create", "update"), // [ASSUMED]
+    announcements: school("read", "create", "update"), // [ADR-0014 decision 11]
   },
 
   // [SSOT] IT / System Admin: system settings full CRUD; NO finance, attendance, academics.
@@ -99,6 +100,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     staff: school(...CRUD), // [ASSUMED] user/membership/role management is a system function
     memberships: school(...CRUD), // [ASSUMED] ONLY role that may grant or change school roles (privilege-escalation guard)
     audit_log: school("read"), // [GUARD §3] message audit trail accessible by the System Admin
+    announcements: school("read"), // [ADR-0014 decision 11] every staff role reads announcements
   },
 
   // [DESIGN] "HR Manager might see: Dashboard, Staff, Attendance, Leave, Payroll, Recruitment".
@@ -211,12 +213,10 @@ export const ASSUMED_GRANTS: ReadonlyArray<readonly [Role, Resource]> = [
   ["PRINCIPAL", "reports_finance"],
   ["PRINCIPAL", "reports_academic"],
   ["PRINCIPAL", "staff"],
-  ["PRINCIPAL", "announcements"],
   ["BURSAR", "leave"],
   ["ACADEMIC_ADMIN", "students"],
   ["ACADEMIC_ADMIN", "leave"],
   ["ACADEMIC_ADMIN", "staff"],
-  ["ACADEMIC_ADMIN", "announcements"],
   ["SYSTEM_ADMIN", "staff"],
   ["PARENT", "finance"],
   // NEW with the extended roles
