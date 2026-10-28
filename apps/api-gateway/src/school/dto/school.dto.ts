@@ -1,10 +1,20 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsIn, IsOptional, IsString, Length, Matches, MaxLength } from 'class-validator';
+import { IsEmail, IsIn, IsInt, IsNumber, IsOptional, IsString, Length, Matches, Max, MaxLength, Min } from 'class-validator';
 import { LOCALES } from '@oruschools/i18n';
 import { HEX_COLOR } from '../brand.js';
 
 const CODES = LOCALES.map((l) => l.code);
 const trim = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value);
+
+/** Where the school is, for geofenced check-in (P4-S3). The margin defaults to 50 m. */
+export class SetGeofenceDto {
+  @IsNumber({ allowNaN: false, allowInfinity: false }) @Min(-90) @Max(90) lat!: number;
+  @IsNumber({ allowNaN: false, allowInfinity: false }) @Min(-180) @Max(180) lng!: number;
+  /** The grounds, in metres from the point. */
+  @IsInt() @Min(10) @Max(2000) radiusM!: number;
+  /** The feathered margin around the grounds. Radius plus margin is the soft ring. */
+  @IsOptional() @IsInt() @Min(0) @Max(500) marginM?: number;
+}
 
 export class SchoolProfileDto {
   id!: string;

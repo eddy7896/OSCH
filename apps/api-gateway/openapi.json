@@ -2823,6 +2823,40 @@
         ],
         "type": "object"
       },
+      "GeofenceDto": {
+        "properties": {
+          "configured": {
+            "type": "boolean"
+          },
+          "hardRingM": {
+            "type": "number"
+          },
+          "lat": {
+            "nullable": true,
+            "type": "number"
+          },
+          "lng": {
+            "nullable": true,
+            "type": "number"
+          },
+          "marginM": {
+            "type": "number"
+          },
+          "radiusM": {
+            "nullable": true,
+            "type": "number"
+          }
+        },
+        "required": [
+          "configured",
+          "lat",
+          "lng",
+          "radiusM",
+          "marginM",
+          "hardRingM"
+        ],
+        "type": "object"
+      },
       "GradeLevelDto": {
         "properties": {
           "classes": {
@@ -4760,6 +4794,30 @@
         ],
         "type": "object"
       },
+      "PositionDto": {
+        "properties": {
+          "accuracyM": {
+            "maximum": 100000,
+            "minimum": 0,
+            "type": "number"
+          },
+          "lat": {
+            "maximum": 90,
+            "minimum": -90,
+            "type": "number"
+          },
+          "lng": {
+            "maximum": 180,
+            "minimum": -180,
+            "type": "number"
+          }
+        },
+        "required": [
+          "lat",
+          "lng"
+        ],
+        "type": "object"
+      },
       "PreferenceDto": {
         "properties": {
           "enabled": {
@@ -5807,6 +5865,36 @@
         ],
         "type": "object"
       },
+      "SetGeofenceDto": {
+        "properties": {
+          "lat": {
+            "maximum": 90,
+            "minimum": -90,
+            "type": "number"
+          },
+          "lng": {
+            "maximum": 180,
+            "minimum": -180,
+            "type": "number"
+          },
+          "marginM": {
+            "maximum": 500,
+            "minimum": 0,
+            "type": "number"
+          },
+          "radiusM": {
+            "maximum": 2000,
+            "minimum": 10,
+            "type": "number"
+          }
+        },
+        "required": [
+          "lat",
+          "lng",
+          "radiusM"
+        ],
+        "type": "object"
+      },
       "SetPhotoDto": {
         "properties": {
           "key": {
@@ -5959,18 +6047,67 @@
             "nullable": true,
             "type": "string"
           },
+          "checkInDeviceTime": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkInDistanceM": {
+            "nullable": true,
+            "type": "number"
+          },
+          "checkInReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkInStamp": {
+            "nullable": true,
+            "type": "string"
+          },
           "checkOut": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkOutDeviceTime": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkOutDistanceM": {
+            "nullable": true,
+            "type": "number"
+          },
+          "checkOutReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkOutStamp": {
+            "nullable": true,
+            "type": "string"
+          },
+          "confirmedAt": {
             "nullable": true,
             "type": "string"
           },
           "date": {
             "type": "string"
+          },
+          "needsConfirmation": {
+            "type": "boolean"
           }
         },
         "required": [
           "date",
           "checkIn",
-          "checkOut"
+          "checkOut",
+          "checkInStamp",
+          "checkInDistanceM",
+          "checkInReason",
+          "checkInDeviceTime",
+          "needsConfirmation",
+          "confirmedAt",
+          "checkOutStamp",
+          "checkOutDistanceM",
+          "checkOutReason",
+          "checkOutDeviceTime"
         ],
         "type": "object"
       },
@@ -6207,9 +6344,36 @@
             "nullable": true,
             "type": "string"
           },
+          "checkInDeviceTime": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkInDistanceM": {
+            "nullable": true,
+            "type": "number"
+          },
+          "checkInReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "checkInStamp": {
+            "nullable": true,
+            "type": "string"
+          },
           "checkOut": {
             "nullable": true,
             "type": "string"
+          },
+          "checkOutReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "confirmedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "needsConfirmation": {
+            "type": "boolean"
           },
           "staff": {
             "$ref": "#/components/schemas/StaffStaffDto"
@@ -6222,6 +6386,13 @@
           "staff",
           "checkIn",
           "checkOut",
+          "checkInStamp",
+          "checkInDistanceM",
+          "checkInReason",
+          "checkInDeviceTime",
+          "needsConfirmation",
+          "confirmedAt",
+          "checkOutReason",
           "state"
         ],
         "type": "object"
@@ -6388,6 +6559,23 @@
           "entries",
           "next"
         ],
+        "type": "object"
+      },
+      "StampDto": {
+        "properties": {
+          "deviceTime": {
+            "maxLength": 40,
+            "type": "string"
+          },
+          "position": {
+            "$ref": "#/components/schemas/PositionDto"
+          },
+          "reason": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "StatementDto": {
@@ -11408,6 +11596,16 @@
             "$ref": "#/components/parameters/SchoolId"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StampDto"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "content": {
@@ -11462,6 +11660,16 @@
             "$ref": "#/components/parameters/SchoolId"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StampDto"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "content": {
@@ -11504,6 +11712,56 @@
         },
         "x-permission": {
           "action": "create",
+          "resource": "staff_attendance"
+        }
+      }
+    },
+    "/v1/attendance/staff/geofence": {
+      "get": {
+        "operationId": "StaffAttendance_geofence",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeofenceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StaffAttendance"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
           "resource": "staff_attendance"
         }
       }
@@ -11650,6 +11908,79 @@
         "x-audit": {
           "action": "attendance.staff.correct",
           "operation": "CorrectStaffAttendance"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "staff_attendance"
+        }
+      }
+    },
+    "/v1/attendance/staff/{staffId}/days/{date}/confirm": {
+      "post": {
+        "operationId": "StaffAttendance_confirm",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "staffId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffDayDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StaffAttendance"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "attendance.staff.confirm",
+          "operation": "ConfirmStaffCheckIn"
         },
         "x-permission": {
           "action": "update",
@@ -18922,6 +19253,122 @@
         "x-permission": {
           "action": "export",
           "resource": "reports_hr"
+        }
+      }
+    },
+    "/v1/school/geofence": {
+      "delete": {
+        "operationId": "School_clearGeofence",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeofenceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "School"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "school.geofence.clear",
+          "operation": "ClearSchoolGeofence"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "settings"
+        }
+      },
+      "put": {
+        "operationId": "School_setGeofence",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetGeofenceDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeofenceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "School"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "school.geofence.set",
+          "operation": "SetSchoolGeofence"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "settings"
         }
       }
     },

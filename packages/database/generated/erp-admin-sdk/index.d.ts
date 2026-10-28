@@ -725,6 +725,11 @@ export interface CheckInStaffVariables {
   id: UUIDString;
   staffId: UUIDString;
   date: DateString;
+  stamp?: string | null;
+  distanceM?: number | null;
+  reason?: string | null;
+  deviceTime?: TimestampString | null;
+  needsConfirm: boolean;
   actorId: string;
   details?: unknown | null;
 }
@@ -745,6 +750,10 @@ export interface CheckOutStaffData {
 export interface CheckOutStaffVariables {
   schoolId: UUIDString;
   id: UUIDString;
+  stamp?: string | null;
+  distanceM?: number | null;
+  reason?: string | null;
+  deviceTime?: TimestampString | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -785,6 +794,22 @@ export interface Classroom_Key {
   __typename?: 'Classroom_Key';
 }
 
+export interface ClearSchoolGeofenceData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  school_update?: School_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ClearSchoolGeofenceVariables {
+  schoolId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface ClearSubstituteData {
   query?: {
     actor: ({
@@ -813,6 +838,26 @@ export interface ClearSubstituteVariables {
 export interface Concession_Key {
   id: UUIDString;
   __typename?: 'Concession_Key';
+}
+
+export interface ConfirmStaffCheckInData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    row: ({
+      id: UUIDString;
+    } & StaffAttendance_Key)[];
+  };
+  staffAttendance_update?: StaffAttendance_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ConfirmStaffCheckInVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface CorrectStaffAttendanceData {
@@ -2720,6 +2765,19 @@ export interface GetSchoolData {
   } & School_Key;
 }
 
+export interface GetSchoolGeofenceData {
+  school?: {
+    geoLatMicro?: number | null;
+    geoLngMicro?: number | null;
+    geoRadiusM?: number | null;
+    geoMarginM?: number | null;
+  };
+}
+
+export interface GetSchoolGeofenceVariables {
+  schoolId: UUIDString;
+}
+
 export interface GetSchoolProfileData {
   school?: {
     id: UUIDString;
@@ -2754,6 +2812,16 @@ export interface GetStaffAttendanceData {
     date: DateString;
     checkIn?: TimestampString | null;
     checkOut?: TimestampString | null;
+    checkInStamp?: string | null;
+    checkInDistanceM?: number | null;
+    checkInReason?: string | null;
+    checkInDeviceTime?: TimestampString | null;
+    needsConfirm: boolean;
+    confirmedAt?: TimestampString | null;
+    checkOutStamp?: string | null;
+    checkOutDistanceM?: number | null;
+    checkOutReason?: string | null;
+    checkOutDeviceTime?: TimestampString | null;
   } & StaffAttendance_Key)[];
 }
 
@@ -4840,6 +4908,26 @@ export interface SetLeaveBalanceVariables {
   details?: unknown | null;
 }
 
+export interface SetSchoolGeofenceData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  school_update?: School_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetSchoolGeofenceVariables {
+  schoolId: UUIDString;
+  latMicro: number;
+  lngMicro: number;
+  radiusM: number;
+  marginM: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface SetSchoolLogoData {
   query?: {
     actor: ({
@@ -4987,6 +5075,16 @@ export interface StaffAttendanceOfStaffData {
     date: DateString;
     checkIn?: TimestampString | null;
     checkOut?: TimestampString | null;
+    checkInStamp?: string | null;
+    checkInDistanceM?: number | null;
+    checkInReason?: string | null;
+    checkInDeviceTime?: TimestampString | null;
+    needsConfirm: boolean;
+    confirmedAt?: TimestampString | null;
+    checkOutStamp?: string | null;
+    checkOutDistanceM?: number | null;
+    checkOutReason?: string | null;
+    checkOutDeviceTime?: TimestampString | null;
   })[];
 }
 
@@ -4999,10 +5097,21 @@ export interface StaffAttendanceOfStaffVariables {
 
 export interface StaffAttendanceOnData {
   staffAttendances: ({
+    id: UUIDString;
     staffId: UUIDString;
     checkIn?: TimestampString | null;
     checkOut?: TimestampString | null;
-  })[];
+    checkInStamp?: string | null;
+    checkInDistanceM?: number | null;
+    checkInReason?: string | null;
+    checkInDeviceTime?: TimestampString | null;
+    needsConfirm: boolean;
+    confirmedAt?: TimestampString | null;
+    checkOutStamp?: string | null;
+    checkOutDistanceM?: number | null;
+    checkOutReason?: string | null;
+    checkOutDeviceTime?: TimestampString | null;
+  } & StaffAttendance_Key)[];
 }
 
 export interface StaffAttendanceOnVariables {
@@ -6229,6 +6338,21 @@ export function checkOutStaff(dc: DataConnect, vars: CheckOutStaffVariables, opt
 /** Generated Node Admin SDK operation action function for the 'CheckOutStaff' Mutation. Allow users to pass in custom DataConnect instances. */
 export function checkOutStaff(vars: CheckOutStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CheckOutStaffData>>;
 
+/** Generated Node Admin SDK operation action function for the 'ConfirmStaffCheckIn' Mutation. Allow users to execute without passing in DataConnect. */
+export function confirmStaffCheckIn(dc: DataConnect, vars: ConfirmStaffCheckInVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConfirmStaffCheckInData>>;
+/** Generated Node Admin SDK operation action function for the 'ConfirmStaffCheckIn' Mutation. Allow users to pass in custom DataConnect instances. */
+export function confirmStaffCheckIn(vars: ConfirmStaffCheckInVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConfirmStaffCheckInData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetSchoolGeofence' Mutation. Allow users to execute without passing in DataConnect. */
+export function setSchoolGeofence(dc: DataConnect, vars: SetSchoolGeofenceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetSchoolGeofenceData>>;
+/** Generated Node Admin SDK operation action function for the 'SetSchoolGeofence' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setSchoolGeofence(vars: SetSchoolGeofenceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetSchoolGeofenceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ClearSchoolGeofence' Mutation. Allow users to execute without passing in DataConnect. */
+export function clearSchoolGeofence(dc: DataConnect, vars: ClearSchoolGeofenceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearSchoolGeofenceData>>;
+/** Generated Node Admin SDK operation action function for the 'ClearSchoolGeofence' Mutation. Allow users to pass in custom DataConnect instances. */
+export function clearSchoolGeofence(vars: ClearSchoolGeofenceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearSchoolGeofenceData>>;
+
 /** Generated Node Admin SDK operation action function for the 'CorrectStaffAttendance' Mutation. Allow users to execute without passing in DataConnect. */
 export function correctStaffAttendance(dc: DataConnect, vars: CorrectStaffAttendanceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CorrectStaffAttendanceData>>;
 /** Generated Node Admin SDK operation action function for the 'CorrectStaffAttendance' Mutation. Allow users to pass in custom DataConnect instances. */
@@ -6918,4 +7042,9 @@ export function listDevicesForUsers(vars: ListDevicesForUsersVariables, options?
 export function listDevicesOfUser(dc: DataConnect, vars: ListDevicesOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListDevicesOfUserData>>;
 /** Generated Node Admin SDK operation action function for the 'ListDevicesOfUser' Query. Allow users to pass in custom DataConnect instances. */
 export function listDevicesOfUser(vars: ListDevicesOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListDevicesOfUserData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetSchoolGeofence' Query. Allow users to execute without passing in DataConnect. */
+export function getSchoolGeofence(dc: DataConnect, vars: GetSchoolGeofenceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetSchoolGeofenceData>>;
+/** Generated Node Admin SDK operation action function for the 'GetSchoolGeofence' Query. Allow users to pass in custom DataConnect instances. */
+export function getSchoolGeofence(vars: GetSchoolGeofenceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetSchoolGeofenceData>>;
 

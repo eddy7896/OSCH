@@ -997,6 +997,25 @@ class PlacementDtoClassroom {
       };
 }
 
+class PositionDto {
+  const PositionDto({this.accuracyM, required this.lat, required this.lng});
+  final num? accuracyM;
+  final num lat;
+  final num lng;
+
+  factory PositionDto.fromJson(Map<String, dynamic> j) => PositionDto(
+        accuracyM: j['accuracyM'] == null ? null : j['accuracyM'] as num,
+        lat: j['lat'] as num,
+        lng: j['lng'] as num,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (accuracyM != null) 'accuracyM': accuracyM!,
+        'lat': lat,
+        'lng': lng,
+      };
+}
+
 class PreferenceDto {
   const PreferenceDto({required this.enabled});
   final bool enabled;
@@ -1241,21 +1260,51 @@ class SchoolProfileDtoActiveAcademicYear {
 }
 
 class StaffDayDto {
-  const StaffDayDto({required this.checkIn, required this.checkOut, required this.date});
+  const StaffDayDto({required this.checkIn, required this.checkInDeviceTime, required this.checkInDistanceM, required this.checkInReason, required this.checkInStamp, required this.checkOut, required this.checkOutDeviceTime, required this.checkOutDistanceM, required this.checkOutReason, required this.checkOutStamp, required this.confirmedAt, required this.date, required this.needsConfirmation});
   final String? checkIn;
+  final String? checkInDeviceTime;
+  final num? checkInDistanceM;
+  final String? checkInReason;
+  final String? checkInStamp;
   final String? checkOut;
+  final String? checkOutDeviceTime;
+  final num? checkOutDistanceM;
+  final String? checkOutReason;
+  final String? checkOutStamp;
+  final String? confirmedAt;
   final String date;
+  final bool needsConfirmation;
 
   factory StaffDayDto.fromJson(Map<String, dynamic> j) => StaffDayDto(
         checkIn: j['checkIn'] == null ? null : j['checkIn'] as String,
+        checkInDeviceTime: j['checkInDeviceTime'] == null ? null : j['checkInDeviceTime'] as String,
+        checkInDistanceM: j['checkInDistanceM'] == null ? null : j['checkInDistanceM'] as num,
+        checkInReason: j['checkInReason'] == null ? null : j['checkInReason'] as String,
+        checkInStamp: j['checkInStamp'] == null ? null : j['checkInStamp'] as String,
         checkOut: j['checkOut'] == null ? null : j['checkOut'] as String,
+        checkOutDeviceTime: j['checkOutDeviceTime'] == null ? null : j['checkOutDeviceTime'] as String,
+        checkOutDistanceM: j['checkOutDistanceM'] == null ? null : j['checkOutDistanceM'] as num,
+        checkOutReason: j['checkOutReason'] == null ? null : j['checkOutReason'] as String,
+        checkOutStamp: j['checkOutStamp'] == null ? null : j['checkOutStamp'] as String,
+        confirmedAt: j['confirmedAt'] == null ? null : j['confirmedAt'] as String,
         date: j['date'] as String,
+        needsConfirmation: j['needsConfirmation'] as bool,
       );
 
   Map<String, dynamic> toJson() => {
         if (checkIn != null) 'checkIn': checkIn!,
+        if (checkInDeviceTime != null) 'checkInDeviceTime': checkInDeviceTime!,
+        if (checkInDistanceM != null) 'checkInDistanceM': checkInDistanceM!,
+        if (checkInReason != null) 'checkInReason': checkInReason!,
+        if (checkInStamp != null) 'checkInStamp': checkInStamp!,
         if (checkOut != null) 'checkOut': checkOut!,
+        if (checkOutDeviceTime != null) 'checkOutDeviceTime': checkOutDeviceTime!,
+        if (checkOutDistanceM != null) 'checkOutDistanceM': checkOutDistanceM!,
+        if (checkOutReason != null) 'checkOutReason': checkOutReason!,
+        if (checkOutStamp != null) 'checkOutStamp': checkOutStamp!,
+        if (confirmedAt != null) 'confirmedAt': confirmedAt!,
         'date': date,
+        'needsConfirmation': needsConfirmation,
       };
 }
 
@@ -1335,6 +1384,25 @@ class StaffTimetableDto {
         'entries': entries.map((e) => e.toJson()).toList(),
         if (next != null) 'next': next!,
         if (staffId != null) 'staffId': staffId!,
+      };
+}
+
+class StampDto {
+  const StampDto({this.deviceTime, this.position, this.reason});
+  final String? deviceTime;
+  final PositionDto? position;
+  final String? reason;
+
+  factory StampDto.fromJson(Map<String, dynamic> j) => StampDto(
+        deviceTime: j['deviceTime'] == null ? null : j['deviceTime'] as String,
+        position: j['position'] == null ? null : PositionDto.fromJson(j['position'] as Map<String, dynamic>),
+        reason: j['reason'] == null ? null : j['reason'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (deviceTime != null) 'deviceTime': deviceTime!,
+        if (position != null) 'position': position!.toJson(),
+        if (reason != null) 'reason': reason!,
       };
 }
 

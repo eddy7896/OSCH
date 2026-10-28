@@ -1012,25 +1012,50 @@ mutation SetAttendanceStatusLabel($schoolId: UUID!, $id: UUID!, $status: Attenda
 }
 
 # Staff check-in and check-out use the server's clock. One row per staff member per day (unique key).
-mutation CheckInStaff($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $date: Date!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation CheckInStaff($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $date: Date!, $stamp: String, $distanceM: Int, $reason: String, $deviceTime: Timestamp, $needsConfirm: Boolean!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     staff: staffProfiles(where: {id: {eq: $staffId}, schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "active staff member not found in this school") { id }
   }
-  staffAttendance_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, date: $date, checkIn_expr: "request.time" })
+  staffAttendance_insert(data: { id: $id, schoolId: $schoolId, staffId: $staffId, date: $date, checkIn_expr: "request.time", checkInStamp: $stamp, checkInDistanceM: $distanceM, checkInReason: $reason, checkInDeviceTime: $deviceTime, needsConfirm: $needsConfirm })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.staff.checkin", entityType: "StaffAttendance", entityId_expr: "request.variables.id", details: $details })
 }
 
-mutation CheckOutStaff($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+mutation CheckOutStaff($schoolId: UUID!, $id: UUID!, $stamp: String, $distanceM: Int, $reason: String, $deviceTime: Timestamp, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
     row: staffAttendances(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, checkOut: {isNull: true}}) @check(expr: "this.size() == 1", message: "no open check-in found") { id }
   }
-  staffAttendance_update(id: $id, data: { checkOut_expr: "request.time" })
+  staffAttendance_update(id: $id, data: { checkOut_expr: "request.time", checkOutStamp: $stamp, checkOutDistanceM: $distanceM, checkOutReason: $reason, checkOutDeviceTime: $deviceTime })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.staff.checkout", entityType: "StaffAttendance", entityId_expr: "request.variables.id", details: $details })
 }
 
-# HR's correction of a member of staff's day (the old values are in the details).
+# HR's confirmation of a check-in that was beyond the hard ring (decision 9). Only HR may; a day that needs none cannot be confirmed.
+mutation ConfirmStaffCheckIn($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    row: staffAttendances(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, needsConfirm: {eq: true}, confirmedAt: {isNull: true}}) @check(expr: "this.size() == 1", message: "no check-in waiting for confirmation") { id }
+  }
+  staffAttendance_update(id: $id, data: { confirmedById: $actorId, confirmedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "attendance.staff.confirm", entityType: "StaffAttendance", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation SetSchoolGeofence($schoolId: UUID!, $latMicro: Int!, $lngMicro: Int!, $radiusM: Int!, $marginM: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  school_update(id: $schoolId, data: { geoLatMicro: $latMicro, geoLngMicro: $lngMicro, geoRadiusM: $radiusM, geoMarginM: $marginM })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "school.geofence.set", entityType: "School", entityId_expr: "request.variables.schoolId", details: $details })
+}
+
+mutation ClearSchoolGeofence($schoolId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  school_update(id: $schoolId, data: { geoLatMicro: null, geoLngMicro: null, geoRadiusM: null })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "school.geofence.clear", entityType: "School", entityId_expr: "request.variables.schoolId", details: $details })
+}
+
 mutation CorrectStaffAttendance($schoolId: UUID!, $id: UUID!, $staffId: UUID!, $date: Date!, $checkIn: Timestamp, $checkOut: Timestamp, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
   query {
     actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }

@@ -41,6 +41,12 @@ type School @table {
   contactEmail: String
   primaryColor: String
   logoKey: String
+  # Where the school is (P4-S3, ADR-0014 decision 9): a point, the grounds' radius in metres and a feathered margin around it (the soft ring). All null until the System Admin sets them.
+  # Millionths of a degree (about 0.1 m): whole numbers, so the schema holds no floating point at all (evals E-FIN-S1).
+  geoLatMicro: Int
+  geoLngMicro: Int
+  geoRadiusM: Int
+  geoMarginM: Int @default(value: 50)
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
@@ -604,6 +610,19 @@ type StaffAttendance @table @unique(fields: ["staff", "date"]) {
   checkIn: Timestamp
   checkOut: Timestamp
   correctedBy: User
+  # Evidence for HR, not proof (a phone can fake its position): INSIDE, OUTSIDE or UNKNOWN, the distance from the school point, the reason the person gave, and the phone's own time as a note (decisions 9 and 10).
+  # The position itself is never kept. A check-in beyond the hard ring waits for HR to confirm it.
+  checkInStamp: String
+  checkInDistanceM: Int
+  checkInReason: String
+  checkInDeviceTime: Timestamp
+  needsConfirm: Boolean! @default(value: false)
+  confirmedBy: User
+  confirmedAt: Timestamp
+  checkOutStamp: String
+  checkOutDistanceM: Int
+  checkOutReason: String
+  checkOutDeviceTime: Timestamp
 }
 
 # ---- Substitution (P3-7, ADR-0013 decisions 4 and 6). The need for a substitute is DERIVED (an approved leave over a teacher's timetable); only the decision is stored.

@@ -117,9 +117,9 @@ describe.skipIf(!host)('Attendance (P3-4)', () => {
 
   it('staff: one row per member per day; check-out only once there is an open check-in; HR correction audited; schools stay apart', async () => {
     const id = randomUUID();
-    await db.checkInStaff({ schoolId: A, id, staffId: staffA, date, actorId: adminA, details: {} });
-    await expect(db.checkInStaff({ schoolId: A, id: randomUUID(), staffId: staffA, date, actorId: adminA, details: {} })).rejects.toMatchObject({ kind: 'CONFLICT' });
-    await expect(db.checkInStaff({ schoolId: A, id: randomUUID(), staffId: staffB, date, actorId: adminA, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
+    await db.checkInStaff({ schoolId: A, id, staffId: staffA, date, needsConfirm: false, actorId: adminA, details: {} });
+    await expect(db.checkInStaff({ schoolId: A, id: randomUUID(), staffId: staffA, date, needsConfirm: false, actorId: adminA, details: {} })).rejects.toMatchObject({ kind: 'CONFLICT' });
+    await expect(db.checkInStaff({ schoolId: A, id: randomUUID(), staffId: staffB, date, needsConfirm: false, actorId: adminA, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' });
     await db.checkOutStaff({ schoolId: A, id, actorId: adminA, details: {} });
     await expect(db.checkOutStaff({ schoolId: A, id, actorId: adminA, details: {} })).rejects.toMatchObject({ kind: 'FORBIDDEN_REFERENCE' }); // already out
     const row = (await db.getStaffAttendance({ schoolId: A, staffId: staffA, date })).data.staffAttendances[0]!;

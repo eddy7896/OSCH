@@ -14,6 +14,7 @@ abstract final class OutboxKinds {
 
   /// Body: the gateway's CreateRequestDto.
   static const leaveCreate = 'leave.create';
+  /// Body: `{position?: {lat, lng}, deviceTime?, reason?}`: what the phone knows when the person taps (the server decides the stamp).
   static const staffCheckIn = 'staff.checkIn';
   static const staffCheckOut = 'staff.checkOut';
 
@@ -44,9 +45,9 @@ class OruApiSender implements OutboxSender {
         case OutboxKinds.leaveCreate:
           await api.leaveCreate(body: CreateRequestDto.fromJson({...b, 'clientId': e.id}));
         case OutboxKinds.staffCheckIn:
-          await api.staffAttendanceCheckIn();
+          await api.staffAttendanceCheckIn(body: StampDto.fromJson(b));
         case OutboxKinds.staffCheckOut:
-          await api.staffAttendanceCheckOut();
+          await api.staffAttendanceCheckOut(body: StampDto.fromJson(b));
         case OutboxKinds.noticeRead:
           await api.notificationsRead(id: b['noticeId'] as String);
         default:
