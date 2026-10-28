@@ -2202,6 +2202,43 @@
         ],
         "type": "object"
       },
+      "DeviceDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "lastSeenAt": {
+            "type": "string"
+          },
+          "platform": {
+            "enum": [
+              "IOS",
+              "ANDROID"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "platform",
+          "lastSeenAt"
+        ],
+        "type": "object"
+      },
+      "DeviceListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DeviceDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "DocumentUploadRequestDto": {
         "properties": {
           "contentType": {
@@ -5228,6 +5265,25 @@
         ],
         "type": "object"
       },
+      "RegisterDeviceDto": {
+        "properties": {
+          "platform": {
+            "enum": [
+              "IOS",
+              "ANDROID"
+            ],
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "platform"
+        ],
+        "type": "object"
+      },
       "RejectDto": {
         "properties": {
           "note": {
@@ -5236,6 +5292,17 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "RemoveDeviceDto": {
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
         "type": "object"
       },
       "ReportCardDto": {
@@ -11799,6 +11866,131 @@
           "action": "read",
           "resource": "attendance"
         }
+      }
+    },
+    "/v1/devices": {
+      "delete": {
+        "operationId": "Devices_remove",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveDeviceDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Devices"
+        ],
+        "x-access": "user"
+      },
+      "get": {
+        "operationId": "Devices_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Devices"
+        ],
+        "x-access": "user"
+      },
+      "post": {
+        "operationId": "Devices_register",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDeviceDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Devices"
+        ],
+        "x-access": "user"
       }
     },
     "/v1/fees/concessions": {

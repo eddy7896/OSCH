@@ -25,7 +25,8 @@ function parseTables() {
   return tables;
 }
 const tables = parseTables();
-const GLOBAL_TABLES = new Set(["School", "User"]);
+// DeviceToken is a person's phone, not a school's record (P4-S2): it belongs to a User, and a push reads it only through that school's active members.
+const GLOBAL_TABLES = new Set(["School", "User", "DeviceToken"]);
 
 function parseEnums() {
   const out = {};

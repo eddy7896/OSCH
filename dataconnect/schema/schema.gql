@@ -632,6 +632,7 @@ type Notification @table {
   entityType: String
   entityId: String
   createdAt: Timestamp! @default(expr: "request.time")
+  pushedAt: Timestamp # set once, by whichever gateway instance claims the notice to push it (best effort, at most once)
 }
 
 type NotificationRead @table(key: ["notification", "user"]) {
@@ -639,6 +640,22 @@ type NotificationRead @table(key: ["notification", "user"]) {
   notification: Notification!
   user: User!
   readAt: Timestamp! @default(expr: "request.time")
+}
+
+enum DevicePlatform {
+  IOS
+  ANDROID
+}
+
+# A phone's push address (P4-S2, ADR-0014 decision 7). One row per token; the id is derived from the token, so registering the same token twice is one row, and a phone
+# that changes hands moves to the new account. Removed when the person signs out, and when the push provider says the token is dead. The push carries only a notice id.
+type DeviceToken @table @unique(fields: ["token"]) {
+  id: UUID!
+  user: User!
+  token: String!
+  platform: DevicePlatform!
+  createdAt: Timestamp! @default(expr: "request.time")
+  lastSeenAt: Timestamp! @default(expr: "request.time")
 }
 
 # A category a person has switched off: those notifications are kept but not shown (the inbox filters them).

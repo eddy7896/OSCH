@@ -555,6 +555,16 @@ export type DepartmentTotalDto = {
     netMinor: string;
 };
 
+export type DeviceDto = {
+    id: string;
+    lastSeenAt: string;
+    platform: 'IOS' | 'ANDROID';
+};
+
+export type DeviceListDto = {
+    items: Array<DeviceDto>;
+};
+
 export type DocumentUploadRequestDto = {
     contentType: 'image/png' | 'image/jpeg' | 'image/webp' | 'application/pdf';
     sizeBytes: number;
@@ -1364,8 +1374,17 @@ export type RefDto = {
     name: string;
 };
 
+export type RegisterDeviceDto = {
+    platform: 'IOS' | 'ANDROID';
+    token: string;
+};
+
 export type RejectDto = {
     note?: string;
+};
+
+export type RemoveDeviceDto = {
+    token: string;
 };
 
 export type ReportCardDto = {
@@ -4525,6 +4544,116 @@ export type AttendanceStudentResponses = {
 };
 
 export type AttendanceStudentResponse = AttendanceStudentResponses[keyof AttendanceStudentResponses];
+
+export type DevicesRemoveData = {
+    body: RemoveDeviceDto;
+    path?: never;
+    query?: never;
+    url: '/v1/devices';
+};
+
+export type DevicesRemoveErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type DevicesRemoveError = DevicesRemoveErrors[keyof DevicesRemoveErrors];
+
+export type DevicesRemoveResponses = {
+    204: void;
+};
+
+export type DevicesRemoveResponse = DevicesRemoveResponses[keyof DevicesRemoveResponses];
+
+export type DevicesListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/devices';
+};
+
+export type DevicesListErrors = {
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type DevicesListError = DevicesListErrors[keyof DevicesListErrors];
+
+export type DevicesListResponses = {
+    200: DeviceListDto;
+};
+
+export type DevicesListResponse = DevicesListResponses[keyof DevicesListResponses];
+
+export type DevicesRegisterData = {
+    body: RegisterDeviceDto;
+    path?: never;
+    query?: never;
+    url: '/v1/devices';
+};
+
+export type DevicesRegisterErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type DevicesRegisterError = DevicesRegisterErrors[keyof DevicesRegisterErrors];
+
+export type DevicesRegisterResponses = {
+    204: void;
+};
+
+export type DevicesRegisterResponse = DevicesRegisterResponses[keyof DevicesRegisterResponses];
 
 export type FeesConcessionsData = {
     body?: never;

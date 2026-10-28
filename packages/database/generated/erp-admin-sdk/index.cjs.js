@@ -34,6 +34,12 @@ const ConcessionKind = {
 }
 exports.ConcessionKind = ConcessionKind;
 
+const DevicePlatform = {
+  IOS: "IOS",
+  ANDROID: "ANDROID",
+}
+exports.DevicePlatform = DevicePlatform;
+
 const Gender = {
   FEMALE: "FEMALE",
   MALE: "MALE",
@@ -1080,6 +1086,34 @@ function unmuteNotificationCategory(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.unmuteNotificationCategory = unmuteNotificationCategory;
 
+function registerDevice(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RegisterDevice', inputVars, inputOpts);
+}
+exports.registerDevice = registerDevice;
+
+function removeDevice(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveDevice', inputVars, inputOpts);
+}
+exports.removeDevice = removeDevice;
+
+function removeDevicesById(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveDevicesById', inputVars, inputOpts);
+}
+exports.removeDevicesById = removeDevicesById;
+
+function claimNotificationPush(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ClaimNotificationPush', inputVars, inputOpts);
+}
+exports.claimNotificationPush = claimNotificationPush;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1814,4 +1848,25 @@ function getTimetableEntry(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetTimetableEntry', inputVars, inputOpts);
 }
 exports.getTimetableEntry = getTimetableEntry;
+
+function listUnpushedNotifications(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListUnpushedNotifications', inputVars, inputOpts);
+}
+exports.listUnpushedNotifications = listUnpushedNotifications;
+
+function listDevicesForUsers(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListDevicesForUsers', inputVars, inputOpts);
+}
+exports.listDevicesForUsers = listDevicesForUsers;
+
+function listDevicesOfUser(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListDevicesOfUser', inputVars, inputOpts);
+}
+exports.listDevicesOfUser = listDevicesOfUser;
 
