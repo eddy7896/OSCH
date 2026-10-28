@@ -72,7 +72,9 @@ class OruLinkAction extends StatelessWidget {
   const OruLinkAction({super.key, required this.label, required this.onPressed});
 
   final String label;
-  final VoidCallback onPressed;
+
+  /// Null disables it (while something is in progress).
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

@@ -22,6 +22,7 @@ class OruTextField extends StatelessWidget {
     this.obscureText = false,
     this.multiline = false,
     this.enabled = true,
+    this.textDirection,
     this.density = OruDensity.touch,
   }) : assert(label != null || semanticLabel != null, 'a field without a visible label needs a semanticLabel');
 
@@ -36,6 +37,10 @@ class OruTextField extends StatelessWidget {
   final bool obscureText;
   final bool multiline;
   final bool enabled;
+
+  /// For text that reads left to right whatever the language of the screen (an email address, a phone number, a code, a
+  /// password): in a right-to-left screen its digits and punctuation would otherwise come out reversed.
+  final TextDirection? textDirection;
   final OruDensity density;
 
   @override
@@ -56,6 +61,7 @@ class OruTextField extends StatelessWidget {
           onChanged: onChanged,
           keyboardType: multiline ? TextInputType.multiline : keyboardType,
           obscureText: obscureText,
+          textDirection: textDirection,
           enabled: enabled,
           minLines: multiline ? 3 : 1,
           maxLines: multiline ? 6 : 1,

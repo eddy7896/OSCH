@@ -153,7 +153,8 @@ class OruStringsUr extends OruStrings {
   String get authPhoneLabel => 'موبائل نمبر';
 
   @override
-  String get authPhoneHint => 'ملک کے کوڈ کے ساتھ لکھیں، مثلاً +91 98765 43210';
+  String get authPhoneHint =>
+      'ملک کے کوڈ کے ساتھ لکھیں، مثلاً ⁦+91 98765 43210⁩';
 
   @override
   String get actionSendCode => 'کوڈ بھیجیں';
@@ -2413,4 +2414,89 @@ class OruStringsUr extends OruStrings {
   @override
   String get errorOwnMembership =>
       'آپ اپنا کردار نہیں بدل سکتے۔ کسی دوسرے سسٹم منتظم سے کہیں۔';
+
+  @override
+  String get mobSchoolChoiceTitle => 'اپنا اسکول منتخب کریں';
+
+  @override
+  String get mobSchoolChoiceBody =>
+      'آپ کا اکاؤنٹ ایک سے زیادہ اسکولوں میں چلتا ہے۔ جسے کھولنا ہے اسے منتخب کریں۔';
+
+  @override
+  String get mobNoAccessTitle => 'یہ اکاؤنٹ اس ایپ کو استعمال نہیں کر سکتا';
+
+  @override
+  String get mobOpening => 'کھل رہا ہے…';
+
+  @override
+  String get mobLockTitle => 'مقفل ہے';
+
+  @override
+  String get mobLockBody => 'OruSchools کھولنے کے لیے تصدیق کریں کہ یہ آپ ہیں۔';
+
+  @override
+  String get mobActionUnlock => 'کھولیں';
+
+  @override
+  String get mobUnlockFailed =>
+      'ہم تصدیق نہیں کر سکے کہ یہ آپ ہیں۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get mobSignOutTitle => 'اس فون سے سائن آؤٹ کریں؟';
+
+  @override
+  String get mobSignOutBody =>
+      'اس اسکول کے لیے اس فون میں محفوظ سب کچھ ہٹا دیا جائے گا۔';
+
+  @override
+  String mobSignOutOwed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تبدیلیاں ابھی اسکول تک نہیں پہنچیں اور ضائع ہو جائیں گی۔',
+      one: '$count تبدیلی ابھی اسکول تک نہیں پہنچی اور ضائع ہو جائے گی۔',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobActionStaySignedIn => 'سائن اِن رہیں';
+
+  @override
+  String get mobActionSignOutAnyway => 'پھر بھی سائن آؤٹ کریں';
+
+  @override
+  String get mobAppLockTitle => 'میرا فنگر پرنٹ، چہرہ یا اسکرین لاک مانگیں';
+
+  @override
+  String get mobAppLockBody =>
+      'ایپ ایک منٹ پس منظر میں رہنے کے بعد دوبارہ مانگا جائے گا۔';
+
+  @override
+  String get mobAppLockUnavailable => 'اس فون میں اسکرین لاک سیٹ نہیں ہے۔';
+
+  @override
+  String mobSignedInAs(String name) {
+    return '$name کے طور پر سائن اِن';
+  }
+
+  @override
+  String mobSchoolRole(String role, String school) {
+    return '$school میں $role';
+  }
+
+  @override
+  String get mobHomeSoonTitle => 'آپ کا کام یہاں نظر آئے گا';
+
+  @override
+  String get mobHomeSoonBody =>
+      'جماعتیں، حاضری اور رخصت اگلی اپ ڈیٹس میں آئیں گی۔';
+
+  @override
+  String mobCodeSentTo(String phone) {
+    return 'ہم نے $phone پر کوڈ بھیجا ہے۔';
+  }
+
+  @override
+  String get mobActionChangeNumber => 'دوسرا نمبر استعمال کریں';
 }

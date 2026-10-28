@@ -75,6 +75,9 @@ class OruApiTombstones implements TombstoneSource {
       final r = await api.syncTombstones(since: since, limit: pageSize);
       return TombstonePage(removed: [for (final t in r.items) (entityType: t.entityType, entityId: t.entityId)], more: r.more, next: r.next);
     } on OruApiError catch (e) {
+      // Removals are of lessons, cover, attendance and marks, so the gateway shows them only to roles that may read academics.
+      // A bursar or an HR manager on the staff app has none to hear about: that is "nothing removed", not a failed sync.
+      if (e.code == 'FORBIDDEN') return TombstonePage(removed: const [], more: false, next: since);
       throw failureOf(e);
     }
   }

@@ -2413,4 +2413,88 @@ class OruStringsAr extends OruStrings {
   @override
   String get errorOwnMembership =>
       'You cannot change your own role. Ask another system administrator.';
+
+  @override
+  String get mobSchoolChoiceTitle => 'Choose your school';
+
+  @override
+  String get mobSchoolChoiceBody =>
+      'Your account works at more than one school. Choose the one to open.';
+
+  @override
+  String get mobNoAccessTitle => 'This account cannot use this app';
+
+  @override
+  String get mobOpening => 'Opening…';
+
+  @override
+  String get mobLockTitle => 'Locked';
+
+  @override
+  String get mobLockBody => 'Confirm it is you to open OruSchools.';
+
+  @override
+  String get mobActionUnlock => 'Unlock';
+
+  @override
+  String get mobUnlockFailed => 'We could not confirm it is you. Try again.';
+
+  @override
+  String get mobSignOutTitle => 'Sign out of this phone?';
+
+  @override
+  String get mobSignOutBody =>
+      'Everything saved on this phone for this school will be removed.';
+
+  @override
+  String mobSignOutOwed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count changes have not reached the school yet and will be lost.',
+      one: '$count change has not reached the school yet and will be lost.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobActionStaySignedIn => 'Stay signed in';
+
+  @override
+  String get mobActionSignOutAnyway => 'Sign out anyway';
+
+  @override
+  String get mobAppLockTitle => 'Ask for my fingerprint, face or screen lock';
+
+  @override
+  String get mobAppLockBody =>
+      'Asked again after the app has been in the background for a minute.';
+
+  @override
+  String get mobAppLockUnavailable => 'This phone has no screen lock set up.';
+
+  @override
+  String mobSignedInAs(String name) {
+    return 'Signed in as $name';
+  }
+
+  @override
+  String mobSchoolRole(String role, String school) {
+    return '$role at $school';
+  }
+
+  @override
+  String get mobHomeSoonTitle => 'Your work will appear here';
+
+  @override
+  String get mobHomeSoonBody =>
+      'Classes, attendance and leave arrive in the next updates.';
+
+  @override
+  String mobCodeSentTo(String phone) {
+    return 'We sent a code to $phone.';
+  }
+
+  @override
+  String get mobActionChangeNumber => 'Use a different number';
 }

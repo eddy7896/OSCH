@@ -4,4 +4,6 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Development only: the local gateway and Auth emulator are plain http. Release builds keep the default (https only). -->
+    <application android:usesCleartextTraffic="true"/>
 </manifest>
