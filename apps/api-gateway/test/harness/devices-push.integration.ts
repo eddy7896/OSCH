@@ -26,7 +26,7 @@ if (ready) {
 }
 
 const tok = (tag: string) => `${tag}-${randomUUID()}`;
-const waitFor = async (check: () => boolean | Promise<boolean>, ms = 8000) => {
+const waitFor = async (check: () => boolean | Promise<boolean>, ms = 20000) => {
   const end = Date.now() + ms;
   while (Date.now() < end) { if (await check()) return true; await new Promise((r) => setTimeout(r, 100)); }
   return false;
@@ -105,7 +105,7 @@ describe.skipIf(!ready)('devices and push against the real emulators (P4-S2)', {
       ttoken = tok('teacher-phone');
       await bare(principal(), 'post', '/devices').send({ token: ptoken, platform: 'ANDROID' }).expect(204);
       await bare(teacher(), 'post', '/devices').send({ token: ttoken, platform: 'IOS' }).expect(204);
-    });
+    }, 120_000); // the shared runners are slower than a laptop: this sets up a year, a staff member and a leave type
 
     it('reaches the phones of the people the notice is for, carries only ids, and does not reach anyone else', async () => {
       sent.length = 0;
