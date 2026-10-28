@@ -227,4 +227,56 @@ void main() {
     await t.engine.signedIn();
     expect(await t.store.all(), isEmpty);
   }, skip: skip);
+
+  test('E-SYNC-5: a lesson removed on the server is removed from the phone, and the six-state status follows the real work', () async {
+    final t = await phoneFor('teacher@demo.oruschools.example');
+    final tombstones = OruApiTombstones(t.api);
+    final c = SyncCoordinator(
+      store: t.store,
+      engine: t.engine,
+      tombstones: tombstones,
+      nowMs: () => t.clock,
+      tasks: [
+        // Adds and updates only: a removal can reach the phone no other way than the tombstone.
+        PullTask('TimetableEntry', (store) async {
+          try {
+            await store.upsertRecords('TimetableEntry', [for (final e in (await t.api.timetableMine()).entries) (id: e.id, parentId: null, json: e.toJson())]);
+          } on OruApiError catch (e) {
+            throw failureOf(e);
+          }
+        }),
+      ],
+    );
+    final states = <SyncState>[];
+    final sub = c.watch().listen((s) => states.add(s.state));
+
+    await c.syncNow();
+    final before = [for (final r in await t.store.records('TimetableEntry')) r['id'] as String];
+    expect(before, isNotEmpty);
+    expect((await c.snapshot()).state, SyncState.synced);
+
+    // The Academic admin removes one of her lessons, on the server.
+    final admin = await signIn('academic@demo.oruschools.example');
+    final me = await OruApi(OruHttpTransport(baseUrl: Uri.parse(gateway!), getToken: (_) => admin)).meGet();
+    final school = me.memberships.firstWhere((m) => m.school.subDomain == 'greenfield').school.id;
+    final victim = before.first;
+    final res = await http.delete(Uri.parse('$gateway/v1/academics/timetable/entries/$victim'), headers: {'authorization': 'Bearer $admin', 'x-school-id': school});
+    expect(res.statusCode, anyOf(200, 204), reason: res.body);
+
+    // Offline: the phone still shows it (and says it cannot reach the server). Online: it is gone.
+    t.transport.offline = true;
+    await c.syncNow();
+    expect(c.pullStatus, isA<PullOffline>());
+    expect((await c.snapshot()).state, SyncState.offline);
+    expect(await t.store.record('TimetableEntry', victim), isNotNull);
+
+    t.transport.offline = false;
+    await c.syncNow();
+    expect(await t.store.record('TimetableEntry', victim), isNull, reason: 'the tombstone removed it');
+    expect((await t.store.records('TimetableEntry')).length, before.length - 1);
+    expect(await t.store.cursor(tombstoneCursor), isNot(tombstoneBeginning));
+    expect((await c.snapshot()).state, SyncState.synced);
+    expect(states, containsAll([SyncState.synced, SyncState.offline]));
+    await sub.cancel();
+  }, skip: skip);
 }
