@@ -182,7 +182,8 @@ class _OruSignInScreenState extends State<OruSignInScreen> {
   List<Widget> _phoneFields(OruStrings s) {
     final sent = _sessionInfo != null;
     return [
-      OruTextField(label: s.authPhoneLabel, hint: s.authPhoneHint, controller: _phone, keyboardType: TextInputType.phone, textDirection: TextDirection.ltr, enabled: !_busy && !sent, icon: OruIconName.phone),
+      OruTextField(label: s.authPhoneLabel, hint: s.authPhoneHint.replaceFirst('+91 98765 43210', '\u2066+91 98765 43210\u2069'), // the example number keeps its own direction in right-to-left text
+         controller: _phone, keyboardType: TextInputType.phone, textDirection: TextDirection.ltr, enabled: !_busy && !sent, icon: OruIconName.phone),
       if (sent) ...[
         const SizedBox(height: OruSpacing.space2),
         Text(s.mobCodeSentTo('\u2066${_phone.text.trim()}\u2069'), // the number keeps its own direction inside a right-to-left sentence

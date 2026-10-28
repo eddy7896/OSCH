@@ -153,8 +153,7 @@ class OruStringsUr extends OruStrings {
   String get authPhoneLabel => 'موبائل نمبر';
 
   @override
-  String get authPhoneHint =>
-      'ملک کے کوڈ کے ساتھ لکھیں، مثلاً ⁦+91 98765 43210⁩';
+  String get authPhoneHint => 'ملک کے کوڈ کے ساتھ لکھیں، مثلاً +91 98765 43210';
 
   @override
   String get actionSendCode => 'کوڈ بھیجیں';

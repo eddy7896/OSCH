@@ -41,7 +41,7 @@
   "actionSignInPhone": "اس کے بجائے موبائل نمبر استعمال کریں",
   "actionSignInEmail": "اس کے بجائے ای میل استعمال کریں",
   "authPhoneLabel": "موبائل نمبر",
-  "authPhoneHint": "ملک کے کوڈ کے ساتھ لکھیں، مثلاً ⁦+91 98765 43210⁩",
+  "authPhoneHint": "ملک کے کوڈ کے ساتھ لکھیں، مثلاً +91 98765 43210",
   "actionSendCode": "کوڈ بھیجیں",
   "authCodeLabel": "6 ہندسوں کا کوڈ",
   "actionVerifyCode": "کوڈ کی تصدیق کریں",
