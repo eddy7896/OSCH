@@ -63,6 +63,10 @@ jobs:
         run: |
           (cd packages/flutter-core && flutter gen-l10n)
           git diff --exit-code -- packages/flutter-core/lib/src/l10n
+      - name: Generated database code is current
+        run: |
+          (cd packages/flutter-sync && dart run build_runner build)
+          git diff --exit-code -- packages/flutter-sync/lib/src/local_database.g.dart
       - run: dart pub global activate melos
       - run: dart pub global run melos run analyze
       - run: dart pub global run melos run test
