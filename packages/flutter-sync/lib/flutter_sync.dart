@@ -10,3 +10,5 @@ library;
 export 'src/local_database.dart' show OruLocalDatabase, OutboxState;
 export 'src/local_store.dart';
 export 'src/sync_engine.dart';
+export 'src/sync_pull.dart';
+export 'src/sync_state.dart';

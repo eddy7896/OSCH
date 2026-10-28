@@ -61,22 +61,25 @@ class OutboxEntry {
 
 /// What the `SyncStatus` widget is told: how much is waiting and whether anything needs the person.
 class OutboxCounts {
-  const OutboxCounts({required this.queued, required this.sending, required this.failed});
+  const OutboxCounts({required this.queued, required this.sending, required this.failed, this.retrying = 0});
   final int queued;
   final int sending;
   final int failed;
+
+  /// Of the [queued], how many have already been tried and are waiting for their next attempt.
+  final int retrying;
 
   /// Changes not yet safe on the server (`pending` in the six states).
   int get pending => queued + sending;
 
   @override
-  bool operator ==(Object other) => other is OutboxCounts && other.queued == queued && other.sending == sending && other.failed == failed;
+  bool operator ==(Object other) => other is OutboxCounts && other.queued == queued && other.sending == sending && other.failed == failed && other.retrying == retrying;
 
   @override
-  int get hashCode => Object.hash(queued, sending, failed);
+  int get hashCode => Object.hash(queued, sending, failed, retrying);
 
   @override
-  String toString() => 'OutboxCounts(queued: $queued, sending: $sending, failed: $failed)';
+  String toString() => 'OutboxCounts(queued: $queued, sending: $sending, failed: $failed, retrying: $retrying)';
 }
 
 /// The code a change gets when the change it depended on was refused: it cannot succeed either.
@@ -229,11 +232,12 @@ class OruLocalStore {
       'SELECT '
       "COALESCE(SUM(state = 'queued'), 0) AS queued, "
       "COALESCE(SUM(state = 'sending'), 0) AS sending, "
+      "COALESCE(SUM(state = 'queued' AND attempts > 0), 0) AS retrying, "
       "COALESCE(SUM(state = 'failed'), 0) AS failed "
       'FROM outbox_items',
       readsFrom: {db.outboxItems},
     );
-    return q.watchSingle().map((r) => OutboxCounts(queued: r.read<int>('queued'), sending: r.read<int>('sending'), failed: r.read<int>('failed'))).distinct();
+    return q.watchSingle().map((r) => OutboxCounts(queued: r.read<int>('queued'), sending: r.read<int>('sending'), failed: r.read<int>('failed'), retrying: r.read<int>('retrying'))).distinct();
   }
 
   Future<OutboxCounts> counts() => watchCounts().first;
@@ -285,6 +289,21 @@ class OruLocalStore {
   Future<void> applyTombstone({required String entityType, required String entityId}) => db.transaction(() async {
         await (db.delete(db.localRecords)..where((t) => t.entityType.equals(entityType) & t.id.equals(entityId))).go();
         await (db.delete(db.localRecords)..where((t) => t.parentId.equals(entityId))).go();
+      });
+
+  /// A page of tombstones and the cursor to continue from, applied together: if the app dies between them, the page is simply
+  /// fetched again (removing twice is harmless), and the cursor never moves past a removal that was not applied.
+  Future<void> applyTombstones(Iterable<({String entityType, String entityId})> removed, {required String cursorScope, required String next}) => db.transaction(() async {
+        for (final t in removed) {
+          await applyTombstone(entityType: t.entityType, entityId: t.entityId);
+        }
+        await setCursor(cursorScope, next);
+      });
+
+  /// Replaces ALL records of a type with the given list (a whole-list pull: what the server no longer lists is gone).
+  Future<void> replaceAllRecords(String entityType, Iterable<({String id, String? parentId, Map<String, dynamic> json})> records) => db.transaction(() async {
+        await (db.delete(db.localRecords)..where((t) => t.entityType.equals(entityType))).go();
+        await upsertRecords(entityType, records);
       });
 
   // ---- drafts ------------------------------------------------------------------------------------------------------------

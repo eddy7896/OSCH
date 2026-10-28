@@ -2,6 +2,7 @@ import 'package:flutter_core/flutter_core.dart';
 
 import 'local_store.dart';
 import 'sync_engine.dart';
+import 'sync_pull.dart';
 
 /// The kinds of change a phone queues (ADR-0014 decision 4). Anything else is not written offline.
 abstract final class OutboxKinds {
@@ -61,3 +62,23 @@ class OruApiSender implements OutboxSender {
     }
   }
 }
+
+/// `GET /v1/sync/tombstones` through the generated client, as the coordinator's source of removals.
+class OruApiTombstones implements TombstoneSource {
+  OruApiTombstones(this.api, {this.pageSize = 200});
+  final OruApi api;
+  final int pageSize;
+
+  @override
+  Future<TombstonePage> since(String since) async {
+    try {
+      final r = await api.syncTombstones(since: since, limit: pageSize);
+      return TombstonePage(removed: [for (final t in r.items) (entityType: t.entityType, entityId: t.entityId)], more: r.more, next: r.next);
+    } on OruApiError catch (e) {
+      throw failureOf(e);
+    }
+  }
+}
+
+/// How a pull maps the client's errors: no connection or a timeout is "offline"; anything else is the gateway's own code.
+PullFailure failureOf(OruApiError e) => PullFailure(e.code, offline: e.code == 'NETWORK_ERROR' || e.code == 'TIMEOUT', message: e.message);
