@@ -58,7 +58,7 @@ class OruBottomNav extends StatelessWidget {
                         child: Container(
                           constraints: const BoxConstraints(minHeight: 56),
                           decoration: BoxDecoration(color: item.key == active ? OruColors.primarySoft : null, borderRadius: BorderRadius.circular(OruRadius.md)),
-                          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                          child: Column(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [
                             Stack(clipBehavior: Clip.none, children: [
                               OruIcon(item.icon, size: 24, color: item.key == active ? OruColors.primaryText : OruColors.textMuted),
                               if (item.badge > 0)

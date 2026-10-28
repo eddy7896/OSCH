@@ -2594,4 +2594,87 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get actionBack => 'واپس';
+
+  @override
+  String get mobTabAttendance => 'حاضری';
+
+  @override
+  String get mobTabMore => 'مزید';
+
+  @override
+  String get mobAttClassesTitle => 'آپ کی جماعتیں';
+
+  @override
+  String get mobAttNoClasses =>
+      'آپ کسی جماعت کے کلاس استاد نہیں ہیں، اس لیے آپ حاضری نہیں لیتے۔';
+
+  @override
+  String get mobAttStateDone => 'لی گئی';
+
+  @override
+  String get mobAttStateSaved => 'اس فون میں محفوظ';
+
+  @override
+  String get mobAttStateTodo => 'ابھی نہیں لی گئی';
+
+  @override
+  String get mobAttStateLocked => 'مقفل';
+
+  @override
+  String get mobAttStateFailed => 'قبول نہیں ہوئی';
+
+  @override
+  String get mobAttMarkAllPresent => 'سب کو حاضر کریں';
+
+  @override
+  String get mobAttSave => 'حاضری محفوظ کریں';
+
+  @override
+  String get mobAttSavedNotSent =>
+      'اس فون میں محفوظ۔ کنکشن ہونے پر یہ اسکول تک پہنچ جائے گی۔';
+
+  @override
+  String get mobAttLocked =>
+      'یہ دن مقفل ہے۔ اسے صرف تعلیمی منتظم تبدیل کر سکتا ہے۔';
+
+  @override
+  String get mobAttRefused => 'اسکول نے یہ حاضری قبول نہیں کی۔';
+
+  @override
+  String get mobAttRefusedLocked =>
+      'پہنچنے سے پہلے دن مقفل ہو گیا تھا۔ تعلیمی منتظم سے اسے درست کرنے کو کہیں۔';
+
+  @override
+  String get actionDismiss => 'ہٹائیں';
+
+  @override
+  String mobAttExceptions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count استثنا',
+      one: '$count استثنا',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobAttEveryonePresent => 'سب حاضر ہیں';
+
+  @override
+  String mobAttPickStatus(String name) {
+    return '$name کو نشان زد کریں';
+  }
+
+  @override
+  String get mobAttNoStudents => 'اس جماعت میں ابھی کوئی طالب علم نہیں ہے۔';
+
+  @override
+  String get mobAttNotLoaded =>
+      'اس جماعت کو لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔';
+
+  @override
+  String mobAttDateLine(String className, String date) {
+    return '$className، $date';
+  }
 }

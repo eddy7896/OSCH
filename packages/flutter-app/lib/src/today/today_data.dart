@@ -13,6 +13,10 @@ const kPeriod = 'Period';
 const kSchedule = 'Schedule';
 const kTeachingClass = 'TeachingClass';
 const kAttendanceDay = 'AttendanceDay';
+
+/// A student of one of her classes, as the class day lists them (parent: the class).
+const kClassStudent = 'ClassStudent';
+const kAttendanceStatus = 'AttendanceStatus';
 const kLeaveRequest = 'LeaveRequest';
 
 String isoDate(DateTime d) => '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
@@ -40,16 +44,19 @@ List<PullTask> todayPullTasks(OruApi api, {DateTime Function()? now}) {
       final mine = await _guard(api.teachingMine);
       // Only the classes she is class teacher of: those are the classes whose daily attendance she takes.
       await store.replaceAllRecords(kTeachingClass, [for (final c in mine.classTeacherOf) (id: c.id, parentId: null as String?, json: c.toJson())]);
-      // Which of them have attendance today: a day exists on the server once it was submitted.
+      // Each class's day today: whether it was taken or locked, and who is in the class with their status. One call per class.
       final date = isoDate(clock());
-      final done = <PulledRecord>[];
+      final days = <PulledRecord>[];
       for (final c in mine.classTeacherOf) {
-        final days = await _guard(() => api.attendanceDays(id: c.id, from: date, to: date));
-        for (final d in days.items) {
-          if (d.date == date) done.add((id: '${c.id}|$date', parentId: c.id, json: {'classId': c.id, 'date': date, 'locked': d.locked}));
-        }
+        final d = await _guard(() => api.attendanceDay(id: c.id, date: date));
+        days.add((id: '${c.id}|$date', parentId: c.id, json: {'classId': c.id, 'date': date, 'submitted': d.submitted, 'locked': d.locked}));
+        await store.replaceRecords(kClassStudent, parentId: c.id, records: [for (final st in d.students) (id: st.id, json: st.toJson())]);
       }
-      await store.replaceAllRecords(kAttendanceDay, done);
+      await store.replaceAllRecords(kAttendanceDay, days);
+    }),
+    PullTask(kAttendanceStatus, (store) async {
+      final list = await _guard(api.attendanceStatuses);
+      await store.replaceAllRecords(kAttendanceStatus, [for (final x in list.items) (id: x.status, parentId: null as String?, json: x.toJson())]);
     }),
     PullTask.list(kLeaveRequest, () => _guard(() async => [for (final r in (await api.leaveRequests()).items) (id: r.id, parentId: null as String?, json: r.toJson())])),
   ];

@@ -93,7 +93,7 @@ TodayModel buildToday({
     lessons.sort((a, b) => _minutes(a.start).compareTo(_minutes(b.start)));
   }
 
-  final doneOnServer = {for (final d in attendanceDays) if (d['date'] == date) d['classId'] as String};
+  final doneOnServer = {for (final d in attendanceDays) if (d['date'] == date && d['submitted'] == true) d['classId'] as String};
   final savedOnPhone = <String>{
     for (final o in outbox)
       if (o.kind == 'attendance.submit' && o.body['date'] == date && (o.state == OutboxState.queued || o.state == OutboxState.sending)) o.body['classId'] as String,

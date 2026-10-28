@@ -2591,4 +2591,87 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get actionBack => 'वापस';
+
+  @override
+  String get mobTabAttendance => 'उपस्थिति';
+
+  @override
+  String get mobTabMore => 'और';
+
+  @override
+  String get mobAttClassesTitle => 'आपकी कक्षाएँ';
+
+  @override
+  String get mobAttNoClasses =>
+      'आप किसी कक्षा की कक्षा-शिक्षक नहीं हैं, इसलिए आप उपस्थिति नहीं लेते।';
+
+  @override
+  String get mobAttStateDone => 'ली गई';
+
+  @override
+  String get mobAttStateSaved => 'इस फ़ोन में सहेजा गया';
+
+  @override
+  String get mobAttStateTodo => 'अभी नहीं ली गई';
+
+  @override
+  String get mobAttStateLocked => 'बंद';
+
+  @override
+  String get mobAttStateFailed => 'स्वीकार नहीं हुई';
+
+  @override
+  String get mobAttMarkAllPresent => 'सभी को उपस्थित चिह्नित करें';
+
+  @override
+  String get mobAttSave => 'उपस्थिति सहेजें';
+
+  @override
+  String get mobAttSavedNotSent =>
+      'इस फ़ोन में सहेजा गया। कनेक्शन होने पर यह स्कूल तक पहुँच जाएगा।';
+
+  @override
+  String get mobAttLocked =>
+      'यह दिन बंद है। इसे केवल शैक्षणिक प्रशासक बदल सकते हैं।';
+
+  @override
+  String get mobAttRefused => 'स्कूल ने यह उपस्थिति स्वीकार नहीं की।';
+
+  @override
+  String get mobAttRefusedLocked =>
+      'आने से पहले दिन बंद हो गया था। शैक्षणिक प्रशासक से इसे सुधारने को कहें।';
+
+  @override
+  String get actionDismiss => 'हटाएँ';
+
+  @override
+  String mobAttExceptions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count अपवाद',
+      one: '$count अपवाद',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobAttEveryonePresent => 'सभी उपस्थित हैं';
+
+  @override
+  String mobAttPickStatus(String name) {
+    return '$name को चिह्नित करें';
+  }
+
+  @override
+  String get mobAttNoStudents => 'इस कक्षा में अभी कोई छात्र नहीं है।';
+
+  @override
+  String get mobAttNotLoaded =>
+      'इस कक्षा को लोड करने के लिए एक बार कनेक्ट करें।';
+
+  @override
+  String mobAttDateLine(String className, String date) {
+    return '$className, $date';
+  }
 }

@@ -4685,6 +4685,138 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Back'**
   String get actionBack;
+
+  /// Name of the Attendance tab in the Teacher app's bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance'**
+  String get mobTabAttendance;
+
+  /// Name of the tab with the account, the app lock and sign out.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get mobTabMore;
+
+  /// Heading of the list of classes the teacher takes attendance for.
+  ///
+  /// In en, this message translates to:
+  /// **'Your classes'**
+  String get mobAttClassesTitle;
+
+  /// Shown when the teacher is not class teacher of any class.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not the class teacher of any class, so you do not take attendance.'**
+  String get mobAttNoClasses;
+
+  /// State of a class today: attendance has been taken and the school has it.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken'**
+  String get mobAttStateDone;
+
+  /// State of a class today: attendance is saved on the phone and not yet sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone'**
+  String get mobAttStateSaved;
+
+  /// State of a class today: no attendance yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not taken yet'**
+  String get mobAttStateTodo;
+
+  /// State of a class today: the day is locked and only the Academic administrator can change it.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get mobAttStateLocked;
+
+  /// State of a class today: the school refused the attendance sent from this phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not accepted'**
+  String get mobAttStateFailed;
+
+  /// Button that sets every student to present before the teacher marks the exceptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all present'**
+  String get mobAttMarkAllPresent;
+
+  /// Primary button of the attendance screen. It saves on the phone at once and sends when there is a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Save attendance'**
+  String get mobAttSave;
+
+  /// Banner shown after saving attendance that has not reached the school yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone. It reaches the school when you are connected.'**
+  String get mobAttSavedNotSent;
+
+  /// Banner on a day that is locked.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is locked. Only the Academic administrator can change it.'**
+  String get mobAttLocked;
+
+  /// Banner when the school refused attendance sent from the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this attendance.'**
+  String get mobAttRefused;
+
+  /// Explains a refusal because the day was locked.
+  ///
+  /// In en, this message translates to:
+  /// **'The day was locked before it arrived. Ask the Academic administrator to correct it.'**
+  String get mobAttRefusedLocked;
+
+  /// Button that removes a message the person has read.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get actionDismiss;
+
+  /// How many students are marked as something other than present. {count} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} exception} other{{count} exceptions}}'**
+  String mobAttExceptions(int count);
+
+  /// Shown when no student is marked as an exception.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone is present'**
+  String get mobAttEveryonePresent;
+
+  /// Title of the list of statuses for one student. {name} is the student.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark {name}'**
+  String mobAttPickStatus(String name);
+
+  /// Shown when a class has no students.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no students in this class yet.'**
+  String get mobAttNoStudents;
+
+  /// Shown when the class list has not been loaded onto the phone yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect once to load this class.'**
+  String get mobAttNotLoaded;
+
+  /// Title of the attendance screen: the class and the date. {className} is the class name, {date} the date.
+  ///
+  /// In en, this message translates to:
+  /// **'{className}, {date}'**
+  String mobAttDateLine(String className, String date);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

@@ -2592,4 +2592,86 @@ class OruStringsOr extends OruStrings {
 
   @override
   String get actionBack => 'Back';
+
+  @override
+  String get mobTabAttendance => 'Attendance';
+
+  @override
+  String get mobTabMore => 'More';
+
+  @override
+  String get mobAttClassesTitle => 'Your classes';
+
+  @override
+  String get mobAttNoClasses =>
+      'You are not the class teacher of any class, so you do not take attendance.';
+
+  @override
+  String get mobAttStateDone => 'Taken';
+
+  @override
+  String get mobAttStateSaved => 'Saved on this phone';
+
+  @override
+  String get mobAttStateTodo => 'Not taken yet';
+
+  @override
+  String get mobAttStateLocked => 'Locked';
+
+  @override
+  String get mobAttStateFailed => 'Not accepted';
+
+  @override
+  String get mobAttMarkAllPresent => 'Mark all present';
+
+  @override
+  String get mobAttSave => 'Save attendance';
+
+  @override
+  String get mobAttSavedNotSent =>
+      'Saved on this phone. It reaches the school when you are connected.';
+
+  @override
+  String get mobAttLocked =>
+      'This day is locked. Only the Academic administrator can change it.';
+
+  @override
+  String get mobAttRefused => 'The school did not accept this attendance.';
+
+  @override
+  String get mobAttRefusedLocked =>
+      'The day was locked before it arrived. Ask the Academic administrator to correct it.';
+
+  @override
+  String get actionDismiss => 'Dismiss';
+
+  @override
+  String mobAttExceptions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exceptions',
+      one: '$count exception',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobAttEveryonePresent => 'Everyone is present';
+
+  @override
+  String mobAttPickStatus(String name) {
+    return 'Mark $name';
+  }
+
+  @override
+  String get mobAttNoStudents => 'There are no students in this class yet.';
+
+  @override
+  String get mobAttNotLoaded => 'Connect once to load this class.';
+
+  @override
+  String mobAttDateLine(String className, String date) {
+    return '$className, $date';
+  }
 }
