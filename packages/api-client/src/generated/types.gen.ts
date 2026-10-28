@@ -1040,6 +1040,7 @@ export type MethodTotalDto = {
 
 export type MineDto = {
     children: Array<ChildDto>;
+    classTeacherOf: Array<RefDto>;
     classes: Array<RefDto>;
     staff: StaffRefDto | null;
     subjects: Array<SubjectRefDto>;

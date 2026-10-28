@@ -4589,6 +4589,102 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Use a different number'**
   String get mobActionChangeNumber;
+
+  /// Title of the Teacher app's first screen: what the teacher has to do today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get mobTodayTitle;
+
+  /// Link at the top of the home screen that opens the person's account, the app lock switch and sign out.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get mobAccountLink;
+
+  /// Heading of the list of the teacher's remaining lessons today.
+  ///
+  /// In en, this message translates to:
+  /// **'Next lessons'**
+  String get mobTodayNextLessons;
+
+  /// Shown when the teacher has no lessons left today.
+  ///
+  /// In en, this message translates to:
+  /// **'No more lessons today'**
+  String get mobTodayNoMoreLessons;
+
+  /// Shown on a day the school does not work, such as a Sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today is not a school day'**
+  String get mobTodayNotSchoolDay;
+
+  /// One lesson in the list: the class, and when it starts and ends. {className} is a class name; {start} and {end} are times.
+  ///
+  /// In en, this message translates to:
+  /// **'{className}, {start} to {end}'**
+  String mobTodayLessonLine(String className, String start, String end);
+
+  /// Heading of the card about taking student attendance today.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance'**
+  String get mobTodayAttendanceTitle;
+
+  /// How many of the teacher's classes still have no attendance today. {count} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} class has no attendance yet} other{{count} classes have no attendance yet}}'**
+  String mobTodayAttendanceMissing(int count);
+
+  /// Shown when every class of the teacher has its attendance today.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance is taken for all your classes'**
+  String get mobTodayAttendanceAllDone;
+
+  /// How many classes have attendance saved on the phone that has not reached the school yet. {count} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} class saved on this phone, not sent yet} other{{count} classes saved on this phone, not sent yet}}'**
+  String mobTodayAttendanceSaved(int count);
+
+  /// Heading of the card about the teacher's own leave requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get mobTodayLeaveTitle;
+
+  /// How many of the teacher's leave requests the Principal has not decided yet. {count} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} leave request waiting for the Principal} other{{count} leave requests waiting for the Principal}}'**
+  String mobTodayLeaveWaiting(int count);
+
+  /// Shown when the teacher has no leave request waiting for a decision.
+  ///
+  /// In en, this message translates to:
+  /// **'No leave requests waiting'**
+  String get mobTodayLeaveNone;
+
+  /// How many leave requests are saved on the phone and have not reached the school yet. {count} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} leave request saved on this phone, not sent yet} other{{count} leave requests saved on this phone, not sent yet}}'**
+  String mobTodayLeaveSaved(int count);
+
+  /// Shown on the first day, before any data has been loaded from the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect once to load your day. After that it works without a connection.'**
+  String get mobTodayFirstLoad;
+
+  /// Button that goes back to the previous screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get actionBack;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

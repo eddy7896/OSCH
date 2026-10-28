@@ -853,14 +853,16 @@ class MeUserDto {
 }
 
 class MineDto {
-  const MineDto({required this.children, required this.classes, required this.staff, required this.subjects});
+  const MineDto({required this.children, required this.classTeacherOf, required this.classes, required this.staff, required this.subjects});
   final List<ChildDto> children;
+  final List<RefDto> classTeacherOf;
   final List<RefDto> classes;
   final StaffRefDto? staff;
   final List<SubjectRefDto> subjects;
 
   factory MineDto.fromJson(Map<String, dynamic> j) => MineDto(
         children: (j['children'] as List<dynamic>).map((e) => ChildDto.fromJson(e as Map<String, dynamic>)).toList(),
+        classTeacherOf: (j['classTeacherOf'] as List<dynamic>).map((e) => RefDto.fromJson(e as Map<String, dynamic>)).toList(),
         classes: (j['classes'] as List<dynamic>).map((e) => RefDto.fromJson(e as Map<String, dynamic>)).toList(),
         staff: j['staff'] == null ? null : StaffRefDto.fromJson(j['staff'] as Map<String, dynamic>),
         subjects: (j['subjects'] as List<dynamic>).map((e) => SubjectRefDto.fromJson(e as Map<String, dynamic>)).toList(),
@@ -868,6 +870,7 @@ class MineDto {
 
   Map<String, dynamic> toJson() => {
         'children': children.map((e) => e.toJson()).toList(),
+        'classTeacherOf': classTeacherOf.map((e) => e.toJson()).toList(),
         'classes': classes.map((e) => e.toJson()).toList(),
         if (staff != null) 'staff': staff!.toJson(),
         'subjects': subjects.map((e) => e.toJson()).toList(),

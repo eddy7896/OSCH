@@ -736,5 +736,21 @@
   "mobHomeSoonTitle": "Your work will appear here",
   "mobHomeSoonBody": "Classes, attendance and leave arrive in the next updates.",
   "mobCodeSentTo": "We sent a code to {phone}.",
-  "mobActionChangeNumber": "Use a different number"
+  "mobActionChangeNumber": "Use a different number",
+  "mobTodayTitle": "Today",
+  "mobAccountLink": "Account",
+  "mobTodayNextLessons": "Next lessons",
+  "mobTodayNoMoreLessons": "No more lessons today",
+  "mobTodayNotSchoolDay": "Today is not a school day",
+  "mobTodayLessonLine": "{className}, {start} to {end}",
+  "mobTodayAttendanceTitle": "Attendance",
+  "mobTodayAttendanceMissing": "{count, plural, one{{count} class has no attendance yet} other{{count} classes have no attendance yet}}",
+  "mobTodayAttendanceAllDone": "Attendance is taken for all your classes",
+  "mobTodayAttendanceSaved": "{count, plural, one{{count} class saved on this phone, not sent yet} other{{count} classes saved on this phone, not sent yet}}",
+  "mobTodayLeaveTitle": "Leave",
+  "mobTodayLeaveWaiting": "{count, plural, one{{count} leave request waiting for the Principal} other{{count} leave requests waiting for the Principal}}",
+  "mobTodayLeaveNone": "No leave requests waiting",
+  "mobTodayLeaveSaved": "{count, plural, one{{count} leave request saved on this phone, not sent yet} other{{count} leave requests saved on this phone, not sent yet}}",
+  "mobTodayFirstLoad": "Connect once to load your day. After that it works without a connection.",
+  "actionBack": "Back"
 }

@@ -16,10 +16,10 @@ const _config = OruAppConfig(
   authEmulator: String.fromEnvironment('ORU_AUTH_EMULATOR') == '' ? null : String.fromEnvironment('ORU_AUTH_EMULATOR'),
 );
 
-Future<OruServices> open() => OruServices.create(_config, allowedRoles: const {'TEACHER'});
+Future<OruServices> open() => OruServices.create(_config, allowedRoles: const {'TEACHER'}, pullTasks: todayPullTasks);
 
 Future<void> show(WidgetTester tester, OruServices svc) async {
-  await tester.pumpWidget(OruStaffApp(services: svc, title: (s) => s.appTeacher));
+  await tester.pumpWidget(OruStaffApp(services: svc, title: (s) => s.appTeacher, home: (context, svc, st) => OruTeacherHome(services: svc, state: st)));
   await tester.pump(const Duration(milliseconds: 500));
 }
 
@@ -50,18 +50,30 @@ void main() {
     await tester.enterText(fields.at(0), 'teacher@demo.oruschools.example');
     await tester.enterText(fields.at(1), 'demo-pass-2027');
     await tester.tap(find.text('Sign in'));
-    await until(tester, find.textContaining('Signed in as'));
-    expect(find.textContaining('Teacher at'), findsOneWidget);
+    await until(tester, find.text('Today'));
+    // her day arrives from the school once, and is shown from the phone
+    await until(tester, find.text('Leave'));
     await until(tester, find.text('Synced'));
+    expect(find.text('Connect once to load your day. After that it works without a connection.'), findsNothing);
+    await tester.tap(find.text('Account'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Signed in as'), findsOneWidget);
+    expect(find.textContaining('Teacher at'), findsOneWidget);
+    await tester.tap(find.text('Back'));
+    await tester.pumpAndSettle();
 
     // The app is closed and opened again: the Keychain still holds the session, the database file is still there.
     await tester.pumpWidget(const SizedBox());
     await svc.dispose();
     svc = await open();
     await show(tester, svc);
-    await until(tester, find.textContaining('Signed in as'));
+    await until(tester, find.text('Today'));
     expect(find.text('Email address'), findsNothing);
+    // the day is still there, from the phone's own database, before the network has been asked
+    expect(find.text('Leave'), findsOneWidget);
     await until(tester, find.text('Synced'));
+    await tester.tap(find.text('Account'));
+    await tester.pumpAndSettle();
 
     // Sign out: asked first, then the sign-in screen is back and the phone holds nothing of her.
     await tester.tap(find.text('Sign out'));

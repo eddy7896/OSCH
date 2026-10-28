@@ -42,12 +42,14 @@ export class TeachingScope {
       this.children(t, yearId),
     ]);
     const classes = new Map<string, { id: string; name: string }>();
-    for (const x of classTeachers?.data.classTeachers ?? []) if (staff && dashed(x.staff.id) === dashed(staff.id)) classes.set(dashed(x.classroom.id), { id: dashed(x.classroom.id), name: x.classroom.name });
+    const classTeacherOf = new Map<string, { id: string; name: string }>();
+    for (const x of classTeachers?.data.classTeachers ?? []) if (staff && dashed(x.staff.id) === dashed(staff.id)) { classes.set(dashed(x.classroom.id), { id: dashed(x.classroom.id), name: x.classroom.name }); classTeacherOf.set(dashed(x.classroom.id), { id: dashed(x.classroom.id), name: x.classroom.name }); }
     for (const x of lessons?.data.timetableEntries ?? []) classes.set(dashed(x.classroom.id), { id: dashed(x.classroom.id), name: x.classroom.name });
     return {
       staff: staff ? { id: dashed(staff.id), employeeId: staff.employeeId, name: `${staff.firstName} ${staff.lastName}` } : null,
       subjects: (subjects?.data.teacherSubjects ?? []).filter((x) => staff && dashed(x.staff.id) === dashed(staff.id)).map((x) => ({ id: dashed(x.subject.id), name: x.subject.name, code: x.subject.code })),
       classes: [...classes.values()].sort((x, y) => x.name.localeCompare(y.name)),
+      classTeacherOf: [...classTeacherOf.values()].sort((x, y) => x.name.localeCompare(y.name)),
       children,
     };
   }

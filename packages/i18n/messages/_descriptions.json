@@ -737,5 +737,21 @@
   "mobActionChangeNumber": "Goes back from the code box to the number box.",
   "ntCatannouncement": "Name of the notification category switch for announcements from the school.",
   "notifAnnouncementPostedTitle": "Title of the notice sent to staff when the Principal or the Academic administrator posts an announcement.",
-  "notifAnnouncementPostedBody": "Body of that notice: the announcement's own title, written by its author in their language."
+  "notifAnnouncementPostedBody": "Body of that notice: the announcement's own title, written by its author in their language.",
+  "mobTodayTitle": "Title of the Teacher app's first screen: what the teacher has to do today.",
+  "mobAccountLink": "Link at the top of the home screen that opens the person's account, the app lock switch and sign out.",
+  "mobTodayNextLessons": "Heading of the list of the teacher's remaining lessons today.",
+  "mobTodayNoMoreLessons": "Shown when the teacher has no lessons left today.",
+  "mobTodayNotSchoolDay": "Shown on a day the school does not work, such as a Sunday.",
+  "mobTodayLessonLine": "One lesson in the list: the class, and when it starts and ends. {className} is a class name; {start} and {end} are times.",
+  "mobTodayAttendanceTitle": "Heading of the card about taking student attendance today.",
+  "mobTodayAttendanceMissing": "How many of the teacher's classes still have no attendance today. {count} is the number.",
+  "mobTodayAttendanceAllDone": "Shown when every class of the teacher has its attendance today.",
+  "mobTodayAttendanceSaved": "How many classes have attendance saved on the phone that has not reached the school yet. {count} is the number.",
+  "mobTodayLeaveTitle": "Heading of the card about the teacher's own leave requests.",
+  "mobTodayLeaveWaiting": "How many of the teacher's leave requests the Principal has not decided yet. {count} is the number.",
+  "mobTodayLeaveNone": "Shown when the teacher has no leave request waiting for a decision.",
+  "mobTodayLeaveSaved": "How many leave requests are saved on the phone and have not reached the school yet. {count} is the number.",
+  "mobTodayFirstLoad": "Shown on the first day, before any data has been loaded from the school.",
+  "actionBack": "Button that goes back to the previous screen."
 }

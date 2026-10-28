@@ -2509,4 +2509,89 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get mobActionChangeNumber => 'دوسرا نمبر استعمال کریں';
+
+  @override
+  String get mobTodayTitle => 'آج';
+
+  @override
+  String get mobAccountLink => 'اکاؤنٹ';
+
+  @override
+  String get mobTodayNextLessons => 'اگلے اسباق';
+
+  @override
+  String get mobTodayNoMoreLessons => 'آج مزید کوئی سبق نہیں';
+
+  @override
+  String get mobTodayNotSchoolDay => 'آج اسکول کا دن نہیں ہے';
+
+  @override
+  String mobTodayLessonLine(String className, String start, String end) {
+    return '$className، $start سے $end تک';
+  }
+
+  @override
+  String get mobTodayAttendanceTitle => 'حاضری';
+
+  @override
+  String mobTodayAttendanceMissing(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count جماعتوں کی حاضری ابھی نہیں لی گئی',
+      one: '$count جماعت کی حاضری ابھی نہیں لی گئی',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayAttendanceAllDone =>
+      'آپ کی تمام جماعتوں کی حاضری لی جا چکی ہے';
+
+  @override
+  String mobTodayAttendanceSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count جماعتیں اس فون میں محفوظ ہیں، ابھی بھیجی نہیں گئیں',
+      one: '$count جماعت اس فون میں محفوظ ہے، ابھی بھیجی نہیں گئی',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayLeaveTitle => 'رخصت';
+
+  @override
+  String mobTodayLeaveWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count رخصت کی درخواستیں پرنسپل کے انتظار میں',
+      one: '$count رخصت کی درخواست پرنسپل کے انتظار میں',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayLeaveNone => 'کوئی رخصت کی درخواست انتظار میں نہیں';
+
+  @override
+  String mobTodayLeaveSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count رخصت کی درخواستیں اس فون میں محفوظ ہیں، ابھی بھیجی نہیں گئیں',
+      one: '$count رخصت کی درخواست اس فون میں محفوظ ہے، ابھی بھیجی نہیں گئی',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayFirstLoad =>
+      'اپنا دن لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔ اس کے بعد یہ بغیر کنکشن کے چلتا ہے۔';
+
+  @override
+  String get actionBack => 'واپس';
 }

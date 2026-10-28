@@ -4000,6 +4000,12 @@
             },
             "type": "array"
           },
+          "classTeacherOf": {
+            "items": {
+              "$ref": "#/components/schemas/RefDto"
+            },
+            "type": "array"
+          },
           "classes": {
             "items": {
               "$ref": "#/components/schemas/RefDto"
@@ -4026,6 +4032,7 @@
           "staff",
           "subjects",
           "classes",
+          "classTeacherOf",
           "children"
         ],
         "type": "object"

@@ -2507,4 +2507,88 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get mobActionChangeNumber => 'दूसरा नंबर उपयोग करें';
+
+  @override
+  String get mobTodayTitle => 'आज';
+
+  @override
+  String get mobAccountLink => 'खाता';
+
+  @override
+  String get mobTodayNextLessons => 'अगले पाठ';
+
+  @override
+  String get mobTodayNoMoreLessons => 'आज और कोई पाठ नहीं';
+
+  @override
+  String get mobTodayNotSchoolDay => 'आज स्कूल का दिन नहीं है';
+
+  @override
+  String mobTodayLessonLine(String className, String start, String end) {
+    return '$className, $start से $end तक';
+  }
+
+  @override
+  String get mobTodayAttendanceTitle => 'उपस्थिति';
+
+  @override
+  String mobTodayAttendanceMissing(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count कक्षाओं की उपस्थिति अभी नहीं ली गई',
+      one: '$count कक्षा की उपस्थिति अभी नहीं ली गई',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayAttendanceAllDone =>
+      'आपकी सभी कक्षाओं की उपस्थिति ले ली गई है';
+
+  @override
+  String mobTodayAttendanceSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'इस फ़ोन में सहेजा गया, अभी भेजा नहीं गया: $count कक्षाएँ',
+      one: 'इस फ़ोन में सहेजा गया, अभी भेजा नहीं गया: $count कक्षा',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayLeaveTitle => 'छुट्टी';
+
+  @override
+  String mobTodayLeaveWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count छुट्टी के अनुरोध प्रिंसिपल के इंतज़ार में',
+      one: '$count छुट्टी का अनुरोध प्रिंसिपल के इंतज़ार में',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayLeaveNone => 'कोई छुट्टी का अनुरोध प्रतीक्षा में नहीं';
+
+  @override
+  String mobTodayLeaveSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count छुट्टी के अनुरोध इस फ़ोन में सहेजे गए, अभी भेजे नहीं गए',
+      one: '$count छुट्टी का अनुरोध इस फ़ोन में सहेजा गया, अभी भेजा नहीं गया',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayFirstLoad =>
+      'अपना दिन लोड करने के लिए एक बार कनेक्ट करें। उसके बाद यह बिना कनेक्शन के चलता है।';
+
+  @override
+  String get actionBack => 'वापस';
 }

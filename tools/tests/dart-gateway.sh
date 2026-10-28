@@ -42,5 +42,6 @@ if [ "${ORU_KEEP:-}" = 1 ]; then echo "ready: gateway http://localhost:$PORT, au
 STATUS=$?
 (cd packages/flutter-sync && ORU_GATEWAY_URL=http://localhost:$PORT ORU_AUTH_EMULATOR=$AUTH flutter test test/real_gateway_sync_test.dart) || STATUS=$?
 (cd packages/flutter-auth && ORU_GATEWAY_URL=http://localhost:$PORT ORU_AUTH_EMULATOR=$AUTH flutter test test/real_auth_test.dart) || STATUS=$?
+(cd packages/flutter-app && ORU_GATEWAY_URL=http://localhost:$PORT ORU_AUTH_EMULATOR=$AUTH flutter test test/real_today_test.dart) || STATUS=$?
 echo "logs: $LOGS"
 exit $STATUS

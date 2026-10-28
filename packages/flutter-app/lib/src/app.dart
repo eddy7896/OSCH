@@ -9,9 +9,12 @@ import 'services.dart';
 /// The app both phone apps share until their own screens arrive: sign-in, school choice, the lock, and a signed-in home with the
 /// sync status and the account panel. [title] picks the app's name from the catalogue.
 class OruStaffApp extends StatelessWidget {
-  const OruStaffApp({super.key, required this.services, required this.title, this.locale = const Locale(OruLocales.defaultCode)});
+  const OruStaffApp({super.key, required this.services, required this.title, this.home, this.locale = const Locale(OruLocales.defaultCode)});
 
   final OruServices services;
+
+  /// The app once a school is open. Without it, the generic signed-in home (account and sync) is shown.
+  final Widget Function(BuildContext context, OruServices services, SessionActive state)? home;
   final String Function(OruStrings) title;
 
   /// An explicit choice (ADR-0006), never the device language.
@@ -36,7 +39,7 @@ class OruStaffApp extends StatelessWidget {
           lock: services.lock,
           title: title(s),
           appVerificationToken: () async => services.config.appCheckToken,
-          signedIn: (context, st) => OruSignedInHome(services: services, state: st),
+          signedIn: (context, st) => home?.call(context, services, st) ?? OruSignedInHome(services: services, state: st),
         );
       }),
     );

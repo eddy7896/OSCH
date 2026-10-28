@@ -77,24 +77,24 @@ class SyncCoordinator {
 
   PullStatus _pull = const PullStatus.never();
   int? _lastSyncedAtMs;
-  bool _pulling = false;
   final _pullChanges = StreamController<PullStatus>.broadcast(sync: true);
 
   PullStatus get pullStatus => _pull;
 
-  /// Sends what is owed, then pulls the lists and the removals. Calls during a pull are folded into it.
-  Future<void> syncNow() async {
+  Future<void>? _inFlight;
+
+  /// Sends what is owed, then pulls the lists and the removals. A call made while a sync is already running waits for THAT one and
+  /// completes when it does (a pull-to-refresh must not return before the data has arrived).
+  Future<void> syncNow() => _inFlight ??= _syncOnce().whenComplete(() => _inFlight = null);
+
+  Future<void> _syncOnce() async {
     await engine.pass();
-    if (_pulling) return;
-    _pulling = true;
     try {
       await _pullAll();
       _set(PullStatus.ok(_nowMs()));
       _lastSyncedAtMs = _nowMs();
     } on PullFailure catch (e) {
       _set(e.offline ? const PullStatus.offline() : PullStatus.failed(e.code));
-    } finally {
-      _pulling = false;
     }
   }
 

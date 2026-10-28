@@ -2508,4 +2508,88 @@ class OruStringsOr extends OruStrings {
 
   @override
   String get mobActionChangeNumber => 'Use a different number';
+
+  @override
+  String get mobTodayTitle => 'Today';
+
+  @override
+  String get mobAccountLink => 'Account';
+
+  @override
+  String get mobTodayNextLessons => 'Next lessons';
+
+  @override
+  String get mobTodayNoMoreLessons => 'No more lessons today';
+
+  @override
+  String get mobTodayNotSchoolDay => 'Today is not a school day';
+
+  @override
+  String mobTodayLessonLine(String className, String start, String end) {
+    return '$className, $start to $end';
+  }
+
+  @override
+  String get mobTodayAttendanceTitle => 'Attendance';
+
+  @override
+  String mobTodayAttendanceMissing(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count classes have no attendance yet',
+      one: '$count class has no attendance yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayAttendanceAllDone =>
+      'Attendance is taken for all your classes';
+
+  @override
+  String mobTodayAttendanceSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count classes saved on this phone, not sent yet',
+      one: '$count class saved on this phone, not sent yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayLeaveTitle => 'Leave';
+
+  @override
+  String mobTodayLeaveWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count leave requests waiting for the Principal',
+      one: '$count leave request waiting for the Principal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayLeaveNone => 'No leave requests waiting';
+
+  @override
+  String mobTodayLeaveSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count leave requests saved on this phone, not sent yet',
+      one: '$count leave request saved on this phone, not sent yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobTodayFirstLoad =>
+      'Connect once to load your day. After that it works without a connection.';
+
+  @override
+  String get actionBack => 'Back';
 }
