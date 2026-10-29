@@ -182,40 +182,34 @@ class _OruMarksScreenState extends State<OruMarksScreen> {
                           for (final r in v.rows)
                             Padding(
                               padding: const EdgeInsetsDirectional.symmetric(horizontal: OruSpacing.space4, vertical: OruSpacing.space2),
-                              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: OruSpacing.space3),
-                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                      Text(r.name, style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w600)),
-                                      if (r.enrollmentId.isNotEmpty) Text(r.enrollmentId, style: text.bodyMedium?.copyWith(color: OruColors.textMuted)),
-                                    ]),
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                Text(r.name, style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w600)),
+                                if (r.enrollmentId.isNotEmpty) Text(r.enrollmentId, style: text.bodyMedium?.copyWith(color: OruColors.textMuted)),
+                                const SizedBox(height: OruSpacing.space2),
+                                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                  SizedBox(
+                                    width: 132,
+                                    child: OruTextField(
+                                      semanticLabel: s.mobMarksFieldLabel(r.name),
+                                      controller: _field(r),
+                                      focusNode: _node(r.studentId),
+                                      enabled: !r.cell.absent,
+                                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                      textDirection: TextDirection.ltr,
+                                      error: r.problem == null ? null : _problemText(s, r.problem!, v.maxTenths),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: OruSpacing.space3),
-                                SizedBox(
-                                  width: 112,
-                                  child: OruTextField(
-                                    semanticLabel: s.mobMarksFieldLabel(r.name),
-                                    controller: _field(r),
-                                    focusNode: _node(r.studentId),
-                                    enabled: !r.cell.absent,
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                    textDirection: TextDirection.ltr,
-                                    error: r.problem == null ? null : _problemText(s, r.problem!, v.maxTenths),
+                                  const SizedBox(width: OruSpacing.space3),
+                                  Expanded(
+                                    child: OruCheckbox(label: s.mobMarksAbsent, value: r.cell.absent, onChanged: (a) {
+                                      _syncing = true;
+                                      _fields[r.studentId]?.text = '';
+                                      _lastTyped.remove(r.studentId);
+                                      _syncing = false;
+                                      _c.setAbsent(r.studentId, a);
+                                    }),
                                   ),
-                                ),
-                                const SizedBox(width: OruSpacing.space2),
-                                SizedBox(
-                                  width: 112,
-                                  child: OruCheckbox(label: s.mobMarksAbsent, value: r.cell.absent, onChanged: (a) {
-                                    _syncing = true;
-                                    _fields[r.studentId]?.text = '';
-                                    _lastTyped.remove(r.studentId);
-                                    _syncing = false;
-                                    _c.setAbsent(r.studentId, a);
-                                  }),
-                                ),
+                                ]),
                               ]),
                             ),
                         ]),
