@@ -2748,4 +2748,167 @@ class OruStringsHi extends OruStrings {
     );
     return '$_temp0';
   }
+
+  @override
+  String get mobTabLeave => 'छुट्टी';
+
+  @override
+  String get mobLvBalances => 'आपकी छुट्टी';
+
+  @override
+  String mobLvBalanceLine(String type, String remaining, String allowed) {
+    return '$type: $allowed में से $remaining दिन बचे';
+  }
+
+  @override
+  String mobLvBalanceUnset(String type) {
+    return '$type: कोई सीमा तय नहीं';
+  }
+
+  @override
+  String get mobLvRequests => 'आपके अनुरोध';
+
+  @override
+  String get mobLvNone => 'आपने अभी तक छुट्टी नहीं माँगी है।';
+
+  @override
+  String get mobLvAsk => 'छुट्टी माँगें';
+
+  @override
+  String get mobLvStatusPending => 'प्रिंसिपल के इंतज़ार में';
+
+  @override
+  String get mobLvStatusApproved => 'स्वीकृत';
+
+  @override
+  String get mobLvStatusRejected => 'स्वीकृत नहीं';
+
+  @override
+  String get mobLvStatusCancelled => 'रद्द';
+
+  @override
+  String get mobLvSavedNotSent => 'इस फ़ोन में सहेजा गया, अभी भेजा नहीं गया';
+
+  @override
+  String get mobLvRefused => 'स्कूल ने यह अनुरोध स्वीकार नहीं किया।';
+
+  @override
+  String get mobLvRefusedConflict =>
+      'इनमें से कुछ दिनों पर आपकी छुट्टी पहले से है, या पर्याप्त दिन नहीं बचे।';
+
+  @override
+  String mobLvDays(String days) {
+    return '$days दिन';
+  }
+
+  @override
+  String mobLvDates(String start, String end) {
+    return '$start से $end तक';
+  }
+
+  @override
+  String get mobLvFormTitle => 'छुट्टी माँगें';
+
+  @override
+  String get mobLvType => 'छुट्टी का प्रकार';
+
+  @override
+  String get mobLvStart => 'पहला दिन';
+
+  @override
+  String get mobLvEnd => 'आखिरी दिन';
+
+  @override
+  String get mobLvHalf => 'केवल आधा दिन';
+
+  @override
+  String get mobLvMorning => 'सुबह';
+
+  @override
+  String get mobLvAfternoon => 'दोपहर';
+
+  @override
+  String get mobLvReason => 'कारण (वैकल्पिक)';
+
+  @override
+  String get mobLvSend => 'अनुरोध भेजें';
+
+  @override
+  String get mobLvErrEnd => 'आखिरी दिन पहले दिन से पहले नहीं हो सकता।';
+
+  @override
+  String get mobLvErrType => 'छुट्टी का प्रकार चुनें।';
+
+  @override
+  String get mobLvNoTypes =>
+      'छुट्टी के प्रकार लोड करने के लिए एक बार कनेक्ट करें।';
+
+  @override
+  String get mobMoreCover => 'स्थानापन्न ड्यूटी';
+
+  @override
+  String get mobCoverEmpty =>
+      'अगले दो हफ़्तों में आपकी कोई स्थानापन्न ड्यूटी नहीं है।';
+
+  @override
+  String mobCoverLine(String className, String subject, String period) {
+    return '$className, $subject, $period';
+  }
+
+  @override
+  String mobCoverFor(String name) {
+    return '$name के स्थान पर';
+  }
+
+  @override
+  String get mobMoreClasses => 'मेरी कक्षाएँ';
+
+  @override
+  String get mobClsEmpty => 'आप अभी किसी कक्षा को नहीं पढ़ाते।';
+
+  @override
+  String mobClsStudents(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count छात्र',
+      one: '$count छात्र',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobClsReport => 'रिपोर्ट कार्ड';
+
+  @override
+  String get mobClsTerm => 'सत्र';
+
+  @override
+  String get mobClsNoCard => 'रिपोर्ट कार्ड कनेक्शन होने पर लोड होते हैं।';
+
+  @override
+  String mobClsMarksLine(String marks, String max) {
+    return '$max में से $marks';
+  }
+
+  @override
+  String mobClsTotal(String marks, String percent) {
+    return 'कुल $marks, $percent%';
+  }
+
+  @override
+  String mobClsGrade(String grade) {
+    return 'ग्रेड $grade';
+  }
+
+  @override
+  String mobClsPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count परीक्षाओं के अंक अभी दर्ज नहीं',
+      one: '$count परीक्षा के अंक अभी दर्ज नहीं',
+    );
+    return '$_temp0';
+  }
 }
