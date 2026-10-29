@@ -12,7 +12,7 @@ proven on simulators and the real gateway on the emulators has been.
 | `npm run eval` | 130 passed, 0 failed |
 | `npm run check:drift` | 0 errors, 1 old warning |
 | `npm test` | 23 tasks successful |
-| `flutter test` in `packages/flutter-app` against the real gateway on the emulators (`ORU_GATEWAY_URL`, `ORU_AUTH_EMULATOR`) | 110 passed (3 skipped); five runs in a row on one stack |
+| `flutter test` in `packages/flutter-app` against the real gateway on the emulators (`ORU_GATEWAY_URL`, `ORU_AUTH_EMULATOR`) | 105 passed with the stack (five runs in a row), measured before the Urdu screen tests were added; after them, 103 passed and 10 skipped without the stack (the stack was not running) |
 | `flutter test` in `packages/flutter-sync` and `packages/flutter-auth` | 60 and 47 passed |
 | `apps/web-admin`: `npx vitest run` | 281 passed, 38 skipped |
 | iOS simulator integration tests: `apps/mobile-teacher/integration_test/{signin,attendance,marks,leave}_test.dart`, `apps/mobile-staff/integration_test/{signin,home}_test.dart` | passed when last run (each after its own task); not re-run together for this page |
