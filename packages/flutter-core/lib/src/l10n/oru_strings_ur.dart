@@ -2927,4 +2927,27 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get mobAnnLatest => 'تازہ ترین اعلانات';
+
+  @override
+  String get mobTabApprovals => 'منظوریاں';
+
+  @override
+  String get mobApprEmpty => 'آپ کے لیے کوئی رخصت کی درخواست انتظار میں نہیں۔';
+
+  @override
+  String get mobApprApprove => 'منظور کریں';
+
+  @override
+  String get mobApprReject => 'مسترد کریں';
+
+  @override
+  String mobApprLine(String name, String type) {
+    return '$name، $type';
+  }
+
+  @override
+  String get mobApprNeedsNet => 'فیصلے کے لیے کنکشن چاہیے۔ کچھ تبدیل نہیں ہوا۔';
+
+  @override
+  String get mobApprRefused => 'اسکول نے یہ فیصلہ قبول نہیں کیا۔';
 }

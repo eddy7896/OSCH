@@ -837,5 +837,12 @@
   "mobTabHome": "Home",
   "mobAnnEmpty": "There are no announcements yet.",
   "mobAnnBy": "From {name}",
-  "mobAnnLatest": "Latest announcements"
+  "mobAnnLatest": "Latest announcements",
+  "mobTabApprovals": "Approvals",
+  "mobApprEmpty": "No leave requests are waiting for you.",
+  "mobApprApprove": "Approve",
+  "mobApprReject": "Decline",
+  "mobApprLine": "{name}, {type}",
+  "mobApprNeedsNet": "Deciding needs a connection. Nothing was changed.",
+  "mobApprRefused": "The school did not accept this decision."
 }

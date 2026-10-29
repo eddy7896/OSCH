@@ -3968,5 +3968,41 @@
   "mobAnnLatest": "Latest announcements",
   "@mobAnnLatest": {
     "description": "Heading of the card on Home that shows the newest announcements."
+  },
+  "mobTabApprovals": "Approvals",
+  "@mobTabApprovals": {
+    "description": "Name of the Principal's tab in the Staff app where leave requests are decided."
+  },
+  "mobApprEmpty": "No leave requests are waiting for you.",
+  "@mobApprEmpty": {
+    "description": "Shown to the Principal when no leave request is waiting for a decision."
+  },
+  "mobApprApprove": "Approve",
+  "@mobApprApprove": {
+    "description": "Button that approves a leave request."
+  },
+  "mobApprReject": "Decline",
+  "@mobApprReject": {
+    "description": "Button that turns down a leave request."
+  },
+  "mobApprLine": "{name}, {type}",
+  "@mobApprLine": {
+    "description": "One leave request waiting for a decision. {name} is the staff member and {type} the kind of leave.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "mobApprNeedsNet": "Deciding needs a connection. Nothing was changed.",
+  "@mobApprNeedsNet": {
+    "description": "Shown when the Principal tried to approve or turn down leave with no connection."
+  },
+  "mobApprRefused": "The school did not accept this decision.",
+  "@mobApprRefused": {
+    "description": "Shown when the school refused the Principal's decision on a leave request."
   }
 }

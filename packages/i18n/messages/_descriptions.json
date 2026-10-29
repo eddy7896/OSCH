@@ -838,5 +838,12 @@
   "mobTabHome": "Name of the Home tab in the Staff app's bottom navigation.",
   "mobAnnEmpty": "Shown when the school has posted no announcement.",
   "mobAnnBy": "Who posted an announcement. {name} is the person.",
-  "mobAnnLatest": "Heading of the card on Home that shows the newest announcements."
+  "mobAnnLatest": "Heading of the card on Home that shows the newest announcements.",
+  "mobTabApprovals": "Name of the Principal's tab in the Staff app where leave requests are decided.",
+  "mobApprEmpty": "Shown to the Principal when no leave request is waiting for a decision.",
+  "mobApprApprove": "Button that approves a leave request.",
+  "mobApprReject": "Button that turns down a leave request.",
+  "mobApprLine": "One leave request waiting for a decision. {name} is the staff member and {type} the kind of leave.",
+  "mobApprNeedsNet": "Shown when the Principal tried to approve or turn down leave with no connection.",
+  "mobApprRefused": "Shown when the school refused the Principal's decision on a leave request."
 }

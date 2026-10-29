@@ -843,7 +843,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobTabHome": "Home",
     "mobAnnEmpty": "There are no announcements yet.",
     "mobAnnBy": "From {name}",
-    "mobAnnLatest": "Latest announcements"
+    "mobAnnLatest": "Latest announcements",
+    "mobTabApprovals": "Approvals",
+    "mobApprEmpty": "No leave requests are waiting for you.",
+    "mobApprApprove": "Approve",
+    "mobApprReject": "Decline",
+    "mobApprLine": "{name}, {type}",
+    "mobApprNeedsNet": "Deciding needs a connection. Nothing was changed.",
+    "mobApprRefused": "The school did not accept this decision."
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -1684,7 +1691,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobTabHome": "होम",
     "mobAnnEmpty": "अभी कोई घोषणा नहीं है।",
     "mobAnnBy": "{name} की ओर से",
-    "mobAnnLatest": "नवीनतम घोषणाएँ"
+    "mobAnnLatest": "नवीनतम घोषणाएँ",
+    "mobTabApprovals": "अनुमोदन",
+    "mobApprEmpty": "आपके लिए कोई छुट्टी अनुरोध प्रतीक्षा में नहीं है।",
+    "mobApprApprove": "स्वीकृत करें",
+    "mobApprReject": "अस्वीकार करें",
+    "mobApprLine": "{name}, {type}",
+    "mobApprNeedsNet": "निर्णय के लिए कनेक्शन चाहिए। कुछ नहीं बदला।",
+    "mobApprRefused": "स्कूल ने यह निर्णय स्वीकार नहीं किया।"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -2525,7 +2539,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobTabHome": "ہوم",
     "mobAnnEmpty": "ابھی کوئی اعلان نہیں ہے۔",
     "mobAnnBy": "{name} کی طرف سے",
-    "mobAnnLatest": "تازہ ترین اعلانات"
+    "mobAnnLatest": "تازہ ترین اعلانات",
+    "mobTabApprovals": "منظوریاں",
+    "mobApprEmpty": "آپ کے لیے کوئی رخصت کی درخواست انتظار میں نہیں۔",
+    "mobApprApprove": "منظور کریں",
+    "mobApprReject": "مسترد کریں",
+    "mobApprLine": "{name}، {type}",
+    "mobApprNeedsNet": "فیصلے کے لیے کنکشن چاہیے۔ کچھ تبدیل نہیں ہوا۔",
+    "mobApprRefused": "اسکول نے یہ فیصلہ قبول نہیں کیا۔"
   },
   "ks": {},
   "sd": {},
