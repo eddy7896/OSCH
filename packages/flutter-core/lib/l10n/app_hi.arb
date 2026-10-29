@@ -834,5 +834,9 @@
   "mobClsMarksLine": "{max} में से {marks}",
   "mobClsTotal": "कुल {marks}, {percent}%",
   "mobClsGrade": "ग्रेड {grade}",
-  "mobClsPending": "{count, plural, one{{count} परीक्षा के अंक अभी दर्ज नहीं} other{{count} परीक्षाओं के अंक अभी दर्ज नहीं}}"
+  "mobClsPending": "{count, plural, one{{count} परीक्षा के अंक अभी दर्ज नहीं} other{{count} परीक्षाओं के अंक अभी दर्ज नहीं}}",
+  "mobTabHome": "होम",
+  "mobAnnEmpty": "अभी कोई घोषणा नहीं है।",
+  "mobAnnBy": "{name} की ओर से",
+  "mobAnnLatest": "नवीनतम घोषणाएँ"
 }

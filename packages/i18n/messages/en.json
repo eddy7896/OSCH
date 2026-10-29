@@ -833,5 +833,9 @@
   "mobClsMarksLine": "{marks} of {max}",
   "mobClsTotal": "Total {marks}, {percent}%",
   "mobClsGrade": "Grade {grade}",
-  "mobClsPending": "{count, plural, one{{count} exam not marked yet} other{{count} exams not marked yet}}"
+  "mobClsPending": "{count, plural, one{{count} exam not marked yet} other{{count} exams not marked yet}}",
+  "mobTabHome": "Home",
+  "mobAnnEmpty": "There are no announcements yet.",
+  "mobAnnBy": "From {name}",
+  "mobAnnLatest": "Latest announcements"
 }

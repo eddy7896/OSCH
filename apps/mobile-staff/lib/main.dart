@@ -18,8 +18,8 @@ Future<void> main() async {
     runApp(const StaffApp(locale: Locale(_locale)));
     return;
   }
-  final services = await OruServices.create(config, allowedRoles: _roles);
-  runApp(OruStaffApp(services: services, title: (s) => s.appStaff, locale: const Locale(_locale)));
+  final services = await OruServices.create(config, allowedRoles: _roles, pullTasks: staffPullTasks);
+  runApp(OruStaffApp(services: services, title: (s) => s.appStaff, locale: const Locale(_locale), home: (context, svc, st) => OruStaffHome(services: svc, state: st)));
 }
 
 class StaffApp extends StatelessWidget {

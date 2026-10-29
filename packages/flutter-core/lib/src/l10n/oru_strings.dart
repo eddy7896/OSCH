@@ -5171,6 +5171,30 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'{count, plural, one{{count} exam not marked yet} other{{count} exams not marked yet}}'**
   String mobClsPending(int count);
+
+  /// Name of the Home tab in the Staff app's bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get mobTabHome;
+
+  /// Shown when the school has posted no announcement.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no announcements yet.'**
+  String get mobAnnEmpty;
+
+  /// Who posted an announcement. {name} is the person.
+  ///
+  /// In en, this message translates to:
+  /// **'From {name}'**
+  String mobAnnBy(String name);
+
+  /// Heading of the card on Home that shows the newest announcements.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest announcements'**
+  String get mobAnnLatest;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

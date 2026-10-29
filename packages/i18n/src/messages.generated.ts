@@ -839,7 +839,11 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobClsMarksLine": "{marks} of {max}",
     "mobClsTotal": "Total {marks}, {percent}%",
     "mobClsGrade": "Grade {grade}",
-    "mobClsPending": "{count, plural, one{{count} exam not marked yet} other{{count} exams not marked yet}}"
+    "mobClsPending": "{count, plural, one{{count} exam not marked yet} other{{count} exams not marked yet}}",
+    "mobTabHome": "Home",
+    "mobAnnEmpty": "There are no announcements yet.",
+    "mobAnnBy": "From {name}",
+    "mobAnnLatest": "Latest announcements"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -1676,7 +1680,11 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobClsMarksLine": "{max} में से {marks}",
     "mobClsTotal": "कुल {marks}, {percent}%",
     "mobClsGrade": "ग्रेड {grade}",
-    "mobClsPending": "{count, plural, one{{count} परीक्षा के अंक अभी दर्ज नहीं} other{{count} परीक्षाओं के अंक अभी दर्ज नहीं}}"
+    "mobClsPending": "{count, plural, one{{count} परीक्षा के अंक अभी दर्ज नहीं} other{{count} परीक्षाओं के अंक अभी दर्ज नहीं}}",
+    "mobTabHome": "होम",
+    "mobAnnEmpty": "अभी कोई घोषणा नहीं है।",
+    "mobAnnBy": "{name} की ओर से",
+    "mobAnnLatest": "नवीनतम घोषणाएँ"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -2513,7 +2521,11 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobClsMarksLine": "{max} میں سے {marks}",
     "mobClsTotal": "کل {marks}، {percent}%",
     "mobClsGrade": "گریڈ {grade}",
-    "mobClsPending": "{count, plural, one{{count} امتحان کے نمبر ابھی درج نہیں} other{{count} امتحانات کے نمبر ابھی درج نہیں}}"
+    "mobClsPending": "{count, plural, one{{count} امتحان کے نمبر ابھی درج نہیں} other{{count} امتحانات کے نمبر ابھی درج نہیں}}",
+    "mobTabHome": "ہوم",
+    "mobAnnEmpty": "ابھی کوئی اعلان نہیں ہے۔",
+    "mobAnnBy": "{name} کی طرف سے",
+    "mobAnnLatest": "تازہ ترین اعلانات"
   },
   "ks": {},
   "sd": {},

@@ -834,5 +834,9 @@
   "mobClsMarksLine": "A subject's marks on a report card. {marks} and {max} are marks.",
   "mobClsTotal": "The total on a report card. {marks} is the total marks, {percent} the percentage.",
   "mobClsGrade": "The grade on a report card. {grade} is the grade.",
-  "mobClsPending": "How many exams of a report card have no marks yet. {count} is the number."
+  "mobClsPending": "How many exams of a report card have no marks yet. {count} is the number.",
+  "mobTabHome": "Name of the Home tab in the Staff app's bottom navigation.",
+  "mobAnnEmpty": "Shown when the school has posted no announcement.",
+  "mobAnnBy": "Who posted an announcement. {name} is the person.",
+  "mobAnnLatest": "Heading of the card on Home that shows the newest announcements."
 }

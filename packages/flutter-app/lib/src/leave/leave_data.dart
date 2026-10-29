@@ -22,12 +22,14 @@ Future<T> _guard<T>(Future<T> Function() f) async {
 
 /// What the Leave tab and the cover list pull: the leave types, her balances, and the lessons she covers in the next two weeks.
 /// Her own requests are already pulled for Today ([todayPullTasks]).
-List<PullTask> leavePullTasks(OruApi api, {DateTime Function()? now}) {
+/// [cover] is off for apps that have no timetable (the Staff app). [ownRequests] is on there too: the Teacher app already pulls her requests for Today.
+List<PullTask> leavePullTasks(OruApi api, {DateTime Function()? now, bool cover = true, bool ownRequests = false}) {
   final clock = now ?? DateTime.now;
   return [
+    if (ownRequests) PullTask.list(kLeaveRequest, () => _guard(() async => [for (final r in (await api.leaveRequests()).items) (id: r.id, parentId: null as String?, json: r.toJson())])),
     PullTask.list(kLeaveType, () => _guard(() async => [for (final t in (await api.leaveTypes()).items) (id: t.id, parentId: null as String?, json: t.toJson())])),
     PullTask.list(kLeaveBalance, () => _guard(() async => [for (final b in (await api.leaveBalances()).items) (id: b.type.id, parentId: null as String?, json: b.toJson())])),
-    PullTask.list(kCoverDuty, () => _guard(() async {
+    if (cover) PullTask.list(kCoverDuty, () => _guard(() async {
           final from = clock();
           final r = await api.substitutionMine(from: isoDate(from), to: isoDate(from.add(const Duration(days: 14))));
           return [for (final d in r.items) (id: d.id, parentId: null as String?, json: d.toJson())];

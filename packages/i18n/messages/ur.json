@@ -833,5 +833,9 @@
   "mobClsMarksLine": "{max} میں سے {marks}",
   "mobClsTotal": "کل {marks}، {percent}%",
   "mobClsGrade": "گریڈ {grade}",
-  "mobClsPending": "{count, plural, one{{count} امتحان کے نمبر ابھی درج نہیں} other{{count} امتحانات کے نمبر ابھی درج نہیں}}"
+  "mobClsPending": "{count, plural, one{{count} امتحان کے نمبر ابھی درج نہیں} other{{count} امتحانات کے نمبر ابھی درج نہیں}}",
+  "mobTabHome": "ہوم",
+  "mobAnnEmpty": "ابھی کوئی اعلان نہیں ہے۔",
+  "mobAnnBy": "{name} کی طرف سے",
+  "mobAnnLatest": "تازہ ترین اعلانات"
 }
