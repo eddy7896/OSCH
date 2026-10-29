@@ -5345,6 +5345,24 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Announcements'**
   String get mobMoreAnnouncements;
+
+  /// Row in the More tab that opens the list of notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get mobMoreInbox;
+
+  /// Shown when the person has no notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no notifications.'**
+  String get mobInboxEmpty;
+
+  /// How many notifications have not been read. {count} is a number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} unread'**
+  String mobInboxUnread(String count);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

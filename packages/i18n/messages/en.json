@@ -862,5 +862,8 @@
   "mobCiReasonEmpty": "Write a reason to go on.",
   "mobCiWaitingHr": "Waiting for HR to confirm",
   "mobCiRefused": "The school did not accept this.",
-  "mobMoreAnnouncements": "Announcements"
+  "mobMoreAnnouncements": "Announcements",
+  "mobMoreInbox": "Notifications",
+  "mobInboxEmpty": "You have no notifications.",
+  "mobInboxUnread": "{count} unread"
 }

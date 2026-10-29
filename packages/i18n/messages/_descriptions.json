@@ -863,5 +863,8 @@
   "mobCiReasonEmpty": "Error when the reason box is empty.",
   "mobCiWaitingHr": "Shown beside a check-in made far from the school that HR has not confirmed yet.",
   "mobCiRefused": "Banner when the school refused a check-in or check-out sent from the phone.",
-  "mobMoreAnnouncements": "Row in the More tab that opens the list of announcements."
+  "mobMoreAnnouncements": "Row in the More tab that opens the list of announcements.",
+  "mobMoreInbox": "Row in the More tab that opens the list of notifications.",
+  "mobInboxEmpty": "Shown when the person has no notifications.",
+  "mobInboxUnread": "How many notifications have not been read. {count} is a number."
 }

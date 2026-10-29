@@ -17,6 +17,9 @@ const List<OruRoute> kOruRoutes = [
   _rAttendanceStatuses,
   _rAttendanceStudent,
   _rAttendanceSubmit,
+  _rDevicesList,
+  _rDevicesRegister,
+  _rDevicesRemove,
   _rGradesBands,
   _rGradesExams,
   _rGradesGrid,
@@ -60,6 +63,9 @@ const _rAttendanceDays = OruRoute('GET', '/v1/attendance/classes/{id}/days', Oru
 const _rAttendanceStatuses = OruRoute('GET', '/v1/attendance/statuses', OruAccess.tenant, 'Attendance_statuses');
 const _rAttendanceStudent = OruRoute('GET', '/v1/attendance/students/{id}', OruAccess.tenant, 'Attendance_student');
 const _rAttendanceSubmit = OruRoute('PUT', '/v1/attendance/classes/{id}/days/{date}', OruAccess.tenant, 'Attendance_submit');
+const _rDevicesList = OruRoute('GET', '/v1/devices', OruAccess.user, 'Devices_list');
+const _rDevicesRegister = OruRoute('POST', '/v1/devices', OruAccess.user, 'Devices_register');
+const _rDevicesRemove = OruRoute('DELETE', '/v1/devices', OruAccess.user, 'Devices_remove');
 const _rGradesBands = OruRoute('GET', '/v1/grades/bands', OruAccess.tenant, 'Grades_bands');
 const _rGradesExams = OruRoute('GET', '/v1/grades/exams', OruAccess.tenant, 'Grades_exams');
 const _rGradesGrid = OruRoute('GET', '/v1/grades/exams/{id}/marks', OruAccess.tenant, 'Grades_grid');
@@ -156,6 +162,22 @@ class OruApi {
   Future<ClassDayDto> attendanceSubmit({required String id, required String date, required SubmitDayDto body}) async {
     final j = await _t.send(_rAttendanceSubmit, "/v1/attendance/classes/${Uri.encodeComponent(id)}/days/${Uri.encodeComponent(date)}", body: body.toJson());
     return ClassDayDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/devices
+  Future<DeviceListDto> devicesList() async {
+    final j = await _t.send(_rDevicesList, "/v1/devices");
+    return DeviceListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/devices
+  Future<void> devicesRegister({required RegisterDeviceDto body}) async {
+    await _t.send(_rDevicesRegister, "/v1/devices", body: body.toJson());
+  }
+
+  /// DELETE /v1/devices
+  Future<void> devicesRemove({required RemoveDeviceDto body}) async {
+    await _t.send(_rDevicesRemove, "/v1/devices", body: body.toJson());
   }
 
   /// GET /v1/grades/bands

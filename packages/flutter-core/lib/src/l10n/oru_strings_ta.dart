@@ -3008,4 +3008,15 @@ class OruStringsTa extends OruStrings {
 
   @override
   String get mobMoreAnnouncements => 'Announcements';
+
+  @override
+  String get mobMoreInbox => 'Notifications';
+
+  @override
+  String get mobInboxEmpty => 'You have no notifications.';
+
+  @override
+  String mobInboxUnread(String count) {
+    return '$count unread';
+  }
 }
