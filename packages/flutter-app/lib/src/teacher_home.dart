@@ -6,6 +6,7 @@ import 'package:flutter_core/flutter_core.dart';
 import 'services.dart';
 import 'sync_pill.dart';
 import 'attendance/attendance_screens.dart';
+import 'marks/marks_screens.dart';
 import 'today/today_screen.dart';
 
 /// The Teacher app once signed in: Today, with the account one tap away. More tabs join it as attendance, marks and leave ship.
@@ -35,6 +36,7 @@ class _OruTeacherHomeState extends State<OruTeacherHome> {
     final pages = <String, Widget>{
       'today': OruTodayScreen(services: svc, now: widget.now, onOpenAccount: () => setState(() => _tab = 'more'), onOpenAttendance: () => setState(() => _tab = 'attendance')),
       'attendance': OruAttendanceListScreen(services: svc, now: widget.now),
+      'marks': OruMarksListScreen(services: svc),
       'more': _MorePage(services: svc, state: widget.state),
     };
     return Scaffold(
@@ -46,6 +48,7 @@ class _OruTeacherHomeState extends State<OruTeacherHome> {
         items: [
           OruNavItem(key: 'today', label: s.mobTodayTitle, icon: OruIconName.home),
           OruNavItem(key: 'attendance', label: s.mobTabAttendance, icon: OruIconName.check),
+          OruNavItem(key: 'marks', label: s.mobTabMarks, icon: OruIconName.book),
           OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more),
         ],
       ),

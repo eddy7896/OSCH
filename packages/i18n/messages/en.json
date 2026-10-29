@@ -774,5 +774,22 @@
   "mobAttPickStatus": "Mark {name}",
   "mobAttNoStudents": "There are no students in this class yet.",
   "mobAttNotLoaded": "Connect once to load this class.",
-  "mobAttDateLine": "{className}, {date}"
+  "mobAttDateLine": "{className}, {date}",
+  "mobTabMarks": "Marks",
+  "mobMarksExamsTitle": "Exams",
+  "mobMarksNoExams": "There are no exams for you to enter marks for.",
+  "mobMarksExamLine": "{className}, {subject}",
+  "mobMarksOutOf": "out of {max}",
+  "mobMarksProgress": "{done} of {total} marked",
+  "mobMarksAbsent": "Absent",
+  "mobMarksFieldLabel": "Marks for {name}",
+  "mobMarksErrAbove": "Marks cannot be more than {max}.",
+  "mobMarksErrFormat": "Enter marks with at most one decimal, like 42 or 42.5.",
+  "mobMarksSave": "Save marks",
+  "mobMarksRefused": "The school did not accept these marks.",
+  "mobMarksRefusedAbove": "A mark was above the maximum. Check the marks and save again.",
+  "mobMarksRefusedChanged": "The exam or the class changed. Open the exam again and check the marks.",
+  "mobMarksNotLoaded": "Connect once to load this exam.",
+  "mobMarksNoStudents": "There are no students in this class yet.",
+  "mobMarksErrors": "{count, plural, one{{count} mark needs a correction} other{{count} marks need a correction}}"
 }

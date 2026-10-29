@@ -210,4 +210,82 @@ void main() {
       await locked.dispose();
     });
   });
+
+  testWidgets('Marks pictures', skip: out == null || lucide == null || fonts == null, (tester) async {
+    await tester.runAsync(() async {
+      for (final f in Directory(fonts!).listSync().whereType<File>().where((f) => f.path.endsWith('.ttf'))) {
+        await _font('packages/flutter_core/${f.uri.pathSegments.last.split('-').first}', f);
+      }
+      await _font('packages/lucide_icons_flutter/Lucide', File(lucide!));
+    });
+    tester.view.physicalSize = const Size(390 * 2, 900 * 2);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.reset);
+
+    Future<void> pumpFor() async {
+      for (var i = 0; i < 20; i++) {
+        await tester.pump(const Duration(milliseconds: 50));
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+      }
+    }
+
+    Future<void> snap(String id, String lang) async {
+      final boundary = tester.renderObject<RenderRepaintBoundary>(find.byKey(const ValueKey('shot')));
+      final image = await boundary.toImage(pixelRatio: 2);
+      final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+      Directory(out!).createSync(recursive: true);
+      File('$out/$id-$lang.png').writeAsBytesSync(bytes!.buffer.asUint8List());
+    }
+
+    Future<void> show(Widget home, String lang) async {
+      await tester.pumpWidget(RepaintBoundary(
+        key: const ValueKey('shot'),
+        child: KeyedSubtree(
+          key: UniqueKey(),
+          child: MaterialApp(
+            locale: Locale(lang),
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: oruLocalizationsDelegates,
+            supportedLocales: oruSupportedLocales,
+            localeResolutionCallback: oruLocaleResolution,
+            theme: OruTheme.light(locale: Locale(lang)),
+            home: home,
+          ),
+        ),
+      ));
+      await pumpFor();
+    }
+
+    const exam = {
+      'id': 'e1', 'title': 'Unit 1', 'examDate': '2026-11-05', 'maxMarks': '50', 'maxTenths': 500,
+      'class': {'id': 'c5', 'name': 'Class 5A'}, 'subject': {'id': 'm', 'name': 'Mathematics', 'code': 'MAT'}, 'term': {'id': 't', 'name': 'Term 1'},
+    };
+    await tester.runAsync(() async {
+      final svc = await services();
+      await svc.store.replaceAllRecords('Exam', [
+        (id: 'e1', parentId: null, json: Map<String, dynamic>.from(exam)),
+        (id: 'e2', parentId: null, json: {...exam, 'id': 'e2', 'title': 'Unit 2', 'examDate': '2026-10-12', 'class': {'id': 'c6', 'name': 'Class 6B'}}),
+      ]);
+      await svc.store.replaceRecords('ExamStudent', parentId: 'e1', records: [
+        (id: 'a', json: {'studentId': 'a', 'name': 'Asha Rao', 'enrollmentId': 'S-001', 'marksTenths': 425, 'marks': '42.5', 'absent': false, 'examId': 'e1'}),
+        (id: 'b', json: {'studentId': 'b', 'name': 'Bilal Khan', 'enrollmentId': 'S-002', 'marksTenths': null, 'marks': null, 'absent': false, 'examId': 'e1'}),
+        (id: 'c', json: {'studentId': 'c', 'name': 'Chitra Nair', 'enrollmentId': 'S-003', 'marksTenths': 0, 'marks': null, 'absent': true, 'examId': 'e1'}),
+        (id: 'd', json: {'studentId': 'd', 'name': 'Dev Shah', 'enrollmentId': 'S-004', 'marksTenths': 380, 'marks': '38', 'absent': false, 'examId': 'e1'}),
+      ]);
+      await svc.store.replaceRecords('ExamStudent', parentId: 'e2', records: [(id: 'x', json: {'studentId': 'x', 'name': 'Esha Verma', 'enrollmentId': 'S-009', 'marksTenths': 300, 'marks': '30', 'absent': false, 'examId': 'e2'})]);
+      for (final lang in ['en', 'ur']) {
+        await show(OruMarksListScreen(services: svc), lang);
+        await snap('marks-list', lang);
+      }
+      await svc.store.saveDraft('marks', 'e1', {'cells': {'a': {'text': '42.5', 'absent': false}, 'b': {'text': '51', 'absent': false}, 'c': {'text': '', 'absent': true}, 'd': {'text': '38', 'absent': false}}});
+      for (final lang in ['en', 'ur']) {
+        await show(OruMarksScreen(services: svc, exam: Map<String, dynamic>.from(exam)), lang);
+        await snap('marks-entry-error', lang);
+      }
+      await svc.store.saveDraft('marks', 'e1', {'cells': {'a': {'text': '42.5', 'absent': false}, 'b': {'text': '45.5', 'absent': false}, 'c': {'text': '', 'absent': true}, 'd': {'text': '38', 'absent': false}}});
+      await show(OruMarksScreen(services: svc, exam: Map<String, dynamic>.from(exam)), 'en');
+      await snap('marks-entry', 'en');
+      await svc.dispose();
+    });
+  });
 }

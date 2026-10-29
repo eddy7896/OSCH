@@ -18,7 +18,7 @@ Future<void> main() async {
     runApp(const TeacherApp(locale: Locale(_locale)));
     return;
   }
-  final services = await OruServices.create(config, allowedRoles: _roles, pullTasks: todayPullTasks);
+  final services = await OruServices.create(config, allowedRoles: _roles, pullTasks: (api) => [...todayPullTasks(api), ...marksPullTasks(api)]);
   runApp(OruStaffApp(services: services, title: (s) => s.appTeacher, home: (context, svc, st) => OruTeacherHome(services: svc, state: st), locale: const Locale(_locale)));
 }
 

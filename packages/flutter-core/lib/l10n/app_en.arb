@@ -3599,5 +3599,109 @@
         "type": "String"
       }
     }
+  },
+  "mobTabMarks": "Marks",
+  "@mobTabMarks": {
+    "description": "Name of the Marks tab in the Teacher app's bottom navigation."
+  },
+  "mobMarksExamsTitle": "Exams",
+  "@mobMarksExamsTitle": {
+    "description": "Heading of the list of exams the teacher can enter marks for."
+  },
+  "mobMarksNoExams": "There are no exams for you to enter marks for.",
+  "@mobMarksNoExams": {
+    "description": "Shown when the teacher has no exam to enter marks for."
+  },
+  "mobMarksExamLine": "{className}, {subject}",
+  "@mobMarksExamLine": {
+    "description": "Second line of an exam in the list: the class and the subject. {className} is the class name, {subject} the subject.",
+    "placeholders": {
+      "className": {
+        "type": "String"
+      },
+      "subject": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMarksOutOf": "out of {max}",
+  "@mobMarksOutOf": {
+    "description": "How many marks an exam is out of. {max} is the number.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMarksProgress": "{done} of {total} marked",
+  "@mobMarksProgress": {
+    "description": "How many students have marks entered. {done} and {total} are numbers.",
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMarksAbsent": "Absent",
+  "@mobMarksAbsent": {
+    "description": "Switch next to a student's marks: the student did not sit the exam."
+  },
+  "mobMarksFieldLabel": "Marks for {name}",
+  "@mobMarksFieldLabel": {
+    "description": "Spoken label of the marks box of one student. {name} is the student.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMarksErrAbove": "Marks cannot be more than {max}.",
+  "@mobMarksErrAbove": {
+    "description": "Error under a marks box when the number is above the exam's maximum. {max} is the maximum.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMarksErrFormat": "Enter marks with at most one decimal, like 42 or 42.5.",
+  "@mobMarksErrFormat": {
+    "description": "Error under a marks box when the text is not a number with at most one decimal."
+  },
+  "mobMarksSave": "Save marks",
+  "@mobMarksSave": {
+    "description": "Primary button of the marks screen. It saves on the phone at once and sends when there is a connection."
+  },
+  "mobMarksRefused": "The school did not accept these marks.",
+  "@mobMarksRefused": {
+    "description": "Banner when the school refused marks sent from the phone."
+  },
+  "mobMarksRefusedAbove": "A mark was above the maximum. Check the marks and save again.",
+  "@mobMarksRefusedAbove": {
+    "description": "Explains a refusal because a mark was above the exam's maximum."
+  },
+  "mobMarksRefusedChanged": "The exam or the class changed. Open the exam again and check the marks.",
+  "@mobMarksRefusedChanged": {
+    "description": "Explains a refusal because the exam or the class changed after the marks were typed."
+  },
+  "mobMarksNotLoaded": "Connect once to load this exam.",
+  "@mobMarksNotLoaded": {
+    "description": "Shown when the exam's student list has not been loaded onto the phone yet."
+  },
+  "mobMarksNoStudents": "There are no students in this class yet.",
+  "@mobMarksNoStudents": {
+    "description": "Shown when the exam's class has no students."
+  },
+  "mobMarksErrors": "{count, plural, one{{count} mark needs a correction} other{{count} marks need a correction}}",
+  "@mobMarksErrors": {
+    "description": "Shown above the list when some marks are not valid yet and so cannot be saved. {count} is the number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

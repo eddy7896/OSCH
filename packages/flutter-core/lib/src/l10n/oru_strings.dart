@@ -4817,6 +4817,108 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'{className}, {date}'**
   String mobAttDateLine(String className, String date);
+
+  /// Name of the Marks tab in the Teacher app's bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks'**
+  String get mobTabMarks;
+
+  /// Heading of the list of exams the teacher can enter marks for.
+  ///
+  /// In en, this message translates to:
+  /// **'Exams'**
+  String get mobMarksExamsTitle;
+
+  /// Shown when the teacher has no exam to enter marks for.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no exams for you to enter marks for.'**
+  String get mobMarksNoExams;
+
+  /// Second line of an exam in the list: the class and the subject. {className} is the class name, {subject} the subject.
+  ///
+  /// In en, this message translates to:
+  /// **'{className}, {subject}'**
+  String mobMarksExamLine(String className, String subject);
+
+  /// How many marks an exam is out of. {max} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'out of {max}'**
+  String mobMarksOutOf(String max);
+
+  /// How many students have marks entered. {done} and {total} are numbers.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} marked'**
+  String mobMarksProgress(String done, String total);
+
+  /// Switch next to a student's marks: the student did not sit the exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent'**
+  String get mobMarksAbsent;
+
+  /// Spoken label of the marks box of one student. {name} is the student.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks for {name}'**
+  String mobMarksFieldLabel(String name);
+
+  /// Error under a marks box when the number is above the exam's maximum. {max} is the maximum.
+  ///
+  /// In en, this message translates to:
+  /// **'Marks cannot be more than {max}.'**
+  String mobMarksErrAbove(String max);
+
+  /// Error under a marks box when the text is not a number with at most one decimal.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter marks with at most one decimal, like 42 or 42.5.'**
+  String get mobMarksErrFormat;
+
+  /// Primary button of the marks screen. It saves on the phone at once and sends when there is a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Save marks'**
+  String get mobMarksSave;
+
+  /// Banner when the school refused marks sent from the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept these marks.'**
+  String get mobMarksRefused;
+
+  /// Explains a refusal because a mark was above the exam's maximum.
+  ///
+  /// In en, this message translates to:
+  /// **'A mark was above the maximum. Check the marks and save again.'**
+  String get mobMarksRefusedAbove;
+
+  /// Explains a refusal because the exam or the class changed after the marks were typed.
+  ///
+  /// In en, this message translates to:
+  /// **'The exam or the class changed. Open the exam again and check the marks.'**
+  String get mobMarksRefusedChanged;
+
+  /// Shown when the exam's student list has not been loaded onto the phone yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect once to load this exam.'**
+  String get mobMarksNotLoaded;
+
+  /// Shown when the exam's class has no students.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no students in this class yet.'**
+  String get mobMarksNoStudents;
+
+  /// Shown above the list when some marks are not valid yet and so cannot be saved. {count} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} mark needs a correction} other{{count} marks need a correction}}'**
+  String mobMarksErrors(int count);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

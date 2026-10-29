@@ -291,4 +291,27 @@ void main() {
     expect(c.pullStatus, isA<PullOk>());
     expect((await c.snapshot()).state, SyncState.synced);
   }, skip: skip);
+
+  test('marks: a mark above the maximum is refused with the gateway\'s rule and shown, a valid one is accepted once; the refusal never blocks what follows', () async {
+    final t = await phoneFor('teacher@demo.oruschools.example');
+    final mine = await t.api.teachingMine();
+    final subjects = {for (final s in mine.subjects) s.id};
+    final classes = {for (final c in mine.classes) c.id};
+    final exams = (await t.api.gradesExams()).items.where((e) => subjects.contains(e.subject.id) && classes.contains(e.class_.id)).toList();
+    expect(exams, isNotEmpty, reason: 'the demo teacher can enter marks for an exam');
+    final exam = exams.first;
+    final grid = await t.api.gradesGrid(id: exam.id);
+    expect(grid.rows.length, greaterThanOrEqualTo(2));
+    final first = grid.rows[0], second = grid.rows[1];
+
+    final tooHigh = await t.store.enqueue(kind: OutboxKinds.marksSave, body: {'examId': exam.id, 'entries': [{'studentId': first.studentId, 'marks': '${exam.maxTenths ~/ 10 + 1}'}]});
+    final fine = await t.store.enqueue(kind: OutboxKinds.marksSave, body: {'examId': exam.id, 'entries': [{'studentId': second.studentId, 'marks': '1.5'}]});
+    await t.syncAll();
+    final failed = await t.store.failed();
+    expect([for (final f in failed) f.id], [tooHigh.id]);
+    expect(failed.single.lastErrorMessage, contains('aboveMaximum'), reason: 'the field problem travels with the refusal: ${failed.single.lastErrorMessage}');
+    expect(await t.store.entry(fine.id), isNull, reason: 'the valid one behind it went through');
+    final after = (await t.api.gradesGrid(id: exam.id)).rows.firstWhere((r) => r.studentId == second.studentId);
+    expect(after.marksTenths, 15);
+  }, skip: skip);
 }
