@@ -3776,7 +3776,7 @@
   "@mobLvRefusedConflict": {
     "description": "Explains a refusal of a leave request: it overlaps another one, or the allowance is used up."
   },
-  "mobLvDays": "{days} days",
+  "mobLvDays": "{days} day(s)",
   "@mobLvDays": {
     "description": "How long a leave request is. {days} is a number such as 1 or 1.5.",
     "placeholders": {

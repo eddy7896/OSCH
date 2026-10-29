@@ -5007,7 +5007,7 @@ abstract class OruStrings {
   /// How long a leave request is. {days} is a number such as 1 or 1.5.
   ///
   /// In en, this message translates to:
-  /// **'{days} days'**
+  /// **'{days} day(s)'**
   String mobLvDays(String days);
 
   /// The dates of a leave request. {start} and {end} are dates.
