@@ -103,6 +103,53 @@ class _OruCheckInScreenState extends State<OruCheckInScreen> {
   }
 }
 
+/// A card for the Teacher's Today screen: whether she has checked in, and the way to the screen where she does. Reads only the phone.
+class OruCheckInSummary extends StatefulWidget {
+  const OruCheckInSummary({super.key, required this.services, required this.onOpen, this.now});
+  final OruServices services;
+  final VoidCallback onOpen;
+  final DateTime Function()? now;
+
+  @override
+  State<OruCheckInSummary> createState() => _OruCheckInSummaryState();
+}
+
+class _OruCheckInSummaryState extends State<OruCheckInSummary> {
+  late final CheckInController _c = CheckInController(widget.services.store, location: const NoLocation(), now: widget.now);
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = OruStrings.of(context);
+    return ListenableBuilder(
+      listenable: _c,
+      builder: (context, _) {
+        final v = _c.view;
+        final line = v == null
+            ? ''
+            : v.checkOut != null
+                ? s.mobCiOut('\u2066${_timeOf(context, v.checkOut!)}\u2069')
+                : v.savedOut
+                    ? s.mobCiSavedOut
+                    : v.checkIn != null
+                        ? s.mobCiIn('\u2066${_timeOf(context, v.checkIn!)}\u2069')
+                        : (v.savedIn ? s.mobCiSavedIn : s.mobCiNotIn);
+        return OruCard(
+          title: s.mobCiCardTitle,
+          icon: OruIconName.mapPin,
+          action: OruLinkAction(label: s.mobCiOpen, onPressed: widget.onOpen),
+          child: Padding(padding: const EdgeInsets.all(OruSpacing.space4), child: Text(line)),
+        );
+      },
+    );
+  }
+}
+
 class _ReasonSheet extends StatefulWidget {
   const _ReasonSheet({required this.plan});
   final CheckPlan plan;

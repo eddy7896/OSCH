@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../services.dart';
 import '../sync_pill.dart';
+import '../checkin/checkin_screen.dart';
 import 'today_data.dart';
 import 'today_model.dart';
 
@@ -23,12 +24,15 @@ String _isolate(String text) => '\u2066$text\u2069';
 /// The Teacher's first screen: what is next today, which classes still need attendance, and her leave. It reads only what is on the
 /// phone, so it works with the network off after one sync; the sync state is always in view. Pull down to refresh.
 class OruTodayScreen extends StatefulWidget {
-  const OruTodayScreen({super.key, required this.services, required this.onOpenAccount, this.onOpenAttendance, this.now});
+  const OruTodayScreen({super.key, required this.services, required this.onOpenAccount, this.onOpenAttendance, this.onOpenCheckIn, this.now});
   final OruServices services;
   final VoidCallback onOpenAccount;
 
   /// Makes the attendance card a way in (the Teacher app switches to its Attendance tab).
   final VoidCallback? onOpenAttendance;
+
+  /// Shows her own check-in card and makes it a way in (the Teacher app opens the check-in screen).
+  final VoidCallback? onOpenCheckIn;
 
   /// For tests: the clock the screen believes in.
   final DateTime Function()? now;
@@ -82,6 +86,10 @@ class _OruTodayScreenState extends State<OruTodayScreen> {
                   const SizedBox(height: OruSpacing.space3),
                   OruSyncPill(services: widget.services),
                   const SizedBox(height: OruSpacing.space4),
+                  if (widget.onOpenCheckIn != null) ...[
+                    OruCheckInSummary(services: widget.services, onOpen: widget.onOpenCheckIn!, now: widget.now),
+                    const SizedBox(height: OruSpacing.space3),
+                  ],
                   if (m == null) const SizedBox.shrink() else if (!m.hasData) OruEmptyState(title: s.mobTodayTitle, description: s.mobTodayFirstLoad, icon: OruIconName.cloudOff) else ..._sections(context, s, m),
                 ],
               );

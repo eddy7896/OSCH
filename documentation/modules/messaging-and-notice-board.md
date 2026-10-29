@@ -105,4 +105,4 @@ The Parent app (P5-6) and the guardian-to-account link (a guardian record become
 - **D8 Naming:** parent screen called "Notice board", table `Announcement` extended (recommended), or a separate table?
 
 ## 9. Gap noticed while writing this (outside this plan)
-A **teacher's own check-in and check-out** is not in any phone app: the Staff app has it but a Teacher account cannot sign in there, and the Teacher app has no such screen. HR enters teachers' times on the web (corrections). Tracked as P4-9 in `documentation/phase4_plan.md`.
+A **teacher's own check-in and check-out** was not in any phone app: the Staff app has it but a Teacher account cannot sign in there, and the Teacher app had no such screen. HR entered teachers' times on the web (corrections). Fixed afterwards as P4-9 (`documentation/phase4_plan.md`): the Teacher app now has the check-in card and screen.

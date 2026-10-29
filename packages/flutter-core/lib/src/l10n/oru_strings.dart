@@ -5567,6 +5567,18 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'{name}, {date}'**
   String annFrom(String name, String date);
+
+  /// Title of the card that shows whether the person has checked in at work today.
+  ///
+  /// In en, this message translates to:
+  /// **'Your check-in'**
+  String get mobCiCardTitle;
+
+  /// Link that opens the screen where the person checks in and out of work.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in or out'**
+  String get mobCiOpen;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

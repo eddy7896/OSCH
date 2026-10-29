@@ -899,5 +899,7 @@
   "annWithdraw": "Withdraw",
   "annWithdrawn": "Withdrawn",
   "annWithdrawnOk": "Announcement withdrawn.",
-  "annFrom": "{name}, {date}"
+  "annFrom": "{name}, {date}",
+  "mobCiCardTitle": "Your check-in",
+  "mobCiOpen": "Check in or out"
 }

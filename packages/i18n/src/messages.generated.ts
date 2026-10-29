@@ -905,7 +905,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "annWithdraw": "Withdraw",
     "annWithdrawn": "Withdrawn",
     "annWithdrawnOk": "Announcement withdrawn.",
-    "annFrom": "{name}, {date}"
+    "annFrom": "{name}, {date}",
+    "mobCiCardTitle": "Your check-in",
+    "mobCiOpen": "Check in or out"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -1808,7 +1810,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "annWithdraw": "वापस लें",
     "annWithdrawn": "वापस ली गई",
     "annWithdrawnOk": "घोषणा वापस ले ली गई।",
-    "annFrom": "{name}, {date}"
+    "annFrom": "{name}, {date}",
+    "mobCiCardTitle": "आपका चेक-इन",
+    "mobCiOpen": "चेक-इन या चेक-आउट"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -2711,7 +2715,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "annWithdraw": "واپس لیں",
     "annWithdrawn": "واپس لیا گیا",
     "annWithdrawnOk": "اعلان واپس لے لیا گیا۔",
-    "annFrom": "{name}، {date}"
+    "annFrom": "{name}، {date}",
+    "mobCiCardTitle": "آپ کا چیک اِن",
+    "mobCiOpen": "چیک اِن یا چیک آؤٹ"
   },
   "ks": {},
   "sd": {},
