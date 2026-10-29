@@ -5662,6 +5662,20 @@ export interface StaffSeqInfoVariables {
   schoolId: UUIDString;
 }
 
+export interface StaffWithAccountsData {
+  staffProfiles: ({
+    id: UUIDString;
+    employeeId: string;
+    firstName: string;
+    lastName: string;
+    userId?: string | null;
+  } & StaffProfile_Key)[];
+}
+
+export interface StaffWithAccountsVariables {
+  schoolId: UUIDString;
+}
+
 export interface StartImportBatchData {
   query?: {
     actor: ({
@@ -7774,4 +7788,9 @@ export function studentRoutesOfRoute(vars: StudentRoutesOfRouteVariables, option
 export function studentRoutesOfStudents(dc: DataConnect, vars: StudentRoutesOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentRoutesOfStudentsData>>;
 /** Generated Node Admin SDK operation action function for the 'StudentRoutesOfStudents' Query. Allow users to pass in custom DataConnect instances. */
 export function studentRoutesOfStudents(vars: StudentRoutesOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentRoutesOfStudentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StaffWithAccounts' Query. Allow users to execute without passing in DataConnect. */
+export function staffWithAccounts(dc: DataConnect, vars: StaffWithAccountsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffWithAccountsData>>;
+/** Generated Node Admin SDK operation action function for the 'StaffWithAccounts' Query. Allow users to pass in custom DataConnect instances. */
+export function staffWithAccounts(vars: StaffWithAccountsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffWithAccountsData>>;
 

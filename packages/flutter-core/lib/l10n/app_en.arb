@@ -4284,5 +4284,215 @@
   "mobCiOpen": "Check in or out",
   "@mobCiOpen": {
     "description": "Link that opens the screen where the person checks in and out of work."
+  },
+  "trnViewLabel": "Transport view",
+  "@trnViewLabel": {
+    "description": "Label of the choice between the vehicles list and the routes list on the Transport screen."
+  },
+  "trnTabVehicles": "Vehicles",
+  "@trnTabVehicles": {
+    "description": "Tab: the list of the school's vehicles."
+  },
+  "trnTabRoutes": "Routes",
+  "@trnTabRoutes": {
+    "description": "Tab: the list of bus routes."
+  },
+  "trnAdd": "Add",
+  "@trnAdd": {
+    "description": "Button that adds a vehicle, a route or a stop."
+  },
+  "trnDelete": "Delete",
+  "@trnDelete": {
+    "description": "Button that deletes a vehicle or a route."
+  },
+  "trnRemove": "Remove",
+  "@trnRemove": {
+    "description": "Button that removes a stop or a rider from a list."
+  },
+  "trnPrint": "Print the list",
+  "@trnPrint": {
+    "description": "Button that prints the list of who rides a route."
+  },
+  "trnNoVehicles": "No vehicles yet.",
+  "@trnNoVehicles": {
+    "description": "Shown when the school has no vehicle on the list."
+  },
+  "trnNoRoutes": "No routes yet.",
+  "@trnNoRoutes": {
+    "description": "Shown when the school has no bus route."
+  },
+  "trnPlate": "Number plate",
+  "@trnPlate": {
+    "description": "Field: the vehicle's number plate."
+  },
+  "trnVehicleName": "Name (for example Bus 3)",
+  "@trnVehicleName": {
+    "description": "Field: what the school calls the vehicle."
+  },
+  "trnSeats": "Seats",
+  "@trnSeats": {
+    "description": "Field and column: how many seats a vehicle has."
+  },
+  "trnStatusACTIVE": "In service",
+  "@trnStatusACTIVE": {
+    "description": "Status of a vehicle that is in use."
+  },
+  "trnStatusOUT_OF_SERVICE": "Out of service",
+  "@trnStatusOUT_OF_SERVICE": {
+    "description": "Status of a vehicle that is not in use."
+  },
+  "trnPlateInUse": "That number plate is already on the list.",
+  "@trnPlateInUse": {
+    "description": "Error when a vehicle with that number plate already exists."
+  },
+  "trnVehicleInUse": "A route still uses this vehicle. Take it off the route first.",
+  "@trnVehicleInUse": {
+    "description": "Error when deleting a vehicle that a route uses."
+  },
+  "trnRouteName": "Route name",
+  "@trnRouteName": {
+    "description": "Field: the name of a bus route."
+  },
+  "trnDirection": "Direction",
+  "@trnDirection": {
+    "description": "Field: whether the route runs to the school or home."
+  },
+  "trnMORNING": "Morning, to school",
+  "@trnMORNING": {
+    "description": "Direction of a route that takes students to the school."
+  },
+  "trnAFTERNOON": "Afternoon, home",
+  "@trnAFTERNOON": {
+    "description": "Direction of a route that takes students home."
+  },
+  "trnStartsAt": "Starts at",
+  "@trnStartsAt": {
+    "description": "Field: the time a route starts, for example 07:15."
+  },
+  "trnVehicle": "Vehicle",
+  "@trnVehicle": {
+    "description": "Field and column: the vehicle that runs a route."
+  },
+  "trnDriver": "Driver",
+  "@trnDriver": {
+    "description": "Field and column: the driver of a route."
+  },
+  "trnNoneChosen": "None",
+  "@trnNoneChosen": {
+    "description": "Choice meaning no vehicle or no driver."
+  },
+  "trnRouteNameInUse": "A route with that name already exists.",
+  "@trnRouteNameInUse": {
+    "description": "Error when a route name is taken."
+  },
+  "trnNotADriver": "That person is not a driver of this school.",
+  "@trnNotADriver": {
+    "description": "Error when the chosen driver does not hold the driver role."
+  },
+  "trnStops": "Stops",
+  "@trnStops": {
+    "description": "Heading: the stops of a route in the order the bus calls."
+  },
+  "trnStopName": "Stop name",
+  "@trnStopName": {
+    "description": "Field: the name of a stop."
+  },
+  "trnStopTime": "Planned time",
+  "@trnStopTime": {
+    "description": "Field: the planned time at a stop, for example 07:30."
+  },
+  "trnMoveUp": "Move up",
+  "@trnMoveUp": {
+    "description": "Button that moves a stop earlier in the order."
+  },
+  "trnMoveDown": "Move down",
+  "@trnMoveDown": {
+    "description": "Button that moves a stop later in the order."
+  },
+  "trnSaveStops": "Save stops",
+  "@trnSaveStops": {
+    "description": "Button that saves the list of stops."
+  },
+  "trnStopsSaved": "Stops saved.",
+  "@trnStopsSaved": {
+    "description": "Shown after the stops were saved."
+  },
+  "trnStopsDropped": "{count} students lost their seat because their stop is no longer on the list.",
+  "@trnStopsDropped": {
+    "description": "Shown after saving the stops when some students lost their seat. {count} is a number.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "trnDuplicateStop": "Two stops have the same name.",
+  "@trnDuplicateStop": {
+    "description": "Error when two stops of a route share a name."
+  },
+  "trnSeatTitle": "Seat a student",
+  "@trnSeatTitle": {
+    "description": "Heading of the card where a student is put on this route."
+  },
+  "trnFindStudent": "Find a student",
+  "@trnFindStudent": {
+    "description": "Field: search for a student by name or enrolment number."
+  },
+  "trnFindHint": "Type at least two letters of the name or enrolment number.",
+  "@trnFindHint": {
+    "description": "Hint under the student search field."
+  },
+  "trnChooseStop": "Stop",
+  "@trnChooseStop": {
+    "description": "Field: the stop where the student gets on."
+  },
+  "trnSeat": "Seat on this route",
+  "@trnSeat": {
+    "description": "Button that seats the chosen student on this route and stop."
+  },
+  "trnSeated": "Student seated.",
+  "@trnSeated": {
+    "description": "Shown after a student was seated."
+  },
+  "trnUnseated": "Seat removed.",
+  "@trnUnseated": {
+    "description": "Shown after a student's seat was removed."
+  },
+  "trnVehicleFull": "The vehicle has no free seat.",
+  "@trnVehicleFull": {
+    "description": "Error when the route's vehicle is full."
+  },
+  "trnStudentNotFound": "That student was not found.",
+  "@trnStudentNotFound": {
+    "description": "Error when the chosen student is not an active student of this school."
+  },
+  "trnWhoRides": "Who rides",
+  "@trnWhoRides": {
+    "description": "Heading: the list of students on a route, stop by stop."
+  },
+  "trnNobodyAtStop": "Nobody yet.",
+  "@trnNobodyAtStop": {
+    "description": "Shown under a stop that has no student."
+  },
+  "trnSeatsTaken": "{assigned} of {capacity} seats taken",
+  "@trnSeatsTaken": {
+    "description": "How many of the vehicle's seats are taken. {assigned} and {capacity} are numbers.",
+    "placeholders": {
+      "assigned": {
+        "type": "String"
+      },
+      "capacity": {
+        "type": "String"
+      }
+    }
+  },
+  "trnRiding": "{assigned} students ride",
+  "@trnRiding": {
+    "description": "How many students ride a route that has no vehicle yet. {assigned} is a number.",
+    "placeholders": {
+      "assigned": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -611,6 +611,16 @@ export type DocumentUploadRequestDto = {
     sizeBytes: number;
 };
 
+export type DriverDto = {
+    employeeId: string;
+    id: string;
+    name: string;
+};
+
+export type DriverListDto = {
+    items: Array<DriverDto>;
+};
+
 export type DueBandDto = {
     band: string;
     count: number;
@@ -1931,6 +1941,17 @@ export type StudentDto = {
     placement: PlacementDto | null;
     placements: Array<PlacementDto>;
     status: string;
+};
+
+export type StudentFoundDto = {
+    className: string | null;
+    enrollmentId: string;
+    id: string;
+    name: string;
+};
+
+export type StudentFoundListDto = {
+    items: Array<StudentFoundDto>;
 };
 
 export type StudentListDto = {
@@ -11474,6 +11495,44 @@ export type TransportChildrenResponses = {
 
 export type TransportChildrenResponse = TransportChildrenResponses[keyof TransportChildrenResponses];
 
+export type TransportDriversData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/transport/drivers';
+};
+
+export type TransportDriversErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportDriversError = TransportDriversErrors[keyof TransportDriversErrors];
+
+export type TransportDriversResponses = {
+    200: DriverListDto;
+};
+
+export type TransportDriversResponse = TransportDriversResponses[keyof TransportDriversResponses];
+
 export type TransportRoutesData = {
     body?: never;
     path?: never;
@@ -11769,6 +11828,46 @@ export type TransportSetStopsResponses = {
 };
 
 export type TransportSetStopsResponse = TransportSetStopsResponses[keyof TransportSetStopsResponses];
+
+export type TransportFindStudentsData = {
+    body?: never;
+    path?: never;
+    query: {
+        search: string;
+    };
+    url: '/v1/transport/students';
+};
+
+export type TransportFindStudentsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportFindStudentsError = TransportFindStudentsErrors[keyof TransportFindStudentsErrors];
+
+export type TransportFindStudentsResponses = {
+    200: StudentFoundListDto;
+};
+
+export type TransportFindStudentsResponse = TransportFindStudentsResponses[keyof TransportFindStudentsResponses];
 
 export type TransportStudentData = {
     body?: never;

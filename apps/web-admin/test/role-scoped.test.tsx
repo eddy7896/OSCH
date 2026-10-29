@@ -42,6 +42,7 @@ const NEEDS: Record<string, [string, string]> = {
   invoicesCreate: ["finance", "create"], invoicesPay: ["finance", "create"], invoicesPreview: ["finance", "create"], invoicesGenerate: ["finance", "create"], feesCreateStructure: ["finance", "create"], feesCreateItem: ["finance", "create"],
   invoicesReverse: ["finance", "delete"],
   schoolProfile: ["settings", "read"], schoolUpdate: ["settings", "update"], schoolGeofence: ["settings", "read"], schoolSetGeofence: ["settings", "update"], schoolClearGeofence: ["settings", "update"],
+  transportVehicles: ["transport", "read"], transportRoutes: ["transport", "read"], transportRoute: ["transport", "read"], transportManifest: ["transport", "read"], transportDrivers: ["transport", "read"], transportFindStudents: ["transport", "read"], transportCreateVehicle: ["transport", "create"], transportUpdateVehicle: ["transport", "update"], transportDeleteVehicle: ["transport", "delete"], transportCreateRoute: ["transport", "create"], transportUpdateRoute: ["transport", "update"], transportDeleteRoute: ["transport", "delete"], transportSetStops: ["transport", "update"], transportAssign: ["transport", "update"], transportUnassign: ["transport", "update"],
   announcementsList: ["announcements", "read"], announcementsPost: ["announcements", "create"], announcementsWithdraw: ["announcements", "update"], staffAttendanceConfirm: ["staff_attendance", "update"],
   membershipsList: ["memberships", "read"], membershipsUpdate: ["memberships", "update"], membershipsRemove: ["memberships", "delete"], accountsCreate: ["memberships", "create"],
   invitationsList: ["memberships", "read"], invitationsCreate: ["memberships", "create"], invitationsRevoke: ["memberships", "update"],
@@ -94,7 +95,7 @@ const asRole = (role: Role) => {
 };
 /** The school-wide grant, except for what everyone has only for themselves (the inbox): any scope will do there. */
 const granted = (role: Role, [resource, action]: [string, string]) => permissionsOf({ schoolRole: role }).some((p) => p.resource === resource && p.action === action && (p.scope === "school" || resource === "notifications"));
-const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", attendance: "Attendance", gradebook: "Gradebook", leave: "Leave", substitution: "Substitutions", "staff-attendance": "Staff attendance", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles", announcements: "Announcements" };
+const SCREENS: Record<string, string> = { students: "Students", classes: "Classes and subjects", timetable: "Timetable", attendance: "Attendance", gradebook: "Gradebook", leave: "Leave", substitution: "Substitutions", "staff-attendance": "Staff attendance", admissions: "Admissions", staff: "Staff", payroll: "Payroll", finance: "Fees and payments", "reports-finance": "Financial reports", "reports-hr": "HR reports", settings: "School settings", memberships: "Users and roles", announcements: "Announcements", transport: "Transport" };
 const settle = () => new Promise((r) => setTimeout(r, 100));
 
 afterEach(() => vi.restoreAllMocks());

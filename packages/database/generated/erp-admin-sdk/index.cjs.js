@@ -2078,3 +2078,10 @@ function studentRoutesOfStudents(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.studentRoutesOfStudents = studentRoutesOfStudents;
 
+function staffWithAccounts(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StaffWithAccounts', inputVars, inputOpts);
+}
+exports.staffWithAccounts = staffWithAccounts;
+

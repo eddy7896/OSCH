@@ -3139,4 +3139,156 @@ class OruStringsKn extends OruStrings {
 
   @override
   String get mobCiOpen => 'Check in or out';
+
+  @override
+  String get trnViewLabel => 'Transport view';
+
+  @override
+  String get trnTabVehicles => 'Vehicles';
+
+  @override
+  String get trnTabRoutes => 'Routes';
+
+  @override
+  String get trnAdd => 'Add';
+
+  @override
+  String get trnDelete => 'Delete';
+
+  @override
+  String get trnRemove => 'Remove';
+
+  @override
+  String get trnPrint => 'Print the list';
+
+  @override
+  String get trnNoVehicles => 'No vehicles yet.';
+
+  @override
+  String get trnNoRoutes => 'No routes yet.';
+
+  @override
+  String get trnPlate => 'Number plate';
+
+  @override
+  String get trnVehicleName => 'Name (for example Bus 3)';
+
+  @override
+  String get trnSeats => 'Seats';
+
+  @override
+  String get trnStatusACTIVE => 'In service';
+
+  @override
+  String get trnStatusOUT_OF_SERVICE => 'Out of service';
+
+  @override
+  String get trnPlateInUse => 'That number plate is already on the list.';
+
+  @override
+  String get trnVehicleInUse =>
+      'A route still uses this vehicle. Take it off the route first.';
+
+  @override
+  String get trnRouteName => 'Route name';
+
+  @override
+  String get trnDirection => 'Direction';
+
+  @override
+  String get trnMORNING => 'Morning, to school';
+
+  @override
+  String get trnAFTERNOON => 'Afternoon, home';
+
+  @override
+  String get trnStartsAt => 'Starts at';
+
+  @override
+  String get trnVehicle => 'Vehicle';
+
+  @override
+  String get trnDriver => 'Driver';
+
+  @override
+  String get trnNoneChosen => 'None';
+
+  @override
+  String get trnRouteNameInUse => 'A route with that name already exists.';
+
+  @override
+  String get trnNotADriver => 'That person is not a driver of this school.';
+
+  @override
+  String get trnStops => 'Stops';
+
+  @override
+  String get trnStopName => 'Stop name';
+
+  @override
+  String get trnStopTime => 'Planned time';
+
+  @override
+  String get trnMoveUp => 'Move up';
+
+  @override
+  String get trnMoveDown => 'Move down';
+
+  @override
+  String get trnSaveStops => 'Save stops';
+
+  @override
+  String get trnStopsSaved => 'Stops saved.';
+
+  @override
+  String trnStopsDropped(String count) {
+    return '$count students lost their seat because their stop is no longer on the list.';
+  }
+
+  @override
+  String get trnDuplicateStop => 'Two stops have the same name.';
+
+  @override
+  String get trnSeatTitle => 'Seat a student';
+
+  @override
+  String get trnFindStudent => 'Find a student';
+
+  @override
+  String get trnFindHint =>
+      'Type at least two letters of the name or enrolment number.';
+
+  @override
+  String get trnChooseStop => 'Stop';
+
+  @override
+  String get trnSeat => 'Seat on this route';
+
+  @override
+  String get trnSeated => 'Student seated.';
+
+  @override
+  String get trnUnseated => 'Seat removed.';
+
+  @override
+  String get trnVehicleFull => 'The vehicle has no free seat.';
+
+  @override
+  String get trnStudentNotFound => 'That student was not found.';
+
+  @override
+  String get trnWhoRides => 'Who rides';
+
+  @override
+  String get trnNobodyAtStop => 'Nobody yet.';
+
+  @override
+  String trnSeatsTaken(String assigned, String capacity) {
+    return '$assigned of $capacity seats taken';
+  }
+
+  @override
+  String trnRiding(String assigned) {
+    return '$assigned students ride';
+  }
 }

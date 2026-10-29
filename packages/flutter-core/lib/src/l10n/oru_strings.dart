@@ -5579,6 +5579,294 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Check in or out'**
   String get mobCiOpen;
+
+  /// Label of the choice between the vehicles list and the routes list on the Transport screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport view'**
+  String get trnViewLabel;
+
+  /// Tab: the list of the school's vehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles'**
+  String get trnTabVehicles;
+
+  /// Tab: the list of bus routes.
+  ///
+  /// In en, this message translates to:
+  /// **'Routes'**
+  String get trnTabRoutes;
+
+  /// Button that adds a vehicle, a route or a stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get trnAdd;
+
+  /// Button that deletes a vehicle or a route.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get trnDelete;
+
+  /// Button that removes a stop or a rider from a list.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get trnRemove;
+
+  /// Button that prints the list of who rides a route.
+  ///
+  /// In en, this message translates to:
+  /// **'Print the list'**
+  String get trnPrint;
+
+  /// Shown when the school has no vehicle on the list.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicles yet.'**
+  String get trnNoVehicles;
+
+  /// Shown when the school has no bus route.
+  ///
+  /// In en, this message translates to:
+  /// **'No routes yet.'**
+  String get trnNoRoutes;
+
+  /// Field: the vehicle's number plate.
+  ///
+  /// In en, this message translates to:
+  /// **'Number plate'**
+  String get trnPlate;
+
+  /// Field: what the school calls the vehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (for example Bus 3)'**
+  String get trnVehicleName;
+
+  /// Field and column: how many seats a vehicle has.
+  ///
+  /// In en, this message translates to:
+  /// **'Seats'**
+  String get trnSeats;
+
+  /// Status of a vehicle that is in use.
+  ///
+  /// In en, this message translates to:
+  /// **'In service'**
+  String get trnStatusACTIVE;
+
+  /// Status of a vehicle that is not in use.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of service'**
+  String get trnStatusOUT_OF_SERVICE;
+
+  /// Error when a vehicle with that number plate already exists.
+  ///
+  /// In en, this message translates to:
+  /// **'That number plate is already on the list.'**
+  String get trnPlateInUse;
+
+  /// Error when deleting a vehicle that a route uses.
+  ///
+  /// In en, this message translates to:
+  /// **'A route still uses this vehicle. Take it off the route first.'**
+  String get trnVehicleInUse;
+
+  /// Field: the name of a bus route.
+  ///
+  /// In en, this message translates to:
+  /// **'Route name'**
+  String get trnRouteName;
+
+  /// Field: whether the route runs to the school or home.
+  ///
+  /// In en, this message translates to:
+  /// **'Direction'**
+  String get trnDirection;
+
+  /// Direction of a route that takes students to the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning, to school'**
+  String get trnMORNING;
+
+  /// Direction of a route that takes students home.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon, home'**
+  String get trnAFTERNOON;
+
+  /// Field: the time a route starts, for example 07:15.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts at'**
+  String get trnStartsAt;
+
+  /// Field and column: the vehicle that runs a route.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle'**
+  String get trnVehicle;
+
+  /// Field and column: the driver of a route.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get trnDriver;
+
+  /// Choice meaning no vehicle or no driver.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get trnNoneChosen;
+
+  /// Error when a route name is taken.
+  ///
+  /// In en, this message translates to:
+  /// **'A route with that name already exists.'**
+  String get trnRouteNameInUse;
+
+  /// Error when the chosen driver does not hold the driver role.
+  ///
+  /// In en, this message translates to:
+  /// **'That person is not a driver of this school.'**
+  String get trnNotADriver;
+
+  /// Heading: the stops of a route in the order the bus calls.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops'**
+  String get trnStops;
+
+  /// Field: the name of a stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop name'**
+  String get trnStopName;
+
+  /// Field: the planned time at a stop, for example 07:30.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned time'**
+  String get trnStopTime;
+
+  /// Button that moves a stop earlier in the order.
+  ///
+  /// In en, this message translates to:
+  /// **'Move up'**
+  String get trnMoveUp;
+
+  /// Button that moves a stop later in the order.
+  ///
+  /// In en, this message translates to:
+  /// **'Move down'**
+  String get trnMoveDown;
+
+  /// Button that saves the list of stops.
+  ///
+  /// In en, this message translates to:
+  /// **'Save stops'**
+  String get trnSaveStops;
+
+  /// Shown after the stops were saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops saved.'**
+  String get trnStopsSaved;
+
+  /// Shown after saving the stops when some students lost their seat. {count} is a number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} students lost their seat because their stop is no longer on the list.'**
+  String trnStopsDropped(String count);
+
+  /// Error when two stops of a route share a name.
+  ///
+  /// In en, this message translates to:
+  /// **'Two stops have the same name.'**
+  String get trnDuplicateStop;
+
+  /// Heading of the card where a student is put on this route.
+  ///
+  /// In en, this message translates to:
+  /// **'Seat a student'**
+  String get trnSeatTitle;
+
+  /// Field: search for a student by name or enrolment number.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a student'**
+  String get trnFindStudent;
+
+  /// Hint under the student search field.
+  ///
+  /// In en, this message translates to:
+  /// **'Type at least two letters of the name or enrolment number.'**
+  String get trnFindHint;
+
+  /// Field: the stop where the student gets on.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get trnChooseStop;
+
+  /// Button that seats the chosen student on this route and stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Seat on this route'**
+  String get trnSeat;
+
+  /// Shown after a student was seated.
+  ///
+  /// In en, this message translates to:
+  /// **'Student seated.'**
+  String get trnSeated;
+
+  /// Shown after a student's seat was removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Seat removed.'**
+  String get trnUnseated;
+
+  /// Error when the route's vehicle is full.
+  ///
+  /// In en, this message translates to:
+  /// **'The vehicle has no free seat.'**
+  String get trnVehicleFull;
+
+  /// Error when the chosen student is not an active student of this school.
+  ///
+  /// In en, this message translates to:
+  /// **'That student was not found.'**
+  String get trnStudentNotFound;
+
+  /// Heading: the list of students on a route, stop by stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Who rides'**
+  String get trnWhoRides;
+
+  /// Shown under a stop that has no student.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody yet.'**
+  String get trnNobodyAtStop;
+
+  /// How many of the vehicle's seats are taken. {assigned} and {capacity} are numbers.
+  ///
+  /// In en, this message translates to:
+  /// **'{assigned} of {capacity} seats taken'**
+  String trnSeatsTaken(String assigned, String capacity);
+
+  /// How many students ride a route that has no vehicle yet. {assigned} is a number.
+  ///
+  /// In en, this message translates to:
+  /// **'{assigned} students ride'**
+  String trnRiding(String assigned);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

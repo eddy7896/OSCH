@@ -3142,4 +3142,155 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get mobCiOpen => 'चेक-इन या चेक-आउट';
+
+  @override
+  String get trnViewLabel => 'परिवहन दृश्य';
+
+  @override
+  String get trnTabVehicles => 'वाहन';
+
+  @override
+  String get trnTabRoutes => 'मार्ग';
+
+  @override
+  String get trnAdd => 'जोड़ें';
+
+  @override
+  String get trnDelete => 'हटाएँ';
+
+  @override
+  String get trnRemove => 'निकालें';
+
+  @override
+  String get trnPrint => 'सूची छापें';
+
+  @override
+  String get trnNoVehicles => 'अभी कोई वाहन नहीं।';
+
+  @override
+  String get trnNoRoutes => 'अभी कोई मार्ग नहीं।';
+
+  @override
+  String get trnPlate => 'नंबर प्लेट';
+
+  @override
+  String get trnVehicleName => 'नाम (जैसे बस 3)';
+
+  @override
+  String get trnSeats => 'सीटें';
+
+  @override
+  String get trnStatusACTIVE => 'चालू';
+
+  @override
+  String get trnStatusOUT_OF_SERVICE => 'सेवा से बाहर';
+
+  @override
+  String get trnPlateInUse => 'यह नंबर प्लेट सूची में पहले से है।';
+
+  @override
+  String get trnVehicleInUse =>
+      'कोई मार्ग अभी इस वाहन का उपयोग करता है। पहले इसे मार्ग से हटाएँ।';
+
+  @override
+  String get trnRouteName => 'मार्ग का नाम';
+
+  @override
+  String get trnDirection => 'दिशा';
+
+  @override
+  String get trnMORNING => 'सुबह, स्कूल की ओर';
+
+  @override
+  String get trnAFTERNOON => 'दोपहर, घर की ओर';
+
+  @override
+  String get trnStartsAt => 'शुरू होने का समय';
+
+  @override
+  String get trnVehicle => 'वाहन';
+
+  @override
+  String get trnDriver => 'ड्राइवर';
+
+  @override
+  String get trnNoneChosen => 'कोई नहीं';
+
+  @override
+  String get trnRouteNameInUse => 'इस नाम का मार्ग पहले से है।';
+
+  @override
+  String get trnNotADriver => 'यह व्यक्ति इस स्कूल का ड्राइवर नहीं है।';
+
+  @override
+  String get trnStops => 'स्टॉप';
+
+  @override
+  String get trnStopName => 'स्टॉप का नाम';
+
+  @override
+  String get trnStopTime => 'निर्धारित समय';
+
+  @override
+  String get trnMoveUp => 'ऊपर ले जाएँ';
+
+  @override
+  String get trnMoveDown => 'नीचे ले जाएँ';
+
+  @override
+  String get trnSaveStops => 'स्टॉप सहेजें';
+
+  @override
+  String get trnStopsSaved => 'स्टॉप सहेजे गए।';
+
+  @override
+  String trnStopsDropped(String count) {
+    return '$count छात्रों की सीट चली गई क्योंकि उनका स्टॉप अब सूची में नहीं है।';
+  }
+
+  @override
+  String get trnDuplicateStop => 'दो स्टॉप का नाम एक ही है।';
+
+  @override
+  String get trnSeatTitle => 'छात्र को सीट दें';
+
+  @override
+  String get trnFindStudent => 'छात्र खोजें';
+
+  @override
+  String get trnFindHint => 'नाम या नामांकन संख्या के कम से कम दो अक्षर लिखें।';
+
+  @override
+  String get trnChooseStop => 'स्टॉप';
+
+  @override
+  String get trnSeat => 'इस मार्ग पर सीट दें';
+
+  @override
+  String get trnSeated => 'छात्र को सीट मिल गई।';
+
+  @override
+  String get trnUnseated => 'सीट हटा दी गई।';
+
+  @override
+  String get trnVehicleFull => 'वाहन में कोई सीट खाली नहीं है।';
+
+  @override
+  String get trnStudentNotFound => 'वह छात्र नहीं मिला।';
+
+  @override
+  String get trnWhoRides => 'कौन सवारी करता है';
+
+  @override
+  String get trnNobodyAtStop => 'अभी कोई नहीं।';
+
+  @override
+  String trnSeatsTaken(String assigned, String capacity) {
+    return '$capacity में से $assigned सीटें भरी हैं';
+  }
+
+  @override
+  String trnRiding(String assigned) {
+    return '$assigned छात्र सवारी करते हैं';
+  }
 }

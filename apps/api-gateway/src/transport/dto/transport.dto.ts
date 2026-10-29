@@ -109,6 +109,32 @@ export class RouteWithSeatsDto extends RouteDto {
   droppedSeats!: number;
 }
 
+export class DriverDto {
+  id!: string;
+  employeeId!: string;
+  name!: string;
+}
+
+export class DriverListDto {
+  items!: DriverDto[];
+}
+
+export class FindStudentsQueryDto {
+  /** Part of a name or enrolment id; at least two characters. */
+  @IsString() @Length(2, 60) search!: string;
+}
+
+export class StudentFoundDto {
+  id!: string;
+  name!: string;
+  enrollmentId!: string;
+  className!: string | null;
+}
+
+export class StudentFoundListDto {
+  items!: StudentFoundDto[];
+}
+
 export class ManifestStudentDto {
   id!: string;
   name!: string;
