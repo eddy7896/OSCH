@@ -16,7 +16,7 @@ LOGS="$(mktemp -d -t oru-demo.XXXXXX)"
 PIDS=()
 cleanup() {
   echo; echo "stopping the demo..."
-  for p in "${PIDS[@]}"; do kill "$p" 2>/dev/null; done
+  for p in ${PIDS[@]+"${PIDS[@]}"}; do kill "$p" 2>/dev/null; done
   pkill -f "emulators:start --only dataconnect,auth --project demo-oruschools" 2>/dev/null
   for port in 3100 3101 3102; do lsof -ti ":$port" 2>/dev/null | xargs kill 2>/dev/null; done
   true
