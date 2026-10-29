@@ -15,6 +15,7 @@
 #   APPS="teacher staff"       which apps to install (default: teacher staff parent driver)
 #   LAUNCH=teacher             which app to open at the end (default: teacher; none = open nothing)
 #   NO_WEB=1                   do not open the browser tabs
+#   KEEP_BUILDS=1              keep the builds of earlier runs (by default they are deleted first, to free disk space; builds are slower then)
 set -u
 set -o pipefail
 cd "$(dirname "$0")"
@@ -91,6 +92,18 @@ xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID" -b >/dev/null 2>&1
 open -a Simulator
 echo "      simulator $UDID"
+
+# --- 2b. clear what earlier runs left behind ---------------------------------------------------------------------------------
+# The apps' build folders (iOS .app bundles and any APKs), Xcode's Runner build cache, and the four apps on the simulator.
+# Everything here is rebuilt on demand and is not in git. It does not touch other projects, other simulators or Android emulators.
+if [ -z "${KEEP_BUILDS:-}" ]; then
+  before=$(df -k / | awk 'NR==2{print $4}')
+  for d in apps/mobile-*; do rm -rf "$d/build"; done
+  rm -rf "$HOME"/Library/Developer/Xcode/DerivedData/Runner-*
+  for id in teacher staff parent driver; do xcrun simctl uninstall "$UDID" "com.oruschools.$id" >/dev/null 2>&1; done
+  after=$(df -k / | awk 'NR==2{print $4}')
+  echo "      cleared old builds, freed about $(( (after - before) / 1024 )) MB"
+fi
 
 # --- 3. the apps ------------------------------------------------------------------------------------------------------------
 echo "[3/3] building and installing the apps (the first build of each takes a few minutes)..."
