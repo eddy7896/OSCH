@@ -860,6 +860,7 @@ export interface ClearRouteStopsData {
       id: UUIDString;
     } & TransportRoute_Key)[];
   };
+  studentRoute_deleteMany: number;
   routeStop_deleteMany: number;
   auditLog_insert: AuditLog_Key;
 }
@@ -2191,6 +2192,7 @@ export interface DeleteTransportRouteData {
       id: UUIDString;
     } & TransportRoute_Key)[];
   };
+  studentRoute_deleteMany: number;
   routeStop_deleteMany: number;
   transportRoute_delete?: TransportRoute_Key | null;
   auditLog_insert: AuditLog_Key;
@@ -5024,6 +5026,26 @@ export interface RemoveStudentDocumentVariables {
   details?: unknown | null;
 }
 
+export interface RemoveStudentRouteData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    seat: ({
+      id: UUIDString;
+    } & StudentRoute_Key)[];
+  };
+  studentRoute_delete?: StudentRoute_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveStudentRouteVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface RemoveTeacherSubjectData {
   query?: {
     actor: ({
@@ -5403,6 +5425,36 @@ export interface SetStudentPhotoVariables {
   details?: unknown | null;
 }
 
+export interface SetStudentRouteData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+    stop: ({
+      id: UUIDString;
+    } & RouteStop_Key)[];
+  };
+  studentRoute_upsert: StudentRoute_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetStudentRouteVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  routeId: UUIDString;
+  stopId: UUIDString;
+  direction: RouteDirection;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface SetSubscriptionStatusData {
   school_update?: School_Key | null;
   auditLog_insert: AuditLog_Key;
@@ -5652,6 +5704,68 @@ export interface StudentIdentitiesVariables {
   schoolId: UUIDString;
   limit: number;
   offset: number;
+}
+
+export interface StudentRoute_Key {
+  id: UUIDString;
+  __typename?: 'StudentRoute_Key';
+}
+
+export interface StudentRoutesOfRouteData {
+  studentRoutes: ({
+    id: UUIDString;
+    stopId: UUIDString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+      enrollmentId: string;
+      status: StudentStatus;
+      placements: ({
+        classroom: {
+          name: string;
+        };
+      })[];
+    } & Student_Key;
+  } & StudentRoute_Key)[];
+}
+
+export interface StudentRoutesOfRouteVariables {
+  schoolId: UUIDString;
+  routeId: UUIDString;
+}
+
+export interface StudentRoutesOfStudentsData {
+  studentRoutes: ({
+    id: UUIDString;
+    studentId: UUIDString;
+    direction: RouteDirection;
+    route: {
+      id: UUIDString;
+      name: string;
+      direction: RouteDirection;
+      startTime?: string | null;
+      vehicle?: {
+        registration: string;
+        label: string;
+      };
+      driver?: {
+        firstName: string;
+        lastName: string;
+      };
+    } & TransportRoute_Key;
+    stop: {
+      id: UUIDString;
+      name: string;
+      sequence: number;
+      arrivalTime?: string | null;
+    } & RouteStop_Key;
+  } & StudentRoute_Key)[];
+}
+
+export interface StudentRoutesOfStudentsVariables {
+  schoolId: UUIDString;
+  studentIds: UUIDString[];
 }
 
 export interface Student_Key {
@@ -7071,6 +7185,16 @@ export function addRouteStop(dc: DataConnect, vars: AddRouteStopVariables, optio
 /** Generated Node Admin SDK operation action function for the 'AddRouteStop' Mutation. Allow users to pass in custom DataConnect instances. */
 export function addRouteStop(vars: AddRouteStopVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddRouteStopData>>;
 
+/** Generated Node Admin SDK operation action function for the 'SetStudentRoute' Mutation. Allow users to execute without passing in DataConnect. */
+export function setStudentRoute(dc: DataConnect, vars: SetStudentRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetStudentRouteData>>;
+/** Generated Node Admin SDK operation action function for the 'SetStudentRoute' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setStudentRoute(vars: SetStudentRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetStudentRouteData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveStudentRoute' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeStudentRoute(dc: DataConnect, vars: RemoveStudentRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStudentRouteData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveStudentRoute' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeStudentRoute(vars: RemoveStudentRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStudentRouteData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -7640,4 +7764,14 @@ export function listTransportRoutes(vars: ListTransportRoutesVariables, options?
 export function getTransportRoute(dc: DataConnect, vars: GetTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTransportRouteData>>;
 /** Generated Node Admin SDK operation action function for the 'GetTransportRoute' Query. Allow users to pass in custom DataConnect instances. */
 export function getTransportRoute(vars: GetTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTransportRouteData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StudentRoutesOfRoute' Query. Allow users to execute without passing in DataConnect. */
+export function studentRoutesOfRoute(dc: DataConnect, vars: StudentRoutesOfRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentRoutesOfRouteData>>;
+/** Generated Node Admin SDK operation action function for the 'StudentRoutesOfRoute' Query. Allow users to pass in custom DataConnect instances. */
+export function studentRoutesOfRoute(vars: StudentRoutesOfRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentRoutesOfRouteData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StudentRoutesOfStudents' Query. Allow users to execute without passing in DataConnect. */
+export function studentRoutesOfStudents(dc: DataConnect, vars: StudentRoutesOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentRoutesOfStudentsData>>;
+/** Generated Node Admin SDK operation action function for the 'StudentRoutesOfStudents' Query. Allow users to pass in custom DataConnect instances. */
+export function studentRoutesOfStudents(vars: StudentRoutesOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentRoutesOfStudentsData>>;
 

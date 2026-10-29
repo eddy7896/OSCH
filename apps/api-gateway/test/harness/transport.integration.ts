@@ -150,4 +150,115 @@ describe.skipIf(!ready)('transport against the real emulators (P5-4a)', { timeou
     // and the same plate may exist in each school
     await call(otherManager, 'post', '/transport/vehicles', B()).send({ registration: v.registration, label: 'Same plate', capacity: 20 }).expect(201);
   });
+
+  // ---- P5-4b: seats and manifests
+  const academic = () => w!.roles.A.ACADEMIC_ADMIN;
+  const student = async (first: string, school = A(), who: Person = academic()) => (await call(who, 'post', '/students', school).send({ firstName: first, lastName: `R${uniq()}` }).expect(201)).body as { id: string; firstName: string };
+  const makeRoute = async (direction: 'MORNING' | 'AFTERNOON', over: Record<string, unknown> = {}) => (await call(manager(), 'post', '/transport/routes').send({ name: `${direction} ${uniq()}`, direction, ...over }).expect(201)).body as Route;
+  const withStops = async (r: Route, names: string[]) => (await call(manager(), 'put', `/transport/routes/${r.id}/stops`).send({ stops: names.map((name) => ({ name })) }).expect(200)).body as Route & { droppedSeats: number };
+  const seat = (studentId: string, routeId: string, stopId: string, who: Person = manager()) => call(who, 'put', `/transport/students/${studentId}/seat`).send({ routeId, stopId });
+  interface Seats { studentId: string; items: Array<{ direction: string; route: { id: string; name: string }; stop: { id: string; name: string; sequence: number }; vehicle: { registration: string } | null; driverName: string | null }> }
+  interface Manifest { route: Route; capacity: number | null; assigned: number; stops: Array<{ id: string; sequence: number; name: string; students: Array<{ id: string; name: string; enrollmentId: string; className: string | null }> }> }
+
+  it('seating: a student rides one route per direction, at a stop of that route; a second seat in the same direction replaces the first; the manifest lists them by stop', async () => {
+    const morning = await withStops(await makeRoute('MORNING', { startTime: '07:00' }), ['Lake Road', 'Market', 'School gate']);
+    const afternoon = await withStops(await makeRoute('AFTERNOON'), ['School gate', 'Market']);
+    const other = await withStops(await makeRoute('MORNING'), ['Hill Top']);
+    const ann = await student('Ann');
+    const bob = await student('Bob');
+    const stop = (r: Route, name: string) => r.stops.find((s) => s.name === name)!.id;
+
+    const s1 = (await seat(ann.id, morning.id, stop(morning, 'Market')).expect(200)).body as Seats;
+    expect(s1.items).toMatchObject([{ direction: 'MORNING', route: { id: morning.id }, stop: { name: 'Market', sequence: 2 } }]);
+    await seat(ann.id, afternoon.id, stop(afternoon, 'Market')).expect(200);
+    await seat(bob.id, morning.id, stop(morning, 'Lake Road')).expect(200);
+    // moving to another route in the same direction replaces the seat; it never leaves two
+    const moved = (await seat(ann.id, other.id, stop(other, 'Hill Top')).expect(200)).body as Seats;
+    expect(moved.items.map((i) => [i.direction, i.route.id])).toEqual([['AFTERNOON', afternoon.id], ['MORNING', other.id]]);
+    const m = (await call(manager(), 'get', `/transport/routes/${morning.id}/manifest`).expect(200)).body as Manifest;
+    expect(m.assigned).toBe(1);
+    expect(m.stops.map((s) => [s.sequence, s.name, s.students.map((x) => x.name.split(' ')[0])])).toEqual([[1, 'Lake Road', ['Bob']], [2, 'Market', []], [3, 'School gate', []]]);
+    expect(m.stops[0]!.students[0]).toMatchObject({ enrollmentId: expect.any(String) });
+    // refused: a stop of another route, an unknown student, an unknown route, bad input
+    expect((await seat(ann.id, morning.id, stop(other, 'Hill Top')).expect(400)).body.error.details[0].rule).toBe('notOnThisRoute');
+    expect((await seat(randomUUID(), morning.id, stop(morning, 'Market')).expect(400)).body.error.details[0].rule).toBe('notFound');
+    await seat(ann.id, randomUUID(), stop(morning, 'Market')).expect(404);
+    await call(manager(), 'put', `/transport/students/${ann.id}/seat`).send({ routeId: morning.id }).expect(400);
+    await call(manager(), 'put', `/transport/students/${ann.id}/seat`).send({ routeId: morning.id, stopId: stop(morning, 'Market'), extra: 1 }).expect(400);
+    // taking the seat away
+    await call(manager(), 'delete', `/transport/students/${ann.id}/seat/AFTERNOON`).expect(204);
+    await call(manager(), 'delete', `/transport/students/${ann.id}/seat/AFTERNOON`).expect(404);
+    await call(manager(), 'delete', `/transport/students/${ann.id}/seat/NOON`).expect(400);
+    expect(((await call(manager(), 'get', `/transport/students/${ann.id}`).expect(200)).body as Seats).items.map((i) => i.direction)).toEqual(['MORNING']);
+    for (const a of ['transport.student.assign', 'transport.student.unassign']) expect((await audit(a)).length, a).toBeGreaterThan(0);
+  });
+
+  it('a full vehicle takes no more students; a student who leaves the school drops off the manifest; only the Transport manager seats students', async () => {
+    const small = (await call(manager(), 'post', '/transport/vehicles').send({ registration: plate(), label: 'Van', capacity: 1 }).expect(201)).body as Vehicle;
+    const r = await withStops(await makeRoute('MORNING', { vehicleId: small.id }), ['Only stop']);
+    const [a, b] = [await student('Cap'), await student('Cap')];
+    await seat(a.id, r.id, r.stops[0]!.id).expect(200);
+    await seat(a.id, r.id, r.stops[0]!.id).expect(200); // the same student again is not a second seat
+    expect((await seat(b.id, r.id, r.stops[0]!.id).expect(409)).body.error.details[0].rule).toBe('vehicleFull');
+    await call(academic(), 'patch', `/students/${a.id}`).send({ status: 'LEFT' }).expect(200);
+    expect(((await call(manager(), 'get', `/transport/routes/${r.id}/manifest`).expect(200)).body as Manifest).assigned).toBe(0);
+    for (const p of [w!.roles.A.PRINCIPAL, w!.roles.A.TEACHER, w!.roles.A.PARENT, hr(), w!.roles.A.OPERATIONS_MANAGER]) expect([403, 404], 'seat').toContain((await seat(b.id, r.id, r.stops[0]!.id, p)).status);
+    expect([403, 404]).toContain((await call(w!.roles.A.DRIVER, 'delete', `/transport/students/${b.id}/seat/MORNING`)).status);
+  });
+
+  it('changing a route\'s stops keeps the seats on stops of the same name and drops the rest, and says how many', async () => {
+    const r = await withStops(await makeRoute('MORNING'), ['A', 'B', 'C']);
+    const [x, y] = [await student('Keep'), await student('Lose')];
+    await seat(x.id, r.id, r.stops[1]!.id).expect(200); // B
+    await seat(y.id, r.id, r.stops[2]!.id).expect(200); // C
+    const after = await withStops(r, ['B', 'A', 'D']);
+    expect(after.droppedSeats).toBe(1);
+    const m = (await call(manager(), 'get', `/transport/routes/${r.id}/manifest`).expect(200)).body as Manifest;
+    expect(m.stops.map((s) => [s.name, s.students.length])).toEqual([['B', 1], ['A', 0], ['D', 0]]);
+    expect(((await call(manager(), 'get', `/transport/students/${y.id}`).expect(200)).body as Seats).items).toEqual([]);
+    // deleting the route takes the seats with it
+    await call(manager(), 'delete', `/transport/routes/${r.id}`).expect(204);
+    expect(((await call(manager(), 'get', `/transport/students/${x.id}`).expect(200)).body as Seats).items).toEqual([]);
+  });
+
+  it('a driver sees the manifest of their own route only; a parent sees only their own child\'s ride, never a manifest or another family\'s child', async () => {
+    const mine = await withStops(await makeRoute('MORNING', { driverId: driverStaffId }), ['Stop 1']);
+    const foreign = await withStops(await makeRoute('MORNING'), ['Stop 9']);
+    const [kid, stranger] = [await student('Mine'), await student('Stranger')];
+    await seat(kid.id, mine.id, mine.stops[0]!.id).expect(200);
+    await seat(stranger.id, mine.id, mine.stops[0]!.id).expect(200);
+    await call(w!.roles.A.DRIVER, 'get', `/transport/routes/${mine.id}/manifest`).expect(200);
+    await call(w!.roles.A.DRIVER, 'get', `/transport/routes/${foreign.id}/manifest`).expect(404);
+    await call(w!.roles.A.DRIVER, 'get', `/transport/students/${kid.id}`).expect(404);
+    expect(((await call(w!.roles.A.DRIVER, 'get', '/transport/children').expect(200)).body as { items: unknown[] }).items).toEqual([]);
+
+    const parent = w!.roles.A.PARENT;
+    await call(parent, 'get', `/transport/students/${kid.id}`).expect(404); // not linked yet
+    expect(((await call(parent, 'get', '/transport/children').expect(200)).body as { items: unknown[] }).items).toEqual([]);
+    await call(academic(), 'post', `/students/${kid.id}/parent-accounts`).send({ userId: parent.uid, relationship: 'FATHER' }).expect(201);
+    const seen = (await call(parent, 'get', `/transport/students/${kid.id}`).expect(200)).body as Seats;
+    expect(seen.items).toMatchObject([{ direction: 'MORNING', route: { id: mine.id }, stop: { name: 'Stop 1' }, driverName: expect.stringContaining('Ravi') }]);
+    expect(JSON.stringify(seen)).not.toMatch(/phone|email|address/i);
+    const kids = (await call(parent, 'get', '/transport/children').expect(200)).body as { items: Seats[] };
+    expect(kids.items.map((k) => k.studentId)).toEqual([kid.id]);
+    await call(parent, 'get', `/transport/students/${stranger.id}`).expect(404); // another family's child: the same answer as for a child that does not exist
+    await call(parent, 'get', `/transport/students/${randomUUID()}`).expect(404);
+    await call(parent, 'get', `/transport/routes/${mine.id}/manifest`).expect(404); // a manifest holds other families' children
+    await call(parent, 'get', `/transport/routes/${mine.id}`).expect(404);
+    await seat(kid.id, mine.id, mine.stops[0]!.id, parent).expect(403);
+  });
+
+  it('another school: its students cannot be seated here, its manager sees no seats of this school', async () => {
+    const r = await withStops(await makeRoute('MORNING'), ['X']);
+    const mineStudent = await student('Home');
+    const foreignStudent = await student('Away', B(), w!.roles.B.ACADEMIC_ADMIN);
+    await seat(mineStudent.id, r.id, r.stops[0]!.id).expect(200);
+    expect((await seat(foreignStudent.id, r.id, r.stops[0]!.id).expect(400)).body.error.details[0].rule).toBe('notFound');
+    const other = w!.roles.B.TRANSPORT_MANAGER;
+    await call(other, 'get', `/transport/students/${mineStudent.id}`, B()).expect(404);
+    await call(other, 'get', `/transport/routes/${r.id}/manifest`, B()).expect(404);
+    await call(other, 'put', `/transport/students/${mineStudent.id}/seat`, B()).send({ routeId: r.id, stopId: r.stops[0]!.id }).expect(404);
+    await call(other, 'delete', `/transport/students/${mineStudent.id}/seat/MORNING`, B()).expect(404);
+  });
 });
+

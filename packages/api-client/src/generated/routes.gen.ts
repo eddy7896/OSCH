@@ -1299,6 +1299,18 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Sync_tombstones"
   },
   {
+    "method": "GET",
+    "path": "/v1/transport/children",
+    "access": "tenant",
+    "operationId": "Transport_children"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/transport/routes/{id}/manifest",
+    "access": "tenant",
+    "operationId": "Transport_manifest"
+  },
+  {
     "method": "PUT",
     "path": "/v1/transport/routes/{id}/stops",
     "access": "tenant",
@@ -1333,6 +1345,24 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/transport/routes",
     "access": "tenant",
     "operationId": "Transport_createRoute"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/transport/students/{studentId}/seat/{direction}",
+    "access": "tenant",
+    "operationId": "Transport_unassign"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/transport/students/{studentId}/seat",
+    "access": "tenant",
+    "operationId": "Transport_assign"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/transport/students/{studentId}",
+    "access": "tenant",
+    "operationId": "Transport_student"
   },
   {
     "method": "DELETE",

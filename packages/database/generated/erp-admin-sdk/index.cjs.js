@@ -1252,6 +1252,20 @@ function addRouteStop(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.addRouteStop = addRouteStop;
 
+function setStudentRoute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetStudentRoute', inputVars, inputOpts);
+}
+exports.setStudentRoute = setStudentRoute;
+
+function removeStudentRoute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveStudentRoute', inputVars, inputOpts);
+}
+exports.removeStudentRoute = removeStudentRoute;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2049,4 +2063,18 @@ function getTransportRoute(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetTransportRoute', inputVars, inputOpts);
 }
 exports.getTransportRoute = getTransportRoute;
+
+function studentRoutesOfRoute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StudentRoutesOfRoute', inputVars, inputOpts);
+}
+exports.studentRoutesOfRoute = studentRoutesOfRoute;
+
+function studentRoutesOfStudents(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StudentRoutesOfStudents', inputVars, inputOpts);
+}
+exports.studentRoutesOfStudents = studentRoutesOfStudents;
 

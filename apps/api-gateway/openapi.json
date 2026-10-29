@@ -752,6 +752,21 @@
         ],
         "type": "object"
       },
+      "AssignStudentDto": {
+        "properties": {
+          "routeId": {
+            "type": "string"
+          },
+          "stopId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "routeId",
+          "stopId"
+        ],
+        "type": "object"
+      },
       "BalanceDto": {
         "properties": {
           "academicYearId": {
@@ -907,6 +922,20 @@
           "name",
           "relationship",
           "class"
+        ],
+        "type": "object"
+      },
+      "ChildrenSeatsDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StudentSeatsDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -3776,6 +3805,88 @@
         ],
         "type": "object"
       },
+      "ManifestDto": {
+        "properties": {
+          "assigned": {
+            "type": "number"
+          },
+          "capacity": {
+            "nullable": true,
+            "type": "number"
+          },
+          "route": {
+            "$ref": "#/components/schemas/RouteDto"
+          },
+          "stops": {
+            "items": {
+              "$ref": "#/components/schemas/ManifestStopDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "route",
+          "capacity",
+          "assigned",
+          "stops"
+        ],
+        "type": "object"
+      },
+      "ManifestStopDto": {
+        "properties": {
+          "arrivalTime": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sequence": {
+            "type": "number"
+          },
+          "students": {
+            "items": {
+              "$ref": "#/components/schemas/ManifestStudentDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "name",
+          "arrivalTime",
+          "students"
+        ],
+        "type": "object"
+      },
+      "ManifestStudentDto": {
+        "properties": {
+          "className": {
+            "nullable": true,
+            "type": "string"
+          },
+          "enrollmentId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "enrollmentId",
+          "className"
+        ],
+        "type": "object"
+      },
       "MarkEntryDto": {
         "properties": {
           "absent": {
@@ -5658,6 +5769,71 @@
         ],
         "type": "object"
       },
+      "RouteWithSeatsDto": {
+        "properties": {
+          "direction": {
+            "type": "string"
+          },
+          "driver": {
+            "properties": {
+              "employeeId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "employeeId",
+              "name"
+            ],
+            "type": "object"
+          },
+          "droppedSeats": {
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "startTime": {
+            "nullable": true,
+            "type": "string"
+          },
+          "stops": {
+            "items": {
+              "$ref": "#/components/schemas/StopViewDto"
+            },
+            "type": "array"
+          },
+          "vehicle": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VehicleDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "direction",
+          "startTime",
+          "vehicle",
+          "driver",
+          "stops",
+          "droppedSeats"
+        ],
+        "type": "object"
+      },
       "RunTotalsDto": {
         "properties": {
           "deductionsMinor": {
@@ -6023,6 +6199,84 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "SeatDto": {
+        "properties": {
+          "direction": {
+            "type": "string"
+          },
+          "driverName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "route": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "startTime": {
+                "nullable": true,
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "startTime"
+            ],
+            "type": "object"
+          },
+          "stop": {
+            "properties": {
+              "arrivalTime": {
+                "nullable": true,
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "sequence": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "sequence",
+              "arrivalTime"
+            ],
+            "type": "object"
+          },
+          "vehicle": {
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "registration": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "registration",
+              "label"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "direction",
+          "route",
+          "stop",
+          "vehicle",
+          "driverName"
+        ],
         "type": "object"
       },
       "SetBalanceDto": {
@@ -7184,6 +7438,24 @@
           "id",
           "enrollmentId",
           "name"
+        ],
+        "type": "object"
+      },
+      "StudentSeatsDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SeatDto"
+            },
+            "type": "array"
+          },
+          "studentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId",
+          "items"
         ],
         "type": "object"
       },
@@ -22967,6 +23239,56 @@
         }
       }
     },
+    "/v1/transport/children": {
+      "get": {
+        "operationId": "Transport_children",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChildrenSeatsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "transport"
+        }
+      }
+    },
     "/v1/transport/routes": {
       "get": {
         "operationId": "Transport_routes",
@@ -23269,6 +23591,67 @@
         }
       }
     },
+    "/v1/transport/routes/{id}/manifest": {
+      "get": {
+        "operationId": "Transport_manifest",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "transport"
+        }
+      }
+    },
     "/v1/transport/routes/{id}/stops": {
       "put": {
         "operationId": "Transport_setStops",
@@ -23300,7 +23683,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RouteDto"
+                  "$ref": "#/components/schemas/RouteWithSeatsDto"
                 }
               }
             },
@@ -23337,6 +23720,212 @@
         "x-audit": {
           "action": "transport.route.stops",
           "operation": "ClearRouteStops"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "transport"
+        }
+      }
+    },
+    "/v1/transport/students/{studentId}": {
+      "get": {
+        "operationId": "Transport_student",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "studentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentSeatsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "transport"
+        }
+      }
+    },
+    "/v1/transport/students/{studentId}/seat": {
+      "put": {
+        "operationId": "Transport_assign",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "studentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignStudentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentSeatsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.student.assign",
+          "operation": "SetStudentRoute"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "transport"
+        }
+      }
+    },
+    "/v1/transport/students/{studentId}/seat/{direction}": {
+      "delete": {
+        "operationId": "Transport_unassign",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "studentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "direction",
+            "required": true,
+            "schema": {
+              "enum": [
+                "MORNING",
+                "AFTERNOON"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.student.unassign",
+          "operation": "RemoveStudentRoute"
         },
         "x-permission": {
           "action": "update",

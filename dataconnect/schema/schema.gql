@@ -745,3 +745,16 @@ type RouteStop @table @unique(fields: ["route", "sequence"]) @unique(fields: ["r
   lngMicro: Int
   arrivalTime: String # "HH:MM", the planned time
 }
+
+# A student's seat on a route (P5-4b): which stop they use, in which direction. A student is on at most one route per direction (the unique key), and the id is derived from
+# (student, direction) by the gateway so setting it again is an upsert of the same row.
+type StudentRoute @table @unique(fields: ["student", "direction"]) {
+  id: UUID!
+  school: School!
+  student: Student!
+  route: TransportRoute!
+  stop: RouteStop!
+  direction: RouteDirection!
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+

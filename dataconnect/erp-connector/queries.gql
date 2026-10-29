@@ -663,3 +663,19 @@ query GetTransportRoute($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
   }
 }
 
+# ---- Student assignment and manifests (P5-4b)
+query StudentRoutesOfRoute($schoolId: UUID!, $routeId: UUID!) @auth(level: NO_ACCESS) {
+  studentRoutes(where: {schoolId: {eq: $schoolId}, routeId: {eq: $routeId}}, limit: 1000) {
+    id stopId
+    student { id firstName lastName enrollmentId status placements: studentEnrollments_on_student(orderBy: [{createdAt: DESC}], limit: 1) { classroom { name } } }
+  }
+}
+
+query StudentRoutesOfStudents($schoolId: UUID!, $studentIds: [UUID!]!) @auth(level: NO_ACCESS) {
+  studentRoutes(where: {schoolId: {eq: $schoolId}, studentId: {in: $studentIds}}, limit: 1000) {
+    id studentId direction
+    route { id name direction startTime vehicle { registration label } driver { firstName lastName } }
+    stop { id name sequence arrivalTime }
+  }
+}
+
