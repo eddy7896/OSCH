@@ -448,6 +448,14 @@ export type CreateRequestDto = {
     startDate: string;
 };
 
+export type CreateRouteDto = {
+    direction: 'MORNING' | 'AFTERNOON';
+    driverId?: string;
+    name: string;
+    startTime?: string;
+    vehicleId?: string;
+};
+
 export type CreateSalaryLineDto = {
     amountMinor: string;
     kind: 'EARNING' | 'DEDUCTION';
@@ -519,6 +527,12 @@ export type CreateTypeDto = {
     name: string;
     paid: boolean;
     quotaDays?: string;
+};
+
+export type CreateVehicleDto = {
+    capacity: number;
+    label: string;
+    registration: string;
 };
 
 export type CreatedInvitationDto = {
@@ -1446,6 +1460,24 @@ export type RosterEntryDto = {
     status: string;
 };
 
+export type RouteDto = {
+    direction: string;
+    driver: {
+        employeeId: string;
+        id: string;
+        name: string;
+    };
+    id: string;
+    name: string;
+    startTime: string | null;
+    stops: Array<StopViewDto>;
+    vehicle: VehicleDto | null;
+};
+
+export type RouteListDto = {
+    items: Array<RouteDto>;
+};
+
 export type RunTotalsDto = {
     deductionsMinor: string;
     grossMinor: string;
@@ -1581,6 +1613,10 @@ export type SetSlotDto = {
     periodId: string;
     staffId: string;
     subjectId: string;
+};
+
+export type SetStopsDto = {
+    stops: Array<StopDto>;
 };
 
 export type SignedReadDto = {
@@ -1778,6 +1814,22 @@ export type StatusLabelDto = {
 
 export type StatusListDto = {
     items: Array<StatusDto>;
+};
+
+export type StopDto = {
+    arrivalTime?: string;
+    lat?: number;
+    lng?: number;
+    name: string;
+};
+
+export type StopViewDto = {
+    arrivalTime: string | null;
+    id: string;
+    lat: number | null;
+    lng: number | null;
+    name: string;
+    sequence: number;
 };
 
 export type StudentAttendanceDto = {
@@ -2033,6 +2085,14 @@ export type UpdatePreferencesDto = {
     language: 'en' | 'hi' | 'ur' | 'ks' | 'sd' | 'ps' | 'fa' | 'ar' | 'bn' | 'as' | 'mr' | 'doi' | 'gu' | 'pa' | 'or' | 'ta' | 'te' | 'kn' | 'ml';
 };
 
+export type UpdateRouteDto = {
+    direction?: 'MORNING' | 'AFTERNOON';
+    driverId?: string | null;
+    name?: string;
+    startTime?: string;
+    vehicleId?: string | null;
+};
+
 export type UpdateSalaryLineDto = {
     amountMinor?: string;
     kind?: 'EARNING' | 'DEDUCTION';
@@ -2097,6 +2157,13 @@ export type UpdateTypeDto = {
     quotaDays?: string;
 };
 
+export type UpdateVehicleDto = {
+    capacity?: number;
+    label?: string;
+    registration?: string;
+    status?: 'ACTIVE' | 'OUT_OF_SERVICE';
+};
+
 export type UploadTicketDto = {
     expiresInSeconds: number;
     headers: {
@@ -2106,6 +2173,18 @@ export type UploadTicketDto = {
     method: 'PUT';
     publicUrl: string | null;
     uploadUrl: string;
+};
+
+export type VehicleDto = {
+    capacity: number;
+    id: string;
+    label: string;
+    registration: string;
+    status: string;
+};
+
+export type VehicleListDto = {
+    items: Array<VehicleDto>;
 };
 
 export type WorkingDaysDto = {
@@ -11285,6 +11364,422 @@ export type SyncTombstonesResponses = {
 };
 
 export type SyncTombstonesResponse = SyncTombstonesResponses[keyof SyncTombstonesResponses];
+
+export type TransportRoutesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/transport/routes';
+};
+
+export type TransportRoutesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportRoutesError = TransportRoutesErrors[keyof TransportRoutesErrors];
+
+export type TransportRoutesResponses = {
+    200: RouteListDto;
+};
+
+export type TransportRoutesResponse = TransportRoutesResponses[keyof TransportRoutesResponses];
+
+export type TransportCreateRouteData = {
+    body: CreateRouteDto;
+    path?: never;
+    query?: never;
+    url: '/v1/transport/routes';
+};
+
+export type TransportCreateRouteErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportCreateRouteError = TransportCreateRouteErrors[keyof TransportCreateRouteErrors];
+
+export type TransportCreateRouteResponses = {
+    201: RouteDto;
+};
+
+export type TransportCreateRouteResponse = TransportCreateRouteResponses[keyof TransportCreateRouteResponses];
+
+export type TransportDeleteRouteData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/transport/routes/{id}';
+};
+
+export type TransportDeleteRouteErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportDeleteRouteError = TransportDeleteRouteErrors[keyof TransportDeleteRouteErrors];
+
+export type TransportDeleteRouteResponses = {
+    204: void;
+};
+
+export type TransportDeleteRouteResponse = TransportDeleteRouteResponses[keyof TransportDeleteRouteResponses];
+
+export type TransportRouteData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/transport/routes/{id}';
+};
+
+export type TransportRouteErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportRouteError = TransportRouteErrors[keyof TransportRouteErrors];
+
+export type TransportRouteResponses = {
+    200: RouteDto;
+};
+
+export type TransportRouteResponse = TransportRouteResponses[keyof TransportRouteResponses];
+
+export type TransportUpdateRouteData = {
+    body: UpdateRouteDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/transport/routes/{id}';
+};
+
+export type TransportUpdateRouteErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportUpdateRouteError = TransportUpdateRouteErrors[keyof TransportUpdateRouteErrors];
+
+export type TransportUpdateRouteResponses = {
+    200: RouteDto;
+};
+
+export type TransportUpdateRouteResponse = TransportUpdateRouteResponses[keyof TransportUpdateRouteResponses];
+
+export type TransportSetStopsData = {
+    body: SetStopsDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/transport/routes/{id}/stops';
+};
+
+export type TransportSetStopsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportSetStopsError = TransportSetStopsErrors[keyof TransportSetStopsErrors];
+
+export type TransportSetStopsResponses = {
+    200: RouteDto;
+};
+
+export type TransportSetStopsResponse = TransportSetStopsResponses[keyof TransportSetStopsResponses];
+
+export type TransportVehiclesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/transport/vehicles';
+};
+
+export type TransportVehiclesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportVehiclesError = TransportVehiclesErrors[keyof TransportVehiclesErrors];
+
+export type TransportVehiclesResponses = {
+    200: VehicleListDto;
+};
+
+export type TransportVehiclesResponse = TransportVehiclesResponses[keyof TransportVehiclesResponses];
+
+export type TransportCreateVehicleData = {
+    body: CreateVehicleDto;
+    path?: never;
+    query?: never;
+    url: '/v1/transport/vehicles';
+};
+
+export type TransportCreateVehicleErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportCreateVehicleError = TransportCreateVehicleErrors[keyof TransportCreateVehicleErrors];
+
+export type TransportCreateVehicleResponses = {
+    201: VehicleDto;
+};
+
+export type TransportCreateVehicleResponse = TransportCreateVehicleResponses[keyof TransportCreateVehicleResponses];
+
+export type TransportDeleteVehicleData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/transport/vehicles/{id}';
+};
+
+export type TransportDeleteVehicleErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportDeleteVehicleError = TransportDeleteVehicleErrors[keyof TransportDeleteVehicleErrors];
+
+export type TransportDeleteVehicleResponses = {
+    204: void;
+};
+
+export type TransportDeleteVehicleResponse = TransportDeleteVehicleResponses[keyof TransportDeleteVehicleResponses];
+
+export type TransportUpdateVehicleData = {
+    body: UpdateVehicleDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/transport/vehicles/{id}';
+};
+
+export type TransportUpdateVehicleErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TransportUpdateVehicleError = TransportUpdateVehicleErrors[keyof TransportUpdateVehicleErrors];
+
+export type TransportUpdateVehicleResponses = {
+    200: VehicleDto;
+};
+
+export type TransportUpdateVehicleResponse = TransportUpdateVehicleResponses[keyof TransportUpdateVehicleResponses];
 
 export type UploadsSchoolLogoData = {
     body: SchoolLogoUploadDto;

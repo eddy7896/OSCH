@@ -83,6 +83,10 @@ export enum PayrollRunStatus {
   APPROVED = "APPROVED",
   PAID = "PAID",
 }
+export enum RouteDirection {
+  MORNING = "MORNING",
+  AFTERNOON = "AFTERNOON",
+}
 export enum SalaryLineKind {
   EARNING = "EARNING",
   DEDUCTION = "DEDUCTION",
@@ -133,6 +137,10 @@ export enum SubscriptionStatus {
   ACTIVE = "ACTIVE",
   TRIAL = "TRIAL",
   SUSPENDED = "SUSPENDED",
+}
+export enum VehicleStatus {
+  ACTIVE = "ACTIVE",
+  OUT_OF_SERVICE = "OUT_OF_SERVICE",
 }
 
 export interface AcademicYear_Key {
@@ -278,6 +286,30 @@ export interface AddPayslipLineVariables {
   manual: boolean;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface AddRouteStopData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+  };
+  routeStop_insert: RouteStop_Key;
+}
+
+export interface AddRouteStopVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  routeId: UUIDString;
+  sequence: number;
+  name: string;
+  latMicro?: number | null;
+  lngMicro?: number | null;
+  arrivalTime?: string | null;
+  actorId: string;
 }
 
 export interface AddSalaryLineData {
@@ -797,6 +829,66 @@ export interface ClassTeacher_Key {
 export interface Classroom_Key {
   id: UUIDString;
   __typename?: 'Classroom_Key';
+}
+
+export interface ClearRouteDriverData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+  };
+  transportRoute_update?: TransportRoute_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ClearRouteDriverVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface ClearRouteStopsData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+  };
+  routeStop_deleteMany: number;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ClearRouteStopsVariables {
+  schoolId: UUIDString;
+  routeId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface ClearRouteVehicleData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+  };
+  transportRoute_update?: TransportRoute_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ClearRouteVehicleVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface ClearSchoolGeofenceData {
@@ -1704,6 +1796,26 @@ export interface CreateTimetableEntryVariables {
   details?: unknown | null;
 }
 
+export interface CreateTransportRouteData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  transportRoute_insert: TransportRoute_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateTransportRouteVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  name: string;
+  direction: RouteDirection;
+  startTime?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface CreateUserData {
   user_insert: User_Key;
 }
@@ -1712,6 +1824,26 @@ export interface CreateUserVariables {
   id: string;
   email: string;
   globalRole: GlobalRole;
+}
+
+export interface CreateVehicleData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  vehicle_insert: Vehicle_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateVehicleVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  registration: string;
+  label: string;
+  capacity: number;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface DaysOfClassData {
@@ -2046,6 +2178,50 @@ export interface DeleteTimetableEntryVariables {
   id: UUIDString;
   classroomId: UUIDString;
   staffId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeleteTransportRouteData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+  };
+  routeStop_deleteMany: number;
+  transportRoute_delete?: TransportRoute_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteTransportRouteVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DeleteVehicleData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    vehicle: ({
+      id: UUIDString;
+    } & Vehicle_Key)[];
+    inUse: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+  };
+  vehicle_delete?: Vehicle_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteVehicleVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
   actorId: string;
   details?: unknown | null;
 }
@@ -3022,6 +3198,42 @@ export interface GetTimetableEntryData {
 }
 
 export interface GetTimetableEntryVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetTransportRouteData {
+  transportRoutes: ({
+    id: UUIDString;
+    name: string;
+    direction: RouteDirection;
+    startTime?: string | null;
+    vehicle?: {
+      id: UUIDString;
+      registration: string;
+      label: string;
+      capacity: number;
+      status: VehicleStatus;
+    } & Vehicle_Key;
+    driver?: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      userId?: string | null;
+    } & StaffProfile_Key;
+    routeStops_on_route: ({
+      id: UUIDString;
+      sequence: number;
+      name: string;
+      latMicro?: number | null;
+      lngMicro?: number | null;
+      arrivalTime?: string | null;
+    } & RouteStop_Key)[];
+  } & TransportRoute_Key)[];
+}
+
+export interface GetTransportRouteVariables {
   schoolId: UUIDString;
   id: UUIDString;
 }
@@ -4050,6 +4262,41 @@ export interface ListTombstonesVariables {
   limit: number;
 }
 
+export interface ListTransportRoutesData {
+  transportRoutes: ({
+    id: UUIDString;
+    name: string;
+    direction: RouteDirection;
+    startTime?: string | null;
+    vehicle?: {
+      id: UUIDString;
+      registration: string;
+      label: string;
+      capacity: number;
+      status: VehicleStatus;
+    } & Vehicle_Key;
+    driver?: {
+      id: UUIDString;
+      employeeId: string;
+      firstName: string;
+      lastName: string;
+      userId?: string | null;
+    } & StaffProfile_Key;
+    routeStops_on_route: ({
+      id: UUIDString;
+      sequence: number;
+      name: string;
+      latMicro?: number | null;
+      lngMicro?: number | null;
+      arrivalTime?: string | null;
+    } & RouteStop_Key)[];
+  } & TransportRoute_Key)[];
+}
+
+export interface ListTransportRoutesVariables {
+  schoolId: UUIDString;
+}
+
 export interface ListUnpushedNotificationsData {
   notifications: ({
     id: UUIDString;
@@ -4065,6 +4312,20 @@ export interface ListUnpushedNotificationsVariables {
   schoolId: UUIDString;
   since: TimestampString;
   limit: number;
+}
+
+export interface ListVehiclesData {
+  vehicles: ({
+    id: UUIDString;
+    registration: string;
+    label: string;
+    capacity: number;
+    status: VehicleStatus;
+  } & Vehicle_Key)[];
+}
+
+export interface ListVehiclesVariables {
+  schoolId: UUIDString;
 }
 
 export interface LockAttendanceDayData {
@@ -4830,6 +5091,11 @@ export interface RevokeInvitationVariables {
   details?: unknown | null;
 }
 
+export interface RouteStop_Key {
+  id: UUIDString;
+  __typename?: 'RouteStop_Key';
+}
+
 export interface SalaryLineByIdData {
   salaryLines: ({
     id: UUIDString;
@@ -5006,6 +5272,54 @@ export interface SetLeaveBalanceVariables {
   expectedRemaining: number;
   allowedHalfDays: number;
   remainingHalfDays: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface SetRouteDriverData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+    driver: ({
+      id: UUIDString;
+    } & StaffProfile_Key)[];
+  };
+  transportRoute_update?: TransportRoute_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetRouteDriverVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  driverId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface SetRouteVehicleData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+    vehicle: ({
+      id: UUIDString;
+    } & Vehicle_Key)[];
+  };
+  transportRoute_update?: TransportRoute_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SetRouteVehicleVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  vehicleId: UUIDString;
   actorId: string;
   details?: unknown | null;
 }
@@ -5382,6 +5696,11 @@ export interface TimetableEntry_Key {
 export interface Tombstone_Key {
   id: UUIDString;
   __typename?: 'Tombstone_Key';
+}
+
+export interface TransportRoute_Key {
+  id: UUIDString;
+  __typename?: 'TransportRoute_Key';
 }
 
 export interface UnlinkParentAccountData {
@@ -5904,6 +6223,53 @@ export interface UpdateTimetableEntryVariables {
   details?: unknown | null;
 }
 
+export interface UpdateTransportRouteData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+  };
+  transportRoute_update?: TransportRoute_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateTransportRouteVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  name?: string | null;
+  direction?: RouteDirection | null;
+  startTime?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface UpdateVehicleData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    vehicle: ({
+      id: UUIDString;
+    } & Vehicle_Key)[];
+  };
+  vehicle_update?: Vehicle_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface UpdateVehicleVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  registration?: string | null;
+  label?: string | null;
+  capacity?: number | null;
+  status?: VehicleStatus | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface UpsertUserData {
   user_upsert: User_Key;
 }
@@ -5918,6 +6284,11 @@ export interface UpsertUserVariables {
 export interface User_Key {
   id: string;
   __typename?: 'User_Key';
+}
+
+export interface Vehicle_Key {
+  id: UUIDString;
+  __typename?: 'Vehicle_Key';
 }
 
 export interface WithdrawAnnouncementData {
@@ -6640,6 +7011,66 @@ export function withdrawAnnouncement(dc: DataConnect, vars: WithdrawAnnouncement
 /** Generated Node Admin SDK operation action function for the 'WithdrawAnnouncement' Mutation. Allow users to pass in custom DataConnect instances. */
 export function withdrawAnnouncement(vars: WithdrawAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<WithdrawAnnouncementData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateVehicle' Mutation. Allow users to execute without passing in DataConnect. */
+export function createVehicle(dc: DataConnect, vars: CreateVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateVehicleData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateVehicle' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createVehicle(vars: CreateVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateVehicleData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateVehicle' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateVehicle(dc: DataConnect, vars: UpdateVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateVehicleData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateVehicle' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateVehicle(vars: UpdateVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateVehicleData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteVehicle' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteVehicle(dc: DataConnect, vars: DeleteVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteVehicleData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteVehicle' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteVehicle(vars: DeleteVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteVehicleData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateTransportRoute' Mutation. Allow users to execute without passing in DataConnect. */
+export function createTransportRoute(dc: DataConnect, vars: CreateTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateTransportRouteData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateTransportRoute' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createTransportRoute(vars: CreateTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateTransportRouteData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpdateTransportRoute' Mutation. Allow users to execute without passing in DataConnect. */
+export function updateTransportRoute(dc: DataConnect, vars: UpdateTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateTransportRouteData>>;
+/** Generated Node Admin SDK operation action function for the 'UpdateTransportRoute' Mutation. Allow users to pass in custom DataConnect instances. */
+export function updateTransportRoute(vars: UpdateTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpdateTransportRouteData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetRouteVehicle' Mutation. Allow users to execute without passing in DataConnect. */
+export function setRouteVehicle(dc: DataConnect, vars: SetRouteVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetRouteVehicleData>>;
+/** Generated Node Admin SDK operation action function for the 'SetRouteVehicle' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setRouteVehicle(vars: SetRouteVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetRouteVehicleData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ClearRouteVehicle' Mutation. Allow users to execute without passing in DataConnect. */
+export function clearRouteVehicle(dc: DataConnect, vars: ClearRouteVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearRouteVehicleData>>;
+/** Generated Node Admin SDK operation action function for the 'ClearRouteVehicle' Mutation. Allow users to pass in custom DataConnect instances. */
+export function clearRouteVehicle(vars: ClearRouteVehicleVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearRouteVehicleData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SetRouteDriver' Mutation. Allow users to execute without passing in DataConnect. */
+export function setRouteDriver(dc: DataConnect, vars: SetRouteDriverVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetRouteDriverData>>;
+/** Generated Node Admin SDK operation action function for the 'SetRouteDriver' Mutation. Allow users to pass in custom DataConnect instances. */
+export function setRouteDriver(vars: SetRouteDriverVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SetRouteDriverData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ClearRouteDriver' Mutation. Allow users to execute without passing in DataConnect. */
+export function clearRouteDriver(dc: DataConnect, vars: ClearRouteDriverVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearRouteDriverData>>;
+/** Generated Node Admin SDK operation action function for the 'ClearRouteDriver' Mutation. Allow users to pass in custom DataConnect instances. */
+export function clearRouteDriver(vars: ClearRouteDriverVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearRouteDriverData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteTransportRoute' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteTransportRoute(dc: DataConnect, vars: DeleteTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteTransportRouteData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteTransportRoute' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteTransportRoute(vars: DeleteTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteTransportRouteData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ClearRouteStops' Mutation. Allow users to execute without passing in DataConnect. */
+export function clearRouteStops(dc: DataConnect, vars: ClearRouteStopsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearRouteStopsData>>;
+/** Generated Node Admin SDK operation action function for the 'ClearRouteStops' Mutation. Allow users to pass in custom DataConnect instances. */
+export function clearRouteStops(vars: ClearRouteStopsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ClearRouteStopsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddRouteStop' Mutation. Allow users to execute without passing in DataConnect. */
+export function addRouteStop(dc: DataConnect, vars: AddRouteStopVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddRouteStopData>>;
+/** Generated Node Admin SDK operation action function for the 'AddRouteStop' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addRouteStop(vars: AddRouteStopVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddRouteStopData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -7194,4 +7625,19 @@ export function listAnnouncements(vars: ListAnnouncementsVariables, options?: Op
 export function getAnnouncement(dc: DataConnect, vars: GetAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetAnnouncementData>>;
 /** Generated Node Admin SDK operation action function for the 'GetAnnouncement' Query. Allow users to pass in custom DataConnect instances. */
 export function getAnnouncement(vars: GetAnnouncementVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetAnnouncementData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListVehicles' Query. Allow users to execute without passing in DataConnect. */
+export function listVehicles(dc: DataConnect, vars: ListVehiclesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListVehiclesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListVehicles' Query. Allow users to pass in custom DataConnect instances. */
+export function listVehicles(vars: ListVehiclesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListVehiclesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListTransportRoutes' Query. Allow users to execute without passing in DataConnect. */
+export function listTransportRoutes(dc: DataConnect, vars: ListTransportRoutesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTransportRoutesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListTransportRoutes' Query. Allow users to pass in custom DataConnect instances. */
+export function listTransportRoutes(vars: ListTransportRoutesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListTransportRoutesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetTransportRoute' Query. Allow users to execute without passing in DataConnect. */
+export function getTransportRoute(dc: DataConnect, vars: GetTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTransportRouteData>>;
+/** Generated Node Admin SDK operation action function for the 'GetTransportRoute' Query. Allow users to pass in custom DataConnect instances. */
+export function getTransportRoute(vars: GetTransportRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTransportRouteData>>;
 

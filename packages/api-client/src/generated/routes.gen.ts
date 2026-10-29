@@ -1299,6 +1299,66 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Sync_tombstones"
   },
   {
+    "method": "PUT",
+    "path": "/v1/transport/routes/{id}/stops",
+    "access": "tenant",
+    "operationId": "Transport_setStops"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/transport/routes/{id}",
+    "access": "tenant",
+    "operationId": "Transport_deleteRoute"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/transport/routes/{id}",
+    "access": "tenant",
+    "operationId": "Transport_route"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/transport/routes/{id}",
+    "access": "tenant",
+    "operationId": "Transport_updateRoute"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/transport/routes",
+    "access": "tenant",
+    "operationId": "Transport_routes"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/transport/routes",
+    "access": "tenant",
+    "operationId": "Transport_createRoute"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/transport/vehicles/{id}",
+    "access": "tenant",
+    "operationId": "Transport_deleteVehicle"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/transport/vehicles/{id}",
+    "access": "tenant",
+    "operationId": "Transport_updateVehicle"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/transport/vehicles",
+    "access": "tenant",
+    "operationId": "Transport_vehicles"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/transport/vehicles",
+    "access": "tenant",
+    "operationId": "Transport_createVehicle"
+  },
+  {
     "method": "POST",
     "path": "/v1/uploads/school-logo",
     "access": "tenant",

@@ -1381,3 +1381,117 @@ mutation WithdrawAnnouncement($schoolId: UUID!, $id: UUID!, $actorId: String!, $
   announcement_update(id: $id, data: { withdrawnAt_expr: "request.time", updatedAt_expr: "request.time" })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "announcement.withdraw", entityType: "Announcement", entityId_expr: "request.variables.id", details: $details })
 }
+
+# ---- Transport (P5-4a)
+mutation CreateVehicle($schoolId: UUID!, $id: UUID!, $registration: String!, $label: String!, $capacity: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  vehicle_insert(data: { id: $id, schoolId: $schoolId, registration: $registration, label: $label, capacity: $capacity })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.vehicle.create", entityType: "Vehicle", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateVehicle($schoolId: UUID!, $id: UUID!, $registration: String, $label: String, $capacity: Int, $status: VehicleStatus, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    vehicle: vehicles(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "vehicle not found in this school") { id }
+  }
+  vehicle_update(id: $id, data: { registration: $registration, label: $label, capacity: $capacity, status: $status })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.vehicle.update", entityType: "Vehicle", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Refused while a route still uses the vehicle.
+mutation DeleteVehicle($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    vehicle: vehicles(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "vehicle not found in this school") { id }
+    inUse: transportRoutes(where: {vehicleId: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 0", message: "a route still uses this vehicle") { id }
+  }
+  vehicle_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.vehicle.delete", entityType: "Vehicle", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation CreateTransportRoute($schoolId: UUID!, $id: UUID!, $name: String!, $direction: RouteDirection!, $startTime: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+  }
+  transportRoute_insert(data: { id: $id, schoolId: $schoolId, name: $name, direction: $direction, startTime: $startTime })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.route.create", entityType: "TransportRoute", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation UpdateTransportRoute($schoolId: UUID!, $id: UUID!, $name: String, $direction: RouteDirection, $startTime: String, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    route: transportRoutes(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "route not found in this school") { id }
+  }
+  transportRoute_update(id: $id, data: { name: $name, direction: $direction, startTime: $startTime })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.route.update", entityType: "TransportRoute", entityId_expr: "request.variables.id", details: $details })
+}
+
+# The vehicle and the driver are set in their own steps so that the school check on each is unconditional (a vehicle or member of staff from another school is refused).
+mutation SetRouteVehicle($schoolId: UUID!, $id: UUID!, $vehicleId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    route: transportRoutes(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "route not found in this school") { id }
+    vehicle: vehicles(where: {id: {eq: $vehicleId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "vehicle not found in this school") { id }
+  }
+  transportRoute_update(id: $id, data: { vehicleId: $vehicleId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.route.vehicle", entityType: "TransportRoute", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation ClearRouteVehicle($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    route: transportRoutes(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "route not found in this school") { id }
+  }
+  transportRoute_update(id: $id, data: { vehicleId: null })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.route.vehicle", entityType: "TransportRoute", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation SetRouteDriver($schoolId: UUID!, $id: UUID!, $driverId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    route: transportRoutes(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "route not found in this school") { id }
+    driver: staffProfiles(where: {id: {eq: $driverId}, schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "driver not found in this school") { id }
+  }
+  transportRoute_update(id: $id, data: { driverId: $driverId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.route.driver", entityType: "TransportRoute", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation ClearRouteDriver($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    route: transportRoutes(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "route not found in this school") { id }
+  }
+  transportRoute_update(id: $id, data: { driverId: null })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.route.driver", entityType: "TransportRoute", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeleteTransportRoute($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    route: transportRoutes(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "route not found in this school") { id }
+  }
+  routeStop_deleteMany(where: {routeId: {eq: $id}, schoolId: {eq: $schoolId}})
+  transportRoute_delete(id: $id)
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.route.delete", entityType: "TransportRoute", entityId_expr: "request.variables.id", details: $details })
+}
+
+# A route's stops are written one at a time by the gateway (as marks are): clear them, then add each in order. The (route, sequence) and (route, name)
+# keys make a duplicate order or name impossible; the gateway checks the whole list first.
+mutation ClearRouteStops($schoolId: UUID!, $routeId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    route: transportRoutes(where: {id: {eq: $routeId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "route not found in this school") { id }
+  }
+  routeStop_deleteMany(where: {routeId: {eq: $routeId}, schoolId: {eq: $schoolId}})
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.route.stops", entityType: "TransportRoute", entityId_expr: "request.variables.routeId", details: $details })
+}
+
+mutation AddRouteStop($schoolId: UUID!, $id: UUID!, $routeId: UUID!, $sequence: Int!, $name: String!, $latMicro: Int, $lngMicro: Int, $arrivalTime: String, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    route: transportRoutes(where: {id: {eq: $routeId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "route not found in this school") { id }
+  }
+  routeStop_insert(data: { id: $id, schoolId: $schoolId, routeId: $routeId, sequence: $sequence, name: $name, latMicro: $latMicro, lngMicro: $lngMicro, arrivalTime: $arrivalTime })
+}

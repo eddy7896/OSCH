@@ -99,6 +99,8 @@ enum ImportStatus { STARTED COMPLETED PARTIAL }
 enum ApplicationStatus { SUBMITTED UNDER_REVIEW ACCEPTED REJECTED WITHDRAWN ADMITTED }
 enum AttendanceStatus { PRESENT ABSENT LATE LEAVE MEDICAL HALF_DAY EXCUSED } # the seven fixed meanings (ADR-0013 decision 2); a school may relabel them, never add or remove one
 enum StaffStatus { ACTIVE INACTIVE LEFT }
+enum VehicleStatus { ACTIVE OUT_OF_SERVICE }
+enum RouteDirection { MORNING AFTERNOON }
 enum StaffDocumentKind { APPOINTMENT_LETTER ID_PROOF QUALIFICATION EXPERIENCE MEDICAL OTHER }
 enum StudentDocumentKind { BIRTH_CERTIFICATE TRANSFER_CERTIFICATE REPORT_CARD ID_PROOF MEDICAL OTHER }
 
@@ -708,4 +710,38 @@ type Tombstone @table {
   staffId: UUID
   deletedBy: User!
   deletedAt: Timestamp! @default(expr: "request.time")
+}
+
+# ---- Transport (P5-4a, ADR-0015). A vehicle, a route (one direction of a run, with its vehicle and its driver) and the route's ordered stops.
+# Coordinates are micro-degrees in Int (never a floating point). A route's driver is a member of staff; that the person holds the DRIVER role is checked in the gateway.
+type Vehicle @table @unique(fields: ["school", "registration"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  registration: String!
+  label: String!
+  capacity: Int!
+  status: VehicleStatus! @default(value: ACTIVE)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type TransportRoute @table @unique(fields: ["school", "name"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  name: String!
+  direction: RouteDirection!
+  startTime: String # "HH:MM"
+  vehicle: Vehicle
+  driver: StaffProfile
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type RouteStop @table @unique(fields: ["route", "sequence"]) @unique(fields: ["route", "name"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  route: TransportRoute!
+  sequence: Int! # 1, 2, 3 ... in the order the bus calls
+  name: String!
+  latMicro: Int
+  lngMicro: Int
+  arrivalTime: String # "HH:MM", the planned time
 }
