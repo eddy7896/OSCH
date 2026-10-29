@@ -26,6 +26,7 @@ class _NoLock implements DeviceLockPort {
 void main() {
   staffPull();
   approvals();
+  checkIn();
   final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
 
@@ -110,6 +111,62 @@ void staffPull() {
   }, skip: skip);
 }
 
+// P4-5b against the real gateway: a check-in and a check-out made with no connection reach the school once, with the school's own time.
+void checkIn() {
+  final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
+  test('the demo clerk (a STAFF account with a staff record, not in today) checks in and out offline; the school stamps each once and a repeat changes nothing', () async {
+    var online = false;
+    final changes = StreamController<bool>.broadcast();
+    final svc = await OruServices.create(
+      OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+      allowedRoles: const {'STAFF'},
+      executor: NativeDatabase.memory(),
+      storage: MemorySecureStorage(),
+      lockPort: _NoLock(),
+      online: changes.stream,
+      isOnline: () async => online,
+      pullTasks: (api) => [...checkInPullTasks(api)],
+    );
+    await svc.session.signInWithPassword('office@demo.oruschools.example', 'demo-pass-2027');
+    online = true;
+    changes.add(true);
+    await svc.coordinator.syncNow();
+    expect(svc.coordinator.pullStatus, isA<PullOk>());
+    expect(await svc.store.record(kGeofence, 'school'), isNotNull);
+
+    online = false;
+    changes.add(false);
+    final c = CheckInController(svc.store, location: _Nowhere());
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    final inPlan = await c.prepare(CheckKind.checkIn);
+    expect(inPlan.verdict.reasonRequired, isFalse, reason: 'the demo school has set no point, so nobody is asked');
+    await c.save(inPlan);
+    await c.save(await c.prepare(CheckKind.checkOut));
+    expect((await svc.store.all()).map((e) => e.kind), ['staff.checkIn', 'staff.checkOut']);
+
+    online = true;
+    changes.add(true);
+    await svc.coordinator.syncNow();
+    expect((await svc.store.all()).where((e) => e.kind.startsWith('staff.')), isEmpty, reason: 'both sent and accepted: ${(await svc.store.all()).map((e) => '${e.kind} ${e.state} ${e.lastErrorMessage}')}');
+    final days = (await svc.api.staffAttendanceMine()).items..sort((a, b) => a.date.compareTo(b.date));
+    final today = days.last;
+    expect(today.checkIn, isNotNull);
+    expect(today.checkOut, isNotNull);
+    expect(today.checkInDeviceTime, isNotNull, reason: 'the phone\'s own time is kept as a note beside the school\'s');
+    final firstIn = today.checkIn;
+    // The same pair offered again changes nothing: the first check-in stands.
+    await c.save(await c.prepare(CheckKind.checkIn));
+    await svc.coordinator.syncNow();
+    expect((await svc.api.staffAttendanceMine()).items.where((d) => d.date == today.date).single.checkIn, firstIn);
+    c.dispose();
+    await svc.dispose();
+  }, skip: skip);
+}
+
+class _Nowhere implements LocationPort {
+  @override
+  Future<Fix?> current() async => const Fix(lat: 12.9716, lng: 77.5946, accuracyM: 5);
+}
 // P4-5c against the real gateway: the Principal decides a teacher's request; the HR manager, who may not, is refused.
 void approvals() {
   final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;

@@ -179,8 +179,9 @@ class SyncEngine {
     await _activity.close();
   }
 
-  /// A change was just saved: send it if we can.
-  Future<void> kick() => pass();
+  /// A change was just saved: send it if we can. Before the engine has started (it asks whether the device is online first) or after it
+  /// stopped there is nothing to do: `start` runs a pass itself.
+  Future<void> kick() => _stopped ? Future<void>.value() : pass();
 
   /// The person signed in again: resume.
   Future<void> signedIn() {

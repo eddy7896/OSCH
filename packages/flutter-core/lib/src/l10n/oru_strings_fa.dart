@@ -2946,4 +2946,66 @@ class OruStringsFa extends OruStrings {
 
   @override
   String get mobApprRefused => 'The school did not accept this decision.';
+
+  @override
+  String get mobCiNotIn => 'You have not checked in today.';
+
+  @override
+  String mobCiIn(String time) {
+    return 'Checked in at $time';
+  }
+
+  @override
+  String mobCiOut(String time) {
+    return 'Checked out at $time';
+  }
+
+  @override
+  String get mobCiSavedIn => 'Check-in saved on this phone, not sent yet';
+
+  @override
+  String get mobCiSavedOut => 'Check-out saved on this phone, not sent yet';
+
+  @override
+  String get mobCiCheckIn => 'Check in';
+
+  @override
+  String get mobCiCheckOut => 'Check out';
+
+  @override
+  String get mobCiLocating => 'Finding your position...';
+
+  @override
+  String get mobCiReasonTitle => 'Please say why';
+
+  @override
+  String mobCiReasonOutside(String distance) {
+    return 'You seem to be $distance m from the school.';
+  }
+
+  @override
+  String get mobCiReasonNoPosition =>
+      'This phone could not find where you are.';
+
+  @override
+  String get mobCiReasonFar =>
+      'This is far from the school, so HR will confirm it.';
+
+  @override
+  String get mobCiReasonLabel => 'Reason';
+
+  @override
+  String get mobCiReasonSend => 'Send';
+
+  @override
+  String get mobCiReasonEmpty => 'Write a reason to go on.';
+
+  @override
+  String get mobCiWaitingHr => 'Waiting for HR to confirm';
+
+  @override
+  String get mobCiRefused => 'The school did not accept this.';
+
+  @override
+  String get mobMoreAnnouncements => 'Announcements';
 }

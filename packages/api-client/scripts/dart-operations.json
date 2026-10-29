@@ -15,6 +15,7 @@
   "StaffAttendance_mine",
   "StaffAttendance_checkIn",
   "StaffAttendance_checkOut",
+  "StaffAttendance_geofence",
   "Grades_bands",
   "Grades_terms",
   "Grades_exams",

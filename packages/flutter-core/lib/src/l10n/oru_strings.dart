@@ -5237,6 +5237,114 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'The school did not accept this decision.'**
   String get mobApprRefused;
+
+  /// Shown when the person has not checked in at work today.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not checked in today.'**
+  String get mobCiNotIn;
+
+  /// When the person checked in. {time} is a time of day.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in at {time}'**
+  String mobCiIn(String time);
+
+  /// When the person checked out. {time} is a time of day.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked out at {time}'**
+  String mobCiOut(String time);
+
+  /// A check-in waiting on the phone for a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in saved on this phone, not sent yet'**
+  String get mobCiSavedIn;
+
+  /// A check-out waiting on the phone for a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-out saved on this phone, not sent yet'**
+  String get mobCiSavedOut;
+
+  /// Button that records that the person has arrived at work.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in'**
+  String get mobCiCheckIn;
+
+  /// Button that records that the person is leaving work.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out'**
+  String get mobCiCheckOut;
+
+  /// Shown for a few seconds while the phone finds where it is.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding your position...'**
+  String get mobCiLocating;
+
+  /// Title of the box that asks for a reason when the person is not at the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Please say why'**
+  String get mobCiReasonTitle;
+
+  /// Explains why a reason is asked. {distance} is a number of metres.
+  ///
+  /// In en, this message translates to:
+  /// **'You seem to be {distance} m from the school.'**
+  String mobCiReasonOutside(String distance);
+
+  /// Explains why a reason is asked when the phone had no position.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone could not find where you are.'**
+  String get mobCiReasonNoPosition;
+
+  /// Warns that a check-in far from the school waits for HR to confirm it.
+  ///
+  /// In en, this message translates to:
+  /// **'This is far from the school, so HR will confirm it.'**
+  String get mobCiReasonFar;
+
+  /// Label of the reason box.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get mobCiReasonLabel;
+
+  /// Button that records the check-in or check-out with the reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get mobCiReasonSend;
+
+  /// Error when the reason box is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a reason to go on.'**
+  String get mobCiReasonEmpty;
+
+  /// Shown beside a check-in made far from the school that HR has not confirmed yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for HR to confirm'**
+  String get mobCiWaitingHr;
+
+  /// Banner when the school refused a check-in or check-out sent from the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this.'**
+  String get mobCiRefused;
+
+  /// Row in the More tab that opens the list of announcements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get mobMoreAnnouncements;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {
