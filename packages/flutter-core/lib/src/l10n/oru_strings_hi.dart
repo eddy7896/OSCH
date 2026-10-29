@@ -3022,4 +3022,118 @@ class OruStringsHi extends OruStrings {
   String mobInboxUnread(String count) {
     return '$count अपठित';
   }
+
+  @override
+  String get satPosition => 'कहाँ';
+
+  @override
+  String get satStampINSIDE => 'स्कूल में';
+
+  @override
+  String get satStampOUTSIDE => 'स्कूल से दूर';
+
+  @override
+  String get satStampUNKNOWN => 'पता नहीं';
+
+  @override
+  String satDistance(String metres) {
+    return 'स्कूल से $metres मीटर';
+  }
+
+  @override
+  String satReasonIs(String reason) {
+    return 'कारण: $reason';
+  }
+
+  @override
+  String get satWaiting => 'एचआर की पुष्टि की प्रतीक्षा में';
+
+  @override
+  String get satConfirm => 'पुष्टि करें';
+
+  @override
+  String get satConfirmedAt => 'पुष्टि हुई';
+
+  @override
+  String get satConfirmedOk => 'चेक-इन की पुष्टि हो गई।';
+
+  @override
+  String get setGeoTitle => 'स्कूल का स्थान';
+
+  @override
+  String get setGeoNote =>
+      'स्टाफ़ अपने फ़ोन से चेक-इन करते हैं। इस क्षेत्र से बाहर उनसे कारण पूछा जाता है, और 500 मीटर से दूर होने पर एचआर चेक-इन की पुष्टि करता है। स्थान बंद करने पर किसी से कुछ नहीं पूछा जाता।';
+
+  @override
+  String get setGeoLat => 'अक्षांश';
+
+  @override
+  String get setGeoLng => 'देशांतर';
+
+  @override
+  String get setGeoRadius => 'परिसर की त्रिज्या (मीटर)';
+
+  @override
+  String get setGeoMargin => 'मार्जिन (मीटर)';
+
+  @override
+  String get setGeoSave => 'स्थान सहेजें';
+
+  @override
+  String get setGeoClear => 'स्थान बंद करें';
+
+  @override
+  String get setGeoSaved => 'स्थान सहेजा गया।';
+
+  @override
+  String get setGeoCleared => 'स्थान बंद कर दिया गया।';
+
+  @override
+  String setGeoNow(String lat, String lng, String radius, String margin) {
+    return 'अभी: $lat, $lng, परिसर $radius मीटर, मार्जिन $margin मीटर।';
+  }
+
+  @override
+  String get setGeoNone =>
+      'कोई स्थान तय नहीं है, इसलिए किसी से कारण नहीं पूछा जाता।';
+
+  @override
+  String get setGeoInvalid =>
+      '-90 से 90 के बीच अक्षांश, -180 से 180 के बीच देशांतर, 10 से 2000 मीटर की त्रिज्या और 0 से 500 मीटर का मार्जिन दें।';
+
+  @override
+  String get annNone => 'अभी कोई घोषणा नहीं।';
+
+  @override
+  String get annPostTitle => 'घोषणा करें';
+
+  @override
+  String get annPostNote =>
+      'स्टाफ़ का हर सदस्य इसे अपने ऐप में देखता है और उसे सूचना मिलती है।';
+
+  @override
+  String get annFieldTitle => 'शीर्षक';
+
+  @override
+  String get annFieldBody => 'संदेश';
+
+  @override
+  String get annPost => 'पोस्ट करें';
+
+  @override
+  String get annPosted => 'घोषणा पोस्ट हो गई।';
+
+  @override
+  String get annWithdraw => 'वापस लें';
+
+  @override
+  String get annWithdrawn => 'वापस ली गई';
+
+  @override
+  String get annWithdrawnOk => 'घोषणा वापस ले ली गई।';
+
+  @override
+  String annFrom(String name, String date) {
+    return '$name, $date';
+  }
 }

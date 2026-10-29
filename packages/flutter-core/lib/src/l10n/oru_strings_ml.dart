@@ -3019,4 +3019,118 @@ class OruStringsMl extends OruStrings {
   String mobInboxUnread(String count) {
     return '$count unread';
   }
+
+  @override
+  String get satPosition => 'Where';
+
+  @override
+  String get satStampINSIDE => 'At school';
+
+  @override
+  String get satStampOUTSIDE => 'Away from school';
+
+  @override
+  String get satStampUNKNOWN => 'Not known';
+
+  @override
+  String satDistance(String metres) {
+    return '$metres m from the school';
+  }
+
+  @override
+  String satReasonIs(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String get satWaiting => 'Waiting for HR to confirm';
+
+  @override
+  String get satConfirm => 'Confirm';
+
+  @override
+  String get satConfirmedAt => 'Confirmed';
+
+  @override
+  String get satConfirmedOk => 'Check-in confirmed.';
+
+  @override
+  String get setGeoTitle => 'School location';
+
+  @override
+  String get setGeoNote =>
+      'Staff check in from their phones. Away from this area they are asked for a reason, and beyond 500 metres HR confirms the check-in. Switch the location off and nobody is asked.';
+
+  @override
+  String get setGeoLat => 'Latitude';
+
+  @override
+  String get setGeoLng => 'Longitude';
+
+  @override
+  String get setGeoRadius => 'Grounds radius (metres)';
+
+  @override
+  String get setGeoMargin => 'Margin (metres)';
+
+  @override
+  String get setGeoSave => 'Save location';
+
+  @override
+  String get setGeoClear => 'Switch location off';
+
+  @override
+  String get setGeoSaved => 'Location saved.';
+
+  @override
+  String get setGeoCleared => 'Location switched off.';
+
+  @override
+  String setGeoNow(String lat, String lng, String radius, String margin) {
+    return 'Now: $lat, $lng, grounds $radius m, margin $margin m.';
+  }
+
+  @override
+  String get setGeoNone =>
+      'No location is set, so nobody is asked for a reason.';
+
+  @override
+  String get setGeoInvalid =>
+      'Give a latitude between -90 and 90, a longitude between -180 and 180, a radius from 10 to 2000 metres and a margin from 0 to 500 metres.';
+
+  @override
+  String get annNone => 'No announcements yet.';
+
+  @override
+  String get annPostTitle => 'Post an announcement';
+
+  @override
+  String get annPostNote =>
+      'Every member of staff sees it in their app and gets a notification.';
+
+  @override
+  String get annFieldTitle => 'Title';
+
+  @override
+  String get annFieldBody => 'Message';
+
+  @override
+  String get annPost => 'Post';
+
+  @override
+  String get annPosted => 'Announcement posted.';
+
+  @override
+  String get annWithdraw => 'Withdraw';
+
+  @override
+  String get annWithdrawn => 'Withdrawn';
+
+  @override
+  String get annWithdrawnOk => 'Announcement withdrawn.';
+
+  @override
+  String annFrom(String name, String date) {
+    return '$name, $date';
+  }
 }

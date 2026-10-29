@@ -26,6 +26,19 @@ const clock = (iso: string | null, locale: string): string => (iso ? new Intl.Da
 const moment = (date: string, time: string): string => new Date(Date.parse(`${date}T${time}:00Z`) - 330 * 60_000).toISOString();
 const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
 
+/** Where a check-in happened, as evidence (a phone can fake a position, so it is a note for HR, not proof): at school, away with the distance and the reason given, and whether HR still has to confirm it. */
+function Where({ row }: { row: StaffPresenceDto }) {
+  const t = useTranslations();
+  const stamp = row.checkInStamp ?? "UNKNOWN";
+  return (
+    <span className="flex flex-col gap-1">
+      <span>{t(`satStamp${stamp}`)}{row.checkInDistanceM !== null && stamp === "OUTSIDE" ? `, ${t("satDistance", { metres: row.checkInDistanceM })}` : ""}</span>
+      {row.checkInReason && <span className="text-caption text-text-muted">{t("satReasonIs", { reason: row.checkInReason })}</span>}
+      {row.needsConfirmation && (row.confirmedAt ? <Badge tone="success">{t("satConfirmedAt")}</Badge> : <Badge tone="warning">{t("satWaiting")}</Badge>)}
+    </span>
+  );
+}
+
 /** Who is at work on a date, and HR's correction of the times (P3-11b). Employees check in and out in the mobile apps. */
 export function StaffAttendance({ grants }: { grants: StaffAttendanceGrants }) {
   const t = useTranslations();
@@ -39,12 +52,28 @@ export function StaffAttendance({ grants }: { grants: StaffAttendanceGrants }) {
   const [message, setMessage] = useState<{ tone: "saved" | "error"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const open = (r: StaffPresenceDto) => { setEditing(r); setIn(clock(r.checkIn, "en")); setOut(clock(r.checkOut, "en")); setMessage(null); };
+  /** HR confirms a check-in made beyond the hard ring (ADR-0014 decision 9). */
+  const confirm = async (r: StaffPresenceDto) => {
+    setBusy(true);
+    setMessage(null);
+    try {
+      await api!.staffAttendanceConfirm({ path: { staffId: r.staff.id, date } });
+      setMessage({ tone: "saved", text: t("satConfirmedOk") });
+      reload();
+    } catch (err) {
+      setMessage({ tone: "error", text: t(errorKey(err)) });
+    } finally {
+      setBusy(false);
+    }
+  };
   const valid = (!inTime || TIME.test(inTime)) && (!outTime || TIME.test(outTime)) && (inTime !== "" || outTime !== "");
   const columns: Column<StaffPresenceDto>[] = [
     { key: "name", header: t("navStaff"), render: (r) => <span>{r.staff.name}<span className="block text-caption text-text-muted">{r.staff.employeeId}</span></span> },
     { key: "state", header: t("attStatus"), render: (r) => <Badge tone={TONE[r.state] ?? "neutral"}>{t(`satState${r.state}`)}</Badge> },
     { key: "in", header: t("satIn"), numeric: true, render: (r) => clock(r.checkIn, locale) },
     { key: "out", header: t("satOut"), numeric: true, render: (r) => clock(r.checkOut, locale) },
+    { key: "where", header: t("satPosition"), render: (r) => (r.checkIn ? <Where row={r} /> : null) },
+    ...(grants.correct ? [{ key: "confirm", header: t("satConfirm"), hideHeader: true, render: (r: StaffPresenceDto) => (r.needsConfirmation && !r.confirmedAt ? <Button size="compact" variant="ghost" aria-label={`${t("satConfirm")}: ${r.staff.name}`} disabled={busy} onClick={() => void confirm(r)}>{t("satConfirm")}</Button> : null) }] : []),
     ...(grants.correct ? [{ key: "x", header: t("satCorrect"), hideHeader: true, render: (r: StaffPresenceDto) => <Button size="compact" variant="ghost" aria-label={`${t("satCorrect")}: ${r.staff.name}`} onClick={() => open(r)}>{t("satCorrect")}</Button> }] : []),
   ];
   return (

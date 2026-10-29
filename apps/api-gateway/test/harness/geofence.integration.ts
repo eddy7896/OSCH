@@ -60,6 +60,9 @@ describe.skipIf(!ready)('geofenced check-in against the real emulators (P4-S3)',
     expect(set).toMatchObject({ configured: true, radiusM: 150, marginM: 50, hardRingM: 500 });
     expect((await call(who().inside, 'get', '/attendance/staff/geofence').expect(200)).body).toMatchObject({ configured: true, lat: SCHOOL.lat, lng: SCHOOL.lng });
     expect((await audit('school.geofence.set')).length).toBeGreaterThan(0);
+    // The Settings screen reads it with the settings grant (the System Admin has no staff attendance grant); a role without settings is refused.
+    expect((await call(sysadmin(), 'get', '/school/geofence').expect(200)).body).toMatchObject({ configured: true, radiusM: 150, lat: SCHOOL.lat });
+    expect([403, 404]).toContain((await call(who().inside, 'get', '/school/geofence')).status);
   });
 
   it('inside the soft ring (grounds plus margin): INSIDE, no question, and the phone\'s own time is kept only as a note', async () => {

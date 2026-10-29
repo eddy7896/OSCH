@@ -24,6 +24,13 @@ export class SchoolController {
     return this.school.update(tenant, dto);
   }
 
+  /** Where the school is now (settings read: the System Admin and the Principal). */
+  @Permission('settings', 'read')
+  @Get('geofence')
+  geofence(@Tenant() tenant: TenantContext): Promise<GeofenceDto> {
+    return this.school.getGeofence(tenant);
+  }
+
   /** Sets where the school is: a point, the grounds' radius and the feathered margin (ADR-0014 decision 9). The System Admin only. */
   @Permission('settings', 'update')
   @Audit({ action: 'school.geofence.set', operation: 'SetSchoolGeofence' })
