@@ -2927,6 +2927,30 @@ class OruStringsHi extends OruStrings {
   String get mobAnnLatest => 'नवीनतम घोषणाएँ';
 
   @override
+  String get mobTabApprovals => 'अनुमोदन';
+
+  @override
+  String get mobApprEmpty =>
+      'आपके लिए कोई छुट्टी अनुरोध प्रतीक्षा में नहीं है।';
+
+  @override
+  String get mobApprApprove => 'स्वीकृत करें';
+
+  @override
+  String get mobApprReject => 'अस्वीकार करें';
+
+  @override
+  String mobApprLine(String name, String type) {
+    return '$name, $type';
+  }
+
+  @override
+  String get mobApprNeedsNet => 'निर्णय के लिए कनेक्शन चाहिए। कुछ नहीं बदला।';
+
+  @override
+  String get mobApprRefused => 'स्कूल ने यह निर्णय स्वीकार नहीं किया।';
+
+  @override
   String get mobCiNotIn => 'आपने आज चेक-इन नहीं किया है।';
 
   @override

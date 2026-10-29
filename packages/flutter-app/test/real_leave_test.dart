@@ -8,6 +8,7 @@ import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:drift/native.dart';
 import 'package:flutter_app/flutter_app.dart';
 import 'package:flutter_auth/flutter_auth.dart';
+import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_sync/api_sender.dart';
 import 'package:flutter_sync/flutter_sync.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,6 +25,7 @@ class _NoLock implements DeviceLockPort {
 
 void main() {
   staffPull();
+  approvals();
   checkIn();
   final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
@@ -164,4 +166,46 @@ void checkIn() {
 class _Nowhere implements LocationPort {
   @override
   Future<Fix?> current() async => const Fix(lat: 12.9716, lng: 77.5946, accuracyM: 5);
+}
+// P4-5c against the real gateway: the Principal decides a teacher's request; the HR manager, who may not, is refused.
+void approvals() {
+  final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
+  Future<OruServices> as(String email, Set<String> roles) async {
+    final svc = await OruServices.create(
+      OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+      allowedRoles: roles,
+      executor: NativeDatabase.memory(),
+      storage: MemorySecureStorage(),
+      lockPort: _NoLock(),
+      online: const Stream<bool>.empty(),
+      isOnline: () async => true,
+    );
+    await svc.session.signInWithPassword(email, 'demo-pass-2027');
+    return svc;
+  }
+
+  test('the Principal approves a teacher\'s request from the phone\'s controller; HR is refused', () async {
+    final teacher = await as('teacher@demo.oruschools.example', const {'TEACHER'});
+    final principal = await as('principal@demo.oruschools.example', const {'PRINCIPAL'});
+    final hr = await as('hr@demo.oruschools.example', const {'HR_MANAGER'});
+    final types = (await teacher.api.leaveTypes()).items;
+    final day = isoDate(DateTime.utc(2026, 11, 1).add(Duration(days: DateTime.now().millisecondsSinceEpoch ~/ 1000 % 60)));
+    final made = await teacher.api.leaveCreate(body: CreateRequestDto(clientId: 'appr-${DateTime.now().millisecondsSinceEpoch}', leaveTypeId: types.first.id, startDate: day, endDate: day, half: null, reason: 'approval test'));
+    expect(made.status, 'PENDING');
+
+    final asHr = ApprovalsController(hr.api);
+    await asHr.approve(made.id);
+    expect(asHr.problem, ApprovalsProblem.refused, reason: 'HR can never approve');
+
+    final c = ApprovalsController(principal.api);
+    await c.load();
+    expect(c.items!.any((x) => x['id'] == made.id), isTrue);
+    await c.approve(made.id);
+    expect(c.items!.any((x) => x['id'] == made.id), isFalse);
+    final after = (await teacher.api.leaveRequests()).items.firstWhere((r) => r.id == made.id);
+    expect(after.status, 'APPROVED');
+    for (final s in [teacher, principal, hr]) {
+      await s.dispose();
+    }
+  }, skip: skip);
 }

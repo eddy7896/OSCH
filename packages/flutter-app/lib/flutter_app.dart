@@ -4,6 +4,8 @@ library;
 export 'src/app.dart';
 export 'src/config.dart';
 export 'src/platform.dart';
+export 'src/approvals/approvals_data.dart';
+export 'src/approvals/approvals_screen.dart';
 export 'src/attendance/attendance_data.dart';
 export 'src/attendance/attendance_model.dart';
 export 'src/attendance/attendance_screens.dart';
