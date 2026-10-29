@@ -679,3 +679,8 @@ query StudentRoutesOfStudents($schoolId: UUID!, $studentIds: [UUID!]!) @auth(lev
   }
 }
 
+# Active members of staff who have a sign-in account: the candidates for a route's driver (the gateway keeps those whose role is DRIVER).
+query StaffWithAccounts($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  staffProfiles(where: {schoolId: {eq: $schoolId}, status: {eq: ACTIVE}, userId: {isNull: false}}, orderBy: [{firstName: ASC}], limit: 1000) { id employeeId firstName lastName userId }
+}
+

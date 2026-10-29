@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { Audit } from '../audit/audit.decorators.js';
 import { Granted, Permission, type GrantedPermission } from '../permission/permission.decorator.js';
 import { Tenant, type TenantContext } from '../tenant/tenant.decorators.js';
-import { AssignStudentDto, type ChildrenSeatsDto, CreateRouteDto, CreateVehicleDto, IdParamDto, type ManifestDto, type RouteDto, type RouteListDto, type RouteWithSeatsDto, SetStopsDto, StudentDirectionParamDto, StudentParamDto, type StudentSeatsDto, UpdateRouteDto, UpdateVehicleDto, type VehicleDto, type VehicleListDto } from './dto/transport.dto.js';
+import { AssignStudentDto, type ChildrenSeatsDto, type DriverListDto, FindStudentsQueryDto, type StudentFoundListDto, CreateRouteDto, CreateVehicleDto, IdParamDto, type ManifestDto, type RouteDto, type RouteListDto, type RouteWithSeatsDto, SetStopsDto, StudentDirectionParamDto, StudentParamDto, type StudentSeatsDto, UpdateRouteDto, UpdateVehicleDto, type VehicleDto, type VehicleListDto } from './dto/transport.dto.js';
 import { TransportService } from './transport.service.js';
 
 /**
@@ -122,5 +122,19 @@ export class TransportController {
   async unassign(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Param() p: StudentDirectionParamDto): Promise<void> {
     if (g.scope !== 'school') throw new ForbiddenException();
     await this.transport.unassign(t, p.studentId, p.direction);
+  }
+
+  /** Who can be a route's driver (the choice on the route screen). School scope only. */
+  @Permission('transport', 'read')
+  @Get('drivers')
+  drivers(@Tenant() t: TenantContext, @Granted() g: GrantedPermission): Promise<DriverListDto> {
+    return g.scope === 'school' ? this.transport.drivers(t) : Promise.resolve({ items: [] });
+  }
+
+  /** Finds active students to seat. School scope only; a driver or parent gets an empty list. */
+  @Permission('transport', 'read')
+  @Get('students')
+  findStudents(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Query() q: FindStudentsQueryDto): Promise<StudentFoundListDto> {
+    return g.scope === 'school' ? this.transport.findStudents(t, q.search) : Promise.resolve({ items: [] });
   }
 }

@@ -1306,6 +1306,12 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "GET",
+    "path": "/v1/transport/drivers",
+    "access": "tenant",
+    "operationId": "Transport_drivers"
+  },
+  {
+    "method": "GET",
     "path": "/v1/transport/routes/{id}/manifest",
     "access": "tenant",
     "operationId": "Transport_manifest"
@@ -1363,6 +1369,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/transport/students/{studentId}",
     "access": "tenant",
     "operationId": "Transport_student"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/transport/students",
+    "access": "tenant",
+    "operationId": "Transport_findStudents"
   },
   {
     "method": "DELETE",

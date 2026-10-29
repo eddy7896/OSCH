@@ -2,10 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE, type Database } from '@oruschools/database';
 import { createHash, randomUUID } from 'node:crypto';
 import { ApiException, ErrorCode } from '../common/errors.js';
+import { likeContains } from '../students/students.service.js';
 import { dashed } from '../common/uuid.js';
 import { TeachingScope } from '../teaching/teaching-scope.service.js';
 import type { TenantContext } from '../tenant/tenant.decorators.js';
-import type { AssignStudentDto, ChildrenSeatsDto, CreateRouteDto, CreateVehicleDto, ManifestDto, RouteDto, RouteListDto, RouteWithSeatsDto, SeatDto, SetStopsDto, StudentSeatsDto, UpdateRouteDto, UpdateVehicleDto, VehicleDto, VehicleListDto } from './dto/transport.dto.js';
+import type { AssignStudentDto, ChildrenSeatsDto, DriverListDto, StudentFoundListDto, CreateRouteDto, CreateVehicleDto, ManifestDto, RouteDto, RouteListDto, RouteWithSeatsDto, SeatDto, SetStopsDto, StudentSeatsDto, UpdateRouteDto, UpdateVehicleDto, VehicleDto, VehicleListDto } from './dto/transport.dto.js';
 
 interface VehicleRow { id: string; registration: string; label: string; capacity: number; status: string }
 interface StopRow { id: string; sequence: number; name: string; latMicro?: number | null; lngMicro?: number | null; arrivalTime?: string | null }
@@ -307,5 +308,19 @@ export class TransportService {
         students: riding.filter((r) => dashed(r.stopId) === s.id).map((r) => ({ id: dashed(r.student.id), name: `${r.student.firstName} ${r.student.lastName}`, enrollmentId: r.student.enrollmentId, className: r.student.placements[0]?.classroom.name ?? null })).sort((a, b) => a.name.localeCompare(b.name)),
       })),
     };
+  }
+
+  /** Members of staff who can drive: an active account that holds the DRIVER role in this school. For the route screen's driver choice. */
+  async drivers(t: TenantContext): Promise<DriverListDto> {
+    const members = (await this.db.listMemberships({ schoolId: t.schoolId })).data.schoolMembers as unknown as Array<{ schoolRole: string; status: string; user: { id: string } }>;
+    const drivers = new Set(members.filter((m) => m.schoolRole === 'DRIVER' && m.status === 'ACTIVE').map((m) => m.user.id));
+    const staff = (await this.db.staffWithAccounts({ schoolId: t.schoolId })).data.staffProfiles as unknown as Array<{ id: string; employeeId: string; firstName: string; lastName: string; userId?: string | null }>;
+    return { items: staff.filter((s) => s.userId && drivers.has(s.userId)).map((s) => ({ id: dashed(s.id), employeeId: s.employeeId, name: `${s.firstName} ${s.lastName}` })) };
+  }
+
+  /** Active students by name or enrolment id, with their class, for seating them. Transport reaches students only through here (the matrix gives the Transport manager no students grant). */
+  async findStudents(t: TenantContext, search: string): Promise<StudentFoundListDto> {
+    const rows = (await this.db.listStudents({ schoolId: t.schoolId, search: likeContains(search), status: 'ACTIVE' as never, limit: 20, offset: 0 })).data.students as unknown as Array<{ id: string; firstName: string; lastName: string; enrollmentId: string; placements: Array<{ classroom: { name: string } }> }>;
+    return { items: rows.map((r) => ({ id: dashed(r.id), name: `${r.firstName} ${r.lastName}`, enrollmentId: r.enrollmentId, className: r.placements[0]?.classroom.name ?? null })) };
   }
 }

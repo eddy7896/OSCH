@@ -260,5 +260,21 @@ describe.skipIf(!ready)('transport against the real emulators (P5-4a)', { timeou
     await call(other, 'put', `/transport/students/${mineStudent.id}/seat`, B()).send({ routeId: r.id, stopId: r.stops[0]!.id }).expect(404);
     await call(other, 'delete', `/transport/students/${mineStudent.id}/seat/MORNING`, B()).expect(404);
   });
+
+  it('the pickers of the route screen: drivers are staff who hold the DRIVER role; students are found by name through transport; a driver or parent gets nothing', async () => {
+    const drivers = ((await call(manager(), 'get', '/transport/drivers').expect(200)).body as { items: Array<{ id: string; name: string }> }).items;
+    expect(drivers.some((d) => d.id === driverStaffId)).toBe(true);
+    expect(drivers.some((d) => d.id === teacherStaffId)).toBe(false); // signs in as a TEACHER
+    const kid = await student('Zephyrine');
+    const found = ((await call(manager(), 'get', '/transport/students?search=zephyr').expect(200)).body as { items: Array<{ id: string; name: string; enrollmentId: string }> }).items;
+    expect(found.map((f) => f.id)).toContain(kid.id);
+    expect(JSON.stringify(found)).not.toMatch(/phone|email|address|guardian/i);
+    await call(manager(), 'get', '/transport/students?search=z').expect(400);
+    await call(manager(), 'get', '/transport/students').expect(400);
+    expect(((await call(w!.roles.A.DRIVER, 'get', '/transport/students?search=zephyr').expect(200)).body as { items: unknown[] }).items).toEqual([]);
+    expect(((await call(w!.roles.A.PARENT, 'get', '/transport/drivers').expect(200)).body as { items: unknown[] }).items).toEqual([]);
+    for (const p of [w!.roles.A.TEACHER, hr(), w!.roles.A.BURSAR]) expect([403, 404]).toContain((await call(p, 'get', '/transport/drivers')).status);
+    expect(((await call(w!.roles.B.TRANSPORT_MANAGER, 'get', '/transport/students?search=zephyr', B()).expect(200)).body as { items: unknown[] }).items).toEqual([]); // another school
+  });
 });
 

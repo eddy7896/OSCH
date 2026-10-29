@@ -2412,6 +2412,39 @@
         ],
         "type": "object"
       },
+      "DriverDto": {
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "name"
+        ],
+        "type": "object"
+      },
+      "DriverListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DriverDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "DueBandDto": {
         "properties": {
           "band": {
@@ -7373,6 +7406,44 @@
           "address",
           "placements",
           "guardians"
+        ],
+        "type": "object"
+      },
+      "StudentFoundDto": {
+        "properties": {
+          "className": {
+            "nullable": true,
+            "type": "string"
+          },
+          "enrollmentId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "enrollmentId",
+          "className"
+        ],
+        "type": "object"
+      },
+      "StudentFoundListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StudentFoundDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -23289,6 +23360,56 @@
         }
       }
     },
+    "/v1/transport/drivers": {
+      "get": {
+        "operationId": "Transport_drivers",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DriverListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "transport"
+        }
+      }
+    },
     "/v1/transport/routes": {
       "get": {
         "operationId": "Transport_routes",
@@ -23723,6 +23844,66 @@
         },
         "x-permission": {
           "action": "update",
+          "resource": "transport"
+        }
+      }
+    },
+    "/v1/transport/students": {
+      "get": {
+        "operationId": "Transport_findStudents",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "required": true,
+            "schema": {
+              "maxLength": 60,
+              "minLength": 2,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentFoundListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
           "resource": "transport"
         }
       }
