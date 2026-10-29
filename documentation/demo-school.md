@@ -21,7 +21,7 @@ demo data disappears (the emulators keep data in memory only); run it again for 
 - School: http://greenfield.localhost:3102 (the address `demo` is reserved by the gateway, so the school is `greenfield`)
 - Platform owner app: http://localhost:3101
 
-**One click, including the phone apps:** `./start-all.sh` starts the same stack, boots an iOS simulator, builds the four Flutter apps against it, installs them and opens the Teacher app (settings are listed at the top of the script; set `FLUTTER=` to the repaired Flutter from `environment.md` if the native packages fail to build).
+**One click, including the phone apps:** `./start-all.sh` starts the same stack, boots an iOS simulator, builds the four Flutter apps against it, installs them and opens the Teacher app (`python3 start-all-gui.py` opens a window for the same thing: pick the simulator and the apps, and watch the build progress, console and logs; settings are listed at the top of the script; set `FLUTTER=` to the repaired Flutter from `environment.md` if the native packages fail to build).
 
 By hand instead (the steps are at the top of `tools/seed-demo-school.mjs`): emulators, the gateway with `FIREBASE_AUTH_EMULATOR_HOST` and
 `DATA_CONNECT_EMULATOR_HOST`, then `FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099 node tools/seed-demo-school.mjs`, and the web apps with

@@ -27,6 +27,7 @@ GATEWAY=http://127.0.0.1:3100
 AUTH=127.0.0.1:9099
 LOGS="$(mktemp -d -t oru-all.XXXXXX)"
 STACK_PID=""
+echo "Logs: $LOGS"
 
 cleanup() {
   echo; echo "stopping the stack..."
