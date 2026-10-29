@@ -28,7 +28,7 @@ Flutter `mobile-teacher`, `mobile-staff`, `packages/flutter-core`; Drift + outbo
 **Gate:** E-SYNC-* (airplane-mode attendance, duplicate replay idempotent, two-device conflict resolves deterministically, queue survives app kill), `melos run analyze|test` green.
 
 ## Phase 5 — Parent & transport
-`mobile-parent`, `mobile-driver`, payments (Razorpay vs Stripe — decide by ADR), messaging (ADR on Firestore vs gateway, F7), live tracking.
+`mobile-parent`, `mobile-driver`, payments (Razorpay vs Stripe — decide by ADR), messaging (ADR on Firestore vs gateway, F7), live tracking. The messaging and school notice board plan (class broadcast to parents, one-on-one student conversations, parent-facing notice board) is `documentation/modules/messaging-and-notice-board.md`.
 **Gate:** E-MSG-* (office-hours enforced, all messages in audit trail), payment webhook idempotency, driver UI targets ≥56px.
 
 ## Phase 6 — Landing page
