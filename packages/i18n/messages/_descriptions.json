@@ -950,5 +950,17 @@
   "trnWhoRides": "Heading: the list of students on a route, stop by stop.",
   "trnNobodyAtStop": "Shown under a stop that has no student.",
   "trnSeatsTaken": "How many of the vehicle's seats are taken. {assigned} and {capacity} are numbers.",
-  "trnRiding": "How many students ride a route that has no vehicle yet. {assigned} is a number."
+  "trnRiding": "How many students ride a route that has no vehicle yet. {assigned} is a number.",
+  "mobParentHow": "Heading of the Parent app's home. {name} is the child's first name.",
+  "mobParentNoChildren": "Shown when no child is linked to the parent's account.",
+  "mobParentChoose": "Label of the choice between the parent's children.",
+  "mobParentNotTaken": "Shown when the school has not taken attendance for the child's class today.",
+  "mobParentLessons": "Heading of the card with the child's lessons today.",
+  "mobParentNoLessons": "Shown when the child's class has no lesson today.",
+  "mobParentRide": "Heading of the card with the child's bus ride.",
+  "mobParentNoRide": "Shown when the child has no seat on a bus. {name} is the child's first name.",
+  "mobParentRideMorning": "The child's morning bus stop. {stop} is the name of the stop.",
+  "mobParentRideAfternoon": "The child's afternoon bus stop. {stop} is the name of the stop.",
+  "mobParentDriver": "The name of the bus driver. {name} is the driver's name.",
+  "mobParentFirstLoad": "Shown on the Parent app's home before anything was loaded."
 }

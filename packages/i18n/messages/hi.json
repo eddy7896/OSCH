@@ -949,5 +949,17 @@
   "trnWhoRides": "कौन सवारी करता है",
   "trnNobodyAtStop": "अभी कोई नहीं।",
   "trnSeatsTaken": "{capacity} में से {assigned} सीटें भरी हैं",
-  "trnRiding": "{assigned} छात्र सवारी करते हैं"
+  "trnRiding": "{assigned} छात्र सवारी करते हैं",
+  "mobParentHow": "आज {name} कैसा है?",
+  "mobParentNoChildren": "आपके खाते से अभी कोई बच्चा नहीं जुड़ा है। कृपया स्कूल कार्यालय से पूछें।",
+  "mobParentChoose": "बच्चा चुनें",
+  "mobParentNotTaken": "आज की उपस्थिति अभी नहीं ली गई है।",
+  "mobParentLessons": "आज के पाठ",
+  "mobParentNoLessons": "आज कोई पाठ नहीं है।",
+  "mobParentRide": "बस",
+  "mobParentNoRide": "{name} के लिए कोई बस यात्रा तय नहीं है।",
+  "mobParentRideMorning": "स्कूल की ओर: {stop}",
+  "mobParentRideAfternoon": "घर की ओर: {stop}",
+  "mobParentDriver": "ड्राइवर: {name}",
+  "mobParentFirstLoad": "अपने बच्चे का दिन लोड करने के लिए एक बार कनेक्ट करें। उसके बाद यह बिना कनेक्शन के चलता है।"
 }

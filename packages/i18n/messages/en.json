@@ -949,5 +949,17 @@
   "trnWhoRides": "Who rides",
   "trnNobodyAtStop": "Nobody yet.",
   "trnSeatsTaken": "{assigned} of {capacity} seats taken",
-  "trnRiding": "{assigned} students ride"
+  "trnRiding": "{assigned} students ride",
+  "mobParentHow": "How is {name} today?",
+  "mobParentNoChildren": "No child is linked to your account yet. Please ask the school office.",
+  "mobParentChoose": "Choose a child",
+  "mobParentNotTaken": "Attendance has not been taken yet today.",
+  "mobParentLessons": "Today's lessons",
+  "mobParentNoLessons": "There are no lessons today.",
+  "mobParentRide": "Bus",
+  "mobParentNoRide": "No bus ride is set for {name}.",
+  "mobParentRideMorning": "To school: {stop}",
+  "mobParentRideAfternoon": "Home: {stop}",
+  "mobParentDriver": "Driver: {name}",
+  "mobParentFirstLoad": "Connect once to load your child's day. After that it works without a connection."
 }

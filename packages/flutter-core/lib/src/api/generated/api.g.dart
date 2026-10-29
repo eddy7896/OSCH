@@ -50,7 +50,9 @@ const List<OruRoute> kOruRoutes = [
   _rSubstitutionMine,
   _rSyncTombstones,
   _rTeachingMine,
+  _rTimetableForClass,
   _rTimetableMine,
+  _rTransportChildren,
 ];
 
 const _rAcademicsClasses = OruRoute('GET', '/v1/academics/classes', OruAccess.tenant, 'Academics_classes');
@@ -96,7 +98,9 @@ const _rStudentsList = OruRoute('GET', '/v1/students', OruAccess.tenant, 'Studen
 const _rSubstitutionMine = OruRoute('GET', '/v1/substitutions/mine', OruAccess.tenant, 'Substitution_mine');
 const _rSyncTombstones = OruRoute('GET', '/v1/sync/tombstones', OruAccess.tenant, 'Sync_tombstones');
 const _rTeachingMine = OruRoute('GET', '/v1/academics/mine', OruAccess.tenant, 'Teaching_mine');
+const _rTimetableForClass = OruRoute('GET', '/v1/academics/timetable/classes/{id}', OruAccess.tenant, 'Timetable_forClass');
 const _rTimetableMine = OruRoute('GET', '/v1/academics/timetable/mine', OruAccess.tenant, 'Timetable_mine');
+const _rTransportChildren = OruRoute('GET', '/v1/transport/children', OruAccess.tenant, 'Transport_children');
 
 /// The operations the phone apps call, as typed methods. Every method throws an [OruApiError] on failure.
 class OruApi {
@@ -358,10 +362,22 @@ class OruApi {
     return MineDto.fromJson(j as Map<String, dynamic>);
   }
 
+  /// GET /v1/academics/timetable/classes/{id}
+  Future<ClassTimetableDto> timetableForClass({required String id, String? academicYearId}) async {
+    final j = await _t.send(_rTimetableForClass, "/v1/academics/timetable/classes/${Uri.encodeComponent(id)}", query: {'academicYearId': academicYearId});
+    return ClassTimetableDto.fromJson(j as Map<String, dynamic>);
+  }
+
   /// GET /v1/academics/timetable/mine
   Future<StaffTimetableDto> timetableMine({String? academicYearId, String? updatedSince}) async {
     final j = await _t.send(_rTimetableMine, "/v1/academics/timetable/mine", query: {'academicYearId': academicYearId, 'updatedSince': updatedSince});
     return StaffTimetableDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/transport/children
+  Future<ChildrenSeatsDto> transportChildren() async {
+    final j = await _t.send(_rTransportChildren, "/v1/transport/children");
+    return ChildrenSeatsDto.fromJson(j as Map<String, dynamic>);
   }
 
 }

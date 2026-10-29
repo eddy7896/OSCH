@@ -42,6 +42,9 @@ production build `config.authEmulatorHost` is always empty.
 | hr@demo.oruschools.example | HR manager | staff, salaries, pay runs, HR reports (cannot approve or pay) |
 | admissions@demo.oruschools.example | Admissions officer | applications, decisions, admitting |
 | teacher@demo.oruschools.example | Teacher (Tara Teacher) | the "your role works in the mobile app" notice; her half-day sick leave is pending, one request rejected, one cancelled |
+| transport@demo.oruschools.example | Transport manager (Tarun) | Transport: vehicles, routes, stops, seating students, who rides |
+| driver@demo.oruschools.example | Driver (Salim Dar) | the driver of the North loop (the Driver app is not built yet) |
+| parent@demo.oruschools.example | Parent (Parvati Rao) | the Parent app: one child, in the first class, who rides the North loop |
 | office@demo.oruschools.example | Staff (Geeta Kulkarni, the clerk) | the Staff app: she is not checked in today, so Check in / Check out can be tried |
 | sunita@ / vikram@ / farida@demo.oruschools.example | Teachers | the same notice; Sunita has leave asked for and one approved, Vikram's approved leave needs cover, Farida's unpaid leave proposes a deduction |
 
@@ -52,6 +55,8 @@ guardians (31 once the admitted applicant counts), placed in classes; 4 admissio
 admitted); 9 staff with salary lines (four of them teachers who can sign in, with their subjects and class teacher links); a fee structure per level (Tuition in three terms, Annual charges), two concessions, invoices up to
 today (about 90), about 60% paid in full, 10% half paid, 30% unpaid, one payment reversed, receipts numbered; last month's pay run
 approved by the Principal and paid by the Bursar, this month's left as a draft.
+
+**Phase 5 (transport and the parent):** two buses, a morning and an afternoon North loop with three stops each (the driver is Salim Dar), a South loop, eight students seated, and a parent account linked to the first student.
 
 **Phase 3 (the academic engine):** the standard bell schedule (8 teaching periods, Monday to Saturday); a timetable of about 150 lessons for the first
 four classes (the gateway refuses clashes, so the seed tries the next teacher of a subject); 20 working days of attendance for those classes, with
