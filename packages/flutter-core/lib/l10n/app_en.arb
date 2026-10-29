@@ -4276,5 +4276,13 @@
         "type": "String"
       }
     }
+  },
+  "mobCiCardTitle": "Your check-in",
+  "@mobCiCardTitle": {
+    "description": "Title of the card that shows whether the person has checked in at work today."
+  },
+  "mobCiOpen": "Check in or out",
+  "@mobCiOpen": {
+    "description": "Link that opens the screen where the person checks in and out of work."
   }
 }

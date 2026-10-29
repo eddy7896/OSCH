@@ -8,6 +8,8 @@ import 'package:flutter_core/flutter_core.dart';
 import 'services.dart';
 import 'sync_pill.dart';
 import 'attendance/attendance_screens.dart';
+import 'checkin/checkin_data.dart';
+import 'checkin/checkin_screen.dart';
 import 'classes/classes_screens.dart';
 import 'inbox/inbox_data.dart';
 import 'inbox/inbox_screen.dart';
@@ -17,10 +19,13 @@ import 'today/today_screen.dart';
 
 /// The Teacher app once signed in: Today, with the account one tap away. More tabs join it as attendance, marks and leave ship.
 class OruTeacherHome extends StatefulWidget {
-  const OruTeacherHome({super.key, required this.services, required this.state, this.now});
+  const OruTeacherHome({super.key, required this.services, required this.state, this.now, this.location = const GeolocatorLocation()});
   final OruServices services;
   final SessionActive state;
   final DateTime Function()? now;
+
+  /// Where the phone is, for her own check-in. Tests give a fixed one.
+  final LocationPort location;
 
   @override
   State<OruTeacherHome> createState() => _OruTeacherHomeState();
@@ -48,16 +53,21 @@ class _OruTeacherHomeState extends State<OruTeacherHome> {
     super.dispose();
   }
 
+  /// Her own check-in and check-out, on its own page.
+  void _openCheckIn() => Navigator.of(context).push(MaterialPageRoute<void>(
+        builder: (_) => Scaffold(appBar: AppBar(title: Text(OruStrings.of(context).mobCiCardTitle)), body: OruCheckInScreen(services: widget.services, location: widget.location, now: widget.now)),
+      ));
+
   @override
   Widget build(BuildContext context) {
     final s = OruStrings.of(context);
     final svc = widget.services;
     final pages = <String, Widget>{
-      'today': OruTodayScreen(services: svc, now: widget.now, onOpenAccount: () => setState(() => _tab = 'more'), onOpenAttendance: () => setState(() => _tab = 'attendance')),
+      'today': OruTodayScreen(services: svc, now: widget.now, onOpenAccount: () => setState(() => _tab = 'more'), onOpenAttendance: () => setState(() => _tab = 'attendance'), onOpenCheckIn: _openCheckIn),
       'attendance': OruAttendanceListScreen(services: svc, now: widget.now),
       'marks': OruMarksListScreen(services: svc),
       'leave': OruLeaveScreen(services: svc, now: widget.now),
-      'more': _MorePage(services: svc, state: widget.state),
+      'more': _MorePage(services: svc, state: widget.state, onOpenCheckIn: _openCheckIn),
     };
     return Scaffold(
       body: IndexedStack(sizing: StackFit.expand, index: pages.keys.toList().indexOf(_tab), children: pages.values.toList()),
@@ -78,9 +88,10 @@ class _OruTeacherHomeState extends State<OruTeacherHome> {
 }
 
 class _MorePage extends StatelessWidget {
-  const _MorePage({required this.services, required this.state});
+  const _MorePage({required this.services, required this.state, required this.onOpenCheckIn});
   final OruServices services;
   final SessionActive state;
+  final VoidCallback onOpenCheckIn;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +99,8 @@ class _MorePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.all(OruSpacing.space4), children: [
+          OruCard(child: OruListRow(title: s.mobCiOpen, leading: const OruIcon(OruIconName.mapPin, color: OruColors.primaryText), onPressed: onOpenCheckIn)),
+          const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobMoreInbox, leading: const OruIcon(OruIconName.bell, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruInboxScreen(services: services))))),
           const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobMoreClasses, leading: const OruIcon(OruIconName.users, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruClassesScreen(services: services))))),

@@ -35,7 +35,7 @@ proven on simulators and the real gateway on the emulators has been.
 
 ## What the apps do, in one line each
 
-Teacher app: Today, Attendance, Marks, Leave (request, queued and sent once), Cover duties, My classes with report cards, Notifications.
+Teacher app: Today (with her own check-in card), Attendance, Marks, Leave (request, queued and sent once), her own check-in and check-out, Cover duties, My classes with report cards, Notifications.
 Staff app: Home, Attendance (check-in and check-out with the location stamp and a reason outside the rings), Leave, Announcements, Notifications, and the Principal's Approvals (online only).
 Web admin gained: where each check-in was and HR's confirmation, the school location (System Admin), and Announcements (post and withdraw).
 

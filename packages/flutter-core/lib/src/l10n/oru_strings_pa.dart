@@ -3133,4 +3133,10 @@ class OruStringsPa extends OruStrings {
   String annFrom(String name, String date) {
     return '$name, $date';
   }
+
+  @override
+  String get mobCiCardTitle => 'Your check-in';
+
+  @override
+  String get mobCiOpen => 'Check in or out';
 }

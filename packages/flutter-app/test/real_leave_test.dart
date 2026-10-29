@@ -2,6 +2,7 @@
 // Skipped unless ORU_GATEWAY_URL and ORU_AUTH_EMULATOR are set. Proves the pull tasks parse what the gateway sends, and the gate of P4-4d:
 // a leave request made offline is sent once, even when the same entry is offered to the school twice.
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:io';
 
 import 'package:drift/drift.dart' show driftRuntimeOptions;
@@ -23,11 +24,26 @@ class _NoLock implements DeviceLockPort {
   Future<bool> authenticate() async => false;
 }
 
+/// A working day inside the demo school's year on which [api]'s person has no leave yet: the demo school keeps the requests of earlier runs
+/// and two on one day overlap.
+Future<String> _freeDay(OruApi api, DateTime from, int span) async {
+  final taken = [for (final r in (await api.leaveRequests()).items) (r.startDate, r.endDate)];
+  var d = from.add(Duration(days: math.Random().nextInt(span)));
+  for (var i = 0; i < span * 2; i++) {
+    final iso = isoDate(d);
+    if (d.weekday != DateTime.sunday && !taken.any((t) => iso.compareTo(t.$1) >= 0 && iso.compareTo(t.$2) <= 0)) return iso;
+    d = d.add(const Duration(days: 1));
+    if (d.isAfter(from.add(Duration(days: span)))) d = from;
+  }
+  throw StateError('no free day');
+}
+
 void main() {
   staffPull();
   approvals();
   inbox();
   checkIn();
+  teacherCheckIn();
   final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
 
@@ -66,8 +82,7 @@ void main() {
     changes.add(false);
     final before = (await svc.api.leaveRequests()).items.length;
     // A different day each run, inside the demo school's academic year (2026-27): the demo school keeps the requests of earlier runs, and two on one day overlap.
-    final d = DateTime.utc(2027, 1, 1).add(Duration(days: DateTime.now().millisecondsSinceEpoch ~/ 1000 % 85));
-    final day = isoDate(d);
+    final day = await _freeDay(svc.api, DateTime.utc(2027, 1, 1), 85);
     final reason = 'offline once ${DateTime.now().millisecondsSinceEpoch}';
     final body = leaveBody(typeId: types.first['id'] as String, start: day, end: day, half: 'MORNING', reason: reason);
     final entry = await svc.store.enqueue(kind: 'leave.create', body: body);
@@ -190,7 +205,7 @@ void approvals() {
     final principal = await as('principal@demo.oruschools.example', const {'PRINCIPAL'});
     final hr = await as('hr@demo.oruschools.example', const {'HR_MANAGER'});
     final types = (await teacher.api.leaveTypes()).items;
-    final day = isoDate(DateTime.utc(2026, 11, 1).add(Duration(days: DateTime.now().millisecondsSinceEpoch ~/ 1000 % 60)));
+    final day = await _freeDay(teacher.api, DateTime.utc(2026, 12, 1), 100);
     final made = await teacher.api.leaveCreate(body: CreateRequestDto(clientId: 'appr-${DateTime.now().millisecondsSinceEpoch}', leaveTypeId: types.first.id, startDate: day, endDate: day, half: null, reason: 'approval test'));
     expect(made.status, 'PENDING');
 
@@ -298,6 +313,30 @@ void inbox() {
     await again.session.signInWithPassword('principal@demo.oruschools.example', 'demo-pass-2027');
     expect((await again.api.devicesList()).items, hasLength(phonesBefore), reason: 'signing out removed this phone\'s address');
     await again.dispose();
+    await svc.dispose();
+  }, skip: skip);
+}
+
+// P4-9 against the real gateway: a Teacher account may read her own days and where the school is (the Teacher app's check-in screen uses them).
+void teacherCheckIn() {
+  final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
+  test('the demo teacher pulls her own days and the school\'s point, and today shows as checked in', () async {
+    final svc = await OruServices.create(
+      OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+      allowedRoles: const {'TEACHER'},
+      executor: NativeDatabase.memory(),
+      storage: MemorySecureStorage(),
+      lockPort: _NoLock(),
+      online: const Stream<bool>.empty(),
+      isOnline: () async => true,
+      pullTasks: (api) => [...checkInPullTasks(api)],
+    );
+    await svc.session.signInWithPassword('teacher@demo.oruschools.example', 'demo-pass-2027');
+    await svc.coordinator.syncNow();
+    expect(svc.coordinator.pullStatus, isA<PullOk>(), reason: '${svc.coordinator.pullStatus}');
+    expect(await svc.store.record(kGeofence, 'school'), isNotNull);
+    final days = await svc.store.records(kStaffDay);
+    expect(days, isNotEmpty, reason: 'the demo seeds her check-in for today');
     await svc.dispose();
   }, skip: skip);
 }

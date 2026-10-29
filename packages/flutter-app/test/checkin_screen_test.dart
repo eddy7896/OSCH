@@ -119,4 +119,26 @@ void main() {
       await svc.dispose();
     });
   });
+
+  testWidgets('the Teacher\'s Today card says whether she has checked in and opens the check-in screen', (tester) async {
+    phone(tester);
+    await tester.runAsync(() async {
+      final svc = await ready();
+      var opened = 0;
+      await tester.pumpWidget(host(OruCheckInSummary(services: svc, onOpen: () => opened++, now: now)));
+      await pumpFor(tester);
+      expect(find.text('Your check-in'), findsOneWidget);
+      expect(find.text('You have not checked in today.'), findsOneWidget);
+      await tester.tap(find.text('Check in or out'));
+      expect(opened, 1);
+      await svc.store.enqueue(kind: 'staff.checkIn', body: {'deviceTime': '2026-11-02T03:30:00.000Z'});
+      await pumpFor(tester);
+      expect(find.text('Check-in saved on this phone, not sent yet'), findsOneWidget);
+      await svc.store.replaceAllRecords(kStaffDay, [(id: '2026-11-02', parentId: null, json: {'date': '2026-11-02', 'checkIn': DateTime(2026, 11, 2, 8, 30).toUtc().toIso8601String(), 'checkOut': null, 'needsConfirmation': false, 'confirmedAt': null})]);
+      await svc.store.dismiss((await svc.store.all()).single.id);
+      await pumpFor(tester);
+      expect(find.textContaining('Checked in at'), findsOneWidget);
+      await svc.dispose();
+    });
+  });
 }

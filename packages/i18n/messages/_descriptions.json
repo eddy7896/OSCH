@@ -900,5 +900,7 @@
   "annWithdraw": "Button that withdraws an announcement so nobody sees it any more.",
   "annWithdrawn": "Tag on an announcement that was withdrawn.",
   "annWithdrawnOk": "Shown after an announcement was withdrawn.",
-  "annFrom": "Who posted an announcement and when. {name} is the person, {date} the day."
+  "annFrom": "Who posted an announcement and when. {name} is the person, {date} the day.",
+  "mobCiCardTitle": "Title of the card that shows whether the person has checked in at work today.",
+  "mobCiOpen": "Link that opens the screen where the person checks in and out of work."
 }

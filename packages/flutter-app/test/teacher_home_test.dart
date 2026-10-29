@@ -62,6 +62,8 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
       expect(find.text('Signed in as Tara Teacher'), findsOneWidget);
       expect(find.text('Teacher at Greenfield'), findsOneWidget);
+      await tester.ensureVisible(find.text('Sign out'));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       await tester.tap(find.text('Sign out'));
       await pumpFor(tester, 10);
       await tester.tap(find.descendant(of: find.byType(AlertDialog), matching: find.text('Sign out')));

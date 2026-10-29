@@ -900,5 +900,7 @@
   "annWithdraw": "वापस लें",
   "annWithdrawn": "वापस ली गई",
   "annWithdrawnOk": "घोषणा वापस ले ली गई।",
-  "annFrom": "{name}, {date}"
+  "annFrom": "{name}, {date}",
+  "mobCiCardTitle": "आपका चेक-इन",
+  "mobCiOpen": "चेक-इन या चेक-आउट"
 }

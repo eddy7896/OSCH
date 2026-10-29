@@ -3136,4 +3136,10 @@ class OruStringsUr extends OruStrings {
   String annFrom(String name, String date) {
     return '$name، $date';
   }
+
+  @override
+  String get mobCiCardTitle => 'آپ کا چیک اِن';
+
+  @override
+  String get mobCiOpen => 'چیک اِن یا چیک آؤٹ';
 }

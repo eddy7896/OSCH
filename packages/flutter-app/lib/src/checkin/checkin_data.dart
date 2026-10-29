@@ -42,6 +42,13 @@ abstract class LocationPort {
   Future<Fix?> current();
 }
 
+/// For the summary card, which only reads: it never asks where the phone is.
+class NoLocation implements LocationPort {
+  const NoLocation();
+  @override
+  Future<Fix?> current() async => null;
+}
+
 class GeolocatorLocation implements LocationPort {
   const GeolocatorLocation({this.timeout = const Duration(seconds: 10)});
   final Duration timeout;
