@@ -2908,4 +2908,18 @@ class OruStringsFa extends OruStrings {
     );
     return '$_temp0';
   }
+
+  @override
+  String get mobTabHome => 'Home';
+
+  @override
+  String get mobAnnEmpty => 'There are no announcements yet.';
+
+  @override
+  String mobAnnBy(String name) {
+    return 'From $name';
+  }
+
+  @override
+  String get mobAnnLatest => 'Latest announcements';
 }

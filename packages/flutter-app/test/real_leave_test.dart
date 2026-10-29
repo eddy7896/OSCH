@@ -23,6 +23,7 @@ class _NoLock implements DeviceLockPort {
 }
 
 void main() {
+  staffPull();
   final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
 
@@ -60,7 +61,11 @@ void main() {
     online = false;
     changes.add(false);
     final before = (await svc.api.leaveRequests()).items.length;
-    final body = leaveBody(typeId: types.first['id'] as String, start: '2027-03-01', end: '2027-03-01', half: 'MORNING', reason: 'offline once');
+    // A different day each run, inside the demo school's academic year (2026-27): the demo school keeps the requests of earlier runs, and two on one day overlap.
+    final d = DateTime.utc(2027, 1, 1).add(Duration(days: DateTime.now().millisecondsSinceEpoch ~/ 1000 % 85));
+    final day = isoDate(d);
+    final reason = 'offline once ${DateTime.now().millisecondsSinceEpoch}';
+    final body = leaveBody(typeId: types.first['id'] as String, start: day, end: day, half: 'MORNING', reason: reason);
     final entry = await svc.store.enqueue(kind: 'leave.create', body: body);
     expect((await svc.api.leaveRequests()).items.length, before);
 
@@ -72,10 +77,33 @@ void main() {
     final sender = OruApiSender(svc.api);
     final again = await sender.send(entry);
     expect(again.toString(), isNot(contains('refused')), reason: 'a repeat is answered, not refused');
-    final mine = (await svc.api.leaveRequests()).items.where((r) => r.reason == 'offline once').toList();
+    final mine = (await svc.api.leaveRequests()).items.where((r) => r.reason == reason).toList();
     expect(mine, hasLength(1), reason: 'sent once');
     expect(mine.single.half, 'MORNING');
 
+    await svc.dispose();
+  }, skip: skip);
+}
+
+// The Staff app's pulls for a non-teaching role: the HR manager's leave and the school's announcements.
+void staffPull() {
+  final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
+  test('the demo HR manager pulls her leave and the announcements for the Staff app', () async {
+    final svc = await OruServices.create(
+      OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+      allowedRoles: const {'HR_MANAGER'},
+      executor: NativeDatabase.memory(),
+      storage: MemorySecureStorage(),
+      lockPort: _NoLock(),
+      online: const Stream<bool>.empty(),
+      isOnline: () async => true,
+      pullTasks: staffPullTasks,
+    );
+    await svc.session.signInWithPassword('hr@demo.oruschools.example', 'demo-pass-2027');
+    await svc.coordinator.syncNow();
+    final st = svc.coordinator.pullStatus;
+    expect(st, isA<PullOk>(), reason: '${st is PullFailed ? st.code : st}');
+    expect(await svc.store.records(kLeaveType), isNotEmpty);
     await svc.dispose();
   }, skip: skip);
 }

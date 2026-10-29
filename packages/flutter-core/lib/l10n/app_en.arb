@@ -3947,5 +3947,26 @@
         "type": "int"
       }
     }
+  },
+  "mobTabHome": "Home",
+  "@mobTabHome": {
+    "description": "Name of the Home tab in the Staff app's bottom navigation."
+  },
+  "mobAnnEmpty": "There are no announcements yet.",
+  "@mobAnnEmpty": {
+    "description": "Shown when the school has posted no announcement."
+  },
+  "mobAnnBy": "From {name}",
+  "@mobAnnBy": {
+    "description": "Who posted an announcement. {name} is the person.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobAnnLatest": "Latest announcements",
+  "@mobAnnLatest": {
+    "description": "Heading of the card on Home that shows the newest announcements."
   }
 }

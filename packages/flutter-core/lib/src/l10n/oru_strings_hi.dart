@@ -2911,4 +2911,18 @@ class OruStringsHi extends OruStrings {
     );
     return '$_temp0';
   }
+
+  @override
+  String get mobTabHome => 'होम';
+
+  @override
+  String get mobAnnEmpty => 'अभी कोई घोषणा नहीं है।';
+
+  @override
+  String mobAnnBy(String name) {
+    return '$name की ओर से';
+  }
+
+  @override
+  String get mobAnnLatest => 'नवीनतम घोषणाएँ';
 }
