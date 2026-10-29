@@ -5,6 +5,7 @@ import 'package:flutter_core/flutter_core.dart';
 
 import 'package:flutter_sync/flutter_sync.dart';
 
+import '../approvals/approvals_screen.dart';
 import '../announcements/announcements_data.dart';
 import '../announcements/announcements_screens.dart';
 import '../leave/leave_data.dart';
@@ -16,7 +17,7 @@ import '../sync_pill.dart';
 /// What the Staff app pulls: her leave (requests, types, balances) and the school's announcements.
 List<PullTask> staffPullTasks(OruApi api) => [...leavePullTasks(api, cover: false, ownRequests: true), ...announcementsPullTasks(api)];
 
-/// The Staff app once signed in: Home, Leave, Announcements, More (the account). Check-in and the Principal's approvals join it next.
+/// The Staff app once signed in: Home, Leave, Announcements, More (the account), and for the Principal an Approvals tab. Check-in joins it next.
 class OruStaffHome extends StatefulWidget {
   const OruStaffHome({super.key, required this.services, required this.state, this.now});
   final OruServices services;
@@ -44,6 +45,8 @@ class _OruStaffHomeState extends State<OruStaffHome> {
       'home': _HomePage(services: svc, onOpen: (tab) => setState(() => _tab = tab)),
       'leave': OruLeaveScreen(services: svc, now: widget.now),
       'announcements': OruAnnouncementsScreen(services: svc),
+      // The Principal alone decides leave (ADR-0007); the school refuses anyone else, this only keeps the tab to the person it is for.
+      if (widget.state.school.role == 'PRINCIPAL') 'approvals': OruApprovalsScreen(services: svc),
       'more': _AccountPage(services: svc, state: widget.state),
     };
     return Scaffold(
@@ -56,6 +59,7 @@ class _OruStaffHomeState extends State<OruStaffHome> {
           OruNavItem(key: 'home', label: s.mobTabHome, icon: OruIconName.home),
           OruNavItem(key: 'leave', label: s.mobTabLeave, icon: OruIconName.leave),
           OruNavItem(key: 'announcements', label: s.navAnnouncements, icon: OruIconName.message),
+          if (widget.state.school.role == 'PRINCIPAL') OruNavItem(key: 'approvals', label: s.mobTabApprovals, icon: OruIconName.checkCircle),
           OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more),
         ],
       ),

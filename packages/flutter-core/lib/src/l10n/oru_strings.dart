@@ -5195,6 +5195,48 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Latest announcements'**
   String get mobAnnLatest;
+
+  /// Name of the Principal's tab in the Staff app where leave requests are decided.
+  ///
+  /// In en, this message translates to:
+  /// **'Approvals'**
+  String get mobTabApprovals;
+
+  /// Shown to the Principal when no leave request is waiting for a decision.
+  ///
+  /// In en, this message translates to:
+  /// **'No leave requests are waiting for you.'**
+  String get mobApprEmpty;
+
+  /// Button that approves a leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get mobApprApprove;
+
+  /// Button that turns down a leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get mobApprReject;
+
+  /// One leave request waiting for a decision. {name} is the staff member and {type} the kind of leave.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {type}'**
+  String mobApprLine(String name, String type);
+
+  /// Shown when the Principal tried to approve or turn down leave with no connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Deciding needs a connection. Nothing was changed.'**
+  String get mobApprNeedsNet;
+
+  /// Shown when the school refused the Principal's decision on a leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this decision.'**
+  String get mobApprRefused;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

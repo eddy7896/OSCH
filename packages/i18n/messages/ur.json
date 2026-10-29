@@ -837,5 +837,12 @@
   "mobTabHome": "ہوم",
   "mobAnnEmpty": "ابھی کوئی اعلان نہیں ہے۔",
   "mobAnnBy": "{name} کی طرف سے",
-  "mobAnnLatest": "تازہ ترین اعلانات"
+  "mobAnnLatest": "تازہ ترین اعلانات",
+  "mobTabApprovals": "منظوریاں",
+  "mobApprEmpty": "آپ کے لیے کوئی رخصت کی درخواست انتظار میں نہیں۔",
+  "mobApprApprove": "منظور کریں",
+  "mobApprReject": "مسترد کریں",
+  "mobApprLine": "{name}، {type}",
+  "mobApprNeedsNet": "فیصلے کے لیے کنکشن چاہیے۔ کچھ تبدیل نہیں ہوا۔",
+  "mobApprRefused": "اسکول نے یہ فیصلہ قبول نہیں کیا۔"
 }

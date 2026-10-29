@@ -2922,4 +2922,28 @@ class OruStringsDoi extends OruStrings {
 
   @override
   String get mobAnnLatest => 'Latest announcements';
+
+  @override
+  String get mobTabApprovals => 'Approvals';
+
+  @override
+  String get mobApprEmpty => 'No leave requests are waiting for you.';
+
+  @override
+  String get mobApprApprove => 'Approve';
+
+  @override
+  String get mobApprReject => 'Decline';
+
+  @override
+  String mobApprLine(String name, String type) {
+    return '$name, $type';
+  }
+
+  @override
+  String get mobApprNeedsNet =>
+      'Deciding needs a connection. Nothing was changed.';
+
+  @override
+  String get mobApprRefused => 'The school did not accept this decision.';
 }
