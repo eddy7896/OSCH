@@ -156,6 +156,17 @@ const checkedInStaffOfA = async (w: World): Promise<Record<string, string>> => {
   return staff;
 };
 /** An announcement of school A, made through the real operation (P4-S4). */
+const transportManagerOfA = { token: (w: World) => w.roles.A.TRANSPORT_MANAGER.token, actor: (w: World) => w.roles.A.TRANSPORT_MANAGER.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+const vehicleOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  await w.db.createVehicle({ schoolId: w.schools.A, id, registration: `S-${id.slice(0, 8)}`, label: 'Sample bus', capacity: 30, actorId: w.roles.A.TRANSPORT_MANAGER.uid, details: {} });
+  return { id: dash(id) };
+};
+const routeOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  await w.db.createTransportRoute({ schoolId: w.schools.A, id, name: `Sample ${id.slice(0, 8)}`, direction: 'MORNING' as never, actorId: w.roles.A.TRANSPORT_MANAGER.uid, details: {} });
+  return { id: dash(id) };
+};
 const announcementOfA = async (w: World): Promise<Record<string, string>> => {
   const id = randomUUID();
   await w.db.postAnnouncement({ schoolId: w.schools.A, id, title: 'Sample', body: 'Sample announcement.', notice: { title: 'Sample' }, actorId: w.roles.A.ACADEMIC_ADMIN.uid, details: {} });
@@ -460,6 +471,13 @@ export const SAMPLES: Record<string, Sample> = {
     auditSchool: (w) => w.schools.A,
   },
   'PATCH /school/profile': { ...systemAdminOfA, body: () => ({ address: '1 Sample Road' }) },
+  'POST /transport/vehicles': { ...transportManagerOfA, body: () => ({ registration: `K-${randomUUID().slice(0, 8)}`, label: 'Bus', capacity: 40 }) },
+  'PATCH /transport/vehicles/:id': { ...transportManagerOfA, prepare: vehicleOfA, body: () => ({ capacity: 35 }) },
+  'DELETE /transport/vehicles/:id': { ...transportManagerOfA, prepare: vehicleOfA },
+  'POST /transport/routes': { ...transportManagerOfA, body: () => ({ name: `Route ${randomUUID().slice(0, 8)}`, direction: 'MORNING' }) },
+  'PATCH /transport/routes/:id': { ...transportManagerOfA, prepare: routeOfA, body: () => ({ startTime: '07:30' }) },
+  'DELETE /transport/routes/:id': { ...transportManagerOfA, prepare: routeOfA },
+  'PUT /transport/routes/:id/stops': { ...transportManagerOfA, prepare: routeOfA, body: () => ({ stops: [{ name: 'First stop' }, { name: 'Second stop' }] }) },
   'POST /announcements': { ...academicAdminOfA, body: () => ({ title: 'Staff meeting on Friday', body: 'All staff meet in the hall at 3 pm.' }) },
   'PATCH /announcements/:id': { ...principalOfA, prepare: announcementOfA, body: () => ({ title: 'Staff meeting moved', body: 'Now at 4 pm.' }) },
   'POST /announcements/:id/withdraw': { ...academicAdminOfA, prepare: announcementOfA },
