@@ -115,7 +115,7 @@ for app in $APPS; do
   echo "      $app: building..."
   (
     cd "$dir" && "$FLUTTER" pub get >/dev/null &&
-      "$FLUTTER" build ios --simulator --debug --no-codesign \
+      "$FLUTTER" build ios --simulator --debug \
         --dart-define=ORU_GATEWAY_URL="$GATEWAY" --dart-define=ORU_AUTH_EMULATOR="$AUTH"
   ) >"$LOGS/build-$app.log" 2>&1 || { echo "      $app: BUILD FAILED (see $LOGS/build-$app.log)"; FAILED="$FAILED $app"; continue; }
   bundle="$(grep -o 'PRODUCT_BUNDLE_IDENTIFIER = [^;]*' "$dir/ios/Runner.xcodeproj/project.pbxproj" | awk '{print $3}' | grep -v RunnerTests | head -1)"
