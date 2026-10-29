@@ -17,6 +17,7 @@ class OruTextField extends StatelessWidget {
     this.error,
     this.icon,
     this.controller,
+    this.focusNode,
     this.onChanged,
     this.keyboardType,
     this.obscureText = false,
@@ -32,6 +33,7 @@ class OruTextField extends StatelessWidget {
   final String? error;
   final OruIconName? icon;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -58,6 +60,7 @@ class OruTextField extends StatelessWidget {
         label: label == null ? semanticLabel : null,
         child: TextField(
           controller: controller,
+          focusNode: focusNode,
           onChanged: onChanged,
           keyboardType: multiline ? TextInputType.multiline : keyboardType,
           obscureText: obscureText,

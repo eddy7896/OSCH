@@ -775,5 +775,22 @@
   "mobAttPickStatus": "{name} کو نشان زد کریں",
   "mobAttNoStudents": "اس جماعت میں ابھی کوئی طالب علم نہیں ہے۔",
   "mobAttNotLoaded": "اس جماعت کو لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔",
-  "mobAttDateLine": "{className}، {date}"
+  "mobAttDateLine": "{className}، {date}",
+  "mobTabMarks": "نمبر",
+  "mobMarksExamsTitle": "امتحانات",
+  "mobMarksNoExams": "آپ کے لیے نمبر درج کرنے والا کوئی امتحان نہیں ہے۔",
+  "mobMarksExamLine": "{className}، {subject}",
+  "mobMarksOutOf": "{max} میں سے",
+  "mobMarksProgress": "{total} میں سے {done} کے نمبر درج",
+  "mobMarksAbsent": "غیر حاضر",
+  "mobMarksFieldLabel": "{name} کے نمبر",
+  "mobMarksErrAbove": "نمبر {max} سے زیادہ نہیں ہو سکتے۔",
+  "mobMarksErrFormat": "نمبر زیادہ سے زیادہ ایک اعشاریہ کے ساتھ لکھیں، جیسے 42 یا 42.5۔",
+  "mobMarksSave": "نمبر محفوظ کریں",
+  "mobMarksRefused": "اسکول نے یہ نمبر قبول نہیں کیے۔",
+  "mobMarksRefusedAbove": "ایک نمبر زیادہ سے زیادہ سے اوپر تھا۔ نمبر جانچیں اور دوبارہ محفوظ کریں۔",
+  "mobMarksRefusedChanged": "امتحان یا جماعت بدل گئی۔ امتحان دوبارہ کھولیں اور نمبر جانچیں۔",
+  "mobMarksNotLoaded": "اس امتحان کو لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔",
+  "mobMarksNoStudents": "اس جماعت میں ابھی کوئی طالب علم نہیں ہے۔",
+  "mobMarksErrors": "{count, plural, one{{count} نمبر درست کرنا ہے} other{{count} نمبر درست کرنے ہیں}}"
 }

@@ -2674,4 +2674,78 @@ class OruStringsHi extends OruStrings {
   String mobAttDateLine(String className, String date) {
     return '$className, $date';
   }
+
+  @override
+  String get mobTabMarks => 'अंक';
+
+  @override
+  String get mobMarksExamsTitle => 'परीक्षाएँ';
+
+  @override
+  String get mobMarksNoExams =>
+      'आपके लिए अंक दर्ज करने वाली कोई परीक्षा नहीं है।';
+
+  @override
+  String mobMarksExamLine(String className, String subject) {
+    return '$className, $subject';
+  }
+
+  @override
+  String mobMarksOutOf(String max) {
+    return '$max में से';
+  }
+
+  @override
+  String mobMarksProgress(String done, String total) {
+    return '$total में से $done के अंक दर्ज';
+  }
+
+  @override
+  String get mobMarksAbsent => 'अनुपस्थित';
+
+  @override
+  String mobMarksFieldLabel(String name) {
+    return '$name के अंक';
+  }
+
+  @override
+  String mobMarksErrAbove(String max) {
+    return 'अंक $max से अधिक नहीं हो सकते।';
+  }
+
+  @override
+  String get mobMarksErrFormat =>
+      'अंक अधिकतम एक दशमलव के साथ लिखें, जैसे 42 या 42.5।';
+
+  @override
+  String get mobMarksSave => 'अंक सहेजें';
+
+  @override
+  String get mobMarksRefused => 'स्कूल ने ये अंक स्वीकार नहीं किए।';
+
+  @override
+  String get mobMarksRefusedAbove =>
+      'एक अंक अधिकतम से ऊपर था। अंक जाँचें और फिर सहेजें।';
+
+  @override
+  String get mobMarksRefusedChanged =>
+      'परीक्षा या कक्षा बदल गई। परीक्षा फिर खोलें और अंक जाँचें।';
+
+  @override
+  String get mobMarksNotLoaded =>
+      'इस परीक्षा को लोड करने के लिए एक बार कनेक्ट करें।';
+
+  @override
+  String get mobMarksNoStudents => 'इस कक्षा में अभी कोई छात्र नहीं है।';
+
+  @override
+  String mobMarksErrors(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count अंक सुधारने हैं',
+      one: '$count अंक सुधारना है',
+    );
+    return '$_temp0';
+  }
 }

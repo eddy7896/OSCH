@@ -775,5 +775,22 @@
   "mobAttPickStatus": "Title of the list of statuses for one student. {name} is the student.",
   "mobAttNoStudents": "Shown when a class has no students.",
   "mobAttNotLoaded": "Shown when the class list has not been loaded onto the phone yet.",
-  "mobAttDateLine": "Title of the attendance screen: the class and the date. {className} is the class name, {date} the date."
+  "mobAttDateLine": "Title of the attendance screen: the class and the date. {className} is the class name, {date} the date.",
+  "mobTabMarks": "Name of the Marks tab in the Teacher app's bottom navigation.",
+  "mobMarksExamsTitle": "Heading of the list of exams the teacher can enter marks for.",
+  "mobMarksNoExams": "Shown when the teacher has no exam to enter marks for.",
+  "mobMarksExamLine": "Second line of an exam in the list: the class and the subject. {className} is the class name, {subject} the subject.",
+  "mobMarksOutOf": "How many marks an exam is out of. {max} is the number.",
+  "mobMarksProgress": "How many students have marks entered. {done} and {total} are numbers.",
+  "mobMarksAbsent": "Switch next to a student's marks: the student did not sit the exam.",
+  "mobMarksFieldLabel": "Spoken label of the marks box of one student. {name} is the student.",
+  "mobMarksErrAbove": "Error under a marks box when the number is above the exam's maximum. {max} is the maximum.",
+  "mobMarksErrFormat": "Error under a marks box when the text is not a number with at most one decimal.",
+  "mobMarksSave": "Primary button of the marks screen. It saves on the phone at once and sends when there is a connection.",
+  "mobMarksRefused": "Banner when the school refused marks sent from the phone.",
+  "mobMarksRefusedAbove": "Explains a refusal because a mark was above the exam's maximum.",
+  "mobMarksRefusedChanged": "Explains a refusal because the exam or the class changed after the marks were typed.",
+  "mobMarksNotLoaded": "Shown when the exam's student list has not been loaded onto the phone yet.",
+  "mobMarksNoStudents": "Shown when the exam's class has no students.",
+  "mobMarksErrors": "Shown above the list when some marks are not valid yet and so cannot be saved. {count} is the number."
 }

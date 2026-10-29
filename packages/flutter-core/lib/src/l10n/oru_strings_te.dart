@@ -2674,4 +2674,77 @@ class OruStringsTe extends OruStrings {
   String mobAttDateLine(String className, String date) {
     return '$className, $date';
   }
+
+  @override
+  String get mobTabMarks => 'Marks';
+
+  @override
+  String get mobMarksExamsTitle => 'Exams';
+
+  @override
+  String get mobMarksNoExams =>
+      'There are no exams for you to enter marks for.';
+
+  @override
+  String mobMarksExamLine(String className, String subject) {
+    return '$className, $subject';
+  }
+
+  @override
+  String mobMarksOutOf(String max) {
+    return 'out of $max';
+  }
+
+  @override
+  String mobMarksProgress(String done, String total) {
+    return '$done of $total marked';
+  }
+
+  @override
+  String get mobMarksAbsent => 'Absent';
+
+  @override
+  String mobMarksFieldLabel(String name) {
+    return 'Marks for $name';
+  }
+
+  @override
+  String mobMarksErrAbove(String max) {
+    return 'Marks cannot be more than $max.';
+  }
+
+  @override
+  String get mobMarksErrFormat =>
+      'Enter marks with at most one decimal, like 42 or 42.5.';
+
+  @override
+  String get mobMarksSave => 'Save marks';
+
+  @override
+  String get mobMarksRefused => 'The school did not accept these marks.';
+
+  @override
+  String get mobMarksRefusedAbove =>
+      'A mark was above the maximum. Check the marks and save again.';
+
+  @override
+  String get mobMarksRefusedChanged =>
+      'The exam or the class changed. Open the exam again and check the marks.';
+
+  @override
+  String get mobMarksNotLoaded => 'Connect once to load this exam.';
+
+  @override
+  String get mobMarksNoStudents => 'There are no students in this class yet.';
+
+  @override
+  String mobMarksErrors(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count marks need a correction',
+      one: '$count mark needs a correction',
+    );
+    return '$_temp0';
+  }
 }

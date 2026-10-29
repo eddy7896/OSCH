@@ -59,7 +59,9 @@ class OruApiSender implements OutboxSender {
       if (err.retryable) {
         return SendResult.retry(err.code, message: err.message, retryAfterSeconds: err.retryAfterSeconds, offline: err.code == 'NETWORK_ERROR' || err.code == 'TIMEOUT');
       }
-      return SendResult.refused(err.code, message: err.message);
+      // The field problems travel with the message (`entries: aboveMaximum`), so the screen can say what to fix.
+      final problems = [for (final d in err.details) '${d.field}: ${d.rule}'];
+      return SendResult.refused(err.code, message: problems.isEmpty ? err.message : '${err.message} (${problems.join('; ')})');
     }
   }
 }
