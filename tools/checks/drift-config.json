@@ -112,6 +112,7 @@
     "SetUserLanguage": "self-service preference on the caller's own row; no tenant data and no privilege change",
     "CreateAuditLog": "writes the audit table itself",
     "CreateSchoolMember": "Phase 0 seed/bootstrap (first administrator has no actor); use the audited AddMembership",
+    "AddRouteStop": "one stop of a route's list (P5-4a); the whole list is audited once by ClearRouteStops (transport.route.stops) in the same request, as marks are",
     "CreateAttendanceDay": "first step of an attendance submit; FinishAttendanceSubmit commits it and writes the audit row",
     "CreateLeaveBalance": "made on demand from the leave type's quota the first time a person asks for that type; HR's changes go through the audited SetLeaveBalance",
     "MarkNotificationRead": "a marker on the reader's own inbox; it changes no school data",

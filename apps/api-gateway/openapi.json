@@ -1771,6 +1771,36 @@
         ],
         "type": "object"
       },
+      "CreateRouteDto": {
+        "properties": {
+          "direction": {
+            "enum": [
+              "MORNING",
+              "AFTERNOON"
+            ],
+            "type": "string"
+          },
+          "driverId": {
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "vehicleId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "direction"
+        ],
+        "type": "object"
+      },
       "CreateSalaryLineDto": {
         "properties": {
           "amountMinor": {
@@ -2077,6 +2107,31 @@
         "required": [
           "name",
           "paid"
+        ],
+        "type": "object"
+      },
+      "CreateVehicleDto": {
+        "properties": {
+          "capacity": {
+            "maximum": 200,
+            "minimum": 1,
+            "type": "number"
+          },
+          "label": {
+            "maxLength": 60,
+            "minLength": 1,
+            "type": "string"
+          },
+          "registration": {
+            "maxLength": 20,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "required": [
+          "registration",
+          "label",
+          "capacity"
         ],
         "type": "object"
       },
@@ -5528,6 +5583,81 @@
         ],
         "type": "object"
       },
+      "RouteDto": {
+        "properties": {
+          "direction": {
+            "type": "string"
+          },
+          "driver": {
+            "properties": {
+              "employeeId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "employeeId",
+              "name"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "startTime": {
+            "nullable": true,
+            "type": "string"
+          },
+          "stops": {
+            "items": {
+              "$ref": "#/components/schemas/StopViewDto"
+            },
+            "type": "array"
+          },
+          "vehicle": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VehicleDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "direction",
+          "startTime",
+          "vehicle",
+          "driver",
+          "stops"
+        ],
+        "type": "object"
+      },
+      "RouteListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RouteDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "RunTotalsDto": {
         "properties": {
           "deductionsMinor": {
@@ -6024,6 +6154,21 @@
           "periodId",
           "subjectId",
           "staffId"
+        ],
+        "type": "object"
+      },
+      "SetStopsDto": {
+        "properties": {
+          "stops": {
+            "items": {
+              "$ref": "#/components/schemas/StopDto"
+            },
+            "maxItems": 60,
+            "type": "array"
+          }
+        },
+        "required": [
+          "stops"
         ],
         "type": "object"
       },
@@ -6767,6 +6912,66 @@
         },
         "required": [
           "items"
+        ],
+        "type": "object"
+      },
+      "StopDto": {
+        "properties": {
+          "arrivalTime": {
+            "type": "string"
+          },
+          "lat": {
+            "maximum": 90,
+            "minimum": -90,
+            "type": "number"
+          },
+          "lng": {
+            "maximum": 180,
+            "minimum": -180,
+            "type": "number"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "StopViewDto": {
+        "properties": {
+          "arrivalTime": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lat": {
+            "nullable": true,
+            "type": "number"
+          },
+          "lng": {
+            "nullable": true,
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sequence": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "name",
+          "lat",
+          "lng",
+          "arrivalTime"
         ],
         "type": "object"
       },
@@ -7698,6 +7903,34 @@
         ],
         "type": "object"
       },
+      "UpdateRouteDto": {
+        "properties": {
+          "direction": {
+            "enum": [
+              "MORNING",
+              "AFTERNOON"
+            ],
+            "type": "string"
+          },
+          "driverId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "vehicleId": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "UpdateSalaryLineDto": {
         "properties": {
           "amountMinor": {
@@ -7964,6 +8197,33 @@
         },
         "type": "object"
       },
+      "UpdateVehicleDto": {
+        "properties": {
+          "capacity": {
+            "maximum": 200,
+            "minimum": 1,
+            "type": "number"
+          },
+          "label": {
+            "maxLength": 60,
+            "minLength": 1,
+            "type": "string"
+          },
+          "registration": {
+            "maxLength": 20,
+            "minLength": 2,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "OUT_OF_SERVICE"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "UploadTicketDto": {
         "properties": {
           "expiresInSeconds": {
@@ -7999,6 +8259,47 @@
           "key",
           "publicUrl",
           "expiresInSeconds"
+        ],
+        "type": "object"
+      },
+      "VehicleDto": {
+        "properties": {
+          "capacity": {
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "registration": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "registration",
+          "label",
+          "capacity",
+          "status"
+        ],
+        "type": "object"
+      },
+      "VehicleListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/VehicleDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -22663,6 +22964,626 @@
         "x-permission": {
           "action": "read",
           "resource": "academics"
+        }
+      }
+    },
+    "/v1/transport/routes": {
+      "get": {
+        "operationId": "Transport_routes",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "transport"
+        }
+      },
+      "post": {
+        "operationId": "Transport_createRoute",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRouteDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.route.create",
+          "operation": "CreateTransportRoute"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "transport"
+        }
+      }
+    },
+    "/v1/transport/routes/{id}": {
+      "delete": {
+        "operationId": "Transport_deleteRoute",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.route.delete",
+          "operation": "DeleteTransportRoute"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "transport"
+        }
+      },
+      "get": {
+        "operationId": "Transport_route",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "transport"
+        }
+      },
+      "patch": {
+        "operationId": "Transport_updateRoute",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRouteDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.route.update",
+          "operation": "UpdateTransportRoute"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "transport"
+        }
+      }
+    },
+    "/v1/transport/routes/{id}/stops": {
+      "put": {
+        "operationId": "Transport_setStops",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetStopsDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.route.stops",
+          "operation": "ClearRouteStops"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "transport"
+        }
+      }
+    },
+    "/v1/transport/vehicles": {
+      "get": {
+        "operationId": "Transport_vehicles",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "transport"
+        }
+      },
+      "post": {
+        "operationId": "Transport_createVehicle",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVehicleDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.vehicle.create",
+          "operation": "CreateVehicle"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "transport"
+        }
+      }
+    },
+    "/v1/transport/vehicles/{id}": {
+      "delete": {
+        "operationId": "Transport_deleteVehicle",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.vehicle.delete",
+          "operation": "DeleteVehicle"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "transport"
+        }
+      },
+      "patch": {
+        "operationId": "Transport_updateVehicle",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVehicleDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Transport"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "transport.vehicle.update",
+          "operation": "UpdateVehicle"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "transport"
         }
       }
     },

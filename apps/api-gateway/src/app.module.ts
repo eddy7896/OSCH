@@ -22,6 +22,7 @@ import { LeaveModule } from './leave/leave.module.js';
 import { SubstitutionModule } from './substitution/substitution.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
 import { AnnouncementsModule } from './announcements/announcements.module.js';
+import { TransportModule } from './transport/transport.module.js';
 import { DevicesModule } from './devices/devices.module.js';
 import { PushModule } from './push/push.module.js';
 import { SyncModule } from './sync/sync.module.js';
@@ -86,6 +87,7 @@ import { HealthModule } from './health/health.module.js';
     SubstitutionModule,
     NotificationsModule,
     AnnouncementsModule,
+    TransportModule,
     DevicesModule,
     PushModule,
     SyncModule,

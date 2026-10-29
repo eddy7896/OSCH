@@ -104,6 +104,12 @@ const PayrollRunStatus = {
 }
 exports.PayrollRunStatus = PayrollRunStatus;
 
+const RouteDirection = {
+  MORNING: "MORNING",
+  AFTERNOON: "AFTERNOON",
+}
+exports.RouteDirection = RouteDirection;
+
 const SalaryLineKind = {
   EARNING: "EARNING",
   DEDUCTION: "DEDUCTION",
@@ -168,6 +174,12 @@ const SubscriptionStatus = {
   SUSPENDED: "SUSPENDED",
 }
 exports.SubscriptionStatus = SubscriptionStatus;
+
+const VehicleStatus = {
+  ACTIVE: "ACTIVE",
+  OUT_OF_SERVICE: "OUT_OF_SERVICE",
+}
+exports.VehicleStatus = VehicleStatus;
 
 const connectorConfig = {
   connector: 'erp-connector',
@@ -1156,6 +1168,90 @@ function withdrawAnnouncement(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.withdrawAnnouncement = withdrawAnnouncement;
 
+function createVehicle(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateVehicle', inputVars, inputOpts);
+}
+exports.createVehicle = createVehicle;
+
+function updateVehicle(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateVehicle', inputVars, inputOpts);
+}
+exports.updateVehicle = updateVehicle;
+
+function deleteVehicle(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteVehicle', inputVars, inputOpts);
+}
+exports.deleteVehicle = deleteVehicle;
+
+function createTransportRoute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateTransportRoute', inputVars, inputOpts);
+}
+exports.createTransportRoute = createTransportRoute;
+
+function updateTransportRoute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpdateTransportRoute', inputVars, inputOpts);
+}
+exports.updateTransportRoute = updateTransportRoute;
+
+function setRouteVehicle(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetRouteVehicle', inputVars, inputOpts);
+}
+exports.setRouteVehicle = setRouteVehicle;
+
+function clearRouteVehicle(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ClearRouteVehicle', inputVars, inputOpts);
+}
+exports.clearRouteVehicle = clearRouteVehicle;
+
+function setRouteDriver(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('SetRouteDriver', inputVars, inputOpts);
+}
+exports.setRouteDriver = setRouteDriver;
+
+function clearRouteDriver(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ClearRouteDriver', inputVars, inputOpts);
+}
+exports.clearRouteDriver = clearRouteDriver;
+
+function deleteTransportRoute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteTransportRoute', inputVars, inputOpts);
+}
+exports.deleteTransportRoute = deleteTransportRoute;
+
+function clearRouteStops(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ClearRouteStops', inputVars, inputOpts);
+}
+exports.clearRouteStops = clearRouteStops;
+
+function addRouteStop(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddRouteStop', inputVars, inputOpts);
+}
+exports.addRouteStop = addRouteStop;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -1932,4 +2028,25 @@ function getAnnouncement(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetAnnouncement', inputVars, inputOpts);
 }
 exports.getAnnouncement = getAnnouncement;
+
+function listVehicles(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListVehicles', inputVars, inputOpts);
+}
+exports.listVehicles = listVehicles;
+
+function listTransportRoutes(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListTransportRoutes', inputVars, inputOpts);
+}
+exports.listTransportRoutes = listTransportRoutes;
+
+function getTransportRoute(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetTransportRoute', inputVars, inputOpts);
+}
+exports.getTransportRoute = getTransportRoute;
 

@@ -223,6 +223,16 @@ export const bindApi = (client: Client) => ({
   timetableLoad: async (options: Opts<typeof sdk.timetableLoad<true>> = {}): Out<typeof sdk.timetableLoad<true>> => (await sdk.timetableLoad<true>({ ...options, client, throwOnError: true } as never)).data,
   timetableMine: async (options: Opts<typeof sdk.timetableMine<true>> = {}): Out<typeof sdk.timetableMine<true>> => (await sdk.timetableMine<true>({ ...options, client, throwOnError: true } as never)).data,
   timetableSetSlot: async (options: Opts<typeof sdk.timetableSetSlot<true>>): Out<typeof sdk.timetableSetSlot<true>> => (await sdk.timetableSetSlot<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportCreateRoute: async (options: Opts<typeof sdk.transportCreateRoute<true>>): Out<typeof sdk.transportCreateRoute<true>> => (await sdk.transportCreateRoute<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportCreateVehicle: async (options: Opts<typeof sdk.transportCreateVehicle<true>>): Out<typeof sdk.transportCreateVehicle<true>> => (await sdk.transportCreateVehicle<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportDeleteRoute: async (options: Opts<typeof sdk.transportDeleteRoute<true>>): Out<typeof sdk.transportDeleteRoute<true>> => (await sdk.transportDeleteRoute<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportDeleteVehicle: async (options: Opts<typeof sdk.transportDeleteVehicle<true>>): Out<typeof sdk.transportDeleteVehicle<true>> => (await sdk.transportDeleteVehicle<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportRoute: async (options: Opts<typeof sdk.transportRoute<true>>): Out<typeof sdk.transportRoute<true>> => (await sdk.transportRoute<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportRoutes: async (options: Opts<typeof sdk.transportRoutes<true>> = {}): Out<typeof sdk.transportRoutes<true>> => (await sdk.transportRoutes<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportSetStops: async (options: Opts<typeof sdk.transportSetStops<true>>): Out<typeof sdk.transportSetStops<true>> => (await sdk.transportSetStops<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportUpdateRoute: async (options: Opts<typeof sdk.transportUpdateRoute<true>>): Out<typeof sdk.transportUpdateRoute<true>> => (await sdk.transportUpdateRoute<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportUpdateVehicle: async (options: Opts<typeof sdk.transportUpdateVehicle<true>>): Out<typeof sdk.transportUpdateVehicle<true>> => (await sdk.transportUpdateVehicle<true>({ ...options, client, throwOnError: true } as never)).data,
+  transportVehicles: async (options: Opts<typeof sdk.transportVehicles<true>> = {}): Out<typeof sdk.transportVehicles<true>> => (await sdk.transportVehicles<true>({ ...options, client, throwOnError: true } as never)).data,
   uploadsSchoolLogo: async (options: Opts<typeof sdk.uploadsSchoolLogo<true>>): Out<typeof sdk.uploadsSchoolLogo<true>> => (await sdk.uploadsSchoolLogo<true>({ ...options, client, throwOnError: true } as never)).data,
 });
 

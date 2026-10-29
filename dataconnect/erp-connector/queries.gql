@@ -639,3 +639,27 @@ query GetAnnouncement($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
     id title body createdAt updatedAt withdrawnAt author { id displayName email }
   }
 }
+
+# ---- Transport (P5-4a)
+query ListVehicles($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  vehicles(where: {schoolId: {eq: $schoolId}}, orderBy: [{label: ASC}]) { id registration label capacity status }
+}
+
+query ListTransportRoutes($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  transportRoutes(where: {schoolId: {eq: $schoolId}}, orderBy: [{name: ASC}]) {
+    id name direction startTime
+    vehicle { id registration label capacity status }
+    driver { id employeeId firstName lastName userId }
+    routeStops_on_route(orderBy: [{sequence: ASC}]) { id sequence name latMicro lngMicro arrivalTime }
+  }
+}
+
+query GetTransportRoute($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  transportRoutes(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}) {
+    id name direction startTime
+    vehicle { id registration label capacity status }
+    driver { id employeeId firstName lastName userId }
+    routeStops_on_route(orderBy: [{sequence: ASC}]) { id sequence name latMicro lngMicro arrivalTime }
+  }
+}
+
