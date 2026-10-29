@@ -40,6 +40,31 @@ command -v node >/dev/null || { echo "error: node was not found (the project use
 command -v "$FLUTTER" >/dev/null 2>&1 || [ -x "$FLUTTER" ] || { echo "error: Flutter was not found; set FLUTTER=/path/to/flutter"; exit 1; }
 command -v xcrun >/dev/null || { echo "error: Xcode command line tools were not found"; exit 1; }
 
+# --- 0. a Flutter that can build the native packages --------------------------------------------------------------------------
+# Some Flutter installs lack bin/cache/dart-sdk/bin/snapshots/gen_kernel_aot.dart.snapshot, and then drift, secure storage and the other
+# native packages cannot build ("gen_kernel_aot.dart.snapshot is not an AOT snapshot"). The fix needs no change to your install: a
+# copy-on-write clone in ~/flutter_fixed plus that one file from the matching standalone Dart SDK (about 225 MB, downloaded once).
+FLUTTER_BIN="$(command -v "$FLUTTER" 2>/dev/null || echo "$FLUTTER")"
+FLUTTER_ROOT_DIR="$(cd "$(dirname "$(readlink -f "$FLUTTER_BIN" 2>/dev/null || echo "$FLUTTER_BIN")")/.." && pwd)"
+SNAP_REL="bin/cache/dart-sdk/bin/snapshots/gen_kernel_aot.dart.snapshot"
+if [ ! -f "$FLUTTER_ROOT_DIR/$SNAP_REL" ]; then
+  FIXED="$HOME/flutter_fixed"
+  if [ ! -f "$FIXED/$SNAP_REL" ]; then
+    echo "[0/3] your Flutter lacks gen_kernel_aot.dart.snapshot; making a repaired copy in $FIXED (once)..."
+    DART_VERSION="$("$FLUTTER_ROOT_DIR/bin/cache/dart-sdk/bin/dart" --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
+    ARCH=arm64; [ "$(uname -m)" = x86_64 ] && ARCH=x64
+    [ -n "$DART_VERSION" ] || { echo "error: could not read the Dart version of $FLUTTER_ROOT_DIR"; exit 1; }
+    rm -rf "$FIXED"; cp -cR "$FLUTTER_ROOT_DIR" "$FIXED" || { echo "error: could not copy $FLUTTER_ROOT_DIR"; exit 1; }
+    TMPZ="$(mktemp -d)"
+    curl -fL -o "$TMPZ/dart.zip" "https://storage.googleapis.com/dart-archive/channels/stable/release/$DART_VERSION/sdk/dartsdk-macos-$ARCH-release.zip" || { echo "error: could not download Dart $DART_VERSION"; exit 1; }
+    unzip -q -o "$TMPZ/dart.zip" 'dart-sdk/bin/snapshots/gen_kernel_aot.dart.snapshot' -d "$TMPZ" && \
+      cp "$TMPZ/dart-sdk/bin/snapshots/gen_kernel_aot.dart.snapshot" "$FIXED/$SNAP_REL" || { echo "error: could not take the snapshot from the Dart SDK"; exit 1; }
+    rm -rf "$TMPZ"
+  fi
+  FLUTTER="$FIXED/bin/flutter"
+  echo "      using the repaired Flutter at $FIXED"
+fi
+
 # --- 1. the stack -----------------------------------------------------------------------------------------------------------
 echo "[1/3] starting the emulators, gateway, demo school and the two web apps (log: $LOGS/stack.log)..."
 bash tools/demo-stack.sh >"$LOGS/stack.log" 2>&1 &
