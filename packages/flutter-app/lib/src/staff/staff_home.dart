@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/flutter_auth.dart';
 import 'package:flutter_auth/flutter_auth_ui.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_sync/flutter_sync.dart';
 import '../approvals/approvals_screen.dart';
 import '../announcements/announcements_data.dart';
 import '../checkin/checkin_data.dart';
+import '../inbox/inbox_data.dart';
+import '../inbox/inbox_screen.dart';
 import '../checkin/checkin_screen.dart';
 import '../announcements/announcements_screens.dart';
 import '../leave/leave_data.dart';
@@ -16,8 +20,8 @@ import '../leave/leave_screens.dart';
 import '../services.dart';
 import '../sync_pill.dart';
 
-/// What the Staff app pulls: her days and where the school is, her leave (requests, types, balances) and the school's announcements.
-List<PullTask> staffPullTasks(OruApi api) => [...checkInPullTasks(api), ...leavePullTasks(api, cover: false, ownRequests: true), ...announcementsPullTasks(api)];
+/// What the Staff app pulls: her days and where the school is, her leave (requests, types, balances), the school's announcements and her notifications.
+List<PullTask> staffPullTasks(OruApi api) => [...checkInPullTasks(api), ...leavePullTasks(api, cover: false, ownRequests: true), ...announcementsPullTasks(api), ...inboxPullTasks(api)];
 
 /// The Staff app once signed in: Home, Attendance (check-in and check-out), Leave, More (announcements and the account), and for the Principal an Approvals tab.
 class OruStaffHome extends StatefulWidget {
@@ -35,11 +39,24 @@ class OruStaffHome extends StatefulWidget {
 
 class _OruStaffHomeState extends State<OruStaffHome> {
   String _tab = 'home';
+  late final InboxController _inbox = InboxController(widget.services.store);
+  StreamSubscription<void>? _pushOpen;
 
   @override
   void initState() {
     super.initState();
     widget.services.startIfActive();
+    // A tap on a push opens the notifications.
+    _pushOpen = widget.services.inboxRequests.listen((_) {
+      if (mounted) Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruInboxScreen(services: widget.services)));
+    });
+  }
+
+  @override
+  void dispose() {
+    _pushOpen?.cancel();
+    _inbox.dispose();
+    super.dispose();
   }
 
   @override
@@ -56,7 +73,7 @@ class _OruStaffHomeState extends State<OruStaffHome> {
     };
     return Scaffold(
       body: IndexedStack(sizing: StackFit.expand, index: pages.keys.toList().indexOf(_tab), children: pages.values.toList()),
-      bottomNavigationBar: OruBottomNav(
+      bottomNavigationBar: ListenableBuilder(listenable: _inbox, builder: (context, _) => OruBottomNav(
         label: s.appStaff,
         active: _tab,
         onChanged: (k) => setState(() => _tab = k),
@@ -65,9 +82,9 @@ class _OruStaffHomeState extends State<OruStaffHome> {
           OruNavItem(key: 'attendance', label: s.mobTabAttendance, icon: OruIconName.mapPin),
           OruNavItem(key: 'leave', label: s.mobTabLeave, icon: OruIconName.leave),
           if (widget.state.school.role == 'PRINCIPAL') OruNavItem(key: 'approvals', label: s.mobTabApprovals, icon: OruIconName.checkCircle),
-          OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more),
+          OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more, badge: _inbox.unread, badgeLabel: _inbox.unread > 0 ? s.mobInboxUnread('${_inbox.unread}') : null),
         ],
-      ),
+      )),
     );
   }
 }
@@ -162,6 +179,8 @@ class _AccountPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.all(OruSpacing.space4), children: [
+          OruCard(child: OruListRow(title: s.mobMoreInbox, leading: const OruIcon(OruIconName.bell, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruInboxScreen(services: services))))),
+          const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobMoreAnnouncements, leading: const OruIcon(OruIconName.message, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => Scaffold(appBar: AppBar(title: Text(s.mobMoreAnnouncements)), body: OruAnnouncementsScreen(services: services)))))),
           const SizedBox(height: OruSpacing.space4),
           OruAccountPanel(session: services.session, state: state, lock: services.lock, syncStatus: OruSyncPill(services: services)),

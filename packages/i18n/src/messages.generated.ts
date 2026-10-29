@@ -868,7 +868,10 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobCiReasonEmpty": "Write a reason to go on.",
     "mobCiWaitingHr": "Waiting for HR to confirm",
     "mobCiRefused": "The school did not accept this.",
-    "mobMoreAnnouncements": "Announcements"
+    "mobMoreAnnouncements": "Announcements",
+    "mobMoreInbox": "Notifications",
+    "mobInboxEmpty": "You have no notifications.",
+    "mobInboxUnread": "{count} unread"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -1734,7 +1737,10 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobCiReasonEmpty": "आगे बढ़ने के लिए कारण लिखें।",
     "mobCiWaitingHr": "एचआर की पुष्टि की प्रतीक्षा में",
     "mobCiRefused": "स्कूल ने इसे स्वीकार नहीं किया।",
-    "mobMoreAnnouncements": "घोषणाएँ"
+    "mobMoreAnnouncements": "घोषणाएँ",
+    "mobMoreInbox": "सूचनाएँ",
+    "mobInboxEmpty": "आपके पास कोई सूचना नहीं है।",
+    "mobInboxUnread": "{count} अपठित"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -2600,7 +2606,10 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobCiReasonEmpty": "آگے بڑھنے کے لیے وجہ لکھیں۔",
     "mobCiWaitingHr": "ایچ آر کی تصدیق کے انتظار میں",
     "mobCiRefused": "اسکول نے اسے قبول نہیں کیا۔",
-    "mobMoreAnnouncements": "اعلانات"
+    "mobMoreAnnouncements": "اعلانات",
+    "mobMoreInbox": "اطلاعات",
+    "mobInboxEmpty": "آپ کے پاس کوئی اطلاع نہیں ہے۔",
+    "mobInboxUnread": "{count} نہ پڑھی گئی"
   },
   "ks": {},
   "sd": {},

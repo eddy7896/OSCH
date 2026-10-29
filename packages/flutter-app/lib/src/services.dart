@@ -9,6 +9,7 @@ import 'package:flutter_auth/flutter_auth_ui.dart' show oruRoleName;
 import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_sync/api_sender.dart';
 import 'package:flutter_sync/flutter_sync.dart';
+import 'push/push.dart';
 import 'package:http/http.dart' as http;
 
 import 'config.dart';
@@ -27,6 +28,7 @@ class OruServices {
     required this.lock,
     required this.api,
     required this.lockReason,
+    required this.registrar,
   });
 
   final OruAppConfig config;
@@ -41,8 +43,17 @@ class OruServices {
   /// Set by the app's first build, so the phone's prompt is in the person's language.
   final ValueNotifier<String> lockReason;
 
+  /// Keeps this phone's push address on the account.
+  final PushRegistrar registrar;
+
+  final _inboxRequests = StreamController<void>.broadcast();
+
+  /// The person tapped a push: the app opens the notifications.
+  Stream<void> get inboxRequests => _inboxRequests.stream;
+
   StreamSubscription<SessionState>? _watch;
   StreamSubscription<OutboxCounts>? _kick;
+  final _pushSubs = <StreamSubscription<void>>[];
 
   /// [executor], [storage], [lockPort] and [online] are for tests; the app passes none and gets the real phone.
   static Future<OruServices> create(
@@ -57,8 +68,10 @@ class OruServices {
     AccountSource? accountSource,
     http.Client? httpClient,
     List<PullTask> Function(OruApi api)? pullTasks,
+    PushPort push = const NoPush(),
   }) async {
     final secure = storage ?? PlatformSecureStorage();
+    PushRegistrar? registrar;
     final db = OruLocalDatabase(executor ?? driftDatabase(name: 'oruschools'));
     final store = OruLocalStore(db);
     final base = Uri.parse(config.gatewayUrl);
@@ -70,6 +83,7 @@ class OruServices {
       accountSource: accountSource ?? gatewayAccountSource(base),
       wipeLocalData: store.wipe,
       owedChanges: () async => (await store.counts()).pending,
+      beforeSignOut: () async => registrar?.stop(),
     );
     final transport = OruHttpTransport(baseUrl: base, getToken: session.tokenProvider, getSchoolId: () => session.schoolId, client: httpClient);
     final api = OruApi(transport);
@@ -81,8 +95,14 @@ class OruServices {
       isOnline: isOnline ?? () async => !(await connectivity.checkConnectivity()).contains(ConnectivityResult.none),
     );
     final coordinator = SyncCoordinator(store: store, engine: engine, tombstones: OruApiTombstones(api), tasks: pullTasks?.call(api) ?? const []);
+    registrar = PushRegistrar(api, push);
     final lock = AppLock(port: lockPort ?? PlatformDeviceLock(reason: () => reason.value), storage: secure);
-    final s = OruServices._(config: config, session: session, db: db, store: store, engine: engine, coordinator: coordinator, lock: lock, api: api, lockReason: reason);
+    final s = OruServices._(config: config, session: session, db: db, store: store, engine: engine, coordinator: coordinator, lock: lock, api: api, lockReason: reason, registrar: registrar);
+    s._pushSubs.add(push.received.listen((_) => unawaited(coordinator.syncNow().catchError((Object _) {}))));
+    s._pushSubs.add(push.opened.listen((_) {
+      unawaited(coordinator.syncNow().catchError((Object _) {}));
+      s._inboxRequests.add(null);
+    }));
     s._watch = session.changes.listen(s._onSession);
     // A change saved on the phone is sent at once when it can be (offline-sync rule: the engine is kicked on every save), not at the next
     // timer or pull-to-refresh. Changes already waiting for their retry time are not due, so this does not loop.
@@ -104,8 +124,10 @@ class OruServices {
   void _onSession(SessionState st) {
     if (st is SessionActive) {
       unawaited(engine.start().then((_) => engine.signedIn()).then((_) => coordinator.syncNow()).catchError((Object _) {}));
+      unawaited(registrar.start().catchError((Object _) {}));
     } else {
       engine.stop();
+      unawaited(registrar.stop(remove: false));
     }
   }
 
@@ -118,6 +140,11 @@ class OruServices {
   Future<void> dispose() async {
     await _watch?.cancel();
     await _kick?.cancel();
+    for (final p in _pushSubs) {
+      await p.cancel();
+    }
+    await registrar.stop(remove: false);
+    await _inboxRequests.close();
     engine.stop();
     await engine.dispose();
     await db.close();

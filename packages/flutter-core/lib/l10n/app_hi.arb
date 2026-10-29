@@ -863,5 +863,8 @@
   "mobCiReasonEmpty": "आगे बढ़ने के लिए कारण लिखें।",
   "mobCiWaitingHr": "एचआर की पुष्टि की प्रतीक्षा में",
   "mobCiRefused": "स्कूल ने इसे स्वीकार नहीं किया।",
-  "mobMoreAnnouncements": "घोषणाएँ"
+  "mobMoreAnnouncements": "घोषणाएँ",
+  "mobMoreInbox": "सूचनाएँ",
+  "mobInboxEmpty": "आपके पास कोई सूचना नहीं है।",
+  "mobInboxUnread": "{count} अपठित"
 }

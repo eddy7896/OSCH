@@ -53,6 +53,7 @@ class DeviceSession {
     required this.allowedRoles,
     required this.wipeLocalData,
     this.owedChanges,
+    this.beforeSignOut,
     int Function()? nowMs,
     this.refreshMarginMs = 60000,
   }) : _nowMs = nowMs ?? (() => DateTime.now().millisecondsSinceEpoch);
@@ -70,6 +71,10 @@ class DeviceSession {
 
   /// How many changes the phone still owes the gateway, so sign-out can warn.
   final Future<int> Function()? owedChanges;
+
+  /// Runs while the person is still signed in, just before a sign-out wipes the phone (the app stops this phone's pushes here). It must not
+  /// block the sign-out: errors are ignored and it gets 5 seconds.
+  final Future<void> Function()? beforeSignOut;
   final int Function() _nowMs;
 
   /// A token is refreshed this long before it runs out.
@@ -270,6 +275,9 @@ class DeviceSession {
   Future<void> signOut({bool force = false}) async {
     final owed = await owedChanges?.call() ?? 0;
     if (owed > 0 && !force) throw SignOutBlocked(owed);
+    try {
+      await beforeSignOut?.call().timeout(const Duration(seconds: 5));
+    } catch (_) {}
     await _endSession(wipe: true);
   }
 

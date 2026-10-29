@@ -863,5 +863,8 @@
   "mobCiReasonEmpty": "آگے بڑھنے کے لیے وجہ لکھیں۔",
   "mobCiWaitingHr": "ایچ آر کی تصدیق کے انتظار میں",
   "mobCiRefused": "اسکول نے اسے قبول نہیں کیا۔",
-  "mobMoreAnnouncements": "اعلانات"
+  "mobMoreAnnouncements": "اعلانات",
+  "mobMoreInbox": "اطلاعات",
+  "mobInboxEmpty": "آپ کے پاس کوئی اطلاع نہیں ہے۔",
+  "mobInboxUnread": "{count} نہ پڑھی گئی"
 }

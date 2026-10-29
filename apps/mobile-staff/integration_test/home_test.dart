@@ -65,6 +65,11 @@ void main() {
     await until(tester, find.textContaining('Signed in as'));
     await tester.tap(find.text('Announcements').last);
     await tester.pumpAndSettle();
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Notifications').last);
+    await tester.pumpAndSettle();
+    await until(tester, find.byType(OruInboxScreen));
 
     await tester.pumpWidget(const SizedBox());
     await svc.session.signOut(force: true);

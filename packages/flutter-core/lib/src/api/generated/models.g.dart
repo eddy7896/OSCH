@@ -430,6 +430,39 @@ class DecisionDto {
       };
 }
 
+class DeviceDto {
+  const DeviceDto({required this.id, required this.lastSeenAt, required this.platform});
+  final String id;
+  final String lastSeenAt;
+  /// One of: IOS, ANDROID.
+  final String platform;
+
+  factory DeviceDto.fromJson(Map<String, dynamic> j) => DeviceDto(
+        id: j['id'] as String,
+        lastSeenAt: j['lastSeenAt'] as String,
+        platform: j['platform'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'lastSeenAt': lastSeenAt,
+        'platform': platform,
+      };
+}
+
+class DeviceListDto {
+  const DeviceListDto({required this.items});
+  final List<DeviceDto> items;
+
+  factory DeviceListDto.fromJson(Map<String, dynamic> j) => DeviceListDto(
+        items: (j['items'] as List<dynamic>).map((e) => DeviceDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
 class DutyDto {
   const DutyDto({required this.class_, required this.covering, required this.date, required this.id, required this.period, required this.subject});
   final ClassRefDto class_;
@@ -1181,6 +1214,23 @@ class RefDto {
       };
 }
 
+class RegisterDeviceDto {
+  const RegisterDeviceDto({required this.platform, required this.token});
+  /// One of: IOS, ANDROID.
+  final String platform;
+  final String token;
+
+  factory RegisterDeviceDto.fromJson(Map<String, dynamic> j) => RegisterDeviceDto(
+        platform: j['platform'] as String,
+        token: j['token'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'platform': platform,
+        'token': token,
+      };
+}
+
 class RejectDto {
   const RejectDto({this.note});
   final String? note;
@@ -1191,6 +1241,19 @@ class RejectDto {
 
   Map<String, dynamic> toJson() => {
         if (note != null) 'note': note!,
+      };
+}
+
+class RemoveDeviceDto {
+  const RemoveDeviceDto({required this.token});
+  final String token;
+
+  factory RemoveDeviceDto.fromJson(Map<String, dynamic> j) => RemoveDeviceDto(
+        token: j['token'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'token': token,
       };
 }
 

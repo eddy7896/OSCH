@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/flutter_auth.dart';
 import 'package:flutter_auth/flutter_auth_ui.dart';
@@ -7,6 +9,8 @@ import 'services.dart';
 import 'sync_pill.dart';
 import 'attendance/attendance_screens.dart';
 import 'classes/classes_screens.dart';
+import 'inbox/inbox_data.dart';
+import 'inbox/inbox_screen.dart';
 import 'leave/leave_screens.dart';
 import 'marks/marks_screens.dart';
 import 'today/today_screen.dart';
@@ -24,11 +28,24 @@ class OruTeacherHome extends StatefulWidget {
 
 class _OruTeacherHomeState extends State<OruTeacherHome> {
   String _tab = 'today';
+  late final InboxController _inbox = InboxController(widget.services.store);
+  StreamSubscription<void>? _pushOpen;
 
   @override
   void initState() {
     super.initState();
     widget.services.startIfActive();
+    // A tap on a push opens the notifications.
+    _pushOpen = widget.services.inboxRequests.listen((_) {
+      if (mounted) Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruInboxScreen(services: widget.services)));
+    });
+  }
+
+  @override
+  void dispose() {
+    _pushOpen?.cancel();
+    _inbox.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,7 +61,7 @@ class _OruTeacherHomeState extends State<OruTeacherHome> {
     };
     return Scaffold(
       body: IndexedStack(sizing: StackFit.expand, index: pages.keys.toList().indexOf(_tab), children: pages.values.toList()),
-      bottomNavigationBar: OruBottomNav(
+      bottomNavigationBar: ListenableBuilder(listenable: _inbox, builder: (context, _) => OruBottomNav(
         label: s.appTeacher,
         active: _tab,
         onChanged: (k) => setState(() => _tab = k),
@@ -53,9 +70,9 @@ class _OruTeacherHomeState extends State<OruTeacherHome> {
           OruNavItem(key: 'attendance', label: s.mobTabAttendance, icon: OruIconName.check),
           OruNavItem(key: 'marks', label: s.mobTabMarks, icon: OruIconName.book),
           OruNavItem(key: 'leave', label: s.mobTabLeave, icon: OruIconName.leave),
-          OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more),
+          OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more, badge: _inbox.unread, badgeLabel: _inbox.unread > 0 ? s.mobInboxUnread('${_inbox.unread}') : null),
         ],
-      ),
+      )),
     );
   }
 }
@@ -71,6 +88,8 @@ class _MorePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.all(OruSpacing.space4), children: [
+          OruCard(child: OruListRow(title: s.mobMoreInbox, leading: const OruIcon(OruIconName.bell, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruInboxScreen(services: services))))),
+          const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobMoreClasses, leading: const OruIcon(OruIconName.users, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruClassesScreen(services: services))))),
           const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobMoreCover, leading: const OruIcon(OruIconName.calendar, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruCoverScreen(services: services))))),

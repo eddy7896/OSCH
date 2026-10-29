@@ -26,6 +26,7 @@ class _NoLock implements DeviceLockPort {
 void main() {
   staffPull();
   approvals();
+  inbox();
   checkIn();
   final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
@@ -207,5 +208,96 @@ void approvals() {
     for (final s in [teacher, principal, hr]) {
       await s.dispose();
     }
+  }, skip: skip);
+}
+
+// P4-6 against the real gateway: the Principal's notifications are pulled and read from the phone's copy; opening one is sent once; the phone's
+// push address is kept on the account and removed again.
+class _FixedPush implements PushPort {
+  @override
+  Future<String?> token() async => 'test-token-${DateTime.now().millisecondsSinceEpoch}';
+  @override
+  Stream<String> get tokenChanges => const Stream.empty();
+  @override
+  Stream<void> get received => const Stream.empty();
+  @override
+  Stream<void> get opened => const Stream.empty();
+  @override
+  String get platform => 'IOS';
+}
+
+void inbox() {
+  final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
+  test('the Principal pulls her notifications, reads one (sent once) and the phone\'s push address is registered and removed', () async {
+    final changes = StreamController<bool>.broadcast();
+    // The phones this account already has (a run that stopped half way leaves one): this test adds one and takes it away again.
+    final probe = await OruServices.create(
+      OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+      allowedRoles: const {'PRINCIPAL'},
+      executor: NativeDatabase.memory(),
+      storage: MemorySecureStorage(),
+      lockPort: _NoLock(),
+      online: const Stream<bool>.empty(),
+      isOnline: () async => true,
+    );
+    await probe.session.signInWithPassword('principal@demo.oruschools.example', 'demo-pass-2027');
+    final phonesBefore = (await probe.api.devicesList()).items.length;
+    await probe.dispose();
+    final svc = await OruServices.create(
+      OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+      allowedRoles: const {'PRINCIPAL'},
+      executor: NativeDatabase.memory(),
+      storage: MemorySecureStorage(),
+      lockPort: _NoLock(),
+      online: changes.stream,
+      isOnline: () async => true,
+      push: _FixedPush(),
+      pullTasks: (api) => [...inboxPullTasks(api)],
+    );
+    await svc.session.signInWithPassword('principal@demo.oruschools.example', 'demo-pass-2027');
+    changes.add(true);
+    await svc.coordinator.syncNow();
+    expect(svc.coordinator.pullStatus, isA<PullOk>(), reason: '${svc.coordinator.pullStatus}');
+    final notices = await svc.store.records(kNotice);
+    expect(notices, isNotEmpty, reason: 'the demo school\'s leave notices reach the Principal');
+
+    // The phone's push address is on the account.
+    for (var i = 0; i < 50 && (await svc.api.devicesList()).items.length == phonesBefore; i++) {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
+    expect((await svc.api.devicesList()).items, hasLength(phonesBefore + 1));
+
+    // Read from the phone's copy with the network gone, then opened: sent once.
+    final c = InboxController(svc.store);
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    final first = c.items!.firstWhere((i) => !i.read);
+    final unreadBefore = c.unread;
+    changes.add(false);
+    await c.open(first);
+    await c.open(first);
+    expect((await svc.store.all()).where((e) => e.kind == 'notice.read'), hasLength(1));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    expect(c.unread, unreadBefore - 1);
+    changes.add(true);
+    await svc.coordinator.syncNow();
+    expect((await svc.store.all()).where((e) => e.kind == 'notice.read'), isEmpty);
+    final onServer = (await svc.api.notificationsList(limit: 200)).items.firstWhere((n) => n.id == first.notice['id']);
+    expect(onServer.read, isTrue);
+    c.dispose();
+
+    await svc.session.signOut(force: true);
+    final again = await OruServices.create(
+      OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+      allowedRoles: const {'PRINCIPAL'},
+      executor: NativeDatabase.memory(),
+      storage: MemorySecureStorage(),
+      lockPort: _NoLock(),
+      online: const Stream<bool>.empty(),
+      isOnline: () async => true,
+    );
+    await again.session.signInWithPassword('principal@demo.oruschools.example', 'demo-pass-2027');
+    expect((await again.api.devicesList()).items, hasLength(phonesBefore), reason: 'signing out removed this phone\'s address');
+    await again.dispose();
+    await svc.dispose();
   }, skip: skip);
 }

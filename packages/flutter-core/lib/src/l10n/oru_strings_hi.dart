@@ -3011,4 +3011,15 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get mobMoreAnnouncements => 'घोषणाएँ';
+
+  @override
+  String get mobMoreInbox => 'सूचनाएँ';
+
+  @override
+  String get mobInboxEmpty => 'आपके पास कोई सूचना नहीं है।';
+
+  @override
+  String mobInboxUnread(String count) {
+    return '$count अपठित';
+  }
 }
