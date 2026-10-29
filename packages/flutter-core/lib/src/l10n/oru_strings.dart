@@ -4919,6 +4919,258 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'{count, plural, one{{count} mark needs a correction} other{{count} marks need a correction}}'**
   String mobMarksErrors(int count);
+
+  /// Name of the Leave tab in the Teacher app's bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get mobTabLeave;
+
+  /// Heading of the card showing how much leave of each type the teacher has left.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave'**
+  String get mobLvBalances;
+
+  /// One type of leave and how much is left. {type} is the leave type, {remaining} and {allowed} are numbers of days.
+  ///
+  /// In en, this message translates to:
+  /// **'{type}: {remaining} of {allowed} days left'**
+  String mobLvBalanceLine(String type, String remaining, String allowed);
+
+  /// A type of leave that has no allowance set. {type} is the leave type.
+  ///
+  /// In en, this message translates to:
+  /// **'{type}: no limit set'**
+  String mobLvBalanceUnset(String type);
+
+  /// Heading of the list of the teacher's own leave requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Your requests'**
+  String get mobLvRequests;
+
+  /// Shown when the teacher has no leave requests.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not asked for leave yet.'**
+  String get mobLvNone;
+
+  /// Button that opens the leave request form.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for leave'**
+  String get mobLvAsk;
+
+  /// Status of a leave request that has not been decided.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the Principal'**
+  String get mobLvStatusPending;
+
+  /// Status of a leave request the Principal approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get mobLvStatusApproved;
+
+  /// Status of a leave request the Principal did not approve.
+  ///
+  /// In en, this message translates to:
+  /// **'Not approved'**
+  String get mobLvStatusRejected;
+
+  /// Status of a leave request that was cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get mobLvStatusCancelled;
+
+  /// Status of a leave request that is waiting on the phone for a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone, not sent yet'**
+  String get mobLvSavedNotSent;
+
+  /// Banner when the school refused a leave request sent from the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this request.'**
+  String get mobLvRefused;
+
+  /// Explains a refusal of a leave request: it overlaps another one, or the allowance is used up.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have leave on some of these days, or not enough days are left.'**
+  String get mobLvRefusedConflict;
+
+  /// How long a leave request is. {days} is a number such as 1 or 1.5.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String mobLvDays(String days);
+
+  /// The dates of a leave request. {start} and {end} are dates.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} to {end}'**
+  String mobLvDates(String start, String end);
+
+  /// Title of the leave request form.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for leave'**
+  String get mobLvFormTitle;
+
+  /// Label of the leave type choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of leave'**
+  String get mobLvType;
+
+  /// Label of the first day of leave.
+  ///
+  /// In en, this message translates to:
+  /// **'First day'**
+  String get mobLvStart;
+
+  /// Label of the last day of leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Last day'**
+  String get mobLvEnd;
+
+  /// Switch for asking for half a day of leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Half day only'**
+  String get mobLvHalf;
+
+  /// Choice for a half day of leave: the morning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get mobLvMorning;
+
+  /// Choice for a half day of leave: the afternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon'**
+  String get mobLvAfternoon;
+
+  /// Label of the optional reason for a leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get mobLvReason;
+
+  /// Primary button of the leave form. It saves on the phone at once and sends when there is a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get mobLvSend;
+
+  /// Error when the leave dates are the wrong way round.
+  ///
+  /// In en, this message translates to:
+  /// **'The last day cannot be before the first day.'**
+  String get mobLvErrEnd;
+
+  /// Error when no leave type was chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a type of leave.'**
+  String get mobLvErrType;
+
+  /// Shown in the leave form before the leave types have been loaded onto the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect once to load the types of leave.'**
+  String get mobLvNoTypes;
+
+  /// Name of the list of lessons the teacher covers for colleagues on leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover duties'**
+  String get mobMoreCover;
+
+  /// Shown when the teacher has no cover duty coming up.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no cover duties in the next two weeks.'**
+  String get mobCoverEmpty;
+
+  /// One cover duty: the class, the subject and the period. {className}, {subject} and {period} are names.
+  ///
+  /// In en, this message translates to:
+  /// **'{className}, {subject}, {period}'**
+  String mobCoverLine(String className, String subject, String period);
+
+  /// Who the teacher covers for. {name} is the colleague.
+  ///
+  /// In en, this message translates to:
+  /// **'Covering for {name}'**
+  String mobCoverFor(String name);
+
+  /// Name of the list of classes the teacher teaches.
+  ///
+  /// In en, this message translates to:
+  /// **'My classes'**
+  String get mobMoreClasses;
+
+  /// Shown when the teacher has no class.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not teach any class yet.'**
+  String get mobClsEmpty;
+
+  /// How many students a class has. {count} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} student} other{{count} students}}'**
+  String mobClsStudents(int count);
+
+  /// Title of a student's report card.
+  ///
+  /// In en, this message translates to:
+  /// **'Report card'**
+  String get mobClsReport;
+
+  /// Label of the term choice on a report card.
+  ///
+  /// In en, this message translates to:
+  /// **'Term'**
+  String get mobClsTerm;
+
+  /// Shown when a report card has not been loaded and the phone has no connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Report cards load when you are connected.'**
+  String get mobClsNoCard;
+
+  /// A subject's marks on a report card. {marks} and {max} are marks.
+  ///
+  /// In en, this message translates to:
+  /// **'{marks} of {max}'**
+  String mobClsMarksLine(String marks, String max);
+
+  /// The total on a report card. {marks} is the total marks, {percent} the percentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Total {marks}, {percent}%'**
+  String mobClsTotal(String marks, String percent);
+
+  /// The grade on a report card. {grade} is the grade.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade {grade}'**
+  String mobClsGrade(String grade);
+
+  /// How many exams of a report card have no marks yet. {count} is the number.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} exam not marked yet} other{{count} exams not marked yet}}'**
+  String mobClsPending(int count);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

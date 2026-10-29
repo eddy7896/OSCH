@@ -3703,5 +3703,249 @@
         "type": "int"
       }
     }
+  },
+  "mobTabLeave": "Leave",
+  "@mobTabLeave": {
+    "description": "Name of the Leave tab in the Teacher app's bottom navigation."
+  },
+  "mobLvBalances": "Your leave",
+  "@mobLvBalances": {
+    "description": "Heading of the card showing how much leave of each type the teacher has left."
+  },
+  "mobLvBalanceLine": "{type}: {remaining} of {allowed} days left",
+  "@mobLvBalanceLine": {
+    "description": "One type of leave and how much is left. {type} is the leave type, {remaining} and {allowed} are numbers of days.",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      },
+      "allowed": {
+        "type": "String"
+      }
+    }
+  },
+  "mobLvBalanceUnset": "{type}: no limit set",
+  "@mobLvBalanceUnset": {
+    "description": "A type of leave that has no allowance set. {type} is the leave type.",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "mobLvRequests": "Your requests",
+  "@mobLvRequests": {
+    "description": "Heading of the list of the teacher's own leave requests."
+  },
+  "mobLvNone": "You have not asked for leave yet.",
+  "@mobLvNone": {
+    "description": "Shown when the teacher has no leave requests."
+  },
+  "mobLvAsk": "Ask for leave",
+  "@mobLvAsk": {
+    "description": "Button that opens the leave request form."
+  },
+  "mobLvStatusPending": "Waiting for the Principal",
+  "@mobLvStatusPending": {
+    "description": "Status of a leave request that has not been decided."
+  },
+  "mobLvStatusApproved": "Approved",
+  "@mobLvStatusApproved": {
+    "description": "Status of a leave request the Principal approved."
+  },
+  "mobLvStatusRejected": "Not approved",
+  "@mobLvStatusRejected": {
+    "description": "Status of a leave request the Principal did not approve."
+  },
+  "mobLvStatusCancelled": "Cancelled",
+  "@mobLvStatusCancelled": {
+    "description": "Status of a leave request that was cancelled."
+  },
+  "mobLvSavedNotSent": "Saved on this phone, not sent yet",
+  "@mobLvSavedNotSent": {
+    "description": "Status of a leave request that is waiting on the phone for a connection."
+  },
+  "mobLvRefused": "The school did not accept this request.",
+  "@mobLvRefused": {
+    "description": "Banner when the school refused a leave request sent from the phone."
+  },
+  "mobLvRefusedConflict": "You already have leave on some of these days, or not enough days are left.",
+  "@mobLvRefusedConflict": {
+    "description": "Explains a refusal of a leave request: it overlaps another one, or the allowance is used up."
+  },
+  "mobLvDays": "{days} days",
+  "@mobLvDays": {
+    "description": "How long a leave request is. {days} is a number such as 1 or 1.5.",
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "mobLvDates": "{start} to {end}",
+  "@mobLvDates": {
+    "description": "The dates of a leave request. {start} and {end} are dates.",
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "mobLvFormTitle": "Ask for leave",
+  "@mobLvFormTitle": {
+    "description": "Title of the leave request form."
+  },
+  "mobLvType": "Type of leave",
+  "@mobLvType": {
+    "description": "Label of the leave type choice."
+  },
+  "mobLvStart": "First day",
+  "@mobLvStart": {
+    "description": "Label of the first day of leave."
+  },
+  "mobLvEnd": "Last day",
+  "@mobLvEnd": {
+    "description": "Label of the last day of leave."
+  },
+  "mobLvHalf": "Half day only",
+  "@mobLvHalf": {
+    "description": "Switch for asking for half a day of leave."
+  },
+  "mobLvMorning": "Morning",
+  "@mobLvMorning": {
+    "description": "Choice for a half day of leave: the morning."
+  },
+  "mobLvAfternoon": "Afternoon",
+  "@mobLvAfternoon": {
+    "description": "Choice for a half day of leave: the afternoon."
+  },
+  "mobLvReason": "Reason (optional)",
+  "@mobLvReason": {
+    "description": "Label of the optional reason for a leave request."
+  },
+  "mobLvSend": "Send request",
+  "@mobLvSend": {
+    "description": "Primary button of the leave form. It saves on the phone at once and sends when there is a connection."
+  },
+  "mobLvErrEnd": "The last day cannot be before the first day.",
+  "@mobLvErrEnd": {
+    "description": "Error when the leave dates are the wrong way round."
+  },
+  "mobLvErrType": "Choose a type of leave.",
+  "@mobLvErrType": {
+    "description": "Error when no leave type was chosen."
+  },
+  "mobLvNoTypes": "Connect once to load the types of leave.",
+  "@mobLvNoTypes": {
+    "description": "Shown in the leave form before the leave types have been loaded onto the phone."
+  },
+  "mobMoreCover": "Cover duties",
+  "@mobMoreCover": {
+    "description": "Name of the list of lessons the teacher covers for colleagues on leave."
+  },
+  "mobCoverEmpty": "You have no cover duties in the next two weeks.",
+  "@mobCoverEmpty": {
+    "description": "Shown when the teacher has no cover duty coming up."
+  },
+  "mobCoverLine": "{className}, {subject}, {period}",
+  "@mobCoverLine": {
+    "description": "One cover duty: the class, the subject and the period. {className}, {subject} and {period} are names.",
+    "placeholders": {
+      "className": {
+        "type": "String"
+      },
+      "subject": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCoverFor": "Covering for {name}",
+  "@mobCoverFor": {
+    "description": "Who the teacher covers for. {name} is the colleague.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMoreClasses": "My classes",
+  "@mobMoreClasses": {
+    "description": "Name of the list of classes the teacher teaches."
+  },
+  "mobClsEmpty": "You do not teach any class yet.",
+  "@mobClsEmpty": {
+    "description": "Shown when the teacher has no class."
+  },
+  "mobClsStudents": "{count, plural, one{{count} student} other{{count} students}}",
+  "@mobClsStudents": {
+    "description": "How many students a class has. {count} is the number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mobClsReport": "Report card",
+  "@mobClsReport": {
+    "description": "Title of a student's report card."
+  },
+  "mobClsTerm": "Term",
+  "@mobClsTerm": {
+    "description": "Label of the term choice on a report card."
+  },
+  "mobClsNoCard": "Report cards load when you are connected.",
+  "@mobClsNoCard": {
+    "description": "Shown when a report card has not been loaded and the phone has no connection."
+  },
+  "mobClsMarksLine": "{marks} of {max}",
+  "@mobClsMarksLine": {
+    "description": "A subject's marks on a report card. {marks} and {max} are marks.",
+    "placeholders": {
+      "marks": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobClsTotal": "Total {marks}, {percent}%",
+  "@mobClsTotal": {
+    "description": "The total on a report card. {marks} is the total marks, {percent} the percentage.",
+    "placeholders": {
+      "marks": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobClsGrade": "Grade {grade}",
+  "@mobClsGrade": {
+    "description": "The grade on a report card. {grade} is the grade.",
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "mobClsPending": "{count, plural, one{{count} exam not marked yet} other{{count} exams not marked yet}}",
+  "@mobClsPending": {
+    "description": "How many exams of a report card have no marks yet. {count} is the number.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

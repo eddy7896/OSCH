@@ -2747,4 +2747,165 @@ class OruStringsKn extends OruStrings {
     );
     return '$_temp0';
   }
+
+  @override
+  String get mobTabLeave => 'Leave';
+
+  @override
+  String get mobLvBalances => 'Your leave';
+
+  @override
+  String mobLvBalanceLine(String type, String remaining, String allowed) {
+    return '$type: $remaining of $allowed days left';
+  }
+
+  @override
+  String mobLvBalanceUnset(String type) {
+    return '$type: no limit set';
+  }
+
+  @override
+  String get mobLvRequests => 'Your requests';
+
+  @override
+  String get mobLvNone => 'You have not asked for leave yet.';
+
+  @override
+  String get mobLvAsk => 'Ask for leave';
+
+  @override
+  String get mobLvStatusPending => 'Waiting for the Principal';
+
+  @override
+  String get mobLvStatusApproved => 'Approved';
+
+  @override
+  String get mobLvStatusRejected => 'Not approved';
+
+  @override
+  String get mobLvStatusCancelled => 'Cancelled';
+
+  @override
+  String get mobLvSavedNotSent => 'Saved on this phone, not sent yet';
+
+  @override
+  String get mobLvRefused => 'The school did not accept this request.';
+
+  @override
+  String get mobLvRefusedConflict =>
+      'You already have leave on some of these days, or not enough days are left.';
+
+  @override
+  String mobLvDays(String days) {
+    return '$days days';
+  }
+
+  @override
+  String mobLvDates(String start, String end) {
+    return '$start to $end';
+  }
+
+  @override
+  String get mobLvFormTitle => 'Ask for leave';
+
+  @override
+  String get mobLvType => 'Type of leave';
+
+  @override
+  String get mobLvStart => 'First day';
+
+  @override
+  String get mobLvEnd => 'Last day';
+
+  @override
+  String get mobLvHalf => 'Half day only';
+
+  @override
+  String get mobLvMorning => 'Morning';
+
+  @override
+  String get mobLvAfternoon => 'Afternoon';
+
+  @override
+  String get mobLvReason => 'Reason (optional)';
+
+  @override
+  String get mobLvSend => 'Send request';
+
+  @override
+  String get mobLvErrEnd => 'The last day cannot be before the first day.';
+
+  @override
+  String get mobLvErrType => 'Choose a type of leave.';
+
+  @override
+  String get mobLvNoTypes => 'Connect once to load the types of leave.';
+
+  @override
+  String get mobMoreCover => 'Cover duties';
+
+  @override
+  String get mobCoverEmpty => 'You have no cover duties in the next two weeks.';
+
+  @override
+  String mobCoverLine(String className, String subject, String period) {
+    return '$className, $subject, $period';
+  }
+
+  @override
+  String mobCoverFor(String name) {
+    return 'Covering for $name';
+  }
+
+  @override
+  String get mobMoreClasses => 'My classes';
+
+  @override
+  String get mobClsEmpty => 'You do not teach any class yet.';
+
+  @override
+  String mobClsStudents(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count students',
+      one: '$count student',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobClsReport => 'Report card';
+
+  @override
+  String get mobClsTerm => 'Term';
+
+  @override
+  String get mobClsNoCard => 'Report cards load when you are connected.';
+
+  @override
+  String mobClsMarksLine(String marks, String max) {
+    return '$marks of $max';
+  }
+
+  @override
+  String mobClsTotal(String marks, String percent) {
+    return 'Total $marks, $percent%';
+  }
+
+  @override
+  String mobClsGrade(String grade) {
+    return 'Grade $grade';
+  }
+
+  @override
+  String mobClsPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exams not marked yet',
+      one: '$count exam not marked yet',
+    );
+    return '$_temp0';
+  }
 }

@@ -6,6 +6,8 @@ import 'package:flutter_core/flutter_core.dart';
 import 'services.dart';
 import 'sync_pill.dart';
 import 'attendance/attendance_screens.dart';
+import 'classes/classes_screens.dart';
+import 'leave/leave_screens.dart';
 import 'marks/marks_screens.dart';
 import 'today/today_screen.dart';
 
@@ -37,6 +39,7 @@ class _OruTeacherHomeState extends State<OruTeacherHome> {
       'today': OruTodayScreen(services: svc, now: widget.now, onOpenAccount: () => setState(() => _tab = 'more'), onOpenAttendance: () => setState(() => _tab = 'attendance')),
       'attendance': OruAttendanceListScreen(services: svc, now: widget.now),
       'marks': OruMarksListScreen(services: svc),
+      'leave': OruLeaveScreen(services: svc, now: widget.now),
       'more': _MorePage(services: svc, state: widget.state),
     };
     return Scaffold(
@@ -49,6 +52,7 @@ class _OruTeacherHomeState extends State<OruTeacherHome> {
           OruNavItem(key: 'today', label: s.mobTodayTitle, icon: OruIconName.home),
           OruNavItem(key: 'attendance', label: s.mobTabAttendance, icon: OruIconName.check),
           OruNavItem(key: 'marks', label: s.mobTabMarks, icon: OruIconName.book),
+          OruNavItem(key: 'leave', label: s.mobTabLeave, icon: OruIconName.leave),
           OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more),
         ],
       ),
@@ -63,9 +67,14 @@ class _MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = OruStrings.of(context);
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.all(OruSpacing.space4), children: [
+          OruCard(child: OruListRow(title: s.mobMoreClasses, leading: const OruIcon(OruIconName.users, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruClassesScreen(services: services))))),
+          const SizedBox(height: OruSpacing.space2),
+          OruCard(child: OruListRow(title: s.mobMoreCover, leading: const OruIcon(OruIconName.calendar, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruCoverScreen(services: services))))),
+          const SizedBox(height: OruSpacing.space4),
           OruAccountPanel(session: services.session, state: state, lock: services.lock, syncStatus: OruSyncPill(services: services)),
         ]),
       ),

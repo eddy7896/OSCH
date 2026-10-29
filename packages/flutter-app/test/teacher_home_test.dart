@@ -40,7 +40,7 @@ Future<void> pumpFor(WidgetTester tester, [int steps = 30]) async {
 void main() {
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
 
-  testWidgets('sign in lands on Today with three tabs; More holds the account; signing out brings the sign-in screen back', (tester) async {
+  testWidgets('sign in lands on Today with five tabs; More holds the account; signing out brings the sign-in screen back', (tester) async {
     tester.view.physicalSize = const Size(360 * 2, 780 * 2);
     tester.view.devicePixelRatio = 2;
     addTearDown(tester.view.reset);
@@ -53,10 +53,10 @@ void main() {
       await tester.tap(find.text('Sign in'));
       await pumpFor(tester);
       expect(find.text('Today'), findsWidgets);
-      expect(find.text('Leave'), findsOneWidget);
+      expect(find.text('Leave'), findsWidgets); // the Today card and the Leave tab
       expect(find.text('Synced'), findsOneWidget);
 
-      // three tabs; More holds the account
+      // five tabs; More holds the account
       expect(find.text('Attendance'), findsWidgets);
       await tester.tap(find.text('More'));
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
