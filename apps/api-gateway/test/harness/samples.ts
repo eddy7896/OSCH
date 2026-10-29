@@ -167,6 +167,23 @@ const routeOfA = async (w: World): Promise<Record<string, string>> => {
   await w.db.createTransportRoute({ schoolId: w.schools.A, id, name: `Sample ${id.slice(0, 8)}`, direction: 'MORNING' as never, actorId: w.roles.A.TRANSPORT_MANAGER.uid, details: {} });
   return { id: dash(id) };
 };
+/** A student and a route with one stop; `seated` also seats the student there (MORNING). */
+const seatedOrNot = (seated: boolean) => async (w: World): Promise<Record<string, string>> => {
+  const { id: studentId } = await studentOfA(w);
+  const routeId = randomUUID();
+  const stopId = randomUUID();
+  const actorId = w.roles.A.TRANSPORT_MANAGER.uid;
+  await w.db.createTransportRoute({ schoolId: w.schools.A, id: routeId, name: `Seat ${routeId.slice(0, 8)}`, direction: 'MORNING' as never, actorId, details: {} });
+  await w.db.addRouteStop({ schoolId: w.schools.A, id: stopId, routeId, sequence: 1, name: 'Stop', actorId });
+  if (seated) await w.db.setStudentRoute({ schoolId: w.schools.A, id: seatIdOf(studentId, 'MORNING'), studentId: studentId.replaceAll('-', ''), routeId, stopId, direction: 'MORNING' as never, actorId, details: {} });
+  return { studentId, routeId: dash(routeId), stopId: dash(stopId), direction: 'MORNING' };
+};
+const seatIdOf = (studentId: string, direction: string): string => {
+  const h = createHash('sha256').update(`seat:${dash(studentId.replaceAll('-', ''))}:${direction}`).digest('hex').slice(0, 32).split('');
+  h[12] = '4';
+  h[16] = ((Number.parseInt(h[16]!, 16) & 0x3) | 0x8).toString(16);
+  return dash(h.join(''));
+};
 const announcementOfA = async (w: World): Promise<Record<string, string>> => {
   const id = randomUUID();
   await w.db.postAnnouncement({ schoolId: w.schools.A, id, title: 'Sample', body: 'Sample announcement.', notice: { title: 'Sample' }, actorId: w.roles.A.ACADEMIC_ADMIN.uid, details: {} });
@@ -471,6 +488,8 @@ export const SAMPLES: Record<string, Sample> = {
     auditSchool: (w) => w.schools.A,
   },
   'PATCH /school/profile': { ...systemAdminOfA, body: () => ({ address: '1 Sample Road' }) },
+  'PUT /transport/students/:studentId/seat': { ...transportManagerOfA, prepare: seatedOrNot(false), body: (_w, ctx) => ({ routeId: ctx.routeId, stopId: ctx.stopId }) },
+  'DELETE /transport/students/:studentId/seat/:direction': { ...transportManagerOfA, prepare: seatedOrNot(true) },
   'POST /transport/vehicles': { ...transportManagerOfA, body: () => ({ registration: `K-${randomUUID().slice(0, 8)}`, label: 'Bus', capacity: 40 }) },
   'PATCH /transport/vehicles/:id': { ...transportManagerOfA, prepare: vehicleOfA, body: () => ({ capacity: 35 }) },
   'DELETE /transport/vehicles/:id': { ...transportManagerOfA, prepare: vehicleOfA },

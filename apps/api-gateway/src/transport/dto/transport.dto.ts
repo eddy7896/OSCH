@@ -86,6 +86,70 @@ export class RouteDto {
   stops!: StopViewDto[];
 }
 
+export class DirectionParamDto {
+  @IsIn([...DIRECTIONS]) direction!: string;
+}
+
+export class StudentParamDto {
+  @IsString() @Matches(UUID) studentId!: string;
+}
+
+export class StudentDirectionParamDto extends StudentParamDto {
+  @IsIn([...DIRECTIONS]) direction!: string;
+}
+
+/** Seats a student on a route at a stop. The route's direction is the seat's direction. */
+export class AssignStudentDto {
+  @IsString() @Matches(UUID) routeId!: string;
+  @IsString() @Matches(UUID) stopId!: string;
+}
+
+/** The stops of a route have been replaced; `droppedSeats` students whose stop is no longer on the list lost their seat (a stop of the same name keeps its students). */
+export class RouteWithSeatsDto extends RouteDto {
+  droppedSeats!: number;
+}
+
+export class ManifestStudentDto {
+  id!: string;
+  name!: string;
+  enrollmentId!: string;
+  className!: string | null;
+}
+
+export class ManifestStopDto {
+  id!: string;
+  sequence!: number;
+  name!: string;
+  arrivalTime!: string | null;
+  students!: ManifestStudentDto[];
+}
+
+export class ManifestDto {
+  route!: RouteDto;
+  /** The vehicle's seats, or null when the route has no vehicle. */
+  capacity!: number | null;
+  assigned!: number;
+  stops!: ManifestStopDto[];
+}
+
+export class SeatDto {
+  direction!: string;
+  route!: { id: string; name: string; startTime: string | null };
+  stop!: { id: string; name: string; sequence: number; arrivalTime: string | null };
+  vehicle!: { registration: string; label: string } | null;
+  /** The driver's name only: no phone number or address is ever sent to a parent. */
+  driverName!: string | null;
+}
+
+export class StudentSeatsDto {
+  studentId!: string;
+  items!: SeatDto[];
+}
+
+export class ChildrenSeatsDto {
+  items!: StudentSeatsDto[];
+}
+
 export class VehicleListDto {
   items!: VehicleDto[];
 }
