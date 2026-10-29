@@ -40,6 +40,7 @@ production build `config.authEmulatorHost` is always empty.
 | hr@demo.oruschools.example | HR manager | staff, salaries, pay runs, HR reports (cannot approve or pay) |
 | admissions@demo.oruschools.example | Admissions officer | applications, decisions, admitting |
 | teacher@demo.oruschools.example | Teacher (Tara Teacher) | the "your role works in the mobile app" notice; her half-day sick leave is pending, one request rejected, one cancelled |
+| office@demo.oruschools.example | Staff (Geeta Kulkarni, the clerk) | the Staff app: she is not checked in today, so Check in / Check out can be tried |
 | sunita@ / vikram@ / farida@demo.oruschools.example | Teachers | the same notice; Sunita has leave asked for and one approved, Vikram's approved leave needs cover, Farida's unpaid leave proposes a deduction |
 
 ## What is in it

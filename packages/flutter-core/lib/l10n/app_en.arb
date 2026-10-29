@@ -3968,5 +3968,92 @@
   "mobAnnLatest": "Latest announcements",
   "@mobAnnLatest": {
     "description": "Heading of the card on Home that shows the newest announcements."
+  },
+  "mobCiNotIn": "You have not checked in today.",
+  "@mobCiNotIn": {
+    "description": "Shown when the person has not checked in at work today."
+  },
+  "mobCiIn": "Checked in at {time}",
+  "@mobCiIn": {
+    "description": "When the person checked in. {time} is a time of day.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCiOut": "Checked out at {time}",
+  "@mobCiOut": {
+    "description": "When the person checked out. {time} is a time of day.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCiSavedIn": "Check-in saved on this phone, not sent yet",
+  "@mobCiSavedIn": {
+    "description": "A check-in waiting on the phone for a connection."
+  },
+  "mobCiSavedOut": "Check-out saved on this phone, not sent yet",
+  "@mobCiSavedOut": {
+    "description": "A check-out waiting on the phone for a connection."
+  },
+  "mobCiCheckIn": "Check in",
+  "@mobCiCheckIn": {
+    "description": "Button that records that the person has arrived at work."
+  },
+  "mobCiCheckOut": "Check out",
+  "@mobCiCheckOut": {
+    "description": "Button that records that the person is leaving work."
+  },
+  "mobCiLocating": "Finding your position...",
+  "@mobCiLocating": {
+    "description": "Shown for a few seconds while the phone finds where it is."
+  },
+  "mobCiReasonTitle": "Please say why",
+  "@mobCiReasonTitle": {
+    "description": "Title of the box that asks for a reason when the person is not at the school."
+  },
+  "mobCiReasonOutside": "You seem to be {distance} m from the school.",
+  "@mobCiReasonOutside": {
+    "description": "Explains why a reason is asked. {distance} is a number of metres.",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCiReasonNoPosition": "This phone could not find where you are.",
+  "@mobCiReasonNoPosition": {
+    "description": "Explains why a reason is asked when the phone had no position."
+  },
+  "mobCiReasonFar": "This is far from the school, so HR will confirm it.",
+  "@mobCiReasonFar": {
+    "description": "Warns that a check-in far from the school waits for HR to confirm it."
+  },
+  "mobCiReasonLabel": "Reason",
+  "@mobCiReasonLabel": {
+    "description": "Label of the reason box."
+  },
+  "mobCiReasonSend": "Send",
+  "@mobCiReasonSend": {
+    "description": "Button that records the check-in or check-out with the reason."
+  },
+  "mobCiReasonEmpty": "Write a reason to go on.",
+  "@mobCiReasonEmpty": {
+    "description": "Error when the reason box is empty."
+  },
+  "mobCiWaitingHr": "Waiting for HR to confirm",
+  "@mobCiWaitingHr": {
+    "description": "Shown beside a check-in made far from the school that HR has not confirmed yet."
+  },
+  "mobCiRefused": "The school did not accept this.",
+  "@mobCiRefused": {
+    "description": "Banner when the school refused a check-in or check-out sent from the phone."
+  },
+  "mobMoreAnnouncements": "Announcements",
+  "@mobMoreAnnouncements": {
+    "description": "Row in the More tab that opens the list of announcements."
   }
 }

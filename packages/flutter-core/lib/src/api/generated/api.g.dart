@@ -41,6 +41,7 @@ const List<OruRoute> kOruRoutes = [
   _rSchoolProfile,
   _rStaffAttendanceCheckIn,
   _rStaffAttendanceCheckOut,
+  _rStaffAttendanceGeofence,
   _rStaffAttendanceMine,
   _rStudentsList,
   _rSubstitutionMine,
@@ -83,6 +84,7 @@ const _rScheduleGet = OruRoute('GET', '/v1/academics/schedule', OruAccess.tenant
 const _rSchoolProfile = OruRoute('GET', '/v1/school/profile', OruAccess.tenant, 'School_profile');
 const _rStaffAttendanceCheckIn = OruRoute('POST', '/v1/attendance/staff/check-in', OruAccess.tenant, 'StaffAttendance_checkIn');
 const _rStaffAttendanceCheckOut = OruRoute('POST', '/v1/attendance/staff/check-out', OruAccess.tenant, 'StaffAttendance_checkOut');
+const _rStaffAttendanceGeofence = OruRoute('GET', '/v1/attendance/staff/geofence', OruAccess.tenant, 'StaffAttendance_geofence');
 const _rStaffAttendanceMine = OruRoute('GET', '/v1/attendance/staff/mine', OruAccess.tenant, 'StaffAttendance_mine');
 const _rStudentsList = OruRoute('GET', '/v1/students', OruAccess.tenant, 'Students_list');
 const _rSubstitutionMine = OruRoute('GET', '/v1/substitutions/mine', OruAccess.tenant, 'Substitution_mine');
@@ -296,6 +298,12 @@ class OruApi {
   Future<StaffDayDto> staffAttendanceCheckOut({required StampDto body}) async {
     final j = await _t.send(_rStaffAttendanceCheckOut, "/v1/attendance/staff/check-out", body: body.toJson());
     return StaffDayDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/attendance/staff/geofence
+  Future<GeofenceDto> staffAttendanceGeofence() async {
+    final j = await _t.send(_rStaffAttendanceGeofence, "/v1/attendance/staff/geofence");
+    return GeofenceDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// GET /v1/attendance/staff/mine

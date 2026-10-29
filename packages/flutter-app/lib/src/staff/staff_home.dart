@@ -6,6 +6,8 @@ import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_sync/flutter_sync.dart';
 
 import '../announcements/announcements_data.dart';
+import '../checkin/checkin_data.dart';
+import '../checkin/checkin_screen.dart';
 import '../announcements/announcements_screens.dart';
 import '../leave/leave_data.dart';
 import '../leave/leave_model.dart';
@@ -13,15 +15,18 @@ import '../leave/leave_screens.dart';
 import '../services.dart';
 import '../sync_pill.dart';
 
-/// What the Staff app pulls: her leave (requests, types, balances) and the school's announcements.
-List<PullTask> staffPullTasks(OruApi api) => [...leavePullTasks(api, cover: false, ownRequests: true), ...announcementsPullTasks(api)];
+/// What the Staff app pulls: her days and where the school is, her leave (requests, types, balances) and the school's announcements.
+List<PullTask> staffPullTasks(OruApi api) => [...checkInPullTasks(api), ...leavePullTasks(api, cover: false, ownRequests: true), ...announcementsPullTasks(api)];
 
 /// The Staff app once signed in: Home, Leave, Announcements, More (the account). Check-in and the Principal's approvals join it next.
 class OruStaffHome extends StatefulWidget {
-  const OruStaffHome({super.key, required this.services, required this.state, this.now});
+  const OruStaffHome({super.key, required this.services, required this.state, this.now, this.location = const GeolocatorLocation()});
   final OruServices services;
   final SessionActive state;
   final DateTime Function()? now;
+
+  /// Where the phone is, for the check-in. Tests give a fixed one.
+  final LocationPort location;
 
   @override
   State<OruStaffHome> createState() => _OruStaffHomeState();
@@ -42,8 +47,8 @@ class _OruStaffHomeState extends State<OruStaffHome> {
     final svc = widget.services;
     final pages = <String, Widget>{
       'home': _HomePage(services: svc, onOpen: (tab) => setState(() => _tab = tab)),
+      'attendance': OruCheckInScreen(services: svc, location: widget.location, now: widget.now),
       'leave': OruLeaveScreen(services: svc, now: widget.now),
-      'announcements': OruAnnouncementsScreen(services: svc),
       'more': _AccountPage(services: svc, state: widget.state),
     };
     return Scaffold(
@@ -54,8 +59,8 @@ class _OruStaffHomeState extends State<OruStaffHome> {
         onChanged: (k) => setState(() => _tab = k),
         items: [
           OruNavItem(key: 'home', label: s.mobTabHome, icon: OruIconName.home),
+          OruNavItem(key: 'attendance', label: s.mobTabAttendance, icon: OruIconName.mapPin),
           OruNavItem(key: 'leave', label: s.mobTabLeave, icon: OruIconName.leave),
-          OruNavItem(key: 'announcements', label: s.navAnnouncements, icon: OruIconName.message),
           OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more),
         ],
       ),
@@ -149,9 +154,12 @@ class _AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = OruStrings.of(context);
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.all(OruSpacing.space4), children: [
+          OruCard(child: OruListRow(title: s.mobMoreAnnouncements, leading: const OruIcon(OruIconName.message, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => Scaffold(appBar: AppBar(title: Text(s.mobMoreAnnouncements)), body: OruAnnouncementsScreen(services: services)))))),
+          const SizedBox(height: OruSpacing.space4),
           OruAccountPanel(session: services.session, state: state, lock: services.lock, syncStatus: OruSyncPill(services: services)),
         ]),
       ),

@@ -2925,4 +2925,66 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get mobAnnLatest => 'नवीनतम घोषणाएँ';
+
+  @override
+  String get mobCiNotIn => 'आपने आज चेक-इन नहीं किया है।';
+
+  @override
+  String mobCiIn(String time) {
+    return '$time पर चेक-इन किया';
+  }
+
+  @override
+  String mobCiOut(String time) {
+    return '$time पर चेक-आउट किया';
+  }
+
+  @override
+  String get mobCiSavedIn => 'चेक-इन इस फ़ोन में सहेजा गया, अभी भेजा नहीं गया';
+
+  @override
+  String get mobCiSavedOut =>
+      'चेक-आउट इस फ़ोन में सहेजा गया, अभी भेजा नहीं गया';
+
+  @override
+  String get mobCiCheckIn => 'चेक-इन करें';
+
+  @override
+  String get mobCiCheckOut => 'चेक-आउट करें';
+
+  @override
+  String get mobCiLocating => 'आपकी स्थिति खोजी जा रही है...';
+
+  @override
+  String get mobCiReasonTitle => 'कृपया कारण बताएँ';
+
+  @override
+  String mobCiReasonOutside(String distance) {
+    return 'आप स्कूल से लगभग $distance मीटर दूर लगते हैं।';
+  }
+
+  @override
+  String get mobCiReasonNoPosition => 'इस फ़ोन को आपकी स्थिति नहीं मिल सकी।';
+
+  @override
+  String get mobCiReasonFar =>
+      'यह स्कूल से दूर है, इसलिए एचआर इसकी पुष्टि करेगा।';
+
+  @override
+  String get mobCiReasonLabel => 'कारण';
+
+  @override
+  String get mobCiReasonSend => 'भेजें';
+
+  @override
+  String get mobCiReasonEmpty => 'आगे बढ़ने के लिए कारण लिखें।';
+
+  @override
+  String get mobCiWaitingHr => 'एचआर की पुष्टि की प्रतीक्षा में';
+
+  @override
+  String get mobCiRefused => 'स्कूल ने इसे स्वीकार नहीं किया।';
+
+  @override
+  String get mobMoreAnnouncements => 'घोषणाएँ';
 }

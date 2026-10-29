@@ -24,6 +24,7 @@ export const DEMO_PEOPLE = [
   { key: "sunita", role: "TEACHER", name: "Sunita Rao", where: "web-admin (a teacher with leave asked for)" },
   { key: "vikram", role: "TEACHER", name: "Vikram Chopra", where: "web-admin (a teacher whose approved leave needs cover)" },
   { key: "farida", role: "TEACHER", name: "Farida Begum", where: "web-admin (a teacher with approved unpaid leave)" },
+  { key: "office", role: "STAFF", name: "Geeta Kulkarni", where: "the Staff app (the clerk who is not checked in today)" },
 ].map((p) => ({ ...p, email: `${p.key}@${DOMAIN}` }));
 
 export const FIRST_NAMES = ["Aarav", "Diya", "Vihaan", "Ananya", "Arjun", "Meera", "Rohan", "Sana", "Kabir", "Ishita", "Aditya", "Zoya", "Reyansh", "Kavya", "Ayaan", "Riya", "Vivaan", "Nisha", "Dev", "Tanvi", "Imran", "Pooja", "Yash", "Farah", "Rahul", "Lakshmi", "Omar", "Neha", "Karan", "Aisha"];
@@ -35,7 +36,7 @@ export const STAFF = [
   { firstName: "Farida", lastName: "Begum", department: "Languages", designation: "Teacher", basic: 4200000, account: "farida", teaches: ["ENG", "HIN"] },
   { firstName: "Tara", lastName: "Teacher", department: "Mathematics", designation: "Teacher", basic: 4500000, account: "teacher", teaches: ["MATH", "ART"] },
   { firstName: "Joseph", lastName: "Mathew", department: "Science", designation: "Lab assistant", basic: 2600000 },
-  { firstName: "Geeta", lastName: "Kulkarni", department: "Office", designation: "Clerk", basic: 2800000 },
+  { firstName: "Geeta", lastName: "Kulkarni", department: "Office", designation: "Clerk", basic: 2800000, account: "office" },
   { firstName: "Mohan", lastName: "Lal", department: "Support", designation: "Peon", basic: 1800000 },
   { firstName: "Rekha", lastName: "Pillai", department: "Languages", designation: "Teacher", basic: 4300000, teaches: ["HIN", "SST"] },
   { firstName: "Salim", lastName: "Dar", department: "Transport", designation: "Driver", basic: 2200000 },

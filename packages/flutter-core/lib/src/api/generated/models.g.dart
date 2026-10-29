@@ -558,6 +558,34 @@ class ExamListDto {
       };
 }
 
+class GeofenceDto {
+  const GeofenceDto({required this.configured, required this.hardRingM, required this.lat, required this.lng, required this.marginM, required this.radiusM});
+  final bool configured;
+  final num hardRingM;
+  final num? lat;
+  final num? lng;
+  final num marginM;
+  final num? radiusM;
+
+  factory GeofenceDto.fromJson(Map<String, dynamic> j) => GeofenceDto(
+        configured: j['configured'] as bool,
+        hardRingM: j['hardRingM'] as num,
+        lat: j['lat'] == null ? null : j['lat'] as num,
+        lng: j['lng'] == null ? null : j['lng'] as num,
+        marginM: j['marginM'] as num,
+        radiusM: j['radiusM'] == null ? null : j['radiusM'] as num,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'configured': configured,
+        'hardRingM': hardRingM,
+        if (lat != null) 'lat': lat!,
+        if (lng != null) 'lng': lng!,
+        'marginM': marginM,
+        if (radiusM != null) 'radiusM': radiusM!,
+      };
+}
+
 class GridRowDto {
   const GridRowDto({required this.absent, required this.enrollmentId, required this.grade, required this.marks, required this.marksTenths, required this.name, required this.percent, required this.studentId});
   final bool absent;

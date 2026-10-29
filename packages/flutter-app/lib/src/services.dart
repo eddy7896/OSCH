@@ -42,6 +42,7 @@ class OruServices {
   final ValueNotifier<String> lockReason;
 
   StreamSubscription<SessionState>? _watch;
+  StreamSubscription<OutboxCounts>? _kick;
 
   /// [executor], [storage], [lockPort] and [online] are for tests; the app passes none and gets the real phone.
   static Future<OruServices> create(
@@ -83,6 +84,19 @@ class OruServices {
     final lock = AppLock(port: lockPort ?? PlatformDeviceLock(reason: () => reason.value), storage: secure);
     final s = OruServices._(config: config, session: session, db: db, store: store, engine: engine, coordinator: coordinator, lock: lock, api: api, lockReason: reason);
     s._watch = session.changes.listen(s._onSession);
+    // A change saved on the phone is sent at once when it can be (offline-sync rule: the engine is kicked on every save), not at the next
+    // timer or pull-to-refresh. Changes already waiting for their retry time are not due, so this does not loop.
+    // When the last waiting change has gone, the lists are read again so that what the school now holds (a check-in's time, a request's
+    // status) replaces the phone's copy without the person pulling down to refresh.
+    var hadPending = false;
+    s._kick = store.watchCounts().listen((c) {
+      if (c.queued > 0) unawaited(engine.kick().catchError((Object _) {}));
+      if (c.pending > 0) hadPending = true;
+      if (c.pending == 0 && c.failed == 0 && hadPending && session.state is SessionActive) {
+        hadPending = false;
+        unawaited(coordinator.syncNow().catchError((Object _) {}));
+      }
+    });
     return s;
   }
 
@@ -103,6 +117,7 @@ class OruServices {
 
   Future<void> dispose() async {
     await _watch?.cancel();
+    await _kick?.cancel();
     engine.stop();
     await engine.dispose();
     await db.close();
