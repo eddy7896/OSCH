@@ -4108,5 +4108,173 @@
         "type": "String"
       }
     }
+  },
+  "satPosition": "Where",
+  "@satPosition": {
+    "description": "Column in the staff attendance table: where the check-in happened (at school, away, unknown)."
+  },
+  "satStampINSIDE": "At school",
+  "@satStampINSIDE": {
+    "description": "The check-in was made inside the school's area."
+  },
+  "satStampOUTSIDE": "Away from school",
+  "@satStampOUTSIDE": {
+    "description": "The check-in was made outside the school's area."
+  },
+  "satStampUNKNOWN": "Not known",
+  "@satStampUNKNOWN": {
+    "description": "The phone sent no position, or the school has set no area."
+  },
+  "satDistance": "{metres} m from the school",
+  "@satDistance": {
+    "description": "How far from the school a check-in was made. {metres} is a number.",
+    "placeholders": {
+      "metres": {
+        "type": "String"
+      }
+    }
+  },
+  "satReasonIs": "Reason: {reason}",
+  "@satReasonIs": {
+    "description": "The reason a person gave for a check-in away from the school. {reason} is what they wrote.",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "satWaiting": "Waiting for HR to confirm",
+  "@satWaiting": {
+    "description": "A check-in far from the school that HR has not confirmed yet."
+  },
+  "satConfirm": "Confirm",
+  "@satConfirm": {
+    "description": "Button with which HR confirms a check-in made far from the school."
+  },
+  "satConfirmedAt": "Confirmed",
+  "@satConfirmedAt": {
+    "description": "A check-in far from the school that HR has confirmed."
+  },
+  "satConfirmedOk": "Check-in confirmed.",
+  "@satConfirmedOk": {
+    "description": "Shown after HR confirmed a check-in."
+  },
+  "setGeoTitle": "School location",
+  "@setGeoTitle": {
+    "description": "Title of the settings card where the school's point on the map is set."
+  },
+  "setGeoNote": "Staff check in from their phones. Away from this area they are asked for a reason, and beyond 500 metres HR confirms the check-in. Switch the location off and nobody is asked.",
+  "@setGeoNote": {
+    "description": "Explains what the school location does."
+  },
+  "setGeoLat": "Latitude",
+  "@setGeoLat": {
+    "description": "Field: the school's latitude in degrees, for example 12.9716."
+  },
+  "setGeoLng": "Longitude",
+  "@setGeoLng": {
+    "description": "Field: the school's longitude in degrees, for example 77.5946."
+  },
+  "setGeoRadius": "Grounds radius (metres)",
+  "@setGeoRadius": {
+    "description": "Field: how far from the point the school's grounds reach, in metres."
+  },
+  "setGeoMargin": "Margin (metres)",
+  "@setGeoMargin": {
+    "description": "Field: extra metres around the grounds in which nobody is asked for a reason."
+  },
+  "setGeoSave": "Save location",
+  "@setGeoSave": {
+    "description": "Button that saves the school location."
+  },
+  "setGeoClear": "Switch location off",
+  "@setGeoClear": {
+    "description": "Button that switches the school location off."
+  },
+  "setGeoSaved": "Location saved.",
+  "@setGeoSaved": {
+    "description": "Shown after the school location was saved."
+  },
+  "setGeoCleared": "Location switched off.",
+  "@setGeoCleared": {
+    "description": "Shown after the school location was switched off."
+  },
+  "setGeoNow": "Now: {lat}, {lng}, grounds {radius} m, margin {margin} m.",
+  "@setGeoNow": {
+    "description": "The school location as it is now.",
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      },
+      "radius": {
+        "type": "String"
+      },
+      "margin": {
+        "type": "String"
+      }
+    }
+  },
+  "setGeoNone": "No location is set, so nobody is asked for a reason.",
+  "@setGeoNone": {
+    "description": "Shown when the school has no location set."
+  },
+  "setGeoInvalid": "Give a latitude between -90 and 90, a longitude between -180 and 180, a radius from 10 to 2000 metres and a margin from 0 to 500 metres.",
+  "@setGeoInvalid": {
+    "description": "Error when the school location values are not valid."
+  },
+  "annNone": "No announcements yet.",
+  "@annNone": {
+    "description": "Shown when no announcement has been posted."
+  },
+  "annPostTitle": "Post an announcement",
+  "@annPostTitle": {
+    "description": "Title of the card where an announcement is written."
+  },
+  "annPostNote": "Every member of staff sees it in their app and gets a notification.",
+  "@annPostNote": {
+    "description": "Explains who sees an announcement."
+  },
+  "annFieldTitle": "Title",
+  "@annFieldTitle": {
+    "description": "Field: the announcement's title."
+  },
+  "annFieldBody": "Message",
+  "@annFieldBody": {
+    "description": "Field: the announcement's text."
+  },
+  "annPost": "Post",
+  "@annPost": {
+    "description": "Button that posts the announcement."
+  },
+  "annPosted": "Announcement posted.",
+  "@annPosted": {
+    "description": "Shown after an announcement was posted."
+  },
+  "annWithdraw": "Withdraw",
+  "@annWithdraw": {
+    "description": "Button that withdraws an announcement so nobody sees it any more."
+  },
+  "annWithdrawn": "Withdrawn",
+  "@annWithdrawn": {
+    "description": "Tag on an announcement that was withdrawn."
+  },
+  "annWithdrawnOk": "Announcement withdrawn.",
+  "@annWithdrawnOk": {
+    "description": "Shown after an announcement was withdrawn."
+  },
+  "annFrom": "{name}, {date}",
+  "@annFrom": {
+    "description": "Who posted an announcement and when. {name} is the person, {date} the day.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

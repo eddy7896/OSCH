@@ -1041,6 +1041,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "School_clearGeofence"
   },
   {
+    "method": "GET",
+    "path": "/v1/school/geofence",
+    "access": "tenant",
+    "operationId": "School_geofence"
+  },
+  {
     "method": "PUT",
     "path": "/v1/school/geofence",
     "access": "tenant",

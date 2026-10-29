@@ -55,6 +55,11 @@ export class SchoolService {
   }
 
   /** Sets where the school is. Coordinates are only as exact as the person who typed them; the point is a school's public location, not a person's. */
+  /** Where the school is now, for the Settings screen (the phones read the same through the staff attendance route). */
+  async getGeofence(t: TenantContext): Promise<GeofenceDto> {
+    return this.fenceView((await this.db.getSchoolGeofence({ schoolId: t.schoolId })).data.school);
+  }
+
   async setGeofence(t: TenantContext, dto: SetGeofenceDto): Promise<GeofenceDto> {
     const marginM = dto.marginM ?? DEFAULT_MARGIN_M;
     await this.db.setSchoolGeofence({ schoolId: t.schoolId, latMicro: Math.round(dto.lat * 1e6), lngMicro: Math.round(dto.lng * 1e6), radiusM: dto.radiusM, marginM, actorId: t.userId, details: { radiusM: dto.radiusM, marginM } });

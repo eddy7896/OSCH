@@ -3022,4 +3022,118 @@ class OruStringsUr extends OruStrings {
   String mobInboxUnread(String count) {
     return '$count نہ پڑھی گئی';
   }
+
+  @override
+  String get satPosition => 'کہاں';
+
+  @override
+  String get satStampINSIDE => 'اسکول میں';
+
+  @override
+  String get satStampOUTSIDE => 'اسکول سے دور';
+
+  @override
+  String get satStampUNKNOWN => 'معلوم نہیں';
+
+  @override
+  String satDistance(String metres) {
+    return 'اسکول سے $metres میٹر';
+  }
+
+  @override
+  String satReasonIs(String reason) {
+    return 'وجہ: $reason';
+  }
+
+  @override
+  String get satWaiting => 'ایچ آر کی تصدیق کے انتظار میں';
+
+  @override
+  String get satConfirm => 'تصدیق کریں';
+
+  @override
+  String get satConfirmedAt => 'تصدیق ہو گئی';
+
+  @override
+  String get satConfirmedOk => 'چیک اِن کی تصدیق ہو گئی۔';
+
+  @override
+  String get setGeoTitle => 'اسکول کی جگہ';
+
+  @override
+  String get setGeoNote =>
+      'عملہ اپنے فون سے چیک اِن کرتے ہیں۔ اس علاقے سے باہر ان سے وجہ پوچھی جاتی ہے، اور 500 میٹر سے دور ہونے پر ایچ آر چیک اِن کی تصدیق کرتا ہے۔ جگہ بند کرنے پر کسی سے کچھ نہیں پوچھا جاتا۔';
+
+  @override
+  String get setGeoLat => 'عرض بلد';
+
+  @override
+  String get setGeoLng => 'طول بلد';
+
+  @override
+  String get setGeoRadius => 'احاطے کا رداس (میٹر)';
+
+  @override
+  String get setGeoMargin => 'مارجن (میٹر)';
+
+  @override
+  String get setGeoSave => 'جگہ محفوظ کریں';
+
+  @override
+  String get setGeoClear => 'جگہ بند کریں';
+
+  @override
+  String get setGeoSaved => 'جگہ محفوظ ہو گئی۔';
+
+  @override
+  String get setGeoCleared => 'جگہ بند کر دی گئی۔';
+
+  @override
+  String setGeoNow(String lat, String lng, String radius, String margin) {
+    return 'اب: $lat، $lng، احاطہ $radius میٹر، مارجن $margin میٹر۔';
+  }
+
+  @override
+  String get setGeoNone =>
+      'کوئی جگہ مقرر نہیں، اس لیے کسی سے وجہ نہیں پوچھی جاتی۔';
+
+  @override
+  String get setGeoInvalid =>
+      '-90 سے 90 کے درمیان عرض بلد، -180 سے 180 کے درمیان طول بلد، 10 سے 2000 میٹر کا رداس اور 0 سے 500 میٹر کا مارجن دیں۔';
+
+  @override
+  String get annNone => 'ابھی کوئی اعلان نہیں۔';
+
+  @override
+  String get annPostTitle => 'اعلان کریں';
+
+  @override
+  String get annPostNote =>
+      'عملہ کا ہر رکن اسے اپنی ایپ میں دیکھتا ہے اور اسے اطلاع ملتی ہے۔';
+
+  @override
+  String get annFieldTitle => 'عنوان';
+
+  @override
+  String get annFieldBody => 'پیغام';
+
+  @override
+  String get annPost => 'پوسٹ کریں';
+
+  @override
+  String get annPosted => 'اعلان پوسٹ ہو گیا۔';
+
+  @override
+  String get annWithdraw => 'واپس لیں';
+
+  @override
+  String get annWithdrawn => 'واپس لیا گیا';
+
+  @override
+  String get annWithdrawnOk => 'اعلان واپس لے لیا گیا۔';
+
+  @override
+  String annFrom(String name, String date) {
+    return '$name، $date';
+  }
 }

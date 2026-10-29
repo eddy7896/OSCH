@@ -9453,6 +9453,44 @@ export type SchoolClearGeofenceResponses = {
 
 export type SchoolClearGeofenceResponse = SchoolClearGeofenceResponses[keyof SchoolClearGeofenceResponses];
 
+export type SchoolGeofenceData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/school/geofence';
+};
+
+export type SchoolGeofenceErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type SchoolGeofenceError = SchoolGeofenceErrors[keyof SchoolGeofenceErrors];
+
+export type SchoolGeofenceResponses = {
+    200: GeofenceDto;
+};
+
+export type SchoolGeofenceResponse = SchoolGeofenceResponses[keyof SchoolGeofenceResponses];
+
 export type SchoolSetGeofenceData = {
     body: SetGeofenceDto;
     path?: never;

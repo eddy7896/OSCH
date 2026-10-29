@@ -5363,6 +5363,210 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'{count} unread'**
   String mobInboxUnread(String count);
+
+  /// Column in the staff attendance table: where the check-in happened (at school, away, unknown).
+  ///
+  /// In en, this message translates to:
+  /// **'Where'**
+  String get satPosition;
+
+  /// The check-in was made inside the school's area.
+  ///
+  /// In en, this message translates to:
+  /// **'At school'**
+  String get satStampINSIDE;
+
+  /// The check-in was made outside the school's area.
+  ///
+  /// In en, this message translates to:
+  /// **'Away from school'**
+  String get satStampOUTSIDE;
+
+  /// The phone sent no position, or the school has set no area.
+  ///
+  /// In en, this message translates to:
+  /// **'Not known'**
+  String get satStampUNKNOWN;
+
+  /// How far from the school a check-in was made. {metres} is a number.
+  ///
+  /// In en, this message translates to:
+  /// **'{metres} m from the school'**
+  String satDistance(String metres);
+
+  /// The reason a person gave for a check-in away from the school. {reason} is what they wrote.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason: {reason}'**
+  String satReasonIs(String reason);
+
+  /// A check-in far from the school that HR has not confirmed yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for HR to confirm'**
+  String get satWaiting;
+
+  /// Button with which HR confirms a check-in made far from the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get satConfirm;
+
+  /// A check-in far from the school that HR has confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get satConfirmedAt;
+
+  /// Shown after HR confirmed a check-in.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in confirmed.'**
+  String get satConfirmedOk;
+
+  /// Title of the settings card where the school's point on the map is set.
+  ///
+  /// In en, this message translates to:
+  /// **'School location'**
+  String get setGeoTitle;
+
+  /// Explains what the school location does.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff check in from their phones. Away from this area they are asked for a reason, and beyond 500 metres HR confirms the check-in. Switch the location off and nobody is asked.'**
+  String get setGeoNote;
+
+  /// Field: the school's latitude in degrees, for example 12.9716.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get setGeoLat;
+
+  /// Field: the school's longitude in degrees, for example 77.5946.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get setGeoLng;
+
+  /// Field: how far from the point the school's grounds reach, in metres.
+  ///
+  /// In en, this message translates to:
+  /// **'Grounds radius (metres)'**
+  String get setGeoRadius;
+
+  /// Field: extra metres around the grounds in which nobody is asked for a reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Margin (metres)'**
+  String get setGeoMargin;
+
+  /// Button that saves the school location.
+  ///
+  /// In en, this message translates to:
+  /// **'Save location'**
+  String get setGeoSave;
+
+  /// Button that switches the school location off.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch location off'**
+  String get setGeoClear;
+
+  /// Shown after the school location was saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Location saved.'**
+  String get setGeoSaved;
+
+  /// Shown after the school location was switched off.
+  ///
+  /// In en, this message translates to:
+  /// **'Location switched off.'**
+  String get setGeoCleared;
+
+  /// The school location as it is now.
+  ///
+  /// In en, this message translates to:
+  /// **'Now: {lat}, {lng}, grounds {radius} m, margin {margin} m.'**
+  String setGeoNow(String lat, String lng, String radius, String margin);
+
+  /// Shown when the school has no location set.
+  ///
+  /// In en, this message translates to:
+  /// **'No location is set, so nobody is asked for a reason.'**
+  String get setGeoNone;
+
+  /// Error when the school location values are not valid.
+  ///
+  /// In en, this message translates to:
+  /// **'Give a latitude between -90 and 90, a longitude between -180 and 180, a radius from 10 to 2000 metres and a margin from 0 to 500 metres.'**
+  String get setGeoInvalid;
+
+  /// Shown when no announcement has been posted.
+  ///
+  /// In en, this message translates to:
+  /// **'No announcements yet.'**
+  String get annNone;
+
+  /// Title of the card where an announcement is written.
+  ///
+  /// In en, this message translates to:
+  /// **'Post an announcement'**
+  String get annPostTitle;
+
+  /// Explains who sees an announcement.
+  ///
+  /// In en, this message translates to:
+  /// **'Every member of staff sees it in their app and gets a notification.'**
+  String get annPostNote;
+
+  /// Field: the announcement's title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get annFieldTitle;
+
+  /// Field: the announcement's text.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get annFieldBody;
+
+  /// Button that posts the announcement.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get annPost;
+
+  /// Shown after an announcement was posted.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcement posted.'**
+  String get annPosted;
+
+  /// Button that withdraws an announcement so nobody sees it any more.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get annWithdraw;
+
+  /// Tag on an announcement that was withdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawn'**
+  String get annWithdrawn;
+
+  /// Shown after an announcement was withdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcement withdrawn.'**
+  String get annWithdrawnOk;
+
+  /// Who posted an announcement and when. {name} is the person, {date} the day.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {date}'**
+  String annFrom(String name, String date);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

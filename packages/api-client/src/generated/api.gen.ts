@@ -164,6 +164,7 @@ export const bindApi = (client: Client) => ({
   scheduleTemplate: async (options: Opts<typeof sdk.scheduleTemplate<true>>): Out<typeof sdk.scheduleTemplate<true>> => (await sdk.scheduleTemplate<true>({ ...options, client, throwOnError: true } as never)).data,
   scheduleUpdate: async (options: Opts<typeof sdk.scheduleUpdate<true>>): Out<typeof sdk.scheduleUpdate<true>> => (await sdk.scheduleUpdate<true>({ ...options, client, throwOnError: true } as never)).data,
   schoolClearGeofence: async (options: Opts<typeof sdk.schoolClearGeofence<true>> = {}): Out<typeof sdk.schoolClearGeofence<true>> => (await sdk.schoolClearGeofence<true>({ ...options, client, throwOnError: true } as never)).data,
+  schoolGeofence: async (options: Opts<typeof sdk.schoolGeofence<true>> = {}): Out<typeof sdk.schoolGeofence<true>> => (await sdk.schoolGeofence<true>({ ...options, client, throwOnError: true } as never)).data,
   schoolProfile: async (options: Opts<typeof sdk.schoolProfile<true>> = {}): Out<typeof sdk.schoolProfile<true>> => (await sdk.schoolProfile<true>({ ...options, client, throwOnError: true } as never)).data,
   schoolSetGeofence: async (options: Opts<typeof sdk.schoolSetGeofence<true>>): Out<typeof sdk.schoolSetGeofence<true>> => (await sdk.schoolSetGeofence<true>({ ...options, client, throwOnError: true } as never)).data,
   schoolSetLogo: async (options: Opts<typeof sdk.schoolSetLogo<true>>): Out<typeof sdk.schoolSetLogo<true>> => (await sdk.schoolSetLogo<true>({ ...options, client, throwOnError: true } as never)).data,
