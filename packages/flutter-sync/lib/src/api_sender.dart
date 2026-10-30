@@ -20,6 +20,9 @@ abstract final class OutboxKinds {
 
   /// Body: `{noticeId}`.
   static const noticeRead = 'notice.read';
+
+  /// Body: `{id, approve, note?}`: a teacher's or the Academic admin's decision on a parent's request for a child's leave.
+  static const studentLeaveDecide = 'studentleave.decide';
 }
 
 /// Sends a queued change to the gateway through the generated client. The outbox id goes as the gateway's own
@@ -50,6 +53,14 @@ class OruApiSender implements OutboxSender {
           await api.staffAttendanceCheckOut(body: StampDto.fromJson(b));
         case OutboxKinds.noticeRead:
           await api.notificationsRead(id: b['noticeId'] as String);
+        case OutboxKinds.studentLeaveDecide:
+          final note = b['note'] as String?;
+          final decision = DecideStudentLeaveDto(note: (note ?? '').isEmpty ? null : note);
+          if (b['approve'] == true) {
+            await api.studentLeaveApprove(id: b['id'] as String, body: decision);
+          } else {
+            await api.studentLeaveDecline(id: b['id'] as String, body: decision);
+          }
         default:
           return SendResult.refused('UNKNOWN_KIND', message: e.kind);
       }

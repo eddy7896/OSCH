@@ -3383,4 +3383,110 @@ class OruStringsHi extends OruStrings {
   ) {
     return '$studentName: $startDate से $endDate तक। $note';
   }
+
+  @override
+  String get mobSlTitle => 'छात्र की छुट्टी';
+
+  @override
+  String get mobSlWaiting => 'प्रतीक्षा में';
+
+  @override
+  String get mobSlAll => 'सभी';
+
+  @override
+  String get mobSlEmptyWaiting => 'आपके लिए कोई अनुरोध प्रतीक्षा में नहीं है।';
+
+  @override
+  String get mobSlEmptyAll => 'अभी तक छात्र की छुट्टी का कोई अनुरोध नहीं है।';
+
+  @override
+  String mobSlBy(String name) {
+    return '$name ने माँगी';
+  }
+
+  @override
+  String get mobSlHalf => 'आधा दिन';
+
+  @override
+  String get mobSlSaved =>
+      'आपका निर्णय इस फ़ोन में सहेजा गया है और कनेक्शन मिलने पर भेजा जाएगा।';
+
+  @override
+  String get mobSlRefused =>
+      'स्वीकार नहीं हुआ। हो सकता है किसी और ने पहले निर्णय ले लिया हो।';
+
+  @override
+  String get mobSlApproved => 'स्वीकृत';
+
+  @override
+  String get mobSlDeclined => 'अस्वीकृत';
+
+  @override
+  String get mobSlCancelled => 'रद्द';
+
+  @override
+  String get navStudentLeave => 'छात्र की छुट्टी';
+
+  @override
+  String get slStudent => 'छात्र';
+
+  @override
+  String get slClass => 'कक्षा';
+
+  @override
+  String get slDates => 'तिथियाँ';
+
+  @override
+  String get slBy => 'किसने माँगी';
+
+  @override
+  String get slReason => 'कारण';
+
+  @override
+  String get slStatus => 'दिखाएँ';
+
+  @override
+  String get slStatusPENDING => 'प्रतीक्षा में';
+
+  @override
+  String get slStatusAPPROVED => 'स्वीकृत';
+
+  @override
+  String get slStatusDECLINED => 'अस्वीकृत';
+
+  @override
+  String get slStatusCANCELLED => 'रद्द';
+
+  @override
+  String get slAll => 'सभी';
+
+  @override
+  String get slHalf => 'आधा दिन';
+
+  @override
+  String get slNoRequests => 'यहाँ कोई अनुरोध नहीं है।';
+
+  @override
+  String get slApprove => 'स्वीकृत करें';
+
+  @override
+  String get slDecline => 'अस्वीकार करें';
+
+  @override
+  String slDeclineQuestion(String name) {
+    return '$name की छुट्टी अस्वीकार करें?';
+  }
+
+  @override
+  String get slNote => 'अभिभावक के लिए टिप्पणी (वैकल्पिक)';
+
+  @override
+  String get slApproved => 'स्वीकृत। अभिभावक को बता दिया गया है।';
+
+  @override
+  String get slDeclined => 'अस्वीकृत। अभिभावक को बता दिया गया है।';
+
+  @override
+  String get slAlreadyDecided =>
+      'किसी और ने यह अनुरोध पहले तय कर दिया है। कुछ नहीं बदला।';
 }

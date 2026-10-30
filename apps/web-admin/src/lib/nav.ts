@@ -32,6 +32,7 @@ export const ITEM: Record<string, { label: string; icon: IconName }> = {
   staff: { label: "navStaff", icon: "users" },
   "staff-attendance": { label: "navStaffAttendance", icon: "clock" },
   leave: { label: "navLeave", icon: "leave" },
+  "student-leave": { label: "navStudentLeave", icon: "leave" },
   payroll: { label: "navPayroll", icon: "payments" },
   recruitment: { label: "navRecruitment", icon: "user-plus" },
   finance: { label: "navFees", icon: "payments" },

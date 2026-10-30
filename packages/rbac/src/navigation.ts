@@ -38,6 +38,7 @@ export const NAV: readonly NavSectionDef[] = [
     { key: "attendance", label: "Attendance", requires: "attendance" },
     { key: "gradebook", label: "Gradebook", requires: "grades" },
     { key: "substitution", label: "Substitutions", requires: "substitution" },
+    { key: "student-leave", label: "Student leave", requires: "student_leave" },
   ] },
   { title: "People", items: [
     { key: "admissions", label: "Admissions", requires: "admissions" },

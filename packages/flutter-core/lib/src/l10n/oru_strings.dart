@@ -5995,6 +5995,204 @@ abstract class OruStrings {
     String endDate,
     String note,
   );
+
+  /// Title of the Teacher app screen where a parent's request for a child's leave is decided, and of the More row that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Student leave'**
+  String get mobSlTitle;
+
+  /// Filter on the student leave list: requests nobody has decided yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get mobSlWaiting;
+
+  /// Filter on the student leave list: every request, decided or not.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get mobSlAll;
+
+  /// Shown on the student leave list when nothing needs a decision.
+  ///
+  /// In en, this message translates to:
+  /// **'No request is waiting for you.'**
+  String get mobSlEmptyWaiting;
+
+  /// Shown on the student leave list when there are no requests at all.
+  ///
+  /// In en, this message translates to:
+  /// **'No student leave requests yet.'**
+  String get mobSlEmptyAll;
+
+  /// Under a student leave request: the parent who asked. {name} is the parent's name.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked by {name}'**
+  String mobSlBy(String name);
+
+  /// Marks a student leave request that is for half a day.
+  ///
+  /// In en, this message translates to:
+  /// **'Half day'**
+  String get mobSlHalf;
+
+  /// Shown under a student leave request when a decision was made offline and is waiting to be sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your decision is saved on this phone and will be sent when there is a connection.'**
+  String get mobSlSaved;
+
+  /// Shown under a student leave request when the school refused the decision sent from this phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not accepted. It may have been decided by someone else first.'**
+  String get mobSlRefused;
+
+  /// Status of a student leave request that was approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get mobSlApproved;
+
+  /// Status of a student leave request that was declined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get mobSlDeclined;
+
+  /// Status of a student leave request the parent withdrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get mobSlCancelled;
+
+  /// Navigation item and page title for parents' requests for their children's leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Student leave'**
+  String get navStudentLeave;
+
+  /// Column: the student the leave is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Student'**
+  String get slStudent;
+
+  /// Column: the student's class.
+  ///
+  /// In en, this message translates to:
+  /// **'Class'**
+  String get slClass;
+
+  /// Column: the days of leave asked for.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates'**
+  String get slDates;
+
+  /// Column: the parent who asked.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked by'**
+  String get slBy;
+
+  /// Column: why the parent asked.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get slReason;
+
+  /// Label of the filter on the student leave page.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get slStatus;
+
+  /// Status and filter: not decided yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get slStatusPENDING;
+
+  /// Status and filter: approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get slStatusAPPROVED;
+
+  /// Status and filter: declined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get slStatusDECLINED;
+
+  /// Status and filter: withdrawn by the parent.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get slStatusCANCELLED;
+
+  /// Filter option: every request.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get slAll;
+
+  /// Added to the dates of a half-day request.
+  ///
+  /// In en, this message translates to:
+  /// **'Half day'**
+  String get slHalf;
+
+  /// Shown when the list has no student leave requests.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests here.'**
+  String get slNoRequests;
+
+  /// Button that approves a student leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get slApprove;
+
+  /// Button that declines a student leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get slDecline;
+
+  /// Question before declining. {name} is the student's name.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline the leave for {name}?'**
+  String slDeclineQuestion(String name);
+
+  /// Label of the box where a reason for declining may be written.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for the parent (optional)'**
+  String get slNote;
+
+  /// Confirmation after approving.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved. The parent has been told.'**
+  String get slApproved;
+
+  /// Confirmation after declining.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined. The parent has been told.'**
+  String get slDeclined;
+
+  /// Shown when the other approver has already decided or the parent cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone decided this request first. Nothing was changed.'**
+  String get slAlreadyDecided;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

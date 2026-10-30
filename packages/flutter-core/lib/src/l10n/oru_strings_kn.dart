@@ -3380,4 +3380,110 @@ class OruStringsKn extends OruStrings {
   ) {
     return '$studentName: $startDate to $endDate. $note';
   }
+
+  @override
+  String get mobSlTitle => 'Student leave';
+
+  @override
+  String get mobSlWaiting => 'Waiting';
+
+  @override
+  String get mobSlAll => 'All';
+
+  @override
+  String get mobSlEmptyWaiting => 'No request is waiting for you.';
+
+  @override
+  String get mobSlEmptyAll => 'No student leave requests yet.';
+
+  @override
+  String mobSlBy(String name) {
+    return 'Asked by $name';
+  }
+
+  @override
+  String get mobSlHalf => 'Half day';
+
+  @override
+  String get mobSlSaved =>
+      'Your decision is saved on this phone and will be sent when there is a connection.';
+
+  @override
+  String get mobSlRefused =>
+      'Not accepted. It may have been decided by someone else first.';
+
+  @override
+  String get mobSlApproved => 'Approved';
+
+  @override
+  String get mobSlDeclined => 'Declined';
+
+  @override
+  String get mobSlCancelled => 'Cancelled';
+
+  @override
+  String get navStudentLeave => 'Student leave';
+
+  @override
+  String get slStudent => 'Student';
+
+  @override
+  String get slClass => 'Class';
+
+  @override
+  String get slDates => 'Dates';
+
+  @override
+  String get slBy => 'Asked by';
+
+  @override
+  String get slReason => 'Reason';
+
+  @override
+  String get slStatus => 'Show';
+
+  @override
+  String get slStatusPENDING => 'Waiting';
+
+  @override
+  String get slStatusAPPROVED => 'Approved';
+
+  @override
+  String get slStatusDECLINED => 'Declined';
+
+  @override
+  String get slStatusCANCELLED => 'Cancelled';
+
+  @override
+  String get slAll => 'All';
+
+  @override
+  String get slHalf => 'Half day';
+
+  @override
+  String get slNoRequests => 'No requests here.';
+
+  @override
+  String get slApprove => 'Approve';
+
+  @override
+  String get slDecline => 'Decline';
+
+  @override
+  String slDeclineQuestion(String name) {
+    return 'Decline the leave for $name?';
+  }
+
+  @override
+  String get slNote => 'Note for the parent (optional)';
+
+  @override
+  String get slApproved => 'Approved. The parent has been told.';
+
+  @override
+  String get slDeclined => 'Declined. The parent has been told.';
+
+  @override
+  String get slAlreadyDecided =>
+      'Someone decided this request first. Nothing was changed.';
 }

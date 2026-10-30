@@ -4634,5 +4634,147 @@
         "type": "String"
       }
     }
+  },
+  "mobSlTitle": "Student leave",
+  "@mobSlTitle": {
+    "description": "Title of the Teacher app screen where a parent's request for a child's leave is decided, and of the More row that opens it."
+  },
+  "mobSlWaiting": "Waiting",
+  "@mobSlWaiting": {
+    "description": "Filter on the student leave list: requests nobody has decided yet."
+  },
+  "mobSlAll": "All",
+  "@mobSlAll": {
+    "description": "Filter on the student leave list: every request, decided or not."
+  },
+  "mobSlEmptyWaiting": "No request is waiting for you.",
+  "@mobSlEmptyWaiting": {
+    "description": "Shown on the student leave list when nothing needs a decision."
+  },
+  "mobSlEmptyAll": "No student leave requests yet.",
+  "@mobSlEmptyAll": {
+    "description": "Shown on the student leave list when there are no requests at all."
+  },
+  "mobSlBy": "Asked by {name}",
+  "@mobSlBy": {
+    "description": "Under a student leave request: the parent who asked. {name} is the parent's name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobSlHalf": "Half day",
+  "@mobSlHalf": {
+    "description": "Marks a student leave request that is for half a day."
+  },
+  "mobSlSaved": "Your decision is saved on this phone and will be sent when there is a connection.",
+  "@mobSlSaved": {
+    "description": "Shown under a student leave request when a decision was made offline and is waiting to be sent."
+  },
+  "mobSlRefused": "Not accepted. It may have been decided by someone else first.",
+  "@mobSlRefused": {
+    "description": "Shown under a student leave request when the school refused the decision sent from this phone."
+  },
+  "mobSlApproved": "Approved",
+  "@mobSlApproved": {
+    "description": "Status of a student leave request that was approved."
+  },
+  "mobSlDeclined": "Declined",
+  "@mobSlDeclined": {
+    "description": "Status of a student leave request that was declined."
+  },
+  "mobSlCancelled": "Cancelled",
+  "@mobSlCancelled": {
+    "description": "Status of a student leave request the parent withdrew."
+  },
+  "navStudentLeave": "Student leave",
+  "@navStudentLeave": {
+    "description": "Navigation item and page title for parents' requests for their children's leave."
+  },
+  "slStudent": "Student",
+  "@slStudent": {
+    "description": "Column: the student the leave is for."
+  },
+  "slClass": "Class",
+  "@slClass": {
+    "description": "Column: the student's class."
+  },
+  "slDates": "Dates",
+  "@slDates": {
+    "description": "Column: the days of leave asked for."
+  },
+  "slBy": "Asked by",
+  "@slBy": {
+    "description": "Column: the parent who asked."
+  },
+  "slReason": "Reason",
+  "@slReason": {
+    "description": "Column: why the parent asked."
+  },
+  "slStatus": "Show",
+  "@slStatus": {
+    "description": "Label of the filter on the student leave page."
+  },
+  "slStatusPENDING": "Waiting",
+  "@slStatusPENDING": {
+    "description": "Status and filter: not decided yet."
+  },
+  "slStatusAPPROVED": "Approved",
+  "@slStatusAPPROVED": {
+    "description": "Status and filter: approved."
+  },
+  "slStatusDECLINED": "Declined",
+  "@slStatusDECLINED": {
+    "description": "Status and filter: declined."
+  },
+  "slStatusCANCELLED": "Cancelled",
+  "@slStatusCANCELLED": {
+    "description": "Status and filter: withdrawn by the parent."
+  },
+  "slAll": "All",
+  "@slAll": {
+    "description": "Filter option: every request."
+  },
+  "slHalf": "Half day",
+  "@slHalf": {
+    "description": "Added to the dates of a half-day request."
+  },
+  "slNoRequests": "No requests here.",
+  "@slNoRequests": {
+    "description": "Shown when the list has no student leave requests."
+  },
+  "slApprove": "Approve",
+  "@slApprove": {
+    "description": "Button that approves a student leave request."
+  },
+  "slDecline": "Decline",
+  "@slDecline": {
+    "description": "Button that declines a student leave request."
+  },
+  "slDeclineQuestion": "Decline the leave for {name}?",
+  "@slDeclineQuestion": {
+    "description": "Question before declining. {name} is the student's name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "slNote": "Note for the parent (optional)",
+  "@slNote": {
+    "description": "Label of the box where a reason for declining may be written."
+  },
+  "slApproved": "Approved. The parent has been told.",
+  "@slApproved": {
+    "description": "Confirmation after approving."
+  },
+  "slDeclined": "Declined. The parent has been told.",
+  "@slDeclined": {
+    "description": "Confirmation after declining."
+  },
+  "slAlreadyDecided": "Someone decided this request first. Nothing was changed.",
+  "@slAlreadyDecided": {
+    "description": "Shown when the other approver has already decided or the parent cancelled."
   }
 }

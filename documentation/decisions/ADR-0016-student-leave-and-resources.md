@@ -20,6 +20,7 @@
 
 ## Status of the work
 - **P5-10a (server for student leave): built.** `StudentLeave`, `Notification.recipientUser`, `/v1/student-leave` (request, list, read, approve, decline, cancel), the roster pre-fill, the `studentleave` notice category and the `student_leave` RBAC resource. Verified on private emulators: 8 new integration tests, the audit file with four new samples, the four matrix parts, notifications, attendance and push suites, `test:database` 145, `npm test`, eval 130. `test:dataconnect` was not run locally (its script stops all emulators); CI runs it.
-- **Not built:** the Teacher app list and the web page (P5-10b), the Parent app screen (P5-10c), learning resources and comments (P5-11).
+- **P5-10b (Teacher app list and web page): built.** Teacher app: More, "Student leave" (waiting first, Approve and Decline from the phone's copy; the decision is saved in the outbox as `studentleave.decide` with the request as its id, sent once when there is a connection, and a refusal because the other approver was first is shown with a Dismiss). Web admin: "Student leave" under Academics for the Academic admin and the class teacher (Principal reads). Verified: 3 Dart model and screen tests and 5 web tests, `flutter test` in flutter-app (115), flutter-sync (60), web-admin vitest (295), gateway unit tests (716), eval 130, drift 0 errors. **Not verified:** the real-gateway Dart test `studentLeave()` in `real_leave_test.dart` (the emulator ports were held by a demo stack), the simulator, Hindi and Urdu wording (drafts).
+- **Not built:** the Parent app screen (P5-10c), learning resources and comments (P5-11).
 - **Production:** the new table and the new column need the owner's database deploy.
 

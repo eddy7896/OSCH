@@ -433,6 +433,35 @@ class CreateRequestDto {
       };
 }
 
+class CreateStudentLeaveDto {
+  const CreateStudentLeaveDto({required this.clientId, required this.endDate, this.half, required this.reason, required this.startDate, required this.studentId});
+  final String clientId;
+  final String endDate;
+  /// One of: MORNING, AFTERNOON.
+  final String? half;
+  final String reason;
+  final String startDate;
+  final String studentId;
+
+  factory CreateStudentLeaveDto.fromJson(Map<String, dynamic> j) => CreateStudentLeaveDto(
+        clientId: j['clientId'] as String,
+        endDate: j['endDate'] as String,
+        half: j['half'] == null ? null : j['half'] as String,
+        reason: j['reason'] as String,
+        startDate: j['startDate'] as String,
+        studentId: j['studentId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'clientId': clientId,
+        'endDate': endDate,
+        if (half != null) 'half': half!,
+        'reason': reason,
+        'startDate': startDate,
+        'studentId': studentId,
+      };
+}
+
 class DayListDto {
   const DayListDto({required this.items, required this.next});
   final List<DaySummaryDto> items;
@@ -465,6 +494,19 @@ class DaySummaryDto {
         'counts': counts.toJson(),
         'date': date,
         'locked': locked,
+      };
+}
+
+class DecideStudentLeaveDto {
+  const DecideStudentLeaveDto({this.note});
+  final String? note;
+
+  factory DecideStudentLeaveDto.fromJson(Map<String, dynamic> j) => DecideStudentLeaveDto(
+        note: j['note'] == null ? null : j['note'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (note != null) 'note': note!,
       };
 }
 
@@ -1790,6 +1832,119 @@ class StudentAttendanceDto {
         'marks': marks.map((e) => e.toJson()).toList(),
         'studentId': studentId,
         'to': to,
+      };
+}
+
+class StudentLeaveDto {
+  const StudentLeaveDto({required this.createdAt, required this.decision, required this.endDate, required this.half, required this.id, required this.reason, required this.requestedBy, required this.startDate, required this.status, required this.student, required this.updatedAt});
+  final String createdAt;
+  final StudentLeaveDtoDecision decision;
+  final String endDate;
+  final String? half;
+  final String id;
+  final String reason;
+  final StudentLeaveDtoRequestedBy requestedBy;
+  final String startDate;
+  final String status;
+  final StudentLeaveDtoStudent student;
+  final String updatedAt;
+
+  factory StudentLeaveDto.fromJson(Map<String, dynamic> j) => StudentLeaveDto(
+        createdAt: j['createdAt'] as String,
+        decision: StudentLeaveDtoDecision.fromJson(j['decision'] as Map<String, dynamic>),
+        endDate: j['endDate'] as String,
+        half: j['half'] == null ? null : j['half'] as String,
+        id: j['id'] as String,
+        reason: j['reason'] as String,
+        requestedBy: StudentLeaveDtoRequestedBy.fromJson(j['requestedBy'] as Map<String, dynamic>),
+        startDate: j['startDate'] as String,
+        status: j['status'] as String,
+        student: StudentLeaveDtoStudent.fromJson(j['student'] as Map<String, dynamic>),
+        updatedAt: j['updatedAt'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'createdAt': createdAt,
+        'decision': decision.toJson(),
+        'endDate': endDate,
+        if (half != null) 'half': half!,
+        'id': id,
+        'reason': reason,
+        'requestedBy': requestedBy.toJson(),
+        'startDate': startDate,
+        'status': status,
+        'student': student.toJson(),
+        'updatedAt': updatedAt,
+      };
+}
+
+class StudentLeaveDtoDecision {
+  const StudentLeaveDtoDecision({required this.at, required this.by, required this.note});
+  final String? at;
+  final String? by;
+  final String? note;
+
+  factory StudentLeaveDtoDecision.fromJson(Map<String, dynamic> j) => StudentLeaveDtoDecision(
+        at: j['at'] == null ? null : j['at'] as String,
+        by: j['by'] == null ? null : j['by'] as String,
+        note: j['note'] == null ? null : j['note'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (at != null) 'at': at!,
+        if (by != null) 'by': by!,
+        if (note != null) 'note': note!,
+      };
+}
+
+class StudentLeaveDtoRequestedBy {
+  const StudentLeaveDtoRequestedBy({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory StudentLeaveDtoRequestedBy.fromJson(Map<String, dynamic> j) => StudentLeaveDtoRequestedBy(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class StudentLeaveDtoStudent {
+  const StudentLeaveDtoStudent({required this.className, required this.enrollmentId, required this.id, required this.name});
+  final String? className;
+  final String enrollmentId;
+  final String id;
+  final String name;
+
+  factory StudentLeaveDtoStudent.fromJson(Map<String, dynamic> j) => StudentLeaveDtoStudent(
+        className: j['className'] == null ? null : j['className'] as String,
+        enrollmentId: j['enrollmentId'] as String,
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (className != null) 'className': className!,
+        'enrollmentId': enrollmentId,
+        'id': id,
+        'name': name,
+      };
+}
+
+class StudentLeaveListDto {
+  const StudentLeaveListDto({required this.items});
+  final List<StudentLeaveDto> items;
+
+  factory StudentLeaveListDto.fromJson(Map<String, dynamic> j) => StudentLeaveListDto(
+        items: (j['items'] as List<dynamic>).map((e) => StudentLeaveDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
       };
 }
 
