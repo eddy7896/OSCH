@@ -6193,6 +6193,66 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Someone decided this request first. Nothing was changed.'**
   String get slAlreadyDecided;
+
+  /// Button on the Parent app's Leave tab that opens the form for a child's leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for leave for my child'**
+  String get mobPlAsk;
+
+  /// Title of the form where a parent asks leave for a child.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave for my child'**
+  String get mobPlFormTitle;
+
+  /// Heading above the list of the parent's children on the leave form.
+  ///
+  /// In en, this message translates to:
+  /// **'Which child?'**
+  String get mobPlChild;
+
+  /// Shown when the parent tries to send the leave form without choosing a child.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a child.'**
+  String get mobPlErrChild;
+
+  /// Shown on the Parent app's Leave tab when there are no requests.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not asked for any leave yet.'**
+  String get mobPlNone;
+
+  /// Button that withdraws a leave request that is still waiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel request'**
+  String get mobPlCancel;
+
+  /// Shown under a leave request the parent cancelled while offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelling is saved on this phone and will be sent when there is a connection.'**
+  String get mobPlCancelSaved;
+
+  /// Shown under a leave request or a cancel that the school refused.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this. It may already have been decided.'**
+  String get mobPlRefused;
+
+  /// Shown under a decided leave request when the school wrote a note. {note} is the note.
+  ///
+  /// In en, this message translates to:
+  /// **'School\'s note: {note}'**
+  String mobPlNote(String note);
+
+  /// Shown when the parent tries to send the leave form with no reason written.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a short reason.'**
+  String get mobPlErrReason;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

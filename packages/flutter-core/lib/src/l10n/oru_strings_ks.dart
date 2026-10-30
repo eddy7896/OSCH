@@ -3486,4 +3486,38 @@ class OruStringsKs extends OruStrings {
   @override
   String get slAlreadyDecided =>
       'Someone decided this request first. Nothing was changed.';
+
+  @override
+  String get mobPlAsk => 'Ask for leave for my child';
+
+  @override
+  String get mobPlFormTitle => 'Leave for my child';
+
+  @override
+  String get mobPlChild => 'Which child?';
+
+  @override
+  String get mobPlErrChild => 'Choose a child.';
+
+  @override
+  String get mobPlNone => 'You have not asked for any leave yet.';
+
+  @override
+  String get mobPlCancel => 'Cancel request';
+
+  @override
+  String get mobPlCancelSaved =>
+      'Cancelling is saved on this phone and will be sent when there is a connection.';
+
+  @override
+  String get mobPlRefused =>
+      'The school did not accept this. It may already have been decided.';
+
+  @override
+  String mobPlNote(String note) {
+    return 'School\'s note: $note';
+  }
+
+  @override
+  String get mobPlErrReason => 'Write a short reason.';
 }

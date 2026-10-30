@@ -1007,7 +1007,17 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "slNote": "Note for the parent (optional)",
     "slApproved": "Approved. The parent has been told.",
     "slDeclined": "Declined. The parent has been told.",
-    "slAlreadyDecided": "Someone decided this request first. Nothing was changed."
+    "slAlreadyDecided": "Someone decided this request first. Nothing was changed.",
+    "mobPlAsk": "Ask for leave for my child",
+    "mobPlFormTitle": "Leave for my child",
+    "mobPlChild": "Which child?",
+    "mobPlErrChild": "Choose a child.",
+    "mobPlNone": "You have not asked for any leave yet.",
+    "mobPlCancel": "Cancel request",
+    "mobPlCancelSaved": "Cancelling is saved on this phone and will be sent when there is a connection.",
+    "mobPlRefused": "The school did not accept this. It may already have been decided.",
+    "mobPlNote": "School's note: {note}",
+    "mobPlErrReason": "Write a short reason."
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2012,7 +2022,17 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "slNote": "अभिभावक के लिए टिप्पणी (वैकल्पिक)",
     "slApproved": "स्वीकृत। अभिभावक को बता दिया गया है।",
     "slDeclined": "अस्वीकृत। अभिभावक को बता दिया गया है।",
-    "slAlreadyDecided": "किसी और ने यह अनुरोध पहले तय कर दिया है। कुछ नहीं बदला।"
+    "slAlreadyDecided": "किसी और ने यह अनुरोध पहले तय कर दिया है। कुछ नहीं बदला।",
+    "mobPlAsk": "मेरे बच्चे की छुट्टी माँगें",
+    "mobPlFormTitle": "मेरे बच्चे की छुट्टी",
+    "mobPlChild": "कौन-सा बच्चा?",
+    "mobPlErrChild": "एक बच्चा चुनें।",
+    "mobPlNone": "आपने अभी तक कोई छुट्टी नहीं माँगी है।",
+    "mobPlCancel": "अनुरोध रद्द करें",
+    "mobPlCancelSaved": "रद्द करना इस फ़ोन में सहेजा गया है और कनेक्शन मिलने पर भेजा जाएगा।",
+    "mobPlRefused": "स्कूल ने इसे स्वीकार नहीं किया। हो सकता है इस पर निर्णय हो चुका हो।",
+    "mobPlNote": "स्कूल की टिप्पणी: {note}",
+    "mobPlErrReason": "कोई छोटा कारण लिखें।"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3017,7 +3037,17 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "slNote": "والدین کے لیے نوٹ (اختیاری)",
     "slApproved": "منظور کر لی گئی۔ والدین کو بتا دیا گیا ہے۔",
     "slDeclined": "مسترد کر دی گئی۔ والدین کو بتا دیا گیا ہے۔",
-    "slAlreadyDecided": "کسی اور نے یہ درخواست پہلے طے کر دی ہے۔ کچھ نہیں بدلا۔"
+    "slAlreadyDecided": "کسی اور نے یہ درخواست پہلے طے کر دی ہے۔ کچھ نہیں بدلا۔",
+    "mobPlAsk": "میرے بچے کی رخصت کی درخواست",
+    "mobPlFormTitle": "میرے بچے کی رخصت",
+    "mobPlChild": "کون سا بچہ؟",
+    "mobPlErrChild": "ایک بچہ منتخب کریں۔",
+    "mobPlNone": "آپ نے ابھی تک کوئی رخصت نہیں مانگی۔",
+    "mobPlCancel": "درخواست منسوخ کریں",
+    "mobPlCancelSaved": "منسوخی اس فون میں محفوظ ہے اور کنکشن ملنے پر بھیجی جائے گی۔",
+    "mobPlRefused": "اسکول نے اسے قبول نہیں کیا۔ ہو سکتا ہے اس پر فیصلہ ہو چکا ہو۔",
+    "mobPlNote": "اسکول کا نوٹ: {note}",
+    "mobPlErrReason": "کوئی مختصر وجہ لکھیں۔"
   },
   "ks": {},
   "sd": {},

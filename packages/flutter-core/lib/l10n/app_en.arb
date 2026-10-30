@@ -4776,5 +4776,50 @@
   "slAlreadyDecided": "Someone decided this request first. Nothing was changed.",
   "@slAlreadyDecided": {
     "description": "Shown when the other approver has already decided or the parent cancelled."
+  },
+  "mobPlAsk": "Ask for leave for my child",
+  "@mobPlAsk": {
+    "description": "Button on the Parent app's Leave tab that opens the form for a child's leave."
+  },
+  "mobPlFormTitle": "Leave for my child",
+  "@mobPlFormTitle": {
+    "description": "Title of the form where a parent asks leave for a child."
+  },
+  "mobPlChild": "Which child?",
+  "@mobPlChild": {
+    "description": "Heading above the list of the parent's children on the leave form."
+  },
+  "mobPlErrChild": "Choose a child.",
+  "@mobPlErrChild": {
+    "description": "Shown when the parent tries to send the leave form without choosing a child."
+  },
+  "mobPlNone": "You have not asked for any leave yet.",
+  "@mobPlNone": {
+    "description": "Shown on the Parent app's Leave tab when there are no requests."
+  },
+  "mobPlCancel": "Cancel request",
+  "@mobPlCancel": {
+    "description": "Button that withdraws a leave request that is still waiting."
+  },
+  "mobPlCancelSaved": "Cancelling is saved on this phone and will be sent when there is a connection.",
+  "@mobPlCancelSaved": {
+    "description": "Shown under a leave request the parent cancelled while offline."
+  },
+  "mobPlRefused": "The school did not accept this. It may already have been decided.",
+  "@mobPlRefused": {
+    "description": "Shown under a leave request or a cancel that the school refused."
+  },
+  "mobPlNote": "School's note: {note}",
+  "@mobPlNote": {
+    "description": "Shown under a decided leave request when the school wrote a note. {note} is the note.",
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "mobPlErrReason": "Write a short reason.",
+  "@mobPlErrReason": {
+    "description": "Shown when the parent tries to send the leave form with no reason written."
   }
 }

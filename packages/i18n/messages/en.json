@@ -1001,5 +1001,15 @@
   "slNote": "Note for the parent (optional)",
   "slApproved": "Approved. The parent has been told.",
   "slDeclined": "Declined. The parent has been told.",
-  "slAlreadyDecided": "Someone decided this request first. Nothing was changed."
+  "slAlreadyDecided": "Someone decided this request first. Nothing was changed.",
+  "mobPlAsk": "Ask for leave for my child",
+  "mobPlFormTitle": "Leave for my child",
+  "mobPlChild": "Which child?",
+  "mobPlErrChild": "Choose a child.",
+  "mobPlNone": "You have not asked for any leave yet.",
+  "mobPlCancel": "Cancel request",
+  "mobPlCancelSaved": "Cancelling is saved on this phone and will be sent when there is a connection.",
+  "mobPlRefused": "The school did not accept this. It may already have been decided.",
+  "mobPlNote": "School's note: {note}",
+  "mobPlErrReason": "Write a short reason."
 }

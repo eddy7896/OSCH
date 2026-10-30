@@ -10,12 +10,14 @@ import '../attendance/attendance_screens.dart' show pillOfStatus, statusLabel;
 import '../inbox/inbox_data.dart';
 import '../inbox/inbox_screen.dart';
 import '../services.dart';
+import '../studentleave/parent_leave_screen.dart';
+import '../studentleave/studentleave_data.dart';
 import '../sync_pill.dart';
 import 'parent_data.dart';
 import 'parent_model.dart';
 
 /// The pull for the Parent app: the children and their day, and the notifications.
-List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...inboxPullTasks(api)];
+List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...studentLeavePullTasks(api), ...inboxPullTasks(api)];
 
 String _isolate(String text) => '\u2066$text\u2069';
 
@@ -59,6 +61,7 @@ class _OruParentHomeState extends State<OruParentHome> {
     final svc = widget.services;
     final pages = <String, Widget>{
       'home': OruChildHomeScreen(services: svc, now: widget.now),
+      'leave': OruParentLeaveScreen(services: svc, now: widget.now),
       'inbox': OruInboxScreen(services: svc),
       'more': _MorePage(services: svc, state: widget.state),
     };
@@ -72,6 +75,7 @@ class _OruParentHomeState extends State<OruParentHome> {
           onChanged: (k) => setState(() => _tab = k),
           items: [
             OruNavItem(key: 'home', label: s.mobTabHome, icon: OruIconName.home),
+            OruNavItem(key: 'leave', label: s.mobTabLeave, icon: OruIconName.leave),
             OruNavItem(key: 'inbox', label: s.mobMoreInbox, icon: OruIconName.bell, badge: _inbox.unread, badgeLabel: _inbox.unread > 0 ? s.mobInboxUnread('${_inbox.unread}') : null),
             OruNavItem(key: 'more', label: s.mobTabMore, icon: OruIconName.more),
           ],
