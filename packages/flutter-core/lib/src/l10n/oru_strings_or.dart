@@ -2797,7 +2797,7 @@ class OruStringsOr extends OruStrings {
 
   @override
   String mobLvDays(String days) {
-    return '$days days';
+    return '$days day(s)';
   }
 
   @override

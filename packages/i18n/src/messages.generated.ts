@@ -812,7 +812,7 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobLvSavedNotSent": "Saved on this phone, not sent yet",
     "mobLvRefused": "The school did not accept this request.",
     "mobLvRefusedConflict": "You already have leave on some of these days, or not enough days are left.",
-    "mobLvDays": "{days} days",
+    "mobLvDays": "{days} day(s)",
     "mobLvDates": "{start} to {end}",
     "mobLvFormTitle": "Ask for leave",
     "mobLvType": "Type of leave",
