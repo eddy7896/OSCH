@@ -4494,5 +4494,72 @@
         "type": "String"
       }
     }
+  },
+  "ntCatstudentleave": "Student leave",
+  "@ntCatstudentleave": {
+    "description": "Name of the category of notifications about a student's leave."
+  },
+  "notifStudentleaveRequestedTitle": "Leave asked for a student",
+  "@notifStudentleaveRequestedTitle": {
+    "description": "Title of the notification a class teacher gets when a parent asks leave for a student."
+  },
+  "notifStudentleaveRequestedBody": "{studentName}: {startDate} to {endDate}. {reason}",
+  "@notifStudentleaveRequestedBody": {
+    "description": "Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates, {reason} what the parent wrote.",
+    "placeholders": {
+      "studentName": {
+        "type": "String"
+      },
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "notifStudentleaveApprovedTitle": "Leave approved",
+  "@notifStudentleaveApprovedTitle": {
+    "description": "Title of the notification a parent gets when their child's leave was approved."
+  },
+  "notifStudentleaveApprovedBody": "{studentName}: {startDate} to {endDate}.",
+  "@notifStudentleaveApprovedBody": {
+    "description": "Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates.",
+    "placeholders": {
+      "studentName": {
+        "type": "String"
+      },
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "notifStudentleaveDeclinedTitle": "Leave not approved",
+  "@notifStudentleaveDeclinedTitle": {
+    "description": "Title of the notification a parent gets when their child's leave was not approved."
+  },
+  "notifStudentleaveDeclinedBody": "{studentName}: {startDate} to {endDate}. {note}",
+  "@notifStudentleaveDeclinedBody": {
+    "description": "Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates, {note} the reason the school gave.",
+    "placeholders": {
+      "studentName": {
+        "type": "String"
+      },
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
   }
 }

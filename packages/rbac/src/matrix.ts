@@ -43,6 +43,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     payroll: school("read", "approve"), // [SSOT] payroll is part of financial data; [ADR-0012] a monthly payroll run is approved by the Principal and nobody else
     reports_finance: school("read", "export"), // [ASSUMED] export of reports
     attendance: school("read"),
+    student_leave: school("read"), // [ADR-0016]
     students: school("read"),
     academics: school("read"),
     grades: school("read"),
@@ -87,6 +88,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     grades: school(...CRUD_EXPORT),
     attendance: school(...CRUD_EXPORT),
     substitution: school("read", "create", "update"), // [SSOT §7] "Academic Admin: Assign Substitute"
+    student_leave: school("read", "update"), // [ADR-0016] decides a parent's request for a child's leave (the class teacher may too)
     reports_academic: school("read", "export"),
     leave: school("read"), // [ASSUMED] must see leave to plan substitutes
     staff: school("read"), // [ASSUMED] must see teachers to assign substitutes
@@ -151,6 +153,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     students: own("read"),
     academics: own("read"),
     grades: own("read", "create", "update"),
+    student_leave: own("read", "update"), // [ADR-0016] the class teacher of the child's class reads and decides; the gateway narrows `own` to that class
     announcements: school("read"),
     messages: own("read", "create"), // office-hours rule is business logic outside RBAC [GUARD §3]
   },
@@ -174,6 +177,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     academics: linked("read"), // timetable
     finance: linked("read", "create"), // view invoices; "create" = initiate a payment [ASSUMED action mapping]
     transport: linked("read"),
+    student_leave: linked("read", "create", "update"), // [ADR-0016] ask leave for their own child; update is only cancelling a waiting request
     announcements: school("read"),
     messages: own("read", "create"),
   },

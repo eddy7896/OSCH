@@ -5867,6 +5867,62 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'{assigned} students ride'**
   String trnRiding(String assigned);
+
+  /// Name of the category of notifications about a student's leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Student leave'**
+  String get ntCatstudentleave;
+
+  /// Title of the notification a class teacher gets when a parent asks leave for a student.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave asked for a student'**
+  String get notifStudentleaveRequestedTitle;
+
+  /// Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates, {reason} what the parent wrote.
+  ///
+  /// In en, this message translates to:
+  /// **'{studentName}: {startDate} to {endDate}. {reason}'**
+  String notifStudentleaveRequestedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+    String reason,
+  );
+
+  /// Title of the notification a parent gets when their child's leave was approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave approved'**
+  String get notifStudentleaveApprovedTitle;
+
+  /// Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates.
+  ///
+  /// In en, this message translates to:
+  /// **'{studentName}: {startDate} to {endDate}.'**
+  String notifStudentleaveApprovedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+  );
+
+  /// Title of the notification a parent gets when their child's leave was not approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave not approved'**
+  String get notifStudentleaveDeclinedTitle;
+
+  /// Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates, {note} the reason the school gave.
+  ///
+  /// In en, this message translates to:
+  /// **'{studentName}: {startDate} to {endDate}. {note}'**
+  String notifStudentleaveDeclinedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+    String note,
+  );
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

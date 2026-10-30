@@ -3293,4 +3293,46 @@ class OruStringsHi extends OruStrings {
   String trnRiding(String assigned) {
     return '$assigned छात्र सवारी करते हैं';
   }
+
+  @override
+  String get ntCatstudentleave => 'छात्र की छुट्टी';
+
+  @override
+  String get notifStudentleaveRequestedTitle =>
+      'एक छात्र के लिए छुट्टी माँगी गई';
+
+  @override
+  String notifStudentleaveRequestedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+    String reason,
+  ) {
+    return '$studentName: $startDate से $endDate तक। $reason';
+  }
+
+  @override
+  String get notifStudentleaveApprovedTitle => 'छुट्टी स्वीकृत';
+
+  @override
+  String notifStudentleaveApprovedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+  ) {
+    return '$studentName: $startDate से $endDate तक।';
+  }
+
+  @override
+  String get notifStudentleaveDeclinedTitle => 'छुट्टी स्वीकृत नहीं';
+
+  @override
+  String notifStudentleaveDeclinedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+    String note,
+  ) {
+    return '$studentName: $startDate से $endDate तक। $note';
+  }
 }

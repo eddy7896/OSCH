@@ -955,7 +955,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "trnWhoRides": "Who rides",
     "trnNobodyAtStop": "Nobody yet.",
     "trnSeatsTaken": "{assigned} of {capacity} seats taken",
-    "trnRiding": "{assigned} students ride"
+    "trnRiding": "{assigned} students ride",
+    "ntCatstudentleave": "Student leave",
+    "notifStudentleaveRequestedTitle": "Leave asked for a student",
+    "notifStudentleaveRequestedBody": "{studentName}: {startDate} to {endDate}. {reason}",
+    "notifStudentleaveApprovedTitle": "Leave approved",
+    "notifStudentleaveApprovedBody": "{studentName}: {startDate} to {endDate}.",
+    "notifStudentleaveDeclinedTitle": "Leave not approved",
+    "notifStudentleaveDeclinedBody": "{studentName}: {startDate} to {endDate}. {note}"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -1908,7 +1915,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "trnWhoRides": "कौन सवारी करता है",
     "trnNobodyAtStop": "अभी कोई नहीं।",
     "trnSeatsTaken": "{capacity} में से {assigned} सीटें भरी हैं",
-    "trnRiding": "{assigned} छात्र सवारी करते हैं"
+    "trnRiding": "{assigned} छात्र सवारी करते हैं",
+    "ntCatstudentleave": "छात्र की छुट्टी",
+    "notifStudentleaveRequestedTitle": "एक छात्र के लिए छुट्टी माँगी गई",
+    "notifStudentleaveRequestedBody": "{studentName}: {startDate} से {endDate} तक। {reason}",
+    "notifStudentleaveApprovedTitle": "छुट्टी स्वीकृत",
+    "notifStudentleaveApprovedBody": "{studentName}: {startDate} से {endDate} तक।",
+    "notifStudentleaveDeclinedTitle": "छुट्टी स्वीकृत नहीं",
+    "notifStudentleaveDeclinedBody": "{studentName}: {startDate} से {endDate} तक। {note}"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -2861,7 +2875,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "trnWhoRides": "کون سوار ہوتا ہے",
     "trnNobodyAtStop": "ابھی کوئی نہیں۔",
     "trnSeatsTaken": "{capacity} میں سے {assigned} نشستیں بھری ہیں",
-    "trnRiding": "{assigned} طلبہ سوار ہوتے ہیں"
+    "trnRiding": "{assigned} طلبہ سوار ہوتے ہیں",
+    "ntCatstudentleave": "طالب علم کی رخصت",
+    "notifStudentleaveRequestedTitle": "ایک طالب علم کے لیے رخصت مانگی گئی",
+    "notifStudentleaveRequestedBody": "{studentName}: {startDate} سے {endDate} تک۔ {reason}",
+    "notifStudentleaveApprovedTitle": "رخصت منظور",
+    "notifStudentleaveApprovedBody": "{studentName}: {startDate} سے {endDate} تک۔",
+    "notifStudentleaveDeclinedTitle": "رخصت منظور نہیں",
+    "notifStudentleaveDeclinedBody": "{studentName}: {startDate} سے {endDate} تک۔ {note}"
   },
   "ks": {},
   "sd": {},

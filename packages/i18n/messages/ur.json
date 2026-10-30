@@ -949,5 +949,12 @@
   "trnWhoRides": "کون سوار ہوتا ہے",
   "trnNobodyAtStop": "ابھی کوئی نہیں۔",
   "trnSeatsTaken": "{capacity} میں سے {assigned} نشستیں بھری ہیں",
-  "trnRiding": "{assigned} طلبہ سوار ہوتے ہیں"
+  "trnRiding": "{assigned} طلبہ سوار ہوتے ہیں",
+  "ntCatstudentleave": "طالب علم کی رخصت",
+  "notifStudentleaveRequestedTitle": "ایک طالب علم کے لیے رخصت مانگی گئی",
+  "notifStudentleaveRequestedBody": "{studentName}: {startDate} سے {endDate} تک۔ {reason}",
+  "notifStudentleaveApprovedTitle": "رخصت منظور",
+  "notifStudentleaveApprovedBody": "{studentName}: {startDate} سے {endDate} تک۔",
+  "notifStudentleaveDeclinedTitle": "رخصت منظور نہیں",
+  "notifStudentleaveDeclinedBody": "{studentName}: {startDate} سے {endDate} تک۔ {note}"
 }

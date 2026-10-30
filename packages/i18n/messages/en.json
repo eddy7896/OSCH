@@ -949,5 +949,12 @@
   "trnWhoRides": "Who rides",
   "trnNobodyAtStop": "Nobody yet.",
   "trnSeatsTaken": "{assigned} of {capacity} seats taken",
-  "trnRiding": "{assigned} students ride"
+  "trnRiding": "{assigned} students ride",
+  "ntCatstudentleave": "Student leave",
+  "notifStudentleaveRequestedTitle": "Leave asked for a student",
+  "notifStudentleaveRequestedBody": "{studentName}: {startDate} to {endDate}. {reason}",
+  "notifStudentleaveApprovedTitle": "Leave approved",
+  "notifStudentleaveApprovedBody": "{studentName}: {startDate} to {endDate}.",
+  "notifStudentleaveDeclinedTitle": "Leave not approved",
+  "notifStudentleaveDeclinedBody": "{studentName}: {startDate} to {endDate}. {note}"
 }

@@ -950,5 +950,12 @@
   "trnWhoRides": "Heading: the list of students on a route, stop by stop.",
   "trnNobodyAtStop": "Shown under a stop that has no student.",
   "trnSeatsTaken": "How many of the vehicle's seats are taken. {assigned} and {capacity} are numbers.",
-  "trnRiding": "How many students ride a route that has no vehicle yet. {assigned} is a number."
+  "trnRiding": "How many students ride a route that has no vehicle yet. {assigned} is a number.",
+  "ntCatstudentleave": "Name of the category of notifications about a student's leave.",
+  "notifStudentleaveRequestedTitle": "Title of the notification a class teacher gets when a parent asks leave for a student.",
+  "notifStudentleaveRequestedBody": "Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates, {reason} what the parent wrote.",
+  "notifStudentleaveApprovedTitle": "Title of the notification a parent gets when their child's leave was approved.",
+  "notifStudentleaveApprovedBody": "Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates.",
+  "notifStudentleaveDeclinedTitle": "Title of the notification a parent gets when their child's leave was not approved.",
+  "notifStudentleaveDeclinedBody": "Body of that notification. {studentName} is the student, {startDate} and {endDate} are dates, {note} the reason the school gave."
 }

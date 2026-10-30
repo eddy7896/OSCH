@@ -1519,3 +1519,49 @@ mutation RemoveStudentRoute($schoolId: UUID!, $id: UUID!, $actorId: String!, $de
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "transport.student.unassign", entityType: "StudentRoute", entityId_expr: "request.variables.id", details: $details })
 }
 
+# ---- Student leave (P5-10, ADR-0016)
+
+mutation CreateStudentLeave($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $clientId: String!, $startDate: Date!, $endDate: Date!, $half: String, $reason: String!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PARENT}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only a parent of this school can ask leave for a child") { userId }
+    link: parentLinks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, userId: {eq: $actorId}}) @check(expr: "this.size() == 1", message: "that child is not linked to this account") { id }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "active student not found in this school") { id }
+    overlap: studentLeaves(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, status: {in: [PENDING, APPROVED]}, startDate: {le: $endDate}, endDate: {ge: $startDate}}) @check(expr: "this.size() == 0", message: "that child already has leave on some of these days") { id }
+  }
+  studentLeave_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, requestedById: $actorId, clientId: $clientId, startDate: $startDate, endDate: $endDate, half: $half, reason: $reason })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "studentleave.request", entityType: "StudentLeave", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation CreateStudentLeaveNotifyTeacher($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $clientId: String!, $startDate: Date!, $endDate: Date!, $half: String, $reason: String!, $teacherStaffId: UUID!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PARENT}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only a parent of this school can ask leave for a child") { userId }
+    link: parentLinks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, userId: {eq: $actorId}}) @check(expr: "this.size() == 1", message: "that child is not linked to this account") { id }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "active student not found in this school") { id }
+    overlap: studentLeaves(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, status: {in: [PENDING, APPROVED]}, startDate: {le: $endDate}, endDate: {ge: $startDate}}) @check(expr: "this.size() == 0", message: "that child already has leave on some of these days") { id }
+  }
+  studentLeave_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, requestedById: $actorId, clientId: $clientId, startDate: $startDate, endDate: $endDate, half: $half, reason: $reason })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: "studentleave.requested", params: $notice, entityType: "StudentLeave", entityId_expr: "request.variables.id", recipientStaffId: $teacherStaffId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "studentleave.request", entityType: "StudentLeave", entityId_expr: "request.variables.id", details: $details })
+}
+
+# The class teacher of the child's class (checked in the gateway) or the Academic admin decides; the first decision stands. The parent is told, in the same transaction.
+mutation DecideStudentLeave($schoolId: UUID!, $id: UUID!, $status: StudentLeaveStatus!, $note: String, $kind: String!, $parentUserId: String!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {in: [ACADEMIC_ADMIN, TEACHER]}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only a teacher or the Academic admin of this school can decide student leave") { userId }
+    request: studentLeaves(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: PENDING}, requestedById: {eq: $parentUserId}}) @check(expr: "this.size() == 1", message: "request not found in this school or no longer waiting") { id }
+  }
+  studentLeave_update(id: $id, data: { status: $status, decidedById: $actorId, decidedAt_expr: "request.time", updatedAt_expr: "request.time", decisionNote: $note })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: $kind, params: $notice, entityType: "StudentLeave", entityId_expr: "request.variables.id", recipientUserId: $parentUserId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "studentleave.decide", entityType: "StudentLeave", entityId_expr: "request.variables.id", details: $details })
+}
+
+# The parent withdraws a request that is still waiting.
+mutation CancelStudentLeave($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: PARENT}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only a parent of this school can cancel") { userId }
+    request: studentLeaves(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, status: {eq: PENDING}, requestedById: {eq: $actorId}}) @check(expr: "this.size() == 1", message: "no waiting request of yours with that id") { id }
+  }
+  studentLeave_update(id: $id, data: { status: CANCELLED, updatedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "studentleave.cancel", entityType: "StudentLeave", entityId_expr: "request.variables.id", details: $details })
+}
+
