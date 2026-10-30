@@ -3295,6 +3295,54 @@ class OruStringsHi extends OruStrings {
   }
 
   @override
+  String mobParentHow(String name) {
+    return 'आज $name कैसा है?';
+  }
+
+  @override
+  String get mobParentNoChildren =>
+      'आपके खाते से अभी कोई बच्चा नहीं जुड़ा है। कृपया स्कूल कार्यालय से पूछें।';
+
+  @override
+  String get mobParentChoose => 'बच्चा चुनें';
+
+  @override
+  String get mobParentNotTaken => 'आज की उपस्थिति अभी नहीं ली गई है।';
+
+  @override
+  String get mobParentLessons => 'आज के पाठ';
+
+  @override
+  String get mobParentNoLessons => 'आज कोई पाठ नहीं है।';
+
+  @override
+  String get mobParentRide => 'बस';
+
+  @override
+  String mobParentNoRide(String name) {
+    return '$name के लिए कोई बस यात्रा तय नहीं है।';
+  }
+
+  @override
+  String mobParentRideMorning(String stop) {
+    return 'स्कूल की ओर: $stop';
+  }
+
+  @override
+  String mobParentRideAfternoon(String stop) {
+    return 'घर की ओर: $stop';
+  }
+
+  @override
+  String mobParentDriver(String name) {
+    return 'ड्राइवर: $name';
+  }
+
+  @override
+  String get mobParentFirstLoad =>
+      'अपने बच्चे का दिन लोड करने के लिए एक बार कनेक्ट करें। उसके बाद यह बिना कनेक्शन के चलता है।';
+
+  @override
   String get ntCatstudentleave => 'छात्र की छुट्टी';
 
   @override

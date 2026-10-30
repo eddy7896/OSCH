@@ -4495,6 +4495,79 @@
       }
     }
   },
+  "mobParentHow": "How is {name} today?",
+  "@mobParentHow": {
+    "description": "Heading of the Parent app's home. {name} is the child's first name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobParentNoChildren": "No child is linked to your account yet. Please ask the school office.",
+  "@mobParentNoChildren": {
+    "description": "Shown when no child is linked to the parent's account."
+  },
+  "mobParentChoose": "Choose a child",
+  "@mobParentChoose": {
+    "description": "Label of the choice between the parent's children."
+  },
+  "mobParentNotTaken": "Attendance has not been taken yet today.",
+  "@mobParentNotTaken": {
+    "description": "Shown when the school has not taken attendance for the child's class today."
+  },
+  "mobParentLessons": "Today's lessons",
+  "@mobParentLessons": {
+    "description": "Heading of the card with the child's lessons today."
+  },
+  "mobParentNoLessons": "There are no lessons today.",
+  "@mobParentNoLessons": {
+    "description": "Shown when the child's class has no lesson today."
+  },
+  "mobParentRide": "Bus",
+  "@mobParentRide": {
+    "description": "Heading of the card with the child's bus ride."
+  },
+  "mobParentNoRide": "No bus ride is set for {name}.",
+  "@mobParentNoRide": {
+    "description": "Shown when the child has no seat on a bus. {name} is the child's first name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobParentRideMorning": "To school: {stop}",
+  "@mobParentRideMorning": {
+    "description": "The child's morning bus stop. {stop} is the name of the stop.",
+    "placeholders": {
+      "stop": {
+        "type": "String"
+      }
+    }
+  },
+  "mobParentRideAfternoon": "Home: {stop}",
+  "@mobParentRideAfternoon": {
+    "description": "The child's afternoon bus stop. {stop} is the name of the stop.",
+    "placeholders": {
+      "stop": {
+        "type": "String"
+      }
+    }
+  },
+  "mobParentDriver": "Driver: {name}",
+  "@mobParentDriver": {
+    "description": "The name of the bus driver. {name} is the driver's name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobParentFirstLoad": "Connect once to load your child's day. After that it works without a connection.",
+  "@mobParentFirstLoad": {
+    "description": "Shown on the Parent app's home before anything was loaded."
+  },
   "ntCatstudentleave": "Student leave",
   "@ntCatstudentleave": {
     "description": "Name of the category of notifications about a student's leave."

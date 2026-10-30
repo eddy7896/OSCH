@@ -5868,6 +5868,78 @@ abstract class OruStrings {
   /// **'{assigned} students ride'**
   String trnRiding(String assigned);
 
+  /// Heading of the Parent app's home. {name} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'How is {name} today?'**
+  String mobParentHow(String name);
+
+  /// Shown when no child is linked to the parent's account.
+  ///
+  /// In en, this message translates to:
+  /// **'No child is linked to your account yet. Please ask the school office.'**
+  String get mobParentNoChildren;
+
+  /// Label of the choice between the parent's children.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a child'**
+  String get mobParentChoose;
+
+  /// Shown when the school has not taken attendance for the child's class today.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance has not been taken yet today.'**
+  String get mobParentNotTaken;
+
+  /// Heading of the card with the child's lessons today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s lessons'**
+  String get mobParentLessons;
+
+  /// Shown when the child's class has no lesson today.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no lessons today.'**
+  String get mobParentNoLessons;
+
+  /// Heading of the card with the child's bus ride.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus'**
+  String get mobParentRide;
+
+  /// Shown when the child has no seat on a bus. {name} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'No bus ride is set for {name}.'**
+  String mobParentNoRide(String name);
+
+  /// The child's morning bus stop. {stop} is the name of the stop.
+  ///
+  /// In en, this message translates to:
+  /// **'To school: {stop}'**
+  String mobParentRideMorning(String stop);
+
+  /// The child's afternoon bus stop. {stop} is the name of the stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Home: {stop}'**
+  String mobParentRideAfternoon(String stop);
+
+  /// The name of the bus driver. {name} is the driver's name.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver: {name}'**
+  String mobParentDriver(String name);
+
+  /// Shown on the Parent app's home before anything was loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect once to load your child\'s day. After that it works without a connection.'**
+  String get mobParentFirstLoad;
+
   /// Name of the category of notifications about a student's leave.
   ///
   /// In en, this message translates to:

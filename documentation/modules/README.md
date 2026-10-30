@@ -25,3 +25,4 @@ This directory contains modular, detailed documentation for specific feature set
 ## Contributing
 When adding a new module to the system, create a corresponding `[module_name].md` file in this directory and document its specific workflows, data models, and edge cases.
 - [messaging-and-notice-board.md](messaging-and-notice-board.md): the plan (not built) for the class broadcast to parents, one-on-one student conversations and the school notice board; waits for the messaging ADR.
+- [student-leave-and-resources.md](student-leave-and-resources.md): the plan (not built) for a parent asking leave for their child, and teachers' worksheets and workbooks in the Parent app; the owner's answers are recorded there.

@@ -3,6 +3,8 @@
   "Me_preferences",
   "Teaching_mine",
   "Timetable_mine",
+  "Timetable_forClass",
+  "Transport_children",
   "Schedule_get",
   "Academics_classes",
   "Academics_subjects",

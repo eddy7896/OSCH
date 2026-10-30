@@ -3293,6 +3293,54 @@ class OruStringsSd extends OruStrings {
   }
 
   @override
+  String mobParentHow(String name) {
+    return 'How is $name today?';
+  }
+
+  @override
+  String get mobParentNoChildren =>
+      'No child is linked to your account yet. Please ask the school office.';
+
+  @override
+  String get mobParentChoose => 'Choose a child';
+
+  @override
+  String get mobParentNotTaken => 'Attendance has not been taken yet today.';
+
+  @override
+  String get mobParentLessons => 'Today\'s lessons';
+
+  @override
+  String get mobParentNoLessons => 'There are no lessons today.';
+
+  @override
+  String get mobParentRide => 'Bus';
+
+  @override
+  String mobParentNoRide(String name) {
+    return 'No bus ride is set for $name.';
+  }
+
+  @override
+  String mobParentRideMorning(String stop) {
+    return 'To school: $stop';
+  }
+
+  @override
+  String mobParentRideAfternoon(String stop) {
+    return 'Home: $stop';
+  }
+
+  @override
+  String mobParentDriver(String name) {
+    return 'Driver: $name';
+  }
+
+  @override
+  String get mobParentFirstLoad =>
+      'Connect once to load your child\'s day. After that it works without a connection.';
+
+  @override
   String get ntCatstudentleave => 'Student leave';
 
   @override

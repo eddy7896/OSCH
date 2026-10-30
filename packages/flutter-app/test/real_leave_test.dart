@@ -44,6 +44,7 @@ void main() {
   inbox();
   checkIn();
   teacherCheckIn();
+  parent();
   final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
 
@@ -337,6 +338,43 @@ void teacherCheckIn() {
     expect(await svc.store.record(kGeofence, 'school'), isNotNull);
     final days = await svc.store.records(kStaffDay);
     expect(days, isNotEmpty, reason: 'the demo seeds her check-in for today');
+    await svc.dispose();
+  }, skip: skip);
+}
+
+// P5-6a against the real gateway: the demo parent signs in as a PARENT, and the children, attendance, lessons and bus ride are pulled and read from the phone.
+void parent() {
+  final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
+  test('the demo parent pulls her child\'s day: the child, attendance, lessons and the bus; another family\'s child is never there', () async {
+    final svc = await OruServices.create(
+      OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+      allowedRoles: const {'PARENT'},
+      executor: NativeDatabase.memory(),
+      storage: MemorySecureStorage(),
+      lockPort: _NoLock(),
+      online: const Stream<bool>.empty(),
+      isOnline: () async => true,
+      pullTasks: parentAppPullTasks,
+    );
+    await svc.session.signInWithPassword('parent@demo.oruschools.example', 'demo-pass-2027');
+    await svc.coordinator.syncNow();
+    expect(svc.coordinator.pullStatus, isA<PullOk>(), reason: '${svc.coordinator.pullStatus}');
+    final kids = await svc.store.records(kChild);
+    expect(kids, hasLength(1), reason: 'only the one child linked to this account');
+    final id = kids.single['id'] as String;
+    final classId = (kids.single['class'] as Map<String, dynamic>)['id'] as String;
+    expect(await svc.store.records(kChildLesson, parentId: classId), isNotEmpty);
+    final rides = await svc.store.records(kChildRide, parentId: id);
+    expect(rides.map((r) => r['direction']).toSet(), {'MORNING', 'AFTERNOON'});
+    expect((rides.first['stop'] as Map<String, dynamic>)['name'], isNotEmpty);
+    expect(await svc.store.records(kChildAttendance, parentId: id), isNotEmpty, reason: 'the demo school has attendance for the first class');
+    // the model builds from the phone alone, on any working day of the demo's timetable
+    final lessons = await svc.store.records(kChildLesson, parentId: classId);
+    final day = lessons.first['day'] as String;
+    final t = buildChildToday(date: '2026-11-02', weekday: day, attendance: await svc.store.records(kChildAttendance, parentId: id), lessons: lessons, periods: await svc.store.records(kPeriod), schedule: await svc.store.record(kSchedule, 'school'), rides: rides);
+    expect(t.hasData, isTrue);
+    expect(t.lessons, isNotEmpty);
+    expect(t.rides.first.direction, 'MORNING');
     await svc.dispose();
   }, skip: skip);
 }

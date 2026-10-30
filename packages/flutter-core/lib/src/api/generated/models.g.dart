@@ -243,6 +243,19 @@ class ChildDto {
       };
 }
 
+class ChildrenSeatsDto {
+  const ChildrenSeatsDto({required this.items});
+  final List<StudentSeatsDto> items;
+
+  factory ChildrenSeatsDto.fromJson(Map<String, dynamic> j) => ChildrenSeatsDto(
+        items: (j['items'] as List<dynamic>).map((e) => StudentSeatsDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
 class ClassDayDto {
   const ClassDayDto({required this.classId, required this.counts, required this.date, required this.locked, required this.students, required this.submitted, required this.submittedAt, required this.submittedBy});
   final String classId;
@@ -344,6 +357,50 @@ class ClassRefDto {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
+      };
+}
+
+class ClassSlotDto {
+  const ClassSlotDto({required this.day, required this.id, required this.periodId, required this.staff, required this.subject});
+  final String day;
+  final String id;
+  final String periodId;
+  final TimetableStaffDto staff;
+  final TimetableSubjectDto subject;
+
+  factory ClassSlotDto.fromJson(Map<String, dynamic> j) => ClassSlotDto(
+        day: j['day'] as String,
+        id: j['id'] as String,
+        periodId: j['periodId'] as String,
+        staff: TimetableStaffDto.fromJson(j['staff'] as Map<String, dynamic>),
+        subject: TimetableSubjectDto.fromJson(j['subject'] as Map<String, dynamic>),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'day': day,
+        'id': id,
+        'periodId': periodId,
+        'staff': staff.toJson(),
+        'subject': subject.toJson(),
+      };
+}
+
+class ClassTimetableDto {
+  const ClassTimetableDto({required this.academicYearId, required this.classId, required this.entries});
+  final String academicYearId;
+  final String classId;
+  final List<ClassSlotDto> entries;
+
+  factory ClassTimetableDto.fromJson(Map<String, dynamic> j) => ClassTimetableDto(
+        academicYearId: j['academicYearId'] as String,
+        classId: j['classId'] as String,
+        entries: (j['entries'] as List<dynamic>).map((e) => ClassSlotDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'academicYearId': academicYearId,
+        'classId': classId,
+        'entries': entries.map((e) => e.toJson()).toList(),
       };
 }
 
@@ -1416,6 +1473,88 @@ class SchoolProfileDtoActiveAcademicYear {
       };
 }
 
+class SeatDto {
+  const SeatDto({required this.direction, required this.driverName, required this.route, required this.stop, required this.vehicle});
+  final String direction;
+  final String? driverName;
+  final SeatDtoRoute route;
+  final SeatDtoStop stop;
+  final SeatDtoVehicle vehicle;
+
+  factory SeatDto.fromJson(Map<String, dynamic> j) => SeatDto(
+        direction: j['direction'] as String,
+        driverName: j['driverName'] == null ? null : j['driverName'] as String,
+        route: SeatDtoRoute.fromJson(j['route'] as Map<String, dynamic>),
+        stop: SeatDtoStop.fromJson(j['stop'] as Map<String, dynamic>),
+        vehicle: SeatDtoVehicle.fromJson(j['vehicle'] as Map<String, dynamic>),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'direction': direction,
+        if (driverName != null) 'driverName': driverName!,
+        'route': route.toJson(),
+        'stop': stop.toJson(),
+        'vehicle': vehicle.toJson(),
+      };
+}
+
+class SeatDtoRoute {
+  const SeatDtoRoute({required this.id, required this.name, required this.startTime});
+  final String id;
+  final String name;
+  final String? startTime;
+
+  factory SeatDtoRoute.fromJson(Map<String, dynamic> j) => SeatDtoRoute(
+        id: j['id'] as String,
+        name: j['name'] as String,
+        startTime: j['startTime'] == null ? null : j['startTime'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        if (startTime != null) 'startTime': startTime!,
+      };
+}
+
+class SeatDtoStop {
+  const SeatDtoStop({required this.arrivalTime, required this.id, required this.name, required this.sequence});
+  final String? arrivalTime;
+  final String id;
+  final String name;
+  final num sequence;
+
+  factory SeatDtoStop.fromJson(Map<String, dynamic> j) => SeatDtoStop(
+        arrivalTime: j['arrivalTime'] == null ? null : j['arrivalTime'] as String,
+        id: j['id'] as String,
+        name: j['name'] as String,
+        sequence: j['sequence'] as num,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (arrivalTime != null) 'arrivalTime': arrivalTime!,
+        'id': id,
+        'name': name,
+        'sequence': sequence,
+      };
+}
+
+class SeatDtoVehicle {
+  const SeatDtoVehicle({required this.label, required this.registration});
+  final String label;
+  final String registration;
+
+  factory SeatDtoVehicle.fromJson(Map<String, dynamic> j) => SeatDtoVehicle(
+        label: j['label'] as String,
+        registration: j['registration'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'label': label,
+        'registration': registration,
+      };
+}
+
 class StaffDayDto {
   const StaffDayDto({required this.checkIn, required this.checkInDeviceTime, required this.checkInDistanceM, required this.checkInReason, required this.checkInStamp, required this.checkOut, required this.checkOutDeviceTime, required this.checkOutDistanceM, required this.checkOutReason, required this.checkOutStamp, required this.confirmedAt, required this.date, required this.needsConfirmation});
   final String? checkIn;
@@ -1714,6 +1853,22 @@ class StudentRefDto {
       };
 }
 
+class StudentSeatsDto {
+  const StudentSeatsDto({required this.items, required this.studentId});
+  final List<SeatDto> items;
+  final String studentId;
+
+  factory StudentSeatsDto.fromJson(Map<String, dynamic> j) => StudentSeatsDto(
+        items: (j['items'] as List<dynamic>).map((e) => SeatDto.fromJson(e as Map<String, dynamic>)).toList(),
+        studentId: j['studentId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+        'studentId': studentId,
+      };
+}
+
 class StudentSummaryDto {
   const StudentSummaryDto({required this.dateOfBirth, required this.enrollmentId, required this.firstName, required this.gender, required this.id, required this.lastName, required this.placement, required this.status});
   final String? dateOfBirth;
@@ -1892,6 +2047,25 @@ class TimetableClassRefDto {
       );
 
   Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class TimetableStaffDto {
+  const TimetableStaffDto({required this.employeeId, required this.id, required this.name});
+  final String employeeId;
+  final String id;
+  final String name;
+
+  factory TimetableStaffDto.fromJson(Map<String, dynamic> j) => TimetableStaffDto(
+        employeeId: j['employeeId'] as String,
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'employeeId': employeeId,
         'id': id,
         'name': name,
       };

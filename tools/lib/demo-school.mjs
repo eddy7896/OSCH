@@ -24,6 +24,9 @@ export const DEMO_PEOPLE = [
   { key: "sunita", role: "TEACHER", name: "Sunita Rao", where: "web-admin (a teacher with leave asked for)" },
   { key: "vikram", role: "TEACHER", name: "Vikram Chopra", where: "web-admin (a teacher whose approved leave needs cover)" },
   { key: "farida", role: "TEACHER", name: "Farida Begum", where: "web-admin (a teacher with approved unpaid leave)" },
+  { key: "transport", role: "TRANSPORT_MANAGER", name: "Tarun Transport", where: "web-admin (vehicles, routes, stops, seating students)" },
+  { key: "driver", role: "DRIVER", name: "Salim Dar", where: "the Driver app (when built); the driver of the North loop" },
+  { key: "parent", role: "PARENT", via: "invitation", name: "Parvati Rao", where: "the Parent app: the parent of one student, who rides the North loop" },
   { key: "office", role: "STAFF", name: "Geeta Kulkarni", where: "the Staff app (the clerk who is not checked in today)" },
 ].map((p) => ({ ...p, email: `${p.key}@${DOMAIN}` }));
 
@@ -39,7 +42,7 @@ export const STAFF = [
   { firstName: "Geeta", lastName: "Kulkarni", department: "Office", designation: "Clerk", basic: 2800000, account: "office" },
   { firstName: "Mohan", lastName: "Lal", department: "Support", designation: "Peon", basic: 1800000 },
   { firstName: "Rekha", lastName: "Pillai", department: "Languages", designation: "Teacher", basic: 4300000, teaches: ["HIN", "SST"] },
-  { firstName: "Salim", lastName: "Dar", department: "Transport", designation: "Driver", basic: 2200000 },
+  { firstName: "Salim", lastName: "Dar", department: "Transport", designation: "Driver", basic: 2200000, account: "driver" },
 ];
 export const SUBJECTS = [["Mathematics", "MATH"], ["English", "ENG"], ["Hindi", "HIN"], ["Science", "SCI"], ["Social Studies", "SST"], ["Art", "ART"]];
 export const LEVELS_WITH_CLASSES = ["1", "2", "3", "4", "5"];
