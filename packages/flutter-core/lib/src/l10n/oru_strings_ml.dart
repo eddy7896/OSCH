@@ -3339,4 +3339,45 @@ class OruStringsMl extends OruStrings {
   @override
   String get mobParentFirstLoad =>
       'Connect once to load your child\'s day. After that it works without a connection.';
+
+  @override
+  String get ntCatstudentleave => 'Student leave';
+
+  @override
+  String get notifStudentleaveRequestedTitle => 'Leave asked for a student';
+
+  @override
+  String notifStudentleaveRequestedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+    String reason,
+  ) {
+    return '$studentName: $startDate to $endDate. $reason';
+  }
+
+  @override
+  String get notifStudentleaveApprovedTitle => 'Leave approved';
+
+  @override
+  String notifStudentleaveApprovedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+  ) {
+    return '$studentName: $startDate to $endDate.';
+  }
+
+  @override
+  String get notifStudentleaveDeclinedTitle => 'Leave not approved';
+
+  @override
+  String notifStudentleaveDeclinedBody(
+    String studentName,
+    String startDate,
+    String endDate,
+    String note,
+  ) {
+    return '$studentName: $startDate to $endDate. $note';
+  }
 }

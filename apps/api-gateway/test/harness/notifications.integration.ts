@@ -101,7 +101,7 @@ describe.skipIf(!ready)('notifications against the real emulators (P3-9)', { tim
   });
 
   it('preferences hide a category from your inbox without deleting anything', async () => {
-    expect((await call('get', '/notifications/preferences', acad()).expect(200)).body.items).toEqual([{ category: 'leave', enabled: true }, { category: 'substitution', enabled: true }, { category: 'payroll', enabled: true }, { category: 'announcement', enabled: true }]);
+    expect((await call('get', '/notifications/preferences', acad()).expect(200)).body.items).toEqual([{ category: 'leave', enabled: true }, { category: 'substitution', enabled: true }, { category: 'payroll', enabled: true }, { category: 'announcement', enabled: true }, { category: 'studentleave', enabled: true }]);
     await call('put', '/notifications/preferences/substitution', acad()).send({ enabled: false }).expect(200);
     expect((await inbox(acad())).items).toEqual([]);
     expect((await inbox(hr())).items).toHaveLength(1); // somebody else's preference

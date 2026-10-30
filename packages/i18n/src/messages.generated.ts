@@ -967,7 +967,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobParentRideMorning": "To school: {stop}",
     "mobParentRideAfternoon": "Home: {stop}",
     "mobParentDriver": "Driver: {name}",
-    "mobParentFirstLoad": "Connect once to load your child's day. After that it works without a connection."
+    "mobParentFirstLoad": "Connect once to load your child's day. After that it works without a connection.",
+    "ntCatstudentleave": "Student leave",
+    "notifStudentleaveRequestedTitle": "Leave asked for a student",
+    "notifStudentleaveRequestedBody": "{studentName}: {startDate} to {endDate}. {reason}",
+    "notifStudentleaveApprovedTitle": "Leave approved",
+    "notifStudentleaveApprovedBody": "{studentName}: {startDate} to {endDate}.",
+    "notifStudentleaveDeclinedTitle": "Leave not approved",
+    "notifStudentleaveDeclinedBody": "{studentName}: {startDate} to {endDate}. {note}"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -1932,7 +1939,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobParentRideMorning": "स्कूल की ओर: {stop}",
     "mobParentRideAfternoon": "घर की ओर: {stop}",
     "mobParentDriver": "ड्राइवर: {name}",
-    "mobParentFirstLoad": "अपने बच्चे का दिन लोड करने के लिए एक बार कनेक्ट करें। उसके बाद यह बिना कनेक्शन के चलता है।"
+    "mobParentFirstLoad": "अपने बच्चे का दिन लोड करने के लिए एक बार कनेक्ट करें। उसके बाद यह बिना कनेक्शन के चलता है।",
+    "ntCatstudentleave": "छात्र की छुट्टी",
+    "notifStudentleaveRequestedTitle": "एक छात्र के लिए छुट्टी माँगी गई",
+    "notifStudentleaveRequestedBody": "{studentName}: {startDate} से {endDate} तक। {reason}",
+    "notifStudentleaveApprovedTitle": "छुट्टी स्वीकृत",
+    "notifStudentleaveApprovedBody": "{studentName}: {startDate} से {endDate} तक।",
+    "notifStudentleaveDeclinedTitle": "छुट्टी स्वीकृत नहीं",
+    "notifStudentleaveDeclinedBody": "{studentName}: {startDate} से {endDate} तक। {note}"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -2897,7 +2911,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobParentRideMorning": "اسکول کی طرف: {stop}",
     "mobParentRideAfternoon": "گھر کی طرف: {stop}",
     "mobParentDriver": "ڈرائیور: {name}",
-    "mobParentFirstLoad": "اپنے بچے کا دن لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔ اس کے بعد یہ کنکشن کے بغیر چلتا ہے۔"
+    "mobParentFirstLoad": "اپنے بچے کا دن لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔ اس کے بعد یہ کنکشن کے بغیر چلتا ہے۔",
+    "ntCatstudentleave": "طالب علم کی رخصت",
+    "notifStudentleaveRequestedTitle": "ایک طالب علم کے لیے رخصت مانگی گئی",
+    "notifStudentleaveRequestedBody": "{studentName}: {startDate} سے {endDate} تک۔ {reason}",
+    "notifStudentleaveApprovedTitle": "رخصت منظور",
+    "notifStudentleaveApprovedBody": "{studentName}: {startDate} سے {endDate} تک۔",
+    "notifStudentleaveDeclinedTitle": "رخصت منظور نہیں",
+    "notifStudentleaveDeclinedBody": "{studentName}: {startDate} سے {endDate} تک۔ {note}"
   },
   "ks": {},
   "sd": {},

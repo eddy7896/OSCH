@@ -1149,6 +1149,42 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Staff_create"
   },
   {
+    "method": "POST",
+    "path": "/v1/student-leave/{id}/approve",
+    "access": "tenant",
+    "operationId": "StudentLeave_approve"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/student-leave/{id}/cancel",
+    "access": "tenant",
+    "operationId": "StudentLeave_cancel"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/student-leave/{id}/decline",
+    "access": "tenant",
+    "operationId": "StudentLeave_decline"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/student-leave/{id}",
+    "access": "tenant",
+    "operationId": "StudentLeave_one"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/student-leave",
+    "access": "tenant",
+    "operationId": "StudentLeave_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/student-leave",
+    "access": "tenant",
+    "operationId": "StudentLeave_create"
+  },
+  {
     "method": "GET",
     "path": "/v1/students/{id}/documents/{documentId}/url",
     "access": "tenant",

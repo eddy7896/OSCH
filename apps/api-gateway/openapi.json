@@ -2085,6 +2085,43 @@
         ],
         "type": "object"
       },
+      "CreateStudentLeaveDto": {
+        "properties": {
+          "clientId": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "half": {
+            "enum": [
+              "MORNING",
+              "AFTERNOON"
+            ],
+            "type": "string"
+          },
+          "reason": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId",
+          "clientId",
+          "startDate",
+          "endDate",
+          "reason"
+        ],
+        "type": "object"
+      },
       "CreateSubjectDto": {
         "properties": {
           "code": {
@@ -2302,6 +2339,16 @@
         "required": [
           "status"
         ],
+        "type": "object"
+      },
+      "DecideStudentLeaveDto": {
+        "properties": {
+          "note": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "DecisionDto": {
@@ -7438,6 +7485,124 @@
           "items": {
             "items": {
               "$ref": "#/components/schemas/StudentFoundDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "StudentLeaveDto": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "decision": {
+            "properties": {
+              "at": {
+                "nullable": true,
+                "type": "string"
+              },
+              "by": {
+                "nullable": true,
+                "type": "string"
+              },
+              "note": {
+                "nullable": true,
+                "type": "string"
+              }
+            },
+            "required": [
+              "at",
+              "by",
+              "note"
+            ],
+            "type": "object"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "half": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "requestedBy": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "student": {
+            "properties": {
+              "className": {
+                "nullable": true,
+                "type": "string"
+              },
+              "enrollmentId": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "enrollmentId",
+              "className"
+            ],
+            "type": "object"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "student",
+          "startDate",
+          "endDate",
+          "half",
+          "reason",
+          "status",
+          "requestedBy",
+          "decision",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
+      "StudentLeaveListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StudentLeaveDto"
             },
             "type": "array"
           }
@@ -18115,7 +18280,8 @@
                 "leave",
                 "substitution",
                 "payroll",
-                "announcement"
+                "announcement",
+                "studentleave"
               ],
               "type": "string"
             }
@@ -21559,6 +21725,408 @@
         "x-permission": {
           "action": "update",
           "resource": "staff"
+        }
+      }
+    },
+    "/v1/student-leave": {
+      "get": {
+        "operationId": "StudentLeave_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "enum": [
+                "PENDING",
+                "APPROVED",
+                "DECLINED",
+                "CANCELLED"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentLeaveListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentLeave"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "student_leave"
+        }
+      },
+      "post": {
+        "operationId": "StudentLeave_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStudentLeaveDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentLeaveDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentLeave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "studentleave.request",
+          "operation": "CreateStudentLeave"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "student_leave"
+        }
+      }
+    },
+    "/v1/student-leave/{id}": {
+      "get": {
+        "operationId": "StudentLeave_one",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentLeaveDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentLeave"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "student_leave"
+        }
+      }
+    },
+    "/v1/student-leave/{id}/approve": {
+      "post": {
+        "operationId": "StudentLeave_approve",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideStudentLeaveDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentLeaveDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentLeave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "studentleave.decide",
+          "operation": "DecideStudentLeave"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "student_leave"
+        }
+      }
+    },
+    "/v1/student-leave/{id}/cancel": {
+      "post": {
+        "operationId": "StudentLeave_cancel",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentLeaveDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentLeave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "studentleave.cancel",
+          "operation": "CancelStudentLeave"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "student_leave"
+        }
+      }
+    },
+    "/v1/student-leave/{id}/decline": {
+      "post": {
+        "operationId": "StudentLeave_decline",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideStudentLeaveDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentLeaveDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "StudentLeave"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "studentleave.decide",
+          "operation": "DecideStudentLeave"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "student_leave"
         }
       }
     },

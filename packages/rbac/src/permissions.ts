@@ -35,6 +35,7 @@ export const RESOURCES = [
   "operations", // inventory, assets, procurement, visitors
   "transport",
   "announcements",
+  "student_leave", // a parent asks leave for their child; the class teacher or the Academic admin decides (ADR-0016)
   "messages", // 1:1 direct messaging (office hours enforced separately)
   // Administration
   "settings", // school settings, integrations

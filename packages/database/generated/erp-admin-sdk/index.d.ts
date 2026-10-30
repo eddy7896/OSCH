@@ -128,6 +128,12 @@ export enum StudentDocumentKind {
   MEDICAL = "MEDICAL",
   OTHER = "OTHER",
 }
+export enum StudentLeaveStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  DECLINED = "DECLINED",
+  CANCELLED = "CANCELLED",
+}
 export enum StudentStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
@@ -611,6 +617,19 @@ export interface ApproveUnpaidLeaveRequestVariables {
   details?: unknown | null;
 }
 
+export interface ApprovedStudentLeaveOnData {
+  studentLeaves: ({
+    studentId: UUIDString;
+    half?: string | null;
+  })[];
+}
+
+export interface ApprovedStudentLeaveOnVariables {
+  schoolId: UUIDString;
+  studentIds: UUIDString[];
+  date: DateString;
+}
+
 export interface AssessmentTerm_Key {
   id: UUIDString;
   __typename?: 'AssessmentTerm_Key';
@@ -716,6 +735,26 @@ export interface CancelLeaveRequestVariables {
   schoolId: UUIDString;
   id: UUIDString;
   staffId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface CancelStudentLeaveData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    request: ({
+      id: UUIDString;
+    } & StudentLeave_Key)[];
+  };
+  studentLeave_update?: StudentLeave_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CancelStudentLeaveVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
   actorId: string;
   details?: unknown | null;
 }
@@ -1725,6 +1764,74 @@ export interface CreateStudentData {
   auditLog_insert: AuditLog_Key;
 }
 
+export interface CreateStudentLeaveData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    link: ({
+      id: UUIDString;
+    } & ParentLink_Key)[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    overlap: ({
+      id: UUIDString;
+    } & StudentLeave_Key)[];
+  };
+  studentLeave_insert: StudentLeave_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateStudentLeaveNotifyTeacherData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    link: ({
+      id: UUIDString;
+    } & ParentLink_Key)[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+    overlap: ({
+      id: UUIDString;
+    } & StudentLeave_Key)[];
+  };
+  studentLeave_insert: StudentLeave_Key;
+  n1: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateStudentLeaveNotifyTeacherVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  clientId: string;
+  startDate: DateString;
+  endDate: DateString;
+  half?: string | null;
+  reason: string;
+  teacherStaffId: UUIDString;
+  notice?: unknown | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface CreateStudentLeaveVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  clientId: string;
+  startDate: DateString;
+  endDate: DateString;
+  half?: string | null;
+  reason: string;
+  notice?: unknown | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface CreateStudentVariables {
   schoolId: UUIDString;
   id: UUIDString;
@@ -1879,6 +1986,32 @@ export interface DecideApplicationVariables {
   fromStatus: ApplicationStatus;
   toStatus: ApplicationStatus;
   decisionNote?: string | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface DecideStudentLeaveData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    request: ({
+      id: UUIDString;
+    } & StudentLeave_Key)[];
+  };
+  studentLeave_update?: StudentLeave_Key | null;
+  n1: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DecideStudentLeaveVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  status: StudentLeaveStatus;
+  note?: string | null;
+  kind: string;
+  parentUserId: string;
+  notice?: unknown | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -3138,6 +3271,49 @@ export interface GetStudentData {
   } & Student_Key)[];
 }
 
+export interface GetStudentLeaveData {
+  studentLeaves: ({
+    id: UUIDString;
+    clientId: string;
+    startDate: DateString;
+    endDate: DateString;
+    half?: string | null;
+    reason: string;
+    status: StudentLeaveStatus;
+    decisionNote?: string | null;
+    decidedAt?: TimestampString | null;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+      enrollmentId: string;
+      placements: ({
+        classroom: {
+          id: UUIDString;
+          name: string;
+        } & Classroom_Key;
+      })[];
+    } & Student_Key;
+    requestedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    decidedBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & StudentLeave_Key)[];
+}
+
+export interface GetStudentLeaveVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetStudentLevelData {
   studentEnrollments: ({
     classroom: {
@@ -4060,6 +4236,92 @@ export interface ListStaffVariables {
   schoolId: UUIDString;
 }
 
+export interface ListStudentLeavesData {
+  studentLeaves: ({
+    id: UUIDString;
+    startDate: DateString;
+    endDate: DateString;
+    half?: string | null;
+    reason: string;
+    status: StudentLeaveStatus;
+    decisionNote?: string | null;
+    decidedAt?: TimestampString | null;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+      enrollmentId: string;
+      placements: ({
+        classroom: {
+          id: UUIDString;
+          name: string;
+        } & Classroom_Key;
+      })[];
+    } & Student_Key;
+    requestedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    decidedBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & StudentLeave_Key)[];
+}
+
+export interface ListStudentLeavesOfStudentsData {
+  studentLeaves: ({
+    id: UUIDString;
+    startDate: DateString;
+    endDate: DateString;
+    half?: string | null;
+    reason: string;
+    status: StudentLeaveStatus;
+    decisionNote?: string | null;
+    decidedAt?: TimestampString | null;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+      enrollmentId: string;
+      placements: ({
+        classroom: {
+          id: UUIDString;
+          name: string;
+        } & Classroom_Key;
+      })[];
+    } & Student_Key;
+    requestedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    decidedBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & StudentLeave_Key)[];
+}
+
+export interface ListStudentLeavesOfStudentsVariables {
+  schoolId: UUIDString;
+  studentIds: UUIDString[];
+  limit: number;
+}
+
+export interface ListStudentLeavesVariables {
+  schoolId: UUIDString;
+  status?: StudentLeaveStatus | null;
+  limit: number;
+}
+
 export interface ListStudentsData {
   students: ({
     id: UUIDString;
@@ -4307,6 +4569,9 @@ export interface ListUnpushedNotificationsData {
     recipientStaff?: {
       userId?: string | null;
     };
+    recipientUser?: {
+      id: string;
+    } & User_Key;
   } & Notification_Key)[];
 }
 
@@ -5718,6 +5983,23 @@ export interface StudentIdentitiesVariables {
   schoolId: UUIDString;
   limit: number;
   offset: number;
+}
+
+export interface StudentLeaveByClientIdData {
+  studentLeaves: ({
+    id: UUIDString;
+  } & StudentLeave_Key)[];
+}
+
+export interface StudentLeaveByClientIdVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  clientId: string;
+}
+
+export interface StudentLeave_Key {
+  id: UUIDString;
+  __typename?: 'StudentLeave_Key';
 }
 
 export interface StudentRoute_Key {
@@ -7209,6 +7491,26 @@ export function removeStudentRoute(dc: DataConnect, vars: RemoveStudentRouteVari
 /** Generated Node Admin SDK operation action function for the 'RemoveStudentRoute' Mutation. Allow users to pass in custom DataConnect instances. */
 export function removeStudentRoute(vars: RemoveStudentRouteVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveStudentRouteData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateStudentLeave' Mutation. Allow users to execute without passing in DataConnect. */
+export function createStudentLeave(dc: DataConnect, vars: CreateStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStudentLeaveData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateStudentLeave' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createStudentLeave(vars: CreateStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStudentLeaveData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateStudentLeaveNotifyTeacher' Mutation. Allow users to execute without passing in DataConnect. */
+export function createStudentLeaveNotifyTeacher(dc: DataConnect, vars: CreateStudentLeaveNotifyTeacherVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStudentLeaveNotifyTeacherData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateStudentLeaveNotifyTeacher' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createStudentLeaveNotifyTeacher(vars: CreateStudentLeaveNotifyTeacherVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateStudentLeaveNotifyTeacherData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DecideStudentLeave' Mutation. Allow users to execute without passing in DataConnect. */
+export function decideStudentLeave(dc: DataConnect, vars: DecideStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DecideStudentLeaveData>>;
+/** Generated Node Admin SDK operation action function for the 'DecideStudentLeave' Mutation. Allow users to pass in custom DataConnect instances. */
+export function decideStudentLeave(vars: DecideStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DecideStudentLeaveData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CancelStudentLeave' Mutation. Allow users to execute without passing in DataConnect. */
+export function cancelStudentLeave(dc: DataConnect, vars: CancelStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CancelStudentLeaveData>>;
+/** Generated Node Admin SDK operation action function for the 'CancelStudentLeave' Mutation. Allow users to pass in custom DataConnect instances. */
+export function cancelStudentLeave(vars: CancelStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CancelStudentLeaveData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -7793,4 +8095,29 @@ export function studentRoutesOfStudents(vars: StudentRoutesOfStudentsVariables, 
 export function staffWithAccounts(dc: DataConnect, vars: StaffWithAccountsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffWithAccountsData>>;
 /** Generated Node Admin SDK operation action function for the 'StaffWithAccounts' Query. Allow users to pass in custom DataConnect instances. */
 export function staffWithAccounts(vars: StaffWithAccountsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StaffWithAccountsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'StudentLeaveByClientId' Query. Allow users to execute without passing in DataConnect. */
+export function studentLeaveByClientId(dc: DataConnect, vars: StudentLeaveByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentLeaveByClientIdData>>;
+/** Generated Node Admin SDK operation action function for the 'StudentLeaveByClientId' Query. Allow users to pass in custom DataConnect instances. */
+export function studentLeaveByClientId(vars: StudentLeaveByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StudentLeaveByClientIdData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetStudentLeave' Query. Allow users to execute without passing in DataConnect. */
+export function getStudentLeave(dc: DataConnect, vars: GetStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentLeaveData>>;
+/** Generated Node Admin SDK operation action function for the 'GetStudentLeave' Query. Allow users to pass in custom DataConnect instances. */
+export function getStudentLeave(vars: GetStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetStudentLeaveData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListStudentLeaves' Query. Allow users to execute without passing in DataConnect. */
+export function listStudentLeaves(dc: DataConnect, vars: ListStudentLeavesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStudentLeavesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListStudentLeaves' Query. Allow users to pass in custom DataConnect instances. */
+export function listStudentLeaves(vars: ListStudentLeavesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStudentLeavesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListStudentLeavesOfStudents' Query. Allow users to execute without passing in DataConnect. */
+export function listStudentLeavesOfStudents(dc: DataConnect, vars: ListStudentLeavesOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStudentLeavesOfStudentsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListStudentLeavesOfStudents' Query. Allow users to pass in custom DataConnect instances. */
+export function listStudentLeavesOfStudents(vars: ListStudentLeavesOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStudentLeavesOfStudentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ApprovedStudentLeaveOn' Query. Allow users to execute without passing in DataConnect. */
+export function approvedStudentLeaveOn(dc: DataConnect, vars: ApprovedStudentLeaveOnVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApprovedStudentLeaveOnData>>;
+/** Generated Node Admin SDK operation action function for the 'ApprovedStudentLeaveOn' Query. Allow users to pass in custom DataConnect instances. */
+export function approvedStudentLeaveOn(vars: ApprovedStudentLeaveOnVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApprovedStudentLeaveOnData>>;
 

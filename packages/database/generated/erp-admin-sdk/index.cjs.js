@@ -161,6 +161,14 @@ const StudentDocumentKind = {
 }
 exports.StudentDocumentKind = StudentDocumentKind;
 
+const StudentLeaveStatus = {
+  PENDING: "PENDING",
+  APPROVED: "APPROVED",
+  DECLINED: "DECLINED",
+  CANCELLED: "CANCELLED",
+}
+exports.StudentLeaveStatus = StudentLeaveStatus;
+
 const StudentStatus = {
   ACTIVE: "ACTIVE",
   INACTIVE: "INACTIVE",
@@ -1266,6 +1274,34 @@ function removeStudentRoute(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.removeStudentRoute = removeStudentRoute;
 
+function createStudentLeave(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateStudentLeave', inputVars, inputOpts);
+}
+exports.createStudentLeave = createStudentLeave;
+
+function createStudentLeaveNotifyTeacher(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateStudentLeaveNotifyTeacher', inputVars, inputOpts);
+}
+exports.createStudentLeaveNotifyTeacher = createStudentLeaveNotifyTeacher;
+
+function decideStudentLeave(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DecideStudentLeave', inputVars, inputOpts);
+}
+exports.decideStudentLeave = decideStudentLeave;
+
+function cancelStudentLeave(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CancelStudentLeave', inputVars, inputOpts);
+}
+exports.cancelStudentLeave = cancelStudentLeave;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2084,4 +2120,39 @@ function staffWithAccounts(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('StaffWithAccounts', inputVars, inputOpts);
 }
 exports.staffWithAccounts = staffWithAccounts;
+
+function studentLeaveByClientId(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('StudentLeaveByClientId', inputVars, inputOpts);
+}
+exports.studentLeaveByClientId = studentLeaveByClientId;
+
+function getStudentLeave(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetStudentLeave', inputVars, inputOpts);
+}
+exports.getStudentLeave = getStudentLeave;
+
+function listStudentLeaves(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListStudentLeaves', inputVars, inputOpts);
+}
+exports.listStudentLeaves = listStudentLeaves;
+
+function listStudentLeavesOfStudents(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListStudentLeavesOfStudents', inputVars, inputOpts);
+}
+exports.listStudentLeavesOfStudents = listStudentLeavesOfStudents;
+
+function approvedStudentLeaveOn(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ApprovedStudentLeaveOn', inputVars, inputOpts);
+}
+exports.approvedStudentLeaveOn = approvedStudentLeaveOn;
 

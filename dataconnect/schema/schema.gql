@@ -100,6 +100,7 @@ enum ApplicationStatus { SUBMITTED UNDER_REVIEW ACCEPTED REJECTED WITHDRAWN ADMI
 enum AttendanceStatus { PRESENT ABSENT LATE LEAVE MEDICAL HALF_DAY EXCUSED } # the seven fixed meanings (ADR-0013 decision 2); a school may relabel them, never add or remove one
 enum StaffStatus { ACTIVE INACTIVE LEFT }
 enum VehicleStatus { ACTIVE OUT_OF_SERVICE }
+enum StudentLeaveStatus { PENDING APPROVED DECLINED CANCELLED }
 enum RouteDirection { MORNING AFTERNOON }
 enum StaffDocumentKind { APPOINTMENT_LETTER ID_PROOF QUALIFICATION EXPERIENCE MEDICAL OTHER }
 enum StudentDocumentKind { BIRTH_CERTIFICATE TRANSFER_CERTIFICATE REPORT_CARD ID_PROOF MEDICAL OTHER }
@@ -647,6 +648,7 @@ type Notification @table {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
   recipientStaff: StaffProfile
+  recipientUser: User # one signed-in person who has no staff record (a parent), P5-10
   audienceRole: SchoolRole
   kind: String! # for example leave.approved; the words come from packages/i18n, in the reader's language
   params: Any # the values the words need: names, dates, a class
@@ -756,5 +758,24 @@ type StudentRoute @table @unique(fields: ["student", "direction"]) {
   stop: RouteStop!
   direction: RouteDirection!
   createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# A parent's request for leave for their child (P5-10, ADR-0016). Decided by the class teacher or the Academic admin; the first decision stands.
+type StudentLeave @table @unique(fields: ["student", "clientId"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  student: Student!
+  requestedBy: User!
+  clientId: String! # the device's own id for the request, so a repeat is one request
+  startDate: Date!
+  endDate: Date!
+  half: String # MORNING or AFTERNOON (then start and end are the same day); null otherwise
+  reason: String!
+  status: StudentLeaveStatus! @default(value: PENDING)
+  decidedBy: User
+  decidedAt: Timestamp
+  decisionNote: String
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time")
 }
 

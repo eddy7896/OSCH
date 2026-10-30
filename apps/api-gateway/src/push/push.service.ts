@@ -62,14 +62,15 @@ export class PushService {
     return { claimed, sent };
   }
 
-  private async recipients(schoolId: string, n: { audienceRole?: string | null; recipientStaff?: { userId?: string | null } | null }): Promise<string[]> {
+  private async recipients(schoolId: string, n: { audienceRole?: string | null; recipientStaff?: { userId?: string | null } | null; recipientUser?: { id?: string | null } | null }): Promise<string[]> {
     if (n.recipientStaff?.userId) return [n.recipientStaff.userId];
+    if (n.recipientUser?.id) return [n.recipientUser.id]; // a person with no staff record, such as a parent
     if (!n.audienceRole) return [];
     const members = (await this.db.listMemberships({ schoolId })).data.schoolMembers;
     return members.filter((m) => m.status === 'ACTIVE' && m.schoolRole === n.audienceRole).map((m) => m.user.id);
   }
 
-  private async push(schoolId: string, n: { id: string; kind: string; audienceRole?: string | null; recipientStaff?: { userId?: string | null } | null }): Promise<number> {
+  private async push(schoolId: string, n: { id: string; kind: string; audienceRole?: string | null; recipientStaff?: { userId?: string | null } | null; recipientUser?: { id?: string | null } | null }): Promise<number> {
     const category = categoryOf(n.kind);
     let users = await this.recipients(schoolId, n);
     if (category && users.length) {

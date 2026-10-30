@@ -184,6 +184,21 @@ const seatIdOf = (studentId: string, direction: string): string => {
   h[16] = ((Number.parseInt(h[16]!, 16) & 0x3) | 0x8).toString(16);
   return dash(h.join(''));
 };
+const parentOfA = { token: (w: World) => w.roles.A.PARENT.token, actor: (w: World) => w.roles.A.PARENT.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+const inDays = (n: number): string => new Date(Date.now() + n * 86_400_000).toISOString().slice(0, 10);
+/** A student of school A linked to the sample parent; `leave` also has the parent's waiting leave request for them. */
+const childOfParentA = (leave: boolean) => async (w: World): Promise<Record<string, string>> => {
+  const ctx = await studentOfA(w);
+  const studentId = ctx['id']!.replaceAll('-', '');
+  await w.db.linkParentAccount({ schoolId: w.schools.A, id: randomUUID(), studentId, userId: w.roles.A.PARENT.uid, relationship: 'MOTHER', actorId: actorA(w), details: {} });
+  const out: Record<string, string> = { studentId: ctx['id']!, clientId: `s-${randomUUID().slice(0, 12)}` };
+  if (leave) {
+    const id = randomUUID();
+    await w.db.createStudentLeave({ schoolId: w.schools.A, id, studentId, clientId: out['clientId']!, startDate: inDays(20), endDate: inDays(21), reason: 'Sample', notice: {}, actorId: w.roles.A.PARENT.uid, details: {} });
+    out['id'] = dash(id);
+  }
+  return out;
+};
 const announcementOfA = async (w: World): Promise<Record<string, string>> => {
   const id = randomUUID();
   await w.db.postAnnouncement({ schoolId: w.schools.A, id, title: 'Sample', body: 'Sample announcement.', notice: { title: 'Sample' }, actorId: w.roles.A.ACADEMIC_ADMIN.uid, details: {} });
@@ -488,6 +503,10 @@ export const SAMPLES: Record<string, Sample> = {
     auditSchool: (w) => w.schools.A,
   },
   'PATCH /school/profile': { ...systemAdminOfA, body: () => ({ address: '1 Sample Road' }) },
+  'POST /student-leave': { ...parentOfA, prepare: childOfParentA(false), body: (_w, ctx) => ({ studentId: ctx.studentId, clientId: ctx.clientId, startDate: inDays(30), endDate: inDays(31), reason: 'Family function' }) },
+  'POST /student-leave/:id/approve': { ...academicAdminOfA, prepare: childOfParentA(true), body: () => ({}) },
+  'POST /student-leave/:id/decline': { ...academicAdminOfA, prepare: childOfParentA(true), body: () => ({ note: 'Exam week' }) },
+  'POST /student-leave/:id/cancel': { ...parentOfA, prepare: childOfParentA(true) },
   'PUT /transport/students/:studentId/seat': { ...transportManagerOfA, prepare: seatedOrNot(false), body: (_w, ctx) => ({ routeId: ctx.routeId, stopId: ctx.stopId }) },
   'DELETE /transport/students/:studentId/seat/:direction': { ...transportManagerOfA, prepare: seatedOrNot(true) },
   'POST /transport/vehicles': { ...transportManagerOfA, body: () => ({ registration: `K-${randomUUID().slice(0, 8)}`, label: 'Bus', capacity: 40 }) },

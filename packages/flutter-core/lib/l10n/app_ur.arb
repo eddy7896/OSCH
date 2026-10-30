@@ -962,5 +962,12 @@
   "mobParentRideMorning": "اسکول کی طرف: {stop}",
   "mobParentRideAfternoon": "گھر کی طرف: {stop}",
   "mobParentDriver": "ڈرائیور: {name}",
-  "mobParentFirstLoad": "اپنے بچے کا دن لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔ اس کے بعد یہ کنکشن کے بغیر چلتا ہے۔"
+  "mobParentFirstLoad": "اپنے بچے کا دن لوڈ کرنے کے لیے ایک بار کنیکٹ کریں۔ اس کے بعد یہ کنکشن کے بغیر چلتا ہے۔",
+  "ntCatstudentleave": "طالب علم کی رخصت",
+  "notifStudentleaveRequestedTitle": "ایک طالب علم کے لیے رخصت مانگی گئی",
+  "notifStudentleaveRequestedBody": "{studentName}: {startDate} سے {endDate} تک۔ {reason}",
+  "notifStudentleaveApprovedTitle": "رخصت منظور",
+  "notifStudentleaveApprovedBody": "{studentName}: {startDate} سے {endDate} تک۔",
+  "notifStudentleaveDeclinedTitle": "رخصت منظور نہیں",
+  "notifStudentleaveDeclinedBody": "{studentName}: {startDate} سے {endDate} تک۔ {note}"
 }

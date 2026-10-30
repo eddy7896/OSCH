@@ -77,11 +77,17 @@ export class AttendanceService {
     const year = await this.yearOf(t);
     const [roster, day] = await Promise.all([this.roster(t, classId, year), this.dayOf(t, classId, date)]);
     const marks = new Map((day?.marks ?? []).map((m) => [dashed(m.student.id), m]));
+    // Until the day is taken, a child whose parent's leave request was approved starts as Leave (HALF_DAY for half a day): the teacher sees it and may change it (ADR-0016).
+    const away = new Map<string, string>();
+    if (!day && roster.size > 0) {
+      const rows = (await this.db.approvedStudentLeaveOn({ schoolId: t.schoolId, studentIds: [...roster.keys()], date })).data.studentLeaves;
+      for (const r of rows) away.set(dashed(r.studentId), r.half ? 'HALF_DAY' : 'LEAVE');
+    }
     return {
       classId: dashed(classId), date, submitted: !!day, locked: day?.locked ?? false,
       submittedBy: day ? day.submittedBy.displayName ?? day.submittedBy.email : null, submittedAt: day?.submittedAt ?? null,
       counts: countStatuses([...marks.values()].filter((m) => roster.has(dashed(m.student.id))), roster.size),
-      students: [...roster.values()].map((s) => ({ ...s, status: marks.get(s.id)?.status ?? 'PRESENT', note: marks.get(s.id)?.note ?? null })),
+      students: [...roster.values()].map((s) => ({ ...s, status: marks.get(s.id)?.status ?? (away.get(s.id) ?? 'PRESENT'), note: marks.get(s.id)?.note ?? null })),
     };
   }
 

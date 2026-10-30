@@ -576,7 +576,7 @@ query ListSubstitutions($schoolId: UUID!, $from: Date!, $to: Date!, $substituteI
 
 # ---- Notifications (P3-9) and sync groundwork (P3-10)
 query ListNotifications($schoolId: UUID!, $userId: String!, $role: SchoolRole!, $limit: Int!, $updatedSince: Timestamp) @auth(level: NO_ACCESS) {
-  notifications(where: {_and: [{schoolId: {eq: $schoolId}}, {createdAt: {ge: $updatedSince}}, {_or: [{recipientStaff: {userId: {eq: $userId}}}, {audienceRole: {eq: $role}}]}]}, orderBy: [{createdAt: DESC}], limit: $limit) {
+  notifications(where: {_and: [{schoolId: {eq: $schoolId}}, {createdAt: {ge: $updatedSince}}, {_or: [{recipientStaff: {userId: {eq: $userId}}}, {recipientUser: {id: {eq: $userId}}}, {audienceRole: {eq: $role}}]}]}, orderBy: [{createdAt: DESC}], limit: $limit) {
     id kind params entityType entityId createdAt
     reads: notificationReads_on_notification(where: {userId: {eq: $userId}}) { readAt }
   }
@@ -608,7 +608,7 @@ query GetTimetableEntry($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
 # ---- Devices and push (P4-S2)
 query ListUnpushedNotifications($schoolId: UUID!, $since: Timestamp!, $limit: Int!) @auth(level: NO_ACCESS) {
   notifications(where: {schoolId: {eq: $schoolId}, pushedAt: {isNull: true}, createdAt: {ge: $since}}, orderBy: [{createdAt: ASC}], limit: $limit) {
-    id kind audienceRole recipientStaff { userId }
+    id kind audienceRole recipientStaff { userId } recipientUser { id }
   }
 }
 
@@ -682,5 +682,42 @@ query StudentRoutesOfStudents($schoolId: UUID!, $studentIds: [UUID!]!) @auth(lev
 # Active members of staff who have a sign-in account: the candidates for a route's driver (the gateway keeps those whose role is DRIVER).
 query StaffWithAccounts($schoolId: UUID!) @auth(level: NO_ACCESS) {
   staffProfiles(where: {schoolId: {eq: $schoolId}, status: {eq: ACTIVE}, userId: {isNull: false}}, orderBy: [{firstName: ASC}], limit: 1000) { id employeeId firstName lastName userId }
+}
+
+# ---- Student leave (P5-10)
+query StudentLeaveByClientId($schoolId: UUID!, $studentId: UUID!, $clientId: String!) @auth(level: NO_ACCESS) {
+  studentLeaves(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, clientId: {eq: $clientId}}, limit: 1) { id }
+}
+
+query GetStudentLeave($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  studentLeaves(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id clientId startDate endDate half reason status decisionNote decidedAt createdAt updatedAt
+    student { id firstName lastName enrollmentId placements: studentEnrollments_on_student(orderBy: [{createdAt: DESC}], limit: 1) { classroom { id name } } }
+    requestedBy { id displayName email }
+    decidedBy { id displayName email }
+  }
+}
+
+query ListStudentLeaves($schoolId: UUID!, $status: StudentLeaveStatus, $limit: Int!) @auth(level: NO_ACCESS) {
+  studentLeaves(where: {schoolId: {eq: $schoolId}, status: {eq: $status}}, orderBy: [{createdAt: DESC}], limit: $limit) {
+    id startDate endDate half reason status decisionNote decidedAt createdAt updatedAt
+    student { id firstName lastName enrollmentId placements: studentEnrollments_on_student(orderBy: [{createdAt: DESC}], limit: 1) { classroom { id name } } }
+    requestedBy { id displayName email }
+    decidedBy { id displayName email }
+  }
+}
+
+query ListStudentLeavesOfStudents($schoolId: UUID!, $studentIds: [UUID!]!, $limit: Int!) @auth(level: NO_ACCESS) {
+  studentLeaves(where: {schoolId: {eq: $schoolId}, studentId: {in: $studentIds}}, orderBy: [{createdAt: DESC}], limit: $limit) {
+    id startDate endDate half reason status decisionNote decidedAt createdAt updatedAt
+    student { id firstName lastName enrollmentId placements: studentEnrollments_on_student(orderBy: [{createdAt: DESC}], limit: 1) { classroom { id name } } }
+    requestedBy { id displayName email }
+    decidedBy { id displayName email }
+  }
+}
+
+# Students of these ids whose approved leave covers a date: the class roster starts them as Leave until the day is taken.
+query ApprovedStudentLeaveOn($schoolId: UUID!, $studentIds: [UUID!]!, $date: Date!) @auth(level: NO_ACCESS) {
+  studentLeaves(where: {schoolId: {eq: $schoolId}, studentId: {in: $studentIds}, status: {eq: APPROVED}, startDate: {le: $date}, endDate: {ge: $date}}, limit: 2000) { studentId half }
 }
 
