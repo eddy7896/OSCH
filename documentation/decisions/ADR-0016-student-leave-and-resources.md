@@ -17,3 +17,9 @@
 - The Data Connect schema gains `StudentLeave` and a nullable `Notification.recipientUser`; both need the owner's deploy to production.
 - Teachers and parents of one class become able to read each other's first names in comments; the Parent app must say so (a short line under the comment box) and the privacy policy (P6-5) must mention it.
 - The class teacher's list of requests and the Academic admin's page read the same routes at different scopes.
+
+## Status of the work
+- **P5-10a (server for student leave): built.** `StudentLeave`, `Notification.recipientUser`, `/v1/student-leave` (request, list, read, approve, decline, cancel), the roster pre-fill, the `studentleave` notice category and the `student_leave` RBAC resource. Verified on private emulators: 8 new integration tests, the audit file with four new samples, the four matrix parts, notifications, attendance and push suites, `test:database` 145, `npm test`, eval 130. `test:dataconnect` was not run locally (its script stops all emulators); CI runs it.
+- **Not built:** the Teacher app list and the web page (P5-10b), the Parent app screen (P5-10c), learning resources and comments (P5-11).
+- **Production:** the new table and the new column need the owner's database deploy.
+
