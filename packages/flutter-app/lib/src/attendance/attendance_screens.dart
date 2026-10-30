@@ -9,7 +9,8 @@ import '../today/today_data.dart';
 import 'attendance_data.dart';
 import 'attendance_model.dart';
 
-OruAttendanceStatus _pillOf(String code) => switch (code) {
+/// The pill (icon and colour) for an attendance status code.
+OruAttendanceStatus pillOfStatus(String code) => switch (code) {
       'ABSENT' => OruAttendanceStatus.absent,
       'LATE' => OruAttendanceStatus.late,
       'LEAVE' => OruAttendanceStatus.leave,
@@ -172,7 +173,7 @@ class _OruAttendanceScreenState extends State<OruAttendanceScreen> {
           for (final code in attendanceStatusCodes)
             OruListRow(
               title: statusLabel(s, code, _labels),
-              leading: OruIcon(_pillOf(code).icon, color: _pillOf(code).tone.foreground),
+              leading: OruIcon(pillOfStatus(code).icon, color: pillOfStatus(code).tone.foreground),
               trailing: code == st.status ? const OruIcon(OruIconName.check, color: OruColors.primaryText) : null,
               onPressed: () => Navigator.pop(ctx, code),
             ),
@@ -218,7 +219,7 @@ class _OruAttendanceScreenState extends State<OruAttendanceScreen> {
                               title: st.name,
                               subtitle: st.enrollmentId.isEmpty ? null : st.enrollmentId,
                               leading: OruAvatar(name: st.name),
-                              trailing: OruStatusPill(status: _pillOf(st.status), label: statusLabel(s, st.status, _labels), onPressed: locked ? null : () => _pick(st)),
+                              trailing: OruStatusPill(status: pillOfStatus(st.status), label: statusLabel(s, st.status, _labels), onPressed: locked ? null : () => _pick(st)),
                               onPressed: locked ? null : () => _pick(st),
                             ),
                         ]),

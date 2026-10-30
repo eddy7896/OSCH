@@ -61,6 +61,27 @@ async function call(method, path, { token, school, body, ok = [200, 201, 204] } 
 }
 
 /** The bell schedule, teachers, timetable, a month of attendance, exams with marks and grade bands, leave in every state, a substitution and the notices they cause. */
+/** Phase 5: transport (two buses, a morning and an afternoon route with stops, students seated) and a parent linked to one student who rides it. */
+async function phase5({ as, students, staff, people }) {
+  const driver = staff.find((s) => s.spec.account === "driver");
+  const bus = await call("POST", "/v1/transport/vehicles", { ...as("transport"), body: { registration: "KA-01-AB-1234", label: "Bus 3", capacity: 40 } });
+  const van = await call("POST", "/v1/transport/vehicles", { ...as("transport"), body: { registration: "KA-01-CD-5678", label: "Van 1", capacity: 14 } });
+  const north = await call("POST", "/v1/transport/routes", { ...as("transport"), body: { name: "North loop", direction: "MORNING", startTime: "07:15", vehicleId: bus.id, driverId: driver.id } });
+  const back = await call("POST", "/v1/transport/routes", { ...as("transport"), body: { name: "North loop, home", direction: "AFTERNOON", startTime: "15:30", vehicleId: bus.id, driverId: driver.id } });
+  await call("POST", "/v1/transport/routes", { ...as("transport"), body: { name: "South loop", direction: "MORNING", startTime: "07:30", vehicleId: van.id } });
+  const stops = (r, list) => call("PUT", `/v1/transport/routes/${r.id}/stops`, { ...as("transport"), body: { stops: list.map(([name, arrivalTime]) => ({ name, arrivalTime })) } });
+  const northStops = await stops(north, [["Lake Road", "07:20"], ["Market", "07:35"], ["School gate", "07:50"]]);
+  const backStops = await stops(back, [["School gate", "15:30"], ["Market", "15:45"], ["Lake Road", "16:00"]]);
+  const seat = (s, r, stop) => call("PUT", `/v1/transport/students/${s.id}/seat`, { ...as("transport"), body: { routeId: r.id, stopId: stop.id } });
+  for (const [i, s] of students.slice(0, 8).entries()) {
+    await seat(s, north, northStops.stops[i % 2]);
+    await seat(s, back, backStops.stops[1 + (i % 2)]);
+  }
+  // the parent of the first student (who is in the first class and so has attendance, a timetable and a seat)
+  await call("POST", `/v1/students/${students[0].id}/parent-accounts`, { ...as("academic"), body: { userId: people.parent.uid, relationship: "MOTHER" } });
+  log("Transport: 2 buses, 3 routes with stops, 8 students seated; a parent linked to one of them");
+}
+
 async function phase3({ as, classes, students, subjects, staff }) {
   const today = schoolToday();
   const academic = as("academic");
@@ -187,11 +208,19 @@ try {
   admin.token = await signIn(admin.email);
 
   // ---- everyone else, through the System administrator's account endpoint
-  for (const p of Object.values(people).filter((x) => x.role && x.key !== "admin")) {
+  for (const p of Object.values(people).filter((x) => x.role && x.key !== "admin" && x.via !== "invitation")) {
     const made = await call("POST", "/v1/memberships/accounts", { token: admin.token, school: sid, body: { displayName: p.name, email: p.email, schoolRole: p.role } });
     await auth.updateUser(made.userId, { password: DEMO_PHRASE, emailVerified: true });
     p.uid = made.userId;
     p.token = await signIn(p.email);
+  }
+  // A parent cannot be made by the System Admin's account route (ADR-0011): the parent has their own sign-in and accepts an invitation, as a real parent would.
+  for (const p of Object.values(people).filter((x) => x.via === "invitation")) {
+    const user = await auth.createUser({ email: p.email, password: DEMO_PHRASE, emailVerified: true, displayName: p.name });
+    p.uid = user.uid;
+    const inv = await call("POST", "/v1/invitations", { token: admin.token, school: sid, body: { email: p.email, schoolRole: p.role } });
+    p.token = await signIn(p.email);
+    await call("POST", "/v1/invitations/accept", { token: p.token, body: { token: inv.token } });
   }
   log(`${Object.keys(people).length} accounts ready`);
   const as = (key) => ({ token: people[key].token, school: sid });
@@ -290,6 +319,7 @@ try {
 
   // ======================================================== Phase 3: the academic engine
   await phase3({ as, classes, students, subjects, staff });
+  await phase5({ as, students, staff, people });
 
   log(`\nDone. Sign in as any of these:\n\n${loginTable()}`);
 } catch (e) {

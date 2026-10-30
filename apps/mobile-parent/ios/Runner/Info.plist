@@ -14,6 +14,14 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Development: lets the app reach the gateway and Auth emulator on this computer over http. Everything else stays https only. -->
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Confirm it is you to open OruSchools.</string>
 	<key>CFBundleName</key>
 	<string>Oru Parent</string>
 	<key>CFBundlePackageType</key>
