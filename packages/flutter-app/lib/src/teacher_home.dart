@@ -15,6 +15,7 @@ import 'inbox/inbox_data.dart';
 import 'inbox/inbox_screen.dart';
 import 'leave/leave_screens.dart';
 import 'marks/marks_screens.dart';
+import 'studentleave/studentleave_screen.dart';
 import 'today/today_screen.dart';
 
 /// The Teacher app once signed in: Today, with the account one tap away. More tabs join it as attendance, marks and leave ship.
@@ -106,6 +107,8 @@ class _MorePage extends StatelessWidget {
           OruCard(child: OruListRow(title: s.mobMoreClasses, leading: const OruIcon(OruIconName.users, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruClassesScreen(services: services))))),
           const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobMoreCover, leading: const OruIcon(OruIconName.calendar, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruCoverScreen(services: services))))),
+          const SizedBox(height: OruSpacing.space2),
+          OruCard(child: OruListRow(title: s.mobSlTitle, leading: const OruIcon(OruIconName.leave, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruStudentLeaveScreen(services: services))))),
           const SizedBox(height: OruSpacing.space4),
           OruAccountPanel(session: services.session, state: state, lock: services.lock, syncStatus: OruSyncPill(services: services)),
         ]),

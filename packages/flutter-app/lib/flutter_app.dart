@@ -30,6 +30,8 @@ export 'src/marks/marks_model.dart';
 export 'src/marks/marks_screens.dart';
 export 'src/services.dart';
 export 'src/staff/staff_home.dart';
+export 'src/studentleave/studentleave_data.dart';
+export 'src/studentleave/studentleave_screen.dart';
 export 'src/sync_pill.dart';
 export 'src/teacher_home.dart';
 export 'src/today/today_data.dart';

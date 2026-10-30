@@ -46,6 +46,12 @@ const List<OruRoute> kOruRoutes = [
   _rStaffAttendanceCheckOut,
   _rStaffAttendanceGeofence,
   _rStaffAttendanceMine,
+  _rStudentLeaveApprove,
+  _rStudentLeaveCancel,
+  _rStudentLeaveCreate,
+  _rStudentLeaveDecline,
+  _rStudentLeaveList,
+  _rStudentLeaveOne,
   _rStudentsList,
   _rSubstitutionMine,
   _rSyncTombstones,
@@ -94,6 +100,12 @@ const _rStaffAttendanceCheckIn = OruRoute('POST', '/v1/attendance/staff/check-in
 const _rStaffAttendanceCheckOut = OruRoute('POST', '/v1/attendance/staff/check-out', OruAccess.tenant, 'StaffAttendance_checkOut');
 const _rStaffAttendanceGeofence = OruRoute('GET', '/v1/attendance/staff/geofence', OruAccess.tenant, 'StaffAttendance_geofence');
 const _rStaffAttendanceMine = OruRoute('GET', '/v1/attendance/staff/mine', OruAccess.tenant, 'StaffAttendance_mine');
+const _rStudentLeaveApprove = OruRoute('POST', '/v1/student-leave/{id}/approve', OruAccess.tenant, 'StudentLeave_approve');
+const _rStudentLeaveCancel = OruRoute('POST', '/v1/student-leave/{id}/cancel', OruAccess.tenant, 'StudentLeave_cancel');
+const _rStudentLeaveCreate = OruRoute('POST', '/v1/student-leave', OruAccess.tenant, 'StudentLeave_create');
+const _rStudentLeaveDecline = OruRoute('POST', '/v1/student-leave/{id}/decline', OruAccess.tenant, 'StudentLeave_decline');
+const _rStudentLeaveList = OruRoute('GET', '/v1/student-leave', OruAccess.tenant, 'StudentLeave_list');
+const _rStudentLeaveOne = OruRoute('GET', '/v1/student-leave/{id}', OruAccess.tenant, 'StudentLeave_one');
 const _rStudentsList = OruRoute('GET', '/v1/students', OruAccess.tenant, 'Students_list');
 const _rSubstitutionMine = OruRoute('GET', '/v1/substitutions/mine', OruAccess.tenant, 'Substitution_mine');
 const _rSyncTombstones = OruRoute('GET', '/v1/sync/tombstones', OruAccess.tenant, 'Sync_tombstones');
@@ -336,6 +348,42 @@ class OruApi {
   Future<StaffDayListDto> staffAttendanceMine({String? from, String? to}) async {
     final j = await _t.send(_rStaffAttendanceMine, "/v1/attendance/staff/mine", query: {'from': from, 'to': to});
     return StaffDayListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/student-leave/{id}/approve
+  Future<StudentLeaveDto> studentLeaveApprove({required String id, required DecideStudentLeaveDto body}) async {
+    final j = await _t.send(_rStudentLeaveApprove, "/v1/student-leave/${Uri.encodeComponent(id)}/approve", body: body.toJson());
+    return StudentLeaveDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/student-leave/{id}/cancel
+  Future<StudentLeaveDto> studentLeaveCancel({required String id}) async {
+    final j = await _t.send(_rStudentLeaveCancel, "/v1/student-leave/${Uri.encodeComponent(id)}/cancel");
+    return StudentLeaveDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/student-leave
+  Future<StudentLeaveDto> studentLeaveCreate({required CreateStudentLeaveDto body}) async {
+    final j = await _t.send(_rStudentLeaveCreate, "/v1/student-leave", body: body.toJson());
+    return StudentLeaveDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/student-leave/{id}/decline
+  Future<StudentLeaveDto> studentLeaveDecline({required String id, required DecideStudentLeaveDto body}) async {
+    final j = await _t.send(_rStudentLeaveDecline, "/v1/student-leave/${Uri.encodeComponent(id)}/decline", body: body.toJson());
+    return StudentLeaveDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/student-leave
+  Future<StudentLeaveListDto> studentLeaveList({String? status}) async {
+    final j = await _t.send(_rStudentLeaveList, "/v1/student-leave", query: {'status': status});
+    return StudentLeaveListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/student-leave/{id}
+  Future<StudentLeaveDto> studentLeaveOne({required String id}) async {
+    final j = await _t.send(_rStudentLeaveOne, "/v1/student-leave/${Uri.encodeComponent(id)}");
+    return StudentLeaveDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// GET /v1/students

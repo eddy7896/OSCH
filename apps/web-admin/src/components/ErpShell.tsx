@@ -18,6 +18,7 @@ import { Fees } from "./screens/Fees";
 import { Gradebook } from "./screens/Gradebook";
 import { HrReports } from "./screens/HrReports";
 import { Leave } from "./screens/Leave";
+import { StudentLeave } from "./screens/StudentLeave";
 import { Substitutions } from "./screens/Substitutions";
 import { Settings } from "./screens/Settings";
 import { FinanceReports } from "./screens/FinanceReports";
@@ -30,7 +31,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { NotificationBell } from "./NotificationBell";
 
 /** The navigation keys that have a screen. `announcements` has one too, but is left out on purpose: every staff role may read it, and a role whose work is in the phone apps (teacher, staff, driver) must still be told to use them, not be given only this page. */
-const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "leave", "substitution", "admissions", "staff", "payroll", "finance", "settings", "transport", "reports-finance", "reports-hr"]);
+const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "leave", "student-leave", "substitution", "admissions", "staff", "payroll", "finance", "settings", "transport", "reports-finance", "reports-hr"]);
 
 type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
@@ -87,6 +88,8 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
             <Gradebook grants={{ enter: access.permissions["grades"]?.["create"] === "school", create: access.permissions["academics"]?.["create"] === "school", update: access.permissions["academics"]?.["update"] === "school", remove: access.permissions["academics"]?.["delete"] === "school" }} />
           ) : current === "leave" ? (
             <Leave grants={{ approve: access.permissions["leave"]?.["approve"] === "school", create: access.permissions["leave"]?.["create"] === "school", manage: access.permissions["leave"]?.["update"] === "school" }} />
+          ) : current === "student-leave" ? (
+            <StudentLeave grants={{ decide: Boolean(access.permissions["student_leave"]?.["update"]) }} />
           ) : current === "substitution" ? (
             <Substitutions grants={{ assign: access.permissions["academics"]?.["update"] === "school" }} />
           ) : current === "staff-attendance" ? (

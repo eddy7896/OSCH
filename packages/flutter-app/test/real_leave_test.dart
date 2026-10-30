@@ -45,6 +45,7 @@ void main() {
   checkIn();
   teacherCheckIn();
   parent();
+  studentLeave();
   final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
 
@@ -376,5 +377,58 @@ void parent() {
     expect(t.lessons, isNotEmpty);
     expect(t.rides.first.direction, 'MORNING');
     await svc.dispose();
+  }, skip: skip);
+}
+
+/// P5-10b: a parent asks, the class teacher's phone pulls it, decides offline, and the decision is sent once; a second decision is refused.
+void studentLeave() {
+  final skip = gateway == null || authHost == null ? 'set ORU_GATEWAY_URL and ORU_AUTH_EMULATOR (see tools/tests/dart-gateway.sh)' : null;
+  test('the class teacher decides a parent\'s request from the phone; the school sees one decision, and a later one is refused', () async {
+    Future<OruServices> phoneOf(String role, String email, List<PullTask> Function(OruApi) tasks, {required bool Function() online}) async {
+      final svc = await OruServices.create(
+        OruAppConfig(gatewayUrl: gateway!, firebaseApiKey: 'fake', authEmulator: authHost),
+        allowedRoles: {role},
+        executor: NativeDatabase.memory(),
+        storage: MemorySecureStorage(),
+        lockPort: _NoLock(),
+        online: const Stream<bool>.empty(),
+        isOnline: () async => online(),
+        pullTasks: tasks,
+      );
+      await svc.session.signInWithPassword(email, 'demo-pass-2027');
+      return svc;
+    }
+
+    final parentPhone = await phoneOf('PARENT', 'parent@demo.oruschools.example', parentAppPullTasks, online: () => true);
+    await parentPhone.coordinator.syncNow();
+    final child = (await parentPhone.store.records(kChild)).single['id'] as String;
+    final day = isoDate(DateTime.now().add(Duration(days: 200 + math.Random().nextInt(100))));
+    final made = await parentPhone.api.studentLeaveCreate(body: CreateStudentLeaveDto(clientId: 'real-${DateTime.now().microsecondsSinceEpoch}', studentId: child, startDate: day, endDate: day, reason: 'Fever'));
+
+    var online = false;
+    final teacherPhone = await phoneOf('TEACHER', 'teacher@demo.oruschools.example', studentLeavePullTasks, online: () => online);
+    online = true;
+    await teacherPhone.coordinator.syncNow();
+    expect(teacherPhone.coordinator.pullStatus, isA<PullOk>(), reason: '${teacherPhone.coordinator.pullStatus}');
+    expect((await teacherPhone.store.records(kStudentLeave)).map((r) => r['id']), contains(made.id));
+
+    online = false;
+    final c = StudentLeaveController(teacherPhone.store);
+    await c.decide(made.id, approve: true);
+    await c.decide(made.id, approve: true);
+    expect((await teacherPhone.store.all()).where((e) => e.kind == OutboxKinds.studentLeaveDecide), hasLength(1));
+    online = true;
+    await teacherPhone.coordinator.syncNow();
+    expect(await teacherPhone.store.all(), isEmpty, reason: 'sent');
+    expect((await parentPhone.api.studentLeaveOne(id: made.id)).status, 'APPROVED');
+
+    // the other approver is too late: the school answers 409 and the phone keeps the refusal to show
+    await c.decide(made.id, approve: false);
+    await teacherPhone.coordinator.syncNow();
+    expect((await teacherPhone.store.all()).single.state, OutboxState.failed);
+    expect((await parentPhone.api.studentLeaveOne(id: made.id)).status, 'APPROVED');
+    c.dispose();
+    await teacherPhone.dispose();
+    await parentPhone.dispose();
   }, skip: skip);
 }

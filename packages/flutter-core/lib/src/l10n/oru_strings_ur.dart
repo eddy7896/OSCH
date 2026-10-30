@@ -3383,4 +3383,111 @@ class OruStringsUr extends OruStrings {
   ) {
     return '$studentName: $startDate سے $endDate تک۔ $note';
   }
+
+  @override
+  String get mobSlTitle => 'طالب علم کی رخصت';
+
+  @override
+  String get mobSlWaiting => 'انتظار میں';
+
+  @override
+  String get mobSlAll => 'سب';
+
+  @override
+  String get mobSlEmptyWaiting => 'آپ کے لیے کوئی درخواست انتظار میں نہیں ہے۔';
+
+  @override
+  String get mobSlEmptyAll =>
+      'ابھی تک طالب علم کی رخصت کی کوئی درخواست نہیں ہے۔';
+
+  @override
+  String mobSlBy(String name) {
+    return '$name کی طرف سے درخواست';
+  }
+
+  @override
+  String get mobSlHalf => 'آدھا دن';
+
+  @override
+  String get mobSlSaved =>
+      'آپ کا فیصلہ اس فون میں محفوظ ہے اور کنکشن ملنے پر بھیجا جائے گا۔';
+
+  @override
+  String get mobSlRefused =>
+      'قبول نہیں ہوا۔ ہو سکتا ہے کسی اور نے پہلے فیصلہ کر دیا ہو۔';
+
+  @override
+  String get mobSlApproved => 'منظور';
+
+  @override
+  String get mobSlDeclined => 'مسترد';
+
+  @override
+  String get mobSlCancelled => 'منسوخ';
+
+  @override
+  String get navStudentLeave => 'طالب علم کی رخصت';
+
+  @override
+  String get slStudent => 'طالب علم';
+
+  @override
+  String get slClass => 'جماعت';
+
+  @override
+  String get slDates => 'تاریخیں';
+
+  @override
+  String get slBy => 'درخواست کنندہ';
+
+  @override
+  String get slReason => 'وجہ';
+
+  @override
+  String get slStatus => 'دکھائیں';
+
+  @override
+  String get slStatusPENDING => 'انتظار میں';
+
+  @override
+  String get slStatusAPPROVED => 'منظور';
+
+  @override
+  String get slStatusDECLINED => 'مسترد';
+
+  @override
+  String get slStatusCANCELLED => 'منسوخ';
+
+  @override
+  String get slAll => 'سب';
+
+  @override
+  String get slHalf => 'آدھا دن';
+
+  @override
+  String get slNoRequests => 'یہاں کوئی درخواست نہیں ہے۔';
+
+  @override
+  String get slApprove => 'منظور کریں';
+
+  @override
+  String get slDecline => 'مسترد کریں';
+
+  @override
+  String slDeclineQuestion(String name) {
+    return '$name کی رخصت مسترد کریں؟';
+  }
+
+  @override
+  String get slNote => 'والدین کے لیے نوٹ (اختیاری)';
+
+  @override
+  String get slApproved => 'منظور کر لی گئی۔ والدین کو بتا دیا گیا ہے۔';
+
+  @override
+  String get slDeclined => 'مسترد کر دی گئی۔ والدین کو بتا دیا گیا ہے۔';
+
+  @override
+  String get slAlreadyDecided =>
+      'کسی اور نے یہ درخواست پہلے طے کر دی ہے۔ کچھ نہیں بدلا۔';
 }
