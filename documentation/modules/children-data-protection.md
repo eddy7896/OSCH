@@ -14,6 +14,12 @@ Status: **plan, 2026-10-31.** This answers ADR-0017 decision **D11** and widens 
 
 **Not found in these searches (treat as unknown):** the breach-notification deadline, the exact duties of a data *processor*, whether a school with many pupils is a "Significant Data Fiduciary", the Rules' verification methods in detail, and whether the exemption extends to a software vendor acting for the school.
 
+## 1a. Owner answers (2026-10-31)
+1. **Consent:** every parent records consent at first sign-in in the Parent app (versioned, withdrawable), whether or not the school exemption applies.
+2. **Resource comments** show **"Parent of {child's first name}"** only (the parent's own name is not shown to other families; the teacher and the Academic admin still see who wrote it). This replaces the "first name, relationship of child's first name" form in ADR-0016 decision 6.
+3. **Push text says nothing about the child** ("You have a new school notice"); details are read inside the app.
+4. **Legal review** (P6-5a) happens **before the first pilot school**; the owner finds a lawyer who knows India's data protection law and gives them this page.
+
 ## 2. Roles and the main idea
 - The **school is the data fiduciary** (it decides why the data is used). **OruSchools is its data processor** (it holds and handles the data on the school's behalf). This must be written down in a contract (a data processing agreement) signed when a school joins. Whether the vendor can rely on the school's educational exemption is a **question for the lawyer**, so the design does not depend on it.
 - **The design rule: stay inside "educational activity and safety of the child", and still behave as if consent and the tracking ban applied.** If the exemption turns out narrower than hoped, nothing needs to be rebuilt.
