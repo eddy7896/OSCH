@@ -23,6 +23,7 @@ import { SubstitutionModule } from './substitution/substitution.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
 import { AnnouncementsModule } from './announcements/announcements.module.js';
 import { TransportModule } from './transport/transport.module.js';
+import { ResourcesModule } from './resources/resources.module.js';
 import { StudentLeaveModule } from './student-leave/student-leave.module.js';
 import { DevicesModule } from './devices/devices.module.js';
 import { PushModule } from './push/push.module.js';
@@ -90,6 +91,7 @@ import { HealthModule } from './health/health.module.js';
     AnnouncementsModule,
     TransportModule,
     StudentLeaveModule,
+    ResourcesModule,
     DevicesModule,
     PushModule,
     SyncModule,
