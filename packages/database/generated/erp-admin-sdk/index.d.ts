@@ -247,6 +247,41 @@ export interface AddGuardianVariables {
   details?: unknown | null;
 }
 
+export interface AddLearningResourceData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    classroom: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+    year: ({
+      id: UUIDString;
+    } & AcademicYear_Key)[];
+    subject: ({
+      id: UUIDString;
+    } & Subject_Key)[];
+  };
+  learningResource_insert: LearningResource_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddLearningResourceVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  classroomId: UUIDString;
+  academicYearId: UUIDString;
+  subjectId: UUIDString;
+  title: string;
+  note?: string | null;
+  fileKey: string;
+  fileName: string;
+  contentType: string;
+  sizeBytes: number;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface AddMembershipData {
   query?: {
     actor: ({
@@ -2829,6 +2864,38 @@ export interface GetInvoiceVariables {
   id: UUIDString;
 }
 
+export interface GetLearningResourceData {
+  learningResources: ({
+    id: UUIDString;
+    title: string;
+    note?: string | null;
+    fileKey: string;
+    fileName: string;
+    contentType: string;
+    sizeBytes: number;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    subject: {
+      id: UUIDString;
+      name: string;
+    } & Subject_Key;
+    uploadedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & LearningResource_Key)[];
+}
+
+export interface GetLearningResourceVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetLeaveRequestData {
   leaveRequests: ({
     id: UUIDString;
@@ -3153,6 +3220,7 @@ export interface GetSchoolProfileData {
     activeAcademicYear?: {
       id: UUIDString;
       name: string;
+      endDate: DateString;
     } & AcademicYear_Key;
   } & School_Key;
 }
@@ -3468,6 +3536,11 @@ export interface InvoicedForYearVariables {
   academicYearId: UUIDString;
   limit: number;
   offset: number;
+}
+
+export interface LearningResource_Key {
+  id: UUIDString;
+  __typename?: 'LearningResource_Key';
 }
 
 export interface LeaveBalance_Key {
@@ -3913,6 +3986,73 @@ export interface ListInvoicesVariables {
   dueOnOrAfter?: DateString | null;
   limit: number;
   offset: number;
+}
+
+export interface ListLearningResourcesData {
+  learningResources: ({
+    id: UUIDString;
+    title: string;
+    note?: string | null;
+    fileKey: string;
+    fileName: string;
+    contentType: string;
+    sizeBytes: number;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    subject: {
+      id: UUIDString;
+      name: string;
+    } & Subject_Key;
+    uploadedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & LearningResource_Key)[];
+}
+
+export interface ListLearningResourcesOfClassesData {
+  learningResources: ({
+    id: UUIDString;
+    title: string;
+    note?: string | null;
+    fileKey: string;
+    fileName: string;
+    contentType: string;
+    sizeBytes: number;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    subject: {
+      id: UUIDString;
+      name: string;
+    } & Subject_Key;
+    uploadedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & LearningResource_Key)[];
+}
+
+export interface ListLearningResourcesOfClassesVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
+  classIds: UUIDString[];
+  limit: number;
+}
+
+export interface ListLearningResourcesVariables {
+  schoolId: UUIDString;
+  academicYearId: UUIDString;
+  limit: number;
 }
 
 export interface ListLeaveBalancesData {
@@ -5160,6 +5300,26 @@ export interface RemoveGuardianData {
 }
 
 export interface RemoveGuardianVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface RemoveLearningResourceData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    resource: ({
+      id: UUIDString;
+    } & LearningResource_Key)[];
+  };
+  learningResource_update?: LearningResource_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RemoveLearningResourceVariables {
   schoolId: UUIDString;
   id: UUIDString;
   actorId: string;
@@ -7511,6 +7671,16 @@ export function cancelStudentLeave(dc: DataConnect, vars: CancelStudentLeaveVari
 /** Generated Node Admin SDK operation action function for the 'CancelStudentLeave' Mutation. Allow users to pass in custom DataConnect instances. */
 export function cancelStudentLeave(vars: CancelStudentLeaveVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CancelStudentLeaveData>>;
 
+/** Generated Node Admin SDK operation action function for the 'AddLearningResource' Mutation. Allow users to execute without passing in DataConnect. */
+export function addLearningResource(dc: DataConnect, vars: AddLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddLearningResourceData>>;
+/** Generated Node Admin SDK operation action function for the 'AddLearningResource' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addLearningResource(vars: AddLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddLearningResourceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RemoveLearningResource' Mutation. Allow users to execute without passing in DataConnect. */
+export function removeLearningResource(dc: DataConnect, vars: RemoveLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveLearningResourceData>>;
+/** Generated Node Admin SDK operation action function for the 'RemoveLearningResource' Mutation. Allow users to pass in custom DataConnect instances. */
+export function removeLearningResource(vars: RemoveLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveLearningResourceData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -8120,4 +8290,19 @@ export function listStudentLeavesOfStudents(vars: ListStudentLeavesOfStudentsVar
 export function approvedStudentLeaveOn(dc: DataConnect, vars: ApprovedStudentLeaveOnVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApprovedStudentLeaveOnData>>;
 /** Generated Node Admin SDK operation action function for the 'ApprovedStudentLeaveOn' Query. Allow users to pass in custom DataConnect instances. */
 export function approvedStudentLeaveOn(vars: ApprovedStudentLeaveOnVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ApprovedStudentLeaveOnData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListLearningResources' Query. Allow users to execute without passing in DataConnect. */
+export function listLearningResources(dc: DataConnect, vars: ListLearningResourcesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLearningResourcesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListLearningResources' Query. Allow users to pass in custom DataConnect instances. */
+export function listLearningResources(vars: ListLearningResourcesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLearningResourcesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListLearningResourcesOfClasses' Query. Allow users to execute without passing in DataConnect. */
+export function listLearningResourcesOfClasses(dc: DataConnect, vars: ListLearningResourcesOfClassesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLearningResourcesOfClassesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListLearningResourcesOfClasses' Query. Allow users to pass in custom DataConnect instances. */
+export function listLearningResourcesOfClasses(vars: ListLearningResourcesOfClassesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListLearningResourcesOfClassesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetLearningResource' Query. Allow users to execute without passing in DataConnect. */
+export function getLearningResource(dc: DataConnect, vars: GetLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetLearningResourceData>>;
+/** Generated Node Admin SDK operation action function for the 'GetLearningResource' Query. Allow users to pass in custom DataConnect instances. */
+export function getLearningResource(vars: GetLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetLearningResourceData>>;
 

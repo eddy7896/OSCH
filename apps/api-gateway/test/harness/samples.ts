@@ -217,6 +217,18 @@ const examSetupOfA = async (w: World): Promise<Record<string, string>> => {
   const subject = await subjectOfA(w);
   return { termId: term['id']!, year: term['year']!, classId: dash(klass['id']!), subjectId: dash(subject['id']!) };
 };
+/** A class, subject and the active year of school A, and a stored file for a learning resource (P5-11). */
+const resourceKey = (w: World, classId: string): string => {
+  const key = `schools/${w.schools.A}/resources/${classId}/${randomUUID()}.pdf`;
+  sampleStore.objects.set(key, { sizeBytes: 1234, contentType: 'application/pdf' });
+  return key;
+};
+const resourceOfA = async (w: World): Promise<Record<string, string>> => {
+  const s = await examSetupOfA(w);
+  const id = randomUUID();
+  await w.db.addLearningResource({ schoolId: w.schools.A, id, classroomId: s['classId']!, academicYearId: s['year']!, subjectId: s['subjectId']!, title: 'Sample', fileKey: resourceKey(w, s['classId']!), fileName: 'sample.pdf', contentType: 'application/pdf', sizeBytes: 1234, actorId: actorA(w), details: {} });
+  return { ...s, id: dash(id) };
+};
 const examOfA = async (w: World): Promise<Record<string, string>> => {
   const s = await examSetupOfA(w);
   const id = randomUUID();
@@ -599,6 +611,8 @@ export const SAMPLES: Record<string, Sample> = {
   'PUT /students/:id/photo': { ...academicAdminOfA, prepare: studentOfA, body: (w, ctx) => ({ key: uploadedKey(w, ctx['id']!, 'photo') }) },
   'POST /students/:id/documents': { ...academicAdminOfA, prepare: studentOfA, body: (w, ctx) => ({ key: uploadedKey(w, ctx['id']!, 'documents', 'pdf', 'application/pdf'), kind: 'BIRTH_CERTIFICATE', fileName: 'birth certificate.pdf' }) },
   'DELETE /students/:id/documents/:documentId': { ...academicAdminOfA, prepare: studentWithDocument },
+  'POST /resources': { ...academicAdminOfA, prepare: examSetupOfA, body: (w, ctx) => ({ classId: ctx['classId'], subjectId: ctx['subjectId'], key: resourceKey(w, ctx['classId']!), title: 'Fractions', fileName: 'fractions.pdf' }) },
+  'DELETE /resources/:id': { ...academicAdminOfA, prepare: resourceOfA },
   'POST /staff': { ...hrOfA, body: () => ({ firstName: 'Audit', lastName: 'Staff', department: 'Science' }) },
   'PATCH /staff/:id': { ...hrOfA, prepare: staffOfA, body: () => ({ designation: 'Teacher' }) },
   'PUT /staff/:id/account': { ...hrOfA, prepare: staffOfA, body: (w) => ({ userId: w.roles.A.TEACHER.uid }) },
