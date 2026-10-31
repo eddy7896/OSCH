@@ -1035,6 +1035,42 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Reports_payroll"
   },
   {
+    "method": "GET",
+    "path": "/v1/resources/{id}/download",
+    "access": "tenant",
+    "operationId": "Resources_download"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/resources/{id}",
+    "access": "tenant",
+    "operationId": "Resources_remove"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/resources/{id}",
+    "access": "tenant",
+    "operationId": "Resources_one"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/resources/uploads",
+    "access": "tenant",
+    "operationId": "Resources_ticket"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/resources",
+    "access": "tenant",
+    "operationId": "Resources_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/resources",
+    "access": "tenant",
+    "operationId": "Resources_add"
+  },
+  {
     "method": "DELETE",
     "path": "/v1/school/geofence",
     "access": "tenant",

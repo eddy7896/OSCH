@@ -44,6 +44,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     reports_finance: school("read", "export"), // [ASSUMED] export of reports
     attendance: school("read"),
     student_leave: school("read"), // [ADR-0016]
+    learning_resources: school("read"), // [ADR-0016]
     students: school("read"),
     academics: school("read"),
     grades: school("read"),
@@ -88,6 +89,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     grades: school(...CRUD_EXPORT),
     attendance: school(...CRUD_EXPORT),
     substitution: school("read", "create", "update"), // [SSOT §7] "Academic Admin: Assign Substitute"
+    learning_resources: school("read", "create", "delete"), // [ADR-0016] may share for any class and remove any
     student_leave: school("read", "update"), // [ADR-0016] decides a parent's request for a child's leave (the class teacher may too)
     reports_academic: school("read", "export"),
     leave: school("read"), // [ASSUMED] must see leave to plan substitutes
@@ -154,6 +156,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     academics: own("read"),
     grades: own("read", "create", "update"),
     student_leave: own("read", "update"), // [ADR-0016] the class teacher of the child's class reads and decides; the gateway narrows `own` to that class
+    learning_resources: own("read", "create", "delete"), // [ADR-0016] the gateway narrows `own` to the classes and subjects she teaches, and removal to her own uploads
     announcements: school("read"),
     messages: own("read", "create"), // office-hours rule is business logic outside RBAC [GUARD §3]
   },
@@ -178,6 +181,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     finance: linked("read", "create"), // view invoices; "create" = initiate a payment [ASSUMED action mapping]
     transport: linked("read"),
     student_leave: linked("read", "create", "update"), // [ADR-0016] ask leave for their own child; update is only cancelling a waiting request
+    learning_resources: linked("read"), // [ADR-0016] the resources of the classes their linked children are in
     announcements: school("read"),
     messages: own("read", "create"),
   },

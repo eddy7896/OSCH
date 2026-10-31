@@ -121,7 +121,7 @@ describe.skipIf(!ready)('student photo and documents against the real emulators 
     const photoKey = (await call('post', `/students/${s2.id}/photo/upload-url`).send({ contentType: 'image/png', sizeBytes: 5 }).expect(200)).body.key;
     upload(photoKey, 'image/png', 5);
     await call('post', `/students/${s2.id}/documents`).send({ key: photoKey, kind: 'OTHER', fileName: 'x.png' }).expect(400);
-  });
+  }, 120_000); // 29 database writes in a row took the whole 30 s on a busy CI runner
 
   it("another school's staff cannot get a ticket, attach, read or delete files of A's student; B's token with A's header is refused", async () => {
     const s = await admit();

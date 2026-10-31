@@ -79,6 +79,34 @@ class ActiveSchoolDto {
       };
 }
 
+class AddResourceDto {
+  const AddResourceDto({required this.classId, required this.fileName, required this.key, this.note, required this.subjectId, required this.title});
+  final String classId;
+  final String fileName;
+  final String key;
+  final String? note;
+  final String subjectId;
+  final String title;
+
+  factory AddResourceDto.fromJson(Map<String, dynamic> j) => AddResourceDto(
+        classId: j['classId'] as String,
+        fileName: j['fileName'] as String,
+        key: j['key'] as String,
+        note: j['note'] == null ? null : j['note'] as String,
+        subjectId: j['subjectId'] as String,
+        title: j['title'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'classId': classId,
+        'fileName': fileName,
+        'key': key,
+        if (note != null) 'note': note!,
+        'subjectId': subjectId,
+        'title': title,
+      };
+}
+
 class AnnouncementDto {
   const AnnouncementDto({required this.author, required this.body, required this.createdAt, required this.id, required this.title, required this.updatedAt, required this.withdrawn});
   final AnnouncementDtoAuthor author;
@@ -687,6 +715,32 @@ class ExamListDto {
 
   Map<String, dynamic> toJson() => {
         'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
+class FileUploadTicketDto {
+  const FileUploadTicketDto({required this.expiresInSeconds, required this.headers, required this.key, required this.method, required this.uploadUrl});
+  final num expiresInSeconds;
+  final Map<String, String> headers;
+  final String key;
+  /// One of: PUT.
+  final String method;
+  final String uploadUrl;
+
+  factory FileUploadTicketDto.fromJson(Map<String, dynamic> j) => FileUploadTicketDto(
+        expiresInSeconds: j['expiresInSeconds'] as num,
+        headers: (j['headers'] as Map<String, dynamic>).map((k, e) => MapEntry(k, e as String)),
+        key: j['key'] as String,
+        method: j['method'] as String,
+        uploadUrl: j['uploadUrl'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'expiresInSeconds': expiresInSeconds,
+        'headers': headers.map((k, e) => MapEntry(k, e)),
+        'key': key,
+        'method': method,
+        'uploadUrl': uploadUrl,
       };
 }
 
@@ -1396,6 +1450,133 @@ class ReportCardDto {
       };
 }
 
+class ResourceDto {
+  const ResourceDto({required this.class_, required this.contentType, required this.createdAt, required this.fileName, required this.id, required this.note, required this.sizeBytes, required this.subject, required this.title, required this.updatedAt, required this.uploadedBy});
+  final ResourceDtoClass class_;
+  final String contentType;
+  final String createdAt;
+  final String fileName;
+  final String id;
+  final String? note;
+  final num sizeBytes;
+  final ResourceDtoSubject subject;
+  final String title;
+  final String updatedAt;
+  final ResourceDtoUploadedBy uploadedBy;
+
+  factory ResourceDto.fromJson(Map<String, dynamic> j) => ResourceDto(
+        class_: ResourceDtoClass.fromJson(j['class'] as Map<String, dynamic>),
+        contentType: j['contentType'] as String,
+        createdAt: j['createdAt'] as String,
+        fileName: j['fileName'] as String,
+        id: j['id'] as String,
+        note: j['note'] == null ? null : j['note'] as String,
+        sizeBytes: j['sizeBytes'] as num,
+        subject: ResourceDtoSubject.fromJson(j['subject'] as Map<String, dynamic>),
+        title: j['title'] as String,
+        updatedAt: j['updatedAt'] as String,
+        uploadedBy: ResourceDtoUploadedBy.fromJson(j['uploadedBy'] as Map<String, dynamic>),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'class': class_.toJson(),
+        'contentType': contentType,
+        'createdAt': createdAt,
+        'fileName': fileName,
+        'id': id,
+        if (note != null) 'note': note!,
+        'sizeBytes': sizeBytes,
+        'subject': subject.toJson(),
+        'title': title,
+        'updatedAt': updatedAt,
+        'uploadedBy': uploadedBy.toJson(),
+      };
+}
+
+class ResourceDtoClass {
+  const ResourceDtoClass({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory ResourceDtoClass.fromJson(Map<String, dynamic> j) => ResourceDtoClass(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class ResourceDtoSubject {
+  const ResourceDtoSubject({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory ResourceDtoSubject.fromJson(Map<String, dynamic> j) => ResourceDtoSubject(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class ResourceDtoUploadedBy {
+  const ResourceDtoUploadedBy({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory ResourceDtoUploadedBy.fromJson(Map<String, dynamic> j) => ResourceDtoUploadedBy(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class ResourceListDto {
+  const ResourceListDto({required this.items});
+  final List<ResourceDto> items;
+
+  factory ResourceListDto.fromJson(Map<String, dynamic> j) => ResourceListDto(
+        items: (j['items'] as List<dynamic>).map((e) => ResourceDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
+class ResourceUploadRequestDto {
+  const ResourceUploadRequestDto({required this.classId, required this.contentType, required this.sizeBytes, required this.subjectId});
+  final String classId;
+  /// One of: application/pdf, image/jpeg, image/png, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation.
+  final String contentType;
+  final num sizeBytes;
+  final String subjectId;
+
+  factory ResourceUploadRequestDto.fromJson(Map<String, dynamic> j) => ResourceUploadRequestDto(
+        classId: j['classId'] as String,
+        contentType: j['contentType'] as String,
+        sizeBytes: j['sizeBytes'] as num,
+        subjectId: j['subjectId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'classId': classId,
+        'contentType': contentType,
+        'sizeBytes': sizeBytes,
+        'subjectId': subjectId,
+      };
+}
+
 class RosterEntryDto {
   const RosterEntryDto({required this.enrollmentId, required this.id, required this.name, required this.note, required this.status});
   final String enrollmentId;
@@ -1594,6 +1775,22 @@ class SeatDtoVehicle {
   Map<String, dynamic> toJson() => {
         'label': label,
         'registration': registration,
+      };
+}
+
+class SignedReadDto {
+  const SignedReadDto({required this.expiresInSeconds, required this.url});
+  final num expiresInSeconds;
+  final String url;
+
+  factory SignedReadDto.fromJson(Map<String, dynamic> j) => SignedReadDto(
+        expiresInSeconds: j['expiresInSeconds'] as num,
+        url: j['url'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'expiresInSeconds': expiresInSeconds,
+        'url': url,
       };
 }
 
