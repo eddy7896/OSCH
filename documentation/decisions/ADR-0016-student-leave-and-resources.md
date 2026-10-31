@@ -13,6 +13,9 @@
 6. **Comments under a resource** (P5-11d): parents of that class, the uploading teacher and the Academic admin read and write; text only, 500 characters. A parent's name is shown as "first name, relationship of child's first name" (for example "Parvati, mother of Asha"): **the owner accepted that other parents of the class see a child's first name**. This does not contradict the messaging plan's "no private chat between parents": comments are in the open, in the class, under a school resource. The teacher or the Academic admin can hide a comment (shown as "Hidden by the school"; the author is told); a parent may edit or delete their own comment for 5 minutes after posting; the first version and every change stay in the audit trail; the server's clock decides the window. The teacher and everyone who has commented are told of a new comment.
 7. **Defaults taken without an answer (the owner may change them):** no malware scanning of uploads in version 1 (only parents of that class can download); the teacher's notice of a new comment waits for office hours, as the messaging plan proposes; no Report button for parents (hiding is the teacher's or the admin's).
 
+## Amendment (2026-10-31, children's data plan)
+Decision 6's display of a commenter changes: a comment shows **"Parent of {child's first name}"** and not the parent's own name, so other families learn only a first name (owner's answer, `documentation/modules/children-data-protection.md` section 1a). Notices pushed to a phone carry no child detail. Not built yet (comments are P5-11d); the text above is superseded where it differs.
+
 ## Consequences
 - The Data Connect schema gains `StudentLeave` and a nullable `Notification.recipientUser`; both need the owner's deploy to production.
 - Teachers and parents of one class become able to read each other's first names in comments; the Parent app must say so (a short line under the comment box) and the privacy policy (P6-5) must mention it.
