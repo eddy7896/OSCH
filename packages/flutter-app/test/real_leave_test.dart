@@ -403,7 +403,16 @@ void studentLeave() {
     await parentPhone.coordinator.syncNow();
     final child = (await parentPhone.store.records(kChild)).single['id'] as String;
     final day = isoDate(DateTime.now().add(Duration(days: 200 + math.Random().nextInt(100))));
-    final made = await parentPhone.api.studentLeaveCreate(body: CreateStudentLeaveDto(clientId: 'real-${DateTime.now().microsecondsSinceEpoch}', studentId: child, startDate: day, endDate: day, reason: 'Fever'));
+    final asked = ParentLeaveController(parentPhone.store);
+    await asked.ask(parentLeaveBody(studentId: child, start: day, end: day, reason: 'Fever'));
+    final entryId = (await parentPhone.store.all()).single.id;
+    await parentPhone.coordinator.syncNow();
+    expect(await parentPhone.store.all(), isEmpty, reason: 'sent');
+    final made = (await parentPhone.api.studentLeaveList()).items.singleWhere((r) => r.reason == 'Fever' && r.startDate == day);
+    expect(entryId, isNotEmpty);
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    expect(asked.rows!.where((r) => r.id == made.id), hasLength(1), reason: 'shows once, as the school\'s');
+    asked.dispose();
 
     var online = false;
     final teacherPhone = await phoneOf('TEACHER', 'teacher@demo.oruschools.example', studentLeavePullTasks, online: () => online);

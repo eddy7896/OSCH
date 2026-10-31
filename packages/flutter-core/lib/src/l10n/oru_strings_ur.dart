@@ -3490,4 +3490,38 @@ class OruStringsUr extends OruStrings {
   @override
   String get slAlreadyDecided =>
       'کسی اور نے یہ درخواست پہلے طے کر دی ہے۔ کچھ نہیں بدلا۔';
+
+  @override
+  String get mobPlAsk => 'میرے بچے کی رخصت کی درخواست';
+
+  @override
+  String get mobPlFormTitle => 'میرے بچے کی رخصت';
+
+  @override
+  String get mobPlChild => 'کون سا بچہ؟';
+
+  @override
+  String get mobPlErrChild => 'ایک بچہ منتخب کریں۔';
+
+  @override
+  String get mobPlNone => 'آپ نے ابھی تک کوئی رخصت نہیں مانگی۔';
+
+  @override
+  String get mobPlCancel => 'درخواست منسوخ کریں';
+
+  @override
+  String get mobPlCancelSaved =>
+      'منسوخی اس فون میں محفوظ ہے اور کنکشن ملنے پر بھیجی جائے گی۔';
+
+  @override
+  String get mobPlRefused =>
+      'اسکول نے اسے قبول نہیں کیا۔ ہو سکتا ہے اس پر فیصلہ ہو چکا ہو۔';
+
+  @override
+  String mobPlNote(String note) {
+    return 'اسکول کا نوٹ: $note';
+  }
+
+  @override
+  String get mobPlErrReason => 'کوئی مختصر وجہ لکھیں۔';
 }

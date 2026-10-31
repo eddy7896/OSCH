@@ -1002,5 +1002,15 @@
   "slNote": "Label of the box where a reason for declining may be written.",
   "slApproved": "Confirmation after approving.",
   "slDeclined": "Confirmation after declining.",
-  "slAlreadyDecided": "Shown when the other approver has already decided or the parent cancelled."
+  "slAlreadyDecided": "Shown when the other approver has already decided or the parent cancelled.",
+  "mobPlAsk": "Button on the Parent app's Leave tab that opens the form for a child's leave.",
+  "mobPlFormTitle": "Title of the form where a parent asks leave for a child.",
+  "mobPlChild": "Heading above the list of the parent's children on the leave form.",
+  "mobPlErrChild": "Shown when the parent tries to send the leave form without choosing a child.",
+  "mobPlNone": "Shown on the Parent app's Leave tab when there are no requests.",
+  "mobPlCancel": "Button that withdraws a leave request that is still waiting.",
+  "mobPlCancelSaved": "Shown under a leave request the parent cancelled while offline.",
+  "mobPlRefused": "Shown under a leave request or a cancel that the school refused.",
+  "mobPlNote": "Shown under a decided leave request when the school wrote a note. {note} is the note.",
+  "mobPlErrReason": "Shown when the parent tries to send the leave form with no reason written."
 }
