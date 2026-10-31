@@ -57,7 +57,7 @@ This **conflicts in form** with two standing rules, so it needs this ADR before 
 | D8 | Chart library for Flutter and React (new dependency; the stack rule is about frameworks, not libraries). | Custom painting on the existing widgets for the radar, heatmap and rose; one small library for line and bar charts, chosen by a spike (P7-9) |
 | D9 | Do students answer workbooks on a parent's phone (shared device)? How is a child identified (child switcher), and can a parent help? | Child switcher; the answer is recorded as the child's, with a "helped by parent" flag |
 | D10 | Minimum cohort size before any class or grade comparison is shown. | 8 |
-| D11 | Data protection review for children's data (India's DPDP Act 2023, consent of a parent). **Unverified here**: needs legal advice; also P6-5. | Before pilot |
+| D11 | Data protection review for children's data (India's DPDP Act 2023, consent of a parent). **Unverified here**: needs legal advice; also P6-5. **Mitigation plan written 2026-10-31: `documentation/modules/children-data-protection.md`** (tasks P6-5a to P6-5h). | Before pilot |
 | D12 | Hosting: the engine runs on the same VPS behind the reverse proxy, on a private port. | Yes |
 
 ## Consequences
