@@ -6253,6 +6253,174 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Write a short reason.'**
   String get mobPlErrReason;
+
+  /// Title of the Teacher app screen that lists the worksheets and workbooks shared with the parents of a class, and of the More row that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources'**
+  String get mobRsTitle;
+
+  /// Button that opens the form to share a worksheet or workbook.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a resource'**
+  String get mobRsAdd;
+
+  /// Title of the form for sharing a worksheet or workbook.
+  ///
+  /// In en, this message translates to:
+  /// **'New resource'**
+  String get mobRsFormTitle;
+
+  /// Heading above the list of classes on the share form.
+  ///
+  /// In en, this message translates to:
+  /// **'Class'**
+  String get mobRsClass;
+
+  /// Heading above the list of subjects on the share form.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get mobRsSubject;
+
+  /// Label of the title box on the share form.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get mobRsTitleField;
+
+  /// Label of the optional note box on the share form.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for the parents (optional)'**
+  String get mobRsNote;
+
+  /// Row that opens the phone's file chooser on the share form.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a file'**
+  String get mobRsChoose;
+
+  /// Hint under Choose a file: which files may be shared.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF, picture, Word or PowerPoint, up to 20 MB.'**
+  String get mobRsFileHint;
+
+  /// Note at the top of the share form: the file is sent at once, nothing is saved for later.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing sends the file, so it needs a connection.'**
+  String get mobRsNeedsNetHint;
+
+  /// Button that sends the file and shares it with the parents of the class.
+  ///
+  /// In en, this message translates to:
+  /// **'Share with the parents'**
+  String get mobRsSend;
+
+  /// Shown on the share button while the file is being sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending'**
+  String get mobRsSending;
+
+  /// Shown when sharing or removing failed because the phone is offline.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no connection. Nothing was shared.'**
+  String get mobRsNeedsNet;
+
+  /// Shown when the share form is sent with no class chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a class.'**
+  String get mobRsErrClass;
+
+  /// Shown when the share form is sent with no subject chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a subject.'**
+  String get mobRsErrSubject;
+
+  /// Shown when the share form is sent with no title.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a title.'**
+  String get mobRsErrTitle;
+
+  /// Shown when the share form is sent with no file.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a file.'**
+  String get mobRsErrFile;
+
+  /// Shown when the chosen file is of a type that cannot be shared.
+  ///
+  /// In en, this message translates to:
+  /// **'This kind of file cannot be shared. Use PDF, a picture, Word or PowerPoint.'**
+  String get mobRsErrType;
+
+  /// Shown when the chosen file is too big.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is larger than 20 MB.'**
+  String get mobRsErrSize;
+
+  /// Shown when the school refuses because the teacher does not teach the chosen subject in the chosen class.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not teach this subject in this class.'**
+  String get mobRsNotTeaching;
+
+  /// Shown when the school refused to share or remove a resource.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this.'**
+  String get mobRsRefused;
+
+  /// Shown when sending the file to storage failed.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be sent. Try again.'**
+  String get mobRsUploadFailed;
+
+  /// Shown on the Resources screen when the list is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing has been shared with the parents yet.'**
+  String get mobRsNone;
+
+  /// Under a resource the signed-in teacher shared herself.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared by you'**
+  String get mobRsMine;
+
+  /// Under a resource another teacher shared. {name} is that teacher.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared by {name}'**
+  String mobRsBy(String name);
+
+  /// Button that removes a resource the teacher shared.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get mobRsRemove;
+
+  /// Question before removing a resource. {title} is its title.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {title}? The parents will no longer see it.'**
+  String mobRsRemoveQuestion(String title);
+
+  /// Confirmation after removing a resource.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed.'**
+  String get mobRsRemoved;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {
