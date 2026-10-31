@@ -1039,5 +1039,12 @@
   "mobRsBy": "Shared by {name}",
   "mobRsRemove": "Remove",
   "mobRsRemoveQuestion": "Remove {title}? The parents will no longer see it.",
-  "mobRsRemoved": "Removed."
+  "mobRsRemoved": "Removed.",
+  "mobRsParentNone": "No worksheets have been shared for {child}'s class yet.",
+  "mobRsOpen": "Open",
+  "mobRsOpening": "Opening",
+  "mobRsKept": "Saved on this phone",
+  "mobRsNeedsNetOpen": "Opening this the first time needs a connection.",
+  "mobRsOpenFailed": "The file could not be opened. Try again.",
+  "mobRsNoViewer": "This phone has no app that can open this kind of file."
 }
