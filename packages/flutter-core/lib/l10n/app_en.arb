@@ -4821,5 +4821,127 @@
   "mobPlErrReason": "Write a short reason.",
   "@mobPlErrReason": {
     "description": "Shown when the parent tries to send the leave form with no reason written."
+  },
+  "mobRsTitle": "Resources",
+  "@mobRsTitle": {
+    "description": "Title of the Teacher app screen that lists the worksheets and workbooks shared with the parents of a class, and of the More row that opens it."
+  },
+  "mobRsAdd": "Add a resource",
+  "@mobRsAdd": {
+    "description": "Button that opens the form to share a worksheet or workbook."
+  },
+  "mobRsFormTitle": "New resource",
+  "@mobRsFormTitle": {
+    "description": "Title of the form for sharing a worksheet or workbook."
+  },
+  "mobRsClass": "Class",
+  "@mobRsClass": {
+    "description": "Heading above the list of classes on the share form."
+  },
+  "mobRsSubject": "Subject",
+  "@mobRsSubject": {
+    "description": "Heading above the list of subjects on the share form."
+  },
+  "mobRsTitleField": "Title",
+  "@mobRsTitleField": {
+    "description": "Label of the title box on the share form."
+  },
+  "mobRsNote": "Note for the parents (optional)",
+  "@mobRsNote": {
+    "description": "Label of the optional note box on the share form."
+  },
+  "mobRsChoose": "Choose a file",
+  "@mobRsChoose": {
+    "description": "Row that opens the phone's file chooser on the share form."
+  },
+  "mobRsFileHint": "PDF, picture, Word or PowerPoint, up to 20 MB.",
+  "@mobRsFileHint": {
+    "description": "Hint under Choose a file: which files may be shared."
+  },
+  "mobRsNeedsNetHint": "Sharing sends the file, so it needs a connection.",
+  "@mobRsNeedsNetHint": {
+    "description": "Note at the top of the share form: the file is sent at once, nothing is saved for later."
+  },
+  "mobRsSend": "Share with the parents",
+  "@mobRsSend": {
+    "description": "Button that sends the file and shares it with the parents of the class."
+  },
+  "mobRsSending": "Sending",
+  "@mobRsSending": {
+    "description": "Shown on the share button while the file is being sent."
+  },
+  "mobRsNeedsNet": "There is no connection. Nothing was shared.",
+  "@mobRsNeedsNet": {
+    "description": "Shown when sharing or removing failed because the phone is offline."
+  },
+  "mobRsErrClass": "Choose a class.",
+  "@mobRsErrClass": {
+    "description": "Shown when the share form is sent with no class chosen."
+  },
+  "mobRsErrSubject": "Choose a subject.",
+  "@mobRsErrSubject": {
+    "description": "Shown when the share form is sent with no subject chosen."
+  },
+  "mobRsErrTitle": "Write a title.",
+  "@mobRsErrTitle": {
+    "description": "Shown when the share form is sent with no title."
+  },
+  "mobRsErrFile": "Choose a file.",
+  "@mobRsErrFile": {
+    "description": "Shown when the share form is sent with no file."
+  },
+  "mobRsErrType": "This kind of file cannot be shared. Use PDF, a picture, Word or PowerPoint.",
+  "@mobRsErrType": {
+    "description": "Shown when the chosen file is of a type that cannot be shared."
+  },
+  "mobRsErrSize": "The file is larger than 20 MB.",
+  "@mobRsErrSize": {
+    "description": "Shown when the chosen file is too big."
+  },
+  "mobRsNotTeaching": "You do not teach this subject in this class.",
+  "@mobRsNotTeaching": {
+    "description": "Shown when the school refuses because the teacher does not teach the chosen subject in the chosen class."
+  },
+  "mobRsRefused": "The school did not accept this.",
+  "@mobRsRefused": {
+    "description": "Shown when the school refused to share or remove a resource."
+  },
+  "mobRsUploadFailed": "The file could not be sent. Try again.",
+  "@mobRsUploadFailed": {
+    "description": "Shown when sending the file to storage failed."
+  },
+  "mobRsNone": "Nothing has been shared with the parents yet.",
+  "@mobRsNone": {
+    "description": "Shown on the Resources screen when the list is empty."
+  },
+  "mobRsMine": "Shared by you",
+  "@mobRsMine": {
+    "description": "Under a resource the signed-in teacher shared herself."
+  },
+  "mobRsBy": "Shared by {name}",
+  "@mobRsBy": {
+    "description": "Under a resource another teacher shared. {name} is that teacher.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobRsRemove": "Remove",
+  "@mobRsRemove": {
+    "description": "Button that removes a resource the teacher shared."
+  },
+  "mobRsRemoveQuestion": "Remove {title}? The parents will no longer see it.",
+  "@mobRsRemoveQuestion": {
+    "description": "Question before removing a resource. {title} is its title.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "mobRsRemoved": "Removed.",
+  "@mobRsRemoved": {
+    "description": "Confirmation after removing a resource."
   }
 }

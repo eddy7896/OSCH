@@ -3523,4 +3523,94 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get mobPlErrReason => 'कोई छोटा कारण लिखें।';
+
+  @override
+  String get mobRsTitle => 'संसाधन';
+
+  @override
+  String get mobRsAdd => 'संसाधन जोड़ें';
+
+  @override
+  String get mobRsFormTitle => 'नया संसाधन';
+
+  @override
+  String get mobRsClass => 'कक्षा';
+
+  @override
+  String get mobRsSubject => 'विषय';
+
+  @override
+  String get mobRsTitleField => 'शीर्षक';
+
+  @override
+  String get mobRsNote => 'अभिभावकों के लिए टिप्पणी (वैकल्पिक)';
+
+  @override
+  String get mobRsChoose => 'फ़ाइल चुनें';
+
+  @override
+  String get mobRsFileHint => 'PDF, चित्र, Word या PowerPoint, 20 MB तक।';
+
+  @override
+  String get mobRsNeedsNetHint =>
+      'साझा करने पर फ़ाइल भेजी जाती है, इसलिए कनेक्शन चाहिए।';
+
+  @override
+  String get mobRsSend => 'अभिभावकों के साथ साझा करें';
+
+  @override
+  String get mobRsSending => 'भेजा जा रहा है';
+
+  @override
+  String get mobRsNeedsNet => 'कनेक्शन नहीं है। कुछ साझा नहीं हुआ।';
+
+  @override
+  String get mobRsErrClass => 'एक कक्षा चुनें।';
+
+  @override
+  String get mobRsErrSubject => 'एक विषय चुनें।';
+
+  @override
+  String get mobRsErrTitle => 'शीर्षक लिखें।';
+
+  @override
+  String get mobRsErrFile => 'फ़ाइल चुनें।';
+
+  @override
+  String get mobRsErrType =>
+      'इस तरह की फ़ाइल साझा नहीं की जा सकती। PDF, चित्र, Word या PowerPoint चुनें।';
+
+  @override
+  String get mobRsErrSize => 'फ़ाइल 20 MB से बड़ी है।';
+
+  @override
+  String get mobRsNotTeaching => 'आप इस कक्षा में यह विषय नहीं पढ़ातीं/पढ़ाते।';
+
+  @override
+  String get mobRsRefused => 'स्कूल ने इसे स्वीकार नहीं किया।';
+
+  @override
+  String get mobRsUploadFailed => 'फ़ाइल भेजी नहीं जा सकी। फिर से कोशिश करें।';
+
+  @override
+  String get mobRsNone => 'अभी तक अभिभावकों के साथ कुछ साझा नहीं किया गया है।';
+
+  @override
+  String get mobRsMine => 'आपने साझा किया';
+
+  @override
+  String mobRsBy(String name) {
+    return '$name ने साझा किया';
+  }
+
+  @override
+  String get mobRsRemove => 'हटाएँ';
+
+  @override
+  String mobRsRemoveQuestion(String title) {
+    return '$title हटाएँ? अभिभावक इसे अब नहीं देख पाएँगे।';
+  }
+
+  @override
+  String get mobRsRemoved => 'हटा दिया गया।';
 }

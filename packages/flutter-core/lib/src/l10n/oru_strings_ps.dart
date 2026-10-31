@@ -3520,4 +3520,94 @@ class OruStringsPs extends OruStrings {
 
   @override
   String get mobPlErrReason => 'Write a short reason.';
+
+  @override
+  String get mobRsTitle => 'Resources';
+
+  @override
+  String get mobRsAdd => 'Add a resource';
+
+  @override
+  String get mobRsFormTitle => 'New resource';
+
+  @override
+  String get mobRsClass => 'Class';
+
+  @override
+  String get mobRsSubject => 'Subject';
+
+  @override
+  String get mobRsTitleField => 'Title';
+
+  @override
+  String get mobRsNote => 'Note for the parents (optional)';
+
+  @override
+  String get mobRsChoose => 'Choose a file';
+
+  @override
+  String get mobRsFileHint => 'PDF, picture, Word or PowerPoint, up to 20 MB.';
+
+  @override
+  String get mobRsNeedsNetHint =>
+      'Sharing sends the file, so it needs a connection.';
+
+  @override
+  String get mobRsSend => 'Share with the parents';
+
+  @override
+  String get mobRsSending => 'Sending';
+
+  @override
+  String get mobRsNeedsNet => 'There is no connection. Nothing was shared.';
+
+  @override
+  String get mobRsErrClass => 'Choose a class.';
+
+  @override
+  String get mobRsErrSubject => 'Choose a subject.';
+
+  @override
+  String get mobRsErrTitle => 'Write a title.';
+
+  @override
+  String get mobRsErrFile => 'Choose a file.';
+
+  @override
+  String get mobRsErrType =>
+      'This kind of file cannot be shared. Use PDF, a picture, Word or PowerPoint.';
+
+  @override
+  String get mobRsErrSize => 'The file is larger than 20 MB.';
+
+  @override
+  String get mobRsNotTeaching => 'You do not teach this subject in this class.';
+
+  @override
+  String get mobRsRefused => 'The school did not accept this.';
+
+  @override
+  String get mobRsUploadFailed => 'The file could not be sent. Try again.';
+
+  @override
+  String get mobRsNone => 'Nothing has been shared with the parents yet.';
+
+  @override
+  String get mobRsMine => 'Shared by you';
+
+  @override
+  String mobRsBy(String name) {
+    return 'Shared by $name';
+  }
+
+  @override
+  String get mobRsRemove => 'Remove';
+
+  @override
+  String mobRsRemoveQuestion(String title) {
+    return 'Remove $title? The parents will no longer see it.';
+  }
+
+  @override
+  String get mobRsRemoved => 'Removed.';
 }

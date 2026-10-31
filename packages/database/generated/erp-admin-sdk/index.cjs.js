@@ -1302,6 +1302,20 @@ function cancelStudentLeave(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.cancelStudentLeave = cancelStudentLeave;
 
+function addLearningResource(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddLearningResource', inputVars, inputOpts);
+}
+exports.addLearningResource = addLearningResource;
+
+function removeLearningResource(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RemoveLearningResource', inputVars, inputOpts);
+}
+exports.removeLearningResource = removeLearningResource;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2155,4 +2169,25 @@ function approvedStudentLeaveOn(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ApprovedStudentLeaveOn', inputVars, inputOpts);
 }
 exports.approvedStudentLeaveOn = approvedStudentLeaveOn;
+
+function listLearningResources(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListLearningResources', inputVars, inputOpts);
+}
+exports.listLearningResources = listLearningResources;
+
+function listLearningResourcesOfClasses(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListLearningResourcesOfClasses', inputVars, inputOpts);
+}
+exports.listLearningResourcesOfClasses = listLearningResourcesOfClasses;
+
+function getLearningResource(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetLearningResource', inputVars, inputOpts);
+}
+exports.getLearningResource = getLearningResource;
 
