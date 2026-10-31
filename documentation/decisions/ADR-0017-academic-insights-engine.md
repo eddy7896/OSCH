@@ -1,6 +1,6 @@
 # ADR-0017: The Academic Insights Engine (a separate service for student progression and growth)
 
-- **Status:** **Proposed (2026-10-31), waiting for the owner.** Nothing here is built. It becomes work only after the owner answers section "Decisions needed" (D1 first).
+- **Status:** **Accepted in part (2026-10-31).** The owner answered D1 to D7 and D10 in chat (section "Owner answers"); D8, D9, D11 and D12 take the stated recommendation until the owner changes them. Nothing is built yet.
 - **Plan:** `documentation/modules/academic-insights-engine.md`. Tasks P7-1 to P7-14 in `documentation/project_plan.md` (Phase 7) and the Project Hub.
 - **Builds on:** ADR-0001 (tenant isolation), ADR-0004 (money and time), ADR-0005 (no dark mode), ADR-0006 (languages), ADR-0007 (roles), ADR-0008 (gateway), ADR-0013 (Phase 3: timetable, attendance, exams), ADR-0014 (offline sync), ADR-0016 (parent resources).
 - **Name:** the owner called it "the academic engine". ADR-0013 already uses "Phase 3 academic engine" for timetable, attendance, exams and substitution, so this document calls the new service the **Academic Insights Engine** (AIE) to keep the two apart.
@@ -30,9 +30,21 @@ This **conflicts in form** with two standing rules, so it needs this ADR before 
 3. Rules from **NEP 2020, the state and the board the school follows** are **versioned policy packs** (data plus validators), each with its source, its effective date and a reviewer. Nothing is hard-coded as "the law": a pack the owner has not reviewed is shown as a draft.
 4. The 13 visualisations are **served as data** (series, thresholds, drill-down targets) by the gateway; the apps draw them with shared chart widgets that obey the design system (tokens only, text labels and icons as well as colour, 13 px and 48 px minimums, right to left).
 5. Teachers **author and publish workbooks and worksheets** (interactive, answered in the Parent app, offline-first); this is separate from ADR-0016's file resources (PDF and Office files), which stay as they are.
-6. **Privacy by design:** a parent never sees another child's name, rank or score; section and grade comparisons use only aggregates over a minimum cohort size (D10, proposed 8); the at-risk flag is shown to parents in supportive words, never as a label on the child (D6).
+6. **Privacy by design:** a parent never sees another child's name, rank or score; section and grade comparisons use only aggregates over a minimum cohort size (D10, answered 15); the at-risk flag is shown to parents in supportive words, never as a label on the child (D6).
 
-## Decisions needed from the owner
+## Owner answers (2026-10-31)
+| ID | Answer |
+|---|---|
+| D1 | **A**: a separate compute service; the gateway is the only door and the only path to the database |
+| D2 | **JKBOSE, CBSE and ICSE** packs on the NEP 2020 base (wider than recommended: each pack ships as draft until its rules are read from the board's own documents) |
+| D3 | **The Principal** confirms a calendar change; the System Admin may prepare it |
+| D4 | **The teacher enters all three** (teacher, peer, self) in version 1 |
+| D5 | **Teachers write questions, plus import from a file** (spreadsheet or CSV import is in scope, not a bought bank) |
+| D6 | Staff see the bands; **parents see a kind sentence and a next step** |
+| D7 | **Each school sets the effort weights** (default 50 per cent attendance, 50 per cent workbooks) |
+| D10 | **15 students** minimum before any class or grade comparison is shown. Consequence: small classes and sections under 15 show no comparison (charts 1 and 4 hide the median, the benchmark bars and the P75 line, and say why). Chart 10 and chart 11 are for staff and are not limited by it |
+
+## Decisions the owner was asked (original table, answers above)
 | ID | Question | Recommended |
 |---|---|---|
 | D1 | Architecture: A (compute service, gateway the only DB path), B (own database), C (engine reads Data Connect), or D (module in the gateway)? | A |

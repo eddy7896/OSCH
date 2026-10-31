@@ -1,6 +1,6 @@
 # Academic Insights Engine (plan, nothing built)
 
-Status: **plan, proposed 2026-10-31, for owner review.** Decision record: `documentation/decisions/ADR-0017-academic-insights-engine.md` (Proposed). Nothing here exists in code or schema. Tasks: Phase 7 (P7-1 to P7-14) in `documentation/project_plan.md` and the Project Hub.
+Status: **plan; ADR-0017 accepted in part 2026-10-31 (D1 to D7 and D10 answered).** Decision record: `documentation/decisions/ADR-0017-academic-insights-engine.md`. Nothing here exists in code or schema. Tasks: Phase 7 (P7-1 to P7-14) in `documentation/project_plan.md` and the Project Hub.
 
 ## 1. What the owner asked for
 1. A **separate microservice** that tracks each student's progression and growth through the year.
@@ -29,7 +29,8 @@ A **policy pack** is a versioned set of rules the engine uses and the apps expla
 |---|---|---|
 | NEP 2020 base | the 5+3+3+4 stage structure (foundational, preparatory, middle, secondary) mapped to classes; competency-based, formative and holistic assessment; the Holistic Progress Card (HPC) | stage structure is well known; **the HPC domain list is unverified** (see below) |
 | JKBOSE | session by zone (above), grading and pass rules, the HPC for the secondary stage, the 3x3 rubric (three competency levels: basic, proficient, advanced) introduced in a JKBOSE and PARAKH workshop | partly: the workshop is reported ([JK Monitor](https://jkmonitor.org/index.php/jkbose-organizes-five-day-workshop-on-holistic-progress-card-secondary-stage-standardization-of-question-paper-templates-under-equivalence-of-boards-in-collaboration-with-parakh-ncert)); pass rules not read |
-| CBSE and others | later (D2) | no |
+| CBSE | requested by the owner (D2); shipped as draft until its rules are read from CBSE's own documents | no |
+| ICSE | requested by the owner (D2); draft likewise | no |
 | School overrides | the school may tighten (never loosen) a pack's rule | n/a |
 
 **The brief's four holistic domains** (Cognitive, Socio-emotional, Physical wellbeing, Creative arts) and the 1 to 4 rubric are used as the owner wrote them. A search found PARAKH describing the HPC as a 360-degree tool covering co-curricular, vocational and socio-emotional learning, and a state training deck listing other category names; **nothing confirmed the exact four domains or the 1 to 4 scale**. The domain list and scale are therefore a **configurable part of the NEP pack**, to be checked against the PARAKH HPC documents ([PARAKH](https://ncert.nic.in/parakh/about.php)) before the report card PDF (chart 7) is called official. Likewise "Bloom's levels (JKBOSE PARAKH)" in chart 6: PARAKH has its own taxonomy; the mapping to Bloom's four levels is a pack setting to be confirmed.
@@ -58,9 +59,9 @@ Charts 3, 6, 11 and 2 cannot be drawn from today's data: they need **per-questio
 All scores are integers in tenths of a percent or basis points (no floating point in stored results, as with money in ADR-0004); a chart shows rounded whole percents.
 - **topic_mastery** = weighted share of marks earned on questions tagged to the topic, newest evidence weighted more (weights are a pack setting); state: **Not taught yet** (grey) until the syllabus plan marks it taught, **Green** at 75 per cent or more, **Amber** 50 to 74, **Red** below 50 (the brief's thresholds).
 - **composite_axis_score** (chart 2) = the mean of the mastery of the topics that feed the axis in the window; **previous_term_axis_score** the same for the previous term.
-- **student_subject_score** = percent of marks in the subject over the window; **section_median_score**, **section_mean_score_%** and **grade P75** are computed over the cohort only when it has at least D10 students, otherwise the series is omitted and the chart says why.
+- **student_subject_score** = percent of marks in the subject over the window; **section_median_score**, **section_mean_score_%** and **grade P75** are computed over the cohort only when it has at least 15 students (D10, answered), otherwise the series is omitted and the chart says why.
 - **Workbook Consistency** (chart 1's sixth axis) and **workbook_completion_rate_%** = published items answered on time / items assigned, over the window.
-- **effort_score** (chart 10) = attendance share and workbook completion share, weighted (D7).
+- **effort_score** (chart 10) = attendance share and workbook completion share, weighted; **each school sets the weights** (default 50/50) and the teacher sees them (D7, answered).
 - **at-risk bands** (chart 12): Critical (`at_risk_flag`), Watchlist, On-Track, Thriving, from explicit, documented rules over outcome, effort and trend; the rule text is shown to staff beside the flag. A band is a prompt for a person, not a verdict.
 - **winter_retention_index** (chart 8) = the share of topics whose mastery after the vacation is at least the mastery before it, among topics practised in the vacation pack.
 - **Attendance-to-grade correlation** (chart 9): the change in rolling test score across an absence window, shown only as a plain observation ("marks fell after 6 absences"), never as a causal claim.
@@ -97,7 +98,7 @@ Drawing: the radar, heatmap, rose and funnel are custom-painted on top of the ex
 - **Not in version 1:** answers by photo of handwriting, automatic marking of written text, timed tests with proctoring, sharing a workbook across schools.
 
 ## 8. Privacy, safety and ownership
-- Parents see only their linked children; a comparison uses aggregates over at least D10 students and never another child's identity (E-INS-2).
+- Parents see only their linked children; a comparison uses aggregates over at least 15 students (D10, answered) and never another child's identity (E-INS-2).
 - Teachers see insights for classes they teach (own scope); the Academic admin and the Principal see school-wide; HR, Bursar and others see none (ADR-0007 silos hold).
 - Children's data: purpose limited to the school's teaching; retention follows the school year rules already in ADR-0016 plus a decision at P6-5; **the legal basis and parental consent under the DPDP Act 2023 are unverified here** (D11).
 - Every write (publishing a workbook, an answer set, a rubric score, applying a calendar proposal) is audited with actor and time; engine results are derived data and carry the inputs' timestamps and the pack version.
@@ -106,11 +107,11 @@ Drawing: the radar, heatmap, rose and funnel are custom-painted on top of the ex
 ## 9. Tasks (also in the Hub's plan, Phase 7)
 | ID | Task | Gate |
 |---|---|---|
-| P7-1 | ADR-0017 accepted with the owner's answers to D1 to D12 | no code before |
+| P7-1 | ADR-0017 accepted (D1 to D7 and D10 answered 2026-10-31; D8, D9, D11, D12 on recommendation) | done for the answered parts |
 | P7-2 | Engine service skeleton: `apps/academic-engine` (NestJS), private network, service credential, health, CI job, OpenAPI, the internal gateway feeds and writeback, "engine down" behaviour (last snapshot with its time) | E-INS-1 |
 | P7-3 | Calendar profiles and policy packs: `calendarProfile` setting, profile data (JK winter zone, JK summer zone, standard, custom), proposals and confirm-to-apply, NEP stage mapping, JKBOSE pack (draft), web Settings screen | E-INS-3, E-INS-4 |
 | P7-4 | Curriculum map: chapters, topics, six axes per subject, syllabus plan (taught or not yet), planned tests and targets; web screens and CSV import | E-INS-5 |
-| P7-5 | Question bank and per-question results: questions with topic, axis, Bloom, marks; teacher test entry by question | E-INS-6 |
+| P7-5 | Question bank and per-question results: questions with topic, axis, Bloom, marks; teacher test entry by question; import of questions from a spreadsheet or CSV (D5) | E-INS-6 |
 | P7-6 | Workbooks and worksheets: P7-6a server (authoring, publish, assign, answer sets, auto-marking), P7-6b web authoring, P7-6c Teacher app assign and review, P7-6d Parent app answering offline | E-WB-1 to E-WB-5 |
 | P7-7 | Scoring: mastery, axes, benchmarks, effort, growth, risk bands; recompute jobs; snapshot tables | E-INS-7, E-INS-8 |
 | P7-8 | Insights API: `/v1/insights/*` with scope and cohort rules, in the generated matrix | E-INS-2 |
