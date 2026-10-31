@@ -34,5 +34,8 @@ Flutter `mobile-teacher`, `mobile-staff`, `packages/flutter-core`; Drift + outbo
 ## Phase 6 — Landing page
 **Gate:** Lighthouse/SEO thresholds; no secrets/API calls from public bundle.
 
+## Phase 7 — Academic Insights Engine (proposed 2026-10-31, waiting for ADR-0017)
+A separate service for student progression and growth, the school's calendar profile (J&K winter and summer zones), NEP 2020 and board policy packs, teacher-authored workbooks answered in the Parent app, and 13 visualisations for parents, teachers and school admins. Plan: `documentation/modules/academic-insights-engine.md`; decision: `documentation/decisions/ADR-0017-academic-insights-engine.md`. Tasks P7-1 to P7-14. It depends on Phase 5's Parent app foundation (P5-6a, built) and on the per-question data that does not exist yet.
+
 ## Working agreement per task
 1. Pick the next unchecked item in the current phase. 2. Write/extend the eval first. 3. Implement. 4. Run drift + evals. 5. Update `live_documents.md`. 6. Summarize with evidence (CLAUDE.md DoD).

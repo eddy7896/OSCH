@@ -1,6 +1,7 @@
 {
   "plannedPaths": [
     "apps/teacher-app",
+    "apps/academic-engine",
     "apps/staff-app",
     "apps/parent-app",
     "apps/driver-app",

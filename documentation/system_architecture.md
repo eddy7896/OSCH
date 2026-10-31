@@ -30,6 +30,8 @@ OruSchools utilizes a **Two-Pillar Architecture** to serve as both an Enterprise
   - *Constraint:* **No client application** (including Mobile Flutter apps) is permitted to connect directly to the database. All queries and mutations MUST be routed through the API Gateway, which utilizes the Firebase Admin SDK to communicate with the DB.
 - **Monorepo Management:** Turborepo for JS/TS (Next.js, NestJS), Melos for Dart (Flutter).
 
+- **Academic Insights Engine (planned, ADR-0017, proposed):** a second NestJS service for student progression and growth analytics (mastery, benchmarks, risk bands, the school's calendar profile and the NEP 2020, state and board policy packs). It is a compute service on a private address: **only the gateway calls it**, with a service credential and the verified `schoolId`; **it never touches the database**, it reads internal gateway feeds and the gateway stores its snapshots. If it is down, apps show the last snapshot with its time. Not built; see `documentation/modules/academic-insights-engine.md`.
+
 ## Architecture Diagram
 
 ```mermaid
@@ -42,6 +44,7 @@ graph TD
             MS[Master Scheduling ERP]
         end
         API[NestJS / API Gateway]
+        AIE[Academic Insights Engine - planned]
     end
 
     subgraph Firebase Cloud Infrastructure
@@ -58,6 +61,7 @@ graph TD
     SA & F & HR & MS <-->|Internal REST/GraphQL| API
     PN & DM & LT & QG <-->|External REST/GraphQL| API
     API <-->|Admin SDK| DB
+    API <-.->|"private, service credential (planned, ADR-0017)"| AIE
 ```
 
 ## Shared Platform (Design & Tokens)
