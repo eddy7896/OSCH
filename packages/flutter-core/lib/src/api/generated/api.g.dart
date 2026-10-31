@@ -40,6 +40,12 @@ const List<OruRoute> kOruRoutes = [
   _rNotificationsRead,
   _rNotificationsReadAll,
   _rNotificationsSetPreference,
+  _rResourcesAdd,
+  _rResourcesDownload,
+  _rResourcesList,
+  _rResourcesOne,
+  _rResourcesRemove,
+  _rResourcesTicket,
   _rScheduleGet,
   _rSchoolProfile,
   _rStaffAttendanceCheckIn,
@@ -94,6 +100,12 @@ const _rNotificationsPreferences = OruRoute('GET', '/v1/notifications/preference
 const _rNotificationsRead = OruRoute('POST', '/v1/notifications/{id}/read', OruAccess.tenant, 'Notifications_read');
 const _rNotificationsReadAll = OruRoute('POST', '/v1/notifications/read-all', OruAccess.tenant, 'Notifications_readAll');
 const _rNotificationsSetPreference = OruRoute('PUT', '/v1/notifications/preferences/{category}', OruAccess.tenant, 'Notifications_setPreference');
+const _rResourcesAdd = OruRoute('POST', '/v1/resources', OruAccess.tenant, 'Resources_add');
+const _rResourcesDownload = OruRoute('GET', '/v1/resources/{id}/download', OruAccess.tenant, 'Resources_download');
+const _rResourcesList = OruRoute('GET', '/v1/resources', OruAccess.tenant, 'Resources_list');
+const _rResourcesOne = OruRoute('GET', '/v1/resources/{id}', OruAccess.tenant, 'Resources_one');
+const _rResourcesRemove = OruRoute('DELETE', '/v1/resources/{id}', OruAccess.tenant, 'Resources_remove');
+const _rResourcesTicket = OruRoute('POST', '/v1/resources/uploads', OruAccess.tenant, 'Resources_ticket');
 const _rScheduleGet = OruRoute('GET', '/v1/academics/schedule', OruAccess.tenant, 'Schedule_get');
 const _rSchoolProfile = OruRoute('GET', '/v1/school/profile', OruAccess.tenant, 'School_profile');
 const _rStaffAttendanceCheckIn = OruRoute('POST', '/v1/attendance/staff/check-in', OruAccess.tenant, 'StaffAttendance_checkIn');
@@ -312,6 +324,41 @@ class OruApi {
   Future<PreferenceListDto> notificationsSetPreference({required String category, required PreferenceDto body}) async {
     final j = await _t.send(_rNotificationsSetPreference, "/v1/notifications/preferences/${Uri.encodeComponent(category)}", body: body.toJson());
     return PreferenceListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/resources
+  Future<ResourceDto> resourcesAdd({required AddResourceDto body}) async {
+    final j = await _t.send(_rResourcesAdd, "/v1/resources", body: body.toJson());
+    return ResourceDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/resources/{id}/download
+  Future<SignedReadDto> resourcesDownload({required String id}) async {
+    final j = await _t.send(_rResourcesDownload, "/v1/resources/${Uri.encodeComponent(id)}/download");
+    return SignedReadDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/resources
+  Future<ResourceListDto> resourcesList({String? classId}) async {
+    final j = await _t.send(_rResourcesList, "/v1/resources", query: {'classId': classId});
+    return ResourceListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/resources/{id}
+  Future<ResourceDto> resourcesOne({required String id}) async {
+    final j = await _t.send(_rResourcesOne, "/v1/resources/${Uri.encodeComponent(id)}");
+    return ResourceDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// DELETE /v1/resources/{id}
+  Future<void> resourcesRemove({required String id}) async {
+    await _t.send(_rResourcesRemove, "/v1/resources/${Uri.encodeComponent(id)}");
+  }
+
+  /// POST /v1/resources/uploads
+  Future<FileUploadTicketDto> resourcesTicket({required ResourceUploadRequestDto body}) async {
+    final j = await _t.send(_rResourcesTicket, "/v1/resources/uploads", body: body.toJson());
+    return FileUploadTicketDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// GET /v1/academics/schedule

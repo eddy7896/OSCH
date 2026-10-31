@@ -760,6 +760,26 @@ type StudentRoute @table @unique(fields: ["student", "direction"]) {
   createdAt: Timestamp! @default(expr: "request.time")
 }
 
+# A worksheet or workbook a teacher shares with the parents of a class (P5-11, ADR-0016). The file is in the private bucket
+# (key under schools/<school>/resources/<class>/); only the metadata lives here. It is visible until its academic year ends; removal keeps the row (and the audit trail).
+type LearningResource @table @unique(fields: ["school", "fileKey"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  classroom: Classroom!
+  academicYear: AcademicYear!
+  subject: Subject!
+  title: String!
+  note: String
+  fileKey: String!
+  fileName: String!
+  contentType: String!
+  sizeBytes: Int!
+  uploadedBy: User!
+  removedAt: Timestamp
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time")
+}
+
 # A parent's request for leave for their child (P5-10, ADR-0016). Decided by the class teacher or the Academic admin; the first decision stands.
 type StudentLeave @table @unique(fields: ["student", "clientId"]) {
   id: UUID! @default(expr: "uuidV4()")

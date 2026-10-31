@@ -65,6 +65,15 @@ export type AddPayslipLineDto = {
     name: string;
 };
 
+export type AddResourceDto = {
+    classId: string;
+    fileName: string;
+    key: string;
+    note?: string;
+    subjectId: string;
+    title: string;
+};
+
 export type AddStaffDocumentDto = {
     fileName: string;
     key: string;
@@ -1500,6 +1509,40 @@ export type ReportCardDto = {
     term: RefDto;
     totalMarks: string;
     totalMaxMarks: string;
+};
+
+export type ResourceDto = {
+    class: {
+        id: string;
+        name: string;
+    };
+    contentType: string;
+    createdAt: string;
+    fileName: string;
+    id: string;
+    note: string | null;
+    sizeBytes: number;
+    subject: {
+        id: string;
+        name: string;
+    };
+    title: string;
+    updatedAt: string;
+    uploadedBy: {
+        id: string;
+        name: string;
+    };
+};
+
+export type ResourceListDto = {
+    items: Array<ResourceDto>;
+};
+
+export type ResourceUploadRequestDto = {
+    classId: string;
+    contentType: 'application/pdf' | 'image/jpeg' | 'image/png' | 'application/msword' | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' | 'application/vnd.ms-powerpoint' | 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+    sizeBytes: number;
+    subjectId: string;
 };
 
 export type ReversePaymentDto = {
@@ -9628,6 +9671,254 @@ export type ReportsPayrollExportError = ReportsPayrollExportErrors[keyof Reports
 export type ReportsPayrollExportResponses = {
     200: unknown;
 };
+
+export type ResourcesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        classId?: string;
+    };
+    url: '/v1/resources';
+};
+
+export type ResourcesListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ResourcesListError = ResourcesListErrors[keyof ResourcesListErrors];
+
+export type ResourcesListResponses = {
+    200: ResourceListDto;
+};
+
+export type ResourcesListResponse = ResourcesListResponses[keyof ResourcesListResponses];
+
+export type ResourcesAddData = {
+    body: AddResourceDto;
+    path?: never;
+    query?: never;
+    url: '/v1/resources';
+};
+
+export type ResourcesAddErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ResourcesAddError = ResourcesAddErrors[keyof ResourcesAddErrors];
+
+export type ResourcesAddResponses = {
+    201: ResourceDto;
+};
+
+export type ResourcesAddResponse = ResourcesAddResponses[keyof ResourcesAddResponses];
+
+export type ResourcesTicketData = {
+    body: ResourceUploadRequestDto;
+    path?: never;
+    query?: never;
+    url: '/v1/resources/uploads';
+};
+
+export type ResourcesTicketErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ResourcesTicketError = ResourcesTicketErrors[keyof ResourcesTicketErrors];
+
+export type ResourcesTicketResponses = {
+    200: FileUploadTicketDto;
+};
+
+export type ResourcesTicketResponse = ResourcesTicketResponses[keyof ResourcesTicketResponses];
+
+export type ResourcesRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/resources/{id}';
+};
+
+export type ResourcesRemoveErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ResourcesRemoveError = ResourcesRemoveErrors[keyof ResourcesRemoveErrors];
+
+export type ResourcesRemoveResponses = {
+    204: void;
+};
+
+export type ResourcesRemoveResponse = ResourcesRemoveResponses[keyof ResourcesRemoveResponses];
+
+export type ResourcesOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/resources/{id}';
+};
+
+export type ResourcesOneErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ResourcesOneError = ResourcesOneErrors[keyof ResourcesOneErrors];
+
+export type ResourcesOneResponses = {
+    200: ResourceDto;
+};
+
+export type ResourcesOneResponse = ResourcesOneResponses[keyof ResourcesOneResponses];
+
+export type ResourcesDownloadData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/resources/{id}/download';
+};
+
+export type ResourcesDownloadErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ResourcesDownloadError = ResourcesDownloadErrors[keyof ResourcesDownloadErrors];
+
+export type ResourcesDownloadResponses = {
+    200: SignedReadDto;
+};
+
+export type ResourcesDownloadResponse = ResourcesDownloadResponses[keyof ResourcesDownloadResponses];
 
 export type SchoolClearGeofenceData = {
     body?: never;
