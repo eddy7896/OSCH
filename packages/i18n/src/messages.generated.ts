@@ -1045,7 +1045,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobRsBy": "Shared by {name}",
     "mobRsRemove": "Remove",
     "mobRsRemoveQuestion": "Remove {title}? The parents will no longer see it.",
-    "mobRsRemoved": "Removed."
+    "mobRsRemoved": "Removed.",
+    "mobRsParentNone": "No worksheets have been shared for {child}'s class yet.",
+    "mobRsOpen": "Open",
+    "mobRsOpening": "Opening",
+    "mobRsKept": "Saved on this phone",
+    "mobRsNeedsNetOpen": "Opening this the first time needs a connection.",
+    "mobRsOpenFailed": "The file could not be opened. Try again.",
+    "mobRsNoViewer": "This phone has no app that can open this kind of file."
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2088,7 +2095,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobRsBy": "{name} ने साझा किया",
     "mobRsRemove": "हटाएँ",
     "mobRsRemoveQuestion": "{title} हटाएँ? अभिभावक इसे अब नहीं देख पाएँगे।",
-    "mobRsRemoved": "हटा दिया गया।"
+    "mobRsRemoved": "हटा दिया गया।",
+    "mobRsParentNone": "{child} की कक्षा के लिए अभी कोई वर्कशीट साझा नहीं की गई है।",
+    "mobRsOpen": "खोलें",
+    "mobRsOpening": "खुल रहा है",
+    "mobRsKept": "इस फ़ोन में सहेजा गया",
+    "mobRsNeedsNetOpen": "इसे पहली बार खोलने के लिए कनेक्शन चाहिए।",
+    "mobRsOpenFailed": "फ़ाइल खुल नहीं सकी। फिर से कोशिश करें।",
+    "mobRsNoViewer": "इस फ़ोन में इस तरह की फ़ाइल खोलने वाला ऐप नहीं है।"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3131,7 +3145,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobRsBy": "{name} نے شیئر کیا",
     "mobRsRemove": "ہٹائیں",
     "mobRsRemoveQuestion": "{title} ہٹائیں؟ والدین اسے اب نہیں دیکھ سکیں گے۔",
-    "mobRsRemoved": "ہٹا دیا گیا۔"
+    "mobRsRemoved": "ہٹا دیا گیا۔",
+    "mobRsParentNone": "{child} کی جماعت کے لیے ابھی کوئی ورک شیٹ شیئر نہیں کی گئی۔",
+    "mobRsOpen": "کھولیں",
+    "mobRsOpening": "کھل رہا ہے",
+    "mobRsKept": "اس فون میں محفوظ",
+    "mobRsNeedsNetOpen": "اسے پہلی بار کھولنے کے لیے کنکشن چاہیے۔",
+    "mobRsOpenFailed": "فائل کھل نہیں سکی۔ دوبارہ کوشش کریں۔",
+    "mobRsNoViewer": "اس فون میں اس قسم کی فائل کھولنے والی ایپ نہیں ہے۔"
   },
   "ks": {},
   "sd": {},

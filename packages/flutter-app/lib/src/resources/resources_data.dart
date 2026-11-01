@@ -33,8 +33,11 @@ Future<T> _guard<T>(Future<T> Function() f) async {
 }
 
 /// What the Resources screen pulls: the list (the school removes expired and removed ones, so the whole list replaces the phone's copy) and her subjects.
+/// The resources list alone (a parent's app reads it for the classes of their linked children).
+PullTask resourcesListPullTask(OruApi api) => PullTask.list(kResource, () => _guard(() async => [for (final r in (await api.resourcesList()).items) (id: r.id, parentId: null as String?, json: r.toJson())]));
+
 List<PullTask> resourcesPullTasks(OruApi api) => [
-      PullTask.list(kResource, () => _guard(() async => [for (final r in (await api.resourcesList()).items) (id: r.id, parentId: null as String?, json: r.toJson())])),
+      resourcesListPullTask(api),
       PullTask(kMySubject, (store) async {
         final mine = await _guard(api.teachingMine);
         await store.replaceAllRecords(kMySubject, [for (final s in mine.subjects) (id: s.id, parentId: null as String?, json: s.toJson())]);

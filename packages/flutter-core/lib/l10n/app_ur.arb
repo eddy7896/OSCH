@@ -1040,5 +1040,12 @@
   "mobRsBy": "{name} نے شیئر کیا",
   "mobRsRemove": "ہٹائیں",
   "mobRsRemoveQuestion": "{title} ہٹائیں؟ والدین اسے اب نہیں دیکھ سکیں گے۔",
-  "mobRsRemoved": "ہٹا دیا گیا۔"
+  "mobRsRemoved": "ہٹا دیا گیا۔",
+  "mobRsParentNone": "{child} کی جماعت کے لیے ابھی کوئی ورک شیٹ شیئر نہیں کی گئی۔",
+  "mobRsOpen": "کھولیں",
+  "mobRsOpening": "کھل رہا ہے",
+  "mobRsKept": "اس فون میں محفوظ",
+  "mobRsNeedsNetOpen": "اسے پہلی بار کھولنے کے لیے کنکشن چاہیے۔",
+  "mobRsOpenFailed": "فائل کھل نہیں سکی۔ دوبارہ کوشش کریں۔",
+  "mobRsNoViewer": "اس فون میں اس قسم کی فائل کھولنے والی ایپ نہیں ہے۔"
 }

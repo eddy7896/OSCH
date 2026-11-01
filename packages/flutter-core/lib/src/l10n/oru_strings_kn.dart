@@ -3610,4 +3610,29 @@ class OruStringsKn extends OruStrings {
 
   @override
   String get mobRsRemoved => 'Removed.';
+
+  @override
+  String mobRsParentNone(String child) {
+    return 'No worksheets have been shared for $child\'s class yet.';
+  }
+
+  @override
+  String get mobRsOpen => 'Open';
+
+  @override
+  String get mobRsOpening => 'Opening';
+
+  @override
+  String get mobRsKept => 'Saved on this phone';
+
+  @override
+  String get mobRsNeedsNetOpen =>
+      'Opening this the first time needs a connection.';
+
+  @override
+  String get mobRsOpenFailed => 'The file could not be opened. Try again.';
+
+  @override
+  String get mobRsNoViewer =>
+      'This phone has no app that can open this kind of file.';
 }

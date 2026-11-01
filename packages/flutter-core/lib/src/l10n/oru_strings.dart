@@ -6421,6 +6421,48 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Removed.'**
   String get mobRsRemoved;
+
+  /// Shown on the Parent app's Resources tab when the child's class has nothing. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'No worksheets have been shared for {child}\'s class yet.'**
+  String mobRsParentNone(String child);
+
+  /// Button that opens a worksheet or workbook the teacher shared.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get mobRsOpen;
+
+  /// Shown on the Open button while the file is being downloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening'**
+  String get mobRsOpening;
+
+  /// Shown on a resource that was opened before and can be read with no connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone'**
+  String get mobRsKept;
+
+  /// Shown when a worksheet could not be downloaded because the phone is offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening this the first time needs a connection.'**
+  String get mobRsNeedsNetOpen;
+
+  /// Shown when the school would not give the file or something went wrong.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be opened. Try again.'**
+  String get mobRsOpenFailed;
+
+  /// Shown when the file was downloaded but no app on the phone can open it.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone has no app that can open this kind of file.'**
+  String get mobRsNoViewer;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

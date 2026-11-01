@@ -1040,5 +1040,12 @@
   "mobRsBy": "Under a resource another teacher shared. {name} is that teacher.",
   "mobRsRemove": "Button that removes a resource the teacher shared.",
   "mobRsRemoveQuestion": "Question before removing a resource. {title} is its title.",
-  "mobRsRemoved": "Confirmation after removing a resource."
+  "mobRsRemoved": "Confirmation after removing a resource.",
+  "mobRsParentNone": "Shown on the Parent app's Resources tab when the child's class has nothing. {child} is the child's first name.",
+  "mobRsOpen": "Button that opens a worksheet or workbook the teacher shared.",
+  "mobRsOpening": "Shown on the Open button while the file is being downloaded.",
+  "mobRsKept": "Shown on a resource that was opened before and can be read with no connection.",
+  "mobRsNeedsNetOpen": "Shown when a worksheet could not be downloaded because the phone is offline.",
+  "mobRsOpenFailed": "Shown when the school would not give the file or something went wrong.",
+  "mobRsNoViewer": "Shown when the file was downloaded but no app on the phone can open it."
 }

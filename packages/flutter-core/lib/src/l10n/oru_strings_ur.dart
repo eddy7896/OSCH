@@ -3614,4 +3614,28 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get mobRsRemoved => 'ہٹا دیا گیا۔';
+
+  @override
+  String mobRsParentNone(String child) {
+    return '$child کی جماعت کے لیے ابھی کوئی ورک شیٹ شیئر نہیں کی گئی۔';
+  }
+
+  @override
+  String get mobRsOpen => 'کھولیں';
+
+  @override
+  String get mobRsOpening => 'کھل رہا ہے';
+
+  @override
+  String get mobRsKept => 'اس فون میں محفوظ';
+
+  @override
+  String get mobRsNeedsNetOpen => 'اسے پہلی بار کھولنے کے لیے کنکشن چاہیے۔';
+
+  @override
+  String get mobRsOpenFailed => 'فائل کھل نہیں سکی۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get mobRsNoViewer =>
+      'اس فون میں اس قسم کی فائل کھولنے والی ایپ نہیں ہے۔';
 }

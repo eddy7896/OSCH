@@ -4943,5 +4943,38 @@
   "mobRsRemoved": "Removed.",
   "@mobRsRemoved": {
     "description": "Confirmation after removing a resource."
+  },
+  "mobRsParentNone": "No worksheets have been shared for {child}'s class yet.",
+  "@mobRsParentNone": {
+    "description": "Shown on the Parent app's Resources tab when the child's class has nothing. {child} is the child's first name.",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "mobRsOpen": "Open",
+  "@mobRsOpen": {
+    "description": "Button that opens a worksheet or workbook the teacher shared."
+  },
+  "mobRsOpening": "Opening",
+  "@mobRsOpening": {
+    "description": "Shown on the Open button while the file is being downloaded."
+  },
+  "mobRsKept": "Saved on this phone",
+  "@mobRsKept": {
+    "description": "Shown on a resource that was opened before and can be read with no connection."
+  },
+  "mobRsNeedsNetOpen": "Opening this the first time needs a connection.",
+  "@mobRsNeedsNetOpen": {
+    "description": "Shown when a worksheet could not be downloaded because the phone is offline."
+  },
+  "mobRsOpenFailed": "The file could not be opened. Try again.",
+  "@mobRsOpenFailed": {
+    "description": "Shown when the school would not give the file or something went wrong."
+  },
+  "mobRsNoViewer": "This phone has no app that can open this kind of file.",
+  "@mobRsNoViewer": {
+    "description": "Shown when the file was downloaded but no app on the phone can open it."
   }
 }

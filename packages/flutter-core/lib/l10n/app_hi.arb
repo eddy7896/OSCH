@@ -1040,5 +1040,12 @@
   "mobRsBy": "{name} ने साझा किया",
   "mobRsRemove": "हटाएँ",
   "mobRsRemoveQuestion": "{title} हटाएँ? अभिभावक इसे अब नहीं देख पाएँगे।",
-  "mobRsRemoved": "हटा दिया गया।"
+  "mobRsRemoved": "हटा दिया गया।",
+  "mobRsParentNone": "{child} की कक्षा के लिए अभी कोई वर्कशीट साझा नहीं की गई है।",
+  "mobRsOpen": "खोलें",
+  "mobRsOpening": "खुल रहा है",
+  "mobRsKept": "इस फ़ोन में सहेजा गया",
+  "mobRsNeedsNetOpen": "इसे पहली बार खोलने के लिए कनेक्शन चाहिए।",
+  "mobRsOpenFailed": "फ़ाइल खुल नहीं सकी। फिर से कोशिश करें।",
+  "mobRsNoViewer": "इस फ़ोन में इस तरह की फ़ाइल खोलने वाला ऐप नहीं है।"
 }
