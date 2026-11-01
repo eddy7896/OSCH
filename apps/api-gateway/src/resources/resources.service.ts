@@ -10,7 +10,7 @@ import type { TenantContext } from '../tenant/tenant.decorators.js';
 import { RESOURCE_TYPES, type AddResourceDto, type FileUploadTicketDto, type ResourceDto, type ResourceListDto, type ResourceUploadRequestDto, type SignedReadDto } from './dto/resources.dto.js';
 
 type Scope = 'school' | 'own' | 'linked';
-interface Row {
+export interface ResourceRow {
   id: string; title: string; note?: string | null; fileKey: string; fileName: string; contentType: string; sizeBytes: number; createdAt: string; updatedAt: string;
   classroom: { id: string; name: string }; subject: { id: string; name: string }; uploadedBy: { id: string; displayName?: string | null; email: string };
 }
@@ -37,7 +37,7 @@ export class ResourcesService {
     return this.store;
   }
 
-  private view(r: Row): ResourceDto {
+  private view(r: ResourceRow): ResourceDto {
     return {
       id: dashed(r.id), title: r.title, note: r.note ?? null, class: { id: dashed(r.classroom.id), name: r.classroom.name }, subject: { id: dashed(r.subject.id), name: r.subject.name },
       fileName: r.fileName, contentType: r.contentType, sizeBytes: r.sizeBytes, uploadedBy: { id: r.uploadedBy.id, name: r.uploadedBy.displayName ?? r.uploadedBy.email },
@@ -100,8 +100,8 @@ export class ResourcesService {
     return this.one(t, 'school', id);
   }
 
-  private async row(t: TenantContext, id: string): Promise<Row | null> {
-    return ((await this.db.getLearningResource({ schoolId: t.schoolId, id: dashed(id) })).data.learningResources[0] as unknown as Row | undefined) ?? null;
+  private async row(t: TenantContext, id: string): Promise<ResourceRow | null> {
+    return ((await this.db.getLearningResource({ schoolId: t.schoolId, id: dashed(id) })).data.learningResources[0] as unknown as ResourceRow | undefined) ?? null;
   }
 
   /** The classes the caller may see resources of: all (school), the classes they teach (own), or the classes their linked children are in. */
@@ -120,10 +120,11 @@ export class ResourcesService {
     const rows = ids
       ? (await this.db.listLearningResourcesOfClasses({ schoolId: t.schoolId, academicYearId: yearId, classIds: ids, limit: LIMIT })).data.learningResources
       : (await this.db.listLearningResources({ schoolId: t.schoolId, academicYearId: yearId, limit: LIMIT })).data.learningResources;
-    return { items: (rows as unknown as Row[]).map((r) => this.view(r)) };
+    return { items: (rows as unknown as ResourceRow[]).map((r) => this.view(r)) };
   }
 
-  private async visible(t: TenantContext, scope: Scope, id: string): Promise<Row> {
+  /** The resource if the caller may see it (their class), else "not found". Used by the comments too. */
+  async visible(t: TenantContext, scope: Scope, id: string): Promise<ResourceRow> {
     const r = await this.row(t, id);
     if (!r) throw notFound();
     const allowed = await this.classes(t, scope);

@@ -3637,4 +3637,31 @@ class OruStringsHi extends OruStrings {
   @override
   String get mobRsNoViewer =>
       'इस फ़ोन में इस तरह की फ़ाइल खोलने वाला ऐप नहीं है।';
+
+  @override
+  String get notifResourcecommentStaffpostedTitle => 'वर्कशीट पर नई टिप्पणी';
+
+  @override
+  String notifResourcecommentStaffpostedBody(String who, String title) {
+    return '$who ने $title पर टिप्पणी की।';
+  }
+
+  @override
+  String get notifResourcecommentParentpostedTitle => 'वर्कशीट पर नई टिप्पणी';
+
+  @override
+  String notifResourcecommentParentpostedBody(String who, String title) {
+    return '$who के अभिभावक ने $title पर टिप्पणी की।';
+  }
+
+  @override
+  String get notifResourcecommentHiddenTitle => 'आपकी टिप्पणी छिपा दी गई';
+
+  @override
+  String notifResourcecommentHiddenBody(String title) {
+    return 'स्कूल ने $title पर आपकी टिप्पणी छिपा दी।';
+  }
+
+  @override
+  String get ntCatresourcecomment => 'वर्कशीट पर टिप्पणियाँ';
 }

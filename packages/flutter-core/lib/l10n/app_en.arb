@@ -4976,5 +4976,54 @@
   "mobRsNoViewer": "This phone has no app that can open this kind of file.",
   "@mobRsNoViewer": {
     "description": "Shown when the file was downloaded but no app on the phone can open it."
+  },
+  "notifResourcecommentStaffpostedTitle": "New comment on a worksheet",
+  "@notifResourcecommentStaffpostedTitle": {
+    "description": "Title of the notice sent when a teacher or the Academic admin comments under a worksheet you shared or commented on."
+  },
+  "notifResourcecommentStaffpostedBody": "{who} commented on {title}.",
+  "@notifResourcecommentStaffpostedBody": {
+    "description": "Body of that notice. {who} is the staff member's name, {title} the worksheet's title.",
+    "placeholders": {
+      "who": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifResourcecommentParentpostedTitle": "New comment on a worksheet",
+  "@notifResourcecommentParentpostedTitle": {
+    "description": "Title of the notice sent when a parent comments under a worksheet you shared or commented on."
+  },
+  "notifResourcecommentParentpostedBody": "Parent of {who} commented on {title}.",
+  "@notifResourcecommentParentpostedBody": {
+    "description": "Body of that notice. {who} is the first name of the child, {title} the worksheet's title.",
+    "placeholders": {
+      "who": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifResourcecommentHiddenTitle": "Your comment was hidden",
+  "@notifResourcecommentHiddenTitle": {
+    "description": "Title of the notice sent to the author when the school hides their comment."
+  },
+  "notifResourcecommentHiddenBody": "The school hid your comment on {title}.",
+  "@notifResourcecommentHiddenBody": {
+    "description": "Body of that notice. {title} is the worksheet's title.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "ntCatresourcecomment": "Worksheet comments",
+  "@ntCatresourcecomment": {
+    "description": "Name of the notification category for comments under worksheets, shown in the notification settings."
   }
 }

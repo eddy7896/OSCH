@@ -17,6 +17,11 @@ const List<OruRoute> kOruRoutes = [
   _rAttendanceStatuses,
   _rAttendanceStudent,
   _rAttendanceSubmit,
+  _rCommentsCreate,
+  _rCommentsEdit,
+  _rCommentsHide,
+  _rCommentsList,
+  _rCommentsRemove,
   _rDevicesList,
   _rDevicesRegister,
   _rDevicesRemove,
@@ -77,6 +82,11 @@ const _rAttendanceDays = OruRoute('GET', '/v1/attendance/classes/{id}/days', Oru
 const _rAttendanceStatuses = OruRoute('GET', '/v1/attendance/statuses', OruAccess.tenant, 'Attendance_statuses');
 const _rAttendanceStudent = OruRoute('GET', '/v1/attendance/students/{id}', OruAccess.tenant, 'Attendance_student');
 const _rAttendanceSubmit = OruRoute('PUT', '/v1/attendance/classes/{id}/days/{date}', OruAccess.tenant, 'Attendance_submit');
+const _rCommentsCreate = OruRoute('POST', '/v1/resources/{id}/comments', OruAccess.tenant, 'Comments_create');
+const _rCommentsEdit = OruRoute('PUT', '/v1/resources/{id}/comments/{commentId}', OruAccess.tenant, 'Comments_edit');
+const _rCommentsHide = OruRoute('POST', '/v1/resources/{id}/comments/{commentId}/hide', OruAccess.tenant, 'Comments_hide');
+const _rCommentsList = OruRoute('GET', '/v1/resources/{id}/comments', OruAccess.tenant, 'Comments_list');
+const _rCommentsRemove = OruRoute('DELETE', '/v1/resources/{id}/comments/{commentId}', OruAccess.tenant, 'Comments_remove');
 const _rDevicesList = OruRoute('GET', '/v1/devices', OruAccess.user, 'Devices_list');
 const _rDevicesRegister = OruRoute('POST', '/v1/devices', OruAccess.user, 'Devices_register');
 const _rDevicesRemove = OruRoute('DELETE', '/v1/devices', OruAccess.user, 'Devices_remove');
@@ -190,6 +200,35 @@ class OruApi {
   Future<ClassDayDto> attendanceSubmit({required String id, required String date, required SubmitDayDto body}) async {
     final j = await _t.send(_rAttendanceSubmit, "/v1/attendance/classes/${Uri.encodeComponent(id)}/days/${Uri.encodeComponent(date)}", body: body.toJson());
     return ClassDayDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/resources/{id}/comments
+  Future<CommentDto> commentsCreate({required String id, required CreateCommentDto body}) async {
+    final j = await _t.send(_rCommentsCreate, "/v1/resources/${Uri.encodeComponent(id)}/comments", body: body.toJson());
+    return CommentDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// PUT /v1/resources/{id}/comments/{commentId}
+  Future<CommentDto> commentsEdit({required String id, required String commentId, required EditCommentDto body}) async {
+    final j = await _t.send(_rCommentsEdit, "/v1/resources/${Uri.encodeComponent(id)}/comments/${Uri.encodeComponent(commentId)}", body: body.toJson());
+    return CommentDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/resources/{id}/comments/{commentId}/hide
+  Future<CommentDto> commentsHide({required String id, required String commentId}) async {
+    final j = await _t.send(_rCommentsHide, "/v1/resources/${Uri.encodeComponent(id)}/comments/${Uri.encodeComponent(commentId)}/hide");
+    return CommentDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/resources/{id}/comments
+  Future<CommentListDto> commentsList({required String id}) async {
+    final j = await _t.send(_rCommentsList, "/v1/resources/${Uri.encodeComponent(id)}/comments");
+    return CommentListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// DELETE /v1/resources/{id}/comments/{commentId}
+  Future<void> commentsRemove({required String id, required String commentId}) async {
+    await _t.send(_rCommentsRemove, "/v1/resources/${Uri.encodeComponent(id)}/comments/${Uri.encodeComponent(commentId)}");
   }
 
   /// GET /v1/devices

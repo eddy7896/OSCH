@@ -1046,5 +1046,12 @@
   "mobRsKept": "Saved on this phone",
   "mobRsNeedsNetOpen": "Opening this the first time needs a connection.",
   "mobRsOpenFailed": "The file could not be opened. Try again.",
-  "mobRsNoViewer": "This phone has no app that can open this kind of file."
+  "mobRsNoViewer": "This phone has no app that can open this kind of file.",
+  "notifResourcecommentStaffpostedTitle": "New comment on a worksheet",
+  "notifResourcecommentStaffpostedBody": "{who} commented on {title}.",
+  "notifResourcecommentParentpostedTitle": "New comment on a worksheet",
+  "notifResourcecommentParentpostedBody": "Parent of {who} commented on {title}.",
+  "notifResourcecommentHiddenTitle": "Your comment was hidden",
+  "notifResourcecommentHiddenBody": "The school hid your comment on {title}.",
+  "ntCatresourcecomment": "Worksheet comments"
 }

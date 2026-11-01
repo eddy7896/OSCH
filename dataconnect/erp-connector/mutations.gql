@@ -1587,3 +1587,50 @@ mutation RemoveLearningResource($schoolId: UUID!, $id: UUID!, $actorId: String!,
   learningResource_update(id: $id, data: { removedAt_expr: "request.time", updatedAt_expr: "request.time" })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "resource.remove", entityType: "LearningResource", entityId_expr: "request.variables.id", details: $details })
 }
+
+# ---- Comments under a learning resource (P5-11d, ADR-0016). The gateway has checked who may see the resource; the database checks the pieces and the author.
+mutation CreateResourceComment($schoolId: UUID!, $id: UUID!, $resourceId: UUID!, $clientId: String!, $authorRole: SchoolRole!, $authorName: String!, $replyToId: UUID, $body: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: $authorRole}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "the author is not an active member of this school in that role") { userId }
+    resource: learningResources(where: {id: {eq: $resourceId}, schoolId: {eq: $schoolId}, removedAt: {isNull: true}}) @check(expr: "this.size() == 1", message: "resource not found in this school or removed") { id }
+  }
+  resourceComment_insert(data: { id: $id, schoolId: $schoolId, resourceId: $resourceId, authorId: $actorId, authorRole: $authorRole, authorName: $authorName, clientId: $clientId, replyToId: $replyToId, body: $body, originalBody: $body })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "resourcecomment.post", entityType: "ResourceComment", entityId_expr: "request.variables.id", details: $details })
+}
+
+# The author edits within the window: the gateway computes $windowStart from the server's clock (now minus 5 minutes); the database refuses a comment created before it.
+mutation EditResourceComment($schoolId: UUID!, $id: UUID!, $body: String!, $windowStart: Timestamp!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    comment: resourceComments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, authorId: {eq: $actorId}, deletedAt: {isNull: true}, hiddenAt: {isNull: true}, createdAt: {ge: $windowStart}}) @check(expr: "this.size() == 1", message: "no comment of yours that can still be changed") { id }
+  }
+  resourceComment_update(id: $id, data: { body: $body, editedAt_expr: "request.time", updatedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "resourcecomment.edit", entityType: "ResourceComment", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation DeleteResourceComment($schoolId: UUID!, $id: UUID!, $windowStart: Timestamp!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    comment: resourceComments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, authorId: {eq: $actorId}, deletedAt: {isNull: true}, createdAt: {ge: $windowStart}}) @check(expr: "this.size() == 1", message: "no comment of yours that can still be deleted") { id }
+  }
+  resourceComment_update(id: $id, data: { deletedAt_expr: "request.time", updatedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "resourcecomment.delete", entityType: "ResourceComment", entityId_expr: "request.variables.id", details: $details })
+}
+
+# The uploader or the Academic admin hides a comment (the gateway has checked which); the author is told in the same transaction.
+mutation HideResourceComment($schoolId: UUID!, $id: UUID!, $authorUserId: String!, $kind: String!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {in: [ACADEMIC_ADMIN, TEACHER]}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only a teacher or the Academic admin of this school can hide a comment") { userId }
+    comment: resourceComments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, authorId: {eq: $authorUserId}, deletedAt: {isNull: true}, hiddenAt: {isNull: true}}) @check(expr: "this.size() == 1", message: "comment not found in this school or already hidden") { id }
+  }
+  resourceComment_update(id: $id, data: { hiddenAt_expr: "request.time", hiddenById: $actorId, updatedAt_expr: "request.time" })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: $kind, params: $notice, entityType: "ResourceComment", entityId_expr: "request.variables.id", recipientUserId: $authorUserId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "resourcecomment.hide", entityType: "ResourceComment", entityId_expr: "request.variables.id", details: $details })
+}
+
+# One notice to one person about a new comment. The comment is already saved: a failure here never undoes it (the gateway sends one of these per person, best effort).
+mutation NotifyResourceComment($schoolId: UUID!, $commentId: UUID!, $recipientUserId: String!, $kind: String!, $notice: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    comment: resourceComments(where: {id: {eq: $commentId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "comment not found in this school") { id }
+  }
+  notification_insert(data: { schoolId: $schoolId, kind: $kind, params: $notice, entityType: "ResourceComment", entityId_expr: "request.variables.commentId", recipientUserId: $recipientUserId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "resourcecomment.notify", entityType: "ResourceComment", entityId_expr: "request.variables.commentId", details: $details })
+}

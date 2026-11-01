@@ -1300,6 +1300,90 @@
         ],
         "type": "object"
       },
+      "CommentDto": {
+        "properties": {
+          "author": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "TEACHER",
+                  "PARENT",
+                  "ADMIN"
+                ],
+                "type": "string"
+              },
+              "mine": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind",
+              "name",
+              "mine"
+            ],
+            "type": "object"
+          },
+          "body": {
+            "nullable": true,
+            "type": "string"
+          },
+          "canChange": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "edited": {
+            "type": "boolean"
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "replyToId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "resourceId": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "resourceId",
+          "author",
+          "body",
+          "hidden",
+          "edited",
+          "replyToId",
+          "canChange",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
+      "CommentListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CommentDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "ConcessionDto": {
         "properties": {
           "academicYear": {
@@ -1541,6 +1625,27 @@
           "gradeLevelId",
           "section",
           "capacity"
+        ],
+        "type": "object"
+      },
+      "CreateCommentDto": {
+        "properties": {
+          "body": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "clientId": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "type": "string"
+          },
+          "replyToId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "clientId",
+          "body"
         ],
         "type": "object"
       },
@@ -2713,6 +2818,19 @@
           "from",
           "to",
           "items"
+        ],
+        "type": "object"
+      },
+      "EditCommentDto": {
+        "properties": {
+          "body": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "body"
         ],
         "type": "object"
       },
@@ -18453,7 +18571,8 @@
                 "substitution",
                 "payroll",
                 "announcement",
-                "studentleave"
+                "studentleave",
+                "resourcecomment"
               ],
               "type": "string"
             }
@@ -20944,6 +21063,360 @@
         "x-permission": {
           "action": "read",
           "resource": "learning_resources"
+        }
+      }
+    },
+    "/v1/resources/{id}/comments": {
+      "get": {
+        "operationId": "Comments_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Comments"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "resource_comments"
+        }
+      },
+      "post": {
+        "operationId": "Comments_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Comments"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "resourcecomment.post",
+          "operation": "CreateResourceComment"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "resource_comments"
+        }
+      }
+    },
+    "/v1/resources/{id}/comments/{commentId}": {
+      "delete": {
+        "operationId": "Comments_remove",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "commentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Comments"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "resourcecomment.delete",
+          "operation": "DeleteResourceComment"
+        },
+        "x-permission": {
+          "action": "delete",
+          "resource": "resource_comments"
+        }
+      },
+      "put": {
+        "operationId": "Comments_edit",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "commentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditCommentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Comments"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "resourcecomment.edit",
+          "operation": "EditResourceComment"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "resource_comments"
+        }
+      }
+    },
+    "/v1/resources/{id}/comments/{commentId}/hide": {
+      "post": {
+        "operationId": "Comments_hide",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "commentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Comments"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "resourcecomment.hide",
+          "operation": "HideResourceComment"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "resource_comments"
         }
       }
     },

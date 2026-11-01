@@ -740,3 +740,22 @@ query GetLearningResource($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) 
     id title note fileKey fileName contentType sizeBytes createdAt updatedAt classroom { id name } subject { id name } uploadedBy { id displayName email }
   }
 }
+
+# Every comment under a resource, oldest first (deleted ones included: the gateway leaves them out and uses the rest to know who has already commented).
+query ListResourceComments($schoolId: UUID!, $resourceId: UUID!, $limit: Int!) @auth(level: NO_ACCESS) {
+  resourceComments(where: {schoolId: {eq: $schoolId}, resourceId: {eq: $resourceId}}, orderBy: [{createdAt: ASC}], limit: $limit) {
+    id resourceId clientId authorRole authorName body originalBody editedAt deletedAt hiddenAt createdAt updatedAt author { id } hiddenBy { id } replyTo { id }
+  }
+}
+
+query GetResourceComment($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  resourceComments(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}, limit: 1) {
+    id resourceId clientId authorRole authorName body originalBody editedAt deletedAt hiddenAt createdAt updatedAt author { id } hiddenBy { id } replyTo { id }
+  }
+}
+
+query ResourceCommentByClientId($schoolId: UUID!, $resourceId: UUID!, $authorId: String!, $clientId: String!) @auth(level: NO_ACCESS) {
+  resourceComments(where: {schoolId: {eq: $schoolId}, resourceId: {eq: $resourceId}, authorId: {eq: $authorId}, clientId: {eq: $clientId}}, limit: 1) {
+    id resourceId clientId authorRole authorName body originalBody editedAt deletedAt hiddenAt createdAt updatedAt author { id } hiddenBy { id } replyTo { id }
+  }
+}

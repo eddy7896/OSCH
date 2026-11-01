@@ -1047,5 +1047,12 @@
   "mobRsKept": "Shown on a resource that was opened before and can be read with no connection.",
   "mobRsNeedsNetOpen": "Shown when a worksheet could not be downloaded because the phone is offline.",
   "mobRsOpenFailed": "Shown when the school would not give the file or something went wrong.",
-  "mobRsNoViewer": "Shown when the file was downloaded but no app on the phone can open it."
+  "mobRsNoViewer": "Shown when the file was downloaded but no app on the phone can open it.",
+  "notifResourcecommentStaffpostedTitle": "Title of the notice sent when a teacher or the Academic admin comments under a worksheet you shared or commented on.",
+  "notifResourcecommentStaffpostedBody": "Body of that notice. {who} is the staff member's name, {title} the worksheet's title.",
+  "notifResourcecommentParentpostedTitle": "Title of the notice sent when a parent comments under a worksheet you shared or commented on.",
+  "notifResourcecommentParentpostedBody": "Body of that notice. {who} is the first name of the child, {title} the worksheet's title.",
+  "notifResourcecommentHiddenTitle": "Title of the notice sent to the author when the school hides their comment.",
+  "notifResourcecommentHiddenBody": "Body of that notice. {title} is the worksheet's title.",
+  "ntCatresourcecomment": "Name of the notification category for comments under worksheets, shown in the notification settings."
 }
