@@ -432,6 +432,98 @@ class ClassTimetableDto {
       };
 }
 
+class CommentDto {
+  const CommentDto({required this.author, required this.body, required this.canChange, required this.createdAt, required this.edited, required this.hidden, required this.id, required this.replyToId, required this.resourceId, required this.updatedAt});
+  final CommentDtoAuthor author;
+  final String? body;
+  final bool canChange;
+  final String createdAt;
+  final bool edited;
+  final bool hidden;
+  final String id;
+  final String? replyToId;
+  final String resourceId;
+  final String updatedAt;
+
+  factory CommentDto.fromJson(Map<String, dynamic> j) => CommentDto(
+        author: CommentDtoAuthor.fromJson(j['author'] as Map<String, dynamic>),
+        body: j['body'] == null ? null : j['body'] as String,
+        canChange: j['canChange'] as bool,
+        createdAt: j['createdAt'] as String,
+        edited: j['edited'] as bool,
+        hidden: j['hidden'] as bool,
+        id: j['id'] as String,
+        replyToId: j['replyToId'] == null ? null : j['replyToId'] as String,
+        resourceId: j['resourceId'] as String,
+        updatedAt: j['updatedAt'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'author': author.toJson(),
+        if (body != null) 'body': body!,
+        'canChange': canChange,
+        'createdAt': createdAt,
+        'edited': edited,
+        'hidden': hidden,
+        'id': id,
+        if (replyToId != null) 'replyToId': replyToId!,
+        'resourceId': resourceId,
+        'updatedAt': updatedAt,
+      };
+}
+
+class CommentDtoAuthor {
+  const CommentDtoAuthor({required this.kind, required this.mine, required this.name});
+  /// One of: TEACHER, PARENT, ADMIN.
+  final String kind;
+  final bool mine;
+  final String name;
+
+  factory CommentDtoAuthor.fromJson(Map<String, dynamic> j) => CommentDtoAuthor(
+        kind: j['kind'] as String,
+        mine: j['mine'] as bool,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'kind': kind,
+        'mine': mine,
+        'name': name,
+      };
+}
+
+class CommentListDto {
+  const CommentListDto({required this.items});
+  final List<CommentDto> items;
+
+  factory CommentListDto.fromJson(Map<String, dynamic> j) => CommentListDto(
+        items: (j['items'] as List<dynamic>).map((e) => CommentDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
+class CreateCommentDto {
+  const CreateCommentDto({required this.body, required this.clientId, this.replyToId});
+  final String body;
+  final String clientId;
+  final String? replyToId;
+
+  factory CreateCommentDto.fromJson(Map<String, dynamic> j) => CreateCommentDto(
+        body: j['body'] as String,
+        clientId: j['clientId'] as String,
+        replyToId: j['replyToId'] == null ? null : j['replyToId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'body': body,
+        'clientId': clientId,
+        if (replyToId != null) 'replyToId': replyToId!,
+      };
+}
+
 class CreateRequestDto {
   const CreateRequestDto({this.clientId, required this.endDate, this.half, required this.leaveTypeId, this.reason, required this.startDate});
   final String? clientId;
@@ -634,6 +726,19 @@ class DutyListDto {
         'from': from,
         'items': items.map((e) => e.toJson()).toList(),
         'to': to,
+      };
+}
+
+class EditCommentDto {
+  const EditCommentDto({required this.body});
+  final String body;
+
+  factory EditCommentDto.fromJson(Map<String, dynamic> j) => EditCommentDto(
+        body: j['body'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'body': body,
       };
 }
 

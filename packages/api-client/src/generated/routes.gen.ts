@@ -1035,6 +1035,36 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Reports_payroll"
   },
   {
+    "method": "POST",
+    "path": "/v1/resources/{id}/comments/{commentId}/hide",
+    "access": "tenant",
+    "operationId": "Comments_hide"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/resources/{id}/comments/{commentId}",
+    "access": "tenant",
+    "operationId": "Comments_remove"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/resources/{id}/comments/{commentId}",
+    "access": "tenant",
+    "operationId": "Comments_edit"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/resources/{id}/comments",
+    "access": "tenant",
+    "operationId": "Comments_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/resources/{id}/comments",
+    "access": "tenant",
+    "operationId": "Comments_create"
+  },
+  {
     "method": "GET",
     "path": "/v1/resources/{id}/download",
     "access": "tenant",

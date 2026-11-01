@@ -780,6 +780,28 @@ type LearningResource @table @unique(fields: ["school", "fileKey"]) {
   updatedAt: Timestamp! @default(expr: "request.time")
 }
 
+# A comment under a learning resource (P5-11d, ADR-0016 decision 6). Text only. `authorName` is what other families see: for a parent the first names of their children in the
+# resource's class (the app writes "Parent of ..."), for staff the person's name. `originalBody` keeps the first version after an edit. A parent may edit or delete within
+# 5 minutes of `createdAt` (the server's clock); a hidden comment keeps its words for staff and the audit trail but never reaches a parent.
+type ResourceComment @table @unique(fields: ["resource", "author", "clientId"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  resource: LearningResource!
+  author: User!
+  authorRole: SchoolRole!
+  authorName: String!
+  clientId: String!
+  replyTo: ResourceComment
+  body: String!
+  originalBody: String!
+  editedAt: Timestamp
+  deletedAt: Timestamp
+  hiddenAt: Timestamp
+  hiddenBy: User
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time")
+}
+
 # A parent's request for leave for their child (P5-10, ADR-0016). Decided by the class teacher or the Academic admin; the first decision stands.
 type StudentLeave @table @unique(fields: ["student", "clientId"]) {
   id: UUID! @default(expr: "uuidV4()")

@@ -1730,6 +1730,32 @@ export interface CreatePeriodVariables {
   details?: unknown | null;
 }
 
+export interface CreateResourceCommentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    resource: ({
+      id: UUIDString;
+    } & LearningResource_Key)[];
+  };
+  resourceComment_insert: ResourceComment_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateResourceCommentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  resourceId: UUIDString;
+  clientId: string;
+  authorRole: SchoolRole;
+  authorName: string;
+  replyToId?: UUIDString | null;
+  body: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface CreateSchoolData {
   school_insert: School_Key;
 }
@@ -2307,6 +2333,24 @@ export interface DeletePeriodVariables {
   details?: unknown | null;
 }
 
+export interface DeleteResourceCommentData {
+  query?: {
+    comment: ({
+      id: UUIDString;
+    } & ResourceComment_Key)[];
+  };
+  resourceComment_update?: ResourceComment_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface DeleteResourceCommentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  windowStart: TimestampString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface DeleteSubjectData {
   query?: {
     actor: ({
@@ -2443,6 +2487,25 @@ export interface EditAnnouncementVariables {
   id: UUIDString;
   title: string;
   body: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface EditResourceCommentData {
+  query?: {
+    comment: ({
+      id: UUIDString;
+    } & ResourceComment_Key)[];
+  };
+  resourceComment_update?: ResourceComment_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface EditResourceCommentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  body: string;
+  windowStart: TimestampString;
   actorId: string;
   details?: unknown | null;
 }
@@ -3161,6 +3224,37 @@ export interface GetReceiptVariables {
   id: UUIDString;
 }
 
+export interface GetResourceCommentData {
+  resourceComments: ({
+    id: UUIDString;
+    resourceId: UUIDString;
+    clientId: string;
+    authorRole: SchoolRole;
+    authorName: string;
+    body: string;
+    originalBody: string;
+    editedAt?: TimestampString | null;
+    deletedAt?: TimestampString | null;
+    hiddenAt?: TimestampString | null;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    author: {
+      id: string;
+    } & User_Key;
+    hiddenBy?: {
+      id: string;
+    } & User_Key;
+    replyTo?: {
+      id: UUIDString;
+    } & ResourceComment_Key;
+  } & ResourceComment_Key)[];
+}
+
+export interface GetResourceCommentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetSchoolBySubDomainData {
   schools: ({
     id: UUIDString;
@@ -3507,6 +3601,30 @@ export interface GradeLevel_Key {
 export interface Guardian_Key {
   id: UUIDString;
   __typename?: 'Guardian_Key';
+}
+
+export interface HideResourceCommentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    comment: ({
+      id: UUIDString;
+    } & ResourceComment_Key)[];
+  };
+  resourceComment_update?: ResourceComment_Key | null;
+  n1: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface HideResourceCommentVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  authorUserId: string;
+  kind: string;
+  notice?: unknown | null;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface ImportBatch_Key {
@@ -4295,6 +4413,38 @@ export interface ListReceiptsVariables {
   offset: number;
 }
 
+export interface ListResourceCommentsData {
+  resourceComments: ({
+    id: UUIDString;
+    resourceId: UUIDString;
+    clientId: string;
+    authorRole: SchoolRole;
+    authorName: string;
+    body: string;
+    originalBody: string;
+    editedAt?: TimestampString | null;
+    deletedAt?: TimestampString | null;
+    hiddenAt?: TimestampString | null;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    author: {
+      id: string;
+    } & User_Key;
+    hiddenBy?: {
+      id: string;
+    } & User_Key;
+    replyTo?: {
+      id: UUIDString;
+    } & ResourceComment_Key;
+  } & ResourceComment_Key)[];
+}
+
+export interface ListResourceCommentsVariables {
+  schoolId: UUIDString;
+  resourceId: UUIDString;
+  limit: number;
+}
+
 export interface ListSalaryLinesData {
   salaryLines: ({
     id: UUIDString;
@@ -4874,6 +5024,26 @@ export interface NotificationRead_Key {
 export interface Notification_Key {
   id: UUIDString;
   __typename?: 'Notification_Key';
+}
+
+export interface NotifyResourceCommentData {
+  query?: {
+    comment: ({
+      id: UUIDString;
+    } & ResourceComment_Key)[];
+  };
+  notification_insert: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface NotifyResourceCommentVariables {
+  schoolId: UUIDString;
+  commentId: UUIDString;
+  recipientUserId: string;
+  kind: string;
+  notice?: unknown | null;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface ParentLink_Key {
@@ -5489,6 +5659,44 @@ export interface RemoveTeacherSubjectVariables {
   id: UUIDString;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface ResourceCommentByClientIdData {
+  resourceComments: ({
+    id: UUIDString;
+    resourceId: UUIDString;
+    clientId: string;
+    authorRole: SchoolRole;
+    authorName: string;
+    body: string;
+    originalBody: string;
+    editedAt?: TimestampString | null;
+    deletedAt?: TimestampString | null;
+    hiddenAt?: TimestampString | null;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    author: {
+      id: string;
+    } & User_Key;
+    hiddenBy?: {
+      id: string;
+    } & User_Key;
+    replyTo?: {
+      id: UUIDString;
+    } & ResourceComment_Key;
+  } & ResourceComment_Key)[];
+}
+
+export interface ResourceCommentByClientIdVariables {
+  schoolId: UUIDString;
+  resourceId: UUIDString;
+  authorId: string;
+  clientId: string;
+}
+
+export interface ResourceComment_Key {
+  id: UUIDString;
+  __typename?: 'ResourceComment_Key';
 }
 
 export interface ReversePaymentData {
@@ -7681,6 +7889,31 @@ export function removeLearningResource(dc: DataConnect, vars: RemoveLearningReso
 /** Generated Node Admin SDK operation action function for the 'RemoveLearningResource' Mutation. Allow users to pass in custom DataConnect instances. */
 export function removeLearningResource(vars: RemoveLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RemoveLearningResourceData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateResourceComment' Mutation. Allow users to execute without passing in DataConnect. */
+export function createResourceComment(dc: DataConnect, vars: CreateResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateResourceCommentData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateResourceComment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createResourceComment(vars: CreateResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateResourceCommentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'EditResourceComment' Mutation. Allow users to execute without passing in DataConnect. */
+export function editResourceComment(dc: DataConnect, vars: EditResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EditResourceCommentData>>;
+/** Generated Node Admin SDK operation action function for the 'EditResourceComment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function editResourceComment(vars: EditResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EditResourceCommentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteResourceComment' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteResourceComment(dc: DataConnect, vars: DeleteResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteResourceCommentData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteResourceComment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteResourceComment(vars: DeleteResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteResourceCommentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'HideResourceComment' Mutation. Allow users to execute without passing in DataConnect. */
+export function hideResourceComment(dc: DataConnect, vars: HideResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<HideResourceCommentData>>;
+/** Generated Node Admin SDK operation action function for the 'HideResourceComment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function hideResourceComment(vars: HideResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<HideResourceCommentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'NotifyResourceComment' Mutation. Allow users to execute without passing in DataConnect. */
+export function notifyResourceComment(dc: DataConnect, vars: NotifyResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<NotifyResourceCommentData>>;
+/** Generated Node Admin SDK operation action function for the 'NotifyResourceComment' Mutation. Allow users to pass in custom DataConnect instances. */
+export function notifyResourceComment(vars: NotifyResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<NotifyResourceCommentData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -8305,4 +8538,19 @@ export function listLearningResourcesOfClasses(vars: ListLearningResourcesOfClas
 export function getLearningResource(dc: DataConnect, vars: GetLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetLearningResourceData>>;
 /** Generated Node Admin SDK operation action function for the 'GetLearningResource' Query. Allow users to pass in custom DataConnect instances. */
 export function getLearningResource(vars: GetLearningResourceVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetLearningResourceData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListResourceComments' Query. Allow users to execute without passing in DataConnect. */
+export function listResourceComments(dc: DataConnect, vars: ListResourceCommentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListResourceCommentsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListResourceComments' Query. Allow users to pass in custom DataConnect instances. */
+export function listResourceComments(vars: ListResourceCommentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListResourceCommentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetResourceComment' Query. Allow users to execute without passing in DataConnect. */
+export function getResourceComment(dc: DataConnect, vars: GetResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetResourceCommentData>>;
+/** Generated Node Admin SDK operation action function for the 'GetResourceComment' Query. Allow users to pass in custom DataConnect instances. */
+export function getResourceComment(vars: GetResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetResourceCommentData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ResourceCommentByClientId' Query. Allow users to execute without passing in DataConnect. */
+export function resourceCommentByClientId(dc: DataConnect, vars: ResourceCommentByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ResourceCommentByClientIdData>>;
+/** Generated Node Admin SDK operation action function for the 'ResourceCommentByClientId' Query. Allow users to pass in custom DataConnect instances. */
+export function resourceCommentByClientId(vars: ResourceCommentByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ResourceCommentByClientIdData>>;
 

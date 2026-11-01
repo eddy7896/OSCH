@@ -1052,7 +1052,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobRsKept": "Saved on this phone",
     "mobRsNeedsNetOpen": "Opening this the first time needs a connection.",
     "mobRsOpenFailed": "The file could not be opened. Try again.",
-    "mobRsNoViewer": "This phone has no app that can open this kind of file."
+    "mobRsNoViewer": "This phone has no app that can open this kind of file.",
+    "notifResourcecommentStaffpostedTitle": "New comment on a worksheet",
+    "notifResourcecommentStaffpostedBody": "{who} commented on {title}.",
+    "notifResourcecommentParentpostedTitle": "New comment on a worksheet",
+    "notifResourcecommentParentpostedBody": "Parent of {who} commented on {title}.",
+    "notifResourcecommentHiddenTitle": "Your comment was hidden",
+    "notifResourcecommentHiddenBody": "The school hid your comment on {title}.",
+    "ntCatresourcecomment": "Worksheet comments"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2102,7 +2109,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobRsKept": "इस फ़ोन में सहेजा गया",
     "mobRsNeedsNetOpen": "इसे पहली बार खोलने के लिए कनेक्शन चाहिए।",
     "mobRsOpenFailed": "फ़ाइल खुल नहीं सकी। फिर से कोशिश करें।",
-    "mobRsNoViewer": "इस फ़ोन में इस तरह की फ़ाइल खोलने वाला ऐप नहीं है।"
+    "mobRsNoViewer": "इस फ़ोन में इस तरह की फ़ाइल खोलने वाला ऐप नहीं है।",
+    "notifResourcecommentStaffpostedTitle": "वर्कशीट पर नई टिप्पणी",
+    "notifResourcecommentStaffpostedBody": "{who} ने {title} पर टिप्पणी की।",
+    "notifResourcecommentParentpostedTitle": "वर्कशीट पर नई टिप्पणी",
+    "notifResourcecommentParentpostedBody": "{who} के अभिभावक ने {title} पर टिप्पणी की।",
+    "notifResourcecommentHiddenTitle": "आपकी टिप्पणी छिपा दी गई",
+    "notifResourcecommentHiddenBody": "स्कूल ने {title} पर आपकी टिप्पणी छिपा दी।",
+    "ntCatresourcecomment": "वर्कशीट पर टिप्पणियाँ"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3152,7 +3166,14 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobRsKept": "اس فون میں محفوظ",
     "mobRsNeedsNetOpen": "اسے پہلی بار کھولنے کے لیے کنکشن چاہیے۔",
     "mobRsOpenFailed": "فائل کھل نہیں سکی۔ دوبارہ کوشش کریں۔",
-    "mobRsNoViewer": "اس فون میں اس قسم کی فائل کھولنے والی ایپ نہیں ہے۔"
+    "mobRsNoViewer": "اس فون میں اس قسم کی فائل کھولنے والی ایپ نہیں ہے۔",
+    "notifResourcecommentStaffpostedTitle": "ورک شیٹ پر نیا تبصرہ",
+    "notifResourcecommentStaffpostedBody": "{who} نے {title} پر تبصرہ کیا۔",
+    "notifResourcecommentParentpostedTitle": "ورک شیٹ پر نیا تبصرہ",
+    "notifResourcecommentParentpostedBody": "{who} کے والدین نے {title} پر تبصرہ کیا۔",
+    "notifResourcecommentHiddenTitle": "آپ کا تبصرہ چھپا دیا گیا",
+    "notifResourcecommentHiddenBody": "اسکول نے {title} پر آپ کا تبصرہ چھپا دیا۔",
+    "ntCatresourcecomment": "ورک شیٹ پر تبصرے"
   },
   "ks": {},
   "sd": {},

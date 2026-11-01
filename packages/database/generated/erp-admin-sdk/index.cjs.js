@@ -1316,6 +1316,41 @@ function removeLearningResource(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.removeLearningResource = removeLearningResource;
 
+function createResourceComment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateResourceComment', inputVars, inputOpts);
+}
+exports.createResourceComment = createResourceComment;
+
+function editResourceComment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('EditResourceComment', inputVars, inputOpts);
+}
+exports.editResourceComment = editResourceComment;
+
+function deleteResourceComment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteResourceComment', inputVars, inputOpts);
+}
+exports.deleteResourceComment = deleteResourceComment;
+
+function hideResourceComment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('HideResourceComment', inputVars, inputOpts);
+}
+exports.hideResourceComment = hideResourceComment;
+
+function notifyResourceComment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('NotifyResourceComment', inputVars, inputOpts);
+}
+exports.notifyResourceComment = notifyResourceComment;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2190,4 +2225,25 @@ function getLearningResource(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('GetLearningResource', inputVars, inputOpts);
 }
 exports.getLearningResource = getLearningResource;
+
+function listResourceComments(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListResourceComments', inputVars, inputOpts);
+}
+exports.listResourceComments = listResourceComments;
+
+function getResourceComment(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetResourceComment', inputVars, inputOpts);
+}
+exports.getResourceComment = getResourceComment;
+
+function resourceCommentByClientId(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ResourceCommentByClientId', inputVars, inputOpts);
+}
+exports.resourceCommentByClientId = resourceCommentByClientId;
 

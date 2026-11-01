@@ -3635,4 +3635,33 @@ class OruStringsGu extends OruStrings {
   @override
   String get mobRsNoViewer =>
       'This phone has no app that can open this kind of file.';
+
+  @override
+  String get notifResourcecommentStaffpostedTitle =>
+      'New comment on a worksheet';
+
+  @override
+  String notifResourcecommentStaffpostedBody(String who, String title) {
+    return '$who commented on $title.';
+  }
+
+  @override
+  String get notifResourcecommentParentpostedTitle =>
+      'New comment on a worksheet';
+
+  @override
+  String notifResourcecommentParentpostedBody(String who, String title) {
+    return 'Parent of $who commented on $title.';
+  }
+
+  @override
+  String get notifResourcecommentHiddenTitle => 'Your comment was hidden';
+
+  @override
+  String notifResourcecommentHiddenBody(String title) {
+    return 'The school hid your comment on $title.';
+  }
+
+  @override
+  String get ntCatresourcecomment => 'Worksheet comments';
 }

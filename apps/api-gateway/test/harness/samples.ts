@@ -229,6 +229,16 @@ const resourceOfA = async (w: World): Promise<Record<string, string>> => {
   await w.db.addLearningResource({ schoolId: w.schools.A, id, classroomId: s['classId']!, academicYearId: s['year']!, subjectId: s['subjectId']!, title: 'Sample', fileKey: resourceKey(w, s['classId']!), fileName: 'sample.pdf', contentType: 'application/pdf', sizeBytes: 1234, actorId: actorA(w), details: {} });
   return { ...s, id: dash(id) };
 };
+/** A resource of school A with a student of its class linked to the sample parent, and the parent's comment under it (P5-11d). */
+const commentOfA = async (w: World): Promise<Record<string, string>> => {
+  const res = await resourceOfA(w);
+  const student = await studentOfA(w);
+  await w.db.placeStudent({ schoolId: w.schools.A, studentId: student['id']!, academicYearId: res['year']!, classroomId: res['classId']!, actorId: actorA(w) });
+  await w.db.linkParentAccount({ schoolId: w.schools.A, id: randomUUID(), studentId: student['id']!.replaceAll('-', ''), userId: w.roles.A.PARENT.uid, relationship: 'MOTHER', actorId: actorA(w), details: {} });
+  const id = randomUUID();
+  await w.db.createResourceComment({ schoolId: w.schools.A, id, resourceId: res['id']!, clientId: `s-${id.slice(0, 12)}`, authorRole: 'PARENT' as never, authorName: 'Asha', body: 'Sample', actorId: w.roles.A.PARENT.uid, details: {} });
+  return { ...res, commentId: dash(id) };
+};
 const examOfA = async (w: World): Promise<Record<string, string>> => {
   const s = await examSetupOfA(w);
   const id = randomUUID();
@@ -613,6 +623,10 @@ export const SAMPLES: Record<string, Sample> = {
   'DELETE /students/:id/documents/:documentId': { ...academicAdminOfA, prepare: studentWithDocument },
   'POST /resources': { ...academicAdminOfA, prepare: examSetupOfA, body: (w, ctx) => ({ classId: ctx['classId'], subjectId: ctx['subjectId'], key: resourceKey(w, ctx['classId']!), title: 'Fractions', fileName: 'fractions.pdf' }) },
   'DELETE /resources/:id': { ...academicAdminOfA, prepare: resourceOfA },
+  'POST /resources/:id/comments': { ...academicAdminOfA, prepare: resourceOfA, body: () => ({ clientId: `s-${randomUUID().slice(0, 12)}`, body: 'Please keep to the syllabus' }) },
+  'PUT /resources/:id/comments/:commentId': { ...parentOfA, prepare: commentOfA, body: () => ({ body: 'Edited' }) },
+  'DELETE /resources/:id/comments/:commentId': { ...parentOfA, prepare: commentOfA },
+  'POST /resources/:id/comments/:commentId/hide': { ...academicAdminOfA, prepare: commentOfA },
   'POST /staff': { ...hrOfA, body: () => ({ firstName: 'Audit', lastName: 'Staff', department: 'Science' }) },
   'PATCH /staff/:id': { ...hrOfA, prepare: staffOfA, body: () => ({ designation: 'Teacher' }) },
   'PUT /staff/:id/account': { ...hrOfA, prepare: staffOfA, body: (w) => ({ userId: w.roles.A.TEACHER.uid }) },

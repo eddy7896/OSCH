@@ -6463,6 +6463,48 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'This phone has no app that can open this kind of file.'**
   String get mobRsNoViewer;
+
+  /// Title of the notice sent when a teacher or the Academic admin comments under a worksheet you shared or commented on.
+  ///
+  /// In en, this message translates to:
+  /// **'New comment on a worksheet'**
+  String get notifResourcecommentStaffpostedTitle;
+
+  /// Body of that notice. {who} is the staff member's name, {title} the worksheet's title.
+  ///
+  /// In en, this message translates to:
+  /// **'{who} commented on {title}.'**
+  String notifResourcecommentStaffpostedBody(String who, String title);
+
+  /// Title of the notice sent when a parent comments under a worksheet you shared or commented on.
+  ///
+  /// In en, this message translates to:
+  /// **'New comment on a worksheet'**
+  String get notifResourcecommentParentpostedTitle;
+
+  /// Body of that notice. {who} is the first name of the child, {title} the worksheet's title.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent of {who} commented on {title}.'**
+  String notifResourcecommentParentpostedBody(String who, String title);
+
+  /// Title of the notice sent to the author when the school hides their comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Your comment was hidden'**
+  String get notifResourcecommentHiddenTitle;
+
+  /// Body of that notice. {title} is the worksheet's title.
+  ///
+  /// In en, this message translates to:
+  /// **'The school hid your comment on {title}.'**
+  String notifResourcecommentHiddenBody(String title);
+
+  /// Name of the notification category for comments under worksheets, shown in the notification settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Worksheet comments'**
+  String get ntCatresourcecomment;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

@@ -331,6 +331,27 @@ export type CollectionsReportDto = {
     total: number;
 };
 
+export type CommentDto = {
+    author: {
+        kind: 'TEACHER' | 'PARENT' | 'ADMIN';
+        mine: boolean;
+        name: string;
+    };
+    body: string | null;
+    canChange: boolean;
+    createdAt: string;
+    edited: boolean;
+    hidden: boolean;
+    id: string;
+    replyToId: string | null;
+    resourceId: string;
+    updatedAt: string;
+};
+
+export type CommentListDto = {
+    items: Array<CommentDto>;
+};
+
 export type ConcessionDto = {
     academicYear: {
         id: string;
@@ -392,6 +413,12 @@ export type CreateClassDto = {
     capacity: number;
     gradeLevelId: string;
     section: string;
+};
+
+export type CreateCommentDto = {
+    body: string;
+    clientId: string;
+    replyToId?: string;
 };
 
 export type CreateConcessionDto = {
@@ -692,6 +719,10 @@ export type DutyListDto = {
     from: string;
     items: Array<DutyDto>;
     to: string;
+};
+
+export type EditCommentDto = {
+    body: string;
 };
 
 export type ErrorEnvelope = {
@@ -8272,7 +8303,7 @@ export type NotificationsPreferencesResponse = NotificationsPreferencesResponses
 export type NotificationsSetPreferenceData = {
     body: PreferenceDto;
     path: {
-        category: 'leave' | 'substitution' | 'payroll' | 'announcement' | 'studentleave';
+        category: 'leave' | 'substitution' | 'payroll' | 'announcement' | 'studentleave' | 'resourcecomment';
     };
     query?: never;
     url: '/v1/notifications/preferences/{category}';
@@ -9875,6 +9906,229 @@ export type ResourcesOneResponses = {
 };
 
 export type ResourcesOneResponse = ResourcesOneResponses[keyof ResourcesOneResponses];
+
+export type CommentsListData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/resources/{id}/comments';
+};
+
+export type CommentsListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type CommentsListError = CommentsListErrors[keyof CommentsListErrors];
+
+export type CommentsListResponses = {
+    200: CommentListDto;
+};
+
+export type CommentsListResponse = CommentsListResponses[keyof CommentsListResponses];
+
+export type CommentsCreateData = {
+    body: CreateCommentDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/resources/{id}/comments';
+};
+
+export type CommentsCreateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type CommentsCreateError = CommentsCreateErrors[keyof CommentsCreateErrors];
+
+export type CommentsCreateResponses = {
+    201: CommentDto;
+};
+
+export type CommentsCreateResponse = CommentsCreateResponses[keyof CommentsCreateResponses];
+
+export type CommentsRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+        commentId: string;
+    };
+    query?: never;
+    url: '/v1/resources/{id}/comments/{commentId}';
+};
+
+export type CommentsRemoveErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type CommentsRemoveError = CommentsRemoveErrors[keyof CommentsRemoveErrors];
+
+export type CommentsRemoveResponses = {
+    204: void;
+};
+
+export type CommentsRemoveResponse = CommentsRemoveResponses[keyof CommentsRemoveResponses];
+
+export type CommentsEditData = {
+    body: EditCommentDto;
+    path: {
+        id: string;
+        commentId: string;
+    };
+    query?: never;
+    url: '/v1/resources/{id}/comments/{commentId}';
+};
+
+export type CommentsEditErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type CommentsEditError = CommentsEditErrors[keyof CommentsEditErrors];
+
+export type CommentsEditResponses = {
+    200: CommentDto;
+};
+
+export type CommentsEditResponse = CommentsEditResponses[keyof CommentsEditResponses];
+
+export type CommentsHideData = {
+    body?: never;
+    path: {
+        id: string;
+        commentId: string;
+    };
+    query?: never;
+    url: '/v1/resources/{id}/comments/{commentId}/hide';
+};
+
+export type CommentsHideErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type CommentsHideError = CommentsHideErrors[keyof CommentsHideErrors];
+
+export type CommentsHideResponses = {
+    200: CommentDto;
+};
+
+export type CommentsHideResponse = CommentsHideResponses[keyof CommentsHideResponses];
 
 export type ResourcesDownloadData = {
     body?: never;

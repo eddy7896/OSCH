@@ -1047,5 +1047,12 @@
   "mobRsKept": "اس فون میں محفوظ",
   "mobRsNeedsNetOpen": "اسے پہلی بار کھولنے کے لیے کنکشن چاہیے۔",
   "mobRsOpenFailed": "فائل کھل نہیں سکی۔ دوبارہ کوشش کریں۔",
-  "mobRsNoViewer": "اس فون میں اس قسم کی فائل کھولنے والی ایپ نہیں ہے۔"
+  "mobRsNoViewer": "اس فون میں اس قسم کی فائل کھولنے والی ایپ نہیں ہے۔",
+  "notifResourcecommentStaffpostedTitle": "ورک شیٹ پر نیا تبصرہ",
+  "notifResourcecommentStaffpostedBody": "{who} نے {title} پر تبصرہ کیا۔",
+  "notifResourcecommentParentpostedTitle": "ورک شیٹ پر نیا تبصرہ",
+  "notifResourcecommentParentpostedBody": "{who} کے والدین نے {title} پر تبصرہ کیا۔",
+  "notifResourcecommentHiddenTitle": "آپ کا تبصرہ چھپا دیا گیا",
+  "notifResourcecommentHiddenBody": "اسکول نے {title} پر آپ کا تبصرہ چھپا دیا۔",
+  "ntCatresourcecomment": "ورک شیٹ پر تبصرے"
 }
