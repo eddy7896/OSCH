@@ -18,7 +18,18 @@
     "apps/web-admin/src",
     "apps/saas-admin/src"
   ],
-  "pathCheckExemptDocs": [],
+  "pathCheckExemptDocs": [
+    "documentation/templates/project-bootstrap-prompt/00-master-system-prompt.md",
+    "documentation/templates/project-bootstrap-prompt/01-discovery-interview.md",
+    "documentation/templates/project-bootstrap-prompt/02-documentation-set.md",
+    "documentation/templates/project-bootstrap-prompt/03-adr-templates.md",
+    "documentation/templates/project-bootstrap-prompt/04-guardrails-and-hallucination-checks.md",
+    "documentation/templates/project-bootstrap-prompt/05-drift-evals-tests.md",
+    "documentation/templates/project-bootstrap-prompt/06-git-branching-and-pr.md",
+    "documentation/templates/project-bootstrap-prompt/07-agent-operating-protocol.md",
+    "documentation/templates/project-bootstrap-prompt/08-phase-plan-and-gates.md",
+    "documentation/templates/project-bootstrap-prompt/README.md"
+  ],
   "bannedDependencies": [
     "prisma",
     "@prisma/client",
@@ -83,7 +94,7 @@
     },
     {
       "term": "lucide_icons\\b(?!_)",
-      "reason": "Flutter icon package is lucide_icons_flutter (lucide_icons last published 2023); see design_system_spec \u00a76",
+      "reason": "Flutter icon package is lucide_icons_flutter (lucide_icons last published 2023); see design_system_spec §6",
       "allowIn": [
         "documentation/design_system_spec.md",
         "documentation/audit_2026-10-15.md",
