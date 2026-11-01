@@ -5,6 +5,7 @@ import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_sync/flutter_sync.dart';
 
 import '../parent/parent_data.dart' show kChild;
+import 'comments_data.dart' show kComment;
 import 'resource_files.dart';
 import 'resources_data.dart' show kResource;
 
@@ -33,7 +34,7 @@ List<SubjectGroup> groupBySubject(List<Map<String, dynamic>> all, String? classI
 /// The Parent app's Resources tab: the worksheets and workbooks of the chosen child's class, from the phone's copy; opening one downloads it once and keeps it for offline reading.
 class ParentResourcesController extends ChangeNotifier {
   ParentResourcesController(this.api, this.store, this.files) {
-    for (final t in const [kResource, kChild]) {
+    for (final t in const [kResource, kChild, kComment]) {
       _subs.add(store.watchRecords(t).listen((_) => _refresh()));
     }
     _refresh();
@@ -47,6 +48,9 @@ class ParentResourcesController extends ChangeNotifier {
   List<Map<String, dynamic>>? children;
   List<Map<String, dynamic>> all = const [];
   final Set<String> kept = {};
+
+  /// How many comments each resource has on this phone (the school's own, as last pulled).
+  final Map<String, int> commentCounts = {};
   String? selectedId;
   String? openingId;
   OpenProblem problem = OpenProblem.none;
@@ -76,7 +80,15 @@ class ParentResourcesController extends ChangeNotifier {
     for (final x in r) {
       if (await files.cachedPath(x['id'] as String, x['fileName'] as String) != null) have.add(x['id'] as String);
     }
+    final counts = <String, int>{};
+    for (final x in r) {
+      final id = x['id'] as String;
+      counts[id] = (await store.records(kComment, parentId: id)).length;
+    }
     if (_disposed) return;
+    commentCounts
+      ..clear()
+      ..addAll(counts);
     children = kids;
     all = r;
     kept
