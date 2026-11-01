@@ -4,6 +4,7 @@ import 'package:flutter_core/flutter_core.dart';
 import '../announcements/announcements_screens.dart' show dateWords;
 import '../services.dart';
 import '../sync_pill.dart';
+import 'comments_screen.dart';
 import 'parent_resources.dart';
 import 'resource_files.dart';
 
@@ -80,7 +81,14 @@ class _OruParentResourcesScreenState extends State<OruParentResourcesScreen> {
                           if (((r['note'] as String?) ?? '').isNotEmpty) Padding(padding: const EdgeInsetsDirectional.only(start: OruSpacing.space4, end: OruSpacing.space4, bottom: OruSpacing.space2), child: Text(r['note'] as String, style: text.bodyMedium)),
                           Padding(
                             padding: const EdgeInsets.all(OruSpacing.space3),
-                            child: OruButton(label: _c.openingId == r['id'] ? s.mobRsOpening : s.mobRsOpen, icon: OruIconName.chevronRight, onPressed: _c.openingId == null ? () => _c.open(r) : null),
+                            child: Wrap(spacing: OruSpacing.space2, runSpacing: OruSpacing.space2, children: [
+                              OruButton(label: _c.openingId == r['id'] ? s.mobRsOpening : s.mobRsOpen, icon: OruIconName.chevronRight, onPressed: _c.openingId == null ? () => _c.open(r) : null),
+                              OruButton(
+                                label: s.mobCmButton('${_c.commentCounts[r['id']] ?? 0}'),
+                                icon: OruIconName.message,
+                                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruCommentsScreen(services: widget.services, resourceId: r['id'] as String, resourceTitle: r['title'] as String, forParent: true))),
+                              ),
+                            ]),
                           ),
                         ]),
                       ),

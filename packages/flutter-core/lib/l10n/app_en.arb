@@ -5025,5 +5025,142 @@
   "ntCatresourcecomment": "Worksheet comments",
   "@ntCatresourcecomment": {
     "description": "Name of the notification category for comments under worksheets, shown in the notification settings."
+  },
+  "mobCmTitle": "Comments",
+  "@mobCmTitle": {
+    "description": "Title of the screen with the comments under a worksheet."
+  },
+  "mobCmButton": "Comments ({count})",
+  "@mobCmButton": {
+    "description": "Button under a worksheet that opens its comments. {count} is how many there are.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCmEmpty": "No comments yet. Ask a question about this worksheet.",
+  "@mobCmEmpty": {
+    "description": "Shown under a worksheet that has no comments."
+  },
+  "mobCmWrite": "Write a comment",
+  "@mobCmWrite": {
+    "description": "Label of the box where a comment is written."
+  },
+  "mobCmCounter": "{count} of 500",
+  "@mobCmCounter": {
+    "description": "Counter under the comment box. {count} is the number of characters written.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCmSend": "Send comment",
+  "@mobCmSend": {
+    "description": "Button that sends the comment."
+  },
+  "mobCmReply": "Reply",
+  "@mobCmReply": {
+    "description": "Button that answers one comment."
+  },
+  "mobCmReplyingTo": "Replying to {name}",
+  "@mobCmReplyingTo": {
+    "description": "Shown above the comment box while answering a comment. {name} is the author's name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCmInReplyTo": "In reply to {name}",
+  "@mobCmInReplyTo": {
+    "description": "Shown on a comment that answers another. {name} is the other author's name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCmParentOf": "Parent of {name}",
+  "@mobCmParentOf": {
+    "description": "How a parent's comment is signed. {name} is the first name of their child in this class.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobCmTeacher": "Teacher",
+  "@mobCmTeacher": {
+    "description": "Label next to a teacher's name on a comment."
+  },
+  "mobCmAdmin": "School",
+  "@mobCmAdmin": {
+    "description": "Label next to the Academic admin's name on a comment."
+  },
+  "mobCmHidden": "Hidden by the school",
+  "@mobCmHidden": {
+    "description": "Shown to a parent instead of a comment the school hid."
+  },
+  "mobCmHiddenStaff": "Hidden: parents cannot see these words",
+  "@mobCmHiddenStaff": {
+    "description": "Shown to the teacher or Academic admin on a comment they hid."
+  },
+  "mobCmEdited": "edited",
+  "@mobCmEdited": {
+    "description": "Small label on a comment that was changed after posting."
+  },
+  "mobCmSaved": "Saved on this phone, not sent yet",
+  "@mobCmSaved": {
+    "description": "Shown under a comment waiting to be sent."
+  },
+  "mobCmRefused": "The school did not accept this comment.",
+  "@mobCmRefused": {
+    "description": "Shown under a comment the school refused."
+  },
+  "mobCmEdit": "Edit",
+  "@mobCmEdit": {
+    "description": "Button that changes your own comment (for 5 minutes)."
+  },
+  "mobCmSave": "Save",
+  "@mobCmSave": {
+    "description": "Button that saves the changed comment."
+  },
+  "mobCmDelete": "Delete",
+  "@mobCmDelete": {
+    "description": "Button that deletes your own comment (for 5 minutes)."
+  },
+  "mobCmHide": "Hide",
+  "@mobCmHide": {
+    "description": "Button that hides a comment from parents (teacher and Academic admin)."
+  },
+  "mobCmHideQuestion": "Hide this comment? Parents will no longer see its words, and the person who wrote it will be told.",
+  "@mobCmHideQuestion": {
+    "description": "Question before hiding a comment."
+  },
+  "mobCmWindowClosed": "The 5 minutes for changing this comment are over.",
+  "@mobCmWindowClosed": {
+    "description": "Shown when a parent tries to change a comment after the 5 minutes."
+  },
+  "mobCmNeedsNet": "Changing a comment needs a connection. Nothing was changed.",
+  "@mobCmNeedsNet": {
+    "description": "Shown when editing, deleting or hiding failed because the phone is offline."
+  },
+  "mobCmAlreadyHidden": "This comment was already hidden.",
+  "@mobCmAlreadyHidden": {
+    "description": "Shown when someone else hid the comment first."
+  },
+  "mobCmTooLong": "A comment can have at most 500 characters.",
+  "@mobCmTooLong": {
+    "description": "Shown when the comment is too long."
+  },
+  "mobCmEmptyError": "Write something first.",
+  "@mobCmEmptyError": {
+    "description": "Shown when the comment is empty."
+  },
+  "mobCmPrivacy": "Other parents of the class will see your child's first name next to your comment.",
+  "@mobCmPrivacy": {
+    "description": "Note under the comment box for parents: what other families can see."
   }
 }
