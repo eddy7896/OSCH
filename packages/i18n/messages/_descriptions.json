@@ -1082,5 +1082,20 @@
   "mobCmAlreadyHidden": "Shown when someone else hid the comment first.",
   "mobCmTooLong": "Shown when the comment is too long.",
   "mobCmEmptyError": "Shown when the comment is empty.",
-  "mobCmPrivacy": "Note under the comment box for parents: what other families can see."
+  "mobCmPrivacy": "Note under the comment box for parents: what other families can see.",
+  "mobPaReportCard": "Row on the Parent app's Home that opens the child's report card.",
+  "mobPaTimetable": "Row on the Parent app's Home that opens the child's class timetable, and the title of that screen.",
+  "mobPaCalendar": "Row on the Parent app's Home that opens the child's month calendar, and the title of that screen.",
+  "mobPaMoreAbout": "Heading on the Parent app's Home above the report card, timetable and calendar rows. {child} is the child's first name.",
+  "mobPaTimetableOf": "Heading of the timetable screen. {child} is the child's first name.",
+  "mobPaNoTimetable": "Shown on the timetable screen when nothing was ever loaded.",
+  "mobPaNoLessonsDay": "Shown on the timetable screen for a day with no lessons.",
+  "mobPaCalendarOf": "Heading of the calendar screen. {child} is the child's first name.",
+  "mobPaPrevMonth": "Button that shows the month before on the calendar.",
+  "mobPaNextMonth": "Button that shows the month after on the calendar.",
+  "mobPaMonthSummary": "Heading above the count of days by attendance status on the calendar.",
+  "mobPaDayNothing": "Shown in the day details on the calendar when the school recorded nothing.",
+  "mobPaLeaveDay": "Shown on a calendar day covered by an approved leave request.",
+  "mobPaExamDay": "Spoken label for a calendar day with an exam.",
+  "mobPaExamLine": "An exam in the day details on the calendar. {title} is the exam's title, {subject} its subject."
 }

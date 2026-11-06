@@ -40,7 +40,7 @@ List<PullTask> parentPullTasks(OruApi api, {DateTime Function()? now}) {
       final mine = await _guard(api.teachingMine);
       await store.replaceAllRecords(kChild, [for (final c in mine.children) (id: c.id, parentId: null as String?, json: c.toJson())]);
       final to = clock();
-      final from = to.subtract(const Duration(days: 13));
+      final from = to.subtract(const Duration(days: 62));
       for (final c in mine.children) {
         final a = await _soft(() => api.attendanceStudent(id: c.id, from: isoDate(from), to: isoDate(to)));
         await store.replaceRecords(kChildAttendance, parentId: c.id, records: [for (final m in a?.marks ?? const <StudentMarkDto>[]) (id: m.date, json: {'date': m.date, 'status': m.status, 'note': m.note})]);

@@ -1082,5 +1082,20 @@
   "mobCmAlreadyHidden": "یہ تبصرہ پہلے ہی چھپایا جا چکا ہے۔",
   "mobCmTooLong": "تبصرے میں زیادہ سے زیادہ 500 حروف ہو سکتے ہیں۔",
   "mobCmEmptyError": "پہلے کچھ لکھیں۔",
-  "mobCmPrivacy": "جماعت کے دوسرے والدین آپ کے تبصرے کے ساتھ آپ کے بچے کا پہلا نام دیکھیں گے۔"
+  "mobCmPrivacy": "جماعت کے دوسرے والدین آپ کے تبصرے کے ساتھ آپ کے بچے کا پہلا نام دیکھیں گے۔",
+  "mobPaReportCard": "رپورٹ کارڈ",
+  "mobPaTimetable": "ٹائم ٹیبل",
+  "mobPaCalendar": "کیلنڈر",
+  "mobPaMoreAbout": "{child} کے بارے میں مزید",
+  "mobPaTimetableOf": "{child} کا ہفتہ",
+  "mobPaNoTimetable": "ٹائم ٹیبل ابھی لوڈ نہیں ہوا۔ دیکھنے کے لیے ایک بار کنکشن جوڑیں۔",
+  "mobPaNoLessonsDay": "اس دن کوئی سبق نہیں ہے۔",
+  "mobPaCalendarOf": "{child} کا مہینہ",
+  "mobPaPrevMonth": "پہلے",
+  "mobPaNextMonth": "بعد میں",
+  "mobPaMonthSummary": "اس مہینے",
+  "mobPaDayNothing": "اس دن کے لیے کچھ درج نہیں ہے۔",
+  "mobPaLeaveDay": "منظور شدہ رخصت",
+  "mobPaExamDay": "امتحان",
+  "mobPaExamLine": "{title}: {subject}"
 }

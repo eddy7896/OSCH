@@ -22,6 +22,8 @@ export 'src/leave/leave_screens.dart';
 export 'src/inbox/inbox_data.dart';
 export 'src/inbox/inbox_screen.dart';
 export 'src/marks/marks_data.dart';
+export 'src/parent/parent_academics.dart';
+export 'src/parent/parent_academics_screens.dart';
 export 'src/parent/parent_data.dart';
 export 'src/parent/parent_model.dart';
 export 'src/parent/parent_screens.dart';

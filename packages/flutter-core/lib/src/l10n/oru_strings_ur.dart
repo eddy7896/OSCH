@@ -3762,4 +3762,58 @@ class OruStringsUr extends OruStrings {
   @override
   String get mobCmPrivacy =>
       'جماعت کے دوسرے والدین آپ کے تبصرے کے ساتھ آپ کے بچے کا پہلا نام دیکھیں گے۔';
+
+  @override
+  String get mobPaReportCard => 'رپورٹ کارڈ';
+
+  @override
+  String get mobPaTimetable => 'ٹائم ٹیبل';
+
+  @override
+  String get mobPaCalendar => 'کیلنڈر';
+
+  @override
+  String mobPaMoreAbout(String child) {
+    return '$child کے بارے میں مزید';
+  }
+
+  @override
+  String mobPaTimetableOf(String child) {
+    return '$child کا ہفتہ';
+  }
+
+  @override
+  String get mobPaNoTimetable =>
+      'ٹائم ٹیبل ابھی لوڈ نہیں ہوا۔ دیکھنے کے لیے ایک بار کنکشن جوڑیں۔';
+
+  @override
+  String get mobPaNoLessonsDay => 'اس دن کوئی سبق نہیں ہے۔';
+
+  @override
+  String mobPaCalendarOf(String child) {
+    return '$child کا مہینہ';
+  }
+
+  @override
+  String get mobPaPrevMonth => 'پہلے';
+
+  @override
+  String get mobPaNextMonth => 'بعد میں';
+
+  @override
+  String get mobPaMonthSummary => 'اس مہینے';
+
+  @override
+  String get mobPaDayNothing => 'اس دن کے لیے کچھ درج نہیں ہے۔';
+
+  @override
+  String get mobPaLeaveDay => 'منظور شدہ رخصت';
+
+  @override
+  String get mobPaExamDay => 'امتحان';
+
+  @override
+  String mobPaExamLine(String title, String subject) {
+    return '$title: $subject';
+  }
 }
