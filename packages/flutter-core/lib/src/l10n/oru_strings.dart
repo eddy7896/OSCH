@@ -6505,6 +6505,264 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Worksheet comments'**
   String get ntCatresourcecomment;
+
+  /// Title of the screen with the comments under a worksheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get mobCmTitle;
+
+  /// Button under a worksheet that opens its comments. {count} is how many there are.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments ({count})'**
+  String mobCmButton(String count);
+
+  /// Shown under a worksheet that has no comments.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet. Ask a question about this worksheet.'**
+  String get mobCmEmpty;
+
+  /// Label of the box where a comment is written.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment'**
+  String get mobCmWrite;
+
+  /// Counter under the comment box. {count} is the number of characters written.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 500'**
+  String mobCmCounter(String count);
+
+  /// Button that sends the comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Send comment'**
+  String get mobCmSend;
+
+  /// Button that answers one comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get mobCmReply;
+
+  /// Shown above the comment box while answering a comment. {name} is the author's name.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String mobCmReplyingTo(String name);
+
+  /// Shown on a comment that answers another. {name} is the other author's name.
+  ///
+  /// In en, this message translates to:
+  /// **'In reply to {name}'**
+  String mobCmInReplyTo(String name);
+
+  /// How a parent's comment is signed. {name} is the first name of their child in this class.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent of {name}'**
+  String mobCmParentOf(String name);
+
+  /// Label next to a teacher's name on a comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher'**
+  String get mobCmTeacher;
+
+  /// Label next to the Academic admin's name on a comment.
+  ///
+  /// In en, this message translates to:
+  /// **'School'**
+  String get mobCmAdmin;
+
+  /// Shown to a parent instead of a comment the school hid.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden by the school'**
+  String get mobCmHidden;
+
+  /// Shown to the teacher or Academic admin on a comment they hid.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden: parents cannot see these words'**
+  String get mobCmHiddenStaff;
+
+  /// Small label on a comment that was changed after posting.
+  ///
+  /// In en, this message translates to:
+  /// **'edited'**
+  String get mobCmEdited;
+
+  /// Shown under a comment waiting to be sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone, not sent yet'**
+  String get mobCmSaved;
+
+  /// Shown under a comment the school refused.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this comment.'**
+  String get mobCmRefused;
+
+  /// Button that changes your own comment (for 5 minutes).
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get mobCmEdit;
+
+  /// Button that saves the changed comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get mobCmSave;
+
+  /// Button that deletes your own comment (for 5 minutes).
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get mobCmDelete;
+
+  /// Button that hides a comment from parents (teacher and Academic admin).
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get mobCmHide;
+
+  /// Question before hiding a comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide this comment? Parents will no longer see its words, and the person who wrote it will be told.'**
+  String get mobCmHideQuestion;
+
+  /// Shown when a parent tries to change a comment after the 5 minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'The 5 minutes for changing this comment are over.'**
+  String get mobCmWindowClosed;
+
+  /// Shown when editing, deleting or hiding failed because the phone is offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing a comment needs a connection. Nothing was changed.'**
+  String get mobCmNeedsNet;
+
+  /// Shown when someone else hid the comment first.
+  ///
+  /// In en, this message translates to:
+  /// **'This comment was already hidden.'**
+  String get mobCmAlreadyHidden;
+
+  /// Shown when the comment is too long.
+  ///
+  /// In en, this message translates to:
+  /// **'A comment can have at most 500 characters.'**
+  String get mobCmTooLong;
+
+  /// Shown when the comment is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Write something first.'**
+  String get mobCmEmptyError;
+
+  /// Note under the comment box for parents: what other families can see.
+  ///
+  /// In en, this message translates to:
+  /// **'Other parents of the class will see your child\'s first name next to your comment.'**
+  String get mobCmPrivacy;
+
+  /// Row on the Parent app's Home that opens the child's report card.
+  ///
+  /// In en, this message translates to:
+  /// **'Report card'**
+  String get mobPaReportCard;
+
+  /// Row on the Parent app's Home that opens the child's class timetable, and the title of that screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Timetable'**
+  String get mobPaTimetable;
+
+  /// Row on the Parent app's Home that opens the child's month calendar, and the title of that screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get mobPaCalendar;
+
+  /// Heading on the Parent app's Home above the report card, timetable and calendar rows. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'More about {child}'**
+  String mobPaMoreAbout(String child);
+
+  /// Heading of the timetable screen. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'{child}\'s week'**
+  String mobPaTimetableOf(String child);
+
+  /// Shown on the timetable screen when nothing was ever loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'The timetable has not been loaded yet. Connect once to see it.'**
+  String get mobPaNoTimetable;
+
+  /// Shown on the timetable screen for a day with no lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no lessons on this day.'**
+  String get mobPaNoLessonsDay;
+
+  /// Heading of the calendar screen. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'{child}\'s month'**
+  String mobPaCalendarOf(String child);
+
+  /// Button that shows the month before on the calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get mobPaPrevMonth;
+
+  /// Button that shows the month after on the calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get mobPaNextMonth;
+
+  /// Heading above the count of days by attendance status on the calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get mobPaMonthSummary;
+
+  /// Shown in the day details on the calendar when the school recorded nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is recorded for this day.'**
+  String get mobPaDayNothing;
+
+  /// Shown on a calendar day covered by an approved leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved leave'**
+  String get mobPaLeaveDay;
+
+  /// Spoken label for a calendar day with an exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam'**
+  String get mobPaExamDay;
+
+  /// An exam in the day details on the calendar. {title} is the exam's title, {subject} its subject.
+  ///
+  /// In en, this message translates to:
+  /// **'{title}: {subject}'**
+  String mobPaExamLine(String title, String subject);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

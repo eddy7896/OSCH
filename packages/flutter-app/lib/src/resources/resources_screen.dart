@@ -4,6 +4,7 @@ import 'package:flutter_core/flutter_core.dart';
 import '../announcements/announcements_screens.dart' show dateWords;
 import '../services.dart';
 import '../sync_pill.dart';
+import 'comments_screen.dart';
 import 'resources_data.dart';
 
 String _problemText(OruStrings s, ResourceProblem p) => switch (p) {
@@ -91,6 +92,15 @@ class _OruResourcesScreenState extends State<OruResourcesScreen> {
                           padding: const EdgeInsetsDirectional.only(start: OruSpacing.space4, end: OruSpacing.space4, top: OruSpacing.space1),
                           child: Text(_c.isMine(r) ? s.mobRsMine : s.mobRsBy((r['uploadedBy'] as Map<String, dynamic>)['name'] as String), style: text.bodySmall?.copyWith(color: OruColors.textMuted)),
                         ),
+                        if (_c.isMine(r))
+                          Padding(
+                            padding: const EdgeInsetsDirectional.only(start: OruSpacing.space3, end: OruSpacing.space3, top: OruSpacing.space2),
+                            child: OruButton(
+                              label: s.mobCmTitle,
+                              icon: OruIconName.message,
+                              onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruCommentsScreen(services: widget.services, resourceId: r['id'] as String, resourceTitle: r['title'] as String, canHide: true))),
+                            ),
+                          ),
                         if (_c.isMine(r))
                           Padding(
                             padding: const EdgeInsets.all(OruSpacing.space3),

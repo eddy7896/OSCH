@@ -3664,4 +3664,157 @@ class OruStringsBn extends OruStrings {
 
   @override
   String get ntCatresourcecomment => 'Worksheet comments';
+
+  @override
+  String get mobCmTitle => 'Comments';
+
+  @override
+  String mobCmButton(String count) {
+    return 'Comments ($count)';
+  }
+
+  @override
+  String get mobCmEmpty =>
+      'No comments yet. Ask a question about this worksheet.';
+
+  @override
+  String get mobCmWrite => 'Write a comment';
+
+  @override
+  String mobCmCounter(String count) {
+    return '$count of 500';
+  }
+
+  @override
+  String get mobCmSend => 'Send comment';
+
+  @override
+  String get mobCmReply => 'Reply';
+
+  @override
+  String mobCmReplyingTo(String name) {
+    return 'Replying to $name';
+  }
+
+  @override
+  String mobCmInReplyTo(String name) {
+    return 'In reply to $name';
+  }
+
+  @override
+  String mobCmParentOf(String name) {
+    return 'Parent of $name';
+  }
+
+  @override
+  String get mobCmTeacher => 'Teacher';
+
+  @override
+  String get mobCmAdmin => 'School';
+
+  @override
+  String get mobCmHidden => 'Hidden by the school';
+
+  @override
+  String get mobCmHiddenStaff => 'Hidden: parents cannot see these words';
+
+  @override
+  String get mobCmEdited => 'edited';
+
+  @override
+  String get mobCmSaved => 'Saved on this phone, not sent yet';
+
+  @override
+  String get mobCmRefused => 'The school did not accept this comment.';
+
+  @override
+  String get mobCmEdit => 'Edit';
+
+  @override
+  String get mobCmSave => 'Save';
+
+  @override
+  String get mobCmDelete => 'Delete';
+
+  @override
+  String get mobCmHide => 'Hide';
+
+  @override
+  String get mobCmHideQuestion =>
+      'Hide this comment? Parents will no longer see its words, and the person who wrote it will be told.';
+
+  @override
+  String get mobCmWindowClosed =>
+      'The 5 minutes for changing this comment are over.';
+
+  @override
+  String get mobCmNeedsNet =>
+      'Changing a comment needs a connection. Nothing was changed.';
+
+  @override
+  String get mobCmAlreadyHidden => 'This comment was already hidden.';
+
+  @override
+  String get mobCmTooLong => 'A comment can have at most 500 characters.';
+
+  @override
+  String get mobCmEmptyError => 'Write something first.';
+
+  @override
+  String get mobCmPrivacy =>
+      'Other parents of the class will see your child\'s first name next to your comment.';
+
+  @override
+  String get mobPaReportCard => 'Report card';
+
+  @override
+  String get mobPaTimetable => 'Timetable';
+
+  @override
+  String get mobPaCalendar => 'Calendar';
+
+  @override
+  String mobPaMoreAbout(String child) {
+    return 'More about $child';
+  }
+
+  @override
+  String mobPaTimetableOf(String child) {
+    return '$child\'s week';
+  }
+
+  @override
+  String get mobPaNoTimetable =>
+      'The timetable has not been loaded yet. Connect once to see it.';
+
+  @override
+  String get mobPaNoLessonsDay => 'There are no lessons on this day.';
+
+  @override
+  String mobPaCalendarOf(String child) {
+    return '$child\'s month';
+  }
+
+  @override
+  String get mobPaPrevMonth => 'Earlier';
+
+  @override
+  String get mobPaNextMonth => 'Later';
+
+  @override
+  String get mobPaMonthSummary => 'This month';
+
+  @override
+  String get mobPaDayNothing => 'Nothing is recorded for this day.';
+
+  @override
+  String get mobPaLeaveDay => 'Approved leave';
+
+  @override
+  String get mobPaExamDay => 'Exam';
+
+  @override
+  String mobPaExamLine(String title, String subject) {
+    return '$title: $subject';
+  }
 }

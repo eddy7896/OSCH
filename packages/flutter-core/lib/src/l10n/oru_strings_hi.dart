@@ -3664,4 +3664,156 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get ntCatresourcecomment => 'वर्कशीट पर टिप्पणियाँ';
+
+  @override
+  String get mobCmTitle => 'टिप्पणियाँ';
+
+  @override
+  String mobCmButton(String count) {
+    return 'टिप्पणियाँ ($count)';
+  }
+
+  @override
+  String get mobCmEmpty =>
+      'अभी कोई टिप्पणी नहीं। इस वर्कशीट के बारे में सवाल पूछें।';
+
+  @override
+  String get mobCmWrite => 'टिप्पणी लिखें';
+
+  @override
+  String mobCmCounter(String count) {
+    return '$count में से 500';
+  }
+
+  @override
+  String get mobCmSend => 'टिप्पणी भेजें';
+
+  @override
+  String get mobCmReply => 'जवाब दें';
+
+  @override
+  String mobCmReplyingTo(String name) {
+    return '$name को जवाब';
+  }
+
+  @override
+  String mobCmInReplyTo(String name) {
+    return '$name के जवाब में';
+  }
+
+  @override
+  String mobCmParentOf(String name) {
+    return '$name के अभिभावक';
+  }
+
+  @override
+  String get mobCmTeacher => 'शिक्षक';
+
+  @override
+  String get mobCmAdmin => 'स्कूल';
+
+  @override
+  String get mobCmHidden => 'स्कूल द्वारा छिपाया गया';
+
+  @override
+  String get mobCmHiddenStaff => 'छिपाया गया: अभिभावक ये शब्द नहीं देख सकते';
+
+  @override
+  String get mobCmEdited => 'संपादित';
+
+  @override
+  String get mobCmSaved => 'इस फ़ोन में सहेजा गया, अभी भेजा नहीं गया';
+
+  @override
+  String get mobCmRefused => 'स्कूल ने इस टिप्पणी को स्वीकार नहीं किया।';
+
+  @override
+  String get mobCmEdit => 'संपादित करें';
+
+  @override
+  String get mobCmSave => 'सहेजें';
+
+  @override
+  String get mobCmDelete => 'हटाएँ';
+
+  @override
+  String get mobCmHide => 'छिपाएँ';
+
+  @override
+  String get mobCmHideQuestion =>
+      'इस टिप्पणी को छिपाएँ? अभिभावक इसके शब्द नहीं देख पाएँगे और लिखने वाले को बता दिया जाएगा।';
+
+  @override
+  String get mobCmWindowClosed => 'इस टिप्पणी को बदलने के 5 मिनट बीत चुके हैं।';
+
+  @override
+  String get mobCmNeedsNet =>
+      'टिप्पणी बदलने के लिए कनेक्शन चाहिए। कुछ नहीं बदला।';
+
+  @override
+  String get mobCmAlreadyHidden => 'यह टिप्पणी पहले ही छिपाई जा चुकी है।';
+
+  @override
+  String get mobCmTooLong => 'टिप्पणी में अधिकतम 500 अक्षर हो सकते हैं।';
+
+  @override
+  String get mobCmEmptyError => 'पहले कुछ लिखें।';
+
+  @override
+  String get mobCmPrivacy =>
+      'कक्षा के अन्य अभिभावक आपकी टिप्पणी के साथ आपके बच्चे का पहला नाम देखेंगे।';
+
+  @override
+  String get mobPaReportCard => 'रिपोर्ट कार्ड';
+
+  @override
+  String get mobPaTimetable => 'समय सारणी';
+
+  @override
+  String get mobPaCalendar => 'कैलेंडर';
+
+  @override
+  String mobPaMoreAbout(String child) {
+    return '$child के बारे में और';
+  }
+
+  @override
+  String mobPaTimetableOf(String child) {
+    return '$child का सप्ताह';
+  }
+
+  @override
+  String get mobPaNoTimetable =>
+      'समय सारणी अभी लोड नहीं हुई है। देखने के लिए एक बार कनेक्ट करें।';
+
+  @override
+  String get mobPaNoLessonsDay => 'इस दिन कोई पाठ नहीं है।';
+
+  @override
+  String mobPaCalendarOf(String child) {
+    return '$child का महीना';
+  }
+
+  @override
+  String get mobPaPrevMonth => 'पहले';
+
+  @override
+  String get mobPaNextMonth => 'बाद में';
+
+  @override
+  String get mobPaMonthSummary => 'इस महीने';
+
+  @override
+  String get mobPaDayNothing => 'इस दिन के लिए कुछ दर्ज नहीं है।';
+
+  @override
+  String get mobPaLeaveDay => 'स्वीकृत छुट्टी';
+
+  @override
+  String get mobPaExamDay => 'परीक्षा';
+
+  @override
+  String mobPaExamLine(String title, String subject) {
+    return '$title: $subject';
+  }
 }
