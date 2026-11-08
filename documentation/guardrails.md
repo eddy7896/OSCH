@@ -17,7 +17,7 @@ Administrative staff are siloed based on the principle of least privilege.
 
 ## 3. Communication Boundaries
 - **Guardrail:** Teachers and Parents cannot initiate unrestricted, un-auditable messaging.
-- **Rule:** Direct Messaging operates strictly within "Office Hours". All messages must be logged to a central audit trail accessible by the System Admin.
+- **Rule (amended 2026-11-08, ADR-0018 decision 2):** a message is delivered at once at any hour and the receiver may reply whenever they choose; there are no office-hours holds or refusals. All messages must still be logged to a central audit trail accessible by the System Admin. (Before the amendment: "strictly within Office Hours".)
 
 ## 4. Substitution & Payroll Integrity
 - **Guardrail:** When a teacher takes unpaid leave, the system must definitively trigger a payroll deduction alert and an academic substitution alert.
