@@ -1,6 +1,6 @@
 /** Pure rules of the in-app inbox (P3-9, ADR-0013 decision 9): which category a notification is in, and how its words are made in the reader's language. */
 
-export const CATEGORIES = ['leave', 'substitution', 'payroll', 'announcement', 'studentleave', 'resourcecomment'] as const;
+export const CATEGORIES = ['leave', 'substitution', 'payroll', 'announcement', 'studentleave', 'resourcecomment', 'message'] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 interface KindInfo { category: Category; title: string; body: string }
@@ -19,6 +19,8 @@ export const KINDS: Readonly<Record<string, KindInfo>> = {
   'resourcecomment.staffposted': { category: 'resourcecomment', title: 'notifResourcecommentStaffpostedTitle', body: 'notifResourcecommentStaffpostedBody' },
   'resourcecomment.parentposted': { category: 'resourcecomment', title: 'notifResourcecommentParentpostedTitle', body: 'notifResourcecommentParentpostedBody' },
   'resourcecomment.hidden': { category: 'resourcecomment', title: 'notifResourcecommentHiddenTitle', body: 'notifResourcecommentHiddenBody' },
+  'message.received': { category: 'message', title: 'notifMessageReceivedTitle', body: 'notifMessageReceivedBody' },
+  'message.reported': { category: 'message', title: 'notifMessageReportedTitle', body: 'notifMessageReportedBody' },
   'substitution.cleared': { category: 'substitution', title: 'notifSubstitutionClearedTitle', body: 'notifSubstitutionClearedBody' },
 };
 

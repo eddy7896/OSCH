@@ -160,7 +160,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     resource_comments: own("read", "create", "update"), // [ADR-0016] the gateway narrows `own` to resources she uploaded; update = hide a comment under them
     learning_resources: own("read", "create", "delete"), // [ADR-0016] the gateway narrows `own` to the classes and subjects she teaches, and removal to her own uploads
     announcements: school("read"),
-    messages: own("read", "create"), // office-hours rule is business logic outside RBAC [GUARD §3]
+    messages: own("read", "create", "update"), // [ADR-0018] own conversations; update = hide a message the sender wrote (no office-hours rule since ADR-0018)
   },
 
   // [DESIGN] Staff app: personal attendance, leave, tasks, announcements (SELF_SERVICE covers the first two).
@@ -186,7 +186,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     resource_comments: linked("read", "create", "update", "delete"), // [ADR-0016] the class's resources; update and delete only their own comment and only within 5 minutes
     learning_resources: linked("read"), // [ADR-0016] the resources of the classes their linked children are in
     announcements: school("read"),
-    messages: own("read", "create"),
+    messages: own("read", "create", "update"), // [ADR-0018] own conversations; update = hide a message the sender wrote
   },
 };
 

@@ -1634,3 +1634,55 @@ mutation NotifyResourceComment($schoolId: UUID!, $commentId: UUID!, $recipientUs
   notification_insert(data: { schoolId: $schoolId, kind: $kind, params: $notice, entityType: "ResourceComment", entityId_expr: "request.variables.commentId", recipientUserId: $recipientUserId })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "resourcecomment.notify", entityType: "ResourceComment", entityId_expr: "request.variables.commentId", details: $details })
 }
+
+# ---- Messaging (P5-3b, ADR-0018). The gateway has decided who may talk to whom; the database checks the pieces and that the actor is one of the two people.
+mutation StartConversation($schoolId: UUID!, $id: UUID!, $studentId: UUID!, $staffUserId: String!, $guardianUserId: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "actor is not an active member of this school") { userId }
+    staff: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $staffUserId}, schoolRole: {eq: TEACHER}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "that is not an active teacher of this school") { userId }
+    link: parentLinks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, userId: {eq: $guardianUserId}}) @check(expr: "this.size() == 1", message: "that parent is not linked to this student") { id }
+    student: students(where: {id: {eq: $studentId}, schoolId: {eq: $schoolId}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "active student not found in this school") { id }
+  }
+  conversation_insert(data: { id: $id, schoolId: $schoolId, studentId: $studentId, staffUserId: $staffUserId, guardianUserId: $guardianUserId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "message.thread.start", entityType: "Conversation", entityId_expr: "request.variables.id", details: $details })
+}
+
+# One message, delivered at once. The other person is told in the same transaction; the words are in the audit trail (the System Admin can read them).
+mutation SendMessage($schoolId: UUID!, $id: UUID!, $conversationId: UUID!, $studentId: UUID!, $clientId: String!, $body: String!, $staffUserId: String!, $guardianUserId: String!, $recipientUserId: String!, $kind: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    conversation: conversations(where: {id: {eq: $conversationId}, schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, staffUserId: {eq: $staffUserId}, guardianUserId: {eq: $guardianUserId}}) @check(expr: "this.size() == 1", message: "conversation not found in this school") { id }
+    link: parentLinks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, userId: {eq: $guardianUserId}}) @check(expr: "this.size() == 1", message: "that parent is no longer linked to this student") { id }
+    staff: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $staffUserId}, schoolRole: {eq: TEACHER}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "that teacher is no longer active in this school") { userId }
+  }
+  message_insert(data: { id: $id, schoolId: $schoolId, conversationId: $conversationId, senderId: $actorId, clientId: $clientId, body: $body })
+  conversation_update(id: $conversationId, data: { lastMessageAt_expr: "request.time", lastSenderId: $actorId })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: $kind, entityType: "Conversation", entityId_expr: "request.variables.conversationId", recipientUserId: $recipientUserId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "message.send", entityType: "Message", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation MarkConversationRead($schoolId: UUID!, $conversationId: UUID!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    conversation: conversations(where: {id: {eq: $conversationId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "conversation not found in this school") { id }
+  }
+  conversationRead_upsert(data: { schoolId: $schoolId, conversationId: $conversationId, userId: $actorId, readAt_expr: "request.time" })
+}
+
+# The sender takes a message out of view within the window (the gateway computes $windowStart from its clock); the words stay in the audit trail.
+mutation HideMessage($schoolId: UUID!, $id: UUID!, $windowStart: Timestamp!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    message: messages(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, senderId: {eq: $actorId}, hiddenAt: {isNull: true}, createdAt: {ge: $windowStart}}) @check(expr: "this.size() == 1", message: "no message of yours that can still be hidden") { id }
+  }
+  message_update(id: $id, data: { hiddenAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "message.hide", entityType: "Message", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Either person reports a message; the Principal is told and reviews it.
+mutation ReportMessage($schoolId: UUID!, $id: UUID!, $conversationId: UUID!, $messageId: UUID!, $staffUserId: String!, $guardianUserId: String!, $note: String, $kind: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    conversation: conversations(where: {id: {eq: $conversationId}, schoolId: {eq: $schoolId}, staffUserId: {eq: $staffUserId}, guardianUserId: {eq: $guardianUserId}}) @check(expr: "this.size() == 1", message: "conversation not found in this school") { id }
+    message: messages(where: {id: {eq: $messageId}, schoolId: {eq: $schoolId}, conversationId: {eq: $conversationId}}) @check(expr: "this.size() == 1", message: "message not found in this conversation") { id }
+  }
+  messageReport_insert(data: { id: $id, schoolId: $schoolId, messageId: $messageId, reportedById: $actorId, note: $note })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: $kind, entityType: "MessageReport", entityId_expr: "request.variables.id", audienceRole: PRINCIPAL })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "message.report", entityType: "MessageReport", entityId_expr: "request.variables.id", details: $details })
+}

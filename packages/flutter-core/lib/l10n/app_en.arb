@@ -5245,5 +5245,25 @@
         "type": "String"
       }
     }
+  },
+  "notifMessageReceivedTitle": "New message",
+  "@notifMessageReceivedTitle": {
+    "description": "Title of the notice sent when someone writes to you in a conversation about a student."
+  },
+  "notifMessageReceivedBody": "You have a new message. Open the app to read it.",
+  "@notifMessageReceivedBody": {
+    "description": "Body of that notice. It names nobody and no student, so it is safe to show on a locked phone."
+  },
+  "notifMessageReportedTitle": "A message was reported",
+  "@notifMessageReportedTitle": {
+    "description": "Title of the notice sent to the Principal when a message is reported."
+  },
+  "notifMessageReportedBody": "A message in a conversation was reported. Please review it.",
+  "@notifMessageReportedBody": {
+    "description": "Body of that notice."
+  },
+  "ntCatmessage": "Messages",
+  "@ntCatmessage": {
+    "description": "Name of the notification category for messages, shown in the notification settings."
   }
 }

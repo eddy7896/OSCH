@@ -1097,5 +1097,10 @@
   "mobPaDayNothing": "Shown in the day details on the calendar when the school recorded nothing.",
   "mobPaLeaveDay": "Shown on a calendar day covered by an approved leave request.",
   "mobPaExamDay": "Spoken label for a calendar day with an exam.",
-  "mobPaExamLine": "An exam in the day details on the calendar. {title} is the exam's title, {subject} its subject."
+  "mobPaExamLine": "An exam in the day details on the calendar. {title} is the exam's title, {subject} its subject.",
+  "notifMessageReceivedTitle": "Title of the notice sent when someone writes to you in a conversation about a student.",
+  "notifMessageReceivedBody": "Body of that notice. It names nobody and no student, so it is safe to show on a locked phone.",
+  "notifMessageReportedTitle": "Title of the notice sent to the Principal when a message is reported.",
+  "notifMessageReportedBody": "Body of that notice.",
+  "ntCatmessage": "Name of the notification category for messages, shown in the notification settings."
 }

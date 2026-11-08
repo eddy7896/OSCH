@@ -6763,6 +6763,36 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'{title}: {subject}'**
   String mobPaExamLine(String title, String subject);
+
+  /// Title of the notice sent when someone writes to you in a conversation about a student.
+  ///
+  /// In en, this message translates to:
+  /// **'New message'**
+  String get notifMessageReceivedTitle;
+
+  /// Body of that notice. It names nobody and no student, so it is safe to show on a locked phone.
+  ///
+  /// In en, this message translates to:
+  /// **'You have a new message. Open the app to read it.'**
+  String get notifMessageReceivedBody;
+
+  /// Title of the notice sent to the Principal when a message is reported.
+  ///
+  /// In en, this message translates to:
+  /// **'A message was reported'**
+  String get notifMessageReportedTitle;
+
+  /// Body of that notice.
+  ///
+  /// In en, this message translates to:
+  /// **'A message in a conversation was reported. Please review it.'**
+  String get notifMessageReportedBody;
+
+  /// Name of the notification category for messages, shown in the notification settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get ntCatmessage;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

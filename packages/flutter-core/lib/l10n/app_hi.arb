@@ -1097,5 +1097,10 @@
   "mobPaDayNothing": "इस दिन के लिए कुछ दर्ज नहीं है।",
   "mobPaLeaveDay": "स्वीकृत छुट्टी",
   "mobPaExamDay": "परीक्षा",
-  "mobPaExamLine": "{title}: {subject}"
+  "mobPaExamLine": "{title}: {subject}",
+  "notifMessageReceivedTitle": "नया संदेश",
+  "notifMessageReceivedBody": "आपके लिए एक नया संदेश है। पढ़ने के लिए ऐप खोलें।",
+  "notifMessageReportedTitle": "एक संदेश की शिकायत की गई",
+  "notifMessageReportedBody": "एक बातचीत में एक संदेश की शिकायत की गई है। कृपया इसे देखें।",
+  "ntCatmessage": "संदेश"
 }

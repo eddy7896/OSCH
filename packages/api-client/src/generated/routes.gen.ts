@@ -825,6 +825,54 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Memberships_add"
   },
   {
+    "method": "GET",
+    "path": "/v1/messages/contacts",
+    "access": "tenant",
+    "operationId": "Messages_contacts"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/messages/threads/{id}/messages/{messageId}/hide",
+    "access": "tenant",
+    "operationId": "Messages_hide"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/messages/threads/{id}/messages/{messageId}/report",
+    "access": "tenant",
+    "operationId": "Messages_report"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/messages/threads/{id}/messages",
+    "access": "tenant",
+    "operationId": "Messages_send"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/messages/threads/{id}/read",
+    "access": "tenant",
+    "operationId": "Messages_read"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/messages/threads/{id}",
+    "access": "tenant",
+    "operationId": "Messages_thread"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/messages/threads",
+    "access": "tenant",
+    "operationId": "Messages_threads"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/messages/threads",
+    "access": "tenant",
+    "operationId": "Messages_start"
+  },
+  {
     "method": "POST",
     "path": "/v1/notifications/{id}/read",
     "access": "tenant",

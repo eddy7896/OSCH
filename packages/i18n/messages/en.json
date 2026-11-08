@@ -1096,5 +1096,10 @@
   "mobPaDayNothing": "Nothing is recorded for this day.",
   "mobPaLeaveDay": "Approved leave",
   "mobPaExamDay": "Exam",
-  "mobPaExamLine": "{title}: {subject}"
+  "mobPaExamLine": "{title}: {subject}",
+  "notifMessageReceivedTitle": "New message",
+  "notifMessageReceivedBody": "You have a new message. Open the app to read it.",
+  "notifMessageReportedTitle": "A message was reported",
+  "notifMessageReportedBody": "A message in a conversation was reported. Please review it.",
+  "ntCatmessage": "Messages"
 }

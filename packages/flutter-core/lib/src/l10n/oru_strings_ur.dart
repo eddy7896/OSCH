@@ -3816,4 +3816,21 @@ class OruStringsUr extends OruStrings {
   String mobPaExamLine(String title, String subject) {
     return '$title: $subject';
   }
+
+  @override
+  String get notifMessageReceivedTitle => 'نیا پیغام';
+
+  @override
+  String get notifMessageReceivedBody =>
+      'آپ کے لیے ایک نیا پیغام ہے۔ پڑھنے کے لیے ایپ کھولیں۔';
+
+  @override
+  String get notifMessageReportedTitle => 'ایک پیغام کی شکایت کی گئی';
+
+  @override
+  String get notifMessageReportedBody =>
+      'ایک گفتگو میں ایک پیغام کی شکایت کی گئی ہے۔ براہ کرم اسے دیکھیں۔';
+
+  @override
+  String get ntCatmessage => 'پیغامات';
 }
