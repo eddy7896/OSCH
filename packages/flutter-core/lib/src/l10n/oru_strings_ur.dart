@@ -3665,4 +3665,101 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get ntCatresourcecomment => 'ورک شیٹ پر تبصرے';
+
+  @override
+  String get mobCmTitle => 'تبصرے';
+
+  @override
+  String mobCmButton(String count) {
+    return 'تبصرے ($count)';
+  }
+
+  @override
+  String get mobCmEmpty =>
+      'ابھی کوئی تبصرہ نہیں۔ اس ورک شیٹ کے بارے میں سوال پوچھیں۔';
+
+  @override
+  String get mobCmWrite => 'تبصرہ لکھیں';
+
+  @override
+  String mobCmCounter(String count) {
+    return '500 میں سے $count';
+  }
+
+  @override
+  String get mobCmSend => 'تبصرہ بھیجیں';
+
+  @override
+  String get mobCmReply => 'جواب دیں';
+
+  @override
+  String mobCmReplyingTo(String name) {
+    return '$name کو جواب';
+  }
+
+  @override
+  String mobCmInReplyTo(String name) {
+    return '$name کے جواب میں';
+  }
+
+  @override
+  String mobCmParentOf(String name) {
+    return '$name کے والدین';
+  }
+
+  @override
+  String get mobCmTeacher => 'استاد';
+
+  @override
+  String get mobCmAdmin => 'اسکول';
+
+  @override
+  String get mobCmHidden => 'اسکول نے چھپا دیا';
+
+  @override
+  String get mobCmHiddenStaff => 'چھپا ہوا: والدین یہ الفاظ نہیں دیکھ سکتے';
+
+  @override
+  String get mobCmEdited => 'ترمیم شدہ';
+
+  @override
+  String get mobCmSaved => 'اس فون میں محفوظ، ابھی بھیجا نہیں گیا';
+
+  @override
+  String get mobCmRefused => 'اسکول نے اس تبصرے کو قبول نہیں کیا۔';
+
+  @override
+  String get mobCmEdit => 'ترمیم کریں';
+
+  @override
+  String get mobCmSave => 'محفوظ کریں';
+
+  @override
+  String get mobCmDelete => 'حذف کریں';
+
+  @override
+  String get mobCmHide => 'چھپائیں';
+
+  @override
+  String get mobCmHideQuestion =>
+      'اس تبصرے کو چھپائیں؟ والدین اس کے الفاظ نہیں دیکھ سکیں گے اور لکھنے والے کو بتا دیا جائے گا۔';
+
+  @override
+  String get mobCmWindowClosed => 'اس تبصرے کو بدلنے کے 5 منٹ گزر چکے ہیں۔';
+
+  @override
+  String get mobCmNeedsNet => 'تبصرہ بدلنے کے لیے کنکشن چاہیے۔ کچھ نہیں بدلا۔';
+
+  @override
+  String get mobCmAlreadyHidden => 'یہ تبصرہ پہلے ہی چھپایا جا چکا ہے۔';
+
+  @override
+  String get mobCmTooLong => 'تبصرے میں زیادہ سے زیادہ 500 حروف ہو سکتے ہیں۔';
+
+  @override
+  String get mobCmEmptyError => 'پہلے کچھ لکھیں۔';
+
+  @override
+  String get mobCmPrivacy =>
+      'جماعت کے دوسرے والدین آپ کے تبصرے کے ساتھ آپ کے بچے کا پہلا نام دیکھیں گے۔';
 }

@@ -29,6 +29,9 @@ abstract final class OutboxKinds {
 
   /// Body: `{id}`: the parent withdraws a request that is still waiting.
   static const studentLeaveCancel = 'studentleave.cancel';
+
+  /// Body: `{resourceId, body, replyToId?}`: a comment under a shared worksheet (the entry id is its `clientId`).
+  static const resourceCommentPost = 'resourcecomment.post';
 }
 
 /// Sends a queued change to the gateway through the generated client. The outbox id goes as the gateway's own
@@ -71,6 +74,8 @@ class OruApiSender implements OutboxSender {
           await api.studentLeaveCreate(body: CreateStudentLeaveDto.fromJson({...b, 'clientId': e.id}));
         case OutboxKinds.studentLeaveCancel:
           await api.studentLeaveCancel(id: b['id'] as String);
+        case OutboxKinds.resourceCommentPost:
+          await api.commentsCreate(id: b['resourceId'] as String, body: CreateCommentDto(clientId: e.id, body: b['body'] as String, replyToId: b['replyToId'] as String?));
         default:
           return SendResult.refused('UNKNOWN_KIND', message: e.kind);
       }

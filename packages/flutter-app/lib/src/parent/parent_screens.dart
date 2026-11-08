@@ -11,6 +11,7 @@ import '../inbox/inbox_data.dart';
 import '../inbox/inbox_screen.dart';
 import '../services.dart';
 import '../resources/parent_resources_screen.dart';
+import '../resources/comments_data.dart' show commentsPullTask;
 import '../resources/resources_data.dart' show resourcesListPullTask;
 import '../studentleave/parent_leave_screen.dart';
 import '../studentleave/studentleave_data.dart';
@@ -19,7 +20,7 @@ import 'parent_data.dart';
 import 'parent_model.dart';
 
 /// The pull for the Parent app: the children and their day, and the notifications.
-List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...studentLeavePullTasks(api), resourcesListPullTask(api), ...inboxPullTasks(api)];
+List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...studentLeavePullTasks(api), resourcesListPullTask(api), commentsPullTask(api), ...inboxPullTasks(api)];
 
 String _isolate(String text) => '\u2066$text\u2069';
 
