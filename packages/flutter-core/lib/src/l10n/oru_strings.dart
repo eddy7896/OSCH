@@ -6673,6 +6673,96 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Other parents of the class will see your child\'s first name next to your comment.'**
   String get mobCmPrivacy;
+
+  /// Row on the Parent app's Home that opens the child's report card.
+  ///
+  /// In en, this message translates to:
+  /// **'Report card'**
+  String get mobPaReportCard;
+
+  /// Row on the Parent app's Home that opens the child's class timetable, and the title of that screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Timetable'**
+  String get mobPaTimetable;
+
+  /// Row on the Parent app's Home that opens the child's month calendar, and the title of that screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get mobPaCalendar;
+
+  /// Heading on the Parent app's Home above the report card, timetable and calendar rows. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'More about {child}'**
+  String mobPaMoreAbout(String child);
+
+  /// Heading of the timetable screen. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'{child}\'s week'**
+  String mobPaTimetableOf(String child);
+
+  /// Shown on the timetable screen when nothing was ever loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'The timetable has not been loaded yet. Connect once to see it.'**
+  String get mobPaNoTimetable;
+
+  /// Shown on the timetable screen for a day with no lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no lessons on this day.'**
+  String get mobPaNoLessonsDay;
+
+  /// Heading of the calendar screen. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'{child}\'s month'**
+  String mobPaCalendarOf(String child);
+
+  /// Button that shows the month before on the calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get mobPaPrevMonth;
+
+  /// Button that shows the month after on the calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get mobPaNextMonth;
+
+  /// Heading above the count of days by attendance status on the calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get mobPaMonthSummary;
+
+  /// Shown in the day details on the calendar when the school recorded nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is recorded for this day.'**
+  String get mobPaDayNothing;
+
+  /// Shown on a calendar day covered by an approved leave request.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved leave'**
+  String get mobPaLeaveDay;
+
+  /// Spoken label for a calendar day with an exam.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam'**
+  String get mobPaExamDay;
+
+  /// An exam in the day details on the calendar. {title} is the exam's title, {subject} its subject.
+  ///
+  /// In en, this message translates to:
+  /// **'{title}: {subject}'**
+  String mobPaExamLine(String title, String subject);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

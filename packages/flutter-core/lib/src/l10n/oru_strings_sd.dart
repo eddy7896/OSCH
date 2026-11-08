@@ -3763,4 +3763,58 @@ class OruStringsSd extends OruStrings {
   @override
   String get mobCmPrivacy =>
       'Other parents of the class will see your child\'s first name next to your comment.';
+
+  @override
+  String get mobPaReportCard => 'Report card';
+
+  @override
+  String get mobPaTimetable => 'Timetable';
+
+  @override
+  String get mobPaCalendar => 'Calendar';
+
+  @override
+  String mobPaMoreAbout(String child) {
+    return 'More about $child';
+  }
+
+  @override
+  String mobPaTimetableOf(String child) {
+    return '$child\'s week';
+  }
+
+  @override
+  String get mobPaNoTimetable =>
+      'The timetable has not been loaded yet. Connect once to see it.';
+
+  @override
+  String get mobPaNoLessonsDay => 'There are no lessons on this day.';
+
+  @override
+  String mobPaCalendarOf(String child) {
+    return '$child\'s month';
+  }
+
+  @override
+  String get mobPaPrevMonth => 'Earlier';
+
+  @override
+  String get mobPaNextMonth => 'Later';
+
+  @override
+  String get mobPaMonthSummary => 'This month';
+
+  @override
+  String get mobPaDayNothing => 'Nothing is recorded for this day.';
+
+  @override
+  String get mobPaLeaveDay => 'Approved leave';
+
+  @override
+  String get mobPaExamDay => 'Exam';
+
+  @override
+  String mobPaExamLine(String title, String subject) {
+    return '$title: $subject';
+  }
 }
