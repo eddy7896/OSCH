@@ -911,6 +911,212 @@ class GridRowDto {
       };
 }
 
+class InvoiceDto {
+  const InvoiceDto({required this.academicYear, required this.amountMinor, required this.discountMinor, required this.dueDate, required this.grossMinor, required this.id, required this.outstandingMinor, required this.paidMinor, required this.payments, required this.status, required this.student, required this.title});
+  final InvoiceDtoAcademicYear academicYear;
+  final String amountMinor;
+  final String? discountMinor;
+  final String dueDate;
+  final String? grossMinor;
+  final String id;
+  final String outstandingMinor;
+  final String paidMinor;
+  final List<PaymentDto> payments;
+  final String status;
+  final InvoiceDtoStudent student;
+  final String title;
+
+  factory InvoiceDto.fromJson(Map<String, dynamic> j) => InvoiceDto(
+        academicYear: InvoiceDtoAcademicYear.fromJson(j['academicYear'] as Map<String, dynamic>),
+        amountMinor: j['amountMinor'] as String,
+        discountMinor: j['discountMinor'] == null ? null : j['discountMinor'] as String,
+        dueDate: j['dueDate'] as String,
+        grossMinor: j['grossMinor'] == null ? null : j['grossMinor'] as String,
+        id: j['id'] as String,
+        outstandingMinor: j['outstandingMinor'] as String,
+        paidMinor: j['paidMinor'] as String,
+        payments: (j['payments'] as List<dynamic>).map((e) => PaymentDto.fromJson(e as Map<String, dynamic>)).toList(),
+        status: j['status'] as String,
+        student: InvoiceDtoStudent.fromJson(j['student'] as Map<String, dynamic>),
+        title: j['title'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'academicYear': academicYear.toJson(),
+        'amountMinor': amountMinor,
+        if (discountMinor != null) 'discountMinor': discountMinor!,
+        'dueDate': dueDate,
+        if (grossMinor != null) 'grossMinor': grossMinor!,
+        'id': id,
+        'outstandingMinor': outstandingMinor,
+        'paidMinor': paidMinor,
+        'payments': payments.map((e) => e.toJson()).toList(),
+        'status': status,
+        'student': student.toJson(),
+        'title': title,
+      };
+}
+
+class InvoiceDtoAcademicYear {
+  const InvoiceDtoAcademicYear({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory InvoiceDtoAcademicYear.fromJson(Map<String, dynamic> j) => InvoiceDtoAcademicYear(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class InvoiceDtoStudent {
+  const InvoiceDtoStudent({required this.enrollmentId, required this.id, required this.name});
+  final String enrollmentId;
+  final String id;
+  final String name;
+
+  factory InvoiceDtoStudent.fromJson(Map<String, dynamic> j) => InvoiceDtoStudent(
+        enrollmentId: j['enrollmentId'] as String,
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'enrollmentId': enrollmentId,
+        'id': id,
+        'name': name,
+      };
+}
+
+class InvoiceListDto {
+  const InvoiceListDto({required this.items, required this.page, required this.pageSize, required this.total, required this.totals});
+  final List<InvoiceSummaryDto> items;
+  final num page;
+  final num pageSize;
+  final num total;
+  final InvoiceTotalsDto totals;
+
+  factory InvoiceListDto.fromJson(Map<String, dynamic> j) => InvoiceListDto(
+        items: (j['items'] as List<dynamic>).map((e) => InvoiceSummaryDto.fromJson(e as Map<String, dynamic>)).toList(),
+        page: j['page'] as num,
+        pageSize: j['pageSize'] as num,
+        total: j['total'] as num,
+        totals: InvoiceTotalsDto.fromJson(j['totals'] as Map<String, dynamic>),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+        'page': page,
+        'pageSize': pageSize,
+        'total': total,
+        'totals': totals.toJson(),
+      };
+}
+
+class InvoiceSummaryDto {
+  const InvoiceSummaryDto({required this.academicYear, required this.amountMinor, required this.discountMinor, required this.dueDate, required this.grossMinor, required this.id, required this.outstandingMinor, required this.paidMinor, required this.status, required this.student, required this.title});
+  final InvoiceSummaryDtoAcademicYear academicYear;
+  final String amountMinor;
+  final String? discountMinor;
+  final String dueDate;
+  final String? grossMinor;
+  final String id;
+  final String outstandingMinor;
+  final String paidMinor;
+  final String status;
+  final InvoiceSummaryDtoStudent student;
+  final String title;
+
+  factory InvoiceSummaryDto.fromJson(Map<String, dynamic> j) => InvoiceSummaryDto(
+        academicYear: InvoiceSummaryDtoAcademicYear.fromJson(j['academicYear'] as Map<String, dynamic>),
+        amountMinor: j['amountMinor'] as String,
+        discountMinor: j['discountMinor'] == null ? null : j['discountMinor'] as String,
+        dueDate: j['dueDate'] as String,
+        grossMinor: j['grossMinor'] == null ? null : j['grossMinor'] as String,
+        id: j['id'] as String,
+        outstandingMinor: j['outstandingMinor'] as String,
+        paidMinor: j['paidMinor'] as String,
+        status: j['status'] as String,
+        student: InvoiceSummaryDtoStudent.fromJson(j['student'] as Map<String, dynamic>),
+        title: j['title'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'academicYear': academicYear.toJson(),
+        'amountMinor': amountMinor,
+        if (discountMinor != null) 'discountMinor': discountMinor!,
+        'dueDate': dueDate,
+        if (grossMinor != null) 'grossMinor': grossMinor!,
+        'id': id,
+        'outstandingMinor': outstandingMinor,
+        'paidMinor': paidMinor,
+        'status': status,
+        'student': student.toJson(),
+        'title': title,
+      };
+}
+
+class InvoiceSummaryDtoAcademicYear {
+  const InvoiceSummaryDtoAcademicYear({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory InvoiceSummaryDtoAcademicYear.fromJson(Map<String, dynamic> j) => InvoiceSummaryDtoAcademicYear(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class InvoiceSummaryDtoStudent {
+  const InvoiceSummaryDtoStudent({required this.enrollmentId, required this.id, required this.name});
+  final String enrollmentId;
+  final String id;
+  final String name;
+
+  factory InvoiceSummaryDtoStudent.fromJson(Map<String, dynamic> j) => InvoiceSummaryDtoStudent(
+        enrollmentId: j['enrollmentId'] as String,
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'enrollmentId': enrollmentId,
+        'id': id,
+        'name': name,
+      };
+}
+
+class InvoiceTotalsDto {
+  const InvoiceTotalsDto({required this.amountMinor, required this.count, required this.outstandingMinor, required this.paidMinor});
+  final String amountMinor;
+  final num count;
+  final String outstandingMinor;
+  final String paidMinor;
+
+  factory InvoiceTotalsDto.fromJson(Map<String, dynamic> j) => InvoiceTotalsDto(
+        amountMinor: j['amountMinor'] as String,
+        count: j['count'] as num,
+        outstandingMinor: j['outstandingMinor'] as String,
+        paidMinor: j['paidMinor'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'amountMinor': amountMinor,
+        'count': count,
+        'outstandingMinor': outstandingMinor,
+        'paidMinor': paidMinor,
+      };
+}
+
 class LeaveRequestDto {
   const LeaveRequestDto({required this.createdAt, required this.days, required this.decision, required this.endDate, required this.half, required this.id, required this.reason, required this.staff, required this.startDate, required this.status, required this.type});
   final String createdAt;
@@ -1284,6 +1490,78 @@ class NotificationListDto {
       };
 }
 
+class PaymentDto {
+  const PaymentDto({required this.amountMinor, required this.id, required this.method, required this.paidOn, required this.receipt, required this.recordedBy, required this.reference, required this.reversalReason, required this.reversedAt});
+  final String amountMinor;
+  final String id;
+  final String method;
+  final String paidOn;
+  final PaymentReceiptDto? receipt;
+  final PaymentDtoRecordedBy recordedBy;
+  final String? reference;
+  final String? reversalReason;
+  final String? reversedAt;
+
+  factory PaymentDto.fromJson(Map<String, dynamic> j) => PaymentDto(
+        amountMinor: j['amountMinor'] as String,
+        id: j['id'] as String,
+        method: j['method'] as String,
+        paidOn: j['paidOn'] as String,
+        receipt: j['receipt'] == null ? null : PaymentReceiptDto.fromJson(j['receipt'] as Map<String, dynamic>),
+        recordedBy: PaymentDtoRecordedBy.fromJson(j['recordedBy'] as Map<String, dynamic>),
+        reference: j['reference'] == null ? null : j['reference'] as String,
+        reversalReason: j['reversalReason'] == null ? null : j['reversalReason'] as String,
+        reversedAt: j['reversedAt'] == null ? null : j['reversedAt'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'amountMinor': amountMinor,
+        'id': id,
+        'method': method,
+        'paidOn': paidOn,
+        if (receipt != null) 'receipt': receipt!.toJson(),
+        'recordedBy': recordedBy.toJson(),
+        if (reference != null) 'reference': reference!,
+        if (reversalReason != null) 'reversalReason': reversalReason!,
+        if (reversedAt != null) 'reversedAt': reversedAt!,
+      };
+}
+
+class PaymentDtoRecordedBy {
+  const PaymentDtoRecordedBy({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory PaymentDtoRecordedBy.fromJson(Map<String, dynamic> j) => PaymentDtoRecordedBy(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class PaymentReceiptDto {
+  const PaymentReceiptDto({required this.cancelled, required this.id, required this.number});
+  final bool cancelled;
+  final String id;
+  final String number;
+
+  factory PaymentReceiptDto.fromJson(Map<String, dynamic> j) => PaymentReceiptDto(
+        cancelled: j['cancelled'] as bool,
+        id: j['id'] as String,
+        number: j['number'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'cancelled': cancelled,
+        'id': id,
+        'number': number,
+      };
+}
+
 class PeriodDto {
   const PeriodDto({required this.endTime, required this.id, required this.isBreak, required this.label, required this.number, required this.startTime});
   final String endTime;
@@ -1453,6 +1731,237 @@ class ReadAllDto {
 
   Map<String, dynamic> toJson() => {
         'marked': marked,
+      };
+}
+
+class ReceiptDto {
+  const ReceiptDto({required this.academicYear, required this.amountMinor, required this.balanceAfterMinor, required this.cancelReason, required this.cancelled, required this.className, required this.id, required this.invoice, required this.issuedAt, required this.method, required this.number, required this.paidOn, required this.receivedBy, required this.reference, required this.school, required this.student});
+  final ReceiptDtoAcademicYear academicYear;
+  final String amountMinor;
+  final String balanceAfterMinor;
+  final String? cancelReason;
+  final bool cancelled;
+  final String? className;
+  final String id;
+  final ReceiptDtoInvoice invoice;
+  final String issuedAt;
+  final String method;
+  final String number;
+  final String paidOn;
+  final String receivedBy;
+  final String? reference;
+  final ReceiptDtoSchool school;
+  final ReceiptDtoStudent student;
+
+  factory ReceiptDto.fromJson(Map<String, dynamic> j) => ReceiptDto(
+        academicYear: ReceiptDtoAcademicYear.fromJson(j['academicYear'] as Map<String, dynamic>),
+        amountMinor: j['amountMinor'] as String,
+        balanceAfterMinor: j['balanceAfterMinor'] as String,
+        cancelReason: j['cancelReason'] == null ? null : j['cancelReason'] as String,
+        cancelled: j['cancelled'] as bool,
+        className: j['className'] == null ? null : j['className'] as String,
+        id: j['id'] as String,
+        invoice: ReceiptDtoInvoice.fromJson(j['invoice'] as Map<String, dynamic>),
+        issuedAt: j['issuedAt'] as String,
+        method: j['method'] as String,
+        number: j['number'] as String,
+        paidOn: j['paidOn'] as String,
+        receivedBy: j['receivedBy'] as String,
+        reference: j['reference'] == null ? null : j['reference'] as String,
+        school: ReceiptDtoSchool.fromJson(j['school'] as Map<String, dynamic>),
+        student: ReceiptDtoStudent.fromJson(j['student'] as Map<String, dynamic>),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'academicYear': academicYear.toJson(),
+        'amountMinor': amountMinor,
+        'balanceAfterMinor': balanceAfterMinor,
+        if (cancelReason != null) 'cancelReason': cancelReason!,
+        'cancelled': cancelled,
+        if (className != null) 'className': className!,
+        'id': id,
+        'invoice': invoice.toJson(),
+        'issuedAt': issuedAt,
+        'method': method,
+        'number': number,
+        'paidOn': paidOn,
+        'receivedBy': receivedBy,
+        if (reference != null) 'reference': reference!,
+        'school': school.toJson(),
+        'student': student.toJson(),
+      };
+}
+
+class ReceiptDtoAcademicYear {
+  const ReceiptDtoAcademicYear({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory ReceiptDtoAcademicYear.fromJson(Map<String, dynamic> j) => ReceiptDtoAcademicYear(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class ReceiptDtoInvoice {
+  const ReceiptDtoInvoice({required this.id, required this.title});
+  final String id;
+  final String title;
+
+  factory ReceiptDtoInvoice.fromJson(Map<String, dynamic> j) => ReceiptDtoInvoice(
+        id: j['id'] as String,
+        title: j['title'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+      };
+}
+
+class ReceiptDtoSchool {
+  const ReceiptDtoSchool({required this.address, required this.email, required this.language, required this.logoKey, required this.name, required this.phone});
+  final String? address;
+  final String? email;
+  final String language;
+  final String? logoKey;
+  final String name;
+  final String? phone;
+
+  factory ReceiptDtoSchool.fromJson(Map<String, dynamic> j) => ReceiptDtoSchool(
+        address: j['address'] == null ? null : j['address'] as String,
+        email: j['email'] == null ? null : j['email'] as String,
+        language: j['language'] as String,
+        logoKey: j['logoKey'] == null ? null : j['logoKey'] as String,
+        name: j['name'] as String,
+        phone: j['phone'] == null ? null : j['phone'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (address != null) 'address': address!,
+        if (email != null) 'email': email!,
+        'language': language,
+        if (logoKey != null) 'logoKey': logoKey!,
+        'name': name,
+        if (phone != null) 'phone': phone!,
+      };
+}
+
+class ReceiptDtoStudent {
+  const ReceiptDtoStudent({required this.enrollmentId, required this.id, required this.name});
+  final String enrollmentId;
+  final String id;
+  final String name;
+
+  factory ReceiptDtoStudent.fromJson(Map<String, dynamic> j) => ReceiptDtoStudent(
+        enrollmentId: j['enrollmentId'] as String,
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'enrollmentId': enrollmentId,
+        'id': id,
+        'name': name,
+      };
+}
+
+class ReceiptListDto {
+  const ReceiptListDto({required this.items, required this.page, required this.pageSize, required this.total, required this.totalAmountMinor});
+  final List<ReceiptSummaryDto> items;
+  final num page;
+  final num pageSize;
+  final num total;
+  final String totalAmountMinor;
+
+  factory ReceiptListDto.fromJson(Map<String, dynamic> j) => ReceiptListDto(
+        items: (j['items'] as List<dynamic>).map((e) => ReceiptSummaryDto.fromJson(e as Map<String, dynamic>)).toList(),
+        page: j['page'] as num,
+        pageSize: j['pageSize'] as num,
+        total: j['total'] as num,
+        totalAmountMinor: j['totalAmountMinor'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+        'page': page,
+        'pageSize': pageSize,
+        'total': total,
+        'totalAmountMinor': totalAmountMinor,
+      };
+}
+
+class ReceiptSummaryDto {
+  const ReceiptSummaryDto({required this.amountMinor, required this.cancelled, required this.id, required this.invoice, required this.issuedAt, required this.number, required this.paidOn, required this.student});
+  final String amountMinor;
+  final bool cancelled;
+  final String id;
+  final ReceiptSummaryDtoInvoice invoice;
+  final String issuedAt;
+  final String number;
+  final String paidOn;
+  final ReceiptSummaryDtoStudent student;
+
+  factory ReceiptSummaryDto.fromJson(Map<String, dynamic> j) => ReceiptSummaryDto(
+        amountMinor: j['amountMinor'] as String,
+        cancelled: j['cancelled'] as bool,
+        id: j['id'] as String,
+        invoice: ReceiptSummaryDtoInvoice.fromJson(j['invoice'] as Map<String, dynamic>),
+        issuedAt: j['issuedAt'] as String,
+        number: j['number'] as String,
+        paidOn: j['paidOn'] as String,
+        student: ReceiptSummaryDtoStudent.fromJson(j['student'] as Map<String, dynamic>),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'amountMinor': amountMinor,
+        'cancelled': cancelled,
+        'id': id,
+        'invoice': invoice.toJson(),
+        'issuedAt': issuedAt,
+        'number': number,
+        'paidOn': paidOn,
+        'student': student.toJson(),
+      };
+}
+
+class ReceiptSummaryDtoInvoice {
+  const ReceiptSummaryDtoInvoice({required this.id, required this.title});
+  final String id;
+  final String title;
+
+  factory ReceiptSummaryDtoInvoice.fromJson(Map<String, dynamic> j) => ReceiptSummaryDtoInvoice(
+        id: j['id'] as String,
+        title: j['title'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+      };
+}
+
+class ReceiptSummaryDtoStudent {
+  const ReceiptSummaryDtoStudent({required this.enrollmentId, required this.id, required this.name});
+  final String enrollmentId;
+  final String id;
+  final String name;
+
+  factory ReceiptSummaryDtoStudent.fromJson(Map<String, dynamic> j) => ReceiptSummaryDtoStudent(
+        enrollmentId: j['enrollmentId'] as String,
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'enrollmentId': enrollmentId,
+        'id': id,
+        'name': name,
       };
 }
 
