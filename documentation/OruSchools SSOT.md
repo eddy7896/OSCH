@@ -183,7 +183,7 @@ graph TD
 
 Replacing fragmented WhatsApp groups with a secure, auditable, and professionally bounded messaging system.
 
-- **1:1 Direct Messaging:** Teacher ↔︎ Parent with strict “Office Hours” enforced.
+- **1:1 Direct Messaging:** Teacher ↔︎ Parent, delivered at once at any hour, every message logged to the Admin audit trail. [Amended 2026-11-08 by the owner, ADR-0018: the “Office Hours” enforcement was removed.]
 - **Grade-Wide Broadcast:** 1-way announcements from staff to parents (Push Notifications).
 - **Community Groups:** Moderated 2-way chat for clubs or PTAs.
 
@@ -227,7 +227,7 @@ sequenceDiagram
     actor Parent
     
     Teacher->>DB: Sends Direct Message
-    Note right of DB: Checks Teacher Office Hours<br/>Logs to Admin Audit Trail
+    Note right of DB: Logs to Admin Audit Trail (no office-hours check since ADR-0018)
     DB-->>Parent: Triggers Push Notification
     Parent->>DB: Reads and Replies
     DB-->>Teacher: Routes to Teacher Queue
