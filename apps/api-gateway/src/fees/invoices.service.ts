@@ -92,6 +92,20 @@ export class InvoicesService {
     if (!r) throw notFound(); // another school's invoice looks exactly like one that does not exist
     return r as unknown as InvoiceRow;
   }
+  /** The invoices of these students only (a parent's linked children), due date first. Several children are merged; each is read in full so the totals add up. */
+  async listFor(t: TenantContext, q: ListInvoicesQueryDto, studentIds: string[]): Promise<InvoiceListDto> {
+    const wanted = q.studentId ? studentIds.filter((s) => same(s, q.studentId!)) : studentIds;
+    const lists = await Promise.all(wanted.map((studentId) => this.list(t, { ...q, studentId, page: 1, pageSize: 100 })));
+    const items = lists.flatMap((l) => l.items).sort((a, b) => a.dueDate.localeCompare(b.dueDate) || a.title.localeCompare(b.title));
+    const sum = (f: (x: InvoiceSummaryDto) => string) => items.reduce((s, x) => s + BigInt(f(x)), 0n);
+    return { items, total: items.length, page: 1, pageSize: 100, totals: totals(items.length, sum((x) => x.amountMinor), sum((x) => x.paidMinor)) };
+  }
+  /** One invoice, only if it is a linked child's; any other looks exactly like one that does not exist. */
+  async getFor(t: TenantContext, id: string, studentIds: string[]): Promise<InvoiceDto> {
+    const inv = await this.get(t, id);
+    if (!studentIds.some((s) => same(s, inv.student.id))) throw notFound();
+    return inv;
+  }
   async get(t: TenantContext, id: string): Promise<InvoiceDto> {
     const r = await this.row(t, id);
     return { ...this.summary(r, today()), payments: (r.payments ?? []).map((p) => this.payment(p)) };

@@ -20,10 +20,12 @@ import '../classes/classes_screens.dart' show OruReportCardScreen;
 import 'parent_academics.dart';
 import 'parent_academics_screens.dart';
 import 'parent_data.dart';
+import 'parent_fees.dart';
+import 'parent_fees_screens.dart';
 import 'parent_model.dart';
 
 /// The pull for the Parent app: the children and their day, and the notifications.
-List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...parentAcademicsPullTasks(api), ...studentLeavePullTasks(api), resourcesListPullTask(api), commentsPullTask(api), ...inboxPullTasks(api)];
+List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...parentAcademicsPullTasks(api), ...parentFeesPullTasks(api), ...studentLeavePullTasks(api), resourcesListPullTask(api), commentsPullTask(api), ...inboxPullTasks(api)];
 
 String _isolate(String text) => '\u2066$text\u2069';
 
@@ -156,6 +158,8 @@ class _OruChildHomeScreenState extends State<OruChildHomeScreen> {
                     OruCard(child: OruListRow(title: s.mobPaReportCard, leading: const OruIcon(OruIconName.chart, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruReportCardScreen(services: widget.services, student: child))))),
                     const SizedBox(height: OruSpacing.space2),
                     OruCard(child: OruListRow(title: s.mobPaTimetable, leading: const OruIcon(OruIconName.book, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruChildTimetableScreen(services: widget.services, child: child, now: widget.now))))),
+                    const SizedBox(height: OruSpacing.space2),
+                    OruCard(child: OruListRow(title: s.mobPfTitle, leading: const OruIcon(OruIconName.payments, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruChildFeesScreen(services: widget.services, child: child))))),
                     const SizedBox(height: OruSpacing.space2),
                     OruCard(child: OruListRow(title: s.mobPaCalendar, leading: const OruIcon(OruIconName.calendar, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruChildCalendarScreen(services: widget.services, child: child, now: widget.now))))),
                   ],
