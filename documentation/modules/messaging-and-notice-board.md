@@ -1,6 +1,6 @@
 # Messaging and the school notice board (plan, nothing built)
 
-Status: **plan, proposed 2026-10-30, for owner review.** Nothing here exists in code. It becomes work in Phase 5 after the ADR in section 8 is accepted
+Status: **plan; decisions D1 to D8 answered 2026-11-08 and recorded in `documentation/decisions/ADR-0018-messaging-and-notice-board.md` (accepted). Nothing here exists in code.** Where this plan and ADR-0018 differ (office hours, the hold of notifications, who posts on the board), **ADR-0018 wins**. The text below is the original proposal and still describes the intended build, except those points. Original wording: It becomes work in Phase 5 after the ADR in section 8 is accepted
 (`documentation/project_plan.md` Phase 5 already names messaging and finding F7; `documentation/audit_2026-10-15.md` F7 says an ADR is needed first).
 
 ## 1. What the owner asked for
