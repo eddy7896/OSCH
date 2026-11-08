@@ -3767,7 +3767,7 @@ class OruStringsHi extends OruStrings {
   String get mobPaReportCard => 'रिपोर्ट कार्ड';
 
   @override
-  String get mobPaTimetable => 'समय सारणी';
+  String get mobPaTimetable => 'समय-सारणी';
 
   @override
   String get mobPaCalendar => 'कैलेंडर';
@@ -3784,7 +3784,7 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get mobPaNoTimetable =>
-      'समय सारणी अभी लोड नहीं हुई है। देखने के लिए एक बार कनेक्ट करें।';
+      'समय-सारणी अभी लोड नहीं हुई है। देखने के लिए एक बार कनेक्ट करें।';
 
   @override
   String get mobPaNoLessonsDay => 'इस दिन कोई पाठ नहीं है।';
