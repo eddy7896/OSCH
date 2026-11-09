@@ -1126,5 +1126,7 @@
   "notifMessageReceivedBody": "آپ کے لیے ایک نیا پیغام ہے۔ پڑھنے کے لیے ایپ کھولیں۔",
   "notifMessageReportedTitle": "ایک پیغام کی شکایت کی گئی",
   "notifMessageReportedBody": "ایک گفتگو میں ایک پیغام کی شکایت کی گئی ہے۔ براہ کرم اسے دیکھیں۔",
-  "ntCatmessage": "پیغامات"
+  "ntCatmessage": "پیغامات",
+  "notifBroadcastPostedTitle": "اسکول کی طرف سے نیا پیغام",
+  "notifBroadcastPostedBody": "آپ کے بچے کی جماعت کے لیے ایک نیا پیغام ہے۔ پڑھنے کے لیے ایپ کھولیں۔"
 }

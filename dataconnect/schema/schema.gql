@@ -846,6 +846,31 @@ type MessageReport @table {
   reviewedBy: User
 }
 
+# A one-way message from the class teacher (or the Principal or Academic admin) to the parents of a whole class (P5-3c, ADR-0018). The recipients are written when it is sent,
+# from the guardians linked to the students placed in the class at that moment, so a child who moves later neither gains nor loses an old broadcast. Parents cannot reply into it.
+type Broadcast @table @unique(fields: ["sender", "clientId"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  classroom: Classroom!
+  sender: User!
+  clientId: String!
+  title: String!
+  body: String!
+  targetCount: Int! # students in the class when it was sent
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# One row per (student, guardian account) reached. A guardian with two children in the class has two rows and sees the broadcast once.
+type BroadcastRecipient @table @unique(fields: ["broadcast", "student", "guardianUser"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  broadcast: Broadcast!
+  student: Student!
+  guardianUser: User!
+  readAt: Timestamp
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
 # A parent's request for leave for their child (P5-10, ADR-0016). Decided by the class teacher or the Academic admin; the first decision stands.
 type StudentLeave @table @unique(fields: ["student", "clientId"]) {
   id: UUID! @default(expr: "uuidV4()")

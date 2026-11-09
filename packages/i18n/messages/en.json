@@ -1126,5 +1126,7 @@
   "notifMessageReceivedBody": "You have a new message. Open the app to read it.",
   "notifMessageReportedTitle": "A message was reported",
   "notifMessageReportedBody": "A message in a conversation was reported. Please review it.",
-  "ntCatmessage": "Messages"
+  "ntCatmessage": "Messages",
+  "notifBroadcastPostedTitle": "New message from the school",
+  "notifBroadcastPostedBody": "Your child's class has a new message. Open the app to read it."
 }

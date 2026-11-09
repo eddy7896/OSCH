@@ -45,12 +45,13 @@ describe("E-RBAC: SSOT §4 matrix cells (locked)", () => {
     expect(can(as("PRINCIPAL"), "payroll", "approve")).toBe(true);
     const writes = permissionsOf(as("PRINCIPAL")).filter((p) => WRITE.includes(p.action));
     expect(writes.length).toBeGreaterThan(0); // check-in and own leave request
-    // The one other write is writing announcements, which the owner gave the Principal and the Academic admin (ADR-0014 decision 11).
-    for (const w of writes.filter((x) => x.resource !== "announcements")) {
+    // The other writes are announcements (ADR-0014 decision 11) and a message to the parents of a class (ADR-0018 decision 3), both given by the owner to the Principal and the Academic admin.
+    for (const w of writes.filter((x) => x.resource !== "announcements" && x.resource !== "broadcasts")) {
       expect([...SELF_SERVICE_RESOURCES, ...INBOX_RESOURCES] as readonly string[], `${w.resource}:${w.action}`).toContain(w.resource);
       expect(w.scope, `${w.resource}:${w.action}`).toBe("own");
     }
     expect(writes.filter((x) => x.resource === "announcements").map((x) => x.action).sort()).toEqual(["create", "update"]);
+    expect(writes.filter((x) => x.resource === "broadcasts").map((x) => x.action)).toEqual(["create"]);
     const approvals = permissionsOf(as("PRINCIPAL")).filter((p) => p.action === "approve");
     expect(approvals.map((p) => p.resource).sort()).toEqual(["leave", "payroll"]); // leave requests and the monthly payroll run (ADR-0012)
   });

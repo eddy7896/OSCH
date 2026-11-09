@@ -1686,3 +1686,41 @@ mutation ReportMessage($schoolId: UUID!, $id: UUID!, $conversationId: UUID!, $me
   n1: notification_insert(data: { schoolId: $schoolId, kind: $kind, entityType: "MessageReport", entityId_expr: "request.variables.id", audienceRole: PRINCIPAL })
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "message.report", entityType: "MessageReport", entityId_expr: "request.variables.id", details: $details })
 }
+
+# ---- Class broadcast (P5-3c, ADR-0018). The gateway has decided the class, the sender's right and the recipients; the database checks the pieces and the sender's role.
+mutation CreateBroadcast($schoolId: UUID!, $id: UUID!, $classroomId: UUID!, $clientId: String!, $title: String!, $body: String!, $targetCount: Int!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {in: [TEACHER, PRINCIPAL, ACADEMIC_ADMIN]}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only a teacher, the Principal or the Academic admin of this school can send to a class") { userId }
+    classroom: classrooms(where: {id: {eq: $classroomId}, schoolId: {eq: $schoolId}}) @check(expr: "this.size() == 1", message: "class not found in this school") { id }
+  }
+  broadcast_insert(data: { id: $id, schoolId: $schoolId, classroomId: $classroomId, senderId: $actorId, clientId: $clientId, title: $title, body: $body, targetCount: $targetCount })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "broadcast.send", entityType: "Broadcast", entityId_expr: "request.variables.id", details: $details })
+}
+
+# One parent account reached for one student. Written after the broadcast, one by one (a database operation cannot loop); the guardian must be linked to the student.
+mutation AddBroadcastRecipient($schoolId: UUID!, $id: UUID!, $broadcastId: UUID!, $studentId: UUID!, $guardianUserId: String!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    broadcast: broadcasts(where: {id: {eq: $broadcastId}, schoolId: {eq: $schoolId}, senderId: {eq: $actorId}}) @check(expr: "this.size() == 1", message: "broadcast not found, or not yours") { id }
+    link: parentLinks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, userId: {eq: $guardianUserId}}) @check(expr: "this.size() == 1", message: "that parent is not linked to this student") { id }
+  }
+  broadcastRecipient_insert(data: { id: $id, schoolId: $schoolId, broadcastId: $broadcastId, studentId: $studentId, guardianUserId: $guardianUserId })
+}
+
+# The same, and the parent is told (once per parent: the first row of each parent uses this one).
+mutation AddBroadcastRecipientNotify($schoolId: UUID!, $id: UUID!, $broadcastId: UUID!, $studentId: UUID!, $guardianUserId: String!, $kind: String!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    broadcast: broadcasts(where: {id: {eq: $broadcastId}, schoolId: {eq: $schoolId}, senderId: {eq: $actorId}}) @check(expr: "this.size() == 1", message: "broadcast not found, or not yours") { id }
+    link: parentLinks(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, userId: {eq: $guardianUserId}}) @check(expr: "this.size() == 1", message: "that parent is not linked to this student") { id }
+  }
+  broadcastRecipient_insert(data: { id: $id, schoolId: $schoolId, broadcastId: $broadcastId, studentId: $studentId, guardianUserId: $guardianUserId })
+  n1: notification_insert(data: { schoolId: $schoolId, kind: $kind, entityType: "Broadcast", entityId_expr: "request.variables.broadcastId", recipientUserId: $guardianUserId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "broadcast.notify", entityType: "Broadcast", entityId_expr: "request.variables.broadcastId", details: $details })
+}
+
+# A parent opens a broadcast: every row of theirs for it is marked read.
+mutation MarkBroadcastRead($schoolId: UUID!, $broadcastId: UUID!, $actorId: String!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    mine: broadcastRecipients(where: {schoolId: {eq: $schoolId}, broadcastId: {eq: $broadcastId}, guardianUserId: {eq: $actorId}}) @check(expr: "this.size() > 0", message: "that broadcast was not sent to you") { id }
+  }
+  broadcastRecipient_updateMany(where: {schoolId: {eq: $schoolId}, broadcastId: {eq: $broadcastId}, guardianUserId: {eq: $actorId}, readAt: {isNull: true}}, data: { readAt_expr: "request.time" })
+}

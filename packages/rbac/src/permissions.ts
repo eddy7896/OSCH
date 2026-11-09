@@ -38,6 +38,7 @@ export const RESOURCES = [
   "student_leave", // a parent asks leave for their child; the class teacher or the Academic admin decides (ADR-0016)
   "learning_resources", // worksheets and workbooks a teacher shares with the parents of a class (ADR-0016)
   "resource_comments", // comments under a shared worksheet: the class's parents, the uploading teacher, the Academic admin (ADR-0016)
+  "broadcasts", // one-way messages from the class teacher, the Principal or the Academic admin to the parents of a class (ADR-0018)
   "messages", // 1:1 direct messaging (office hours enforced separately)
   // Administration
   "settings", // school settings, integrations

@@ -114,6 +114,8 @@
     }
   ],
   "auditExemptOperations": {
+    "AddBroadcastRecipient": "one delivery row of a broadcast that is already audited (broadcast.send, with the class, the words and the counts); P5-3c",
+    "MarkBroadcastRead": "records only that a parent opened a broadcast; no message, person or permission changes (P5-3c)",
     "MarkConversationRead": "records only when the person last opened a conversation (P5-3b); no message, person or permission changes",
     "RegisterDevice": "a phone's push address on the caller's own account (P4-S2); no tenant data and no privilege change",
     "RemoveDevice": "removes the caller's own phone address (P4-S2); no tenant data and no privilege change",

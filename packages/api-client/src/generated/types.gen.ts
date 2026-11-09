@@ -227,6 +227,36 @@ export type BandsDto = {
     template: Array<BandDto>;
 };
 
+export type BroadcastDetailDto = {
+    body: string;
+    class: {
+        id: string;
+        name: string;
+    };
+    id: string;
+    read: boolean | null;
+    sender: {
+        name: string;
+        userId: string;
+    };
+    sentAt: string;
+    stats: BroadcastStatsDto | null;
+    students: Array<StudentRefDto>;
+    title: string;
+};
+
+export type BroadcastListDto = {
+    items: Array<BroadcastDetailDto>;
+};
+
+export type BroadcastStatsDto = {
+    parents: number;
+    reachedStudents: number;
+    readBy: number;
+    targetStudents: number;
+    unreachable: Array<StudentRefDto>;
+};
+
 export type CandidateDto = {
     staff: StaffRefDto;
     substitutionsThisMonth: number;
@@ -418,6 +448,13 @@ export type CreateApplicationDto = {
     lastName: string;
     notes?: string;
     previousSchool?: string;
+};
+
+export type CreateBroadcastDto = {
+    body: string;
+    classId: string;
+    clientId: string;
+    title: string;
 };
 
 export type CreateClassDto = {
@@ -5263,6 +5300,170 @@ export type AttendanceStudentResponses = {
 };
 
 export type AttendanceStudentResponse = AttendanceStudentResponses[keyof AttendanceStudentResponses];
+
+export type BroadcastsListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/broadcasts';
+};
+
+export type BroadcastsListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type BroadcastsListError = BroadcastsListErrors[keyof BroadcastsListErrors];
+
+export type BroadcastsListResponses = {
+    200: BroadcastListDto;
+};
+
+export type BroadcastsListResponse = BroadcastsListResponses[keyof BroadcastsListResponses];
+
+export type BroadcastsCreateData = {
+    body: CreateBroadcastDto;
+    path?: never;
+    query?: never;
+    url: '/v1/broadcasts';
+};
+
+export type BroadcastsCreateErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type BroadcastsCreateError = BroadcastsCreateErrors[keyof BroadcastsCreateErrors];
+
+export type BroadcastsCreateResponses = {
+    201: BroadcastDetailDto;
+};
+
+export type BroadcastsCreateResponse = BroadcastsCreateResponses[keyof BroadcastsCreateResponses];
+
+export type BroadcastsOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/broadcasts/{id}';
+};
+
+export type BroadcastsOneErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type BroadcastsOneError = BroadcastsOneErrors[keyof BroadcastsOneErrors];
+
+export type BroadcastsOneResponses = {
+    200: BroadcastDetailDto;
+};
+
+export type BroadcastsOneResponse = BroadcastsOneResponses[keyof BroadcastsOneResponses];
+
+export type BroadcastsReadData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/broadcasts/{id}/read';
+};
+
+export type BroadcastsReadErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type BroadcastsReadError = BroadcastsReadErrors[keyof BroadcastsReadErrors];
+
+export type BroadcastsReadResponses = {
+    204: void;
+};
+
+export type BroadcastsReadResponse = BroadcastsReadResponses[keyof BroadcastsReadResponses];
 
 export type DevicesRemoveData = {
     body: RemoveDeviceDto;

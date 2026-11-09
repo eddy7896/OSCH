@@ -387,6 +387,30 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Attendance_student"
   },
   {
+    "method": "POST",
+    "path": "/v1/broadcasts/{id}/read",
+    "access": "tenant",
+    "operationId": "Broadcasts_read"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/broadcasts/{id}",
+    "access": "tenant",
+    "operationId": "Broadcasts_one"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/broadcasts",
+    "access": "tenant",
+    "operationId": "Broadcasts_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/broadcasts",
+    "access": "tenant",
+    "operationId": "Broadcasts_create"
+  },
+  {
     "method": "DELETE",
     "path": "/v1/devices",
     "access": "user",

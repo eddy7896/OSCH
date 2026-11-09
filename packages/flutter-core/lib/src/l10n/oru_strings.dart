@@ -6943,6 +6943,18 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Messages'**
   String get ntCatmessage;
+
+  /// Title of the notice sent to a parent when the class teacher or the school sends a message to the whole class.
+  ///
+  /// In en, this message translates to:
+  /// **'New message from the school'**
+  String get notifBroadcastPostedTitle;
+
+  /// Body of that notice. It names no child and no words of the message.
+  ///
+  /// In en, this message translates to:
+  /// **'Your child\'s class has a new message. Open the app to read it.'**
+  String get notifBroadcastPostedBody;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

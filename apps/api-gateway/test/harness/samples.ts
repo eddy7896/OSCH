@@ -648,6 +648,7 @@ export const SAMPLES: Record<string, Sample> = {
   'DELETE /students/:id/documents/:documentId': { ...academicAdminOfA, prepare: studentWithDocument },
   'POST /resources': { ...academicAdminOfA, prepare: examSetupOfA, body: (w, ctx) => ({ classId: ctx['classId'], subjectId: ctx['subjectId'], key: resourceKey(w, ctx['classId']!), title: 'Fractions', fileName: 'fractions.pdf' }) },
   'DELETE /resources/:id': { ...academicAdminOfA, prepare: resourceOfA },
+  'POST /broadcasts': { ...academicAdminOfA, prepare: examWithStudentOfA, body: (_w, ctx) => ({ classId: ctx['classId'], clientId: `s-${randomUUID().slice(0, 12)}`, title: 'Sample', body: 'Sample broadcast' }) },
   'POST /messages/threads': { ...parentOfA, prepare: messagingOfA('none'), body: (_w, ctx) => ({ studentId: ctx['studentId'], otherUserId: ctx['teacherUid'] }) },
   'POST /messages/threads/:id/messages': { ...parentOfA, prepare: messagingOfA('thread'), body: () => ({ clientId: `s-${randomUUID().slice(0, 12)}`, body: 'Hello teacher' }) },
   'POST /messages/threads/:id/messages/:messageId/hide': { ...parentOfA, prepare: messagingOfA('message') },

@@ -1386,6 +1386,34 @@ function reportMessage(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.reportMessage = reportMessage;
 
+function createBroadcast(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateBroadcast', inputVars, inputOpts);
+}
+exports.createBroadcast = createBroadcast;
+
+function addBroadcastRecipient(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddBroadcastRecipient', inputVars, inputOpts);
+}
+exports.addBroadcastRecipient = addBroadcastRecipient;
+
+function addBroadcastRecipientNotify(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('AddBroadcastRecipientNotify', inputVars, inputOpts);
+}
+exports.addBroadcastRecipientNotify = addBroadcastRecipientNotify;
+
+function markBroadcastRead(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('MarkBroadcastRead', inputVars, inputOpts);
+}
+exports.markBroadcastRead = markBroadcastRead;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2330,4 +2358,46 @@ function conversationReadsOf(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ConversationReadsOf', inputVars, inputOpts);
 }
 exports.conversationReadsOf = conversationReadsOf;
+
+function parentLinksOfStudents(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ParentLinksOfStudents', inputVars, inputOpts);
+}
+exports.parentLinksOfStudents = parentLinksOfStudents;
+
+function listBroadcasts(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListBroadcasts', inputVars, inputOpts);
+}
+exports.listBroadcasts = listBroadcasts;
+
+function getBroadcast(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetBroadcast', inputVars, inputOpts);
+}
+exports.getBroadcast = getBroadcast;
+
+function broadcastByClientId(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('BroadcastByClientId', inputVars, inputOpts);
+}
+exports.broadcastByClientId = broadcastByClientId;
+
+function broadcastRecipients(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('BroadcastRecipients', inputVars, inputOpts);
+}
+exports.broadcastRecipients = broadcastRecipients;
+
+function broadcastsReceivedBy(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('BroadcastsReceivedBy', inputVars, inputOpts);
+}
+exports.broadcastsReceivedBy = broadcastsReceivedBy;
 

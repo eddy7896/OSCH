@@ -913,6 +913,127 @@
         ],
         "type": "object"
       },
+      "BroadcastDetailDto": {
+        "properties": {
+          "body": {
+            "type": "string"
+          },
+          "class": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "read": {
+            "nullable": true,
+            "type": "boolean"
+          },
+          "sender": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId",
+              "name"
+            ],
+            "type": "object"
+          },
+          "sentAt": {
+            "type": "string"
+          },
+          "stats": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BroadcastStatsDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "students": {
+            "items": {
+              "$ref": "#/components/schemas/StudentRefDto"
+            },
+            "type": "array"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "students",
+          "read",
+          "stats",
+          "id",
+          "title",
+          "body",
+          "class",
+          "sender",
+          "sentAt"
+        ],
+        "type": "object"
+      },
+      "BroadcastListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BroadcastDetailDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "BroadcastStatsDto": {
+        "properties": {
+          "parents": {
+            "type": "number"
+          },
+          "reachedStudents": {
+            "type": "number"
+          },
+          "readBy": {
+            "type": "number"
+          },
+          "targetStudents": {
+            "type": "number"
+          },
+          "unreachable": {
+            "items": {
+              "$ref": "#/components/schemas/StudentRefDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "targetStudents",
+          "reachedStudents",
+          "unreachable",
+          "parents",
+          "readBy"
+        ],
+        "type": "object"
+      },
       "CandidateDto": {
         "properties": {
           "staff": {
@@ -1642,6 +1763,34 @@
           "gradeLevelId",
           "guardianName",
           "guardianRelationship"
+        ],
+        "type": "object"
+      },
+      "CreateBroadcastDto": {
+        "properties": {
+          "body": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "classId": {
+            "type": "string"
+          },
+          "clientId": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "classId",
+          "clientId",
+          "title",
+          "body"
         ],
         "type": "object"
       },
@@ -13963,6 +14112,233 @@
         "x-permission": {
           "action": "read",
           "resource": "attendance"
+        }
+      }
+    },
+    "/v1/broadcasts": {
+      "get": {
+        "operationId": "Broadcasts_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BroadcastListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Broadcasts"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "broadcasts"
+        }
+      },
+      "post": {
+        "operationId": "Broadcasts_create",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBroadcastDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BroadcastDetailDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Broadcasts"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "broadcast.send",
+          "operation": "CreateBroadcast"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "broadcasts"
+        }
+      }
+    },
+    "/v1/broadcasts/{id}": {
+      "get": {
+        "operationId": "Broadcasts_one",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BroadcastDetailDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Broadcasts"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "broadcasts"
+        }
+      }
+    },
+    "/v1/broadcasts/{id}/read": {
+      "post": {
+        "operationId": "Broadcasts_read",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Broadcasts"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "update",
+          "resource": "broadcasts"
         }
       }
     },
