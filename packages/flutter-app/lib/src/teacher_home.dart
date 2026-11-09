@@ -15,6 +15,7 @@ import 'inbox/inbox_data.dart';
 import 'inbox/inbox_screen.dart';
 import 'leave/leave_screens.dart';
 import 'marks/marks_screens.dart';
+import 'messaging/messaging_screens.dart';
 import 'resources/resources_screen.dart';
 import 'studentleave/studentleave_screen.dart';
 import 'today/today_screen.dart';
@@ -110,6 +111,10 @@ class _MorePage extends StatelessWidget {
           OruCard(child: OruListRow(title: s.mobMoreCover, leading: const OruIcon(OruIconName.calendar, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruCoverScreen(services: services))))),
           const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobRsTitle, leading: const OruIcon(OruIconName.book, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruResourcesScreen(services: services, userId: state.account.userId))))),
+          const SizedBox(height: OruSpacing.space2),
+          OruCard(child: OruListRow(title: s.mobMsTitle, leading: const OruIcon(OruIconName.message, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruMessagesScreen(services: services, forParent: false))))),
+          const SizedBox(height: OruSpacing.space2),
+          OruCard(child: OruListRow(title: s.mobBcTitle, leading: const OruIcon(OruIconName.send, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruBroadcastsScreen(services: services, forParent: false))))),
           const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobSlTitle, leading: const OruIcon(OruIconName.leave, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruStudentLeaveScreen(services: services))))),
           const SizedBox(height: OruSpacing.space4),

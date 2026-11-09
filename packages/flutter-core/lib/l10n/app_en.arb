@@ -5411,5 +5411,242 @@
   "notifBroadcastPostedBody": "Your child's class has a new message. Open the app to read it.",
   "@notifBroadcastPostedBody": {
     "description": "Body of that notice. It names no child and no words of the message."
+  },
+  "mobMsTitle": "Messages",
+  "@mobMsTitle": {
+    "description": "Title of the Messages screen and the row that opens it."
+  },
+  "mobMsEmpty": "No conversations yet.",
+  "@mobMsEmpty": {
+    "description": "Shown on the Messages screen when there is no conversation."
+  },
+  "mobMsNew": "New message",
+  "@mobMsNew": {
+    "description": "Button that starts a conversation with a teacher or a parent."
+  },
+  "mobMsAbout": "About {name}",
+  "@mobMsAbout": {
+    "description": "Line under a conversation: the student it is about. {name} is the student's name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMsUnread": "New",
+  "@mobMsUnread": {
+    "description": "Small mark on a conversation that has a message you have not opened."
+  },
+  "mobMsWrite": "Write a message",
+  "@mobMsWrite": {
+    "description": "Label of the message box."
+  },
+  "mobMsCounter": "{count} of 1000",
+  "@mobMsCounter": {
+    "description": "Counter under the message box. {count} is the number of characters written.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMsSend": "Send",
+  "@mobMsSend": {
+    "description": "Button that sends a message."
+  },
+  "mobMsSaved": "Saved on this phone, not sent yet",
+  "@mobMsSaved": {
+    "description": "Shown under a message that is waiting on the phone for a connection."
+  },
+  "mobMsRefused": "The school did not accept this message.",
+  "@mobMsRefused": {
+    "description": "Shown under a message the school refused for good."
+  },
+  "mobMsHidden": "This message was hidden by the person who wrote it.",
+  "@mobMsHidden": {
+    "description": "Shown in place of the words of a hidden message."
+  },
+  "mobMsHide": "Hide",
+  "@mobMsHide": {
+    "description": "Button that hides a message you sent."
+  },
+  "mobMsHideQuestion": "Hide this message? The other person will no longer see its words.",
+  "@mobMsHideQuestion": {
+    "description": "Question before hiding a message."
+  },
+  "mobMsReport": "Report",
+  "@mobMsReport": {
+    "description": "Button that reports a message to the school."
+  },
+  "mobMsReportQuestion": "Report this message to the school? The school will read this conversation.",
+  "@mobMsReportQuestion": {
+    "description": "Question before reporting a message."
+  },
+  "mobMsReportNote": "What was wrong? (optional)",
+  "@mobMsReportNote": {
+    "description": "Label of the optional note when reporting a message."
+  },
+  "mobMsReported": "Reported. The school will look at it.",
+  "@mobMsReported": {
+    "description": "Shown after a message was reported."
+  },
+  "mobMsNeedsNet": "This needs a connection. Nothing was changed.",
+  "@mobMsNeedsNet": {
+    "description": "Shown when starting, hiding or reporting without a connection."
+  },
+  "mobMsEmptyError": "Write something first.",
+  "@mobMsEmptyError": {
+    "description": "Shown when the message box is empty."
+  },
+  "mobMsTooLong": "A message can have at most 1000 characters.",
+  "@mobMsTooLong": {
+    "description": "Shown when a message is too long."
+  },
+  "mobMsPickStudent": "Choose a student",
+  "@mobMsPickStudent": {
+    "description": "Heading above the students to write about."
+  },
+  "mobMsPickPerson": "Choose who to write to",
+  "@mobMsPickPerson": {
+    "description": "Heading above the people a message can go to."
+  },
+  "mobMsNoContacts": "There is nobody to write to about this student yet.",
+  "@mobMsNoContacts": {
+    "description": "Shown when no teacher or parent can be written to for the student."
+  },
+  "mobMsClassTeacher": "Class teacher",
+  "@mobMsClassTeacher": {
+    "description": "Label of a class teacher in the list of people to write to."
+  },
+  "mobMsSubjectTeacher": "Teacher of {subjects}",
+  "@mobMsSubjectTeacher": {
+    "description": "Label of a subject teacher. {subjects} is a list of subject names.",
+    "placeholders": {
+      "subjects": {
+        "type": "String"
+      }
+    }
+  },
+  "mobMsMother": "Mother",
+  "@mobMsMother": {
+    "description": "Label of a parent in the list of people to write to."
+  },
+  "mobMsFather": "Father",
+  "@mobMsFather": {
+    "description": "Label of a parent in the list of people to write to."
+  },
+  "mobMsGuardian": "Guardian",
+  "@mobMsGuardian": {
+    "description": "Label of a guardian in the list of people to write to."
+  },
+  "mobMsParent": "Parent",
+  "@mobMsParent": {
+    "description": "Label of a parent whose relationship is not recorded."
+  },
+  "mobBcTitle": "Class messages",
+  "@mobBcTitle": {
+    "description": "Title of the screen with messages sent to a whole class, and the row that opens it."
+  },
+  "mobBcSendToClass": "Send to the whole class",
+  "@mobBcSendToClass": {
+    "description": "Button on the Teacher app that opens the form for a message to all parents of a class."
+  },
+  "mobBcClass": "Class",
+  "@mobBcClass": {
+    "description": "Label of the class choice."
+  },
+  "mobBcTitleField": "Title",
+  "@mobBcTitleField": {
+    "description": "Label of the title of a class message."
+  },
+  "mobBcBodyField": "Message",
+  "@mobBcBodyField": {
+    "description": "Label of the words of a class message."
+  },
+  "mobBcSend": "Send to parents",
+  "@mobBcSend": {
+    "description": "Button that sends a message to the parents of the class."
+  },
+  "mobBcOneWay": "Parents cannot reply here. They can write to you privately.",
+  "@mobBcOneWay": {
+    "description": "Note under the class message form."
+  },
+  "mobBcEmpty": "You have sent no class messages yet.",
+  "@mobBcEmpty": {
+    "description": "Shown on the teacher's list of class messages when there are none."
+  },
+  "mobBcEmptyParent": "The school has sent no class messages yet.",
+  "@mobBcEmptyParent": {
+    "description": "Shown on the parent's list of class messages when there are none."
+  },
+  "mobBcNoClass": "You are not the class teacher of any class, so you cannot send to a class.",
+  "@mobBcNoClass": {
+    "description": "Shown when the teacher has no class of her own."
+  },
+  "mobBcTitleError": "Write a title of up to 120 characters.",
+  "@mobBcTitleError": {
+    "description": "Shown when the title is empty or too long."
+  },
+  "mobBcBodyError": "Write a message of up to 2000 characters.",
+  "@mobBcBodyError": {
+    "description": "Shown when the message is empty or too long."
+  },
+  "mobBcCounter": "{count} of 2000",
+  "@mobBcCounter": {
+    "description": "Counter under the class message box. {count} is the number of characters written.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBcReached": "{reached} of {total} students reached",
+  "@mobBcReached": {
+    "description": "On a sent class message: how many students have a parent who was told.",
+    "placeholders": {
+      "reached": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBcRead": "{read} of {parents} parent accounts have opened it",
+  "@mobBcRead": {
+    "description": "On a sent class message: how many parent accounts opened it.",
+    "placeholders": {
+      "read": {
+        "type": "String"
+      },
+      "parents": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBcNotReached": "No parent account yet. Please call:",
+  "@mobBcNotReached": {
+    "description": "Heading above the students whose parents could not be reached."
+  },
+  "mobBcAllReached": "Every student has a parent who was told.",
+  "@mobBcAllReached": {
+    "description": "Shown when no student is left unreached."
+  },
+  "mobBcNoStats": "The counts appear once this phone has the school's answer.",
+  "@mobBcNoStats": {
+    "description": "Shown on a sent class message whose counts the phone does not have yet."
+  },
+  "mobBcFor": "For {names}",
+  "@mobBcFor": {
+    "description": "On a class message the parent received: the children it is for.",
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBcReply": "Reply privately",
+  "@mobBcReply": {
+    "description": "Button on a class message that opens a private conversation with the teacher."
   }
 }

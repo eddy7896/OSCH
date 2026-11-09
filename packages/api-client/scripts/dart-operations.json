@@ -65,5 +65,17 @@
   "Substitution_mine",
   "Sync_tombstones",
   "Announcements_list",
-  "Announcements_one"
+  "Announcements_one",
+  "Messages_contacts",
+  "Messages_threads",
+  "Messages_start",
+  "Messages_thread",
+  "Messages_send",
+  "Messages_read",
+  "Messages_hide",
+  "Messages_report",
+  "Broadcasts_list",
+  "Broadcasts_create",
+  "Broadcasts_one",
+  "Broadcasts_read"
 ]

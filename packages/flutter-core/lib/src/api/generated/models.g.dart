@@ -246,6 +246,129 @@ class BandsDto {
       };
 }
 
+class BroadcastDetailDto {
+  const BroadcastDetailDto({required this.body, required this.class_, required this.id, required this.read, required this.sender, required this.sentAt, required this.stats, required this.students, required this.title});
+  final String body;
+  final BroadcastDetailDtoClass class_;
+  final String id;
+  final bool? read;
+  final BroadcastDetailDtoSender sender;
+  final String sentAt;
+  final BroadcastStatsDto? stats;
+  final List<BroadcastStudentDto> students;
+  final String title;
+
+  factory BroadcastDetailDto.fromJson(Map<String, dynamic> j) => BroadcastDetailDto(
+        body: j['body'] as String,
+        class_: BroadcastDetailDtoClass.fromJson(j['class'] as Map<String, dynamic>),
+        id: j['id'] as String,
+        read: j['read'] == null ? null : j['read'] as bool,
+        sender: BroadcastDetailDtoSender.fromJson(j['sender'] as Map<String, dynamic>),
+        sentAt: j['sentAt'] as String,
+        stats: j['stats'] == null ? null : BroadcastStatsDto.fromJson(j['stats'] as Map<String, dynamic>),
+        students: (j['students'] as List<dynamic>).map((e) => BroadcastStudentDto.fromJson(e as Map<String, dynamic>)).toList(),
+        title: j['title'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'body': body,
+        'class': class_.toJson(),
+        'id': id,
+        if (read != null) 'read': read!,
+        'sender': sender.toJson(),
+        'sentAt': sentAt,
+        if (stats != null) 'stats': stats!.toJson(),
+        'students': students.map((e) => e.toJson()).toList(),
+        'title': title,
+      };
+}
+
+class BroadcastDetailDtoClass {
+  const BroadcastDetailDtoClass({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory BroadcastDetailDtoClass.fromJson(Map<String, dynamic> j) => BroadcastDetailDtoClass(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class BroadcastDetailDtoSender {
+  const BroadcastDetailDtoSender({required this.name, required this.userId});
+  final String name;
+  final String userId;
+
+  factory BroadcastDetailDtoSender.fromJson(Map<String, dynamic> j) => BroadcastDetailDtoSender(
+        name: j['name'] as String,
+        userId: j['userId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'userId': userId,
+      };
+}
+
+class BroadcastListDto {
+  const BroadcastListDto({required this.items});
+  final List<BroadcastDetailDto> items;
+
+  factory BroadcastListDto.fromJson(Map<String, dynamic> j) => BroadcastListDto(
+        items: (j['items'] as List<dynamic>).map((e) => BroadcastDetailDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
+class BroadcastStatsDto {
+  const BroadcastStatsDto({required this.parents, required this.reachedStudents, required this.readBy, required this.targetStudents, required this.unreachable});
+  final num parents;
+  final num reachedStudents;
+  final num readBy;
+  final num targetStudents;
+  final List<BroadcastStudentDto> unreachable;
+
+  factory BroadcastStatsDto.fromJson(Map<String, dynamic> j) => BroadcastStatsDto(
+        parents: j['parents'] as num,
+        reachedStudents: j['reachedStudents'] as num,
+        readBy: j['readBy'] as num,
+        targetStudents: j['targetStudents'] as num,
+        unreachable: (j['unreachable'] as List<dynamic>).map((e) => BroadcastStudentDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'parents': parents,
+        'reachedStudents': reachedStudents,
+        'readBy': readBy,
+        'targetStudents': targetStudents,
+        'unreachable': unreachable.map((e) => e.toJson()).toList(),
+      };
+}
+
+class BroadcastStudentDto {
+  const BroadcastStudentDto({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory BroadcastStudentDto.fromJson(Map<String, dynamic> j) => BroadcastStudentDto(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
 class ChildDto {
   const ChildDto({required this.class_, required this.enrollmentId, required this.id, required this.name, required this.relationship});
   final RefDto? class_;
@@ -502,6 +625,63 @@ class CommentListDto {
 
   Map<String, dynamic> toJson() => {
         'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
+class ContactDto {
+  const ContactDto({required this.label, required this.name, required this.subjects, required this.userId});
+  final String label;
+  final String name;
+  final List<String> subjects;
+  final String userId;
+
+  factory ContactDto.fromJson(Map<String, dynamic> j) => ContactDto(
+        label: j['label'] as String,
+        name: j['name'] as String,
+        subjects: (j['subjects'] as List<dynamic>).map((e) => e as String).toList(),
+        userId: j['userId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'label': label,
+        'name': name,
+        'subjects': subjects.map((e) => e).toList(),
+        'userId': userId,
+      };
+}
+
+class ContactListDto {
+  const ContactListDto({required this.items});
+  final List<ContactDto> items;
+
+  factory ContactListDto.fromJson(Map<String, dynamic> j) => ContactListDto(
+        items: (j['items'] as List<dynamic>).map((e) => ContactDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
+class CreateBroadcastDto {
+  const CreateBroadcastDto({required this.body, required this.classId, required this.clientId, required this.title});
+  final String body;
+  final String classId;
+  final String clientId;
+  final String title;
+
+  factory CreateBroadcastDto.fromJson(Map<String, dynamic> j) => CreateBroadcastDto(
+        body: j['body'] as String,
+        classId: j['classId'] as String,
+        clientId: j['clientId'] as String,
+        title: j['title'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'body': body,
+        'classId': classId,
+        'clientId': clientId,
+        'title': title,
       };
 }
 
@@ -1377,6 +1557,34 @@ class MeUserDto {
       };
 }
 
+class MessageDto {
+  const MessageDto({required this.body, required this.canHide, required this.createdAt, required this.hidden, required this.id, required this.mine});
+  final String? body;
+  final bool canHide;
+  final String createdAt;
+  final bool hidden;
+  final String id;
+  final bool mine;
+
+  factory MessageDto.fromJson(Map<String, dynamic> j) => MessageDto(
+        body: j['body'] == null ? null : j['body'] as String,
+        canHide: j['canHide'] as bool,
+        createdAt: j['createdAt'] as String,
+        hidden: j['hidden'] as bool,
+        id: j['id'] as String,
+        mine: j['mine'] as bool,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (body != null) 'body': body!,
+        'canHide': canHide,
+        'createdAt': createdAt,
+        'hidden': hidden,
+        'id': id,
+        'mine': mine,
+      };
+}
+
 class MineDto {
   const MineDto({required this.children, required this.classTeacherOf, required this.classes, required this.staff, required this.subjects});
   final List<ChildDto> children;
@@ -2064,6 +2272,19 @@ class ReportCardDto {
       };
 }
 
+class ReportMessageDto {
+  const ReportMessageDto({this.note});
+  final String? note;
+
+  factory ReportMessageDto.fromJson(Map<String, dynamic> j) => ReportMessageDto(
+        note: j['note'] == null ? null : j['note'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (note != null) 'note': note!,
+      };
+}
+
 class ResourceDto {
   const ResourceDto({required this.class_, required this.contentType, required this.createdAt, required this.fileName, required this.id, required this.note, required this.sizeBytes, required this.subject, required this.title, required this.updatedAt, required this.uploadedBy});
   final ResourceDtoClass class_;
@@ -2392,6 +2613,22 @@ class SeatDtoVehicle {
       };
 }
 
+class SendMessageDto {
+  const SendMessageDto({required this.body, required this.clientId});
+  final String body;
+  final String clientId;
+
+  factory SendMessageDto.fromJson(Map<String, dynamic> j) => SendMessageDto(
+        body: j['body'] as String,
+        clientId: j['clientId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'body': body,
+        'clientId': clientId,
+      };
+}
+
 class SignedReadDto {
   const SignedReadDto({required this.expiresInSeconds, required this.url});
   final num expiresInSeconds;
@@ -2552,6 +2789,22 @@ class StampDto {
         if (deviceTime != null) 'deviceTime': deviceTime!,
         if (position != null) 'position': position!.toJson(),
         if (reason != null) 'reason': reason!,
+      };
+}
+
+class StartThreadDto {
+  const StartThreadDto({required this.otherUserId, required this.studentId});
+  final String otherUserId;
+  final String studentId;
+
+  factory StartThreadDto.fromJson(Map<String, dynamic> j) => StartThreadDto(
+        otherUserId: j['otherUserId'] as String,
+        studentId: j['studentId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'otherUserId': otherUserId,
+        'studentId': studentId,
       };
 }
 
@@ -2995,6 +3248,144 @@ class TermListDto {
 
   factory TermListDto.fromJson(Map<String, dynamic> j) => TermListDto(
         items: (j['items'] as List<dynamic>).map((e) => TermDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
+class ThreadDetailDto {
+  const ThreadDetailDto({required this.id, required this.lastMessageAt, required this.messages, required this.other, required this.student, required this.unread});
+  final String id;
+  final String? lastMessageAt;
+  final List<MessageDto> messages;
+  final ThreadDetailDtoOther other;
+  final ThreadDetailDtoStudent student;
+  final bool unread;
+
+  factory ThreadDetailDto.fromJson(Map<String, dynamic> j) => ThreadDetailDto(
+        id: j['id'] as String,
+        lastMessageAt: j['lastMessageAt'] == null ? null : j['lastMessageAt'] as String,
+        messages: (j['messages'] as List<dynamic>).map((e) => MessageDto.fromJson(e as Map<String, dynamic>)).toList(),
+        other: ThreadDetailDtoOther.fromJson(j['other'] as Map<String, dynamic>),
+        student: ThreadDetailDtoStudent.fromJson(j['student'] as Map<String, dynamic>),
+        unread: j['unread'] as bool,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        if (lastMessageAt != null) 'lastMessageAt': lastMessageAt!,
+        'messages': messages.map((e) => e.toJson()).toList(),
+        'other': other.toJson(),
+        'student': student.toJson(),
+        'unread': unread,
+      };
+}
+
+class ThreadDetailDtoOther {
+  const ThreadDetailDtoOther({required this.kind, required this.name, required this.userId});
+  /// One of: TEACHER, PARENT.
+  final String kind;
+  final String name;
+  final String userId;
+
+  factory ThreadDetailDtoOther.fromJson(Map<String, dynamic> j) => ThreadDetailDtoOther(
+        kind: j['kind'] as String,
+        name: j['name'] as String,
+        userId: j['userId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'kind': kind,
+        'name': name,
+        'userId': userId,
+      };
+}
+
+class ThreadDetailDtoStudent {
+  const ThreadDetailDtoStudent({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory ThreadDetailDtoStudent.fromJson(Map<String, dynamic> j) => ThreadDetailDtoStudent(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class ThreadDto {
+  const ThreadDto({required this.id, required this.lastMessageAt, required this.other, required this.student, required this.unread});
+  final String id;
+  final String? lastMessageAt;
+  final ThreadDtoOther other;
+  final ThreadDtoStudent student;
+  final bool unread;
+
+  factory ThreadDto.fromJson(Map<String, dynamic> j) => ThreadDto(
+        id: j['id'] as String,
+        lastMessageAt: j['lastMessageAt'] == null ? null : j['lastMessageAt'] as String,
+        other: ThreadDtoOther.fromJson(j['other'] as Map<String, dynamic>),
+        student: ThreadDtoStudent.fromJson(j['student'] as Map<String, dynamic>),
+        unread: j['unread'] as bool,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        if (lastMessageAt != null) 'lastMessageAt': lastMessageAt!,
+        'other': other.toJson(),
+        'student': student.toJson(),
+        'unread': unread,
+      };
+}
+
+class ThreadDtoOther {
+  const ThreadDtoOther({required this.kind, required this.name, required this.userId});
+  /// One of: TEACHER, PARENT.
+  final String kind;
+  final String name;
+  final String userId;
+
+  factory ThreadDtoOther.fromJson(Map<String, dynamic> j) => ThreadDtoOther(
+        kind: j['kind'] as String,
+        name: j['name'] as String,
+        userId: j['userId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'kind': kind,
+        'name': name,
+        'userId': userId,
+      };
+}
+
+class ThreadDtoStudent {
+  const ThreadDtoStudent({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory ThreadDtoStudent.fromJson(Map<String, dynamic> j) => ThreadDtoStudent(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class ThreadListDto {
+  const ThreadListDto({required this.items});
+  final List<ThreadDto> items;
+
+  factory ThreadListDto.fromJson(Map<String, dynamic> j) => ThreadListDto(
+        items: (j['items'] as List<dynamic>).map((e) => ThreadDto.fromJson(e as Map<String, dynamic>)).toList(),
       );
 
   Map<String, dynamic> toJson() => {

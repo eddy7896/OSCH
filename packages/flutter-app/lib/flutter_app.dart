@@ -34,6 +34,8 @@ export 'src/marks/marks_model.dart';
 export 'src/marks/marks_screens.dart';
 export 'src/services.dart';
 export 'src/staff/staff_home.dart';
+export 'src/messaging/messaging_data.dart';
+export 'src/messaging/messaging_screens.dart';
 export 'src/resources/comments_data.dart';
 export 'src/resources/comments_screen.dart';
 export 'src/resources/parent_resources.dart';

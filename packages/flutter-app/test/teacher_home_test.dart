@@ -60,6 +60,7 @@ void main() {
       expect(find.text('Attendance'), findsWidgets);
       await tester.tap(find.text('More'));
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
+      await tester.scrollUntilVisible(find.text('Signed in as Tara Teacher'), 200, scrollable: find.byType(Scrollable).first);
       expect(find.text('Signed in as Tara Teacher'), findsOneWidget);
       expect(find.text('Teacher at Greenfield'), findsOneWidget);
       await tester.ensureVisible(find.text('Sign out'));

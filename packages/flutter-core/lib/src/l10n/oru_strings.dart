@@ -6955,6 +6955,300 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Your child\'s class has a new message. Open the app to read it.'**
   String get notifBroadcastPostedBody;
+
+  /// Title of the Messages screen and the row that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get mobMsTitle;
+
+  /// Shown on the Messages screen when there is no conversation.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet.'**
+  String get mobMsEmpty;
+
+  /// Button that starts a conversation with a teacher or a parent.
+  ///
+  /// In en, this message translates to:
+  /// **'New message'**
+  String get mobMsNew;
+
+  /// Line under a conversation: the student it is about. {name} is the student's name.
+  ///
+  /// In en, this message translates to:
+  /// **'About {name}'**
+  String mobMsAbout(String name);
+
+  /// Small mark on a conversation that has a message you have not opened.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get mobMsUnread;
+
+  /// Label of the message box.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a message'**
+  String get mobMsWrite;
+
+  /// Counter under the message box. {count} is the number of characters written.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 1000'**
+  String mobMsCounter(String count);
+
+  /// Button that sends a message.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get mobMsSend;
+
+  /// Shown under a message that is waiting on the phone for a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone, not sent yet'**
+  String get mobMsSaved;
+
+  /// Shown under a message the school refused for good.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this message.'**
+  String get mobMsRefused;
+
+  /// Shown in place of the words of a hidden message.
+  ///
+  /// In en, this message translates to:
+  /// **'This message was hidden by the person who wrote it.'**
+  String get mobMsHidden;
+
+  /// Button that hides a message you sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get mobMsHide;
+
+  /// Question before hiding a message.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide this message? The other person will no longer see its words.'**
+  String get mobMsHideQuestion;
+
+  /// Button that reports a message to the school.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get mobMsReport;
+
+  /// Question before reporting a message.
+  ///
+  /// In en, this message translates to:
+  /// **'Report this message to the school? The school will read this conversation.'**
+  String get mobMsReportQuestion;
+
+  /// Label of the optional note when reporting a message.
+  ///
+  /// In en, this message translates to:
+  /// **'What was wrong? (optional)'**
+  String get mobMsReportNote;
+
+  /// Shown after a message was reported.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported. The school will look at it.'**
+  String get mobMsReported;
+
+  /// Shown when starting, hiding or reporting without a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'This needs a connection. Nothing was changed.'**
+  String get mobMsNeedsNet;
+
+  /// Shown when the message box is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Write something first.'**
+  String get mobMsEmptyError;
+
+  /// Shown when a message is too long.
+  ///
+  /// In en, this message translates to:
+  /// **'A message can have at most 1000 characters.'**
+  String get mobMsTooLong;
+
+  /// Heading above the students to write about.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a student'**
+  String get mobMsPickStudent;
+
+  /// Heading above the people a message can go to.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose who to write to'**
+  String get mobMsPickPerson;
+
+  /// Shown when no teacher or parent can be written to for the student.
+  ///
+  /// In en, this message translates to:
+  /// **'There is nobody to write to about this student yet.'**
+  String get mobMsNoContacts;
+
+  /// Label of a class teacher in the list of people to write to.
+  ///
+  /// In en, this message translates to:
+  /// **'Class teacher'**
+  String get mobMsClassTeacher;
+
+  /// Label of a subject teacher. {subjects} is a list of subject names.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher of {subjects}'**
+  String mobMsSubjectTeacher(String subjects);
+
+  /// Label of a parent in the list of people to write to.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother'**
+  String get mobMsMother;
+
+  /// Label of a parent in the list of people to write to.
+  ///
+  /// In en, this message translates to:
+  /// **'Father'**
+  String get mobMsFather;
+
+  /// Label of a guardian in the list of people to write to.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian'**
+  String get mobMsGuardian;
+
+  /// Label of a parent whose relationship is not recorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent'**
+  String get mobMsParent;
+
+  /// Title of the screen with messages sent to a whole class, and the row that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Class messages'**
+  String get mobBcTitle;
+
+  /// Button on the Teacher app that opens the form for a message to all parents of a class.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to the whole class'**
+  String get mobBcSendToClass;
+
+  /// Label of the class choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Class'**
+  String get mobBcClass;
+
+  /// Label of the title of a class message.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get mobBcTitleField;
+
+  /// Label of the words of a class message.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get mobBcBodyField;
+
+  /// Button that sends a message to the parents of the class.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to parents'**
+  String get mobBcSend;
+
+  /// Note under the class message form.
+  ///
+  /// In en, this message translates to:
+  /// **'Parents cannot reply here. They can write to you privately.'**
+  String get mobBcOneWay;
+
+  /// Shown on the teacher's list of class messages when there are none.
+  ///
+  /// In en, this message translates to:
+  /// **'You have sent no class messages yet.'**
+  String get mobBcEmpty;
+
+  /// Shown on the parent's list of class messages when there are none.
+  ///
+  /// In en, this message translates to:
+  /// **'The school has sent no class messages yet.'**
+  String get mobBcEmptyParent;
+
+  /// Shown when the teacher has no class of her own.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not the class teacher of any class, so you cannot send to a class.'**
+  String get mobBcNoClass;
+
+  /// Shown when the title is empty or too long.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a title of up to 120 characters.'**
+  String get mobBcTitleError;
+
+  /// Shown when the message is empty or too long.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a message of up to 2000 characters.'**
+  String get mobBcBodyError;
+
+  /// Counter under the class message box. {count} is the number of characters written.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 2000'**
+  String mobBcCounter(String count);
+
+  /// On a sent class message: how many students have a parent who was told.
+  ///
+  /// In en, this message translates to:
+  /// **'{reached} of {total} students reached'**
+  String mobBcReached(String reached, String total);
+
+  /// On a sent class message: how many parent accounts opened it.
+  ///
+  /// In en, this message translates to:
+  /// **'{read} of {parents} parent accounts have opened it'**
+  String mobBcRead(String read, String parents);
+
+  /// Heading above the students whose parents could not be reached.
+  ///
+  /// In en, this message translates to:
+  /// **'No parent account yet. Please call:'**
+  String get mobBcNotReached;
+
+  /// Shown when no student is left unreached.
+  ///
+  /// In en, this message translates to:
+  /// **'Every student has a parent who was told.'**
+  String get mobBcAllReached;
+
+  /// Shown on a sent class message whose counts the phone does not have yet.
+  ///
+  /// In en, this message translates to:
+  /// **'The counts appear once this phone has the school\'s answer.'**
+  String get mobBcNoStats;
+
+  /// On a class message the parent received: the children it is for.
+  ///
+  /// In en, this message translates to:
+  /// **'For {names}'**
+  String mobBcFor(String names);
+
+  /// Button on a class message that opens a private conversation with the teacher.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply privately'**
+  String get mobBcReply;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

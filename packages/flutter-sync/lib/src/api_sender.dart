@@ -32,6 +32,18 @@ abstract final class OutboxKinds {
 
   /// Body: `{resourceId, body, replyToId?}`: a comment under a shared worksheet (the entry id is its `clientId`).
   static const resourceCommentPost = 'resourcecomment.post';
+
+  /// Body: `{threadId, body}`: a message in a conversation (the entry id is its `clientId`).
+  static const messageSend = 'message.send';
+
+  /// Body: `{threadId}`: the person opened the conversation.
+  static const threadRead = 'thread.read';
+
+  /// Body: `{classId, title, body}`: a message to the parents of a whole class (the entry id is its `clientId`).
+  static const broadcastSend = 'broadcast.send';
+
+  /// Body: `{id}`: a parent opened a class message.
+  static const broadcastRead = 'broadcast.read';
 }
 
 /// Sends a queued change to the gateway through the generated client. The outbox id goes as the gateway's own
@@ -76,6 +88,14 @@ class OruApiSender implements OutboxSender {
           await api.studentLeaveCancel(id: b['id'] as String);
         case OutboxKinds.resourceCommentPost:
           await api.commentsCreate(id: b['resourceId'] as String, body: CreateCommentDto(clientId: e.id, body: b['body'] as String, replyToId: b['replyToId'] as String?));
+        case OutboxKinds.messageSend:
+          await api.messagesSend(id: b['threadId'] as String, body: SendMessageDto(clientId: e.id, body: b['body'] as String));
+        case OutboxKinds.threadRead:
+          await api.messagesRead(id: b['threadId'] as String);
+        case OutboxKinds.broadcastSend:
+          await api.broadcastsCreate(body: CreateBroadcastDto(clientId: e.id, classId: b['classId'] as String, title: b['title'] as String, body: b['body'] as String));
+        case OutboxKinds.broadcastRead:
+          await api.broadcastsRead(id: b['id'] as String);
         default:
           return SendResult.refused('UNKNOWN_KIND', message: e.kind);
       }
