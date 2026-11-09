@@ -1132,7 +1132,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "notifMessageReceivedBody": "You have a new message. Open the app to read it.",
     "notifMessageReportedTitle": "A message was reported",
     "notifMessageReportedBody": "A message in a conversation was reported. Please review it.",
-    "ntCatmessage": "Messages"
+    "ntCatmessage": "Messages",
+    "notifBroadcastPostedTitle": "New message from the school",
+    "notifBroadcastPostedBody": "Your child's class has a new message. Open the app to read it."
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2262,7 +2264,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "notifMessageReceivedBody": "आपके लिए एक नया संदेश है। पढ़ने के लिए ऐप खोलें।",
     "notifMessageReportedTitle": "एक संदेश की शिकायत की गई",
     "notifMessageReportedBody": "एक बातचीत में एक संदेश की शिकायत की गई है। कृपया इसे देखें।",
-    "ntCatmessage": "संदेश"
+    "ntCatmessage": "संदेश",
+    "notifBroadcastPostedTitle": "स्कूल की ओर से नया संदेश",
+    "notifBroadcastPostedBody": "आपके बच्चे की कक्षा के लिए एक नया संदेश है। पढ़ने के लिए ऐप खोलें।"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3392,7 +3396,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "notifMessageReceivedBody": "آپ کے لیے ایک نیا پیغام ہے۔ پڑھنے کے لیے ایپ کھولیں۔",
     "notifMessageReportedTitle": "ایک پیغام کی شکایت کی گئی",
     "notifMessageReportedBody": "ایک گفتگو میں ایک پیغام کی شکایت کی گئی ہے۔ براہ کرم اسے دیکھیں۔",
-    "ntCatmessage": "پیغامات"
+    "ntCatmessage": "پیغامات",
+    "notifBroadcastPostedTitle": "اسکول کی طرف سے نیا پیغام",
+    "notifBroadcastPostedBody": "آپ کے بچے کی جماعت کے لیے ایک نیا پیغام ہے۔ پڑھنے کے لیے ایپ کھولیں۔"
   },
   "ks": {},
   "sd": {},

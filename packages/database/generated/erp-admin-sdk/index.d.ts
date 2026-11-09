@@ -196,6 +196,52 @@ export interface ActivateAcademicYearVariables {
   details?: unknown | null;
 }
 
+export interface AddBroadcastRecipientData {
+  query?: {
+    broadcast: ({
+      id: UUIDString;
+    } & Broadcast_Key)[];
+    link: ({
+      id: UUIDString;
+    } & ParentLink_Key)[];
+  };
+  broadcastRecipient_insert: BroadcastRecipient_Key;
+}
+
+export interface AddBroadcastRecipientNotifyData {
+  query?: {
+    broadcast: ({
+      id: UUIDString;
+    } & Broadcast_Key)[];
+    link: ({
+      id: UUIDString;
+    } & ParentLink_Key)[];
+  };
+  broadcastRecipient_insert: BroadcastRecipient_Key;
+  n1: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface AddBroadcastRecipientNotifyVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  broadcastId: UUIDString;
+  studentId: UUIDString;
+  guardianUserId: string;
+  kind: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface AddBroadcastRecipientVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  broadcastId: UUIDString;
+  studentId: UUIDString;
+  guardianUserId: string;
+  actorId: string;
+}
+
 export interface AddFeeInstalmentData {
   query?: {
     actor: ({
@@ -748,6 +794,95 @@ export interface AttendanceStatusLabel_Key {
 export interface AuditLog_Key {
   id: UUIDString;
   __typename?: 'AuditLog_Key';
+}
+
+export interface BroadcastByClientIdData {
+  broadcasts: ({
+    id: UUIDString;
+    title: string;
+    body: string;
+    targetCount: number;
+    createdAt: TimestampString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    sender: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & Broadcast_Key)[];
+}
+
+export interface BroadcastByClientIdVariables {
+  schoolId: UUIDString;
+  senderId: string;
+  clientId: string;
+}
+
+export interface BroadcastRecipient_Key {
+  id: UUIDString;
+  __typename?: 'BroadcastRecipient_Key';
+}
+
+export interface BroadcastRecipientsData {
+  broadcastRecipients: ({
+    id: UUIDString;
+    readAt?: TimestampString | null;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    guardianUser: {
+      id: string;
+    } & User_Key;
+  } & BroadcastRecipient_Key)[];
+}
+
+export interface BroadcastRecipientsVariables {
+  schoolId: UUIDString;
+  broadcastId: UUIDString;
+}
+
+export interface Broadcast_Key {
+  id: UUIDString;
+  __typename?: 'Broadcast_Key';
+}
+
+export interface BroadcastsReceivedByData {
+  broadcastRecipients: ({
+    id: UUIDString;
+    readAt?: TimestampString | null;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    broadcast: {
+      id: UUIDString;
+      title: string;
+      body: string;
+      targetCount: number;
+      createdAt: TimestampString;
+      classroom: {
+        id: UUIDString;
+        name: string;
+      } & Classroom_Key;
+      sender: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+    } & Broadcast_Key;
+  } & BroadcastRecipient_Key)[];
+}
+
+export interface BroadcastsReceivedByVariables {
+  schoolId: UUIDString;
+  guardianUserId: string;
+  limit: number;
 }
 
 export interface CancelLeaveRequestData {
@@ -1373,6 +1508,31 @@ export interface CreateAuditLogVariables {
   action: string;
   entityType: string;
   entityId?: string | null;
+  details?: unknown | null;
+}
+
+export interface CreateBroadcastData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    classroom: ({
+      id: UUIDString;
+    } & Classroom_Key)[];
+  };
+  broadcast_insert: Broadcast_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface CreateBroadcastVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  classroomId: UUIDString;
+  clientId: string;
+  title: string;
+  body: string;
+  targetCount: number;
+  actorId: string;
   details?: unknown | null;
 }
 
@@ -2803,6 +2963,30 @@ export interface GetAttendanceDayVariables {
   date: DateString;
 }
 
+export interface GetBroadcastData {
+  broadcasts: ({
+    id: UUIDString;
+    title: string;
+    body: string;
+    targetCount: number;
+    createdAt: TimestampString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    sender: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & Broadcast_Key)[];
+}
+
+export interface GetBroadcastVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetConversationData {
   conversations: ({
     id: UUIDString;
@@ -4001,6 +4185,31 @@ export interface ListAuditLogVariables {
   offset: number;
 }
 
+export interface ListBroadcastsData {
+  broadcasts: ({
+    id: UUIDString;
+    title: string;
+    body: string;
+    targetCount: number;
+    createdAt: TimestampString;
+    classroom: {
+      id: UUIDString;
+      name: string;
+    } & Classroom_Key;
+    sender: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & Broadcast_Key)[];
+}
+
+export interface ListBroadcastsVariables {
+  schoolId: UUIDString;
+  senderId?: string | null;
+  limit: number;
+}
+
 export interface ListClassTeachersData {
   classTeachers: ({
     id: UUIDString;
@@ -5113,6 +5322,21 @@ export interface LockAttendanceDayVariables {
   details?: unknown | null;
 }
 
+export interface MarkBroadcastReadData {
+  query?: {
+    mine: ({
+      id: UUIDString;
+    } & BroadcastRecipient_Key)[];
+  };
+  broadcastRecipient_updateMany: number;
+}
+
+export interface MarkBroadcastReadVariables {
+  schoolId: UUIDString;
+  broadcastId: UUIDString;
+  actorId: string;
+}
+
 export interface MarkConversationReadData {
   query?: {
     conversation: ({
@@ -5319,6 +5543,23 @@ export interface ParentLinksOfStudentData {
 export interface ParentLinksOfStudentVariables {
   schoolId: UUIDString;
   studentId: UUIDString;
+}
+
+export interface ParentLinksOfStudentsData {
+  parentLinks: ({
+    studentId: UUIDString;
+    relationship: string;
+    user: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  })[];
+}
+
+export interface ParentLinksOfStudentsVariables {
+  schoolId: UUIDString;
+  studentIds: UUIDString[];
 }
 
 export interface ParentLinksOfUserData {
@@ -8281,6 +8522,26 @@ export function reportMessage(dc: DataConnect, vars: ReportMessageVariables, opt
 /** Generated Node Admin SDK operation action function for the 'ReportMessage' Mutation. Allow users to pass in custom DataConnect instances. */
 export function reportMessage(vars: ReportMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ReportMessageData>>;
 
+/** Generated Node Admin SDK operation action function for the 'CreateBroadcast' Mutation. Allow users to execute without passing in DataConnect. */
+export function createBroadcast(dc: DataConnect, vars: CreateBroadcastVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateBroadcastData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateBroadcast' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createBroadcast(vars: CreateBroadcastVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateBroadcastData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddBroadcastRecipient' Mutation. Allow users to execute without passing in DataConnect. */
+export function addBroadcastRecipient(dc: DataConnect, vars: AddBroadcastRecipientVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddBroadcastRecipientData>>;
+/** Generated Node Admin SDK operation action function for the 'AddBroadcastRecipient' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addBroadcastRecipient(vars: AddBroadcastRecipientVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddBroadcastRecipientData>>;
+
+/** Generated Node Admin SDK operation action function for the 'AddBroadcastRecipientNotify' Mutation. Allow users to execute without passing in DataConnect. */
+export function addBroadcastRecipientNotify(dc: DataConnect, vars: AddBroadcastRecipientNotifyVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddBroadcastRecipientNotifyData>>;
+/** Generated Node Admin SDK operation action function for the 'AddBroadcastRecipientNotify' Mutation. Allow users to pass in custom DataConnect instances. */
+export function addBroadcastRecipientNotify(vars: AddBroadcastRecipientNotifyVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddBroadcastRecipientNotifyData>>;
+
+/** Generated Node Admin SDK operation action function for the 'MarkBroadcastRead' Mutation. Allow users to execute without passing in DataConnect. */
+export function markBroadcastRead(dc: DataConnect, vars: MarkBroadcastReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkBroadcastReadData>>;
+/** Generated Node Admin SDK operation action function for the 'MarkBroadcastRead' Mutation. Allow users to pass in custom DataConnect instances. */
+export function markBroadcastRead(vars: MarkBroadcastReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkBroadcastReadData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -8955,4 +9216,34 @@ export function messageByClientId(vars: MessageByClientIdVariables, options?: Op
 export function conversationReadsOf(dc: DataConnect, vars: ConversationReadsOfVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConversationReadsOfData>>;
 /** Generated Node Admin SDK operation action function for the 'ConversationReadsOf' Query. Allow users to pass in custom DataConnect instances. */
 export function conversationReadsOf(vars: ConversationReadsOfVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConversationReadsOfData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ParentLinksOfStudents' Query. Allow users to execute without passing in DataConnect. */
+export function parentLinksOfStudents(dc: DataConnect, vars: ParentLinksOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ParentLinksOfStudentsData>>;
+/** Generated Node Admin SDK operation action function for the 'ParentLinksOfStudents' Query. Allow users to pass in custom DataConnect instances. */
+export function parentLinksOfStudents(vars: ParentLinksOfStudentsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ParentLinksOfStudentsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListBroadcasts' Query. Allow users to execute without passing in DataConnect. */
+export function listBroadcasts(dc: DataConnect, vars: ListBroadcastsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListBroadcastsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListBroadcasts' Query. Allow users to pass in custom DataConnect instances. */
+export function listBroadcasts(vars: ListBroadcastsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListBroadcastsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetBroadcast' Query. Allow users to execute without passing in DataConnect. */
+export function getBroadcast(dc: DataConnect, vars: GetBroadcastVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetBroadcastData>>;
+/** Generated Node Admin SDK operation action function for the 'GetBroadcast' Query. Allow users to pass in custom DataConnect instances. */
+export function getBroadcast(vars: GetBroadcastVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetBroadcastData>>;
+
+/** Generated Node Admin SDK operation action function for the 'BroadcastByClientId' Query. Allow users to execute without passing in DataConnect. */
+export function broadcastByClientId(dc: DataConnect, vars: BroadcastByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<BroadcastByClientIdData>>;
+/** Generated Node Admin SDK operation action function for the 'BroadcastByClientId' Query. Allow users to pass in custom DataConnect instances. */
+export function broadcastByClientId(vars: BroadcastByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<BroadcastByClientIdData>>;
+
+/** Generated Node Admin SDK operation action function for the 'BroadcastRecipients' Query. Allow users to execute without passing in DataConnect. */
+export function broadcastRecipients(dc: DataConnect, vars: BroadcastRecipientsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<BroadcastRecipientsData>>;
+/** Generated Node Admin SDK operation action function for the 'BroadcastRecipients' Query. Allow users to pass in custom DataConnect instances. */
+export function broadcastRecipients(vars: BroadcastRecipientsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<BroadcastRecipientsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'BroadcastsReceivedBy' Query. Allow users to execute without passing in DataConnect. */
+export function broadcastsReceivedBy(dc: DataConnect, vars: BroadcastsReceivedByVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<BroadcastsReceivedByData>>;
+/** Generated Node Admin SDK operation action function for the 'BroadcastsReceivedBy' Query. Allow users to pass in custom DataConnect instances. */
+export function broadcastsReceivedBy(vars: BroadcastsReceivedByVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<BroadcastsReceivedByData>>;
 

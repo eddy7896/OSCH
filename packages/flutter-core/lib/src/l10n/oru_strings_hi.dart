@@ -3924,4 +3924,11 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get ntCatmessage => 'संदेश';
+
+  @override
+  String get notifBroadcastPostedTitle => 'स्कूल की ओर से नया संदेश';
+
+  @override
+  String get notifBroadcastPostedBody =>
+      'आपके बच्चे की कक्षा के लिए एक नया संदेश है। पढ़ने के लिए ऐप खोलें।';
 }

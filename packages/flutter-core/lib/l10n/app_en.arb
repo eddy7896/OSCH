@@ -5403,5 +5403,13 @@
   "ntCatmessage": "Messages",
   "@ntCatmessage": {
     "description": "Name of the notification category for messages, shown in the notification settings."
+  },
+  "notifBroadcastPostedTitle": "New message from the school",
+  "@notifBroadcastPostedTitle": {
+    "description": "Title of the notice sent to a parent when the class teacher or the school sends a message to the whole class."
+  },
+  "notifBroadcastPostedBody": "Your child's class has a new message. Open the app to read it.",
+  "@notifBroadcastPostedBody": {
+    "description": "Body of that notice. It names no child and no words of the message."
   }
 }

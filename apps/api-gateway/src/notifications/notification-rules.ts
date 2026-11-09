@@ -20,6 +20,7 @@ export const KINDS: Readonly<Record<string, KindInfo>> = {
   'resourcecomment.parentposted': { category: 'resourcecomment', title: 'notifResourcecommentParentpostedTitle', body: 'notifResourcecommentParentpostedBody' },
   'resourcecomment.hidden': { category: 'resourcecomment', title: 'notifResourcecommentHiddenTitle', body: 'notifResourcecommentHiddenBody' },
   'message.received': { category: 'message', title: 'notifMessageReceivedTitle', body: 'notifMessageReceivedBody' },
+  'broadcast.posted': { category: 'message', title: 'notifBroadcastPostedTitle', body: 'notifBroadcastPostedBody' },
   'message.reported': { category: 'message', title: 'notifMessageReportedTitle', body: 'notifMessageReportedBody' },
   'substitution.cleared': { category: 'substitution', title: 'notifSubstitutionClearedTitle', body: 'notifSubstitutionClearedBody' },
 };

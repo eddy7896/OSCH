@@ -1127,5 +1127,7 @@
   "notifMessageReceivedBody": "Body of that notice. It names nobody and no student, so it is safe to show on a locked phone.",
   "notifMessageReportedTitle": "Title of the notice sent to the Principal when a message is reported.",
   "notifMessageReportedBody": "Body of that notice.",
-  "ntCatmessage": "Name of the notification category for messages, shown in the notification settings."
+  "ntCatmessage": "Name of the notification category for messages, shown in the notification settings.",
+  "notifBroadcastPostedTitle": "Title of the notice sent to a parent when the class teacher or the school sends a message to the whole class.",
+  "notifBroadcastPostedBody": "Body of that notice. It names no child and no words of the message."
 }

@@ -789,3 +789,28 @@ query MessageByClientId($schoolId: UUID!, $conversationId: UUID!, $senderId: Str
 query ConversationReadsOf($schoolId: UUID!, $userId: String!) @auth(level: NO_ACCESS) {
   conversationReads(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}, limit: 500) { conversationId readAt }
 }
+
+# Class broadcast (P5-3c)
+query ParentLinksOfStudents($schoolId: UUID!, $studentIds: [UUID!]!) @auth(level: NO_ACCESS) {
+  parentLinks(where: {schoolId: {eq: $schoolId}, studentId: {in: $studentIds}}, limit: 3000) { studentId relationship user { id displayName email } }
+}
+
+query ListBroadcasts($schoolId: UUID!, $senderId: String, $limit: Int!) @auth(level: NO_ACCESS) {
+  broadcasts(where: {schoolId: {eq: $schoolId}, senderId: {eq: $senderId}}, orderBy: [{createdAt: DESC}], limit: $limit) { id title body targetCount createdAt classroom { id name } sender { id displayName email } }
+}
+
+query GetBroadcast($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  broadcasts(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}, limit: 1) { id title body targetCount createdAt classroom { id name } sender { id displayName email } }
+}
+
+query BroadcastByClientId($schoolId: UUID!, $senderId: String!, $clientId: String!) @auth(level: NO_ACCESS) {
+  broadcasts(where: {schoolId: {eq: $schoolId}, senderId: {eq: $senderId}, clientId: {eq: $clientId}}, limit: 1) { id title body targetCount createdAt classroom { id name } sender { id displayName email } }
+}
+
+query BroadcastRecipients($schoolId: UUID!, $broadcastId: UUID!) @auth(level: NO_ACCESS) {
+  broadcastRecipients(where: {schoolId: {eq: $schoolId}, broadcastId: {eq: $broadcastId}}, limit: 3000) { id readAt student { id firstName lastName } guardianUser { id } }
+}
+
+query BroadcastsReceivedBy($schoolId: UUID!, $guardianUserId: String!, $limit: Int!) @auth(level: NO_ACCESS) {
+  broadcastRecipients(where: {schoolId: {eq: $schoolId}, guardianUserId: {eq: $guardianUserId}}, orderBy: [{createdAt: DESC}], limit: $limit) { id readAt student { id firstName lastName } broadcast { id title body targetCount createdAt classroom { id name } sender { id displayName email } } }
+}

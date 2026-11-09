@@ -44,6 +44,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     reports_finance: school("read", "export"), // [ASSUMED] export of reports
     attendance: school("read"),
     student_leave: school("read"), // [ADR-0016]
+    broadcasts: school("read", "create"), // [ADR-0018] may send to any class and read what was sent
     learning_resources: school("read"), // [ADR-0016]
     students: school("read"),
     academics: school("read"),
@@ -90,6 +91,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     attendance: school(...CRUD_EXPORT),
     substitution: school("read", "create", "update"), // [SSOT §7] "Academic Admin: Assign Substitute"
     learning_resources: school("read", "create", "delete"), // [ADR-0016] may share for any class and remove any
+    broadcasts: school("read", "create"), // [ADR-0018] may send to any class and read what was sent
     resource_comments: school("read", "create", "update"), // [ADR-0016] reads and writes under any resource; update = hide a comment
     student_leave: school("read", "update"), // [ADR-0016] decides a parent's request for a child's leave (the class teacher may too)
     reports_academic: school("read", "export"),
@@ -157,6 +159,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     academics: own("read"),
     grades: own("read", "create", "update"),
     student_leave: own("read", "update"), // [ADR-0016] the class teacher of the child's class reads and decides; the gateway narrows `own` to that class
+    broadcasts: own("read", "create"), // [ADR-0018] the class teacher of a class sends to its parents; the gateway narrows `own` to that class
     resource_comments: own("read", "create", "update"), // [ADR-0016] the gateway narrows `own` to resources she uploaded; update = hide a comment under them
     learning_resources: own("read", "create", "delete"), // [ADR-0016] the gateway narrows `own` to the classes and subjects she teaches, and removal to her own uploads
     announcements: school("read"),
@@ -183,6 +186,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     finance: linked("read", "create"), // view invoices; "create" = initiate a payment [ASSUMED action mapping]
     transport: linked("read"),
     student_leave: linked("read", "create", "update"), // [ADR-0016] ask leave for their own child; update is only cancelling a waiting request
+    broadcasts: linked("read", "update"), // [ADR-0018] the broadcasts sent to the parent's own children's classes; update = mark read
     resource_comments: linked("read", "create", "update", "delete"), // [ADR-0016] the class's resources; update and delete only their own comment and only within 5 minutes
     learning_resources: linked("read"), // [ADR-0016] the resources of the classes their linked children are in
     announcements: school("read"),
