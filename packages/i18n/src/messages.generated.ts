@@ -1127,7 +1127,12 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobPfAmount": "To pay",
     "mobPfPaidLabel": "Paid",
     "mobPfLeft": "Left to pay",
-    "mobPfNoReceipts": "No payment has been received for this fee yet."
+    "mobPfNoReceipts": "No payment has been received for this fee yet.",
+    "notifMessageReceivedTitle": "New message",
+    "notifMessageReceivedBody": "You have a new message. Open the app to read it.",
+    "notifMessageReportedTitle": "A message was reported",
+    "notifMessageReportedBody": "A message in a conversation was reported. Please review it.",
+    "ntCatmessage": "Messages"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2252,7 +2257,12 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobPfAmount": "देय राशि",
     "mobPfPaidLabel": "चुकाया",
     "mobPfLeft": "चुकाना बाकी",
-    "mobPfNoReceipts": "इस शुल्क के लिए अभी कोई भुगतान प्राप्त नहीं हुआ है।"
+    "mobPfNoReceipts": "इस शुल्क के लिए अभी कोई भुगतान प्राप्त नहीं हुआ है।",
+    "notifMessageReceivedTitle": "नया संदेश",
+    "notifMessageReceivedBody": "आपके लिए एक नया संदेश है। पढ़ने के लिए ऐप खोलें।",
+    "notifMessageReportedTitle": "एक संदेश की शिकायत की गई",
+    "notifMessageReportedBody": "एक बातचीत में एक संदेश की शिकायत की गई है। कृपया इसे देखें।",
+    "ntCatmessage": "संदेश"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3377,7 +3387,12 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobPfAmount": "قابل ادا رقم",
     "mobPfPaidLabel": "ادا کیا",
     "mobPfLeft": "ادا کرنا باقی",
-    "mobPfNoReceipts": "اس فیس کی کوئی ادائیگی ابھی موصول نہیں ہوئی۔"
+    "mobPfNoReceipts": "اس فیس کی کوئی ادائیگی ابھی موصول نہیں ہوئی۔",
+    "notifMessageReceivedTitle": "نیا پیغام",
+    "notifMessageReceivedBody": "آپ کے لیے ایک نیا پیغام ہے۔ پڑھنے کے لیے ایپ کھولیں۔",
+    "notifMessageReportedTitle": "ایک پیغام کی شکایت کی گئی",
+    "notifMessageReportedBody": "ایک گفتگو میں ایک پیغام کی شکایت کی گئی ہے۔ براہ کرم اسے دیکھیں۔",
+    "ntCatmessage": "پیغامات"
   },
   "ks": {},
   "sd": {},

@@ -1479,6 +1479,46 @@
         ],
         "type": "object"
       },
+      "ContactDto": {
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "subjects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "name",
+          "label",
+          "subjects"
+        ],
+        "type": "object"
+      },
+      "ContactListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ContactDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "CorrectStaffDayDto": {
         "properties": {
           "checkIn": {
@@ -4373,6 +4413,38 @@
         ],
         "type": "object"
       },
+      "MessageDto": {
+        "properties": {
+          "body": {
+            "nullable": true,
+            "type": "string"
+          },
+          "canHide": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "mine": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "mine",
+          "body",
+          "hidden",
+          "canHide",
+          "createdAt"
+        ],
+        "type": "object"
+      },
       "MethodTotalDto": {
         "properties": {
           "amountMinor": {
@@ -5887,6 +5959,15 @@
         ],
         "type": "object"
       },
+      "ReportMessageDto": {
+        "properties": {
+          "note": {
+            "maxLength": 300,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "ResourceDto": {
         "properties": {
           "class": {
@@ -6646,6 +6727,24 @@
           "stop",
           "vehicle",
           "driverName"
+        ],
+        "type": "object"
+      },
+      "SendMessageDto": {
+        "properties": {
+          "body": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "clientId": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "clientId",
+          "body"
         ],
         "type": "object"
       },
@@ -7418,6 +7517,23 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "StartThreadDto": {
+        "properties": {
+          "otherUserId": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "studentId",
+          "otherUserId"
+        ],
         "type": "object"
       },
       "StatementDto": {
@@ -8279,6 +8395,147 @@
           "items": {
             "items": {
               "$ref": "#/components/schemas/TermDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "ThreadDetailDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "lastMessageAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/MessageDto"
+            },
+            "type": "array"
+          },
+          "other": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "TEACHER",
+                  "PARENT"
+                ],
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId",
+              "kind",
+              "name"
+            ],
+            "type": "object"
+          },
+          "student": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "unread": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "student",
+          "other",
+          "lastMessageAt",
+          "unread",
+          "messages"
+        ],
+        "type": "object"
+      },
+      "ThreadDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "lastMessageAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "other": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "TEACHER",
+                  "PARENT"
+                ],
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId",
+              "kind",
+              "name"
+            ],
+            "type": "object"
+          },
+          "student": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "unread": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "student",
+          "other",
+          "lastMessageAt",
+          "unread"
+        ],
+        "type": "object"
+      },
+      "ThreadListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ThreadDto"
             },
             "type": "array"
           }
@@ -18428,6 +18685,515 @@
         }
       }
     },
+    "/v1/messages/contacts": {
+      "get": {
+        "operationId": "Messages_contacts",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "studentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Messages"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "messages"
+        }
+      }
+    },
+    "/v1/messages/threads": {
+      "get": {
+        "operationId": "Messages_threads",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Messages"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "messages"
+        }
+      },
+      "post": {
+        "operationId": "Messages_start",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartThreadDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Messages"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "message.thread.start",
+          "operation": "StartConversation"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "messages"
+        }
+      }
+    },
+    "/v1/messages/threads/{id}": {
+      "get": {
+        "operationId": "Messages_thread",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadDetailDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Messages"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "messages"
+        }
+      }
+    },
+    "/v1/messages/threads/{id}/messages": {
+      "post": {
+        "operationId": "Messages_send",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMessageDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Messages"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "message.send",
+          "operation": "SendMessage"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "messages"
+        }
+      }
+    },
+    "/v1/messages/threads/{id}/messages/{messageId}/hide": {
+      "post": {
+        "operationId": "Messages_hide",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "messageId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Messages"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "message.hide",
+          "operation": "HideMessage"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "messages"
+        }
+      }
+    },
+    "/v1/messages/threads/{id}/messages/{messageId}/report": {
+      "post": {
+        "operationId": "Messages_report",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "messageId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportMessageDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Messages"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "message.report",
+          "operation": "ReportMessage"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "messages"
+        }
+      }
+    },
+    "/v1/messages/threads/{id}/read": {
+      "post": {
+        "operationId": "Messages_read",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Messages"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "update",
+          "resource": "messages"
+        }
+      }
+    },
     "/v1/notifications": {
       "get": {
         "operationId": "Notifications_list",
@@ -18572,7 +19338,8 @@
                 "payroll",
                 "announcement",
                 "studentleave",
-                "resourcecomment"
+                "resourcecomment",
+                "message"
               ],
               "type": "string"
             }

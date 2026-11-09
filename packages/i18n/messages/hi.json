@@ -1121,5 +1121,10 @@
   "mobPfAmount": "देय राशि",
   "mobPfPaidLabel": "चुकाया",
   "mobPfLeft": "चुकाना बाकी",
-  "mobPfNoReceipts": "इस शुल्क के लिए अभी कोई भुगतान प्राप्त नहीं हुआ है।"
+  "mobPfNoReceipts": "इस शुल्क के लिए अभी कोई भुगतान प्राप्त नहीं हुआ है।",
+  "notifMessageReceivedTitle": "नया संदेश",
+  "notifMessageReceivedBody": "आपके लिए एक नया संदेश है। पढ़ने के लिए ऐप खोलें।",
+  "notifMessageReportedTitle": "एक संदेश की शिकायत की गई",
+  "notifMessageReportedBody": "एक बातचीत में एक संदेश की शिकायत की गई है। कृपया इसे देखें।",
+  "ntCatmessage": "संदेश"
 }

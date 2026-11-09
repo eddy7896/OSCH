@@ -1032,6 +1032,62 @@ export interface ConfirmStaffCheckInVariables {
   details?: unknown | null;
 }
 
+export interface ConversationByPartiesData {
+  conversations: ({
+    id: UUIDString;
+    lastMessageAt?: TimestampString | null;
+    createdAt: TimestampString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    staffUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    guardianUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    lastSender?: {
+      id: string;
+    } & User_Key;
+  } & Conversation_Key)[];
+}
+
+export interface ConversationByPartiesVariables {
+  schoolId: UUIDString;
+  studentId: UUIDString;
+  staffUserId: string;
+  guardianUserId: string;
+}
+
+export interface ConversationRead_Key {
+  conversationId: UUIDString;
+  userId: string;
+  __typename?: 'ConversationRead_Key';
+}
+
+export interface ConversationReadsOfData {
+  conversationReads: ({
+    conversationId: UUIDString;
+    readAt: TimestampString;
+  })[];
+}
+
+export interface ConversationReadsOfVariables {
+  schoolId: UUIDString;
+  userId: string;
+}
+
+export interface Conversation_Key {
+  id: UUIDString;
+  __typename?: 'Conversation_Key';
+}
+
 export interface CorrectStaffAttendanceData {
   query?: {
     actor: ({
@@ -2747,6 +2803,37 @@ export interface GetAttendanceDayVariables {
   date: DateString;
 }
 
+export interface GetConversationData {
+  conversations: ({
+    id: UUIDString;
+    lastMessageAt?: TimestampString | null;
+    createdAt: TimestampString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    staffUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    guardianUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    lastSender?: {
+      id: string;
+    } & User_Key;
+  } & Conversation_Key)[];
+}
+
+export interface GetConversationVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetExamData {
   exams: ({
     id: UUIDString;
@@ -3013,6 +3100,33 @@ export interface GetMembershipData {
 export interface GetMembershipVariables {
   schoolId: UUIDString;
   userId: string;
+}
+
+export interface GetMessageData {
+  messages: ({
+    id: UUIDString;
+    clientId: string;
+    body: string;
+    hiddenAt?: TimestampString | null;
+    createdAt: TimestampString;
+    sender: {
+      id: string;
+    } & User_Key;
+    conversation: {
+      id: UUIDString;
+      staffUser: {
+        id: string;
+      } & User_Key;
+      guardianUser: {
+        id: string;
+      } & User_Key;
+    } & Conversation_Key;
+  } & Message_Key)[];
+}
+
+export interface GetMessageVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
 }
 
 export interface GetPaymentData {
@@ -3603,6 +3717,24 @@ export interface Guardian_Key {
   __typename?: 'Guardian_Key';
 }
 
+export interface HideMessageData {
+  query?: {
+    message: ({
+      id: UUIDString;
+    } & Message_Key)[];
+  };
+  message_update?: Message_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface HideMessageVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  windowStart: TimestampString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface HideResourceCommentData {
   query?: {
     actor: ({
@@ -3939,6 +4071,61 @@ export interface ListConcessionsVariables {
   schoolId: UUIDString;
   studentId?: UUIDString | null;
   academicYearId?: UUIDString | null;
+}
+
+export interface ListConversationsOfData {
+  asStaff: ({
+    id: UUIDString;
+    lastMessageAt?: TimestampString | null;
+    createdAt: TimestampString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    staffUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    guardianUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    lastSender?: {
+      id: string;
+    } & User_Key;
+  } & Conversation_Key)[];
+  asGuardian: ({
+    id: UUIDString;
+    lastMessageAt?: TimestampString | null;
+    createdAt: TimestampString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    staffUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    guardianUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    lastSender?: {
+      id: string;
+    } & User_Key;
+  } & Conversation_Key)[];
+}
+
+export interface ListConversationsOfVariables {
+  schoolId: UUIDString;
+  userId: string;
+  limit: number;
 }
 
 export interface ListDevicesForUsersData {
@@ -4283,6 +4470,25 @@ export interface ListMembershipsForUserVariables {
 
 export interface ListMembershipsVariables {
   schoolId: UUIDString;
+}
+
+export interface ListMessagesData {
+  messages: ({
+    id: UUIDString;
+    clientId: string;
+    body: string;
+    hiddenAt?: TimestampString | null;
+    createdAt: TimestampString;
+    sender: {
+      id: string;
+    } & User_Key;
+  } & Message_Key)[];
+}
+
+export interface ListMessagesVariables {
+  schoolId: UUIDString;
+  conversationId: UUIDString;
+  limit: number;
 }
 
 export interface ListNotificationMutesData {
@@ -4731,6 +4937,8 @@ export interface ListTimetableForClassData {
       employeeId: string;
       firstName: string;
       lastName: string;
+      userId?: string | null;
+      status: StaffStatus;
     } & StaffProfile_Key;
   } & TimetableEntry_Key)[];
 }
@@ -4905,6 +5113,21 @@ export interface LockAttendanceDayVariables {
   details?: unknown | null;
 }
 
+export interface MarkConversationReadData {
+  query?: {
+    conversation: ({
+      id: UUIDString;
+    } & Conversation_Key)[];
+  };
+  conversationRead_upsert: ConversationRead_Key;
+}
+
+export interface MarkConversationReadVariables {
+  schoolId: UUIDString;
+  conversationId: UUIDString;
+  actorId: string;
+}
+
 export interface MarkNotificationReadData {
   query?: {
     actor: ({
@@ -4963,6 +5186,36 @@ export interface MarksOfStudentInTermVariables {
   schoolId: UUIDString;
   studentId: UUIDString;
   termId: UUIDString;
+}
+
+export interface MessageByClientIdData {
+  messages: ({
+    id: UUIDString;
+    clientId: string;
+    body: string;
+    hiddenAt?: TimestampString | null;
+    createdAt: TimestampString;
+    sender: {
+      id: string;
+    } & User_Key;
+  } & Message_Key)[];
+}
+
+export interface MessageByClientIdVariables {
+  schoolId: UUIDString;
+  conversationId: UUIDString;
+  senderId: string;
+  clientId: string;
+}
+
+export interface MessageReport_Key {
+  id: UUIDString;
+  __typename?: 'MessageReport_Key';
+}
+
+export interface Message_Key {
+  id: UUIDString;
+  __typename?: 'Message_Key';
 }
 
 export interface MoveStudentData {
@@ -5661,6 +5914,33 @@ export interface RemoveTeacherSubjectVariables {
   details?: unknown | null;
 }
 
+export interface ReportMessageData {
+  query?: {
+    conversation: ({
+      id: UUIDString;
+    } & Conversation_Key)[];
+    message: ({
+      id: UUIDString;
+    } & Message_Key)[];
+  };
+  messageReport_insert: MessageReport_Key;
+  n1: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ReportMessageVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  conversationId: UUIDString;
+  messageId: UUIDString;
+  staffUserId: string;
+  guardianUserId: string;
+  note?: string | null;
+  kind: string;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface ResourceCommentByClientIdData {
   resourceComments: ({
     id: UUIDString;
@@ -5870,6 +6150,39 @@ export interface SchoolWorkingDaysVariables {
 export interface School_Key {
   id: UUIDString;
   __typename?: 'School_Key';
+}
+
+export interface SendMessageData {
+  query?: {
+    conversation: ({
+      id: UUIDString;
+    } & Conversation_Key)[];
+    link: ({
+      id: UUIDString;
+    } & ParentLink_Key)[];
+    staff: ({
+      userId: string;
+    })[];
+  };
+  message_insert: Message_Key;
+  conversation_update?: Conversation_Key | null;
+  n1: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface SendMessageVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  conversationId: UUIDString;
+  studentId: UUIDString;
+  clientId: string;
+  body: string;
+  staffUserId: string;
+  guardianUserId: string;
+  recipientUserId: string;
+  kind: string;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface SetAttendanceStatusLabelData {
@@ -6307,6 +6620,35 @@ export interface StaffWithAccountsData {
 
 export interface StaffWithAccountsVariables {
   schoolId: UUIDString;
+}
+
+export interface StartConversationData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    staff: ({
+      userId: string;
+    })[];
+    link: ({
+      id: UUIDString;
+    } & ParentLink_Key)[];
+    student: ({
+      id: UUIDString;
+    } & Student_Key)[];
+  };
+  conversation_insert: Conversation_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface StartConversationVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  studentId: UUIDString;
+  staffUserId: string;
+  guardianUserId: string;
+  actorId: string;
+  details?: unknown | null;
 }
 
 export interface StartImportBatchData {
@@ -7914,6 +8256,31 @@ export function notifyResourceComment(dc: DataConnect, vars: NotifyResourceComme
 /** Generated Node Admin SDK operation action function for the 'NotifyResourceComment' Mutation. Allow users to pass in custom DataConnect instances. */
 export function notifyResourceComment(vars: NotifyResourceCommentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<NotifyResourceCommentData>>;
 
+/** Generated Node Admin SDK operation action function for the 'StartConversation' Mutation. Allow users to execute without passing in DataConnect. */
+export function startConversation(dc: DataConnect, vars: StartConversationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StartConversationData>>;
+/** Generated Node Admin SDK operation action function for the 'StartConversation' Mutation. Allow users to pass in custom DataConnect instances. */
+export function startConversation(vars: StartConversationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StartConversationData>>;
+
+/** Generated Node Admin SDK operation action function for the 'SendMessage' Mutation. Allow users to execute without passing in DataConnect. */
+export function sendMessage(dc: DataConnect, vars: SendMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SendMessageData>>;
+/** Generated Node Admin SDK operation action function for the 'SendMessage' Mutation. Allow users to pass in custom DataConnect instances. */
+export function sendMessage(vars: SendMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SendMessageData>>;
+
+/** Generated Node Admin SDK operation action function for the 'MarkConversationRead' Mutation. Allow users to execute without passing in DataConnect. */
+export function markConversationRead(dc: DataConnect, vars: MarkConversationReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkConversationReadData>>;
+/** Generated Node Admin SDK operation action function for the 'MarkConversationRead' Mutation. Allow users to pass in custom DataConnect instances. */
+export function markConversationRead(vars: MarkConversationReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkConversationReadData>>;
+
+/** Generated Node Admin SDK operation action function for the 'HideMessage' Mutation. Allow users to execute without passing in DataConnect. */
+export function hideMessage(dc: DataConnect, vars: HideMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<HideMessageData>>;
+/** Generated Node Admin SDK operation action function for the 'HideMessage' Mutation. Allow users to pass in custom DataConnect instances. */
+export function hideMessage(vars: HideMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<HideMessageData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ReportMessage' Mutation. Allow users to execute without passing in DataConnect. */
+export function reportMessage(dc: DataConnect, vars: ReportMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ReportMessageData>>;
+/** Generated Node Admin SDK operation action function for the 'ReportMessage' Mutation. Allow users to pass in custom DataConnect instances. */
+export function reportMessage(vars: ReportMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ReportMessageData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -8553,4 +8920,39 @@ export function getResourceComment(vars: GetResourceCommentVariables, options?: 
 export function resourceCommentByClientId(dc: DataConnect, vars: ResourceCommentByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ResourceCommentByClientIdData>>;
 /** Generated Node Admin SDK operation action function for the 'ResourceCommentByClientId' Query. Allow users to pass in custom DataConnect instances. */
 export function resourceCommentByClientId(vars: ResourceCommentByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ResourceCommentByClientIdData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListConversationsOf' Query. Allow users to execute without passing in DataConnect. */
+export function listConversationsOf(dc: DataConnect, vars: ListConversationsOfVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListConversationsOfData>>;
+/** Generated Node Admin SDK operation action function for the 'ListConversationsOf' Query. Allow users to pass in custom DataConnect instances. */
+export function listConversationsOf(vars: ListConversationsOfVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListConversationsOfData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetConversation' Query. Allow users to execute without passing in DataConnect. */
+export function getConversation(dc: DataConnect, vars: GetConversationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetConversationData>>;
+/** Generated Node Admin SDK operation action function for the 'GetConversation' Query. Allow users to pass in custom DataConnect instances. */
+export function getConversation(vars: GetConversationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetConversationData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ConversationByParties' Query. Allow users to execute without passing in DataConnect. */
+export function conversationByParties(dc: DataConnect, vars: ConversationByPartiesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConversationByPartiesData>>;
+/** Generated Node Admin SDK operation action function for the 'ConversationByParties' Query. Allow users to pass in custom DataConnect instances. */
+export function conversationByParties(vars: ConversationByPartiesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConversationByPartiesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListMessages' Query. Allow users to execute without passing in DataConnect. */
+export function listMessages(dc: DataConnect, vars: ListMessagesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMessagesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListMessages' Query. Allow users to pass in custom DataConnect instances. */
+export function listMessages(vars: ListMessagesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMessagesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetMessage' Query. Allow users to execute without passing in DataConnect. */
+export function getMessage(dc: DataConnect, vars: GetMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMessageData>>;
+/** Generated Node Admin SDK operation action function for the 'GetMessage' Query. Allow users to pass in custom DataConnect instances. */
+export function getMessage(vars: GetMessageVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMessageData>>;
+
+/** Generated Node Admin SDK operation action function for the 'MessageByClientId' Query. Allow users to execute without passing in DataConnect. */
+export function messageByClientId(dc: DataConnect, vars: MessageByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MessageByClientIdData>>;
+/** Generated Node Admin SDK operation action function for the 'MessageByClientId' Query. Allow users to pass in custom DataConnect instances. */
+export function messageByClientId(vars: MessageByClientIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MessageByClientIdData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ConversationReadsOf' Query. Allow users to execute without passing in DataConnect. */
+export function conversationReadsOf(dc: DataConnect, vars: ConversationReadsOfVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConversationReadsOfData>>;
+/** Generated Node Admin SDK operation action function for the 'ConversationReadsOf' Query. Allow users to pass in custom DataConnect instances. */
+export function conversationReadsOf(vars: ConversationReadsOfVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConversationReadsOfData>>;
 

@@ -239,6 +239,31 @@ const commentOfA = async (w: World): Promise<Record<string, string>> => {
   await w.db.createResourceComment({ schoolId: w.schools.A, id, resourceId: res['id']!, clientId: `s-${id.slice(0, 12)}`, authorRole: 'PARENT' as never, authorName: 'Asha', body: 'Sample', actorId: w.roles.A.PARENT.uid, details: {} });
   return { ...res, commentId: dash(id) };
 };
+/** A class with the sample TEACHER as its class teacher, a student placed in it and linked to the sample PARENT; `thread` adds their conversation, `message` the parent's first message (P5-3b). */
+const teacherOfA = { token: (w: World) => w.roles.A.TEACHER.token, actor: (w: World) => w.roles.A.TEACHER.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+const messagingOfA = (level: 'none' | 'thread' | 'message') => async (w: World): Promise<Record<string, string>> => {
+  const res = await examSetupOfA(w);
+  let staffId = (await w.db.staffOfUser({ schoolId: w.schools.A, userId: w.roles.A.TEACHER.uid })).data.staffProfiles[0]?.id;
+  if (!staffId) {
+    const staff = await staffOfA(w);
+    await w.db.linkStaffAccount({ schoolId: w.schools.A, id: staff['id']!, userId: w.roles.A.TEACHER.uid, actorId: w.roles.A.HR_MANAGER.uid, details: {} });
+    staffId = staff['id']!;
+  }
+  await w.db.assignClassTeacher({ schoolId: w.schools.A, id: randomUUID(), classroomId: res['classId']!, academicYearId: res['year']!, staffId: dash(staffId), actorId: actorA(w), details: {} });
+  const student = await studentOfA(w);
+  await w.db.placeStudent({ schoolId: w.schools.A, studentId: student['id']!, academicYearId: res['year']!, classroomId: res['classId']!, actorId: actorA(w) });
+  await w.db.linkParentAccount({ schoolId: w.schools.A, id: randomUUID(), studentId: student['id']!.replaceAll('-', ''), userId: w.roles.A.PARENT.uid, relationship: 'MOTHER', actorId: actorA(w), details: {} });
+  const out: Record<string, string> = { studentId: student['id']!, teacherUid: w.roles.A.TEACHER.uid };
+  if (level === 'none') return out;
+  const convId = randomUUID();
+  await w.db.startConversation({ schoolId: w.schools.A, id: convId, studentId: student['id']!, staffUserId: w.roles.A.TEACHER.uid, guardianUserId: w.roles.A.PARENT.uid, actorId: w.roles.A.PARENT.uid, details: {} });
+  out['id'] = dash(convId);
+  if (level === 'thread') return out;
+  const messageId = randomUUID();
+  await w.db.sendMessage({ schoolId: w.schools.A, id: messageId, conversationId: convId, studentId: student['id']!, clientId: `s-${messageId.slice(0, 12)}`, body: 'Sample', staffUserId: w.roles.A.TEACHER.uid, guardianUserId: w.roles.A.PARENT.uid, recipientUserId: w.roles.A.TEACHER.uid, kind: 'message.received', actorId: w.roles.A.PARENT.uid, details: {} });
+  out['messageId'] = dash(messageId);
+  return out;
+};
 const examOfA = async (w: World): Promise<Record<string, string>> => {
   const s = await examSetupOfA(w);
   const id = randomUUID();
@@ -623,6 +648,10 @@ export const SAMPLES: Record<string, Sample> = {
   'DELETE /students/:id/documents/:documentId': { ...academicAdminOfA, prepare: studentWithDocument },
   'POST /resources': { ...academicAdminOfA, prepare: examSetupOfA, body: (w, ctx) => ({ classId: ctx['classId'], subjectId: ctx['subjectId'], key: resourceKey(w, ctx['classId']!), title: 'Fractions', fileName: 'fractions.pdf' }) },
   'DELETE /resources/:id': { ...academicAdminOfA, prepare: resourceOfA },
+  'POST /messages/threads': { ...parentOfA, prepare: messagingOfA('none'), body: (_w, ctx) => ({ studentId: ctx['studentId'], otherUserId: ctx['teacherUid'] }) },
+  'POST /messages/threads/:id/messages': { ...parentOfA, prepare: messagingOfA('thread'), body: () => ({ clientId: `s-${randomUUID().slice(0, 12)}`, body: 'Hello teacher' }) },
+  'POST /messages/threads/:id/messages/:messageId/hide': { ...parentOfA, prepare: messagingOfA('message') },
+  'POST /messages/threads/:id/messages/:messageId/report': { ...teacherOfA, prepare: messagingOfA('message'), body: () => ({ note: 'Please look at this' }) },
   'POST /resources/:id/comments': { ...academicAdminOfA, prepare: resourceOfA, body: () => ({ clientId: `s-${randomUUID().slice(0, 12)}`, body: 'Please keep to the syllabus' }) },
   'PUT /resources/:id/comments/:commentId': { ...parentOfA, prepare: commentOfA, body: () => ({ body: 'Edited' }) },
   'DELETE /resources/:id/comments/:commentId': { ...parentOfA, prepare: commentOfA },

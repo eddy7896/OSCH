@@ -802,6 +802,50 @@ type ResourceComment @table @unique(fields: ["resource", "author", "clientId"]) 
   updatedAt: Timestamp! @default(expr: "request.time")
 }
 
+# Messaging (P5-3, ADR-0018). A conversation is about ONE student between one member of staff and ONE parent account (a separate private conversation per parent).
+# Messages are delivered at once at any hour. `lastSender` and `lastMessageAt` say who spoke last, so "unread" needs no per-message receipts.
+type Conversation @table @unique(fields: ["student", "staffUser", "guardianUser"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  student: Student!
+  staffUser: User!
+  guardianUser: User!
+  lastMessageAt: Timestamp
+  lastSender: User
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type Message @table @unique(fields: ["conversation", "sender", "clientId"]) {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  conversation: Conversation!
+  sender: User!
+  clientId: String! # the device's own id, so a repeat is one message
+  body: String!
+  hiddenAt: Timestamp # the sender hid it within the window; the words stay in the audit trail
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+# When a person last opened a conversation.
+type ConversationRead @table(key: ["conversation", "user"]) {
+  school: School!
+  conversation: Conversation!
+  user: User!
+  readAt: Timestamp! @default(expr: "request.time")
+}
+
+# A message either party reported; the Principal reviews it.
+type MessageReport @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  message: Message!
+  reportedBy: User!
+  note: String
+  createdAt: Timestamp! @default(expr: "request.time")
+  reviewedAt: Timestamp
+  reviewedBy: User
+}
+
 # A parent's request for leave for their child (P5-10, ADR-0016). Decided by the class teacher or the Academic admin; the first decision stands.
 type StudentLeave @table @unique(fields: ["student", "clientId"]) {
   id: UUID! @default(expr: "uuidV4()")

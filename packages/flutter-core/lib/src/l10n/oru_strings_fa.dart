@@ -3908,4 +3908,21 @@ class OruStringsFa extends OruStrings {
   @override
   String get mobPfNoReceipts =>
       'No payment has been received for this fee yet.';
+
+  @override
+  String get notifMessageReceivedTitle => 'New message';
+
+  @override
+  String get notifMessageReceivedBody =>
+      'You have a new message. Open the app to read it.';
+
+  @override
+  String get notifMessageReportedTitle => 'A message was reported';
+
+  @override
+  String get notifMessageReportedBody =>
+      'A message in a conversation was reported. Please review it.';
+
+  @override
+  String get ntCatmessage => 'Messages';
 }

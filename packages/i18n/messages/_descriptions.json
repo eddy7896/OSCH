@@ -1122,5 +1122,10 @@
   "mobPfAmount": "Label of the amount due on a fee after any concession.",
   "mobPfPaidLabel": "Label of how much of a fee has been paid.",
   "mobPfLeft": "Label of how much of a fee is still owed.",
-  "mobPfNoReceipts": "Shown on a fee's details when there are no receipts."
+  "mobPfNoReceipts": "Shown on a fee's details when there are no receipts.",
+  "notifMessageReceivedTitle": "Title of the notice sent when someone writes to you in a conversation about a student.",
+  "notifMessageReceivedBody": "Body of that notice. It names nobody and no student, so it is safe to show on a locked phone.",
+  "notifMessageReportedTitle": "Title of the notice sent to the Principal when a message is reported.",
+  "notifMessageReportedBody": "Body of that notice.",
+  "ntCatmessage": "Name of the notification category for messages, shown in the notification settings."
 }

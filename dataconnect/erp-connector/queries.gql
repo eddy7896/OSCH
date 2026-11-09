@@ -441,7 +441,7 @@ query ListTimetableForYear($schoolId: UUID!, $academicYearId: UUID!) @auth(level
 
 query ListTimetableForClass($schoolId: UUID!, $academicYearId: UUID!, $classroomId: UUID!) @auth(level: NO_ACCESS) {
   timetableEntries(where: {schoolId: {eq: $schoolId}, academicYearId: {eq: $academicYearId}, classroomId: {eq: $classroomId}}, limit: 1000) {
-    id day periodId subject { id name code } staff { id employeeId firstName lastName }
+    id day periodId subject { id name code } staff { id employeeId firstName lastName userId status }
   }
 }
 
@@ -758,4 +758,34 @@ query ResourceCommentByClientId($schoolId: UUID!, $resourceId: UUID!, $authorId:
   resourceComments(where: {schoolId: {eq: $schoolId}, resourceId: {eq: $resourceId}, authorId: {eq: $authorId}, clientId: {eq: $clientId}}, limit: 1) {
     id resourceId clientId authorRole authorName body originalBody editedAt deletedAt hiddenAt createdAt updatedAt author { id } hiddenBy { id } replyTo { id }
   }
+}
+
+# Messaging (P5-3b)
+query ListConversationsOf($schoolId: UUID!, $userId: String!, $limit: Int!) @auth(level: NO_ACCESS) {
+  asStaff: conversations(where: {schoolId: {eq: $schoolId}, staffUserId: {eq: $userId}}, orderBy: [{createdAt: DESC}], limit: $limit) { id lastMessageAt createdAt student { id firstName lastName } staffUser { id displayName email } guardianUser { id displayName email } lastSender { id } }
+  asGuardian: conversations(where: {schoolId: {eq: $schoolId}, guardianUserId: {eq: $userId}}, orderBy: [{createdAt: DESC}], limit: $limit) { id lastMessageAt createdAt student { id firstName lastName } staffUser { id displayName email } guardianUser { id displayName email } lastSender { id } }
+}
+
+query GetConversation($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  conversations(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}, limit: 1) { id lastMessageAt createdAt student { id firstName lastName } staffUser { id displayName email } guardianUser { id displayName email } lastSender { id } }
+}
+
+query ConversationByParties($schoolId: UUID!, $studentId: UUID!, $staffUserId: String!, $guardianUserId: String!) @auth(level: NO_ACCESS) {
+  conversations(where: {schoolId: {eq: $schoolId}, studentId: {eq: $studentId}, staffUserId: {eq: $staffUserId}, guardianUserId: {eq: $guardianUserId}}, limit: 1) { id lastMessageAt createdAt student { id firstName lastName } staffUser { id displayName email } guardianUser { id displayName email } lastSender { id } }
+}
+
+query ListMessages($schoolId: UUID!, $conversationId: UUID!, $limit: Int!) @auth(level: NO_ACCESS) {
+  messages(where: {schoolId: {eq: $schoolId}, conversationId: {eq: $conversationId}}, orderBy: [{createdAt: DESC}], limit: $limit) { id clientId body hiddenAt createdAt sender { id } }
+}
+
+query GetMessage($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  messages(where: {id: {eq: $id}, schoolId: {eq: $schoolId}}, limit: 1) { id clientId body hiddenAt createdAt sender { id } conversation { id staffUser { id } guardianUser { id } } }
+}
+
+query MessageByClientId($schoolId: UUID!, $conversationId: UUID!, $senderId: String!, $clientId: String!) @auth(level: NO_ACCESS) {
+  messages(where: {schoolId: {eq: $schoolId}, conversationId: {eq: $conversationId}, senderId: {eq: $senderId}, clientId: {eq: $clientId}}, limit: 1) { id clientId body hiddenAt createdAt sender { id } }
+}
+
+query ConversationReadsOf($schoolId: UUID!, $userId: String!) @auth(level: NO_ACCESS) {
+  conversationReads(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}, limit: 500) { conversationId readAt }
 }

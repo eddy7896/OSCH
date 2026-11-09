@@ -1121,5 +1121,10 @@
   "mobPfAmount": "قابل ادا رقم",
   "mobPfPaidLabel": "ادا کیا",
   "mobPfLeft": "ادا کرنا باقی",
-  "mobPfNoReceipts": "اس فیس کی کوئی ادائیگی ابھی موصول نہیں ہوئی۔"
+  "mobPfNoReceipts": "اس فیس کی کوئی ادائیگی ابھی موصول نہیں ہوئی۔",
+  "notifMessageReceivedTitle": "نیا پیغام",
+  "notifMessageReceivedBody": "آپ کے لیے ایک نیا پیغام ہے۔ پڑھنے کے لیے ایپ کھولیں۔",
+  "notifMessageReportedTitle": "ایک پیغام کی شکایت کی گئی",
+  "notifMessageReportedBody": "ایک گفتگو میں ایک پیغام کی شکایت کی گئی ہے۔ براہ کرم اسے دیکھیں۔",
+  "ntCatmessage": "پیغامات"
 }

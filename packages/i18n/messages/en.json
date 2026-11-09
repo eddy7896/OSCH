@@ -1121,5 +1121,10 @@
   "mobPfAmount": "To pay",
   "mobPfPaidLabel": "Paid",
   "mobPfLeft": "Left to pay",
-  "mobPfNoReceipts": "No payment has been received for this fee yet."
+  "mobPfNoReceipts": "No payment has been received for this fee yet.",
+  "notifMessageReceivedTitle": "New message",
+  "notifMessageReceivedBody": "You have a new message. Open the app to read it.",
+  "notifMessageReportedTitle": "A message was reported",
+  "notifMessageReportedBody": "A message in a conversation was reported. Please review it.",
+  "ntCatmessage": "Messages"
 }

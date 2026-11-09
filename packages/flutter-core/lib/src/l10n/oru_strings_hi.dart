@@ -3907,4 +3907,21 @@ class OruStringsHi extends OruStrings {
   @override
   String get mobPfNoReceipts =>
       'इस शुल्क के लिए अभी कोई भुगतान प्राप्त नहीं हुआ है।';
+
+  @override
+  String get notifMessageReceivedTitle => 'नया संदेश';
+
+  @override
+  String get notifMessageReceivedBody =>
+      'आपके लिए एक नया संदेश है। पढ़ने के लिए ऐप खोलें।';
+
+  @override
+  String get notifMessageReportedTitle => 'एक संदेश की शिकायत की गई';
+
+  @override
+  String get notifMessageReportedBody =>
+      'एक बातचीत में एक संदेश की शिकायत की गई है। कृपया इसे देखें।';
+
+  @override
+  String get ntCatmessage => 'संदेश';
 }
