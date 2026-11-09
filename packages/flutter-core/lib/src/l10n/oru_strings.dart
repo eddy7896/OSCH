@@ -6764,6 +6764,156 @@ abstract class OruStrings {
   /// **'{title}: {subject}'**
   String mobPaExamLine(String title, String subject);
 
+  /// Row on the Parent app's Home that opens the child's fees, and the title of that screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Fees'**
+  String get mobPfTitle;
+
+  /// Heading of the fees screen. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'{child}\'s fees'**
+  String mobPfOf(String child);
+
+  /// Heading of the card that shows how much is still owed.
+  ///
+  /// In en, this message translates to:
+  /// **'Still to pay'**
+  String get mobPfOwe;
+
+  /// Shown on the fees screen when nothing is owed.
+  ///
+  /// In en, this message translates to:
+  /// **'All fees are paid.'**
+  String get mobPfAllPaid;
+
+  /// Under the amount still to pay: the part whose due date has passed. {amount} is money.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue: {amount}'**
+  String mobPfOverdueAmount(String amount);
+
+  /// Under the amount still to pay: what has been paid. {amount} is money.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid so far: {amount}'**
+  String mobPfPaidSoFar(String amount);
+
+  /// Note on the fees screen: paying inside the app is not offered yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Paying online is not available yet. Please pay at the school office.'**
+  String get mobPfPayNote;
+
+  /// Shown on the fees screen when there are no invoices. {child} is the child's first name.
+  ///
+  /// In en, this message translates to:
+  /// **'No fees have been billed for {child} yet.'**
+  String mobPfNone(String child);
+
+  /// Status word on a fee that is fully paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get mobPfPaid;
+
+  /// Status word on a fee that is unpaid and past its due date.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get mobPfOverdue;
+
+  /// Status word on a fee that is partly paid and not yet due.
+  ///
+  /// In en, this message translates to:
+  /// **'Part paid'**
+  String get mobPfPartial;
+
+  /// Status word on a fee that is unpaid and not yet due.
+  ///
+  /// In en, this message translates to:
+  /// **'Not paid yet'**
+  String get mobPfPending;
+
+  /// Under a fee: the date it is due. {date} is a date.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String mobPfDue(String date);
+
+  /// Under a fee: how much of it is paid. {paid} and {total} are money.
+  ///
+  /// In en, this message translates to:
+  /// **'{paid} of {total} paid'**
+  String mobPfOfTotal(String paid, String total);
+
+  /// Heading above the list of receipts.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipts'**
+  String get mobPfReceipts;
+
+  /// Title of a receipt. {number} is its number.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt {number}'**
+  String mobPfReceiptNo(String number);
+
+  /// Label on a receipt that was cancelled because its payment was reversed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get mobPfCancelled;
+
+  /// Title of the screen with one fee's amounts and receipts.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee details'**
+  String get mobPfDetail;
+
+  /// Label of a fee's due date.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get mobPfDueOn;
+
+  /// Label of the fee before any concession.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee'**
+  String get mobPfFee;
+
+  /// Label of the reduction on a fee.
+  ///
+  /// In en, this message translates to:
+  /// **'Concession'**
+  String get mobPfConcession;
+
+  /// Label of the amount due on a fee after any concession.
+  ///
+  /// In en, this message translates to:
+  /// **'To pay'**
+  String get mobPfAmount;
+
+  /// Label of how much of a fee has been paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get mobPfPaidLabel;
+
+  /// Label of how much of a fee is still owed.
+  ///
+  /// In en, this message translates to:
+  /// **'Left to pay'**
+  String get mobPfLeft;
+
+  /// Shown on a fee's details when there are no receipts.
+  ///
+  /// In en, this message translates to:
+  /// **'No payment has been received for this fee yet.'**
+  String get mobPfNoReceipts;
+
   /// Title of the notice sent when someone writes to you in a conversation about a student.
   ///
   /// In en, this message translates to:

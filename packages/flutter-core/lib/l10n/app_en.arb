@@ -5246,6 +5246,144 @@
       }
     }
   },
+  "mobPfTitle": "Fees",
+  "@mobPfTitle": {
+    "description": "Row on the Parent app's Home that opens the child's fees, and the title of that screen."
+  },
+  "mobPfOf": "{child}'s fees",
+  "@mobPfOf": {
+    "description": "Heading of the fees screen. {child} is the child's first name.",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "mobPfOwe": "Still to pay",
+  "@mobPfOwe": {
+    "description": "Heading of the card that shows how much is still owed."
+  },
+  "mobPfAllPaid": "All fees are paid.",
+  "@mobPfAllPaid": {
+    "description": "Shown on the fees screen when nothing is owed."
+  },
+  "mobPfOverdueAmount": "Overdue: {amount}",
+  "@mobPfOverdueAmount": {
+    "description": "Under the amount still to pay: the part whose due date has passed. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "mobPfPaidSoFar": "Paid so far: {amount}",
+  "@mobPfPaidSoFar": {
+    "description": "Under the amount still to pay: what has been paid. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "mobPfPayNote": "Paying online is not available yet. Please pay at the school office.",
+  "@mobPfPayNote": {
+    "description": "Note on the fees screen: paying inside the app is not offered yet."
+  },
+  "mobPfNone": "No fees have been billed for {child} yet.",
+  "@mobPfNone": {
+    "description": "Shown on the fees screen when there are no invoices. {child} is the child's first name.",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "mobPfPaid": "Paid",
+  "@mobPfPaid": {
+    "description": "Status word on a fee that is fully paid."
+  },
+  "mobPfOverdue": "Overdue",
+  "@mobPfOverdue": {
+    "description": "Status word on a fee that is unpaid and past its due date."
+  },
+  "mobPfPartial": "Part paid",
+  "@mobPfPartial": {
+    "description": "Status word on a fee that is partly paid and not yet due."
+  },
+  "mobPfPending": "Not paid yet",
+  "@mobPfPending": {
+    "description": "Status word on a fee that is unpaid and not yet due."
+  },
+  "mobPfDue": "Due {date}",
+  "@mobPfDue": {
+    "description": "Under a fee: the date it is due. {date} is a date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mobPfOfTotal": "{paid} of {total} paid",
+  "@mobPfOfTotal": {
+    "description": "Under a fee: how much of it is paid. {paid} and {total} are money.",
+    "placeholders": {
+      "paid": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobPfReceipts": "Receipts",
+  "@mobPfReceipts": {
+    "description": "Heading above the list of receipts."
+  },
+  "mobPfReceiptNo": "Receipt {number}",
+  "@mobPfReceiptNo": {
+    "description": "Title of a receipt. {number} is its number.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "mobPfCancelled": "Cancelled",
+  "@mobPfCancelled": {
+    "description": "Label on a receipt that was cancelled because its payment was reversed."
+  },
+  "mobPfDetail": "Fee details",
+  "@mobPfDetail": {
+    "description": "Title of the screen with one fee's amounts and receipts."
+  },
+  "mobPfDueOn": "Due date",
+  "@mobPfDueOn": {
+    "description": "Label of a fee's due date."
+  },
+  "mobPfFee": "Fee",
+  "@mobPfFee": {
+    "description": "Label of the fee before any concession."
+  },
+  "mobPfConcession": "Concession",
+  "@mobPfConcession": {
+    "description": "Label of the reduction on a fee."
+  },
+  "mobPfAmount": "To pay",
+  "@mobPfAmount": {
+    "description": "Label of the amount due on a fee after any concession."
+  },
+  "mobPfPaidLabel": "Paid",
+  "@mobPfPaidLabel": {
+    "description": "Label of how much of a fee has been paid."
+  },
+  "mobPfLeft": "Left to pay",
+  "@mobPfLeft": {
+    "description": "Label of how much of a fee is still owed."
+  },
+  "mobPfNoReceipts": "No payment has been received for this fee yet.",
+  "@mobPfNoReceipts": {
+    "description": "Shown on a fee's details when there are no receipts."
+  },
   "notifMessageReceivedTitle": "New message",
   "@notifMessageReceivedTitle": {
     "description": "Title of the notice sent when someone writes to you in a conversation about a student."

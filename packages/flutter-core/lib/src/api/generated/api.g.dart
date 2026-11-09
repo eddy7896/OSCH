@@ -31,6 +31,8 @@ const List<OruRoute> kOruRoutes = [
   _rGradesReportCard,
   _rGradesSaveMarks,
   _rGradesTerms,
+  _rInvoicesGet,
+  _rInvoicesList,
   _rLeaveApprove,
   _rLeaveBalances,
   _rLeaveCancel,
@@ -45,6 +47,8 @@ const List<OruRoute> kOruRoutes = [
   _rNotificationsRead,
   _rNotificationsReadAll,
   _rNotificationsSetPreference,
+  _rReceiptsGet,
+  _rReceiptsList,
   _rResourcesAdd,
   _rResourcesDownload,
   _rResourcesList,
@@ -96,6 +100,8 @@ const _rGradesGrid = OruRoute('GET', '/v1/grades/exams/{id}/marks', OruAccess.te
 const _rGradesReportCard = OruRoute('GET', '/v1/grades/report-cards/students/{studentId}', OruAccess.tenant, 'Grades_reportCard');
 const _rGradesSaveMarks = OruRoute('PUT', '/v1/grades/exams/{id}/marks', OruAccess.tenant, 'Grades_saveMarks');
 const _rGradesTerms = OruRoute('GET', '/v1/grades/terms', OruAccess.tenant, 'Grades_terms');
+const _rInvoicesGet = OruRoute('GET', '/v1/fees/invoices/{id}', OruAccess.tenant, 'Invoices_get');
+const _rInvoicesList = OruRoute('GET', '/v1/fees/invoices', OruAccess.tenant, 'Invoices_list');
 const _rLeaveApprove = OruRoute('POST', '/v1/leave/requests/{id}/approve', OruAccess.tenant, 'Leave_approve');
 const _rLeaveBalances = OruRoute('GET', '/v1/leave/balances', OruAccess.tenant, 'Leave_balances');
 const _rLeaveCancel = OruRoute('POST', '/v1/leave/requests/{id}/cancel', OruAccess.tenant, 'Leave_cancel');
@@ -110,6 +116,8 @@ const _rNotificationsPreferences = OruRoute('GET', '/v1/notifications/preference
 const _rNotificationsRead = OruRoute('POST', '/v1/notifications/{id}/read', OruAccess.tenant, 'Notifications_read');
 const _rNotificationsReadAll = OruRoute('POST', '/v1/notifications/read-all', OruAccess.tenant, 'Notifications_readAll');
 const _rNotificationsSetPreference = OruRoute('PUT', '/v1/notifications/preferences/{category}', OruAccess.tenant, 'Notifications_setPreference');
+const _rReceiptsGet = OruRoute('GET', '/v1/fees/receipts/{id}', OruAccess.tenant, 'Receipts_get');
+const _rReceiptsList = OruRoute('GET', '/v1/fees/receipts', OruAccess.tenant, 'Receipts_list');
 const _rResourcesAdd = OruRoute('POST', '/v1/resources', OruAccess.tenant, 'Resources_add');
 const _rResourcesDownload = OruRoute('GET', '/v1/resources/{id}/download', OruAccess.tenant, 'Resources_download');
 const _rResourcesList = OruRoute('GET', '/v1/resources', OruAccess.tenant, 'Resources_list');
@@ -283,6 +291,18 @@ class OruApi {
     return TermListDto.fromJson(j as Map<String, dynamic>);
   }
 
+  /// GET /v1/fees/invoices/{id}
+  Future<InvoiceDto> invoicesGet({required String id}) async {
+    final j = await _t.send(_rInvoicesGet, "/v1/fees/invoices/${Uri.encodeComponent(id)}");
+    return InvoiceDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/fees/invoices
+  Future<InvoiceListDto> invoicesList({String? studentId, String? academicYearId, String? state, String? dueFrom, String? dueTo, num? page, num? pageSize}) async {
+    final j = await _t.send(_rInvoicesList, "/v1/fees/invoices", query: {'studentId': studentId, 'academicYearId': academicYearId, 'state': state, 'dueFrom': dueFrom, 'dueTo': dueTo, 'page': page, 'pageSize': pageSize});
+    return InvoiceListDto.fromJson(j as Map<String, dynamic>);
+  }
+
   /// POST /v1/leave/requests/{id}/approve
   Future<LeaveRequestDto> leaveApprove({required String id}) async {
     final j = await _t.send(_rLeaveApprove, "/v1/leave/requests/${Uri.encodeComponent(id)}/approve");
@@ -363,6 +383,18 @@ class OruApi {
   Future<PreferenceListDto> notificationsSetPreference({required String category, required PreferenceDto body}) async {
     final j = await _t.send(_rNotificationsSetPreference, "/v1/notifications/preferences/${Uri.encodeComponent(category)}", body: body.toJson());
     return PreferenceListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/fees/receipts/{id}
+  Future<ReceiptDto> receiptsGet({required String id}) async {
+    final j = await _t.send(_rReceiptsGet, "/v1/fees/receipts/${Uri.encodeComponent(id)}");
+    return ReceiptDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/fees/receipts
+  Future<ReceiptListDto> receiptsList({String? studentId, String? academicYearId, num? page, num? pageSize}) async {
+    final j = await _t.send(_rReceiptsList, "/v1/fees/receipts", query: {'studentId': studentId, 'academicYearId': academicYearId, 'page': page, 'pageSize': pageSize});
+    return ReceiptListDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// POST /v1/resources

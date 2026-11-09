@@ -3818,6 +3818,96 @@ class OruStringsUr extends OruStrings {
   }
 
   @override
+  String get mobPfTitle => 'فیس';
+
+  @override
+  String mobPfOf(String child) {
+    return '$child کی فیس';
+  }
+
+  @override
+  String get mobPfOwe => 'ابھی ادا کرنا باقی';
+
+  @override
+  String get mobPfAllPaid => 'ساری فیس ادا ہو چکی ہے۔';
+
+  @override
+  String mobPfOverdueAmount(String amount) {
+    return 'مقررہ تاریخ گزر چکی: $amount';
+  }
+
+  @override
+  String mobPfPaidSoFar(String amount) {
+    return 'اب تک ادا کیا: $amount';
+  }
+
+  @override
+  String get mobPfPayNote =>
+      'آن لائن ادائیگی ابھی دستیاب نہیں۔ براہ کرم اسکول کے دفتر میں ادا کریں۔';
+
+  @override
+  String mobPfNone(String child) {
+    return '$child کے لیے ابھی کوئی فیس نہیں لگائی گئی۔';
+  }
+
+  @override
+  String get mobPfPaid => 'ادا شدہ';
+
+  @override
+  String get mobPfOverdue => 'مقررہ تاریخ گزر گئی';
+
+  @override
+  String get mobPfPartial => 'جزوی ادا';
+
+  @override
+  String get mobPfPending => 'ابھی ادا نہیں ہوا';
+
+  @override
+  String mobPfDue(String date) {
+    return 'واجب الادا $date';
+  }
+
+  @override
+  String mobPfOfTotal(String paid, String total) {
+    return '$total میں سے $paid ادا';
+  }
+
+  @override
+  String get mobPfReceipts => 'رسیدیں';
+
+  @override
+  String mobPfReceiptNo(String number) {
+    return 'رسید $number';
+  }
+
+  @override
+  String get mobPfCancelled => 'منسوخ';
+
+  @override
+  String get mobPfDetail => 'فیس کی تفصیل';
+
+  @override
+  String get mobPfDueOn => 'واجب الادا تاریخ';
+
+  @override
+  String get mobPfFee => 'فیس';
+
+  @override
+  String get mobPfConcession => 'رعایت';
+
+  @override
+  String get mobPfAmount => 'قابل ادا رقم';
+
+  @override
+  String get mobPfPaidLabel => 'ادا کیا';
+
+  @override
+  String get mobPfLeft => 'ادا کرنا باقی';
+
+  @override
+  String get mobPfNoReceipts => 'اس فیس کی کوئی ادائیگی ابھی موصول نہیں ہوئی۔';
+
+  @override
   String get notifMessageReceivedTitle => 'نیا پیغام';
 
   @override

@@ -25,6 +25,8 @@ export 'src/marks/marks_data.dart';
 export 'src/parent/parent_academics.dart';
 export 'src/parent/parent_academics_screens.dart';
 export 'src/parent/parent_data.dart';
+export 'src/parent/parent_fees.dart';
+export 'src/parent/parent_fees_screens.dart';
 export 'src/parent/parent_model.dart';
 export 'src/parent/parent_screens.dart';
 export 'src/push/push.dart';

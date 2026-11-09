@@ -3818,6 +3818,97 @@ class OruStringsHi extends OruStrings {
   }
 
   @override
+  String get mobPfTitle => 'शुल्क';
+
+  @override
+  String mobPfOf(String child) {
+    return '$child का शुल्क';
+  }
+
+  @override
+  String get mobPfOwe => 'अभी देना बाकी';
+
+  @override
+  String get mobPfAllPaid => 'सारा शुल्क चुकाया जा चुका है।';
+
+  @override
+  String mobPfOverdueAmount(String amount) {
+    return 'देय तिथि निकल चुकी: $amount';
+  }
+
+  @override
+  String mobPfPaidSoFar(String amount) {
+    return 'अब तक चुकाया: $amount';
+  }
+
+  @override
+  String get mobPfPayNote =>
+      'ऑनलाइन भुगतान अभी उपलब्ध नहीं है। कृपया स्कूल कार्यालय में भुगतान करें।';
+
+  @override
+  String mobPfNone(String child) {
+    return '$child के लिए अभी कोई शुल्क नहीं लगाया गया है।';
+  }
+
+  @override
+  String get mobPfPaid => 'चुकाया गया';
+
+  @override
+  String get mobPfOverdue => 'देय तिथि निकली';
+
+  @override
+  String get mobPfPartial => 'आंशिक चुकाया';
+
+  @override
+  String get mobPfPending => 'अभी चुकाया नहीं';
+
+  @override
+  String mobPfDue(String date) {
+    return 'देय $date';
+  }
+
+  @override
+  String mobPfOfTotal(String paid, String total) {
+    return '$total में से $paid चुकाया';
+  }
+
+  @override
+  String get mobPfReceipts => 'रसीदें';
+
+  @override
+  String mobPfReceiptNo(String number) {
+    return 'रसीद $number';
+  }
+
+  @override
+  String get mobPfCancelled => 'रद्द';
+
+  @override
+  String get mobPfDetail => 'शुल्क का विवरण';
+
+  @override
+  String get mobPfDueOn => 'देय तिथि';
+
+  @override
+  String get mobPfFee => 'शुल्क';
+
+  @override
+  String get mobPfConcession => 'रियायत';
+
+  @override
+  String get mobPfAmount => 'देय राशि';
+
+  @override
+  String get mobPfPaidLabel => 'चुकाया';
+
+  @override
+  String get mobPfLeft => 'चुकाना बाकी';
+
+  @override
+  String get mobPfNoReceipts =>
+      'इस शुल्क के लिए अभी कोई भुगतान प्राप्त नहीं हुआ है।';
+
+  @override
   String get notifMessageReceivedTitle => 'नया संदेश';
 
   @override

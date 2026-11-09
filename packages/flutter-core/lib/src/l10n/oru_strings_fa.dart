@@ -3819,6 +3819,97 @@ class OruStringsFa extends OruStrings {
   }
 
   @override
+  String get mobPfTitle => 'Fees';
+
+  @override
+  String mobPfOf(String child) {
+    return '$child\'s fees';
+  }
+
+  @override
+  String get mobPfOwe => 'Still to pay';
+
+  @override
+  String get mobPfAllPaid => 'All fees are paid.';
+
+  @override
+  String mobPfOverdueAmount(String amount) {
+    return 'Overdue: $amount';
+  }
+
+  @override
+  String mobPfPaidSoFar(String amount) {
+    return 'Paid so far: $amount';
+  }
+
+  @override
+  String get mobPfPayNote =>
+      'Paying online is not available yet. Please pay at the school office.';
+
+  @override
+  String mobPfNone(String child) {
+    return 'No fees have been billed for $child yet.';
+  }
+
+  @override
+  String get mobPfPaid => 'Paid';
+
+  @override
+  String get mobPfOverdue => 'Overdue';
+
+  @override
+  String get mobPfPartial => 'Part paid';
+
+  @override
+  String get mobPfPending => 'Not paid yet';
+
+  @override
+  String mobPfDue(String date) {
+    return 'Due $date';
+  }
+
+  @override
+  String mobPfOfTotal(String paid, String total) {
+    return '$paid of $total paid';
+  }
+
+  @override
+  String get mobPfReceipts => 'Receipts';
+
+  @override
+  String mobPfReceiptNo(String number) {
+    return 'Receipt $number';
+  }
+
+  @override
+  String get mobPfCancelled => 'Cancelled';
+
+  @override
+  String get mobPfDetail => 'Fee details';
+
+  @override
+  String get mobPfDueOn => 'Due date';
+
+  @override
+  String get mobPfFee => 'Fee';
+
+  @override
+  String get mobPfConcession => 'Concession';
+
+  @override
+  String get mobPfAmount => 'To pay';
+
+  @override
+  String get mobPfPaidLabel => 'Paid';
+
+  @override
+  String get mobPfLeft => 'Left to pay';
+
+  @override
+  String get mobPfNoReceipts =>
+      'No payment has been received for this fee yet.';
+
+  @override
   String get notifMessageReceivedTitle => 'New message';
 
   @override

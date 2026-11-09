@@ -3,6 +3,8 @@ import { Audit, NoAudit } from '../audit/audit.decorators.js';
 import { Strict } from '../common/throttle.guards.js';
 import { Granted, Permission, type GrantedPermission } from '../permission/permission.decorator.js';
 import { Tenant, type TenantContext } from '../tenant/tenant.decorators.js';
+import { dashed } from '../common/uuid.js';
+import { TeachingScope } from '../teaching/teaching-scope.service.js';
 import { IdParamDto, StudentParamDto } from './dto/fees.dto.js';
 import {
   CreateInvoiceDto, GenerateInvoicesDto, GenerateResultDto, InvoiceDto, InvoiceListDto, ListInvoicesQueryDto, OutstandingDto, OutstandingQueryDto, PaymentIdParamDto, RecordPaymentDto,
@@ -20,22 +22,29 @@ const DRY = 'A dry run only counts what would be billed: it writes nothing, not 
 
 /**
  * Invoices, payments and what is still owed. School routes: `X-School-Id` + the `finance` grant (Bursar full; Accountant reads, creates and
- * records payments but cannot reverse one; Principal reads). Parents seeing their own child's invoices arrives later.
+ * records payments but cannot reverse one; Principal reads). A parent (linked scope) reads only their own children's invoices; paying is not served to them yet.
  */
 @Controller('fees')
 export class InvoicesController {
-  constructor(private readonly invoices: InvoicesService) {}
+  constructor(private readonly invoices: InvoicesService, private readonly scope: TeachingScope) {}
+
+  /** The children linked to a parent's account. */
+  private async children(t: TenantContext): Promise<string[]> {
+    return (await this.scope.mine(t)).children.map((c) => dashed(c.id));
+  }
 
   @Permission('finance', 'read')
   @Get('invoices')
   async list(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Query() q: ListInvoicesQueryDto): Promise<InvoiceListDto> {
+    if (g.scope === 'linked') return this.invoices.listFor(t, q, await this.children(t));
     if (g.scope !== 'school') return { items: [], total: 0, page: q.page ?? 1, pageSize: q.pageSize ?? 25, totals: { count: 0, amountMinor: '0', paidMinor: '0', outstandingMinor: '0' } };
     return this.invoices.list(t, q);
   }
 
   @Permission('finance', 'read')
   @Get('invoices/:id')
-  get(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Param() p: IdParamDto): Promise<InvoiceDto> {
+  async get(@Tenant() t: TenantContext, @Granted() g: GrantedPermission, @Param() p: IdParamDto): Promise<InvoiceDto> {
+    if (g.scope === 'linked') return this.invoices.getFor(t, p.id, await this.children(t));
     wideRead(g);
     return this.invoices.get(t, p.id);
   }

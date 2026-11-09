@@ -36,6 +36,19 @@ export class ReceiptsService {
     return { items: (rows.data.receipts as unknown as Row[]).map((r) => this.summary(r)), total: Number(c?._count ?? 0), page, pageSize, totalAmountMinor: String(c?.amountMinor_sum ?? '0') };
   }
 
+  /** The receipts of these students only (a parent's linked children), newest first. */
+  async listFor(t: TenantContext, q: ListReceiptsQueryDto, studentIds: string[]): Promise<ReceiptListDto> {
+    const wanted = q.studentId ? studentIds.filter((s) => dashed(s) === q.studentId!.toLowerCase()) : studentIds;
+    const lists = await Promise.all(wanted.map((studentId) => this.list(t, { ...q, studentId, page: 1, pageSize: 100 })));
+    const items = lists.flatMap((l) => l.items).sort((a, b) => b.issuedAt.localeCompare(a.issuedAt));
+    return { items, total: items.length, page: 1, pageSize: 100, totalAmountMinor: items.filter((i) => !i.cancelled).reduce((s, i) => s + BigInt(i.amountMinor), 0n).toString() };
+  }
+  /** One receipt, only if it is a linked child's. */
+  async getFor(t: TenantContext, id: string, studentIds: string[]): Promise<ReceiptDto> {
+    const r = await this.get(t, id);
+    if (!studentIds.some((s) => dashed(s) === dashed(r.student.id))) throw notFound();
+    return r;
+  }
   private async row(t: TenantContext, id: string): Promise<Row> {
     const r = (await this.db.getReceipt({ schoolId: t.schoolId, id })).data.receipts[0];
     if (!r) throw notFound(); // another school's receipt looks exactly like one that does not exist
