@@ -201,6 +201,12 @@ const SubscriptionStatus = {
 }
 exports.SubscriptionStatus = SubscriptionStatus;
 
+const TripStatus = {
+  IN_PROGRESS: "IN_PROGRESS",
+  ENDED: "ENDED",
+}
+exports.TripStatus = TripStatus;
+
 const VehicleStatus = {
   ACTIVE: "ACTIVE",
   OUT_OF_SERVICE: "OUT_OF_SERVICE",
@@ -1467,6 +1473,34 @@ function notifyNoticeParent(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.notifyNoticeParent = notifyNoticeParent;
 
+function startTrip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('StartTrip', inputVars, inputOpts);
+}
+exports.startTrip = startTrip;
+
+function recordPing(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RecordPing', inputVars, inputOpts);
+}
+exports.recordPing = recordPing;
+
+function endTrip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('EndTrip', inputVars, inputOpts);
+}
+exports.endTrip = endTrip;
+
+function purgeOldPings(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('PurgeOldPings', inputVars, inputOpts);
+}
+exports.purgeOldPings = purgeOldPings;
+
 function recordConsent(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2509,6 +2543,27 @@ function listParentLinks(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListParentLinks', inputVars, inputOpts);
 }
 exports.listParentLinks = listParentLinks;
+
+function tripsInProgress(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('TripsInProgress', inputVars, inputOpts);
+}
+exports.tripsInProgress = tripsInProgress;
+
+function getTrip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetTrip', inputVars, inputOpts);
+}
+exports.getTrip = getTrip;
+
+function pingsOfTrip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('PingsOfTrip', inputVars, inputOpts);
+}
+exports.pingsOfTrip = pingsOfTrip;
 
 function consentOfUser(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);

@@ -176,6 +176,11 @@ export const SubscriptionStatus = {
   SUSPENDED: "SUSPENDED",
 }
 
+export const TripStatus = {
+  IN_PROGRESS: "IN_PROGRESS",
+  ENDED: "ENDED",
+}
+
 export const VehicleStatus = {
   ACTIVE: "ACTIVE",
   OUT_OF_SERVICE: "OUT_OF_SERVICE",
@@ -1261,6 +1266,30 @@ export function notifyNoticeParent(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('NotifyNoticeParent', inputVars, inputOpts);
 }
 
+export function startTrip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('StartTrip', inputVars, inputOpts);
+}
+
+export function recordPing(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RecordPing', inputVars, inputOpts);
+}
+
+export function endTrip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('EndTrip', inputVars, inputOpts);
+}
+
+export function purgeOldPings(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('PurgeOldPings', inputVars, inputOpts);
+}
+
 export function recordConsent(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2153,6 +2182,24 @@ export function listParentLinks(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeQuery('ListParentLinks', inputVars, inputOpts);
+}
+
+export function tripsInProgress(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('TripsInProgress', inputVars, inputOpts);
+}
+
+export function getTrip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetTrip', inputVars, inputOpts);
+}
+
+export function pingsOfTrip(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('PingsOfTrip', inputVars, inputOpts);
 }
 
 export function consentOfUser(dcOrVarsOrOptions, varsOrOptions, options) {

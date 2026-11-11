@@ -24,6 +24,7 @@ import { SubstitutionModule } from './substitution/substitution.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
 import { AnnouncementsModule } from './announcements/announcements.module.js';
 import { TransportModule } from './transport/transport.module.js';
+import { TripsModule } from './trips/trips.module.js';
 import { BroadcastsModule } from './broadcasts/broadcasts.module.js';
 import { NoticeBoardModule } from './noticeboard/noticeboard.module.js';
 import { MessagingModule } from './messaging/messaging.module.js';
@@ -95,6 +96,7 @@ import { HealthModule } from './health/health.module.js';
     NotificationsModule,
     AnnouncementsModule,
     TransportModule,
+    TripsModule,
     StudentLeaveModule,
     ResourcesModule,
     MessagingModule,

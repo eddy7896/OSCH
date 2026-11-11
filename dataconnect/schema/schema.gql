@@ -102,6 +102,7 @@ enum StaffStatus { ACTIVE INACTIVE LEFT }
 enum VehicleStatus { ACTIVE OUT_OF_SERVICE }
 enum StudentLeaveStatus { PENDING APPROVED DECLINED CANCELLED }
 enum RouteDirection { MORNING AFTERNOON }
+enum TripStatus { IN_PROGRESS ENDED }
 enum StaffDocumentKind { APPOINTMENT_LETTER ID_PROOF QUALIFICATION EXPERIENCE MEDICAL OTHER }
 enum StudentDocumentKind { BIRTH_CERTIFICATE TRANSFER_CERTIFICATE REPORT_CARD ID_PROOF MEDICAL OTHER }
 
@@ -899,6 +900,29 @@ type StudentLeave @table @unique(fields: ["student", "clientId"]) {
   decisionNote: String
   createdAt: Timestamp! @default(expr: "request.time")
   updatedAt: Timestamp! @default(expr: "request.time")
+}
+
+# ---- Trips and location pings (P5-5a, ADR-0015 decisions 4 and 5). A trip is one run of a route by its driver; the driver's phone sends a ping about every 30 seconds while it is in progress.
+# Only the vehicle's position is recorded (never a child's). Pings are kept 7 days (the gateway deletes older ones), and only trips in progress are shown to parents.
+type Trip @table {
+  id: UUID! # chosen by the driver's phone, so starting twice is one trip
+  school: School!
+  route: TransportRoute!
+  driver: User!
+  status: TripStatus! @default(value: IN_PROGRESS)
+  startedAt: Timestamp! @default(expr: "request.time")
+  endedAt: Timestamp
+}
+
+type LocationPing @table {
+  id: UUID! # derived by the gateway from the trip and the time of the ping, so a batch sent twice stores each position once
+  school: School!
+  trip: Trip!
+  latMicro: Int!
+  lngMicro: Int!
+  speedKmh: Int
+  recordedAt: Timestamp! # the phone's clock, checked by the gateway
+  receivedAt: Timestamp! @default(expr: "request.time")
 }
 
 # ---- Parent consent (P6-5c, documentation/modules/children-data-protection.md). One row each time a parent gives or withdraws consent to a version of the privacy notice. Rows are never changed

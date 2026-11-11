@@ -1773,6 +1773,39 @@ mutation NotifyNoticeParent($schoolId: UUID!, $announcementId: UUID!, $recipient
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "notice.notify", entityType: "Announcement", entityId_expr: "request.variables.announcementId", details: $details })
 }
 
+# ---- Trips and location pings (P5-5a)
+# The driver of a route starts a trip. The database checks the account is an active DRIVER, that the route is theirs, and that the route has no trip in progress.
+mutation StartTrip($schoolId: UUID!, $id: UUID!, $routeId: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {eq: DRIVER}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only a driver of this school starts a trip") { userId }
+    route: transportRoutes(where: {id: {eq: $routeId}, schoolId: {eq: $schoolId}, driver: {userId: {eq: $actorId}}}) @check(expr: "this.size() == 1", message: "that route is not yours") { id }
+    running: trips(where: {routeId: {eq: $routeId}, schoolId: {eq: $schoolId}, status: {eq: IN_PROGRESS}}) @check(expr: "this.size() == 0", message: "this route already has a trip in progress") { id }
+  }
+  trip_insert(data: { id: $id, schoolId: $schoolId, routeId: $routeId, driverId: $actorId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "trip.start", entityType: "Trip", entityId_expr: "request.variables.id", details: $details })
+}
+
+# One position of the driver's own trip while it is in progress (the gateway writes a batch one by one: a database operation cannot loop). The database checks the trip is this driver's and still running.
+mutation RecordPing($schoolId: UUID!, $tripId: UUID!, $id: UUID!, $actorId: String!, $latMicro: Int!, $lngMicro: Int!, $speedKmh: Int, $recordedAt: Timestamp!) @auth(level: NO_ACCESS) @transaction {
+  query {
+    trip: trips(where: {id: {eq: $tripId}, schoolId: {eq: $schoolId}, driverId: {eq: $actorId}, status: {eq: IN_PROGRESS}}) @check(expr: "this.size() == 1", message: "no trip of yours is in progress with that id") { id }
+  }
+  locationPing_insert(data: { id: $id, schoolId: $schoolId, tripId: $tripId, latMicro: $latMicro, lngMicro: $lngMicro, speedKmh: $speedKmh, recordedAt: $recordedAt })
+}
+
+mutation EndTrip($schoolId: UUID!, $id: UUID!, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    trip: trips(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, driverId: {eq: $actorId}, status: {eq: IN_PROGRESS}}) @check(expr: "this.size() == 1", message: "no trip of yours is in progress with that id") { id }
+  }
+  trip_update(id: $id, data: { status: ENDED, endedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "trip.end", entityType: "Trip", entityId_expr: "request.variables.id", details: $details })
+}
+
+# Positions older than the retention (7 days) are removed. Called by the gateway when a trip starts; housekeeping, no person acted.
+mutation PurgeOldPings($schoolId: UUID!, $before: Timestamp!) @auth(level: NO_ACCESS) {
+  locationPing_deleteMany(where: {schoolId: {eq: $schoolId}, receivedAt: {lt: $before}})
+}
+
 # ---- Parent consent (P6-5c)
 # A parent gives or withdraws consent. Only a parent of this school can; the row and its audit entry are written together.
 mutation RecordConsent($schoolId: UUID!, $userId: String!, $purpose: String!, $noticeVersion: Int!, $language: String!, $given: Boolean!, $students: Any, $details: Any) @auth(level: NO_ACCESS) @transaction {

@@ -1654,6 +1654,36 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "POST",
+    "path": "/v1/trips/{id}/end",
+    "access": "tenant",
+    "operationId": "Trips_end"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/trips/{id}/pings",
+    "access": "tenant",
+    "operationId": "Trips_pings"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/trips/{id}",
+    "access": "tenant",
+    "operationId": "Trips_one"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/trips/active",
+    "access": "tenant",
+    "operationId": "Trips_active"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/trips",
+    "access": "tenant",
+    "operationId": "Trips_start"
+  },
+  {
+    "method": "POST",
     "path": "/v1/uploads/school-logo",
     "access": "tenant",
     "operationId": "Uploads_schoolLogo"

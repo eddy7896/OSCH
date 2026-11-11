@@ -1515,6 +1515,22 @@ export type PhotoUploadRequestDto = {
     sizeBytes: number;
 };
 
+export type PingDto = {
+    lat: number;
+    lng: number;
+    recordedAt: string;
+    speedKmh?: number;
+};
+
+export type PingResultDto = {
+    accepted: number;
+    ignored: number;
+};
+
+export type PingsDto = {
+    pings: Array<PingDto>;
+};
+
 export type PlacementDto = {
     academicYear: {
         id: string;
@@ -2179,6 +2195,11 @@ export type StartThreadDto = {
     studentId: string;
 };
 
+export type StartTripDto = {
+    id: string;
+    routeId: string;
+};
+
 export type StatementDto = {
     invoices: Array<InvoiceSummaryDto>;
     student: {
@@ -2489,6 +2510,52 @@ export type TombstoneListDto = {
     items: Array<TombstoneDto>;
     more: boolean;
     next: string;
+};
+
+export type TripChildDto = {
+    id: string;
+    name: string;
+    stopId: string;
+};
+
+export type TripDto = {
+    children: Array<TripChildDto>;
+    driver: string;
+    endedAt: string | null;
+    id: string;
+    last: TripPositionDto | null;
+    route: {
+        direction: 'MORNING' | 'AFTERNOON';
+        id: string;
+        name: string;
+    };
+    stale: boolean;
+    startedAt: string;
+    state: 'IN_PROGRESS' | 'ENDED';
+    stops: Array<TripStopDto>;
+    vehicle: string | null;
+};
+
+export type TripListDto = {
+    items: Array<TripDto>;
+};
+
+export type TripPositionDto = {
+    lat: number;
+    lng: number;
+    recordedAt: string;
+    speedKmh: number | null;
+};
+
+export type TripStopDto = {
+    etaMinutes: number | null;
+    id: string;
+    lat: number | null;
+    lng: number | null;
+    name: string;
+    plannedTime: string | null;
+    reached: boolean;
+    sequence: number;
 };
 
 export type TypeRefDto = {
@@ -14314,6 +14381,214 @@ export type TransportUpdateVehicleResponses = {
 };
 
 export type TransportUpdateVehicleResponse = TransportUpdateVehicleResponses[keyof TransportUpdateVehicleResponses];
+
+export type TripsStartData = {
+    body: StartTripDto;
+    path?: never;
+    query?: never;
+    url: '/v1/trips';
+};
+
+export type TripsStartErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TripsStartError = TripsStartErrors[keyof TripsStartErrors];
+
+export type TripsStartResponses = {
+    201: TripDto;
+};
+
+export type TripsStartResponse = TripsStartResponses[keyof TripsStartResponses];
+
+export type TripsActiveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/trips/active';
+};
+
+export type TripsActiveErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TripsActiveError = TripsActiveErrors[keyof TripsActiveErrors];
+
+export type TripsActiveResponses = {
+    200: TripListDto;
+};
+
+export type TripsActiveResponse = TripsActiveResponses[keyof TripsActiveResponses];
+
+export type TripsOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/trips/{id}';
+};
+
+export type TripsOneErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TripsOneError = TripsOneErrors[keyof TripsOneErrors];
+
+export type TripsOneResponses = {
+    200: TripDto;
+};
+
+export type TripsOneResponse = TripsOneResponses[keyof TripsOneResponses];
+
+export type TripsEndData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/trips/{id}/end';
+};
+
+export type TripsEndErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TripsEndError = TripsEndErrors[keyof TripsEndErrors];
+
+export type TripsEndResponses = {
+    200: TripDto;
+};
+
+export type TripsEndResponse = TripsEndResponses[keyof TripsEndResponses];
+
+export type TripsPingsData = {
+    body: PingsDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/trips/{id}/pings';
+};
+
+export type TripsPingsErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type TripsPingsError = TripsPingsErrors[keyof TripsPingsErrors];
+
+export type TripsPingsResponses = {
+    200: PingResultDto;
+};
+
+export type TripsPingsResponse = TripsPingsResponses[keyof TripsPingsResponses];
 
 export type UploadsSchoolLogoData = {
     body: SchoolLogoUploadDto;

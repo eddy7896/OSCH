@@ -158,6 +158,10 @@ export enum SubscriptionStatus {
   TRIAL = "TRIAL",
   SUSPENDED = "SUSPENDED",
 }
+export enum TripStatus {
+  IN_PROGRESS = "IN_PROGRESS",
+  ENDED = "ENDED",
+}
 export enum VehicleStatus {
   ACTIVE = "ACTIVE",
   OUT_OF_SERVICE = "OUT_OF_SERVICE",
@@ -2834,6 +2838,23 @@ export interface EditResourceCommentVariables {
   details?: unknown | null;
 }
 
+export interface EndTripData {
+  query?: {
+    trip: ({
+      id: UUIDString;
+    } & Trip_Key)[];
+  };
+  trip_update?: Trip_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface EndTripVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface EnrollmentsOfStudentsData {
   studentEnrollments: ({
     studentId: UUIDString;
@@ -4070,6 +4091,45 @@ export interface GetTransportRouteData {
 }
 
 export interface GetTransportRouteVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetTripData {
+  trips: ({
+    id: UUIDString;
+    startedAt: TimestampString;
+    endedAt?: TimestampString | null;
+    status: TripStatus;
+    driver: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    route: {
+      id: UUIDString;
+      name: string;
+      direction: RouteDirection;
+      vehicle?: {
+        registration: string;
+        label: string;
+      };
+      driver?: {
+        userId?: string | null;
+      };
+      routeStops_on_route: ({
+        id: UUIDString;
+        sequence: number;
+        name: string;
+        latMicro?: number | null;
+        lngMicro?: number | null;
+        arrivalTime?: string | null;
+      } & RouteStop_Key)[];
+    } & TransportRoute_Key;
+  } & Trip_Key)[];
+}
+
+export interface GetTripVariables {
   schoolId: UUIDString;
   id: UUIDString;
 }
@@ -5624,6 +5684,11 @@ export interface ListVehiclesVariables {
   schoolId: UUIDString;
 }
 
+export interface LocationPing_Key {
+  id: UUIDString;
+  __typename?: 'LocationPing_Key';
+}
+
 export interface LockAttendanceDayData {
   query?: {
     actor: ({
@@ -6023,6 +6088,20 @@ export interface Period_Key {
   __typename?: 'Period_Key';
 }
 
+export interface PingsOfTripData {
+  locationPings: ({
+    latMicro: number;
+    lngMicro: number;
+    speedKmh?: number | null;
+    recordedAt: TimestampString;
+  })[];
+}
+
+export interface PingsOfTripVariables {
+  schoolId: UUIDString;
+  tripId: UUIDString;
+}
+
 export interface PlaceStudentData {
   query?: {
     actor: ({
@@ -6178,6 +6257,15 @@ export interface ProvisionSchoolVariables {
   details?: unknown | null;
 }
 
+export interface PurgeOldPingsData {
+  locationPing_deleteMany: number;
+}
+
+export interface PurgeOldPingsVariables {
+  schoolId: UUIDString;
+  before: TimestampString;
+}
+
 export interface Receipt_Key {
   id: UUIDString;
   __typename?: 'Receipt_Key';
@@ -6257,6 +6345,26 @@ export interface RecordPaymentVariables {
   receiptNumber: string;
   actorId: string;
   details?: unknown | null;
+}
+
+export interface RecordPingData {
+  query?: {
+    trip: ({
+      id: UUIDString;
+    } & Trip_Key)[];
+  };
+  locationPing_insert: LocationPing_Key;
+}
+
+export interface RecordPingVariables {
+  schoolId: UUIDString;
+  tripId: UUIDString;
+  id: UUIDString;
+  actorId: string;
+  latMicro: number;
+  lngMicro: number;
+  speedKmh?: number | null;
+  recordedAt: TimestampString;
 }
 
 export interface RegisterDeviceData {
@@ -7338,6 +7446,30 @@ export interface StartImportBatchVariables {
   details?: unknown | null;
 }
 
+export interface StartTripData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    route: ({
+      id: UUIDString;
+    } & TransportRoute_Key)[];
+    running: ({
+      id: UUIDString;
+    } & Trip_Key)[];
+  };
+  trip_insert: Trip_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface StartTripVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  routeId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface StudentDocument_Key {
   id: UUIDString;
   __typename?: 'StudentDocument_Key';
@@ -7488,6 +7620,48 @@ export interface Tombstone_Key {
 export interface TransportRoute_Key {
   id: UUIDString;
   __typename?: 'TransportRoute_Key';
+}
+
+export interface Trip_Key {
+  id: UUIDString;
+  __typename?: 'Trip_Key';
+}
+
+export interface TripsInProgressData {
+  trips: ({
+    id: UUIDString;
+    startedAt: TimestampString;
+    status: TripStatus;
+    driver: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    route: {
+      id: UUIDString;
+      name: string;
+      direction: RouteDirection;
+      vehicle?: {
+        registration: string;
+        label: string;
+      };
+      driver?: {
+        userId?: string | null;
+      };
+      routeStops_on_route: ({
+        id: UUIDString;
+        sequence: number;
+        name: string;
+        latMicro?: number | null;
+        lngMicro?: number | null;
+        arrivalTime?: string | null;
+      } & RouteStop_Key)[];
+    } & TransportRoute_Key;
+  } & Trip_Key)[];
+}
+
+export interface TripsInProgressVariables {
+  schoolId: UUIDString;
 }
 
 export interface UnlinkParentAccountData {
@@ -8993,6 +9167,26 @@ export function notifyNoticeParent(dc: DataConnect, vars: NotifyNoticeParentVari
 /** Generated Node Admin SDK operation action function for the 'NotifyNoticeParent' Mutation. Allow users to pass in custom DataConnect instances. */
 export function notifyNoticeParent(vars: NotifyNoticeParentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<NotifyNoticeParentData>>;
 
+/** Generated Node Admin SDK operation action function for the 'StartTrip' Mutation. Allow users to execute without passing in DataConnect. */
+export function startTrip(dc: DataConnect, vars: StartTripVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StartTripData>>;
+/** Generated Node Admin SDK operation action function for the 'StartTrip' Mutation. Allow users to pass in custom DataConnect instances. */
+export function startTrip(vars: StartTripVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<StartTripData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RecordPing' Mutation. Allow users to execute without passing in DataConnect. */
+export function recordPing(dc: DataConnect, vars: RecordPingVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordPingData>>;
+/** Generated Node Admin SDK operation action function for the 'RecordPing' Mutation. Allow users to pass in custom DataConnect instances. */
+export function recordPing(vars: RecordPingVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordPingData>>;
+
+/** Generated Node Admin SDK operation action function for the 'EndTrip' Mutation. Allow users to execute without passing in DataConnect. */
+export function endTrip(dc: DataConnect, vars: EndTripVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EndTripData>>;
+/** Generated Node Admin SDK operation action function for the 'EndTrip' Mutation. Allow users to pass in custom DataConnect instances. */
+export function endTrip(vars: EndTripVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EndTripData>>;
+
+/** Generated Node Admin SDK operation action function for the 'PurgeOldPings' Mutation. Allow users to execute without passing in DataConnect. */
+export function purgeOldPings(dc: DataConnect, vars: PurgeOldPingsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PurgeOldPingsData>>;
+/** Generated Node Admin SDK operation action function for the 'PurgeOldPings' Mutation. Allow users to pass in custom DataConnect instances. */
+export function purgeOldPings(vars: PurgeOldPingsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PurgeOldPingsData>>;
+
 /** Generated Node Admin SDK operation action function for the 'RecordConsent' Mutation. Allow users to execute without passing in DataConnect. */
 export function recordConsent(dc: DataConnect, vars: RecordConsentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordConsentData>>;
 /** Generated Node Admin SDK operation action function for the 'RecordConsent' Mutation. Allow users to pass in custom DataConnect instances. */
@@ -9737,6 +9931,21 @@ export function getNotice(vars: GetNoticeVariables, options?: OperationOptions):
 export function listParentLinks(dc: DataConnect, vars: ListParentLinksVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListParentLinksData>>;
 /** Generated Node Admin SDK operation action function for the 'ListParentLinks' Query. Allow users to pass in custom DataConnect instances. */
 export function listParentLinks(vars: ListParentLinksVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListParentLinksData>>;
+
+/** Generated Node Admin SDK operation action function for the 'TripsInProgress' Query. Allow users to execute without passing in DataConnect. */
+export function tripsInProgress(dc: DataConnect, vars: TripsInProgressVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<TripsInProgressData>>;
+/** Generated Node Admin SDK operation action function for the 'TripsInProgress' Query. Allow users to pass in custom DataConnect instances. */
+export function tripsInProgress(vars: TripsInProgressVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<TripsInProgressData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetTrip' Query. Allow users to execute without passing in DataConnect. */
+export function getTrip(dc: DataConnect, vars: GetTripVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTripData>>;
+/** Generated Node Admin SDK operation action function for the 'GetTrip' Query. Allow users to pass in custom DataConnect instances. */
+export function getTrip(vars: GetTripVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetTripData>>;
+
+/** Generated Node Admin SDK operation action function for the 'PingsOfTrip' Query. Allow users to execute without passing in DataConnect. */
+export function pingsOfTrip(dc: DataConnect, vars: PingsOfTripVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PingsOfTripData>>;
+/** Generated Node Admin SDK operation action function for the 'PingsOfTrip' Query. Allow users to pass in custom DataConnect instances. */
+export function pingsOfTrip(vars: PingsOfTripVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PingsOfTripData>>;
 
 /** Generated Node Admin SDK operation action function for the 'ConsentOfUser' Query. Allow users to execute without passing in DataConnect. */
 export function consentOfUser(dc: DataConnect, vars: ConsentOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConsentOfUserData>>;

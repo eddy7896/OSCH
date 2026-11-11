@@ -61,6 +61,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     operations: school("read"), // [ASSUMED]
     leave: school("read", "approve"), // [GUARD §4] leave goes through Principal approval
     transport: school("read"), // [DESIGN] principal dashboard shows transport
+    trips: school("read"), // [P5-5a] where every bus in progress is
     announcements: school("read", "create", "update"), // [ADR-0014 decision 11] the Principal and the Academic admin write announcements
     settings: school("read"),
   },
@@ -147,6 +148,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
   // [DESIGN] ERP "Transport: Vehicles, Routes, Drivers, Students"; "Is transportation running normally?"
   TRANSPORT_MANAGER: {
     dashboard_operations: school("read"), // [DESIGN]
+    trips: school("read"), // [P5-5a] where every bus in progress is
     transport: school(...CRUD_EXPORT), // [DESIGN] student manifests are reached through transport, not the students module
     announcements: school("read"), // [ASSUMED]
     notice_board: [school("read"), own("read", "create", "update")], // [ADR-0018 decision 5] reads the whole board; posts and changes only Transport (the gateway narrows `own` to the category)
@@ -181,6 +183,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
   // [DESIGN] Driver app: route, boarding records (SELF_SERVICE covers attendance and leave).
   DRIVER: {
     transport: own("read", "update"),
+    trips: own("read", "create", "update"), // [P5-5a] starts, reports positions of and ends the trips of the routes they drive
     announcements: school("read"),
   },
 
@@ -192,6 +195,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     academics: linked("read"), // timetable
     finance: linked("read", "create"), // view invoices; "create" = initiate a payment [ASSUMED action mapping]
     transport: linked("read"),
+    trips: linked("read"), // [P5-5a] the bus of their own child, while it is in progress
     student_leave: linked("read", "create", "update"), // [ADR-0016] ask leave for their own child; update is only cancelling a waiting request
     notice_board: linked("read"), // [ADR-0018] posts for all parents, or for the grade or class of their linked children
     broadcasts: linked("read", "update"), // [ADR-0018] the broadcasts sent to the parent's own children's classes; update = mark read
