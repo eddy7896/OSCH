@@ -5705,6 +5705,65 @@
         ],
         "type": "object"
       },
+      "PingDto": {
+        "properties": {
+          "lat": {
+            "maximum": 90,
+            "minimum": -90,
+            "type": "number"
+          },
+          "lng": {
+            "maximum": 180,
+            "minimum": -180,
+            "type": "number"
+          },
+          "recordedAt": {
+            "type": "string"
+          },
+          "speedKmh": {
+            "maximum": 200,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "lat",
+          "lng",
+          "recordedAt"
+        ],
+        "type": "object"
+      },
+      "PingResultDto": {
+        "properties": {
+          "accepted": {
+            "type": "number"
+          },
+          "ignored": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "accepted",
+          "ignored"
+        ],
+        "type": "object"
+      },
+      "PingsDto": {
+        "properties": {
+          "pings": {
+            "items": {
+              "$ref": "#/components/schemas/PingDto"
+            },
+            "maxItems": 50,
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "pings"
+        ],
+        "type": "object"
+      },
       "PlacementDto": {
         "properties": {
           "academicYear": {
@@ -8168,6 +8227,21 @@
         ],
         "type": "object"
       },
+      "StartTripDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "routeId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "routeId"
+        ],
+        "type": "object"
+      },
       "StatementDto": {
         "properties": {
           "invoices": {
@@ -9315,6 +9389,195 @@
           "items",
           "next",
           "more"
+        ],
+        "type": "object"
+      },
+      "TripChildDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "stopId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "stopId"
+        ],
+        "type": "object"
+      },
+      "TripDto": {
+        "properties": {
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/TripChildDto"
+            },
+            "type": "array"
+          },
+          "driver": {
+            "type": "string"
+          },
+          "endedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "last": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TripPositionDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "route": {
+            "properties": {
+              "direction": {
+                "enum": [
+                  "MORNING",
+                  "AFTERNOON"
+                ],
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "direction"
+            ],
+            "type": "object"
+          },
+          "stale": {
+            "type": "boolean"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "IN_PROGRESS",
+              "ENDED"
+            ],
+            "type": "string"
+          },
+          "stops": {
+            "items": {
+              "$ref": "#/components/schemas/TripStopDto"
+            },
+            "type": "array"
+          },
+          "vehicle": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "route",
+          "vehicle",
+          "driver",
+          "startedAt",
+          "endedAt",
+          "last",
+          "stale",
+          "stops",
+          "children"
+        ],
+        "type": "object"
+      },
+      "TripListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TripDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "TripPositionDto": {
+        "properties": {
+          "lat": {
+            "type": "number"
+          },
+          "lng": {
+            "type": "number"
+          },
+          "recordedAt": {
+            "type": "string"
+          },
+          "speedKmh": {
+            "nullable": true,
+            "type": "number"
+          }
+        },
+        "required": [
+          "lat",
+          "lng",
+          "speedKmh",
+          "recordedAt"
+        ],
+        "type": "object"
+      },
+      "TripStopDto": {
+        "properties": {
+          "etaMinutes": {
+            "nullable": true,
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lat": {
+            "nullable": true,
+            "type": "number"
+          },
+          "lng": {
+            "nullable": true,
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "plannedTime": {
+            "nullable": true,
+            "type": "string"
+          },
+          "reached": {
+            "type": "boolean"
+          },
+          "sequence": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "name",
+          "lat",
+          "lng",
+          "plannedTime",
+          "reached",
+          "etaMinutes"
         ],
         "type": "object"
       },
@@ -28211,6 +28474,317 @@
         "x-permission": {
           "action": "update",
           "resource": "transport"
+        }
+      }
+    },
+    "/v1/trips": {
+      "post": {
+        "operationId": "Trips_start",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartTripDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Trips"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "trip.start",
+          "operation": "StartTrip"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "trips"
+        }
+      }
+    },
+    "/v1/trips/active": {
+      "get": {
+        "operationId": "Trips_active",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Trips"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "trips"
+        }
+      }
+    },
+    "/v1/trips/{id}": {
+      "get": {
+        "operationId": "Trips_one",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Trips"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "trips"
+        }
+      }
+    },
+    "/v1/trips/{id}/end": {
+      "post": {
+        "operationId": "Trips_end",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Trips"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "trip.end",
+          "operation": "EndTrip"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "trips"
+        }
+      }
+    },
+    "/v1/trips/{id}/pings": {
+      "post": {
+        "operationId": "Trips_pings",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PingsDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Trips"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "update",
+          "resource": "trips"
         }
       }
     },

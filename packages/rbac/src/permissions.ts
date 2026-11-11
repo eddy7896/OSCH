@@ -34,6 +34,7 @@ export const RESOURCES = [
   // Operations
   "operations", // inventory, assets, procurement, visitors
   "transport",
+  "trips", // runs of a route and the vehicle position pings while one is in progress; a driver starts, reports and ends their own, parents see only their own child's bus (P5-5a)
   "announcements",
   "student_leave", // a parent asks leave for their child; the class teacher or the Academic admin decides (ADR-0016)
   "learning_resources", // worksheets and workbooks a teacher shares with the parents of a class (ADR-0016)

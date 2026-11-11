@@ -178,6 +178,34 @@ const seatedOrNot = (seated: boolean) => async (w: World): Promise<Record<string
   if (seated) await w.db.setStudentRoute({ schoolId: w.schools.A, id: seatIdOf(studentId, 'MORNING'), studentId: studentId.replaceAll('-', ''), routeId, stopId, direction: 'MORNING' as never, actorId, details: {} });
   return { studentId, routeId: dash(routeId), stopId: dash(stopId), direction: 'MORNING' };
 };
+/** The sample school's driver: a member of staff linked to the DRIVER account, made once per world. */
+const driverStaff = new WeakMap<World, string>();
+const driverStaffOfA = async (w: World): Promise<string> => {
+  const have = driverStaff.get(w);
+  if (have) return have;
+  const seq = (await w.db.staffSeqInfo({ schoolId: w.schools.A })).data.school!.staffSeq;
+  const id = randomUUID();
+  await w.db.createStaff({ schoolId: w.schools.A, id, expectedSeq: seq, employeeId: `E${String(seq + 1).padStart(4, '0')}`, firstName: 'Sample', lastName: 'Driver', actorId: w.roles.A.HR_MANAGER.uid });
+  await w.db.linkStaffAccount({ schoolId: w.schools.A, id, userId: w.roles.A.DRIVER.uid, actorId: w.roles.A.HR_MANAGER.uid, details: {} });
+  driverStaff.set(w, id);
+  return id;
+};
+const driverOfA = { token: (w: World) => w.roles.A.DRIVER.token, actor: (w: World) => w.roles.A.DRIVER.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
+/** A route the DRIVER of A drives. */
+const driverRouteOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  const actorId = w.roles.A.TRANSPORT_MANAGER.uid;
+  await w.db.createTransportRoute({ schoolId: w.schools.A, id, name: `Drive ${id.slice(0, 8)}`, direction: 'MORNING' as never, actorId, details: {} });
+  await w.db.setRouteDriver({ schoolId: w.schools.A, id, driverId: await driverStaffOfA(w), actorId, details: {} });
+  return { routeId: dash(id) };
+};
+/** A trip in progress on such a route. */
+const tripOfA = async (w: World): Promise<Record<string, string>> => {
+  const { routeId } = await driverRouteOfA(w);
+  const id = randomUUID();
+  await w.db.startTrip({ schoolId: w.schools.A, id, routeId, actorId: w.roles.A.DRIVER.uid, details: {} });
+  return { id: dash(id), routeId };
+};
 const seatIdOf = (studentId: string, direction: string): string => {
   const h = createHash('sha256').update(`seat:${dash(studentId.replaceAll('-', ''))}:${direction}`).digest('hex').slice(0, 32).split('');
   h[12] = '4';
@@ -574,6 +602,8 @@ export const SAMPLES: Record<string, Sample> = {
   'PUT /transport/routes/:id/stops': { ...transportManagerOfA, prepare: routeOfA, body: () => ({ stops: [{ name: 'First stop' }, { name: 'Second stop' }] }) },
   'POST /announcements': { ...academicAdminOfA, body: () => ({ title: 'Staff meeting on Friday', body: 'All staff meet in the hall at 3 pm.' }) },
   'PATCH /announcements/:id': { ...principalOfA, prepare: announcementOfA, body: () => ({ title: 'Staff meeting moved', body: 'Now at 4 pm.' }) },
+  'POST /trips': { ...driverOfA, prepare: driverRouteOfA, body: (_w, ctx) => ({ id: randomUUID(), routeId: ctx.routeId }) },
+  'POST /trips/:id/end': { ...driverOfA, prepare: tripOfA },
   'POST /notice-board': { ...academicAdminOfA, body: () => ({ title: 'School closed on Monday', body: 'Reopens on Tuesday.', category: 'HOLIDAY', audience: 'ALL_PARENTS' }) },
   'PATCH /notice-board/:id': { ...principalOfA, prepare: noticeOfA, body: () => ({ title: 'School closed on Tuesday', body: 'Reopens on Wednesday.', category: 'HOLIDAY', pinned: true }) },
   'POST /notice-board/:id/withdraw': { ...academicAdminOfA, prepare: noticeOfA },

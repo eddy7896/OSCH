@@ -868,3 +868,26 @@ query GetNotice($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
 query ListParentLinks($schoolId: UUID!) @auth(level: NO_ACCESS) {
   parentLinks(where: {schoolId: {eq: $schoolId}}, limit: 5000) { studentId user { id } }
 }
+
+# ---- Trips and location pings (P5-5a)
+query TripsInProgress($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  trips(where: {schoolId: {eq: $schoolId}, status: {eq: IN_PROGRESS}}, orderBy: [{startedAt: DESC}], limit: 200) {
+    id startedAt status
+    driver { id displayName email }
+    route { id name direction vehicle { registration label } driver { userId } routeStops_on_route(orderBy: [{sequence: ASC}]) { id sequence name latMicro lngMicro arrivalTime } }
+  }
+}
+
+query GetTrip($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  trips(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}) {
+    id startedAt endedAt status
+    driver { id displayName email }
+    route { id name direction vehicle { registration label } driver { userId } routeStops_on_route(orderBy: [{sequence: ASC}]) { id sequence name latMicro lngMicro arrivalTime } }
+  }
+}
+
+# The newest positions of one trip, newest first.
+query PingsOfTrip($schoolId: UUID!, $tripId: UUID!) @auth(level: NO_ACCESS) {
+  locationPings(where: {schoolId: {eq: $schoolId}, tripId: {eq: $tripId}}, orderBy: [{recordedAt: DESC}], limit: 400) { latMicro lngMicro speedKmh recordedAt }
+}
+

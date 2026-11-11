@@ -279,6 +279,11 @@ export const bindApi = (client: Client) => ({
   transportUpdateRoute: async (options: Opts<typeof sdk.transportUpdateRoute<true>>): Out<typeof sdk.transportUpdateRoute<true>> => (await sdk.transportUpdateRoute<true>({ ...options, client, throwOnError: true } as never)).data,
   transportUpdateVehicle: async (options: Opts<typeof sdk.transportUpdateVehicle<true>>): Out<typeof sdk.transportUpdateVehicle<true>> => (await sdk.transportUpdateVehicle<true>({ ...options, client, throwOnError: true } as never)).data,
   transportVehicles: async (options: Opts<typeof sdk.transportVehicles<true>> = {}): Out<typeof sdk.transportVehicles<true>> => (await sdk.transportVehicles<true>({ ...options, client, throwOnError: true } as never)).data,
+  tripsActive: async (options: Opts<typeof sdk.tripsActive<true>> = {}): Out<typeof sdk.tripsActive<true>> => (await sdk.tripsActive<true>({ ...options, client, throwOnError: true } as never)).data,
+  tripsEnd: async (options: Opts<typeof sdk.tripsEnd<true>>): Out<typeof sdk.tripsEnd<true>> => (await sdk.tripsEnd<true>({ ...options, client, throwOnError: true } as never)).data,
+  tripsOne: async (options: Opts<typeof sdk.tripsOne<true>>): Out<typeof sdk.tripsOne<true>> => (await sdk.tripsOne<true>({ ...options, client, throwOnError: true } as never)).data,
+  tripsPings: async (options: Opts<typeof sdk.tripsPings<true>>): Out<typeof sdk.tripsPings<true>> => (await sdk.tripsPings<true>({ ...options, client, throwOnError: true } as never)).data,
+  tripsStart: async (options: Opts<typeof sdk.tripsStart<true>>): Out<typeof sdk.tripsStart<true>> => (await sdk.tripsStart<true>({ ...options, client, throwOnError: true } as never)).data,
   uploadsSchoolLogo: async (options: Opts<typeof sdk.uploadsSchoolLogo<true>>): Out<typeof sdk.uploadsSchoolLogo<true>> => (await sdk.uploadsSchoolLogo<true>({ ...options, client, throwOnError: true } as never)).data,
 });
 
