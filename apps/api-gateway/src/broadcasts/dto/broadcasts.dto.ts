@@ -26,7 +26,7 @@ export class BroadcastDto {
   sender!: { userId: string; name: string };
   sentAt!: string;
 }
-export class StudentRefDto {
+export class BroadcastStudentDto {
   id!: string;
   name!: string;
 }
@@ -36,7 +36,7 @@ export class BroadcastStatsDto {
   /** Students with at least one parent account reached. */
   reachedStudents!: number;
   /** Students with no parent account: the teacher should call them. */
-  unreachable!: StudentRefDto[];
+  unreachable!: BroadcastStudentDto[];
   /** Parent accounts reached, and how many of them have opened it. */
   parents!: number;
   readBy!: number;
@@ -44,7 +44,7 @@ export class BroadcastStatsDto {
 /** One broadcast. A parent gets `students` and `read` (their own children in the class, and whether they opened it); the sender and the school get `stats` on a single broadcast (not in lists). */
 export class BroadcastDetailDto extends BroadcastDto {
   /** A parent's own children in the class; empty for the sender. */
-  students!: StudentRefDto[];
+  students!: BroadcastStudentDto[];
   read!: boolean | null;
   stats!: BroadcastStatsDto | null;
 }

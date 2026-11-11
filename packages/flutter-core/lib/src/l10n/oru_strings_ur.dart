@@ -3930,4 +3930,172 @@ class OruStringsUr extends OruStrings {
   @override
   String get notifBroadcastPostedBody =>
       'آپ کے بچے کی جماعت کے لیے ایک نیا پیغام ہے۔ پڑھنے کے لیے ایپ کھولیں۔';
+
+  @override
+  String get mobMsTitle => 'پیغامات';
+
+  @override
+  String get mobMsEmpty => 'ابھی کوئی گفتگو نہیں ہے۔';
+
+  @override
+  String get mobMsNew => 'نیا پیغام';
+
+  @override
+  String mobMsAbout(String name) {
+    return '$name کے بارے میں';
+  }
+
+  @override
+  String get mobMsUnread => 'نیا';
+
+  @override
+  String get mobMsWrite => 'پیغام لکھیں';
+
+  @override
+  String mobMsCounter(String count) {
+    return '1000 میں سے $count';
+  }
+
+  @override
+  String get mobMsSend => 'بھیجیں';
+
+  @override
+  String get mobMsSaved => 'اس فون میں محفوظ ہے، ابھی بھیجا نہیں گیا';
+
+  @override
+  String get mobMsRefused => 'اسکول نے یہ پیغام قبول نہیں کیا۔';
+
+  @override
+  String get mobMsHidden => 'یہ پیغام لکھنے والے نے چھپا دیا۔';
+
+  @override
+  String get mobMsHide => 'چھپائیں';
+
+  @override
+  String get mobMsHideQuestion =>
+      'یہ پیغام چھپائیں؟ دوسرا شخص اس کے الفاظ نہیں دیکھ سکے گا۔';
+
+  @override
+  String get mobMsReport => 'رپورٹ کریں';
+
+  @override
+  String get mobMsReportQuestion =>
+      'یہ پیغام اسکول کو رپورٹ کریں؟ اسکول یہ گفتگو پڑھے گا۔';
+
+  @override
+  String get mobMsReportNote => 'کیا غلط تھا؟ (اختیاری)';
+
+  @override
+  String get mobMsReported => 'رپورٹ ہو گئی۔ اسکول اسے دیکھے گا۔';
+
+  @override
+  String get mobMsNeedsNet => 'اس کے لیے کنکشن چاہیے۔ کچھ نہیں بدلا۔';
+
+  @override
+  String get mobMsEmptyError => 'پہلے کچھ لکھیں۔';
+
+  @override
+  String get mobMsTooLong => 'پیغام میں زیادہ سے زیادہ 1000 حروف ہو سکتے ہیں۔';
+
+  @override
+  String get mobMsPickStudent => 'طالب علم منتخب کریں';
+
+  @override
+  String get mobMsPickPerson => 'منتخب کریں کسے لکھنا ہے';
+
+  @override
+  String get mobMsNoContacts =>
+      'اس طالب علم کے بارے میں ابھی کسی کو لکھا نہیں جا سکتا۔';
+
+  @override
+  String get mobMsClassTeacher => 'جماعت کا استاد';
+
+  @override
+  String mobMsSubjectTeacher(String subjects) {
+    return '$subjects کے استاد';
+  }
+
+  @override
+  String get mobMsMother => 'والدہ';
+
+  @override
+  String get mobMsFather => 'والد';
+
+  @override
+  String get mobMsGuardian => 'سرپرست';
+
+  @override
+  String get mobMsParent => 'والدین';
+
+  @override
+  String get mobBcTitle => 'جماعت کے پیغامات';
+
+  @override
+  String get mobBcSendToClass => 'پوری جماعت کو بھیجیں';
+
+  @override
+  String get mobBcClass => 'جماعت';
+
+  @override
+  String get mobBcTitleField => 'عنوان';
+
+  @override
+  String get mobBcBodyField => 'پیغام';
+
+  @override
+  String get mobBcSend => 'والدین کو بھیجیں';
+
+  @override
+  String get mobBcOneWay =>
+      'والدین یہاں جواب نہیں دے سکتے۔ وہ آپ کو نجی پیغام لکھ سکتے ہیں۔';
+
+  @override
+  String get mobBcEmpty => 'آپ نے ابھی کوئی جماعت پیغام نہیں بھیجا۔';
+
+  @override
+  String get mobBcEmptyParent => 'اسکول نے ابھی کوئی جماعت پیغام نہیں بھیجا۔';
+
+  @override
+  String get mobBcNoClass =>
+      'آپ کسی جماعت کے جماعت کا استاد نہیں ہیں، اس لیے جماعت کو پیغام نہیں بھیج سکتے۔';
+
+  @override
+  String get mobBcTitleError => 'زیادہ سے زیادہ 120 حروف کا عنوان لکھیں۔';
+
+  @override
+  String get mobBcBodyError => 'زیادہ سے زیادہ 2000 حروف کا پیغام لکھیں۔';
+
+  @override
+  String mobBcCounter(String count) {
+    return '2000 میں سے $count';
+  }
+
+  @override
+  String mobBcReached(String reached, String total) {
+    return '$total میں سے $reached طلبہ تک پہنچا';
+  }
+
+  @override
+  String mobBcRead(String read, String parents) {
+    return '$parents میں سے $read والدین اکاؤنٹس نے اسے کھولا';
+  }
+
+  @override
+  String get mobBcNotReached =>
+      'ابھی کوئی والدین اکاؤنٹ نہیں ہے۔ براہ کرم فون کریں:';
+
+  @override
+  String get mobBcAllReached => 'ہر طالب علم کے کسی والدین کو بتایا گیا۔';
+
+  @override
+  String get mobBcNoStats =>
+      'گنتی تب دکھائی دے گی جب اس فون کو اسکول کا جواب مل جائے گا۔';
+
+  @override
+  String mobBcFor(String names) {
+    return '$names کے لیے';
+  }
+
+  @override
+  String get mobBcReply => 'نجی طور پر جواب دیں';
 }

@@ -969,7 +969,7 @@
           },
           "students": {
             "items": {
-              "$ref": "#/components/schemas/StudentRefDto"
+              "$ref": "#/components/schemas/BroadcastStudentDto"
             },
             "type": "array"
           },
@@ -1020,7 +1020,7 @@
           },
           "unreachable": {
             "items": {
-              "$ref": "#/components/schemas/StudentRefDto"
+              "$ref": "#/components/schemas/BroadcastStudentDto"
             },
             "type": "array"
           }
@@ -1031,6 +1031,21 @@
           "unreachable",
           "parents",
           "readBy"
+        ],
+        "type": "object"
+      },
+      "BroadcastStudentDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
         ],
         "type": "object"
       },

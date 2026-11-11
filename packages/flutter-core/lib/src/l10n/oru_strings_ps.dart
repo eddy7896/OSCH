@@ -3932,4 +3932,172 @@ class OruStringsPs extends OruStrings {
   @override
   String get notifBroadcastPostedBody =>
       'Your child\'s class has a new message. Open the app to read it.';
+
+  @override
+  String get mobMsTitle => 'Messages';
+
+  @override
+  String get mobMsEmpty => 'No conversations yet.';
+
+  @override
+  String get mobMsNew => 'New message';
+
+  @override
+  String mobMsAbout(String name) {
+    return 'About $name';
+  }
+
+  @override
+  String get mobMsUnread => 'New';
+
+  @override
+  String get mobMsWrite => 'Write a message';
+
+  @override
+  String mobMsCounter(String count) {
+    return '$count of 1000';
+  }
+
+  @override
+  String get mobMsSend => 'Send';
+
+  @override
+  String get mobMsSaved => 'Saved on this phone, not sent yet';
+
+  @override
+  String get mobMsRefused => 'The school did not accept this message.';
+
+  @override
+  String get mobMsHidden =>
+      'This message was hidden by the person who wrote it.';
+
+  @override
+  String get mobMsHide => 'Hide';
+
+  @override
+  String get mobMsHideQuestion =>
+      'Hide this message? The other person will no longer see its words.';
+
+  @override
+  String get mobMsReport => 'Report';
+
+  @override
+  String get mobMsReportQuestion =>
+      'Report this message to the school? The school will read this conversation.';
+
+  @override
+  String get mobMsReportNote => 'What was wrong? (optional)';
+
+  @override
+  String get mobMsReported => 'Reported. The school will look at it.';
+
+  @override
+  String get mobMsNeedsNet => 'This needs a connection. Nothing was changed.';
+
+  @override
+  String get mobMsEmptyError => 'Write something first.';
+
+  @override
+  String get mobMsTooLong => 'A message can have at most 1000 characters.';
+
+  @override
+  String get mobMsPickStudent => 'Choose a student';
+
+  @override
+  String get mobMsPickPerson => 'Choose who to write to';
+
+  @override
+  String get mobMsNoContacts =>
+      'There is nobody to write to about this student yet.';
+
+  @override
+  String get mobMsClassTeacher => 'Class teacher';
+
+  @override
+  String mobMsSubjectTeacher(String subjects) {
+    return 'Teacher of $subjects';
+  }
+
+  @override
+  String get mobMsMother => 'Mother';
+
+  @override
+  String get mobMsFather => 'Father';
+
+  @override
+  String get mobMsGuardian => 'Guardian';
+
+  @override
+  String get mobMsParent => 'Parent';
+
+  @override
+  String get mobBcTitle => 'Class messages';
+
+  @override
+  String get mobBcSendToClass => 'Send to the whole class';
+
+  @override
+  String get mobBcClass => 'Class';
+
+  @override
+  String get mobBcTitleField => 'Title';
+
+  @override
+  String get mobBcBodyField => 'Message';
+
+  @override
+  String get mobBcSend => 'Send to parents';
+
+  @override
+  String get mobBcOneWay =>
+      'Parents cannot reply here. They can write to you privately.';
+
+  @override
+  String get mobBcEmpty => 'You have sent no class messages yet.';
+
+  @override
+  String get mobBcEmptyParent => 'The school has sent no class messages yet.';
+
+  @override
+  String get mobBcNoClass =>
+      'You are not the class teacher of any class, so you cannot send to a class.';
+
+  @override
+  String get mobBcTitleError => 'Write a title of up to 120 characters.';
+
+  @override
+  String get mobBcBodyError => 'Write a message of up to 2000 characters.';
+
+  @override
+  String mobBcCounter(String count) {
+    return '$count of 2000';
+  }
+
+  @override
+  String mobBcReached(String reached, String total) {
+    return '$reached of $total students reached';
+  }
+
+  @override
+  String mobBcRead(String read, String parents) {
+    return '$read of $parents parent accounts have opened it';
+  }
+
+  @override
+  String get mobBcNotReached => 'No parent account yet. Please call:';
+
+  @override
+  String get mobBcAllReached => 'Every student has a parent who was told.';
+
+  @override
+  String get mobBcNoStats =>
+      'The counts appear once this phone has the school\'s answer.';
+
+  @override
+  String mobBcFor(String names) {
+    return 'For $names';
+  }
+
+  @override
+  String get mobBcReply => 'Reply privately';
 }

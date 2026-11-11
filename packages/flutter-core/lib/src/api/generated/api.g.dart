@@ -17,6 +17,10 @@ const List<OruRoute> kOruRoutes = [
   _rAttendanceStatuses,
   _rAttendanceStudent,
   _rAttendanceSubmit,
+  _rBroadcastsCreate,
+  _rBroadcastsList,
+  _rBroadcastsOne,
+  _rBroadcastsRead,
   _rCommentsCreate,
   _rCommentsEdit,
   _rCommentsHide,
@@ -42,6 +46,14 @@ const List<OruRoute> kOruRoutes = [
   _rLeaveTypes,
   _rMeGet,
   _rMePreferences,
+  _rMessagesContacts,
+  _rMessagesHide,
+  _rMessagesRead,
+  _rMessagesReport,
+  _rMessagesSend,
+  _rMessagesStart,
+  _rMessagesThread,
+  _rMessagesThreads,
   _rNotificationsList,
   _rNotificationsPreferences,
   _rNotificationsRead,
@@ -86,6 +98,10 @@ const _rAttendanceDays = OruRoute('GET', '/v1/attendance/classes/{id}/days', Oru
 const _rAttendanceStatuses = OruRoute('GET', '/v1/attendance/statuses', OruAccess.tenant, 'Attendance_statuses');
 const _rAttendanceStudent = OruRoute('GET', '/v1/attendance/students/{id}', OruAccess.tenant, 'Attendance_student');
 const _rAttendanceSubmit = OruRoute('PUT', '/v1/attendance/classes/{id}/days/{date}', OruAccess.tenant, 'Attendance_submit');
+const _rBroadcastsCreate = OruRoute('POST', '/v1/broadcasts', OruAccess.tenant, 'Broadcasts_create');
+const _rBroadcastsList = OruRoute('GET', '/v1/broadcasts', OruAccess.tenant, 'Broadcasts_list');
+const _rBroadcastsOne = OruRoute('GET', '/v1/broadcasts/{id}', OruAccess.tenant, 'Broadcasts_one');
+const _rBroadcastsRead = OruRoute('POST', '/v1/broadcasts/{id}/read', OruAccess.tenant, 'Broadcasts_read');
 const _rCommentsCreate = OruRoute('POST', '/v1/resources/{id}/comments', OruAccess.tenant, 'Comments_create');
 const _rCommentsEdit = OruRoute('PUT', '/v1/resources/{id}/comments/{commentId}', OruAccess.tenant, 'Comments_edit');
 const _rCommentsHide = OruRoute('POST', '/v1/resources/{id}/comments/{commentId}/hide', OruAccess.tenant, 'Comments_hide');
@@ -111,6 +127,14 @@ const _rLeaveRequests = OruRoute('GET', '/v1/leave/requests', OruAccess.tenant, 
 const _rLeaveTypes = OruRoute('GET', '/v1/leave/types', OruAccess.tenant, 'Leave_types');
 const _rMeGet = OruRoute('GET', '/v1/me', OruAccess.user, 'Me_get');
 const _rMePreferences = OruRoute('PATCH', '/v1/me/preferences', OruAccess.user, 'Me_preferences');
+const _rMessagesContacts = OruRoute('GET', '/v1/messages/contacts', OruAccess.tenant, 'Messages_contacts');
+const _rMessagesHide = OruRoute('POST', '/v1/messages/threads/{id}/messages/{messageId}/hide', OruAccess.tenant, 'Messages_hide');
+const _rMessagesRead = OruRoute('POST', '/v1/messages/threads/{id}/read', OruAccess.tenant, 'Messages_read');
+const _rMessagesReport = OruRoute('POST', '/v1/messages/threads/{id}/messages/{messageId}/report', OruAccess.tenant, 'Messages_report');
+const _rMessagesSend = OruRoute('POST', '/v1/messages/threads/{id}/messages', OruAccess.tenant, 'Messages_send');
+const _rMessagesStart = OruRoute('POST', '/v1/messages/threads', OruAccess.tenant, 'Messages_start');
+const _rMessagesThread = OruRoute('GET', '/v1/messages/threads/{id}', OruAccess.tenant, 'Messages_thread');
+const _rMessagesThreads = OruRoute('GET', '/v1/messages/threads', OruAccess.tenant, 'Messages_threads');
 const _rNotificationsList = OruRoute('GET', '/v1/notifications', OruAccess.tenant, 'Notifications_list');
 const _rNotificationsPreferences = OruRoute('GET', '/v1/notifications/preferences', OruAccess.tenant, 'Notifications_preferences');
 const _rNotificationsRead = OruRoute('POST', '/v1/notifications/{id}/read', OruAccess.tenant, 'Notifications_read');
@@ -208,6 +232,29 @@ class OruApi {
   Future<ClassDayDto> attendanceSubmit({required String id, required String date, required SubmitDayDto body}) async {
     final j = await _t.send(_rAttendanceSubmit, "/v1/attendance/classes/${Uri.encodeComponent(id)}/days/${Uri.encodeComponent(date)}", body: body.toJson());
     return ClassDayDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/broadcasts
+  Future<BroadcastDetailDto> broadcastsCreate({required CreateBroadcastDto body}) async {
+    final j = await _t.send(_rBroadcastsCreate, "/v1/broadcasts", body: body.toJson());
+    return BroadcastDetailDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/broadcasts
+  Future<BroadcastListDto> broadcastsList() async {
+    final j = await _t.send(_rBroadcastsList, "/v1/broadcasts");
+    return BroadcastListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/broadcasts/{id}
+  Future<BroadcastDetailDto> broadcastsOne({required String id}) async {
+    final j = await _t.send(_rBroadcastsOne, "/v1/broadcasts/${Uri.encodeComponent(id)}");
+    return BroadcastDetailDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/broadcasts/{id}/read
+  Future<void> broadcastsRead({required String id}) async {
+    await _t.send(_rBroadcastsRead, "/v1/broadcasts/${Uri.encodeComponent(id)}/read");
   }
 
   /// POST /v1/resources/{id}/comments
@@ -354,6 +401,52 @@ class OruApi {
   /// PATCH /v1/me/preferences
   Future<void> mePreferences({required UpdatePreferencesDto body}) async {
     await _t.send(_rMePreferences, "/v1/me/preferences", body: body.toJson());
+  }
+
+  /// GET /v1/messages/contacts
+  Future<ContactListDto> messagesContacts({required String studentId}) async {
+    final j = await _t.send(_rMessagesContacts, "/v1/messages/contacts", query: {'studentId': studentId});
+    return ContactListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/messages/threads/{id}/messages/{messageId}/hide
+  Future<MessageDto> messagesHide({required String id, required String messageId}) async {
+    final j = await _t.send(_rMessagesHide, "/v1/messages/threads/${Uri.encodeComponent(id)}/messages/${Uri.encodeComponent(messageId)}/hide");
+    return MessageDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/messages/threads/{id}/read
+  Future<void> messagesRead({required String id}) async {
+    await _t.send(_rMessagesRead, "/v1/messages/threads/${Uri.encodeComponent(id)}/read");
+  }
+
+  /// POST /v1/messages/threads/{id}/messages/{messageId}/report
+  Future<void> messagesReport({required String id, required String messageId, required ReportMessageDto body}) async {
+    await _t.send(_rMessagesReport, "/v1/messages/threads/${Uri.encodeComponent(id)}/messages/${Uri.encodeComponent(messageId)}/report", body: body.toJson());
+  }
+
+  /// POST /v1/messages/threads/{id}/messages
+  Future<MessageDto> messagesSend({required String id, required SendMessageDto body}) async {
+    final j = await _t.send(_rMessagesSend, "/v1/messages/threads/${Uri.encodeComponent(id)}/messages", body: body.toJson());
+    return MessageDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/messages/threads
+  Future<ThreadDto> messagesStart({required StartThreadDto body}) async {
+    final j = await _t.send(_rMessagesStart, "/v1/messages/threads", body: body.toJson());
+    return ThreadDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/messages/threads/{id}
+  Future<ThreadDetailDto> messagesThread({required String id}) async {
+    final j = await _t.send(_rMessagesThread, "/v1/messages/threads/${Uri.encodeComponent(id)}");
+    return ThreadDetailDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/messages/threads
+  Future<ThreadListDto> messagesThreads() async {
+    final j = await _t.send(_rMessagesThreads, "/v1/messages/threads");
+    return ThreadListDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// GET /v1/notifications

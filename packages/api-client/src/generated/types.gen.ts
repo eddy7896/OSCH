@@ -241,7 +241,7 @@ export type BroadcastDetailDto = {
     };
     sentAt: string;
     stats: BroadcastStatsDto | null;
-    students: Array<StudentRefDto>;
+    students: Array<BroadcastStudentDto>;
     title: string;
 };
 
@@ -254,7 +254,12 @@ export type BroadcastStatsDto = {
     reachedStudents: number;
     readBy: number;
     targetStudents: number;
-    unreachable: Array<StudentRefDto>;
+    unreachable: Array<BroadcastStudentDto>;
+};
+
+export type BroadcastStudentDto = {
+    id: string;
+    name: string;
 };
 
 export type CandidateDto = {
