@@ -87,17 +87,16 @@ describe.skipIf(!ready)('notice board against the real emulators (P5-8a)', { tim
     await post(acad(), { audience: 'ALL_PARENTS', classId: cA }).expect(400);
   });
 
-  it('the Bursar posts only Fees and the transport manager only Transport, and each sees and changes only their own category', async () => {
+  it('the Bursar posts only Fees and the transport manager only Transport, and each reads the whole board but changes only their own category', async () => {
     await post(bursar(), { category: 'HOLIDAY' }).expect(403);
     await post(transport(), { category: 'FEES' }).expect(403);
     const fee = (await post(bursar(), { category: 'FEES', title: `Fee ${uniq()}` }).expect(201)).body as Notice;
     const bus = (await post(transport(), { category: 'TRANSPORT', title: `Bus ${uniq()}` }).expect(201)).body as Notice;
     const general = (await post(acad(), { title: `Gen ${uniq()}` }).expect(201)).body as Notice;
-    expect((await mine(bursar())).every((x) => x.category === 'FEES')).toBe(true);
-    expect((await mine(bursar())).map((x) => x.id)).toContain(fee.id);
-    expect((await mine(transport())).map((x) => x.id)).toEqual(expect.arrayContaining([bus.id]));
-    expect((await mine(transport())).map((x) => x.id)).not.toContain(fee.id);
-    await call('get', `/notice-board/${general.id}`, bursar()).expect(404);
+    expect((await mine(bursar())).map((x) => x.id)).toEqual(expect.arrayContaining([fee.id, bus.id, general.id])); // reads the whole board
+    expect((await mine(transport())).map((x) => x.id)).toEqual(expect.arrayContaining([bus.id, fee.id]));
+    await call('get', `/notice-board/${general.id}`, bursar()).expect(200);
+    await call('patch', `/notice-board/${fee.id}`, transport()).send({ title: 'x', body: 'y', category: 'TRANSPORT', pinned: false }).expect(404); // not their category
     await call('patch', `/notice-board/${general.id}`, bursar()).send({ title: 'x', body: 'y', category: 'FEES', pinned: false }).expect(404);
     await call('post', `/notice-board/${general.id}/withdraw`, bursar()).send({}).expect(404);
     await call('patch', `/notice-board/${fee.id}`, bursar()).send({ title: 'Fee changed', body: 'y', category: 'HOLIDAY', pinned: false }).expect(403);

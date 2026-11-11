@@ -5871,7 +5871,7 @@
   "@nbdExpiresAt": {
     "description": "Label of the date and time a post stops being shown."
   },
-  "nbdReach": "This will tell {parents} parent accounts, for {students} students.",
+  "nbdReach": "Parent accounts that will be told: {parents} (for {students} students).",
   "@nbdReach": {
     "description": "Shown before posting: how many parent accounts get a notice.",
     "placeholders": {
@@ -5891,7 +5891,7 @@
   "@nbdPost": {
     "description": "Button that posts to the notice board."
   },
-  "nbdPosted": "Posted. {told} parent accounts were told.",
+  "nbdPosted": "Posted. Parent accounts told: {told}.",
   "@nbdPosted": {
     "description": "Shown after a post. {told} is how many parent accounts got a notice.",
     "placeholders": {
@@ -5976,5 +5976,23 @@
   "nbdCatTRANSPORT": "Transport",
   "@nbdCatTRANSPORT": {
     "description": "Category of a notice board post."
+  },
+  "nbdListFrom": "Shown from {date}",
+  "@nbdListFrom": {
+    "description": "On a post: when it becomes visible to parents.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "nbdListUntil": "Removed on {date}",
+  "@nbdListUntil": {
+    "description": "On a post: when it stops being shown to parents.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

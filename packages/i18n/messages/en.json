@@ -1223,10 +1223,10 @@
   "nbdPinned": "Pin to the top",
   "nbdPublishAt": "Show from (empty means now)",
   "nbdExpiresAt": "Remove on (optional)",
-  "nbdReach": "This will tell {parents} parent accounts, for {students} students.",
+  "nbdReach": "Parent accounts that will be told: {parents} (for {students} students).",
   "nbdReachNone": "Nobody would be told: no parent account is linked to these students.",
   "nbdPost": "Post",
-  "nbdPosted": "Posted. {told} parent accounts were told.",
+  "nbdPosted": "Posted. Parent accounts told: {told}.",
   "nbdNone": "Nothing posted yet.",
   "nbdPin": "Pin",
   "nbdUnpin": "Unpin",
@@ -1244,5 +1244,7 @@
   "nbdCatEXAM": "Exam",
   "nbdCatEVENT": "Event",
   "nbdCatFEES": "Fees",
-  "nbdCatTRANSPORT": "Transport"
+  "nbdCatTRANSPORT": "Transport",
+  "nbdListFrom": "Shown from {date}",
+  "nbdListUntil": "Removed on {date}"
 }

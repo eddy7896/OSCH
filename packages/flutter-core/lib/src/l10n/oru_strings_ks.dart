@@ -4253,7 +4253,7 @@ class OruStringsKs extends OruStrings {
 
   @override
   String nbdReach(String parents, String students) {
-    return 'This will tell $parents parent accounts, for $students students.';
+    return 'Parent accounts that will be told: $parents (for $students students).';
   }
 
   @override
@@ -4265,7 +4265,7 @@ class OruStringsKs extends OruStrings {
 
   @override
   String nbdPosted(String told) {
-    return 'Posted. $told parent accounts were told.';
+    return 'Posted. Parent accounts told: $told.';
   }
 
   @override
@@ -4323,4 +4323,14 @@ class OruStringsKs extends OruStrings {
 
   @override
   String get nbdCatTRANSPORT => 'Transport';
+
+  @override
+  String nbdListFrom(String date) {
+    return 'Shown from $date';
+  }
+
+  @override
+  String nbdListUntil(String date) {
+    return 'Removed on $date';
+  }
 }

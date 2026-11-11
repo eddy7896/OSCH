@@ -4251,7 +4251,7 @@ class OruStringsUr extends OruStrings {
 
   @override
   String nbdReach(String parents, String students) {
-    return 'اس سے $parents والدین اکاؤنٹس کو بتایا جائے گا، $students طلبہ کے لیے۔';
+    return 'جن والدین اکاؤنٹس کو بتایا جائے گا: $parents ($students طلبہ کے لیے)۔';
   }
 
   @override
@@ -4263,7 +4263,7 @@ class OruStringsUr extends OruStrings {
 
   @override
   String nbdPosted(String told) {
-    return 'پوسٹ ہو گئی۔ $told والدین اکاؤنٹس کو بتایا گیا۔';
+    return 'پوسٹ ہو گئی۔ جن والدین اکاؤنٹس کو بتایا گیا: $told۔';
   }
 
   @override
@@ -4321,4 +4321,14 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get nbdCatTRANSPORT => 'ٹرانسپورٹ';
+
+  @override
+  String nbdListFrom(String date) {
+    return '$date سے دکھائی جائے گی';
+  }
+
+  @override
+  String nbdListUntil(String date) {
+    return '$date کو ہٹائی جائے گی';
+  }
 }

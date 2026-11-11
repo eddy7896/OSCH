@@ -1229,10 +1229,10 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdPinned": "Pin to the top",
     "nbdPublishAt": "Show from (empty means now)",
     "nbdExpiresAt": "Remove on (optional)",
-    "nbdReach": "This will tell {parents} parent accounts, for {students} students.",
+    "nbdReach": "Parent accounts that will be told: {parents} (for {students} students).",
     "nbdReachNone": "Nobody would be told: no parent account is linked to these students.",
     "nbdPost": "Post",
-    "nbdPosted": "Posted. {told} parent accounts were told.",
+    "nbdPosted": "Posted. Parent accounts told: {told}.",
     "nbdNone": "Nothing posted yet.",
     "nbdPin": "Pin",
     "nbdUnpin": "Unpin",
@@ -1250,7 +1250,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdCatEXAM": "Exam",
     "nbdCatEVENT": "Event",
     "nbdCatFEES": "Fees",
-    "nbdCatTRANSPORT": "Transport"
+    "nbdCatTRANSPORT": "Transport",
+    "nbdListFrom": "Shown from {date}",
+    "nbdListUntil": "Removed on {date}"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2477,10 +2479,10 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdPinned": "सबसे ऊपर लगाएँ",
     "nbdPublishAt": "से दिखाएँ (खाली का मतलब अभी)",
     "nbdExpiresAt": "को हटाएँ (वैकल्पिक)",
-    "nbdReach": "इससे {parents} अभिभावक खाते को बताया जाएगा, {students} छात्रों के लिए।",
+    "nbdReach": "बताए जाने वाले अभिभावक खाते: {parents} ({students} छात्रों के लिए)।",
     "nbdReachNone": "किसी को नहीं बताया जाएगा: इन छात्रों से कोई अभिभावक खाता जुड़ा नहीं है।",
     "nbdPost": "पोस्ट करें",
-    "nbdPosted": "पोस्ट हो गई। {told} अभिभावक खाते को बताया गया।",
+    "nbdPosted": "पोस्ट हो गई। बताए गए अभिभावक खाते: {told}।",
     "nbdNone": "अभी कुछ पोस्ट नहीं हुआ।",
     "nbdPin": "ऊपर लगाएँ",
     "nbdUnpin": "ऊपर से हटाएँ",
@@ -2498,7 +2500,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdCatEXAM": "परीक्षा",
     "nbdCatEVENT": "आयोजन",
     "nbdCatFEES": "शुल्क",
-    "nbdCatTRANSPORT": "परिवहन"
+    "nbdCatTRANSPORT": "परिवहन",
+    "nbdListFrom": "{date} से दिखाई जाएगी",
+    "nbdListUntil": "{date} को हटाई जाएगी"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3725,10 +3729,10 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdPinned": "سب سے اوپر لگائیں",
     "nbdPublishAt": "سے دکھائیں (خالی کا مطلب ابھی)",
     "nbdExpiresAt": "کو ہٹائیں (اختیاری)",
-    "nbdReach": "اس سے {parents} والدین اکاؤنٹس کو بتایا جائے گا، {students} طلبہ کے لیے۔",
+    "nbdReach": "جن والدین اکاؤنٹس کو بتایا جائے گا: {parents} ({students} طلبہ کے لیے)۔",
     "nbdReachNone": "کسی کو نہیں بتایا جائے گا: ان طلبہ سے کوئی والدین اکاؤنٹ جڑا نہیں ہے۔",
     "nbdPost": "پوسٹ کریں",
-    "nbdPosted": "پوسٹ ہو گئی۔ {told} والدین اکاؤنٹس کو بتایا گیا۔",
+    "nbdPosted": "پوسٹ ہو گئی۔ جن والدین اکاؤنٹس کو بتایا گیا: {told}۔",
     "nbdNone": "ابھی کچھ پوسٹ نہیں ہوا۔",
     "nbdPin": "اوپر لگائیں",
     "nbdUnpin": "اوپر سے ہٹائیں",
@@ -3746,7 +3750,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdCatEXAM": "امتحان",
     "nbdCatEVENT": "تقریب",
     "nbdCatFEES": "فیس",
-    "nbdCatTRANSPORT": "ٹرانسپورٹ"
+    "nbdCatTRANSPORT": "ٹرانسپورٹ",
+    "nbdListFrom": "{date} سے دکھائی جائے گی",
+    "nbdListUntil": "{date} کو ہٹائی جائے گی"
   },
   "ks": {},
   "sd": {},

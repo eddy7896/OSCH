@@ -1223,10 +1223,10 @@
   "nbdPinned": "سب سے اوپر لگائیں",
   "nbdPublishAt": "سے دکھائیں (خالی کا مطلب ابھی)",
   "nbdExpiresAt": "کو ہٹائیں (اختیاری)",
-  "nbdReach": "اس سے {parents} والدین اکاؤنٹس کو بتایا جائے گا، {students} طلبہ کے لیے۔",
+  "nbdReach": "جن والدین اکاؤنٹس کو بتایا جائے گا: {parents} ({students} طلبہ کے لیے)۔",
   "nbdReachNone": "کسی کو نہیں بتایا جائے گا: ان طلبہ سے کوئی والدین اکاؤنٹ جڑا نہیں ہے۔",
   "nbdPost": "پوسٹ کریں",
-  "nbdPosted": "پوسٹ ہو گئی۔ {told} والدین اکاؤنٹس کو بتایا گیا۔",
+  "nbdPosted": "پوسٹ ہو گئی۔ جن والدین اکاؤنٹس کو بتایا گیا: {told}۔",
   "nbdNone": "ابھی کچھ پوسٹ نہیں ہوا۔",
   "nbdPin": "اوپر لگائیں",
   "nbdUnpin": "اوپر سے ہٹائیں",
@@ -1244,5 +1244,7 @@
   "nbdCatEXAM": "امتحان",
   "nbdCatEVENT": "تقریب",
   "nbdCatFEES": "فیس",
-  "nbdCatTRANSPORT": "ٹرانسپورٹ"
+  "nbdCatTRANSPORT": "ٹرانسپورٹ",
+  "nbdListFrom": "{date} سے دکھائی جائے گی",
+  "nbdListUntil": "{date} کو ہٹائی جائے گی"
 }

@@ -13,7 +13,7 @@ const as = (role: string, perms: Perms) => {
   return m;
 };
 const academic = () => as("ACADEMIC_ADMIN", { notice_board: { read: "school", create: "school", update: "school" }, academics: { read: "school" } });
-const bursar = () => as("BURSAR", { notice_board: { read: "own", create: "own", update: "own" } });
+const bursar = () => as("BURSAR", { notice_board: { read: "school", create: "own", update: "own" } });
 const go = async (api: ReturnType<typeof fakeApi>) => {
   renderApp(<WebAdminApp />, { api, port: fakePort(IN()).port });
   fireEvent.click(await screen.findByRole("button", { name: "Notice board" }));
@@ -47,11 +47,11 @@ describe("notice board", () => {
     fireEvent.change(screen.getByLabelText("Who is it for"), { target: { value: "CLASS" } });
     expect((screen.getByRole("button", { name: "Post" }) as HTMLButtonElement).disabled).toBe(true); // a class has to be chosen
     fireEvent.change(await screen.findByLabelText("Class"), { target: { value: "c5a" } });
-    expect(await screen.findByText("This will tell 12 parent accounts, for 14 students.")).toBeTruthy();
+    expect(await screen.findByText("Parent accounts that will be told: 12 (for 14 students).")).toBeTruthy();
     expect(noticeBoardReach).toHaveBeenCalledWith({ query: { audience: "CLASS", classId: "c5a" } });
     fireEvent.click(screen.getByRole("button", { name: "Post" }));
     await waitFor(() => expect(noticeBoardPost).toHaveBeenCalledWith({ body: { title: "Trip", body: "Bring lunch", category: "GENERAL", audience: "CLASS", pinned: false, classId: "c5a" } }));
-    expect(await screen.findByText("Posted. 12 parent accounts were told.")).toBeTruthy();
+    expect(await screen.findByText("Posted. Parent accounts told: 12.")).toBeTruthy();
   });
 
   it("the Bursar has only the Fees category and only all parents when grades and classes cannot be read", async () => {

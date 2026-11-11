@@ -7523,7 +7523,7 @@ abstract class OruStrings {
   /// Shown before posting: how many parent accounts get a notice.
   ///
   /// In en, this message translates to:
-  /// **'This will tell {parents} parent accounts, for {students} students.'**
+  /// **'Parent accounts that will be told: {parents} (for {students} students).'**
   String nbdReach(String parents, String students);
 
   /// Shown before posting when the audience has no parent account.
@@ -7541,7 +7541,7 @@ abstract class OruStrings {
   /// Shown after a post. {told} is how many parent accounts got a notice.
   ///
   /// In en, this message translates to:
-  /// **'Posted. {told} parent accounts were told.'**
+  /// **'Posted. Parent accounts told: {told}.'**
   String nbdPosted(String told);
 
   /// Shown when the notice board has no posts.
@@ -7651,6 +7651,18 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Transport'**
   String get nbdCatTRANSPORT;
+
+  /// On a post: when it becomes visible to parents.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown from {date}'**
+  String nbdListFrom(String date);
+
+  /// On a post: when it stops being shown to parents.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed on {date}'**
+  String nbdListUntil(String date);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

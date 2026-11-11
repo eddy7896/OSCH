@@ -109,8 +109,8 @@ export function NoticeBoard({ grants }: { grants: NoticeBoardGrants }) {
               {n.pinned && <Badge tone="warning">{t("nbdPinnedTag")}</Badge>}
             </p>
             <p className="text-caption text-text-muted">{n.audience === "ALL_PARENTS" ? t("nbdAudAll") : t("nbdFor", { target: n.target ?? "" })} · {n.author.name}, {day(n.createdAt, locale)}</p>
-            {n.publishAt && <p className="text-caption text-text-muted">{t("nbdPublishAt")}: {day(n.publishAt, locale)}</p>}
-            {n.expiresAt && <p className="text-caption text-text-muted">{t("nbdExpiresAt")}: {day(n.expiresAt, locale)}</p>}
+            {n.publishAt && <p className="text-caption text-text-muted">{t("nbdListFrom", { date: day(n.publishAt, locale) })}</p>}
+            {n.expiresAt && <p className="text-caption text-text-muted">{t("nbdListUntil", { date: day(n.expiresAt, locale) })}</p>}
             {!n.withdrawn && <p className="whitespace-pre-line text-body">{n.body}</p>}
             {grants.manage && !n.withdrawn && (
               <div className="flex flex-wrap gap-2">

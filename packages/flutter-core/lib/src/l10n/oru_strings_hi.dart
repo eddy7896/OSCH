@@ -4252,7 +4252,7 @@ class OruStringsHi extends OruStrings {
 
   @override
   String nbdReach(String parents, String students) {
-    return 'इससे $parents अभिभावक खाते को बताया जाएगा, $students छात्रों के लिए।';
+    return 'बताए जाने वाले अभिभावक खाते: $parents ($students छात्रों के लिए)।';
   }
 
   @override
@@ -4264,7 +4264,7 @@ class OruStringsHi extends OruStrings {
 
   @override
   String nbdPosted(String told) {
-    return 'पोस्ट हो गई। $told अभिभावक खाते को बताया गया।';
+    return 'पोस्ट हो गई। बताए गए अभिभावक खाते: $told।';
   }
 
   @override
@@ -4322,4 +4322,14 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get nbdCatTRANSPORT => 'परिवहन';
+
+  @override
+  String nbdListFrom(String date) {
+    return '$date से दिखाई जाएगी';
+  }
+
+  @override
+  String nbdListUntil(String date) {
+    return '$date को हटाई जाएगी';
+  }
 }

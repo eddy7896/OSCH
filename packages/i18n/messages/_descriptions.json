@@ -1245,5 +1245,7 @@
   "nbdCatEXAM": "Category of a notice board post.",
   "nbdCatEVENT": "Category of a notice board post.",
   "nbdCatFEES": "Category of a notice board post.",
-  "nbdCatTRANSPORT": "Category of a notice board post."
+  "nbdCatTRANSPORT": "Category of a notice board post.",
+  "nbdListFrom": "On a post: when it becomes visible to parents.",
+  "nbdListUntil": "On a post: when it stops being shown to parents."
 }
