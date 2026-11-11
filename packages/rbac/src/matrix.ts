@@ -81,7 +81,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     reports_finance: school("read", "export"),
     leave: school("read"), // [ASSUMED] needs approved unpaid leave to compute payroll deductions [GUARD §4]
     announcements: school("read"), // [ADR-0014 decision 11] every staff role reads announcements
-    notice_board: own("read", "create", "update"), // [ADR-0018 decision 5] the gateway narrows `own` to the Fees category
+    notice_board: [school("read"), own("read", "create", "update")], // [ADR-0018 decision 5] reads the whole board; posts and changes only Fees (the gateway narrows `own` to the category)
   },
 
   // [SSOT] Academic Admin: attendance + academics full CRUD; NO finance, settings.
@@ -147,7 +147,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     dashboard_operations: school("read"), // [DESIGN]
     transport: school(...CRUD_EXPORT), // [DESIGN] student manifests are reached through transport, not the students module
     announcements: school("read"), // [ASSUMED]
-    notice_board: own("read", "create", "update"), // [ADR-0018 decision 5] the gateway narrows `own` to the Transport category
+    notice_board: [school("read"), own("read", "create", "update")], // [ADR-0018 decision 5] reads the whole board; posts and changes only Transport (the gateway narrows `own` to the category)
   },
 
   // [DESIGN] ERP "Operations: Inventory, Assets, Procurement, Visitors".

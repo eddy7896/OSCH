@@ -232,6 +232,13 @@ describe("E-RBAC: matrix integrity", () => {
 describe("E-RBAC: navigation omits what you cannot read (design rule: never disabled)", () => {
   const keys = (role: Role) => navigationFor(as(role)).flatMap((s) => s.items.map((i) => i.key));
 
+  it("the notice board is in the menu of the roles that post to it, including the Bursar and the transport manager whose grant is narrowed to their own category", () => {
+    for (const role of ["PRINCIPAL", "ACADEMIC_ADMIN", "BURSAR", "TRANSPORT_MANAGER"] as Role[]) expect(keys(role), role).toContain("notice-board");
+    for (const role of ["TEACHER", "ACCOUNTANT", "HR_MANAGER", "SYSTEM_ADMIN"] as Role[]) expect(keys(role), role).not.toContain("notice-board");
+    expect(keys("PRINCIPAL")).toContain("message-reports");
+    expect(keys("ACADEMIC_ADMIN")).not.toContain("message-reports");
+  });
+
   it("Finance Admin sees finance/payroll/finance reports, and no academics/attendance/settings", () => {
     const k = keys("BURSAR");
     expect(k).toEqual(expect.arrayContaining(["dashboard-finance", "finance", "payroll", "reports-finance"]));

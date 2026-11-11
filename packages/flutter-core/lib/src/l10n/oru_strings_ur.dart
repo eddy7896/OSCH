@@ -4202,4 +4202,133 @@ class OruStringsUr extends OruStrings {
   String notifNoticePostedBody(String title) {
     return '$title';
   }
+
+  @override
+  String get navNoticeBoard => 'نوٹس بورڈ';
+
+  @override
+  String get nbdNote =>
+      'والدین کے لیے پوسٹ۔ پوسٹ لگتے ہی ہر والدین اکاؤنٹ کو ایک بار بتایا جاتا ہے۔ بعد کے لیے رکھی پوسٹ تب دکھائی دیتی ہے، مگر تب کسی کو بتایا نہیں جاتا۔';
+
+  @override
+  String get nbdPostTitle => 'نئی پوسٹ';
+
+  @override
+  String get nbdFieldTitle => 'عنوان';
+
+  @override
+  String get nbdFieldBody => 'متن';
+
+  @override
+  String get nbdCategory => 'زمرہ';
+
+  @override
+  String get nbdAudience => 'یہ کس کے لیے ہے';
+
+  @override
+  String get nbdAudAll => 'تمام والدین';
+
+  @override
+  String get nbdAudGrade => 'ایک درجہ';
+
+  @override
+  String get nbdAudClass => 'ایک جماعت';
+
+  @override
+  String get nbdGrade => 'درجہ';
+
+  @override
+  String get nbdClass => 'جماعت';
+
+  @override
+  String get nbdPinned => 'سب سے اوپر لگائیں';
+
+  @override
+  String get nbdPublishAt => 'سے دکھائیں (خالی کا مطلب ابھی)';
+
+  @override
+  String get nbdExpiresAt => 'کو ہٹائیں (اختیاری)';
+
+  @override
+  String nbdReach(String parents, String students) {
+    return 'جن والدین اکاؤنٹس کو بتایا جائے گا: $parents ($students طلبہ کے لیے)۔';
+  }
+
+  @override
+  String get nbdReachNone =>
+      'کسی کو نہیں بتایا جائے گا: ان طلبہ سے کوئی والدین اکاؤنٹ جڑا نہیں ہے۔';
+
+  @override
+  String get nbdPost => 'پوسٹ کریں';
+
+  @override
+  String nbdPosted(String told) {
+    return 'پوسٹ ہو گئی۔ جن والدین اکاؤنٹس کو بتایا گیا: $told۔';
+  }
+
+  @override
+  String get nbdNone => 'ابھی کچھ پوسٹ نہیں ہوا۔';
+
+  @override
+  String get nbdPin => 'اوپر لگائیں';
+
+  @override
+  String get nbdUnpin => 'اوپر سے ہٹائیں';
+
+  @override
+  String get nbdPinChanged => 'محفوظ ہو گیا۔';
+
+  @override
+  String get nbdWithdraw => 'واپس لیں';
+
+  @override
+  String get nbdWithdrawnOk => 'واپس لے لی گئی۔ والدین اب اسے نہیں دیکھتے۔';
+
+  @override
+  String get nbdStateLive => 'جاری';
+
+  @override
+  String get nbdStateScheduled => 'مقرر';
+
+  @override
+  String get nbdStateExpired => 'ختم';
+
+  @override
+  String get nbdStateWithdrawn => 'واپس لی گئی';
+
+  @override
+  String get nbdPinnedTag => 'اوپر لگی';
+
+  @override
+  String nbdFor(String target) {
+    return 'کے لیے: $target';
+  }
+
+  @override
+  String get nbdCatGENERAL => 'عمومی';
+
+  @override
+  String get nbdCatHOLIDAY => 'تعطیل';
+
+  @override
+  String get nbdCatEXAM => 'امتحان';
+
+  @override
+  String get nbdCatEVENT => 'تقریب';
+
+  @override
+  String get nbdCatFEES => 'فیس';
+
+  @override
+  String get nbdCatTRANSPORT => 'ٹرانسپورٹ';
+
+  @override
+  String nbdListFrom(String date) {
+    return '$date سے دکھائی جائے گی';
+  }
+
+  @override
+  String nbdListUntil(String date) {
+    return '$date کو ہٹائی جائے گی';
+  }
 }

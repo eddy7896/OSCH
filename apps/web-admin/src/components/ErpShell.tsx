@@ -13,6 +13,7 @@ import { Attendance } from "./screens/Attendance";
 import { StaffAttendance } from "./screens/StaffAttendance";
 import { Announcements } from "./screens/Announcements";
 import { MessageAudit } from "./screens/MessageAudit";
+import { NoticeBoard } from "./screens/NoticeBoard";
 import { MessageReports } from "./screens/MessageReports";
 import { Transport } from "./screens/Transport";
 import { Classes } from "./screens/Classes";
@@ -33,7 +34,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { NotificationBell } from "./NotificationBell";
 
 /** The navigation keys that have a screen. `announcements` has one too, but is left out on purpose: every staff role may read it, and a role whose work is in the phone apps (teacher, staff, driver) must still be told to use them, not be given only this page. */
-const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "leave", "student-leave", "substitution", "admissions", "staff", "payroll", "finance", "settings", "transport", "reports-finance", "reports-hr", "message-reports", "audit"]);
+const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "leave", "student-leave", "substitution", "admissions", "staff", "payroll", "finance", "settings", "transport", "reports-finance", "reports-hr", "message-reports", "audit", "notice-board"]);
 
 type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
@@ -110,6 +111,8 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
             <Transport grants={{ create: access.permissions["transport"]?.["create"] === "school", update: access.permissions["transport"]?.["update"] === "school", remove: access.permissions["transport"]?.["delete"] === "school" }} />
           ) : current === "announcements" ? (
             <Announcements grants={{ post: access.permissions["announcements"]?.["create"] === "school", withdraw: access.permissions["announcements"]?.["update"] === "school" }} />
+          ) : current === "notice-board" ? (
+            <NoticeBoard grants={{ post: Boolean(access.permissions["notice_board"]?.["create"]), manage: Boolean(access.permissions["notice_board"]?.["update"]), onlyCategory: access.permissions["notice_board"]?.["create"] === "own" ? (access.role === "BURSAR" ? "FEES" : "TRANSPORT") : null }} />
           ) : current === "message-reports" ? (
             <MessageReports grants={{ close: access.permissions["message_reports"]?.["update"] === "school" }} />
           ) : current === "audit" ? (

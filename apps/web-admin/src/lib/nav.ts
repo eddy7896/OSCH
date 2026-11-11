@@ -37,6 +37,7 @@ export const ITEM: Record<string, { label: string; icon: IconName }> = {
   recruitment: { label: "navRecruitment", icon: "user-plus" },
   finance: { label: "navFees", icon: "payments" },
   announcements: { label: "navAnnouncements", icon: "bell" },
+  "notice-board": { label: "navNoticeBoard", icon: "bell" },
   "message-reports": { label: "navMessageReports", icon: "bell" },
   transport: { label: "navTransport", icon: "bus" },
   operations: { label: "navOperations", icon: "grid" },

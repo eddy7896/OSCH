@@ -7429,6 +7429,240 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'{title}'**
   String notifNoticePostedBody(String title);
+
+  /// Navigation item and title of the school's notice board for parents.
+  ///
+  /// In en, this message translates to:
+  /// **'Notice board'**
+  String get navNoticeBoard;
+
+  /// Explains the notice board screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts for parents. Each parent account is told once when a post goes live. A post set for later is shown to parents then, but nobody is told when it appears.'**
+  String get nbdNote;
+
+  /// Heading of the form that posts to the notice board.
+  ///
+  /// In en, this message translates to:
+  /// **'New post'**
+  String get nbdPostTitle;
+
+  /// Label of the headline of a notice board post. It is also the text of the notice parents get.
+  ///
+  /// In en, this message translates to:
+  /// **'Headline'**
+  String get nbdFieldTitle;
+
+  /// Label of the words of a notice board post.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get nbdFieldBody;
+
+  /// Label of the category choice of a post.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get nbdCategory;
+
+  /// Label of the audience choice of a post.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is it for'**
+  String get nbdAudience;
+
+  /// Audience: every parent of the school.
+  ///
+  /// In en, this message translates to:
+  /// **'All parents'**
+  String get nbdAudAll;
+
+  /// Audience: the parents of one grade.
+  ///
+  /// In en, this message translates to:
+  /// **'A grade'**
+  String get nbdAudGrade;
+
+  /// Audience: the parents of one class.
+  ///
+  /// In en, this message translates to:
+  /// **'A class'**
+  String get nbdAudClass;
+
+  /// Label of the grade choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade'**
+  String get nbdGrade;
+
+  /// Label of the class choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Class'**
+  String get nbdClass;
+
+  /// Tick box: keep this post at the top of the list.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin to the top'**
+  String get nbdPinned;
+
+  /// Label of the date and time a post becomes visible.
+  ///
+  /// In en, this message translates to:
+  /// **'Show from (empty means now)'**
+  String get nbdPublishAt;
+
+  /// Label of the date and time a post stops being shown.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove on (optional)'**
+  String get nbdExpiresAt;
+
+  /// Shown before posting: how many parent accounts get a notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent accounts that will be told: {parents} (for {students} students).'**
+  String nbdReach(String parents, String students);
+
+  /// Shown before posting when the audience has no parent account.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody would be told: no parent account is linked to these students.'**
+  String get nbdReachNone;
+
+  /// Button that posts to the notice board.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get nbdPost;
+
+  /// Shown after a post. {told} is how many parent accounts got a notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Posted. Parent accounts told: {told}.'**
+  String nbdPosted(String told);
+
+  /// Shown when the notice board has no posts.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing posted yet.'**
+  String get nbdNone;
+
+  /// Button that pins a post.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin'**
+  String get nbdPin;
+
+  /// Button that unpins a post.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin'**
+  String get nbdUnpin;
+
+  /// Shown after pinning or unpinning.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved.'**
+  String get nbdPinChanged;
+
+  /// Button that takes a post down.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get nbdWithdraw;
+
+  /// Shown after a post was withdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawn. Parents no longer see it.'**
+  String get nbdWithdrawnOk;
+
+  /// State of a post that parents can see now.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get nbdStateLive;
+
+  /// State of a post that parents will see later.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get nbdStateScheduled;
+
+  /// State of a post whose end time has passed.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get nbdStateExpired;
+
+  /// State of a post that was taken down.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawn'**
+  String get nbdStateWithdrawn;
+
+  /// Tag on a pinned post.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get nbdPinnedTag;
+
+  /// Who a post is for. {target} is a grade or a class.
+  ///
+  /// In en, this message translates to:
+  /// **'For: {target}'**
+  String nbdFor(String target);
+
+  /// Category of a notice board post.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get nbdCatGENERAL;
+
+  /// Category of a notice board post.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday'**
+  String get nbdCatHOLIDAY;
+
+  /// Category of a notice board post.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam'**
+  String get nbdCatEXAM;
+
+  /// Category of a notice board post.
+  ///
+  /// In en, this message translates to:
+  /// **'Event'**
+  String get nbdCatEVENT;
+
+  /// Category of a notice board post.
+  ///
+  /// In en, this message translates to:
+  /// **'Fees'**
+  String get nbdCatFEES;
+
+  /// Category of a notice board post.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get nbdCatTRANSPORT;
+
+  /// On a post: when it becomes visible to parents.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown from {date}'**
+  String nbdListFrom(String date);
+
+  /// On a post: when it stops being shown to parents.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed on {date}'**
+  String nbdListUntil(String date);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {
