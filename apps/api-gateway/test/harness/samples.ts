@@ -204,6 +204,11 @@ const announcementOfA = async (w: World): Promise<Record<string, string>> => {
   await w.db.postAnnouncement({ schoolId: w.schools.A, id, title: 'Sample', body: 'Sample announcement.', notice: { title: 'Sample' }, actorId: w.roles.A.ACADEMIC_ADMIN.uid, details: {} });
   return { id: dash(id) };
 };
+const noticeOfA = async (w: World): Promise<Record<string, string>> => {
+  const id = randomUUID();
+  await w.db.postNotice({ schoolId: w.schools.A, id, title: 'Sample notice', body: 'Sample notice for parents.', audience: 'ALL_PARENTS' as never, category: 'GENERAL' as never, pinned: false, actorId: w.roles.A.ACADEMIC_ADMIN.uid, details: {} });
+  return { id: dash(id) };
+};
 /** Terms and exams (P3-5), made through the real operations: a term of the active year, an exam of a fresh class and subject, optionally with a student in the class. */
 const termOfA = async (w: World): Promise<Record<string, string>> => {
   const year = await activeYearOfA(w);
@@ -569,6 +574,9 @@ export const SAMPLES: Record<string, Sample> = {
   'PUT /transport/routes/:id/stops': { ...transportManagerOfA, prepare: routeOfA, body: () => ({ stops: [{ name: 'First stop' }, { name: 'Second stop' }] }) },
   'POST /announcements': { ...academicAdminOfA, body: () => ({ title: 'Staff meeting on Friday', body: 'All staff meet in the hall at 3 pm.' }) },
   'PATCH /announcements/:id': { ...principalOfA, prepare: announcementOfA, body: () => ({ title: 'Staff meeting moved', body: 'Now at 4 pm.' }) },
+  'POST /notice-board': { ...academicAdminOfA, body: () => ({ title: 'School closed on Monday', body: 'Reopens on Tuesday.', category: 'HOLIDAY', audience: 'ALL_PARENTS' }) },
+  'PATCH /notice-board/:id': { ...principalOfA, prepare: noticeOfA, body: () => ({ title: 'School closed on Tuesday', body: 'Reopens on Wednesday.', category: 'HOLIDAY', pinned: true }) },
+  'POST /notice-board/:id/withdraw': { ...academicAdminOfA, prepare: noticeOfA },
   'POST /announcements/:id/withdraw': { ...academicAdminOfA, prepare: announcementOfA },
   'PUT /school/geofence': { ...systemAdminOfA, body: () => ({ lat: 12.9716, lng: 77.5946, radiusM: 150 }) },
   'DELETE /school/geofence': { ...systemAdminOfA },

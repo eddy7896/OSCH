@@ -5797,5 +5797,18 @@
   "mauActBroadcast": "Class message",
   "@mauActBroadcast": {
     "description": "Kind of entry in the message audit trail."
+  },
+  "notifNoticePostedTitle": "New notice from the school",
+  "@notifNoticePostedTitle": {
+    "description": "Title of the notice a parent gets when the school posts to the notice board."
+  },
+  "notifNoticePostedBody": "{title}",
+  "@notifNoticePostedBody": {
+    "description": "Text of that notice: the headline of the post. {title} is what the school wrote.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -3069,6 +3069,47 @@
         ],
         "type": "object"
       },
+      "EditNoticeDto": {
+        "properties": {
+          "body": {
+            "maxLength": 5000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "GENERAL",
+              "HOLIDAY",
+              "EXAM",
+              "EVENT",
+              "FEES",
+              "TRANSPORT"
+            ],
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "publishAt": {
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "body",
+          "category",
+          "pinned"
+        ],
+        "type": "object"
+      },
       "ErrorEnvelope": {
         "properties": {
           "error": {
@@ -4912,6 +4953,122 @@
         ],
         "type": "object"
       },
+      "NoticeDto": {
+        "properties": {
+          "audience": {
+            "enum": [
+              "ALL_PARENTS",
+              "GRADE",
+              "CLASS"
+            ],
+            "type": "string"
+          },
+          "author": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "type": "object"
+          },
+          "body": {
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "GENERAL",
+              "HOLIDAY",
+              "EXAM",
+              "EVENT",
+              "FEES",
+              "TRANSPORT"
+            ],
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "publishAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "EXPIRED",
+              "SCHEDULED",
+              "LIVE",
+              "WITHDRAWN"
+            ],
+            "type": "string"
+          },
+          "target": {
+            "nullable": true,
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "told": {
+            "nullable": true,
+            "type": "number"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "withdrawn": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "body",
+          "category",
+          "audience",
+          "pinned",
+          "publishAt",
+          "expiresAt",
+          "target",
+          "author",
+          "createdAt",
+          "updatedAt",
+          "withdrawn",
+          "state",
+          "told"
+        ],
+        "type": "object"
+      },
+      "NoticeListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NoticeDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "NotificationDto": {
         "properties": {
           "body": {
@@ -5625,6 +5782,61 @@
         ],
         "type": "object"
       },
+      "PostNoticeDto": {
+        "properties": {
+          "audience": {
+            "enum": [
+              "ALL_PARENTS",
+              "GRADE",
+              "CLASS"
+            ],
+            "type": "string"
+          },
+          "body": {
+            "maxLength": 5000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "GENERAL",
+              "HOLIDAY",
+              "EXAM",
+              "EVENT",
+              "FEES",
+              "TRANSPORT"
+            ],
+            "type": "string"
+          },
+          "classId": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "gradeLevelId": {
+            "type": "string"
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "publishAt": {
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "body",
+          "category",
+          "audience"
+        ],
+        "type": "object"
+      },
       "PreferenceDto": {
         "properties": {
           "enabled": {
@@ -5828,6 +6040,21 @@
           "name",
           "subDomain",
           "defaultLanguage"
+        ],
+        "type": "object"
+      },
+      "ReachDto": {
+        "properties": {
+          "parents": {
+            "type": "number"
+          },
+          "students": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "parents",
+          "students"
         ],
         "type": "object"
       },
@@ -20093,6 +20320,396 @@
         "x-permission": {
           "action": "update",
           "resource": "messages"
+        }
+      }
+    },
+    "/v1/notice-board": {
+      "get": {
+        "operationId": "NoticeBoard_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "NoticeBoard"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "notice_board"
+        }
+      },
+      "post": {
+        "operationId": "NoticeBoard_post",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostNoticeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "NoticeBoard"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "notice.post",
+          "operation": "PostNotice"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "notice_board"
+        }
+      }
+    },
+    "/v1/notice-board/reach": {
+      "get": {
+        "operationId": "NoticeBoard_reach",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "audience",
+            "required": true,
+            "schema": {
+              "enum": [
+                "ALL_PARENTS",
+                "GRADE",
+                "CLASS"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "gradeLevelId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "classId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReachDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "NoticeBoard"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "create",
+          "resource": "notice_board"
+        }
+      }
+    },
+    "/v1/notice-board/{id}": {
+      "get": {
+        "operationId": "NoticeBoard_one",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "NoticeBoard"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "notice_board"
+        }
+      },
+      "patch": {
+        "operationId": "NoticeBoard_edit",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditNoticeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "NoticeBoard"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "notice.edit",
+          "operation": "EditNotice"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "notice_board"
+        }
+      }
+    },
+    "/v1/notice-board/{id}/withdraw": {
+      "post": {
+        "operationId": "NoticeBoard_withdraw",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "NoticeBoard"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "announcement.withdraw",
+          "operation": "WithdrawAnnouncement"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "notice_board"
         }
       }
     },

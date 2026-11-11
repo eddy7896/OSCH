@@ -922,6 +922,42 @@ export const ROUTES: readonly RouteInfo[] = [
   },
   {
     "method": "POST",
+    "path": "/v1/notice-board/{id}/withdraw",
+    "access": "tenant",
+    "operationId": "NoticeBoard_withdraw"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/notice-board/{id}",
+    "access": "tenant",
+    "operationId": "NoticeBoard_one"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/notice-board/{id}",
+    "access": "tenant",
+    "operationId": "NoticeBoard_edit"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/notice-board/reach",
+    "access": "tenant",
+    "operationId": "NoticeBoard_reach"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/notice-board",
+    "access": "tenant",
+    "operationId": "NoticeBoard_list"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/notice-board",
+    "access": "tenant",
+    "operationId": "NoticeBoard_post"
+  },
+  {
+    "method": "POST",
     "path": "/v1/notifications/{id}/read",
     "access": "tenant",
     "operationId": "Notifications_read"

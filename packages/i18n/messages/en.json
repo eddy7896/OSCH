@@ -1205,5 +1205,7 @@
   "mauActHide": "Message hidden",
   "mauActReport": "Message reported",
   "mauActReview": "Report closed",
-  "mauActBroadcast": "Class message"
+  "mauActBroadcast": "Class message",
+  "notifNoticePostedTitle": "New notice from the school",
+  "notifNoticePostedBody": "{title}"
 }

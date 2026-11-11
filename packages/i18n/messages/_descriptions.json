@@ -1206,5 +1206,7 @@
   "mauActHide": "Kind of entry in the message audit trail.",
   "mauActReport": "Kind of entry in the message audit trail.",
   "mauActReview": "Kind of entry in the message audit trail.",
-  "mauActBroadcast": "Kind of entry in the message audit trail."
+  "mauActBroadcast": "Kind of entry in the message audit trail.",
+  "notifNoticePostedTitle": "Title of the notice a parent gets when the school posts to the notice board.",
+  "notifNoticePostedBody": "Text of that notice: the headline of the post. {title} is what the school wrote."
 }

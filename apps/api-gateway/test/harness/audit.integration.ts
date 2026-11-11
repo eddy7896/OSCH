@@ -59,7 +59,7 @@ describe.skipIf(!ready)('E-AUD-1 runtime: every audited write adds its audit row
       const before = await count();
       // The Principal holds no write grants (except to approve); for the route the Principal may call, an Accountant (no payroll, no HR) is the outsider.
       // (The Principal may also write announcements, ADR-0014 decision 11, and send to a class, ADR-0018 decision 3, so for those routes the Accountant is the outsider too.)
-      const outsider = sample.actor(w!, ctx) === w!.roles.A.PRINCIPAL.uid || route.audit!.action.startsWith('announcement.') || route.audit!.action.startsWith('broadcast.') ? w!.roles.A.ACCOUNTANT : w!.roles.A.PRINCIPAL;
+      const outsider = sample.actor(w!, ctx) === w!.roles.A.PRINCIPAL.uid || route.audit!.action.startsWith('announcement.') || route.audit!.action.startsWith('broadcast.') || route.audit!.action.startsWith('notice.') ? w!.roles.A.ACCOUNTANT : w!.roles.A.PRINCIPAL;
       const res = await send(route, outsider.token, w!.schools.A, ctx, (await sample.body?.(w!, ctx)) ?? {});
       expect(res.status).toBe(sample.refusedStatus ?? 403);
       expect(await count()).toBe(before);

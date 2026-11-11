@@ -7417,6 +7417,18 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Class message'**
   String get mauActBroadcast;
+
+  /// Title of the notice a parent gets when the school posts to the notice board.
+  ///
+  /// In en, this message translates to:
+  /// **'New notice from the school'**
+  String get notifNoticePostedTitle;
+
+  /// Text of that notice: the headline of the post. {title} is what the school wrote.
+  ///
+  /// In en, this message translates to:
+  /// **'{title}'**
+  String notifNoticePostedBody(String title);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

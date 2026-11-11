@@ -629,13 +629,13 @@ query GetSchoolGeofence($schoolId: UUID!) @auth(level: NO_ACCESS) {
 
 # ---- Announcements (P4-S4)
 query ListAnnouncements($schoolId: UUID!, $updatedSince: Timestamp) @auth(level: NO_ACCESS) {
-  announcements(where: {schoolId: {eq: $schoolId}, updatedAt: {ge: $updatedSince}}, orderBy: [{createdAt: DESC}], limit: 200) {
+  announcements(where: {schoolId: {eq: $schoolId}, audience: {eq: STAFF}, updatedAt: {ge: $updatedSince}}, orderBy: [{createdAt: DESC}], limit: 200) {
     id title body createdAt updatedAt withdrawnAt author { id displayName email }
   }
 }
 
 query GetAnnouncement($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
-  announcements(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+  announcements(where: {schoolId: {eq: $schoolId}, id: {eq: $id}, audience: {eq: STAFF}}, limit: 1) {
     id title body createdAt updatedAt withdrawnAt author { id displayName email }
   }
 }
@@ -843,4 +843,28 @@ query GetMessageReport($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
     reportedBy { id displayName email }
     message { id body hiddenAt createdAt sender { id displayName email } conversation { id student { id firstName lastName } staffUser { id displayName email } guardianUser { id displayName email } } }
   }
+}
+
+# ---- Notice board (P5-8a, ADR-0018). The parents' posts are announcements whose audience is not STAFF.
+query ListNotices($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  announcements(where: {schoolId: {eq: $schoolId}, audience: {in: [ALL_PARENTS, GRADE, CLASS]}}, orderBy: [{createdAt: DESC}], limit: 300) {
+    id title body category audience pinned publishAt expiresAt createdAt updatedAt withdrawnAt
+    author { id displayName email }
+    gradeLevel { id name }
+    classroom { id name gradeLevel { id } }
+  }
+}
+
+query GetNotice($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  announcements(where: {schoolId: {eq: $schoolId}, id: {eq: $id}, audience: {in: [ALL_PARENTS, GRADE, CLASS]}}, limit: 1) {
+    id title body category audience pinned publishAt expiresAt createdAt updatedAt withdrawnAt
+    author { id displayName email }
+    gradeLevel { id name }
+    classroom { id name gradeLevel { id } }
+  }
+}
+
+# Every parent account of the school with the students they are linked to (who a notice for all parents reaches).
+query ListParentLinks($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  parentLinks(where: {schoolId: {eq: $schoolId}}, limit: 5000) { studentId user { id } }
 }

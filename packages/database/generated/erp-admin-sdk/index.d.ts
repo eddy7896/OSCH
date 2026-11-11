@@ -71,6 +71,20 @@ export enum MembershipStatus {
   ACTIVE = "ACTIVE",
   SUSPENDED = "SUSPENDED",
 }
+export enum NoticeAudience {
+  STAFF = "STAFF",
+  ALL_PARENTS = "ALL_PARENTS",
+  GRADE = "GRADE",
+  CLASS = "CLASS",
+}
+export enum NoticeCategory {
+  GENERAL = "GENERAL",
+  HOLIDAY = "HOLIDAY",
+  EXAM = "EXAM",
+  EVENT = "EVENT",
+  FEES = "FEES",
+  TRANSPORT = "TRANSPORT",
+}
 export enum PaymentMethod {
   CASH = "CASH",
   CHEQUE = "CHEQUE",
@@ -2733,6 +2747,32 @@ export interface EditAnnouncementVariables {
   details?: unknown | null;
 }
 
+export interface EditNoticeData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    row: ({
+      id: UUIDString;
+    } & Announcement_Key)[];
+  };
+  announcement_update?: Announcement_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface EditNoticeVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  title: string;
+  body: string;
+  category: NoticeCategory;
+  pinned: boolean;
+  publishAt?: TimestampString | null;
+  expiresAt?: TimestampString | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface EditResourceCommentData {
   query?: {
     comment: ({
@@ -3388,6 +3428,43 @@ export interface GetMessageReportVariables {
 }
 
 export interface GetMessageVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
+export interface GetNoticeData {
+  announcements: ({
+    id: UUIDString;
+    title: string;
+    body: string;
+    category: NoticeCategory;
+    audience: NoticeAudience;
+    pinned: boolean;
+    publishAt?: TimestampString | null;
+    expiresAt?: TimestampString | null;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    withdrawnAt?: TimestampString | null;
+    author: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    gradeLevel?: {
+      id: UUIDString;
+      name: string;
+    } & GradeLevel_Key;
+    classroom?: {
+      id: UUIDString;
+      name: string;
+      gradeLevel: {
+        id: UUIDString;
+      } & GradeLevel_Key;
+    } & Classroom_Key;
+  } & Announcement_Key)[];
+}
+
+export interface GetNoticeVariables {
   schoolId: UUIDString;
   id: UUIDString;
 }
@@ -4854,6 +4931,42 @@ export interface ListMessagesVariables {
   limit: number;
 }
 
+export interface ListNoticesData {
+  announcements: ({
+    id: UUIDString;
+    title: string;
+    body: string;
+    category: NoticeCategory;
+    audience: NoticeAudience;
+    pinned: boolean;
+    publishAt?: TimestampString | null;
+    expiresAt?: TimestampString | null;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
+    withdrawnAt?: TimestampString | null;
+    author: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    gradeLevel?: {
+      id: UUIDString;
+      name: string;
+    } & GradeLevel_Key;
+    classroom?: {
+      id: UUIDString;
+      name: string;
+      gradeLevel: {
+        id: UUIDString;
+      } & GradeLevel_Key;
+    } & Classroom_Key;
+  } & Announcement_Key)[];
+}
+
+export interface ListNoticesVariables {
+  schoolId: UUIDString;
+}
+
 export interface ListNotificationMutesData {
   notificationMutes: ({
     category: string;
@@ -4885,6 +4998,19 @@ export interface ListNotificationsVariables {
   role: SchoolRole;
   limit: number;
   updatedSince?: TimestampString | null;
+}
+
+export interface ListParentLinksData {
+  parentLinks: ({
+    studentId: UUIDString;
+    user: {
+      id: string;
+    } & User_Key;
+  })[];
+}
+
+export interface ListParentLinksVariables {
+  schoolId: UUIDString;
 }
 
 export interface ListPayrollRunsData {
@@ -5657,6 +5783,28 @@ export interface Notification_Key {
   __typename?: 'Notification_Key';
 }
 
+export interface NotifyNoticeParentData {
+  query?: {
+    row: ({
+      id: UUIDString;
+    } & Announcement_Key)[];
+    parent: ({
+      userId: string;
+    })[];
+  };
+  n1: Notification_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface NotifyNoticeParentVariables {
+  schoolId: UUIDString;
+  announcementId: UUIDString;
+  recipientUserId: string;
+  params?: unknown | null;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface NotifyResourceCommentData {
   query?: {
     comment: ({
@@ -5909,6 +6057,32 @@ export interface PostAnnouncementVariables {
   title: string;
   body: string;
   notice: unknown;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface PostNoticeData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  announcement_insert: Announcement_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface PostNoticeVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+  title: string;
+  body: string;
+  audience: NoticeAudience;
+  category: NoticeCategory;
+  pinned: boolean;
+  publishAt?: TimestampString | null;
+  expiresAt?: TimestampString | null;
+  gradeLevelId?: UUIDString | null;
+  classroomId?: UUIDString | null;
   actorId: string;
   details?: unknown | null;
 }
@@ -8741,6 +8915,21 @@ export function recordMessageAuditRead(dc: DataConnect, vars: RecordMessageAudit
 /** Generated Node Admin SDK operation action function for the 'RecordMessageAuditRead' Mutation. Allow users to pass in custom DataConnect instances. */
 export function recordMessageAuditRead(vars: RecordMessageAuditReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordMessageAuditReadData>>;
 
+/** Generated Node Admin SDK operation action function for the 'PostNotice' Mutation. Allow users to execute without passing in DataConnect. */
+export function postNotice(dc: DataConnect, vars: PostNoticeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PostNoticeData>>;
+/** Generated Node Admin SDK operation action function for the 'PostNotice' Mutation. Allow users to pass in custom DataConnect instances. */
+export function postNotice(vars: PostNoticeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<PostNoticeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'EditNotice' Mutation. Allow users to execute without passing in DataConnect. */
+export function editNotice(dc: DataConnect, vars: EditNoticeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EditNoticeData>>;
+/** Generated Node Admin SDK operation action function for the 'EditNotice' Mutation. Allow users to pass in custom DataConnect instances. */
+export function editNotice(vars: EditNoticeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<EditNoticeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'NotifyNoticeParent' Mutation. Allow users to execute without passing in DataConnect. */
+export function notifyNoticeParent(dc: DataConnect, vars: NotifyNoticeParentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<NotifyNoticeParentData>>;
+/** Generated Node Admin SDK operation action function for the 'NotifyNoticeParent' Mutation. Allow users to pass in custom DataConnect instances. */
+export function notifyNoticeParent(vars: NotifyNoticeParentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<NotifyNoticeParentData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -9465,4 +9654,19 @@ export function listMessageReports(vars: ListMessageReportsVariables, options?: 
 export function getMessageReport(dc: DataConnect, vars: GetMessageReportVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMessageReportData>>;
 /** Generated Node Admin SDK operation action function for the 'GetMessageReport' Query. Allow users to pass in custom DataConnect instances. */
 export function getMessageReport(vars: GetMessageReportVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMessageReportData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListNotices' Query. Allow users to execute without passing in DataConnect. */
+export function listNotices(dc: DataConnect, vars: ListNoticesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListNoticesData>>;
+/** Generated Node Admin SDK operation action function for the 'ListNotices' Query. Allow users to pass in custom DataConnect instances. */
+export function listNotices(vars: ListNoticesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListNoticesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetNotice' Query. Allow users to execute without passing in DataConnect. */
+export function getNotice(dc: DataConnect, vars: GetNoticeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetNoticeData>>;
+/** Generated Node Admin SDK operation action function for the 'GetNotice' Query. Allow users to pass in custom DataConnect instances. */
+export function getNotice(vars: GetNoticeVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetNoticeData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListParentLinks' Query. Allow users to execute without passing in DataConnect. */
+export function listParentLinks(dc: DataConnect, vars: ListParentLinksVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListParentLinksData>>;
+/** Generated Node Admin SDK operation action function for the 'ListParentLinks' Query. Allow users to pass in custom DataConnect instances. */
+export function listParentLinks(vars: ListParentLinksVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListParentLinksData>>;
 

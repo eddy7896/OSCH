@@ -13,6 +13,7 @@ export const KINDS: Readonly<Record<string, KindInfo>> = {
   'leave.payroll': { category: 'payroll', title: 'notifLeavePayrollTitle', body: 'notifLeavePayrollBody' },
   'substitution.assigned': { category: 'substitution', title: 'notifSubstitutionAssignedTitle', body: 'notifSubstitutionAssignedBody' },
   'announcement.posted': { category: 'announcement', title: 'notifAnnouncementPostedTitle', body: 'notifAnnouncementPostedBody' },
+  'notice.posted': { category: 'announcement', title: 'notifNoticePostedTitle', body: 'notifNoticePostedBody' },
   'studentleave.requested': { category: 'studentleave', title: 'notifStudentleaveRequestedTitle', body: 'notifStudentleaveRequestedBody' },
   'studentleave.approved': { category: 'studentleave', title: 'notifStudentleaveApprovedTitle', body: 'notifStudentleaveApprovedBody' },
   'studentleave.declined': { category: 'studentleave', title: 'notifStudentleaveDeclinedTitle', body: 'notifStudentleaveDeclinedBody' },
