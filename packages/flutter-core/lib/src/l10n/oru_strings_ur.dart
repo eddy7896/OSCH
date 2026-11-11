@@ -4194,4 +4194,12 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get mauActBroadcast => 'جماعت کا پیغام';
+
+  @override
+  String get notifNoticePostedTitle => 'اسکول کی طرف سے نیا نوٹس';
+
+  @override
+  String notifNoticePostedBody(String title) {
+    return '$title';
+  }
 }

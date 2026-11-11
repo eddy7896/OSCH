@@ -1206,5 +1206,7 @@
   "mauActHide": "संदेश छिपाया गया",
   "mauActReport": "संदेश की रिपोर्ट हुई",
   "mauActReview": "रिपोर्ट बंद हुई",
-  "mauActBroadcast": "कक्षा संदेश"
+  "mauActBroadcast": "कक्षा संदेश",
+  "notifNoticePostedTitle": "स्कूल की ओर से नई सूचना",
+  "notifNoticePostedBody": "{title}"
 }

@@ -1743,3 +1743,32 @@ mutation RecordMessageAuditRead($schoolId: UUID!, $actorId: String!, $details: A
   }
   auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "audit.messages.read", entityType: "AuditLog", details: $details })
 }
+
+# ---- Notice board (P5-8a, ADR-0018 decisions 5 and 8)
+# A post for parents. The gateway has decided the audience and the category the poster may use (the Bursar only Fees, the transport manager only Transport); the database checks the role.
+mutation PostNotice($schoolId: UUID!, $id: UUID!, $title: String!, $body: String!, $audience: NoticeAudience!, $category: NoticeCategory!, $pinned: Boolean!, $publishAt: Timestamp, $expiresAt: Timestamp, $gradeLevelId: UUID, $classroomId: UUID, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {in: [PRINCIPAL, ACADEMIC_ADMIN, BURSAR, TRANSPORT_MANAGER]}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal, the Academic admin, the Bursar or the transport manager can post to the notice board") { userId }
+  }
+  announcement_insert(data: { id: $id, schoolId: $schoolId, title: $title, body: $body, authorId: $actorId, audience: $audience, category: $category, pinned: $pinned, publishAt: $publishAt, expiresAt: $expiresAt, gradeLevelId: $gradeLevelId, classroomId: $classroomId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "notice.post", entityType: "Announcement", entityId_expr: "request.variables.id", details: $details })
+}
+
+mutation EditNotice($schoolId: UUID!, $id: UUID!, $title: String!, $body: String!, $category: NoticeCategory!, $pinned: Boolean!, $publishAt: Timestamp, $expiresAt: Timestamp, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $actorId}, schoolRole: {in: [PRINCIPAL, ACADEMIC_ADMIN, BURSAR, TRANSPORT_MANAGER]}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only the Principal, the Academic admin, the Bursar or the transport manager can change the notice board") { userId }
+    row: announcements(where: {id: {eq: $id}, schoolId: {eq: $schoolId}, audience: {in: [ALL_PARENTS, GRADE, CLASS]}, withdrawnAt: {isNull: true}}) @check(expr: "this.size() == 1", message: "notice not found in this school, or withdrawn") { id }
+  }
+  announcement_update(id: $id, data: { title: $title, body: $body, category: $category, pinned: $pinned, publishAt: $publishAt, expiresAt: $expiresAt, updatedAt_expr: "request.time" })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "notice.edit", entityType: "Announcement", entityId_expr: "request.variables.id", details: $details })
+}
+
+# One parent account is told about a notice (written one by one after the post: a database operation cannot loop).
+mutation NotifyNoticeParent($schoolId: UUID!, $announcementId: UUID!, $recipientUserId: String!, $params: Any, $actorId: String!, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    row: announcements(where: {id: {eq: $announcementId}, schoolId: {eq: $schoolId}, authorId: {eq: $actorId}, audience: {in: [ALL_PARENTS, GRADE, CLASS]}}) @check(expr: "this.size() == 1", message: "notice not found, or not yours") { id }
+    parent: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $recipientUserId}, schoolRole: {eq: PARENT}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "that is not a parent of this school") { userId }
+  }
+  n1: notification_insert(data: { schoolId: $schoolId, kind: "notice.posted", params: $params, entityType: "Announcement", entityId_expr: "request.variables.announcementId", recipientUserId: $recipientUserId })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $actorId, action: "notice.notify", entityType: "Announcement", entityId_expr: "request.variables.announcementId", details: $details })
+}

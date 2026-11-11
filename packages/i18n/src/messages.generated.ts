@@ -1211,7 +1211,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mauActHide": "Message hidden",
     "mauActReport": "Message reported",
     "mauActReview": "Report closed",
-    "mauActBroadcast": "Class message"
+    "mauActBroadcast": "Class message",
+    "notifNoticePostedTitle": "New notice from the school",
+    "notifNoticePostedBody": "{title}"
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2420,7 +2422,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mauActHide": "संदेश छिपाया गया",
     "mauActReport": "संदेश की रिपोर्ट हुई",
     "mauActReview": "रिपोर्ट बंद हुई",
-    "mauActBroadcast": "कक्षा संदेश"
+    "mauActBroadcast": "कक्षा संदेश",
+    "notifNoticePostedTitle": "स्कूल की ओर से नई सूचना",
+    "notifNoticePostedBody": "{title}"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3629,7 +3633,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mauActHide": "پیغام چھپایا گیا",
     "mauActReport": "پیغام کی رپورٹ ہوئی",
     "mauActReview": "رپورٹ بند ہوئی",
-    "mauActBroadcast": "جماعت کا پیغام"
+    "mauActBroadcast": "جماعت کا پیغام",
+    "notifNoticePostedTitle": "اسکول کی طرف سے نیا نوٹس",
+    "notifNoticePostedBody": "{title}"
   },
   "ks": {},
   "sd": {},

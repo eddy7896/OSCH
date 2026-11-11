@@ -667,12 +667,23 @@ type NotificationRead @table(key: ["notification", "user"]) {
 
 # An announcement from the school to its staff (P4-S4): written by the Principal or the Academic admin on the web, read by every staff role, delivered as a notice per role in the
 # same transaction. Withdrawing keeps the row (a phone that has it must hear that it is gone) and clears nothing: the gateway shows a withdrawn one without its words.
+# Who an announcement is for. STAFF is the staff announcements of P4-S4; the others are the parents' notice board (P5-8, ADR-0018 decision 8).
+enum NoticeAudience { STAFF ALL_PARENTS GRADE CLASS }
+enum NoticeCategory { GENERAL HOLIDAY EXAM EVENT FEES TRANSPORT }
+
 type Announcement @table {
   id: UUID! @default(expr: "uuidV4()")
   school: School!
   title: String!
   body: String!
   author: User!
+  audience: NoticeAudience! @default(value: STAFF)
+  category: NoticeCategory! @default(value: GENERAL)
+  pinned: Boolean! @default(value: false)
+  publishAt: Timestamp # null: visible at once
+  expiresAt: Timestamp # null: never expires
+  gradeLevel: GradeLevel # the audience GRADE
+  classroom: Classroom # the audience CLASS
   withdrawnAt: Timestamp
   createdAt: Timestamp! @default(expr: "request.time")
   updatedAt: Timestamp! @default(expr: "request.time")

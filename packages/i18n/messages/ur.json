@@ -1205,5 +1205,7 @@
   "mauActHide": "پیغام چھپایا گیا",
   "mauActReport": "پیغام کی رپورٹ ہوئی",
   "mauActReview": "رپورٹ بند ہوئی",
-  "mauActBroadcast": "جماعت کا پیغام"
+  "mauActBroadcast": "جماعت کا پیغام",
+  "notifNoticePostedTitle": "اسکول کی طرف سے نیا نوٹس",
+  "notifNoticePostedBody": "{title}"
 }

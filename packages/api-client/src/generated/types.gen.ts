@@ -787,6 +787,15 @@ export type EditCommentDto = {
     body: string;
 };
 
+export type EditNoticeDto = {
+    body: string;
+    category: 'GENERAL' | 'HOLIDAY' | 'EXAM' | 'EVENT' | 'FEES' | 'TRANSPORT';
+    expiresAt?: string;
+    pinned: boolean;
+    publishAt?: string;
+    title: string;
+};
+
 export type ErrorEnvelope = {
     error: {
         /**
@@ -1282,6 +1291,31 @@ export type NewInstalmentDto = {
     label?: string;
 };
 
+export type NoticeDto = {
+    audience: 'ALL_PARENTS' | 'GRADE' | 'CLASS';
+    author: {
+        id: string;
+        name: string;
+    };
+    body: string;
+    category: 'GENERAL' | 'HOLIDAY' | 'EXAM' | 'EVENT' | 'FEES' | 'TRANSPORT';
+    createdAt: string;
+    expiresAt: string | null;
+    id: string;
+    pinned: boolean;
+    publishAt: string | null;
+    state: 'EXPIRED' | 'SCHEDULED' | 'LIVE' | 'WITHDRAWN';
+    target: string | null;
+    title: string;
+    told: number | null;
+    updatedAt: string;
+    withdrawn: boolean;
+};
+
+export type NoticeListDto = {
+    items: Array<NoticeDto>;
+};
+
 export type NotificationDto = {
     body: string;
     category: string;
@@ -1468,6 +1502,18 @@ export type PositionDto = {
     lng: number;
 };
 
+export type PostNoticeDto = {
+    audience: 'ALL_PARENTS' | 'GRADE' | 'CLASS';
+    body: string;
+    category: 'GENERAL' | 'HOLIDAY' | 'EXAM' | 'EVENT' | 'FEES' | 'TRANSPORT';
+    classId?: string;
+    expiresAt?: string;
+    gradeLevelId?: string;
+    pinned?: boolean;
+    publishAt?: string;
+    title: string;
+};
+
 export type PreferenceDto = {
     enabled: boolean;
 };
@@ -1524,6 +1570,11 @@ export type PublicSchoolDto = {
     id: string;
     name: string;
     subDomain: string;
+};
+
+export type ReachDto = {
+    parents: number;
+    students: number;
 };
 
 export type ReadAllDto = {
@@ -9070,6 +9121,256 @@ export type MessagesReadResponses = {
 };
 
 export type MessagesReadResponse = MessagesReadResponses[keyof MessagesReadResponses];
+
+export type NoticeBoardListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/notice-board';
+};
+
+export type NoticeBoardListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NoticeBoardListError = NoticeBoardListErrors[keyof NoticeBoardListErrors];
+
+export type NoticeBoardListResponses = {
+    200: NoticeListDto;
+};
+
+export type NoticeBoardListResponse = NoticeBoardListResponses[keyof NoticeBoardListResponses];
+
+export type NoticeBoardPostData = {
+    body: PostNoticeDto;
+    path?: never;
+    query?: never;
+    url: '/v1/notice-board';
+};
+
+export type NoticeBoardPostErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NoticeBoardPostError = NoticeBoardPostErrors[keyof NoticeBoardPostErrors];
+
+export type NoticeBoardPostResponses = {
+    201: NoticeDto;
+};
+
+export type NoticeBoardPostResponse = NoticeBoardPostResponses[keyof NoticeBoardPostResponses];
+
+export type NoticeBoardReachData = {
+    body?: never;
+    path?: never;
+    query: {
+        audience: 'ALL_PARENTS' | 'GRADE' | 'CLASS';
+        gradeLevelId?: string;
+        classId?: string;
+    };
+    url: '/v1/notice-board/reach';
+};
+
+export type NoticeBoardReachErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NoticeBoardReachError = NoticeBoardReachErrors[keyof NoticeBoardReachErrors];
+
+export type NoticeBoardReachResponses = {
+    200: ReachDto;
+};
+
+export type NoticeBoardReachResponse = NoticeBoardReachResponses[keyof NoticeBoardReachResponses];
+
+export type NoticeBoardOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/notice-board/{id}';
+};
+
+export type NoticeBoardOneErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NoticeBoardOneError = NoticeBoardOneErrors[keyof NoticeBoardOneErrors];
+
+export type NoticeBoardOneResponses = {
+    200: NoticeDto;
+};
+
+export type NoticeBoardOneResponse = NoticeBoardOneResponses[keyof NoticeBoardOneResponses];
+
+export type NoticeBoardEditData = {
+    body: EditNoticeDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/notice-board/{id}';
+};
+
+export type NoticeBoardEditErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NoticeBoardEditError = NoticeBoardEditErrors[keyof NoticeBoardEditErrors];
+
+export type NoticeBoardEditResponses = {
+    200: NoticeDto;
+};
+
+export type NoticeBoardEditResponse = NoticeBoardEditResponses[keyof NoticeBoardEditResponses];
+
+export type NoticeBoardWithdrawData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/notice-board/{id}/withdraw';
+};
+
+export type NoticeBoardWithdrawErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type NoticeBoardWithdrawError = NoticeBoardWithdrawErrors[keyof NoticeBoardWithdrawErrors];
+
+export type NoticeBoardWithdrawResponses = {
+    200: NoticeDto;
+};
+
+export type NoticeBoardWithdrawResponse = NoticeBoardWithdrawResponses[keyof NoticeBoardWithdrawResponses];
 
 export type NotificationsListData = {
     body?: never;

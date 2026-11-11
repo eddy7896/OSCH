@@ -24,6 +24,7 @@ import { NotificationsModule } from './notifications/notifications.module.js';
 import { AnnouncementsModule } from './announcements/announcements.module.js';
 import { TransportModule } from './transport/transport.module.js';
 import { BroadcastsModule } from './broadcasts/broadcasts.module.js';
+import { NoticeBoardModule } from './noticeboard/noticeboard.module.js';
 import { MessagingModule } from './messaging/messaging.module.js';
 import { ResourcesModule } from './resources/resources.module.js';
 import { StudentLeaveModule } from './student-leave/student-leave.module.js';
@@ -96,6 +97,7 @@ import { HealthModule } from './health/health.module.js';
     ResourcesModule,
     MessagingModule,
     BroadcastsModule,
+    NoticeBoardModule,
     DevicesModule,
     PushModule,
     SyncModule,

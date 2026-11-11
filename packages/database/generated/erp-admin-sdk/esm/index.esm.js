@@ -76,6 +76,22 @@ export const MembershipStatus = {
   SUSPENDED: "SUSPENDED",
 }
 
+export const NoticeAudience = {
+  STAFF: "STAFF",
+  ALL_PARENTS: "ALL_PARENTS",
+  GRADE: "GRADE",
+  CLASS: "CLASS",
+}
+
+export const NoticeCategory = {
+  GENERAL: "GENERAL",
+  HOLIDAY: "HOLIDAY",
+  EXAM: "EXAM",
+  EVENT: "EVENT",
+  FEES: "FEES",
+  TRANSPORT: "TRANSPORT",
+}
+
 export const PaymentMethod = {
   CASH: "CASH",
   CHEQUE: "CHEQUE",
@@ -1227,6 +1243,24 @@ export function recordMessageAuditRead(dcOrVarsOrOptions, varsOrOptions, options
   return dcInstance.executeMutation('RecordMessageAuditRead', inputVars, inputOpts);
 }
 
+export function postNotice(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('PostNotice', inputVars, inputOpts);
+}
+
+export function editNotice(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('EditNotice', inputVars, inputOpts);
+}
+
+export function notifyNoticeParent(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('NotifyNoticeParent', inputVars, inputOpts);
+}
+
 export function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2095,5 +2129,23 @@ export function getMessageReport(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeQuery('GetMessageReport', inputVars, inputOpts);
+}
+
+export function listNotices(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListNotices', inputVars, inputOpts);
+}
+
+export function getNotice(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetNotice', inputVars, inputOpts);
+}
+
+export function listParentLinks(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListParentLinks', inputVars, inputOpts);
 }
 
