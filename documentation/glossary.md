@@ -142,6 +142,7 @@ Rules that apply to every term:
 |---|---|---|---|---|
 | Announcement | A message from the school to many people. | घोषणा (also: घोषणाएँ) | اعلان (also: اعلانات) |  |
 | Notice board | The school's posts for parents: a headline and text for all parents, a grade or a class. | सूचना पट | نوٹس بورڈ | Draft wording; needs a native-speaker review. |
+| Consent | A parent's agreement to the privacy notice, which the school keeps a record of. | सहमति | رضامندی | Draft wording; needs a native-speaker review. |
 | Message | A message between a parent and a teacher. | संदेश | پیغام |  |
 | Notification | A short alert on the phone. | सूचना | اطلاع |  |
 | Communication | The messaging side of the school (a menu group). | संचार | رابطہ |  |

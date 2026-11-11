@@ -4334,4 +4334,131 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get mobNbEmpty => 'اسکول کی طرف سے ابھی کوئی نوٹس نہیں ہے۔';
+
+  @override
+  String get privNoticeVersion => '1';
+
+  @override
+  String get privTitle => 'رازداری اور رضامندی';
+
+  @override
+  String get privLead =>
+      'اپنے بچے کی اسکول کی معلومات دیکھنے سے پہلے، براہِ کرم پڑھیں کہ اسکول اور OruSchools اسے کیسے استعمال کرتے ہیں۔';
+
+  @override
+  String get privSummaryTitle => 'مختصراً';
+
+  @override
+  String get privPoint1 =>
+      'اسکول آپ کے بچے کی معلومات صرف پڑھائی، بچے کی حفاظت اور اسکول چلانے کے لیے استعمال کرتا ہے: حاضری، نمبر، ٹائم ٹیبل، فیس، اسکول بس اور اساتذہ کے پیغامات۔';
+
+  @override
+  String get privPoint2 =>
+      'اسے کبھی بیچا نہیں جاتا، اشتہارات میں استعمال نہیں کیا جاتا اور مارکیٹنگ کے لیے شیئر نہیں کیا جاتا۔';
+
+  @override
+  String get privPoint3 =>
+      'آپ صرف اپنے بچوں کو دیکھتے ہیں۔ دوسرے خاندان آپ کے بچے کو نہیں دیکھ سکتے، اور آپ کے فون کی اطلاعات میں آپ کے بچے کا نام کبھی نہیں ہوتا۔';
+
+  @override
+  String get privPoint4 =>
+      'آپ کسی بھی وقت مزید، رازداری میں اپنی رضامندی واپس لے سکتے ہیں۔ پھر ایپ آپ کے بچے کی معلومات دکھانا بند کر دیتی ہے۔ قانون جو ریکارڈ رکھنا لازم کرتا ہے، اسکول وہ رکھتا ہے۔';
+
+  @override
+  String get privContact =>
+      'آپ کے بچے کی معلومات کی ذمہ داری اسکول کی ہے اور OruSchools اسے اسکول کی طرف سے سنبھالتا ہے۔ سوال یا شکایت کے لیے اسکول کے دفتر سے پوچھیں۔';
+
+  @override
+  String privVersionLine(String version) {
+    return 'رازداری کا نوٹس، ورژن $version';
+  }
+
+  @override
+  String get privAgreeBox => 'میں نے یہ پڑھ لیا ہے اور میں متفق ہوں';
+
+  @override
+  String get privContinue => 'آگے بڑھیں';
+
+  @override
+  String get privNeedAgree => 'آگے بڑھنے کے لیے خانے پر نشان لگائیں۔';
+
+  @override
+  String get privCannotWithout =>
+      'آپ کی رضامندی کے بغیر ایپ آپ کے بچے کی معلومات نہیں دکھا سکتی۔ آپ جب چاہیں متفق ہو سکتے ہیں۔';
+
+  @override
+  String get privFailed =>
+      'آپ کا جواب محفوظ نہیں ہو سکا۔ اپنا کنکشن دیکھیں اور دوبارہ کوشش کریں۔';
+
+  @override
+  String get privChecking => 'آپ کی رازداری کی پسند دیکھی جا رہی ہے';
+
+  @override
+  String get privMoreRow => 'رازداری';
+
+  @override
+  String privGivenOn(String date) {
+    return 'آپ نے $date کو رضامندی دی۔';
+  }
+
+  @override
+  String get privWithdraw => 'میری رضامندی واپس لیں';
+
+  @override
+  String get privWithdrawAsk =>
+      'جب تک آپ دوبارہ متفق نہیں ہوتے، ایپ آپ کے بچے کی معلومات دکھانا بند کر دے گی۔ کیا آپ رضامندی واپس لینا چاہتے ہیں؟';
+
+  @override
+  String get privWithdrawYes => 'واپس لیں';
+
+  @override
+  String get privKeep => 'رضامندی برقرار رکھیں';
+
+  @override
+  String get privDisagree => 'میں متفق نہیں ہوں';
+
+  @override
+  String get navConsent => 'والدین کی رضامندی';
+
+  @override
+  String get pcsTitle => 'والدین کی رضامندی';
+
+  @override
+  String get pcsNote =>
+      'کن والدین نے رازداری کے نوٹس سے اتفاق کیا ہے۔ رضامندی دینے تک والدین کو بچے کی کوئی معلومات نظر نہیں آتی۔ صرف نام اور تاریخیں؛ بچوں کے بارے میں کچھ نہیں۔';
+
+  @override
+  String pcsVersion(String version) {
+    return 'رازداری کا نوٹس، ورژن $version';
+  }
+
+  @override
+  String pcsCounts(String current, String parents) {
+    return '$parents میں سے $current والدین نے اس ورژن سے اتفاق کیا ہے۔';
+  }
+
+  @override
+  String get pcsNone => 'ابھی والدین کا کوئی اکاؤنٹ نہیں ہے۔';
+
+  @override
+  String get pcsStateCURRENT => 'متفق';
+
+  @override
+  String get pcsStateWITHDRAWN => 'واپس لی';
+
+  @override
+  String get pcsStateOLD_VERSION => 'پچھلے ورژن سے متفق';
+
+  @override
+  String get pcsStateNONE => 'ابھی نہیں';
+
+  @override
+  String pcsOn(String date) {
+    return '$date کو';
+  }
+
+  @override
+  String pcsLang(String language) {
+    return 'زبان: $language';
+  }
 }

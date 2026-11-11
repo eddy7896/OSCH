@@ -47,6 +47,7 @@ export const ITEM: Record<string, { label: string; icon: IconName }> = {
   settings: { label: "navSettings", icon: "grid" },
   memberships: { label: "navMemberships", icon: "users" },
   audit: { label: "navAudit", icon: "tasks" },
+  consent: { label: "navConsent", icon: "users" },
 };
 
 /** `SYSTEM_ADMIN` -> `roleSystemAdmin`. */

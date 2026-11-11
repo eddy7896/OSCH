@@ -7,6 +7,8 @@ import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_sync/flutter_sync.dart';
 
 import '../attendance/attendance_screens.dart' show pillOfStatus, statusLabel;
+import '../consent/consent_data.dart';
+import '../consent/consent_screens.dart';
 import '../inbox/inbox_data.dart';
 import '../inbox/inbox_screen.dart';
 import '../services.dart';
@@ -46,24 +48,40 @@ class OruParentHome extends StatefulWidget {
   State<OruParentHome> createState() => _OruParentHomeState();
 }
 
-class _OruParentHomeState extends State<OruParentHome> {
+class _OruParentHomeState extends State<OruParentHome> with WidgetsBindingObserver {
   String _tab = 'home';
-  late final InboxController _inbox = InboxController(widget.services.store);
+  late final ConsentController _consent = ConsentController(widget.services);
+  bool _inboxMade = false;
+  late final InboxController _inbox = _makeInbox();
+  InboxController _makeInbox() {
+    _inboxMade = true; // made only once the app is open: before consent nothing about the parent's notices is read
+    return InboxController(widget.services.store);
+  }
+
   StreamSubscription<void>? _pushOpen;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     widget.services.startIfActive();
+    unawaited(_consent.load());
     _pushOpen = widget.services.inboxRequests.listen((_) {
       if (mounted) Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruInboxScreen(services: widget.services)));
     });
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) unawaited(_consent.refresh()); // withdrawn on another phone, or a new notice, closes the data here too
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _pushOpen?.cancel();
-    _inbox.dispose();
+    _consent.dispose();
+    if (_inboxMade) _inbox.dispose();
     super.dispose();
   }
 
@@ -76,8 +94,13 @@ class _OruParentHomeState extends State<OruParentHome> {
       'resources': OruParentResourcesScreen(services: svc),
       'leave': OruParentLeaveScreen(services: svc, now: widget.now),
       'inbox': OruInboxScreen(services: svc),
-      'more': _MorePage(services: svc, state: widget.state),
+      'more': _MorePage(services: svc, state: widget.state, consent: _consent),
     };
+    // Nothing about a child is shown until the parent has consented to the privacy notice in force (P6-5c); the school refuses the data too.
+    return ListenableBuilder(listenable: _consent, builder: (context, _) => _consent.current == true ? _home(context, s, svc, pages) : _consent.current == null ? Scaffold(body: Center(child: Semantics(label: s.privChecking, child: const CircularProgressIndicator()))) : OruConsentScreen(controller: _consent, services: svc, state: widget.state));
+  }
+
+  Widget _home(BuildContext context, OruStrings s, OruServices svc, Map<String, Widget> pages) {
     return Scaffold(
       body: IndexedStack(sizing: StackFit.expand, index: pages.keys.toList().indexOf(_tab), children: pages.values.toList()),
       bottomNavigationBar: ListenableBuilder(
@@ -223,9 +246,10 @@ class _OruChildHomeScreenState extends State<OruChildHomeScreen> {
 }
 
 class _MorePage extends StatelessWidget {
-  const _MorePage({required this.services, required this.state});
+  const _MorePage({required this.services, required this.state, required this.consent});
   final OruServices services;
   final SessionActive state;
+  final ConsentController consent;
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +262,8 @@ class _MorePage extends StatelessWidget {
           OruCard(child: OruListRow(title: s.mobMsTitle, leading: const OruIcon(OruIconName.message, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruMessagesScreen(services: services, forParent: true))))),
           const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobBcTitle, leading: const OruIcon(OruIconName.send, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruBroadcastsScreen(services: services, forParent: true))))),
+          const SizedBox(height: OruSpacing.space2),
+          OruCard(child: OruListRow(title: s.privMoreRow, leading: const OruIcon(OruIconName.checkCircle, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruPrivacyScreen(controller: consent))))),
           const SizedBox(height: OruSpacing.space4),
           OruAccountPanel(session: services.session, state: state, lock: services.lock, syncStatus: OruSyncPill(services: services)),
         ]),

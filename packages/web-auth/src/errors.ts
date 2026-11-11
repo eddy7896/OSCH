@@ -5,6 +5,7 @@ import { AuthFailure, type AuthFailureCode } from "./auth-port.js";
 const API_ERROR_KEY: Record<ApiErrorCode, string> = {
   AUTH_REQUIRED: "errorAuthRequired",
   FORBIDDEN: "errorForbidden",
+  CONSENT_REQUIRED: "errorForbidden", // only the Parent app meets this; the web apps are for staff
   SCHOOL_SUSPENDED: "errorForbidden",
   CANNOT_CHANGE_OWN_MEMBERSHIP: "errorOwnMembership",
   INVITATION_INVALID: "errorInvitationInvalid",

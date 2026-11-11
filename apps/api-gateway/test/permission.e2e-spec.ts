@@ -6,6 +6,7 @@ import { NoAudit } from '../src/audit/audit.decorators.js';
 import { Public } from '../src/auth/public.decorator.js';
 import { Granted, Permission, type GrantedPermission } from '../src/permission/permission.decorator.js';
 import { Platform, UserScoped } from '../src/tenant/tenant.decorators.js';
+import { CONSENT_NOTICE_VERSION } from '../src/consent/consent.constants.js';
 
 const A = '11111111-1111-4111-8111-111111111111';
 const roleOf = (name: string) => name.toUpperCase();
@@ -18,6 +19,8 @@ const fakeDb = {
     const role = ROLES_UNDER_TEST.find((r) => `u-${r}` === userId);
     return { data: { schoolMembers: role ? [{ schoolRole: roleOf(role), status: 'ACTIVE', school: { subscriptionStatus: 'ACTIVE' } }] : [] } };
   },
+  // every parent in these tests has consented to the notice in force (the consent gate itself is tested on the real emulators)
+  consentOfUser: async () => ({ data: { consentRecords: [{ purpose: 'SCHOOL_USE', noticeVersion: CONSENT_NOTICE_VERSION, language: 'en', given: true, createdAt: '2026-11-01T00:00:00Z' }] } }),
   listSchools: async () => ({ data: { schools: [] } }),
   createAuditLog: async (v: unknown) => ({ data: { auditLog_insert: { id: String((auditRows.push(v), auditRows.length)) } } }),
 };

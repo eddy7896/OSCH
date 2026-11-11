@@ -4335,4 +4335,131 @@ class OruStringsHi extends OruStrings {
 
   @override
   String get mobNbEmpty => 'स्कूल की ओर से अभी कोई सूचना नहीं है।';
+
+  @override
+  String get privNoticeVersion => '1';
+
+  @override
+  String get privTitle => 'गोपनीयता और सहमति';
+
+  @override
+  String get privLead =>
+      'अपने बच्चे की स्कूल की जानकारी देखने से पहले, कृपया पढ़ें कि स्कूल और OruSchools उसका उपयोग कैसे करते हैं।';
+
+  @override
+  String get privSummaryTitle => 'संक्षेप में';
+
+  @override
+  String get privPoint1 =>
+      'स्कूल आपके बच्चे की जानकारी का उपयोग केवल पढ़ाई, बच्चे की सुरक्षा और स्कूल चलाने के लिए करता है: उपस्थिति, अंक, समय-सारणी, शुल्क, स्कूल बस और शिक्षकों के संदेश।';
+
+  @override
+  String get privPoint2 =>
+      'इसे कभी बेचा नहीं जाता, विज्ञापन में उपयोग नहीं किया जाता और मार्केटिंग के लिए साझा नहीं किया जाता।';
+
+  @override
+  String get privPoint3 =>
+      'आप केवल अपने बच्चों को देखते हैं। दूसरे परिवार आपके बच्चे को नहीं देख सकते, और आपके फ़ोन की सूचनाओं में आपके बच्चे का नाम कभी नहीं होता।';
+
+  @override
+  String get privPoint4 =>
+      'आप किसी भी समय अधिक, गोपनीयता में अपनी सहमति वापस ले सकते हैं। फिर ऐप आपके बच्चे की जानकारी दिखाना बंद कर देता है। कानून जो रिकॉर्ड रखना ज़रूरी बताता है, स्कूल वे रखता है।';
+
+  @override
+  String get privContact =>
+      'आपके बच्चे की जानकारी की ज़िम्मेदारी स्कूल की है और OruSchools उसे स्कूल की ओर से संभालता है। प्रश्न या शिकायत के लिए स्कूल कार्यालय से पूछें।';
+
+  @override
+  String privVersionLine(String version) {
+    return 'गोपनीयता सूचना, संस्करण $version';
+  }
+
+  @override
+  String get privAgreeBox => 'मैंने यह पढ़ लिया है और मैं सहमत हूँ';
+
+  @override
+  String get privContinue => 'आगे बढ़ें';
+
+  @override
+  String get privNeedAgree => 'आगे बढ़ने के लिए बॉक्स पर निशान लगाएँ।';
+
+  @override
+  String get privCannotWithout =>
+      'आपकी सहमति के बिना ऐप आपके बच्चे की जानकारी नहीं दिखा सकता। आप जब चाहें सहमत हो सकते हैं।';
+
+  @override
+  String get privFailed =>
+      'आपका उत्तर सहेजा नहीं जा सका। अपना कनेक्शन जाँचें और फिर कोशिश करें।';
+
+  @override
+  String get privChecking => 'आपकी गोपनीयता की पसंद जाँची जा रही है';
+
+  @override
+  String get privMoreRow => 'गोपनीयता';
+
+  @override
+  String privGivenOn(String date) {
+    return 'आपने $date को सहमति दी।';
+  }
+
+  @override
+  String get privWithdraw => 'मेरी सहमति वापस लें';
+
+  @override
+  String get privWithdrawAsk =>
+      'जब तक आप फिर सहमत नहीं होते, ऐप आपके बच्चे की जानकारी दिखाना बंद कर देगा। क्या आप सहमति वापस लेना चाहते हैं?';
+
+  @override
+  String get privWithdrawYes => 'वापस लें';
+
+  @override
+  String get privKeep => 'सहमति बनाए रखें';
+
+  @override
+  String get privDisagree => 'मैं सहमत नहीं हूँ';
+
+  @override
+  String get navConsent => 'अभिभावक सहमति';
+
+  @override
+  String get pcsTitle => 'अभिभावक सहमति';
+
+  @override
+  String get pcsNote =>
+      'किन अभिभावकों ने गोपनीयता सूचना से सहमति दी है। सहमति देने तक अभिभावक को बच्चे की कोई जानकारी नहीं दिखती। केवल नाम और तारीखें; बच्चों के बारे में कुछ नहीं।';
+
+  @override
+  String pcsVersion(String version) {
+    return 'गोपनीयता सूचना, संस्करण $version';
+  }
+
+  @override
+  String pcsCounts(String current, String parents) {
+    return '$parents में से $current अभिभावकों ने इस संस्करण से सहमति दी है।';
+  }
+
+  @override
+  String get pcsNone => 'अभी कोई अभिभावक खाता नहीं है।';
+
+  @override
+  String get pcsStateCURRENT => 'सहमत';
+
+  @override
+  String get pcsStateWITHDRAWN => 'वापस ली';
+
+  @override
+  String get pcsStateOLD_VERSION => 'पहले के संस्करण से सहमत';
+
+  @override
+  String get pcsStateNONE => 'अभी नहीं';
+
+  @override
+  String pcsOn(String date) {
+    return '$date को';
+  }
+
+  @override
+  String pcsLang(String language) {
+    return 'भाषा: $language';
+  }
 }

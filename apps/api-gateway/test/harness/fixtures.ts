@@ -3,6 +3,7 @@ import { createDatabase, FIREBASE_APP_NAME, type Database } from '@oruschools/da
 import { ROLES, type Role } from '@oruschools/rbac';
 import { getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { CONSENT_NOTICE_VERSION } from '../../src/consent/consent.constants.js';
 import { AUTH_HOST } from './emulators.js';
 
 const identity = () => `http://${AUTH_HOST}/identitytoolkit.googleapis.com/v1/accounts`;
@@ -67,6 +68,7 @@ export async function buildWorld(): Promise<World> {
     for (const role of ROLES) {
       const p = await person(`${role.toLowerCase()}-${key.toLowerCase()}`);
       await db.createSchoolMember({ schoolId: schools[key], userId: p.uid, schoolRole: role as never }); // bootstrap seed operation: the first admin has no actor
+      if (role === 'PARENT') await db.recordConsent({ schoolId: schools[key], userId: p.uid, purpose: 'SCHOOL_USE', noticeVersion: CONSENT_NOTICE_VERSION, language: 'en', given: true, students: [], details: {} }); // the world's parents have consented, so the route tests reach the routes; consent.integration.ts tests the gate itself
       roles[key][role] = p;
     }
 

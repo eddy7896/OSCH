@@ -78,5 +78,7 @@
   "Broadcasts_list",
   "Broadcasts_create",
   "Broadcasts_one",
-  "Broadcasts_read"
+  "Broadcasts_read",
+  "Consent_status",
+  "Consent_record"
 ]
