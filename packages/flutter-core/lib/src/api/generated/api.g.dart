@@ -26,6 +26,8 @@ const List<OruRoute> kOruRoutes = [
   _rCommentsHide,
   _rCommentsList,
   _rCommentsRemove,
+  _rConsentRecord,
+  _rConsentStatus,
   _rDevicesList,
   _rDevicesRegister,
   _rDevicesRemove,
@@ -107,6 +109,8 @@ const _rCommentsEdit = OruRoute('PUT', '/v1/resources/{id}/comments/{commentId}'
 const _rCommentsHide = OruRoute('POST', '/v1/resources/{id}/comments/{commentId}/hide', OruAccess.tenant, 'Comments_hide');
 const _rCommentsList = OruRoute('GET', '/v1/resources/{id}/comments', OruAccess.tenant, 'Comments_list');
 const _rCommentsRemove = OruRoute('DELETE', '/v1/resources/{id}/comments/{commentId}', OruAccess.tenant, 'Comments_remove');
+const _rConsentRecord = OruRoute('POST', '/v1/consent', OruAccess.tenant, 'Consent_record');
+const _rConsentStatus = OruRoute('GET', '/v1/consent', OruAccess.tenant, 'Consent_status');
 const _rDevicesList = OruRoute('GET', '/v1/devices', OruAccess.user, 'Devices_list');
 const _rDevicesRegister = OruRoute('POST', '/v1/devices', OruAccess.user, 'Devices_register');
 const _rDevicesRemove = OruRoute('DELETE', '/v1/devices', OruAccess.user, 'Devices_remove');
@@ -284,6 +288,18 @@ class OruApi {
   /// DELETE /v1/resources/{id}/comments/{commentId}
   Future<void> commentsRemove({required String id, required String commentId}) async {
     await _t.send(_rCommentsRemove, "/v1/resources/${Uri.encodeComponent(id)}/comments/${Uri.encodeComponent(commentId)}");
+  }
+
+  /// POST /v1/consent
+  Future<ConsentStatusDto> consentRecord({required RecordConsentDto body}) async {
+    final j = await _t.send(_rConsentRecord, "/v1/consent", body: body.toJson());
+    return ConsentStatusDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/consent
+  Future<ConsentStatusDto> consentStatus() async {
+    final j = await _t.send(_rConsentStatus, "/v1/consent");
+    return ConsentStatusDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// GET /v1/devices

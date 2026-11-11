@@ -4333,4 +4333,131 @@ class OruStringsBn extends OruStrings {
   String nbdListUntil(String date) {
     return 'Removed on $date';
   }
+
+  @override
+  String get privNoticeVersion => '1';
+
+  @override
+  String get privTitle => 'Privacy and consent';
+
+  @override
+  String get privLead =>
+      'Before you see your child\'s school information, please read how the school and OruSchools use it.';
+
+  @override
+  String get privSummaryTitle => 'In short';
+
+  @override
+  String get privPoint1 =>
+      'The school uses your child\'s information only for teaching, your child\'s safety and running the school: attendance, marks, the timetable, fees, the school bus and messages from teachers.';
+
+  @override
+  String get privPoint2 =>
+      'It is never sold, never used for advertising and never shared for marketing.';
+
+  @override
+  String get privPoint3 =>
+      'You see only your own children. Other families cannot see your child, and notifications on your phone never name your child.';
+
+  @override
+  String get privPoint4 =>
+      'You can withdraw your consent at any time in More, Privacy. The app then no longer shows your child\'s information. The school keeps the records the law requires it to keep.';
+
+  @override
+  String get privContact =>
+      'The school is responsible for your child\'s information and OruSchools handles it on the school\'s behalf. For questions or complaints, ask the school office.';
+
+  @override
+  String privVersionLine(String version) {
+    return 'Privacy notice, version $version';
+  }
+
+  @override
+  String get privAgreeBox => 'I have read this and I agree';
+
+  @override
+  String get privContinue => 'Continue';
+
+  @override
+  String get privNeedAgree => 'Tick the box to continue.';
+
+  @override
+  String get privCannotWithout =>
+      'Without your consent the app cannot show your child\'s information. You can agree whenever you are ready.';
+
+  @override
+  String get privFailed =>
+      'Your answer could not be saved. Check your connection and try again.';
+
+  @override
+  String get privChecking => 'Checking your privacy choice';
+
+  @override
+  String get privMoreRow => 'Privacy';
+
+  @override
+  String privGivenOn(String date) {
+    return 'You agreed on $date.';
+  }
+
+  @override
+  String get privWithdraw => 'Withdraw my consent';
+
+  @override
+  String get privWithdrawAsk =>
+      'The app will no longer show your child\'s information until you agree again. Withdraw your consent?';
+
+  @override
+  String get privWithdrawYes => 'Withdraw';
+
+  @override
+  String get privKeep => 'Keep my consent';
+
+  @override
+  String get privDisagree => 'I do not agree';
+
+  @override
+  String get navConsent => 'Parent consent';
+
+  @override
+  String get pcsTitle => 'Parent consent';
+
+  @override
+  String get pcsNote =>
+      'Which parents have agreed to the privacy notice. A parent sees no information about a child until they have agreed. Names and dates only; nothing about the children.';
+
+  @override
+  String pcsVersion(String version) {
+    return 'Privacy notice, version $version';
+  }
+
+  @override
+  String pcsCounts(String current, String parents) {
+    return '$current of $parents parents have agreed to this version.';
+  }
+
+  @override
+  String get pcsNone => 'There are no parent accounts yet.';
+
+  @override
+  String get pcsStateCURRENT => 'Agreed';
+
+  @override
+  String get pcsStateWITHDRAWN => 'Withdrawn';
+
+  @override
+  String get pcsStateOLD_VERSION => 'Agreed to an earlier version';
+
+  @override
+  String get pcsStateNONE => 'Not yet';
+
+  @override
+  String pcsOn(String date) {
+    return 'On $date';
+  }
+
+  @override
+  String pcsLang(String language) {
+    return 'Language: $language';
+  }
 }

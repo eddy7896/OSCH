@@ -1497,6 +1497,23 @@
    ]
   },
   {
+   "term": "Consent",
+   "category": "Communication",
+   "definition": "A parent's agreement to the privacy notice, which the school keeps a record of.",
+   "hi": {
+    "preferred": "सहमति",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "رضامندی",
+    "alternatives": []
+   },
+   "note": "Draft wording; needs a native-speaker review.",
+   "match": [
+    "consent"
+   ]
+  },
+  {
    "term": "Message",
    "category": "Communication",
    "definition": "A message between a parent and a teacher.",

@@ -417,6 +417,24 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Broadcasts_create"
   },
   {
+    "method": "GET",
+    "path": "/v1/consent/overview",
+    "access": "tenant",
+    "operationId": "Consent_overview"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/consent",
+    "access": "tenant",
+    "operationId": "Consent_status"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/consent",
+    "access": "tenant",
+    "operationId": "Consent_record"
+  },
+  {
     "method": "DELETE",
     "path": "/v1/devices",
     "access": "user",

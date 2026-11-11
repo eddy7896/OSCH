@@ -628,6 +628,50 @@ class CommentListDto {
       };
 }
 
+class ConsentPurposeStatusDto {
+  const ConsentPurposeStatusDto({required this.given, required this.noticeVersion, required this.purpose, required this.recordedAt, required this.required_});
+  final bool given;
+  final num? noticeVersion;
+  final String purpose;
+  final String? recordedAt;
+  final bool required_;
+
+  factory ConsentPurposeStatusDto.fromJson(Map<String, dynamic> j) => ConsentPurposeStatusDto(
+        given: j['given'] as bool,
+        noticeVersion: j['noticeVersion'] == null ? null : j['noticeVersion'] as num,
+        purpose: j['purpose'] as String,
+        recordedAt: j['recordedAt'] == null ? null : j['recordedAt'] as String,
+        required_: j['required'] as bool,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'given': given,
+        if (noticeVersion != null) 'noticeVersion': noticeVersion!,
+        'purpose': purpose,
+        if (recordedAt != null) 'recordedAt': recordedAt!,
+        'required': required_,
+      };
+}
+
+class ConsentStatusDto {
+  const ConsentStatusDto({required this.current, required this.noticeVersion, required this.purposes});
+  final bool current;
+  final num noticeVersion;
+  final List<ConsentPurposeStatusDto> purposes;
+
+  factory ConsentStatusDto.fromJson(Map<String, dynamic> j) => ConsentStatusDto(
+        current: j['current'] as bool,
+        noticeVersion: j['noticeVersion'] as num,
+        purposes: (j['purposes'] as List<dynamic>).map((e) => ConsentPurposeStatusDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'current': current,
+        'noticeVersion': noticeVersion,
+        'purposes': purposes.map((e) => e.toJson()).toList(),
+      };
+}
+
 class ContactDto {
   const ContactDto({required this.label, required this.name, required this.subjects, required this.userId});
   final String label;
@@ -2170,6 +2214,25 @@ class ReceiptSummaryDtoStudent {
         'enrollmentId': enrollmentId,
         'id': id,
         'name': name,
+      };
+}
+
+class RecordConsentDto {
+  const RecordConsentDto({required this.given, required this.language, required this.noticeVersion});
+  final bool given;
+  final String language;
+  final num noticeVersion;
+
+  factory RecordConsentDto.fromJson(Map<String, dynamic> j) => RecordConsentDto(
+        given: j['given'] as bool,
+        language: j['language'] as String,
+        noticeVersion: j['noticeVersion'] as num,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'given': given,
+        'language': language,
+        'noticeVersion': noticeVersion,
       };
 }
 

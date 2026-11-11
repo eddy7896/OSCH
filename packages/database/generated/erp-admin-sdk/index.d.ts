@@ -1181,6 +1181,48 @@ export interface ConfirmStaffCheckInVariables {
   details?: unknown | null;
 }
 
+export interface ConsentOfUserData {
+  consentRecords: ({
+    purpose: string;
+    noticeVersion: number;
+    language: string;
+    given: boolean;
+    createdAt: TimestampString;
+  })[];
+}
+
+export interface ConsentOfUserVariables {
+  schoolId: UUIDString;
+  userId: string;
+}
+
+export interface ConsentOverviewData {
+  parents: ({
+    user: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  })[];
+  consentRecords: ({
+    userId: string;
+    purpose: string;
+    noticeVersion: number;
+    language: string;
+    given: boolean;
+    createdAt: TimestampString;
+  })[];
+}
+
+export interface ConsentOverviewVariables {
+  schoolId: UUIDString;
+}
+
+export interface ConsentRecord_Key {
+  id: UUIDString;
+  __typename?: 'ConsentRecord_Key';
+}
+
 export interface ConversationByPartiesData {
   conversations: ({
     id: UUIDString;
@@ -6141,6 +6183,27 @@ export interface Receipt_Key {
   __typename?: 'Receipt_Key';
 }
 
+export interface RecordConsentData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  consentRecord_insert: ConsentRecord_Key;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RecordConsentVariables {
+  schoolId: UUIDString;
+  userId: string;
+  purpose: string;
+  noticeVersion: number;
+  language: string;
+  given: boolean;
+  students?: unknown | null;
+  details?: unknown | null;
+}
+
 export interface RecordMessageAuditReadData {
   query?: {
     actor: ({
@@ -8930,6 +8993,11 @@ export function notifyNoticeParent(dc: DataConnect, vars: NotifyNoticeParentVari
 /** Generated Node Admin SDK operation action function for the 'NotifyNoticeParent' Mutation. Allow users to pass in custom DataConnect instances. */
 export function notifyNoticeParent(vars: NotifyNoticeParentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<NotifyNoticeParentData>>;
 
+/** Generated Node Admin SDK operation action function for the 'RecordConsent' Mutation. Allow users to execute without passing in DataConnect. */
+export function recordConsent(dc: DataConnect, vars: RecordConsentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordConsentData>>;
+/** Generated Node Admin SDK operation action function for the 'RecordConsent' Mutation. Allow users to pass in custom DataConnect instances. */
+export function recordConsent(vars: RecordConsentVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordConsentData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -9669,4 +9737,14 @@ export function getNotice(vars: GetNoticeVariables, options?: OperationOptions):
 export function listParentLinks(dc: DataConnect, vars: ListParentLinksVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListParentLinksData>>;
 /** Generated Node Admin SDK operation action function for the 'ListParentLinks' Query. Allow users to pass in custom DataConnect instances. */
 export function listParentLinks(vars: ListParentLinksVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListParentLinksData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ConsentOfUser' Query. Allow users to execute without passing in DataConnect. */
+export function consentOfUser(dc: DataConnect, vars: ConsentOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConsentOfUserData>>;
+/** Generated Node Admin SDK operation action function for the 'ConsentOfUser' Query. Allow users to pass in custom DataConnect instances. */
+export function consentOfUser(vars: ConsentOfUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConsentOfUserData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ConsentOverview' Query. Allow users to execute without passing in DataConnect. */
+export function consentOverview(dc: DataConnect, vars: ConsentOverviewVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConsentOverviewData>>;
+/** Generated Node Admin SDK operation action function for the 'ConsentOverview' Query. Allow users to pass in custom DataConnect instances. */
+export function consentOverview(vars: ConsentOverviewVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConsentOverviewData>>;
 

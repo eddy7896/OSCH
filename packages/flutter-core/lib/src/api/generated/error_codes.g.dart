@@ -3,4 +3,4 @@
 // ignore_for_file: public_member_api_docs, unnecessary_cast, unnecessary_null_comparison, use_null_aware_elements
 
 /// The machine codes the gateway sends in its error envelope. Screens translate by code; the English message is a fallback only.
-const List<String> kGatewayErrorCodes = ['AUTH_REQUIRED', 'FORBIDDEN', 'SCHOOL_SUSPENDED', 'CANNOT_CHANGE_OWN_MEMBERSHIP', 'INVITATION_INVALID', 'ACCOUNT_EXISTS', 'EMAIL_NOT_VERIFIED', 'NOT_FOUND', 'INVALID_REQUEST', 'CONFLICT', 'RATE_LIMITED', 'TENANT_REFERENCE_FORBIDDEN', 'UPSTREAM_UNAVAILABLE', 'INTERNAL'];
+const List<String> kGatewayErrorCodes = ['AUTH_REQUIRED', 'FORBIDDEN', 'CONSENT_REQUIRED', 'SCHOOL_SUSPENDED', 'CANNOT_CHANGE_OWN_MEMBERSHIP', 'INVITATION_INVALID', 'ACCOUNT_EXISTS', 'EMAIL_NOT_VERIFIED', 'NOT_FOUND', 'INVALID_REQUEST', 'CONFLICT', 'RATE_LIMITED', 'TENANT_REFERENCE_FORBIDDEN', 'UPSTREAM_UNAVAILABLE', 'INTERNAL'];

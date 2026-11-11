@@ -88,6 +88,7 @@ void main() {
       final svc = await services();
       await load(svc);
       await svc.store.replaceAllRecords(kNotice, [rec('n1', {'id': 'n1', 'title': 'Fee reminder', 'body': 'Due on Friday.', 'category': 'fees', 'kind': 'k', 'createdAt': '2026-10-30T08:00:00.000Z', 'read': false})]);
+      await svc.store.upsertRecords(kConsentState, [(id: 'me', parentId: null, json: {'noticeVersion': 1, 'purposes': [], 'current': true})]); // the parent has consented
       const school = SchoolChoice(id: 's1', name: 'Greenfield', subDomain: 'greenfield', role: 'PARENT', defaultLanguage: 'en');
       final state = SessionActive(Account(userId: 'u1', email: 'p@x.test', displayName: 'Parvati Rao', schools: const [school]), school);
       await tester.pumpWidget(host(OruParentHome(services: svc, state: state, now: monday)));

@@ -1615,6 +1615,143 @@
         ],
         "type": "object"
       },
+      "ConsentOverviewDto": {
+        "properties": {
+          "counts": {
+            "properties": {
+              "current": {
+                "type": "number"
+              },
+              "none": {
+                "type": "number"
+              },
+              "oldVersion": {
+                "type": "number"
+              },
+              "parents": {
+                "type": "number"
+              },
+              "withdrawn": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "parents",
+              "current",
+              "withdrawn",
+              "oldVersion",
+              "none"
+            ],
+            "type": "object"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ConsentOverviewParentDto"
+            },
+            "type": "array"
+          },
+          "noticeVersion": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "noticeVersion",
+          "counts",
+          "items"
+        ],
+        "type": "object"
+      },
+      "ConsentOverviewParentDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "language": {
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "noticeVersion": {
+            "nullable": true,
+            "type": "number"
+          },
+          "recordedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "NONE",
+              "CURRENT",
+              "WITHDRAWN",
+              "OLD_VERSION"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "state",
+          "noticeVersion",
+          "language",
+          "recordedAt"
+        ],
+        "type": "object"
+      },
+      "ConsentPurposeStatusDto": {
+        "properties": {
+          "given": {
+            "type": "boolean"
+          },
+          "noticeVersion": {
+            "nullable": true,
+            "type": "number"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "purpose",
+          "required",
+          "given",
+          "noticeVersion",
+          "recordedAt"
+        ],
+        "type": "object"
+      },
+      "ConsentStatusDto": {
+        "properties": {
+          "current": {
+            "type": "boolean"
+          },
+          "noticeVersion": {
+            "type": "number"
+          },
+          "purposes": {
+            "items": {
+              "$ref": "#/components/schemas/ConsentPurposeStatusDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "noticeVersion",
+          "purposes",
+          "current"
+        ],
+        "type": "object"
+      },
       "ContactDto": {
         "properties": {
           "label": {
@@ -3119,6 +3256,7 @@
                 "enum": [
                   "AUTH_REQUIRED",
                   "FORBIDDEN",
+                  "CONSENT_REQUIRED",
                   "SCHOOL_SUSPENDED",
                   "CANNOT_CHANGE_OWN_MEMBERSHIP",
                   "INVITATION_INVALID",
@@ -5012,9 +5150,9 @@
           "state": {
             "enum": [
               "EXPIRED",
+              "WITHDRAWN",
               "SCHEDULED",
-              "LIVE",
-              "WITHDRAWN"
+              "LIVE"
             ],
             "type": "string"
           },
@@ -6309,6 +6447,27 @@
           "amountMinor",
           "student",
           "invoice"
+        ],
+        "type": "object"
+      },
+      "RecordConsentDto": {
+        "properties": {
+          "given": {
+            "type": "boolean"
+          },
+          "language": {
+            "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})?$",
+            "type": "string"
+          },
+          "noticeVersion": {
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "noticeVersion",
+          "language",
+          "given"
         ],
         "type": "object"
       },
@@ -14906,6 +15065,168 @@
         "x-permission": {
           "action": "update",
           "resource": "broadcasts"
+        }
+      }
+    },
+    "/v1/consent": {
+      "get": {
+        "operationId": "Consent_status",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsentStatusDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Consent"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "consent"
+        }
+      },
+      "post": {
+        "operationId": "Consent_record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordConsentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsentStatusDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Consent"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "consent.record",
+          "operation": "RecordConsent"
+        },
+        "x-permission": {
+          "action": "create",
+          "resource": "consent"
+        }
+      }
+    },
+    "/v1/consent/overview": {
+      "get": {
+        "operationId": "Consent_overview",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsentOverviewDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Consent"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "consent_overview"
         }
       }
     },

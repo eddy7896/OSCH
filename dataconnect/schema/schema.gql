@@ -901,3 +901,17 @@ type StudentLeave @table @unique(fields: ["student", "clientId"]) {
   updatedAt: Timestamp! @default(expr: "request.time")
 }
 
+# ---- Parent consent (P6-5c, documentation/modules/children-data-protection.md). One row each time a parent gives or withdraws consent to a version of the privacy notice. Rows are never changed
+# or removed: the latest row for a parent and a purpose is the current answer, and the older ones are the history. `students` is the list of the parent's linked children at that moment.
+type ConsentRecord @table {
+  id: UUID! @default(expr: "uuidV4()")
+  school: School!
+  user: User!
+  purpose: String! # SCHOOL_USE for now; more purposes (a newsletter, photos) are added when they exist
+  noticeVersion: Int!
+  language: String!
+  given: Boolean!
+  students: Any
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+

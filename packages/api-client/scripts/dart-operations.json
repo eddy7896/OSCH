@@ -11,6 +11,8 @@
   "StudentLeave_approve",
   "StudentLeave_decline",
   "StudentLeave_cancel",
+  "Consent_status",
+  "Consent_record",
   "Resources_list",
   "Resources_ticket",
   "Resources_add",

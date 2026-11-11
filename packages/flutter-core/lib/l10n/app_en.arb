@@ -5994,5 +5994,178 @@
         "type": "String"
       }
     }
+  },
+  "privNoticeVersion": "1",
+  "@privNoticeVersion": {
+    "description": "The version number of the privacy notice. Do not translate. The gateway holds the same number; a test keeps them equal."
+  },
+  "privTitle": "Privacy and consent",
+  "@privTitle": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privLead": "Before you see your child's school information, please read how the school and OruSchools use it.",
+  "@privLead": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privSummaryTitle": "In short",
+  "@privSummaryTitle": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privPoint1": "The school uses your child's information only for teaching, your child's safety and running the school: attendance, marks, the timetable, fees, the school bus and messages from teachers.",
+  "@privPoint1": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privPoint2": "It is never sold, never used for advertising and never shared for marketing.",
+  "@privPoint2": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privPoint3": "You see only your own children. Other families cannot see your child, and notifications on your phone never name your child.",
+  "@privPoint3": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privPoint4": "You can withdraw your consent at any time in More, Privacy. The app then no longer shows your child's information. The school keeps the records the law requires it to keep.",
+  "@privPoint4": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privContact": "The school is responsible for your child's information and OruSchools handles it on the school's behalf. For questions or complaints, ask the school office.",
+  "@privContact": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privVersionLine": "Privacy notice, version {version}",
+  "@privVersionLine": {
+    "description": "Parent app privacy and consent screen.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "privAgreeBox": "I have read this and I agree",
+  "@privAgreeBox": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privContinue": "Continue",
+  "@privContinue": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privNeedAgree": "Tick the box to continue.",
+  "@privNeedAgree": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privCannotWithout": "Without your consent the app cannot show your child's information. You can agree whenever you are ready.",
+  "@privCannotWithout": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privFailed": "Your answer could not be saved. Check your connection and try again.",
+  "@privFailed": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privChecking": "Checking your privacy choice",
+  "@privChecking": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privMoreRow": "Privacy",
+  "@privMoreRow": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privGivenOn": "You agreed on {date}.",
+  "@privGivenOn": {
+    "description": "Parent app privacy and consent screen.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "privWithdraw": "Withdraw my consent",
+  "@privWithdraw": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privWithdrawAsk": "The app will no longer show your child's information until you agree again. Withdraw your consent?",
+  "@privWithdrawAsk": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privWithdrawYes": "Withdraw",
+  "@privWithdrawYes": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privKeep": "Keep my consent",
+  "@privKeep": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "privDisagree": "I do not agree",
+  "@privDisagree": {
+    "description": "Parent app privacy and consent screen."
+  },
+  "navConsent": "Parent consent",
+  "@navConsent": {
+    "description": "Web admin, Parent consent screen (read only)."
+  },
+  "pcsTitle": "Parent consent",
+  "@pcsTitle": {
+    "description": "Web admin, Parent consent screen (read only)."
+  },
+  "pcsNote": "Which parents have agreed to the privacy notice. A parent sees no information about a child until they have agreed. Names and dates only; nothing about the children.",
+  "@pcsNote": {
+    "description": "Web admin, Parent consent screen (read only)."
+  },
+  "pcsVersion": "Privacy notice, version {version}",
+  "@pcsVersion": {
+    "description": "Web admin, Parent consent screen (read only).",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "pcsCounts": "{current} of {parents} parents have agreed to this version.",
+  "@pcsCounts": {
+    "description": "Web admin, Parent consent screen (read only).",
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "parents": {
+        "type": "String"
+      }
+    }
+  },
+  "pcsNone": "There are no parent accounts yet.",
+  "@pcsNone": {
+    "description": "Web admin, Parent consent screen (read only)."
+  },
+  "pcsStateCURRENT": "Agreed",
+  "@pcsStateCURRENT": {
+    "description": "Web admin, Parent consent screen (read only)."
+  },
+  "pcsStateWITHDRAWN": "Withdrawn",
+  "@pcsStateWITHDRAWN": {
+    "description": "Web admin, Parent consent screen (read only)."
+  },
+  "pcsStateOLD_VERSION": "Agreed to an earlier version",
+  "@pcsStateOLD_VERSION": {
+    "description": "Web admin, Parent consent screen (read only)."
+  },
+  "pcsStateNONE": "Not yet",
+  "@pcsStateNONE": {
+    "description": "Web admin, Parent consent screen (read only)."
+  },
+  "pcsOn": "On {date}",
+  "@pcsOn": {
+    "description": "Web admin, Parent consent screen (read only).",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pcsLang": "Language: {language}",
+  "@pcsLang": {
+    "description": "Web admin, Parent consent screen (read only).",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
   }
 }

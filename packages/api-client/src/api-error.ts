@@ -53,6 +53,7 @@ export class ApiError extends Error {
 const GATEWAY_CODES: Record<GatewayErrorCode, true> = {
   AUTH_REQUIRED: true,
   FORBIDDEN: true,
+  CONSENT_REQUIRED: true,
   SCHOOL_SUSPENDED: true,
   CANNOT_CHANGE_OWN_MEMBERSHIP: true,
   INVITATION_INVALID: true,

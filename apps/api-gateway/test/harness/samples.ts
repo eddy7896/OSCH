@@ -1,3 +1,4 @@
+import { CONSENT_NOTICE_VERSION } from '../../src/consent/consent.constants.js';
 import { randomUUID } from 'node:crypto';
 import { createHash } from 'node:crypto';
 import { markId } from '../../src/attendance/attendance-rules.js';
@@ -574,6 +575,7 @@ export const SAMPLES: Record<string, Sample> = {
   'PUT /transport/routes/:id/stops': { ...transportManagerOfA, prepare: routeOfA, body: () => ({ stops: [{ name: 'First stop' }, { name: 'Second stop' }] }) },
   'POST /announcements': { ...academicAdminOfA, body: () => ({ title: 'Staff meeting on Friday', body: 'All staff meet in the hall at 3 pm.' }) },
   'PATCH /announcements/:id': { ...principalOfA, prepare: announcementOfA, body: () => ({ title: 'Staff meeting moved', body: 'Now at 4 pm.' }) },
+  'POST /consent': { ...parentOfA, body: () => ({ noticeVersion: CONSENT_NOTICE_VERSION, language: 'en', given: true }) },
   'POST /notice-board': { ...academicAdminOfA, body: () => ({ title: 'School closed on Monday', body: 'Reopens on Tuesday.', category: 'HOLIDAY', audience: 'ALL_PARENTS' }) },
   'PATCH /notice-board/:id': { ...principalOfA, prepare: noticeOfA, body: () => ({ title: 'School closed on Tuesday', body: 'Reopens on Wednesday.', category: 'HOLIDAY', pinned: true }) },
   'POST /notice-board/:id/withdraw': { ...academicAdminOfA, prepare: noticeOfA },

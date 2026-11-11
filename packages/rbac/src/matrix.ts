@@ -38,6 +38,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
   // [SSOT] Principal: global metrics full; financial, attendance, academics, settings READ-ONLY.
   // Read-only is absolute for data; the ONLY write-like power is approving requests ("approve"), [GUARD §4] / [SSOT §7].
   PRINCIPAL: {
+    consent_overview: school("read"), // [P6-5c] which parents have consented, for the access review
     dashboard_school: school("read"),
     finance: school("read"),
     payroll: school("read", "approve"), // [SSOT] payroll is part of financial data; [ADR-0012] a monthly payroll run is approved by the Principal and nobody else
@@ -106,6 +107,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
 
   // [SSOT] IT / System Admin: system settings full CRUD; NO finance, attendance, academics.
   SYSTEM_ADMIN: {
+    consent_overview: school("read"), // [P6-5c] which parents have consented, for the access review
     dashboard_system: school("read"),
     settings: school(...CRUD),
     staff: school(...CRUD), // [ASSUMED] user/membership/role management is a system function
@@ -197,6 +199,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     learning_resources: linked("read"), // [ADR-0016] the resources of the classes their linked children are in
     announcements: school("read"),
     messages: own("read", "create", "update"), // [ADR-0018] own conversations; update = hide a message the sender wrote
+    consent: own("read", "create"), // [P6-5c] gives and withdraws their own consent; each answer is a new record
   },
 };
 
