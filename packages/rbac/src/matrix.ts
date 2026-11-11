@@ -45,6 +45,7 @@ const EXPLICIT: Readonly<Record<Role, RoleGrants>> = {
     attendance: school("read"),
     student_leave: school("read"), // [ADR-0016]
     broadcasts: school("read", "create"), // [ADR-0018] may send to any class and read what was sent
+    message_reports: school("read", "update"), // [ADR-0018 decision 7] reads a reported message and its conversation, and closes the report
     learning_resources: school("read"), // [ADR-0016]
     students: school("read"),
     academics: school("read"),

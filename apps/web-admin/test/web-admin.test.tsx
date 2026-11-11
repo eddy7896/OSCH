@@ -70,10 +70,12 @@ describe("signed in", () => {
   });
 
   it("a module whose screen is not built says so instead of showing nothing", async () => {
-    signedIn();
-    fireEvent.click(await screen.findByRole("button", { name: "Audit log" }));
+    const base = me().activeSchool!;
+    const api = fakeApi({ meGet: vi.fn(async () => me({ activeSchool: { ...base, navigation: [...base.navigation, { title: "HR", items: [{ key: "recruitment", label: "Recruitment" }] }] } })) });
+    signedIn(api);
+    fireEvent.click(await screen.findByRole("button", { name: "Recruitment" }));
     expect(await screen.findByText("This module is not ready yet")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Audit log" }).getAttribute("aria-current")).toBe("page");
+    expect(screen.getByRole("button", { name: "Recruitment" }).getAttribute("aria-current")).toBe("page");
     fireEvent.click(screen.getByRole("button", { name: "Dashboard" }));
     expect(await screen.findByText("Nothing to show yet")).toBeTruthy();
   });

@@ -4100,4 +4100,100 @@ class OruStringsMl extends OruStrings {
 
   @override
   String get mobBcReply => 'Reply privately';
+
+  @override
+  String get navMessageReports => 'Reported messages';
+
+  @override
+  String get mrpTitle => 'Reported messages';
+
+  @override
+  String get mrpNote =>
+      'A person reported these messages. Read the conversation, then close the report. The words stay in the audit trail.';
+
+  @override
+  String get mrpNone => 'No reports.';
+
+  @override
+  String get mrpWaiting => 'Waiting';
+
+  @override
+  String get mrpReviewed => 'Closed';
+
+  @override
+  String mrpBy(String name, String date) {
+    return 'Reported by $name on $date';
+  }
+
+  @override
+  String mrpAbout(String student, String staff, String guardian) {
+    return 'About $student, between $staff and $guardian';
+  }
+
+  @override
+  String mrpTheirNote(String note) {
+    return 'Their note: $note';
+  }
+
+  @override
+  String get mrpOpen => 'Read the conversation';
+
+  @override
+  String get mrpHide => 'Hide the conversation';
+
+  @override
+  String get mrpHiddenTag => 'hidden by the sender';
+
+  @override
+  String get mrpReportedTag => 'reported';
+
+  @override
+  String get mrpFieldNote => 'What you decided (optional)';
+
+  @override
+  String get mrpClose => 'Close this report';
+
+  @override
+  String get mrpClosed => 'Report closed.';
+
+  @override
+  String get mauTitle => 'Message audit trail';
+
+  @override
+  String get mauNote =>
+      'Every message and class message sent in this school, with its words. Opening this page is recorded too.';
+
+  @override
+  String get mauNone => 'No messages yet.';
+
+  @override
+  String get mauMore => 'Show older';
+
+  @override
+  String mauFrom(String actor, String to) {
+    return '$actor to $to';
+  }
+
+  @override
+  String mauAbout(String student) {
+    return 'About $student';
+  }
+
+  @override
+  String get mauActStart => 'Conversation started';
+
+  @override
+  String get mauActSend => 'Message';
+
+  @override
+  String get mauActHide => 'Message hidden';
+
+  @override
+  String get mauActReport => 'Message reported';
+
+  @override
+  String get mauActReview => 'Report closed';
+
+  @override
+  String get mauActBroadcast => 'Class message';
 }

@@ -423,6 +423,15 @@ export type ContactListDto = {
     items: Array<ContactDto>;
 };
 
+export type ConversationLineDto = {
+    body: string;
+    hidden: boolean;
+    id: string;
+    reported: boolean;
+    sender: PersonRefDto;
+    sentAt: string;
+};
+
 export type CorrectStaffDayDto = {
     checkIn?: string | null;
     checkOut?: string | null;
@@ -1193,6 +1202,23 @@ export type MembershipListDto = {
     items: Array<MembershipDto>;
 };
 
+export type MessageAuditEntryDto = {
+    action: string;
+    actor: PersonRefDto;
+    at: string;
+    body: string | null;
+    id: string;
+    note: string | null;
+    student: string | null;
+    title: string | null;
+    to: string | null;
+};
+
+export type MessageAuditPageDto = {
+    items: Array<MessageAuditEntryDto>;
+    next: number | null;
+};
+
 export type MessageDto = {
     body: string | null;
     canHide: boolean;
@@ -1604,8 +1630,44 @@ export type ReportCardDto = {
     totalMaxMarks: string;
 };
 
+export type ReportDetailDto = {
+    conversation: Array<ConversationLineDto>;
+    id: string;
+    message: ReportedMessageDto;
+    note: string | null;
+    reportedAt: string;
+    reportedBy: PersonRefDto;
+    reviewed: boolean;
+    reviewedAt: string | null;
+};
+
+export type ReportDto = {
+    id: string;
+    message: ReportedMessageDto;
+    note: string | null;
+    reportedAt: string;
+    reportedBy: PersonRefDto;
+    reviewed: boolean;
+    reviewedAt: string | null;
+};
+
+export type ReportListDto = {
+    items: Array<ReportDto>;
+};
+
 export type ReportMessageDto = {
     note?: string;
+};
+
+export type ReportedMessageDto = {
+    body: string;
+    guardian: PersonRefDto;
+    hidden: boolean;
+    id: string;
+    sender: PersonRefDto;
+    sentAt: string;
+    staff: PersonRefDto;
+    student: StudentNameDto;
 };
 
 export type ResourceDto = {
@@ -1644,6 +1706,10 @@ export type ResourceUploadRequestDto = {
 
 export type ReversePaymentDto = {
     reason: string;
+};
+
+export type ReviewReportDto = {
+    note?: string;
 };
 
 export type RosterEntryDto = {
@@ -2158,6 +2224,11 @@ export type StudentMarkDto = {
     date: string;
     note: string | null;
     status: string;
+};
+
+export type StudentNameDto = {
+    id: string;
+    name: string;
 };
 
 export type StudentRefDto = {
@@ -5305,6 +5376,47 @@ export type AttendanceStudentResponses = {
 };
 
 export type AttendanceStudentResponse = AttendanceStudentResponses[keyof AttendanceStudentResponses];
+
+export type MessageAuditMessagesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        limit?: number;
+        offset?: number;
+    };
+    url: '/v1/audit/messages';
+};
+
+export type MessageAuditMessagesErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type MessageAuditMessagesError = MessageAuditMessagesErrors[keyof MessageAuditMessagesErrors];
+
+export type MessageAuditMessagesResponses = {
+    200: MessageAuditPageDto;
+};
+
+export type MessageAuditMessagesResponse = MessageAuditMessagesResponses[keyof MessageAuditMessagesResponses];
 
 export type BroadcastsListData = {
     body?: never;
@@ -8534,6 +8646,132 @@ export type MessagesContactsResponses = {
 };
 
 export type MessagesContactsResponse = MessagesContactsResponses[keyof MessagesContactsResponses];
+
+export type MessageReportsListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/messages/reports';
+};
+
+export type MessageReportsListErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type MessageReportsListError = MessageReportsListErrors[keyof MessageReportsListErrors];
+
+export type MessageReportsListResponses = {
+    200: ReportListDto;
+};
+
+export type MessageReportsListResponse = MessageReportsListResponses[keyof MessageReportsListResponses];
+
+export type MessageReportsOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/messages/reports/{id}';
+};
+
+export type MessageReportsOneErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type MessageReportsOneError = MessageReportsOneErrors[keyof MessageReportsOneErrors];
+
+export type MessageReportsOneResponses = {
+    200: ReportDetailDto;
+};
+
+export type MessageReportsOneResponse = MessageReportsOneResponses[keyof MessageReportsOneResponses];
+
+export type MessageReportsCloseData = {
+    body: ReviewReportDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v1/messages/reports/{id}/review';
+};
+
+export type MessageReportsCloseErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Not found (also what an unusable public name or another school's record looks like).
+     */
+    404: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type MessageReportsCloseError = MessageReportsCloseErrors[keyof MessageReportsCloseErrors];
+
+export type MessageReportsCloseResponses = {
+    200: ReportDto;
+};
+
+export type MessageReportsCloseResponse = MessageReportsCloseResponses[keyof MessageReportsCloseResponses];
 
 export type MessagesThreadsData = {
     body?: never;

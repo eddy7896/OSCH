@@ -12,6 +12,8 @@ import { Admissions } from "./screens/Admissions";
 import { Attendance } from "./screens/Attendance";
 import { StaffAttendance } from "./screens/StaffAttendance";
 import { Announcements } from "./screens/Announcements";
+import { MessageAudit } from "./screens/MessageAudit";
+import { MessageReports } from "./screens/MessageReports";
 import { Transport } from "./screens/Transport";
 import { Classes } from "./screens/Classes";
 import { Fees } from "./screens/Fees";
@@ -31,7 +33,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { NotificationBell } from "./NotificationBell";
 
 /** The navigation keys that have a screen. `announcements` has one too, but is left out on purpose: every staff role may read it, and a role whose work is in the phone apps (teacher, staff, driver) must still be told to use them, not be given only this page. */
-const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "leave", "student-leave", "substitution", "admissions", "staff", "payroll", "finance", "settings", "transport", "reports-finance", "reports-hr"]);
+const BUILT = new Set(["memberships", "students", "classes", "timetable", "attendance", "staff-attendance", "gradebook", "leave", "student-leave", "substitution", "admissions", "staff", "payroll", "finance", "settings", "transport", "reports-finance", "reports-hr", "message-reports", "audit"]);
 
 type ActiveSchool = NonNullable<MeResponseDto["activeSchool"]>;
 
@@ -108,6 +110,10 @@ export function ErpShell({ me, active: access, school, hour = new Date().getHour
             <Transport grants={{ create: access.permissions["transport"]?.["create"] === "school", update: access.permissions["transport"]?.["update"] === "school", remove: access.permissions["transport"]?.["delete"] === "school" }} />
           ) : current === "announcements" ? (
             <Announcements grants={{ post: access.permissions["announcements"]?.["create"] === "school", withdraw: access.permissions["announcements"]?.["update"] === "school" }} />
+          ) : current === "message-reports" ? (
+            <MessageReports grants={{ close: access.permissions["message_reports"]?.["update"] === "school" }} />
+          ) : current === "audit" ? (
+            <MessageAudit />
           ) : current === "settings" ? (
             <Settings canEdit={access.permissions["settings"]?.["update"] === "school"} />
           ) : current === "reports-hr" ? (

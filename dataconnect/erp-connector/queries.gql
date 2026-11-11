@@ -814,3 +814,33 @@ query BroadcastRecipients($schoolId: UUID!, $broadcastId: UUID!) @auth(level: NO
 query BroadcastsReceivedBy($schoolId: UUID!, $guardianUserId: String!, $limit: Int!) @auth(level: NO_ACCESS) {
   broadcastRecipients(where: {schoolId: {eq: $schoolId}, guardianUserId: {eq: $guardianUserId}}, orderBy: [{createdAt: DESC}], limit: $limit) { id readAt student { id firstName lastName } broadcast { id title body targetCount createdAt classroom { id name } sender { id displayName email } } }
 }
+
+# Reviewing messages (P5-3e). The System Admin reads the trail of messages and class messages; the Principal reviews reports.
+query ListMessageAudit($schoolId: UUID!, $limit: Int!, $offset: Int!) @auth(level: NO_ACCESS) {
+  auditLogs(where: {schoolId: {eq: $schoolId}, action: {in: ["message.thread.start", "message.send", "message.hide", "message.report", "message.report.review", "broadcast.send"]}}, orderBy: [{createdAt: DESC}], limit: $limit, offset: $offset) {
+    id action entityType entityId details createdAt
+    actor { id email displayName }
+  }
+}
+
+query ConversationsByIds($schoolId: UUID!, $ids: [UUID!]!) @auth(level: NO_ACCESS) {
+  conversations(where: {schoolId: {eq: $schoolId}, id: {in: $ids}}) { id student { id firstName lastName } staffUser { id displayName email } guardianUser { id displayName email } }
+}
+
+query ListMessageReports($schoolId: UUID!, $limit: Int!) @auth(level: NO_ACCESS) {
+  messageReports(where: {schoolId: {eq: $schoolId}}, orderBy: [{createdAt: DESC}], limit: $limit) {
+    id note createdAt reviewedAt
+    reviewedBy { id displayName email }
+    reportedBy { id displayName email }
+    message { id body hiddenAt createdAt sender { id displayName email } conversation { id student { id firstName lastName } staffUser { id displayName email } guardianUser { id displayName email } } }
+  }
+}
+
+query GetMessageReport($schoolId: UUID!, $id: UUID!) @auth(level: NO_ACCESS) {
+  messageReports(where: {schoolId: {eq: $schoolId}, id: {eq: $id}}, limit: 1) {
+    id note createdAt reviewedAt
+    reviewedBy { id displayName email }
+    reportedBy { id displayName email }
+    message { id body hiddenAt createdAt sender { id displayName email } conversation { id student { id firstName lastName } staffUser { id displayName email } guardianUser { id displayName email } } }
+  }
+}

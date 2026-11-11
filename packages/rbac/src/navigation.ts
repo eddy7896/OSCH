@@ -51,7 +51,10 @@ export const NAV: readonly NavSectionDef[] = [
     { key: "recruitment", label: "Recruitment", requires: "recruitment" },
   ] },
   { title: "Finance", items: [{ key: "finance", label: "Fees and payments", requires: "finance" }] },
-  { title: "Communication", items: [{ key: "announcements", label: "Announcements", requires: "announcements" }] },
+  { title: "Communication", items: [
+    { key: "announcements", label: "Announcements", requires: "announcements" },
+    { key: "message-reports", label: "Reported messages", requires: "message_reports" },
+  ] },
   { title: "Transport", items: [{ key: "transport", label: "Transport", requires: "transport" }] },
   { title: "Operations", items: [{ key: "operations", label: "Operations", requires: "operations" }] },
   { title: "Reports", items: [

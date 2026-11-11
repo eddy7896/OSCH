@@ -1655,6 +1655,37 @@
         ],
         "type": "object"
       },
+      "ConversationLineDto": {
+        "properties": {
+          "body": {
+            "type": "string"
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "reported": {
+            "type": "boolean"
+          },
+          "sender": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "sentAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "sender",
+          "body",
+          "hidden",
+          "sentAt",
+          "reported"
+        ],
+        "type": "object"
+      },
       "CorrectStaffDayDto": {
         "properties": {
           "checkIn": {
@@ -4577,6 +4608,73 @@
         ],
         "type": "object"
       },
+      "MessageAuditEntryDto": {
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "actor": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "at": {
+            "type": "string"
+          },
+          "body": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "note": {
+            "nullable": true,
+            "type": "string"
+          },
+          "student": {
+            "nullable": true,
+            "type": "string"
+          },
+          "title": {
+            "nullable": true,
+            "type": "string"
+          },
+          "to": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "at",
+          "action",
+          "actor",
+          "to",
+          "student",
+          "title",
+          "body",
+          "note"
+        ],
+        "type": "object"
+      },
+      "MessageAuditPageDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MessageAuditEntryDto"
+            },
+            "type": "array"
+          },
+          "next": {
+            "nullable": true,
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "next"
+        ],
+        "type": "object"
+      },
       "MessageDto": {
         "properties": {
           "body": {
@@ -6123,6 +6221,101 @@
         ],
         "type": "object"
       },
+      "ReportDetailDto": {
+        "properties": {
+          "conversation": {
+            "items": {
+              "$ref": "#/components/schemas/ConversationLineDto"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "message": {
+            "$ref": "#/components/schemas/ReportedMessageDto"
+          },
+          "note": {
+            "nullable": true,
+            "type": "string"
+          },
+          "reportedAt": {
+            "type": "string"
+          },
+          "reportedBy": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "reviewed": {
+            "type": "boolean"
+          },
+          "reviewedAt": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "note",
+          "reportedAt",
+          "reportedBy",
+          "reviewed",
+          "reviewedAt",
+          "message",
+          "conversation"
+        ],
+        "type": "object"
+      },
+      "ReportDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "message": {
+            "$ref": "#/components/schemas/ReportedMessageDto"
+          },
+          "note": {
+            "nullable": true,
+            "type": "string"
+          },
+          "reportedAt": {
+            "type": "string"
+          },
+          "reportedBy": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "reviewed": {
+            "type": "boolean"
+          },
+          "reviewedAt": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "note",
+          "reportedAt",
+          "reportedBy",
+          "reviewed",
+          "reviewedAt",
+          "message"
+        ],
+        "type": "object"
+      },
+      "ReportListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReportDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "ReportMessageDto": {
         "properties": {
           "note": {
@@ -6130,6 +6323,45 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "ReportedMessageDto": {
+        "properties": {
+          "body": {
+            "type": "string"
+          },
+          "guardian": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "sender": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "sentAt": {
+            "type": "string"
+          },
+          "staff": {
+            "$ref": "#/components/schemas/PersonRefDto"
+          },
+          "student": {
+            "$ref": "#/components/schemas/StudentNameDto"
+          }
+        },
+        "required": [
+          "id",
+          "body",
+          "hidden",
+          "sentAt",
+          "sender",
+          "student",
+          "staff",
+          "guardian"
+        ],
         "type": "object"
       },
       "ResourceDto": {
@@ -6279,6 +6511,15 @@
         "required": [
           "reason"
         ],
+        "type": "object"
+      },
+      "ReviewReportDto": {
+        "properties": {
+          "note": {
+            "maxLength": 300,
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "RosterEntryDto": {
@@ -8225,6 +8466,21 @@
           "date",
           "status",
           "note"
+        ],
+        "type": "object"
+      },
+      "StudentNameDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
         ],
         "type": "object"
       },
@@ -14130,6 +14386,75 @@
         }
       }
     },
+    "/v1/audit/messages": {
+      "get": {
+        "operationId": "MessageAudit_messages",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "maximum": 200,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageAuditPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "MessageAudit"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "audit_log"
+        }
+      }
+    },
     "/v1/broadcasts": {
       "get": {
         "operationId": "Broadcasts_list",
@@ -19131,6 +19456,192 @@
         "x-permission": {
           "action": "read",
           "resource": "messages"
+        }
+      }
+    },
+    "/v1/messages/reports": {
+      "get": {
+        "operationId": "MessageReports_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "MessageReports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "message_reports"
+        }
+      }
+    },
+    "/v1/messages/reports/{id}": {
+      "get": {
+        "operationId": "MessageReports_one",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDetailDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "MessageReports"
+        ],
+        "x-access": "tenant",
+        "x-permission": {
+          "action": "read",
+          "resource": "message_reports"
+        }
+      }
+    },
+    "/v1/messages/reports/{id}/review": {
+      "post": {
+        "operationId": "MessageReports_close",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SchoolId"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewReportDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "MessageReports"
+        ],
+        "x-access": "tenant",
+        "x-audit": {
+          "action": "message.report.review",
+          "operation": "ReviewMessageReport"
+        },
+        "x-permission": {
+          "action": "update",
+          "resource": "message_reports"
         }
       }
     },
