@@ -241,7 +241,7 @@ const commentOfA = async (w: World): Promise<Record<string, string>> => {
 };
 /** A class with the sample TEACHER as its class teacher, a student placed in it and linked to the sample PARENT; `thread` adds their conversation, `message` the parent's first message (P5-3b). */
 const teacherOfA = { token: (w: World) => w.roles.A.TEACHER.token, actor: (w: World) => w.roles.A.TEACHER.uid, school: (w: World) => w.schools.A, auditSchool: (w: World) => w.schools.A };
-const messagingOfA = (level: 'none' | 'thread' | 'message') => async (w: World): Promise<Record<string, string>> => {
+const messagingOfA = (level: 'none' | 'thread' | 'message' | 'report') => async (w: World): Promise<Record<string, string>> => {
   const res = await examSetupOfA(w);
   let staffId = (await w.db.staffOfUser({ schoolId: w.schools.A, userId: w.roles.A.TEACHER.uid })).data.staffProfiles[0]?.id;
   if (!staffId) {
@@ -262,6 +262,10 @@ const messagingOfA = (level: 'none' | 'thread' | 'message') => async (w: World):
   const messageId = randomUUID();
   await w.db.sendMessage({ schoolId: w.schools.A, id: messageId, conversationId: convId, studentId: student['id']!, clientId: `s-${messageId.slice(0, 12)}`, body: 'Sample', staffUserId: w.roles.A.TEACHER.uid, guardianUserId: w.roles.A.PARENT.uid, recipientUserId: w.roles.A.TEACHER.uid, kind: 'message.received', actorId: w.roles.A.PARENT.uid, details: {} });
   out['messageId'] = dash(messageId);
+  if (level === 'message') return out;
+  const reportId = randomUUID();
+  await w.db.reportMessage({ schoolId: w.schools.A, id: reportId, conversationId: convId, messageId, staffUserId: w.roles.A.TEACHER.uid, guardianUserId: w.roles.A.PARENT.uid, note: 'Sample', kind: 'message.reported', actorId: w.roles.A.TEACHER.uid, details: {} });
+  out['id'] = dash(reportId);
   return out;
 };
 const examOfA = async (w: World): Promise<Record<string, string>> => {
@@ -648,6 +652,7 @@ export const SAMPLES: Record<string, Sample> = {
   'DELETE /students/:id/documents/:documentId': { ...academicAdminOfA, prepare: studentWithDocument },
   'POST /resources': { ...academicAdminOfA, prepare: examSetupOfA, body: (w, ctx) => ({ classId: ctx['classId'], subjectId: ctx['subjectId'], key: resourceKey(w, ctx['classId']!), title: 'Fractions', fileName: 'fractions.pdf' }) },
   'DELETE /resources/:id': { ...academicAdminOfA, prepare: resourceOfA },
+  'POST /messages/reports/:id/review': { ...principalOfA, prepare: messagingOfA('report'), body: () => ({ note: 'Looked at it' }) },
   'POST /broadcasts': { ...academicAdminOfA, prepare: examWithStudentOfA, body: (_w, ctx) => ({ classId: ctx['classId'], clientId: `s-${randomUUID().slice(0, 12)}`, title: 'Sample', body: 'Sample broadcast' }) },
   'POST /messages/threads': { ...parentOfA, prepare: messagingOfA('none'), body: (_w, ctx) => ({ studentId: ctx['studentId'], otherUserId: ctx['teacherUid'] }) },
   'POST /messages/threads/:id/messages': { ...parentOfA, prepare: messagingOfA('thread'), body: () => ({ clientId: `s-${randomUUID().slice(0, 12)}`, body: 'Hello teacher' }) },

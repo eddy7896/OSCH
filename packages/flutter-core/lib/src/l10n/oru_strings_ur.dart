@@ -4098,4 +4098,100 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get mobBcReply => 'نجی طور پر جواب دیں';
+
+  @override
+  String get navMessageReports => 'رپورٹ کیے گئے پیغامات';
+
+  @override
+  String get mrpTitle => 'رپورٹ کیے گئے پیغامات';
+
+  @override
+  String get mrpNote =>
+      'کسی نے ان پیغامات کی رپورٹ کی ہے۔ گفتگو پڑھیں، پھر رپورٹ بند کریں۔ الفاظ آڈٹ ریکارڈ میں رہتے ہیں۔';
+
+  @override
+  String get mrpNone => 'کوئی رپورٹ نہیں۔';
+
+  @override
+  String get mrpWaiting => 'انتظار میں';
+
+  @override
+  String get mrpReviewed => 'بند';
+
+  @override
+  String mrpBy(String name, String date) {
+    return '$name نے $date کو رپورٹ کیا';
+  }
+
+  @override
+  String mrpAbout(String student, String staff, String guardian) {
+    return '$student کے بارے میں، $staff اور $guardian کے درمیان';
+  }
+
+  @override
+  String mrpTheirNote(String note) {
+    return 'ان کا نوٹ: $note';
+  }
+
+  @override
+  String get mrpOpen => 'گفتگو پڑھیں';
+
+  @override
+  String get mrpHide => 'گفتگو چھپائیں';
+
+  @override
+  String get mrpHiddenTag => 'بھیجنے والے نے چھپایا';
+
+  @override
+  String get mrpReportedTag => 'رپورٹ کیا گیا';
+
+  @override
+  String get mrpFieldNote => 'آپ نے کیا طے کیا (اختیاری)';
+
+  @override
+  String get mrpClose => 'یہ رپورٹ بند کریں';
+
+  @override
+  String get mrpClosed => 'رپورٹ بند ہو گئی۔';
+
+  @override
+  String get mauTitle => 'پیغامات کا آڈٹ ریکارڈ';
+
+  @override
+  String get mauNote =>
+      'اس اسکول میں بھیجا گیا ہر پیغام اور جماعت کا پیغام، الفاظ کے ساتھ۔ اس صفحے کو کھولنا بھی درج ہوتا ہے۔';
+
+  @override
+  String get mauNone => 'ابھی کوئی پیغام نہیں۔';
+
+  @override
+  String get mauMore => 'پرانے دکھائیں';
+
+  @override
+  String mauFrom(String actor, String to) {
+    return '$actor سے $to کو';
+  }
+
+  @override
+  String mauAbout(String student) {
+    return '$student کے بارے میں';
+  }
+
+  @override
+  String get mauActStart => 'گفتگو شروع ہوئی';
+
+  @override
+  String get mauActSend => 'پیغام';
+
+  @override
+  String get mauActHide => 'پیغام چھپایا گیا';
+
+  @override
+  String get mauActReport => 'پیغام کی رپورٹ ہوئی';
+
+  @override
+  String get mauActReview => 'رپورٹ بند ہوئی';
+
+  @override
+  String get mauActBroadcast => 'جماعت کا پیغام';
 }

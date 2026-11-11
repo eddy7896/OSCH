@@ -5648,5 +5648,154 @@
   "mobBcReply": "Reply privately",
   "@mobBcReply": {
     "description": "Button on a class message that opens a private conversation with the teacher."
+  },
+  "navMessageReports": "Reported messages",
+  "@navMessageReports": {
+    "description": "Navigation item for the Principal's list of reported messages."
+  },
+  "mrpTitle": "Reported messages",
+  "@mrpTitle": {
+    "description": "Title of the Principal's screen with reported messages."
+  },
+  "mrpNote": "A person reported these messages. Read the conversation, then close the report. The words stay in the audit trail.",
+  "@mrpNote": {
+    "description": "Explains the reported messages screen."
+  },
+  "mrpNone": "No reports.",
+  "@mrpNone": {
+    "description": "Shown when nothing was reported."
+  },
+  "mrpWaiting": "Waiting",
+  "@mrpWaiting": {
+    "description": "Badge on a report nobody has closed yet."
+  },
+  "mrpReviewed": "Closed",
+  "@mrpReviewed": {
+    "description": "Badge on a report that was closed."
+  },
+  "mrpBy": "Reported by {name} on {date}",
+  "@mrpBy": {
+    "description": "Line under a reported message. {name} is who reported it.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mrpAbout": "About {student}, between {staff} and {guardian}",
+  "@mrpAbout": {
+    "description": "Who the conversation is about and between whom.",
+    "placeholders": {
+      "student": {
+        "type": "String"
+      },
+      "staff": {
+        "type": "String"
+      },
+      "guardian": {
+        "type": "String"
+      }
+    }
+  },
+  "mrpTheirNote": "Their note: {note}",
+  "@mrpTheirNote": {
+    "description": "The reporter's own words.",
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "mrpOpen": "Read the conversation",
+  "@mrpOpen": {
+    "description": "Button that opens the whole conversation."
+  },
+  "mrpHide": "Hide the conversation",
+  "@mrpHide": {
+    "description": "Button that closes the conversation view."
+  },
+  "mrpHiddenTag": "hidden by the sender",
+  "@mrpHiddenTag": {
+    "description": "Tag on a message the sender hid."
+  },
+  "mrpReportedTag": "reported",
+  "@mrpReportedTag": {
+    "description": "Tag on the message that was reported."
+  },
+  "mrpFieldNote": "What you decided (optional)",
+  "@mrpFieldNote": {
+    "description": "Label of the optional note when closing a report."
+  },
+  "mrpClose": "Close this report",
+  "@mrpClose": {
+    "description": "Button that closes a report."
+  },
+  "mrpClosed": "Report closed.",
+  "@mrpClosed": {
+    "description": "Shown after a report was closed."
+  },
+  "mauTitle": "Message audit trail",
+  "@mauTitle": {
+    "description": "Title of the System Admin's screen with the trail of messages."
+  },
+  "mauNote": "Every message and class message sent in this school, with its words. Opening this page is recorded too.",
+  "@mauNote": {
+    "description": "Explains the audit screen."
+  },
+  "mauNone": "No messages yet.",
+  "@mauNone": {
+    "description": "Shown when the trail is empty."
+  },
+  "mauMore": "Show older",
+  "@mauMore": {
+    "description": "Button that loads the next page of the trail."
+  },
+  "mauFrom": "{actor} to {to}",
+  "@mauFrom": {
+    "description": "Who wrote to whom.",
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "mauAbout": "About {student}",
+  "@mauAbout": {
+    "description": "The student a conversation is about.",
+    "placeholders": {
+      "student": {
+        "type": "String"
+      }
+    }
+  },
+  "mauActStart": "Conversation started",
+  "@mauActStart": {
+    "description": "Kind of entry in the message audit trail."
+  },
+  "mauActSend": "Message",
+  "@mauActSend": {
+    "description": "Kind of entry in the message audit trail."
+  },
+  "mauActHide": "Message hidden",
+  "@mauActHide": {
+    "description": "Kind of entry in the message audit trail."
+  },
+  "mauActReport": "Message reported",
+  "@mauActReport": {
+    "description": "Kind of entry in the message audit trail."
+  },
+  "mauActReview": "Report closed",
+  "@mauActReview": {
+    "description": "Kind of entry in the message audit trail."
+  },
+  "mauActBroadcast": "Class message",
+  "@mauActBroadcast": {
+    "description": "Kind of entry in the message audit trail."
   }
 }

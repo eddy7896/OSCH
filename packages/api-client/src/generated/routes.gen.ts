@@ -387,6 +387,12 @@ export const ROUTES: readonly RouteInfo[] = [
     "operationId": "Attendance_student"
   },
   {
+    "method": "GET",
+    "path": "/v1/audit/messages",
+    "access": "tenant",
+    "operationId": "MessageAudit_messages"
+  },
+  {
     "method": "POST",
     "path": "/v1/broadcasts/{id}/read",
     "access": "tenant",
@@ -853,6 +859,24 @@ export const ROUTES: readonly RouteInfo[] = [
     "path": "/v1/messages/contacts",
     "access": "tenant",
     "operationId": "Messages_contacts"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/messages/reports/{id}/review",
+    "access": "tenant",
+    "operationId": "MessageReports_close"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/messages/reports/{id}",
+    "access": "tenant",
+    "operationId": "MessageReports_one"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/messages/reports",
+    "access": "tenant",
+    "operationId": "MessageReports_list"
   },
   {
     "method": "POST",

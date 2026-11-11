@@ -21,7 +21,7 @@
 Payments: Razorpay. Messaging: through our own server; no office-hours hold; class teacher plus Principal and Academic admin may broadcast; a private conversation per parent; the notice board is also open to the Bursar (fees) and the transport manager (transport). No SMS in version 1. The bus is shown on a **live map** (OpenStreetMap-based tiles; the exact tile source is chosen at P5-5), pings every **30 seconds**. Recorded in ADR-0015 (accepted) and ADR-0018 (accepted). P5-1 and P5-3a are done; P5-2, P5-3b onward, P5-5, P5-7 and P5-8 can start.
 
 ## 1b. Messaging progress
-P5-3b (one-to-one conversations, server) built 2026-11-08; P5-3c (class broadcast, server) built 2026-11-09; P5-3d (Teacher and Parent screens) built 2026-11-09; P5-3e (Staff app, System Admin audit view, Principal's report review) is next. See ADR-0018 "Status of the work".
+P5-3b (one-to-one conversations, server) built 2026-11-08; P5-3c (class broadcast, server) built 2026-11-09; P5-3d (Teacher and Parent screens) built 2026-11-09; P5-3e (Principal's report review and the System Admin message audit view) built 2026-11-11; the Staff app Messages for office roles waits for a decision on which roles a parent may write to. See ADR-0018 "Status of the work".
 
 ## 2. Order of work
 The owner's answers are needed for payments, messaging, SMS and maps, so the work that needs none of them goes first.

@@ -7249,6 +7249,174 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Reply privately'**
   String get mobBcReply;
+
+  /// Navigation item for the Principal's list of reported messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported messages'**
+  String get navMessageReports;
+
+  /// Title of the Principal's screen with reported messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported messages'**
+  String get mrpTitle;
+
+  /// Explains the reported messages screen.
+  ///
+  /// In en, this message translates to:
+  /// **'A person reported these messages. Read the conversation, then close the report. The words stay in the audit trail.'**
+  String get mrpNote;
+
+  /// Shown when nothing was reported.
+  ///
+  /// In en, this message translates to:
+  /// **'No reports.'**
+  String get mrpNone;
+
+  /// Badge on a report nobody has closed yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get mrpWaiting;
+
+  /// Badge on a report that was closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get mrpReviewed;
+
+  /// Line under a reported message. {name} is who reported it.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported by {name} on {date}'**
+  String mrpBy(String name, String date);
+
+  /// Who the conversation is about and between whom.
+  ///
+  /// In en, this message translates to:
+  /// **'About {student}, between {staff} and {guardian}'**
+  String mrpAbout(String student, String staff, String guardian);
+
+  /// The reporter's own words.
+  ///
+  /// In en, this message translates to:
+  /// **'Their note: {note}'**
+  String mrpTheirNote(String note);
+
+  /// Button that opens the whole conversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the conversation'**
+  String get mrpOpen;
+
+  /// Button that closes the conversation view.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide the conversation'**
+  String get mrpHide;
+
+  /// Tag on a message the sender hid.
+  ///
+  /// In en, this message translates to:
+  /// **'hidden by the sender'**
+  String get mrpHiddenTag;
+
+  /// Tag on the message that was reported.
+  ///
+  /// In en, this message translates to:
+  /// **'reported'**
+  String get mrpReportedTag;
+
+  /// Label of the optional note when closing a report.
+  ///
+  /// In en, this message translates to:
+  /// **'What you decided (optional)'**
+  String get mrpFieldNote;
+
+  /// Button that closes a report.
+  ///
+  /// In en, this message translates to:
+  /// **'Close this report'**
+  String get mrpClose;
+
+  /// Shown after a report was closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Report closed.'**
+  String get mrpClosed;
+
+  /// Title of the System Admin's screen with the trail of messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Message audit trail'**
+  String get mauTitle;
+
+  /// Explains the audit screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Every message and class message sent in this school, with its words. Opening this page is recorded too.'**
+  String get mauNote;
+
+  /// Shown when the trail is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet.'**
+  String get mauNone;
+
+  /// Button that loads the next page of the trail.
+  ///
+  /// In en, this message translates to:
+  /// **'Show older'**
+  String get mauMore;
+
+  /// Who wrote to whom.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} to {to}'**
+  String mauFrom(String actor, String to);
+
+  /// The student a conversation is about.
+  ///
+  /// In en, this message translates to:
+  /// **'About {student}'**
+  String mauAbout(String student);
+
+  /// Kind of entry in the message audit trail.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation started'**
+  String get mauActStart;
+
+  /// Kind of entry in the message audit trail.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get mauActSend;
+
+  /// Kind of entry in the message audit trail.
+  ///
+  /// In en, this message translates to:
+  /// **'Message hidden'**
+  String get mauActHide;
+
+  /// Kind of entry in the message audit trail.
+  ///
+  /// In en, this message translates to:
+  /// **'Message reported'**
+  String get mauActReport;
+
+  /// Kind of entry in the message audit trail.
+  ///
+  /// In en, this message translates to:
+  /// **'Report closed'**
+  String get mauActReview;
+
+  /// Kind of entry in the message audit trail.
+  ///
+  /// In en, this message translates to:
+  /// **'Class message'**
+  String get mauActBroadcast;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

@@ -39,6 +39,7 @@ export const RESOURCES = [
   "learning_resources", // worksheets and workbooks a teacher shares with the parents of a class (ADR-0016)
   "resource_comments", // comments under a shared worksheet: the class's parents, the uploading teacher, the Academic admin (ADR-0016)
   "broadcasts", // one-way messages from the class teacher, the Principal or the Academic admin to the parents of a class (ADR-0018)
+  "message_reports", // messages a person reported; the Principal reads the conversation and closes the report (ADR-0018 decision 7)
   "messages", // 1:1 direct messaging (office hours enforced separately)
   // Administration
   "settings", // school settings, integrations

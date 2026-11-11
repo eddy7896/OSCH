@@ -1223,6 +1223,32 @@ export interface Conversation_Key {
   __typename?: 'Conversation_Key';
 }
 
+export interface ConversationsByIdsData {
+  conversations: ({
+    id: UUIDString;
+    student: {
+      id: UUIDString;
+      firstName: string;
+      lastName: string;
+    } & Student_Key;
+    staffUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    guardianUser: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+  } & Conversation_Key)[];
+}
+
+export interface ConversationsByIdsVariables {
+  schoolId: UUIDString;
+  ids: UUIDString[];
+}
+
 export interface CorrectStaffAttendanceData {
   query?: {
     actor: ({
@@ -3308,6 +3334,59 @@ export interface GetMessageData {
   } & Message_Key)[];
 }
 
+export interface GetMessageReportData {
+  messageReports: ({
+    id: UUIDString;
+    note?: string | null;
+    createdAt: TimestampString;
+    reviewedAt?: TimestampString | null;
+    reviewedBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    reportedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    message: {
+      id: UUIDString;
+      body: string;
+      hiddenAt?: TimestampString | null;
+      createdAt: TimestampString;
+      sender: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+      conversation: {
+        id: UUIDString;
+        student: {
+          id: UUIDString;
+          firstName: string;
+          lastName: string;
+        } & Student_Key;
+        staffUser: {
+          id: string;
+          displayName?: string | null;
+          email: string;
+        } & User_Key;
+        guardianUser: {
+          id: string;
+          displayName?: string | null;
+          email: string;
+        } & User_Key;
+      } & Conversation_Key;
+    } & Message_Key;
+  } & MessageReport_Key)[];
+}
+
+export interface GetMessageReportVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
+}
+
 export interface GetMessageVariables {
   schoolId: UUIDString;
   id: UUIDString;
@@ -4681,6 +4760,81 @@ export interface ListMembershipsVariables {
   schoolId: UUIDString;
 }
 
+export interface ListMessageAuditData {
+  auditLogs: ({
+    id: UUIDString;
+    action: string;
+    entityType: string;
+    entityId?: string | null;
+    details?: unknown | null;
+    createdAt: TimestampString;
+    actor: {
+      id: string;
+      email: string;
+      displayName?: string | null;
+    } & User_Key;
+  } & AuditLog_Key)[];
+}
+
+export interface ListMessageAuditVariables {
+  schoolId: UUIDString;
+  limit: number;
+  offset: number;
+}
+
+export interface ListMessageReportsData {
+  messageReports: ({
+    id: UUIDString;
+    note?: string | null;
+    createdAt: TimestampString;
+    reviewedAt?: TimestampString | null;
+    reviewedBy?: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    reportedBy: {
+      id: string;
+      displayName?: string | null;
+      email: string;
+    } & User_Key;
+    message: {
+      id: UUIDString;
+      body: string;
+      hiddenAt?: TimestampString | null;
+      createdAt: TimestampString;
+      sender: {
+        id: string;
+        displayName?: string | null;
+        email: string;
+      } & User_Key;
+      conversation: {
+        id: UUIDString;
+        student: {
+          id: UUIDString;
+          firstName: string;
+          lastName: string;
+        } & Student_Key;
+        staffUser: {
+          id: string;
+          displayName?: string | null;
+          email: string;
+        } & User_Key;
+        guardianUser: {
+          id: string;
+          displayName?: string | null;
+          email: string;
+        } & User_Key;
+      } & Conversation_Key;
+    } & Message_Key;
+  } & MessageReport_Key)[];
+}
+
+export interface ListMessageReportsVariables {
+  schoolId: UUIDString;
+  limit: number;
+}
+
 export interface ListMessagesData {
   messages: ({
     id: UUIDString;
@@ -5813,6 +5967,21 @@ export interface Receipt_Key {
   __typename?: 'Receipt_Key';
 }
 
+export interface RecordMessageAuditReadData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+  };
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface RecordMessageAuditReadVariables {
+  schoolId: UUIDString;
+  actorId: string;
+  details?: unknown | null;
+}
+
 export interface RecordPaymentData {
   query?: {
     actor: ({
@@ -6246,6 +6415,26 @@ export interface ReversePaymentVariables {
   expectedPaidMinor: Int64String;
   newPaidMinor: Int64String;
   newStatus: InvoiceStatus;
+  actorId: string;
+  details?: unknown | null;
+}
+
+export interface ReviewMessageReportData {
+  query?: {
+    actor: ({
+      userId: string;
+    })[];
+    report: ({
+      id: UUIDString;
+    } & MessageReport_Key)[];
+  };
+  messageReport_update?: MessageReport_Key | null;
+  auditLog_insert: AuditLog_Key;
+}
+
+export interface ReviewMessageReportVariables {
+  schoolId: UUIDString;
+  id: UUIDString;
   actorId: string;
   details?: unknown | null;
 }
@@ -8542,6 +8731,16 @@ export function markBroadcastRead(dc: DataConnect, vars: MarkBroadcastReadVariab
 /** Generated Node Admin SDK operation action function for the 'MarkBroadcastRead' Mutation. Allow users to pass in custom DataConnect instances. */
 export function markBroadcastRead(vars: MarkBroadcastReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkBroadcastReadData>>;
 
+/** Generated Node Admin SDK operation action function for the 'ReviewMessageReport' Mutation. Allow users to execute without passing in DataConnect. */
+export function reviewMessageReport(dc: DataConnect, vars: ReviewMessageReportVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ReviewMessageReportData>>;
+/** Generated Node Admin SDK operation action function for the 'ReviewMessageReport' Mutation. Allow users to pass in custom DataConnect instances. */
+export function reviewMessageReport(vars: ReviewMessageReportVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ReviewMessageReportData>>;
+
+/** Generated Node Admin SDK operation action function for the 'RecordMessageAuditRead' Mutation. Allow users to execute without passing in DataConnect. */
+export function recordMessageAuditRead(dc: DataConnect, vars: RecordMessageAuditReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordMessageAuditReadData>>;
+/** Generated Node Admin SDK operation action function for the 'RecordMessageAuditRead' Mutation. Allow users to pass in custom DataConnect instances. */
+export function recordMessageAuditRead(vars: RecordMessageAuditReadVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<RecordMessageAuditReadData>>;
+
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to execute without passing in DataConnect. */
 export function listStaff(dc: DataConnect, vars: ListStaffVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListStaffData>>;
 /** Generated Node Admin SDK operation action function for the 'ListStaff' Query. Allow users to pass in custom DataConnect instances. */
@@ -9246,4 +9445,24 @@ export function broadcastRecipients(vars: BroadcastRecipientsVariables, options?
 export function broadcastsReceivedBy(dc: DataConnect, vars: BroadcastsReceivedByVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<BroadcastsReceivedByData>>;
 /** Generated Node Admin SDK operation action function for the 'BroadcastsReceivedBy' Query. Allow users to pass in custom DataConnect instances. */
 export function broadcastsReceivedBy(vars: BroadcastsReceivedByVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<BroadcastsReceivedByData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListMessageAudit' Query. Allow users to execute without passing in DataConnect. */
+export function listMessageAudit(dc: DataConnect, vars: ListMessageAuditVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMessageAuditData>>;
+/** Generated Node Admin SDK operation action function for the 'ListMessageAudit' Query. Allow users to pass in custom DataConnect instances. */
+export function listMessageAudit(vars: ListMessageAuditVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMessageAuditData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ConversationsByIds' Query. Allow users to execute without passing in DataConnect. */
+export function conversationsByIds(dc: DataConnect, vars: ConversationsByIdsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConversationsByIdsData>>;
+/** Generated Node Admin SDK operation action function for the 'ConversationsByIds' Query. Allow users to pass in custom DataConnect instances. */
+export function conversationsByIds(vars: ConversationsByIdsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ConversationsByIdsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'ListMessageReports' Query. Allow users to execute without passing in DataConnect. */
+export function listMessageReports(dc: DataConnect, vars: ListMessageReportsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMessageReportsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListMessageReports' Query. Allow users to pass in custom DataConnect instances. */
+export function listMessageReports(vars: ListMessageReportsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMessageReportsData>>;
+
+/** Generated Node Admin SDK operation action function for the 'GetMessageReport' Query. Allow users to execute without passing in DataConnect. */
+export function getMessageReport(dc: DataConnect, vars: GetMessageReportVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMessageReportData>>;
+/** Generated Node Admin SDK operation action function for the 'GetMessageReport' Query. Allow users to pass in custom DataConnect instances. */
+export function getMessageReport(vars: GetMessageReportVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMessageReportData>>;
 

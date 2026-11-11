@@ -1414,6 +1414,20 @@ function markBroadcastRead(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.markBroadcastRead = markBroadcastRead;
 
+function reviewMessageReport(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('ReviewMessageReport', inputVars, inputOpts);
+}
+exports.reviewMessageReport = reviewMessageReport;
+
+function recordMessageAuditRead(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RecordMessageAuditRead', inputVars, inputOpts);
+}
+exports.recordMessageAuditRead = recordMessageAuditRead;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2400,4 +2414,32 @@ function broadcastsReceivedBy(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('BroadcastsReceivedBy', inputVars, inputOpts);
 }
 exports.broadcastsReceivedBy = broadcastsReceivedBy;
+
+function listMessageAudit(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListMessageAudit', inputVars, inputOpts);
+}
+exports.listMessageAudit = listMessageAudit;
+
+function conversationsByIds(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ConversationsByIds', inputVars, inputOpts);
+}
+exports.conversationsByIds = conversationsByIds;
+
+function listMessageReports(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListMessageReports', inputVars, inputOpts);
+}
+exports.listMessageReports = listMessageReports;
+
+function getMessageReport(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetMessageReport', inputVars, inputOpts);
+}
+exports.getMessageReport = getMessageReport;
 
