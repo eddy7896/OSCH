@@ -1642,6 +1642,93 @@ class NavSectionDto {
       };
 }
 
+class NoticeDto {
+  const NoticeDto({required this.audience, required this.author, required this.body, required this.category, required this.createdAt, required this.expiresAt, required this.id, required this.pinned, required this.publishAt, required this.state, required this.target, required this.title, required this.told, required this.updatedAt, required this.withdrawn});
+  /// One of: ALL_PARENTS, GRADE, CLASS.
+  final String audience;
+  final NoticeDtoAuthor author;
+  final String body;
+  /// One of: GENERAL, HOLIDAY, EXAM, EVENT, FEES, TRANSPORT.
+  final String category;
+  final String createdAt;
+  final String? expiresAt;
+  final String id;
+  final bool pinned;
+  final String? publishAt;
+  /// One of: EXPIRED, SCHEDULED, LIVE, WITHDRAWN.
+  final String state;
+  final String? target;
+  final String title;
+  final num? told;
+  final String updatedAt;
+  final bool withdrawn;
+
+  factory NoticeDto.fromJson(Map<String, dynamic> j) => NoticeDto(
+        audience: j['audience'] as String,
+        author: NoticeDtoAuthor.fromJson(j['author'] as Map<String, dynamic>),
+        body: j['body'] as String,
+        category: j['category'] as String,
+        createdAt: j['createdAt'] as String,
+        expiresAt: j['expiresAt'] == null ? null : j['expiresAt'] as String,
+        id: j['id'] as String,
+        pinned: j['pinned'] as bool,
+        publishAt: j['publishAt'] == null ? null : j['publishAt'] as String,
+        state: j['state'] as String,
+        target: j['target'] == null ? null : j['target'] as String,
+        title: j['title'] as String,
+        told: j['told'] == null ? null : j['told'] as num,
+        updatedAt: j['updatedAt'] as String,
+        withdrawn: j['withdrawn'] as bool,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'audience': audience,
+        'author': author.toJson(),
+        'body': body,
+        'category': category,
+        'createdAt': createdAt,
+        if (expiresAt != null) 'expiresAt': expiresAt!,
+        'id': id,
+        'pinned': pinned,
+        if (publishAt != null) 'publishAt': publishAt!,
+        'state': state,
+        if (target != null) 'target': target!,
+        'title': title,
+        if (told != null) 'told': told!,
+        'updatedAt': updatedAt,
+        'withdrawn': withdrawn,
+      };
+}
+
+class NoticeDtoAuthor {
+  const NoticeDtoAuthor({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  factory NoticeDtoAuthor.fromJson(Map<String, dynamic> j) => NoticeDtoAuthor(
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
+
+class NoticeListDto {
+  const NoticeListDto({required this.items});
+  final List<NoticeDto> items;
+
+  factory NoticeListDto.fromJson(Map<String, dynamic> j) => NoticeListDto(
+        items: (j['items'] as List<dynamic>).map((e) => NoticeDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
 class NotificationDto {
   const NotificationDto({required this.body, required this.category, required this.createdAt, required this.entityId, required this.entityType, required this.id, required this.kind, required this.read, required this.title});
   final String body;

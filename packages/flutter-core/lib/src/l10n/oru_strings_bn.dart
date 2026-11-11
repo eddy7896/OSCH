@@ -4333,4 +4333,7 @@ class OruStringsBn extends OruStrings {
   String nbdListUntil(String date) {
     return 'Removed on $date';
   }
+
+  @override
+  String get mobNbEmpty => 'The school has no notices for you right now.';
 }

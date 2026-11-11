@@ -7663,6 +7663,12 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Removed on {date}'**
   String nbdListUntil(String date);
+
+  /// Parent app, Notice board screen: shown when there are no notices.
+  ///
+  /// In en, this message translates to:
+  /// **'The school has no notices for you right now.'**
+  String get mobNbEmpty;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

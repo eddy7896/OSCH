@@ -1247,5 +1247,6 @@
   "nbdCatFEES": "शुल्क",
   "nbdCatTRANSPORT": "परिवहन",
   "nbdListFrom": "{date} से दिखाई जाएगी",
-  "nbdListUntil": "{date} को हटाई जाएगी"
+  "nbdListUntil": "{date} को हटाई जाएगी",
+  "mobNbEmpty": "स्कूल की ओर से अभी कोई सूचना नहीं है।"
 }

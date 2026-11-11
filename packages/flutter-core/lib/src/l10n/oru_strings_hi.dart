@@ -4332,4 +4332,7 @@ class OruStringsHi extends OruStrings {
   String nbdListUntil(String date) {
     return '$date को हटाई जाएगी';
   }
+
+  @override
+  String get mobNbEmpty => 'स्कूल की ओर से अभी कोई सूचना नहीं है।';
 }
