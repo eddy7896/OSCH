@@ -1248,6 +1248,7 @@
   "nbdCatTRANSPORT": "Category of a notice board post.",
   "nbdListFrom": "On a post: when it becomes visible to parents.",
   "nbdListUntil": "On a post: when it stops being shown to parents.",
+  "mobNbEmpty": "Parent app, Notice board screen: shown when there are no notices.",
   "privNoticeVersion": "The version number of the privacy notice. Do not translate. The gateway holds the same number; a test keeps them equal.",
   "privTitle": "Parent app privacy and consent screen.",
   "privLead": "Parent app privacy and consent screen.",

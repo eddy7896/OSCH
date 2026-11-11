@@ -5995,6 +5995,10 @@
       }
     }
   },
+  "mobNbEmpty": "The school has no notices for you right now.",
+  "@mobNbEmpty": {
+    "description": "Parent app, Notice board screen: shown when there are no notices."
+  },
   "privNoticeVersion": "1",
   "@privNoticeVersion": {
     "description": "The version number of the privacy notice. Do not translate. The gateway holds the same number; a test keeps them equal."

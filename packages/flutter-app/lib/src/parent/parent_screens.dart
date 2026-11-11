@@ -14,6 +14,8 @@ import '../inbox/inbox_screen.dart';
 import '../services.dart';
 import '../messaging/messaging_data.dart' show messagingPullTasks;
 import '../messaging/messaging_screens.dart';
+import '../noticeboard/noticeboard_data.dart' show noticeBoardPullTasks;
+import '../noticeboard/noticeboard_screen.dart';
 import '../resources/parent_resources_screen.dart';
 import '../resources/comments_data.dart' show commentsPullTask;
 import '../resources/resources_data.dart' show resourcesListPullTask;
@@ -29,7 +31,7 @@ import 'parent_fees_screens.dart';
 import 'parent_model.dart';
 
 /// The pull for the Parent app: the children and their day, and the notifications.
-List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...parentAcademicsPullTasks(api), ...parentFeesPullTasks(api), ...studentLeavePullTasks(api), resourcesListPullTask(api), commentsPullTask(api), ...messagingPullTasks(api), ...inboxPullTasks(api)];
+List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...parentAcademicsPullTasks(api), ...parentFeesPullTasks(api), ...studentLeavePullTasks(api), resourcesListPullTask(api), commentsPullTask(api), ...messagingPullTasks(api), ...noticeBoardPullTasks(api), ...inboxPullTasks(api)];
 
 String _isolate(String text) => '\u2066$text\u2069';
 
@@ -255,6 +257,8 @@ class _MorePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.all(OruSpacing.space4), children: [
+          OruCard(child: OruListRow(title: s.navNoticeBoard, leading: const OruIcon(OruIconName.message, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruNoticeBoardScreen(services: services))))),
+          const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobMsTitle, leading: const OruIcon(OruIconName.message, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruMessagesScreen(services: services, forParent: true))))),
           const SizedBox(height: OruSpacing.space2),
           OruCard(child: OruListRow(title: s.mobBcTitle, leading: const OruIcon(OruIconName.send, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruBroadcastsScreen(services: services, forParent: true))))),

@@ -11,8 +11,7 @@
   "StudentLeave_approve",
   "StudentLeave_decline",
   "StudentLeave_cancel",
-  "Consent_status",
-  "Consent_record",
+  "NoticeBoard_list",
   "Resources_list",
   "Resources_ticket",
   "Resources_add",
@@ -79,5 +78,7 @@
   "Broadcasts_list",
   "Broadcasts_create",
   "Broadcasts_one",
-  "Broadcasts_read"
+  "Broadcasts_read",
+  "Consent_status",
+  "Consent_record"
 ]

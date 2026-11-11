@@ -1248,6 +1248,7 @@
   "nbdCatTRANSPORT": "परिवहन",
   "nbdListFrom": "{date} से दिखाई जाएगी",
   "nbdListUntil": "{date} को हटाई जाएगी",
+  "mobNbEmpty": "स्कूल की ओर से अभी कोई सूचना नहीं है।",
   "privNoticeVersion": "1",
   "privTitle": "गोपनीयता और सहमति",
   "privLead": "अपने बच्चे की स्कूल की जानकारी देखने से पहले, कृपया पढ़ें कि स्कूल और OruSchools उसका उपयोग कैसे करते हैं।",

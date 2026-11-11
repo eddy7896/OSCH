@@ -1247,6 +1247,7 @@
   "nbdCatTRANSPORT": "Transport",
   "nbdListFrom": "Shown from {date}",
   "nbdListUntil": "Removed on {date}",
+  "mobNbEmpty": "The school has no notices for you right now.",
   "privNoticeVersion": "1",
   "privTitle": "Privacy and consent",
   "privLead": "Before you see your child's school information, please read how the school and OruSchools use it.",

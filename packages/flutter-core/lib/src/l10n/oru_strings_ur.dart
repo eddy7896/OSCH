@@ -4333,6 +4333,9 @@ class OruStringsUr extends OruStrings {
   }
 
   @override
+  String get mobNbEmpty => 'اسکول کی طرف سے ابھی کوئی نوٹس نہیں ہے۔';
+
+  @override
   String get privNoticeVersion => '1';
 
   @override
