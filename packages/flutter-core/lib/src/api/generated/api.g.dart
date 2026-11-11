@@ -89,6 +89,11 @@ const List<OruRoute> kOruRoutes = [
   _rTimetableForClass,
   _rTimetableMine,
   _rTransportChildren,
+  _rTransportManifest,
+  _rTransportRoutes,
+  _rTripsEnd,
+  _rTripsPings,
+  _rTripsStart,
 ];
 
 const _rAcademicsClasses = OruRoute('GET', '/v1/academics/classes', OruAccess.tenant, 'Academics_classes');
@@ -173,6 +178,11 @@ const _rTeachingMine = OruRoute('GET', '/v1/academics/mine', OruAccess.tenant, '
 const _rTimetableForClass = OruRoute('GET', '/v1/academics/timetable/classes/{id}', OruAccess.tenant, 'Timetable_forClass');
 const _rTimetableMine = OruRoute('GET', '/v1/academics/timetable/mine', OruAccess.tenant, 'Timetable_mine');
 const _rTransportChildren = OruRoute('GET', '/v1/transport/children', OruAccess.tenant, 'Transport_children');
+const _rTransportManifest = OruRoute('GET', '/v1/transport/routes/{id}/manifest', OruAccess.tenant, 'Transport_manifest');
+const _rTransportRoutes = OruRoute('GET', '/v1/transport/routes', OruAccess.tenant, 'Transport_routes');
+const _rTripsEnd = OruRoute('POST', '/v1/trips/{id}/end', OruAccess.tenant, 'Trips_end');
+const _rTripsPings = OruRoute('POST', '/v1/trips/{id}/pings', OruAccess.tenant, 'Trips_pings');
+const _rTripsStart = OruRoute('POST', '/v1/trips', OruAccess.tenant, 'Trips_start');
 
 /// The operations the phone apps call, as typed methods. Every method throws an [OruApiError] on failure.
 class OruApi {
@@ -661,6 +671,36 @@ class OruApi {
   Future<ChildrenSeatsDto> transportChildren() async {
     final j = await _t.send(_rTransportChildren, "/v1/transport/children");
     return ChildrenSeatsDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/transport/routes/{id}/manifest
+  Future<ManifestDto> transportManifest({required String id}) async {
+    final j = await _t.send(_rTransportManifest, "/v1/transport/routes/${Uri.encodeComponent(id)}/manifest");
+    return ManifestDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/transport/routes
+  Future<RouteListDto> transportRoutes() async {
+    final j = await _t.send(_rTransportRoutes, "/v1/transport/routes");
+    return RouteListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/trips/{id}/end
+  Future<TripDto> tripsEnd({required String id}) async {
+    final j = await _t.send(_rTripsEnd, "/v1/trips/${Uri.encodeComponent(id)}/end");
+    return TripDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/trips/{id}/pings
+  Future<PingResultDto> tripsPings({required String id, required PingsDto body}) async {
+    final j = await _t.send(_rTripsPings, "/v1/trips/${Uri.encodeComponent(id)}/pings", body: body.toJson());
+    return PingResultDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// POST /v1/trips
+  Future<TripDto> tripsStart({required StartTripDto body}) async {
+    final j = await _t.send(_rTripsStart, "/v1/trips", body: body.toJson());
+    return TripDto.fromJson(j as Map<String, dynamic>);
   }
 
 }

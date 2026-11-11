@@ -1,5 +1,5 @@
 name: mobile_driver
-description: "OruSchools Driver: offline-first Flutter app for transport drivers. Scaffold only; features arrive in Phase 4-5."
+description: "OruSchools Driver: offline-first Flutter app for transport drivers. Routes, trips and the bus position (Phase 5)."
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_app: ^0.0.1
   flutter_core: ^0.0.1
 
 dev_dependencies:

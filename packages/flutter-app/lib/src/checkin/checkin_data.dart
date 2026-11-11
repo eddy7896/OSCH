@@ -69,7 +69,7 @@ class GeolocatorLocation implements LocationPort {
     if (permission == LocationPermission.denied) permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) return null;
     final p = await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.high, timeLimit: timeout));
-    return Fix(lat: p.latitude, lng: p.longitude, accuracyM: p.accuracy);
+    return Fix(lat: p.latitude, lng: p.longitude, accuracyM: p.accuracy, speedKmh: p.speed >= 0 ? p.speed * 3.6 : null);
   }
 }
 
