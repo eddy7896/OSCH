@@ -11,6 +11,7 @@
   "StudentLeave_approve",
   "StudentLeave_decline",
   "StudentLeave_cancel",
+  "NoticeBoard_list",
   "Resources_list",
   "Resources_ticket",
   "Resources_add",
