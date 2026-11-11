@@ -5994,5 +5994,9 @@
         "type": "String"
       }
     }
+  },
+  "mobNbEmpty": "The school has no notices for you right now.",
+  "@mobNbEmpty": {
+    "description": "Parent app, Notice board screen: shown when there are no notices."
   }
 }

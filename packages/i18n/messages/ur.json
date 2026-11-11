@@ -1246,5 +1246,6 @@
   "nbdCatFEES": "فیس",
   "nbdCatTRANSPORT": "ٹرانسپورٹ",
   "nbdListFrom": "{date} سے دکھائی جائے گی",
-  "nbdListUntil": "{date} کو ہٹائی جائے گی"
+  "nbdListUntil": "{date} کو ہٹائی جائے گی",
+  "mobNbEmpty": "اسکول کی طرف سے ابھی کوئی نوٹس نہیں ہے۔"
 }

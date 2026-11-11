@@ -1247,5 +1247,6 @@
   "nbdCatFEES": "Category of a notice board post.",
   "nbdCatTRANSPORT": "Category of a notice board post.",
   "nbdListFrom": "On a post: when it becomes visible to parents.",
-  "nbdListUntil": "On a post: when it stops being shown to parents."
+  "nbdListUntil": "On a post: when it stops being shown to parents.",
+  "mobNbEmpty": "Parent app, Notice board screen: shown when there are no notices."
 }

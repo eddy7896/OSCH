@@ -1252,7 +1252,8 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdCatFEES": "Fees",
     "nbdCatTRANSPORT": "Transport",
     "nbdListFrom": "Shown from {date}",
-    "nbdListUntil": "Removed on {date}"
+    "nbdListUntil": "Removed on {date}",
+    "mobNbEmpty": "The school has no notices for you right now."
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2502,7 +2503,8 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdCatFEES": "शुल्क",
     "nbdCatTRANSPORT": "परिवहन",
     "nbdListFrom": "{date} से दिखाई जाएगी",
-    "nbdListUntil": "{date} को हटाई जाएगी"
+    "nbdListUntil": "{date} को हटाई जाएगी",
+    "mobNbEmpty": "स्कूल की ओर से अभी कोई सूचना नहीं है।"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3752,7 +3754,8 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "nbdCatFEES": "فیس",
     "nbdCatTRANSPORT": "ٹرانسپورٹ",
     "nbdListFrom": "{date} سے دکھائی جائے گی",
-    "nbdListUntil": "{date} کو ہٹائی جائے گی"
+    "nbdListUntil": "{date} کو ہٹائی جائے گی",
+    "mobNbEmpty": "اسکول کی طرف سے ابھی کوئی نوٹس نہیں ہے۔"
   },
   "ks": {},
   "sd": {},

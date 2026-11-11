@@ -54,6 +54,7 @@ const List<OruRoute> kOruRoutes = [
   _rMessagesStart,
   _rMessagesThread,
   _rMessagesThreads,
+  _rNoticeBoardList,
   _rNotificationsList,
   _rNotificationsPreferences,
   _rNotificationsRead,
@@ -135,6 +136,7 @@ const _rMessagesSend = OruRoute('POST', '/v1/messages/threads/{id}/messages', Or
 const _rMessagesStart = OruRoute('POST', '/v1/messages/threads', OruAccess.tenant, 'Messages_start');
 const _rMessagesThread = OruRoute('GET', '/v1/messages/threads/{id}', OruAccess.tenant, 'Messages_thread');
 const _rMessagesThreads = OruRoute('GET', '/v1/messages/threads', OruAccess.tenant, 'Messages_threads');
+const _rNoticeBoardList = OruRoute('GET', '/v1/notice-board', OruAccess.tenant, 'NoticeBoard_list');
 const _rNotificationsList = OruRoute('GET', '/v1/notifications', OruAccess.tenant, 'Notifications_list');
 const _rNotificationsPreferences = OruRoute('GET', '/v1/notifications/preferences', OruAccess.tenant, 'Notifications_preferences');
 const _rNotificationsRead = OruRoute('POST', '/v1/notifications/{id}/read', OruAccess.tenant, 'Notifications_read');
@@ -447,6 +449,12 @@ class OruApi {
   Future<ThreadListDto> messagesThreads() async {
     final j = await _t.send(_rMessagesThreads, "/v1/messages/threads");
     return ThreadListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/notice-board
+  Future<NoticeListDto> noticeBoardList() async {
+    final j = await _t.send(_rNoticeBoardList, "/v1/notice-board");
+    return NoticeListDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// GET /v1/notifications

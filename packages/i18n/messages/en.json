@@ -1246,5 +1246,6 @@
   "nbdCatFEES": "Fees",
   "nbdCatTRANSPORT": "Transport",
   "nbdListFrom": "Shown from {date}",
-  "nbdListUntil": "Removed on {date}"
+  "nbdListUntil": "Removed on {date}",
+  "mobNbEmpty": "The school has no notices for you right now."
 }
