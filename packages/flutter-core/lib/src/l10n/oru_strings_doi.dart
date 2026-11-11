@@ -4204,4 +4204,123 @@ class OruStringsDoi extends OruStrings {
   String notifNoticePostedBody(String title) {
     return '$title';
   }
+
+  @override
+  String get navNoticeBoard => 'Notice board';
+
+  @override
+  String get nbdNote =>
+      'Posts for parents. Each parent account is told once when a post goes live. A post set for later is shown to parents then, but nobody is told when it appears.';
+
+  @override
+  String get nbdPostTitle => 'New post';
+
+  @override
+  String get nbdFieldTitle => 'Headline';
+
+  @override
+  String get nbdFieldBody => 'Text';
+
+  @override
+  String get nbdCategory => 'Category';
+
+  @override
+  String get nbdAudience => 'Who is it for';
+
+  @override
+  String get nbdAudAll => 'All parents';
+
+  @override
+  String get nbdAudGrade => 'A grade';
+
+  @override
+  String get nbdAudClass => 'A class';
+
+  @override
+  String get nbdGrade => 'Grade';
+
+  @override
+  String get nbdClass => 'Class';
+
+  @override
+  String get nbdPinned => 'Pin to the top';
+
+  @override
+  String get nbdPublishAt => 'Show from (empty means now)';
+
+  @override
+  String get nbdExpiresAt => 'Remove on (optional)';
+
+  @override
+  String nbdReach(String parents, String students) {
+    return 'This will tell $parents parent accounts, for $students students.';
+  }
+
+  @override
+  String get nbdReachNone =>
+      'Nobody would be told: no parent account is linked to these students.';
+
+  @override
+  String get nbdPost => 'Post';
+
+  @override
+  String nbdPosted(String told) {
+    return 'Posted. $told parent accounts were told.';
+  }
+
+  @override
+  String get nbdNone => 'Nothing posted yet.';
+
+  @override
+  String get nbdPin => 'Pin';
+
+  @override
+  String get nbdUnpin => 'Unpin';
+
+  @override
+  String get nbdPinChanged => 'Saved.';
+
+  @override
+  String get nbdWithdraw => 'Withdraw';
+
+  @override
+  String get nbdWithdrawnOk => 'Withdrawn. Parents no longer see it.';
+
+  @override
+  String get nbdStateLive => 'Live';
+
+  @override
+  String get nbdStateScheduled => 'Scheduled';
+
+  @override
+  String get nbdStateExpired => 'Expired';
+
+  @override
+  String get nbdStateWithdrawn => 'Withdrawn';
+
+  @override
+  String get nbdPinnedTag => 'Pinned';
+
+  @override
+  String nbdFor(String target) {
+    return 'For: $target';
+  }
+
+  @override
+  String get nbdCatGENERAL => 'General';
+
+  @override
+  String get nbdCatHOLIDAY => 'Holiday';
+
+  @override
+  String get nbdCatEXAM => 'Exam';
+
+  @override
+  String get nbdCatEVENT => 'Event';
+
+  @override
+  String get nbdCatFEES => 'Fees';
+
+  @override
+  String get nbdCatTRANSPORT => 'Transport';
 }

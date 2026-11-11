@@ -53,6 +53,7 @@ export const NAV: readonly NavSectionDef[] = [
   { title: "Finance", items: [{ key: "finance", label: "Fees and payments", requires: "finance" }] },
   { title: "Communication", items: [
     { key: "announcements", label: "Announcements", requires: "announcements" },
+    { key: "notice-board", label: "Notice board", requires: "notice_board" },
     { key: "message-reports", label: "Reported messages", requires: "message_reports" },
   ] },
   { title: "Transport", items: [{ key: "transport", label: "Transport", requires: "transport" }] },

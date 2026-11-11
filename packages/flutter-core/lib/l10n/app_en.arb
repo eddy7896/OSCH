@@ -5810,5 +5810,171 @@
         "type": "String"
       }
     }
+  },
+  "navNoticeBoard": "Notice board",
+  "@navNoticeBoard": {
+    "description": "Navigation item and title of the school's notice board for parents."
+  },
+  "nbdNote": "Posts for parents. Each parent account is told once when a post goes live. A post set for later is shown to parents then, but nobody is told when it appears.",
+  "@nbdNote": {
+    "description": "Explains the notice board screen."
+  },
+  "nbdPostTitle": "New post",
+  "@nbdPostTitle": {
+    "description": "Heading of the form that posts to the notice board."
+  },
+  "nbdFieldTitle": "Headline",
+  "@nbdFieldTitle": {
+    "description": "Label of the headline of a notice board post. It is also the text of the notice parents get."
+  },
+  "nbdFieldBody": "Text",
+  "@nbdFieldBody": {
+    "description": "Label of the words of a notice board post."
+  },
+  "nbdCategory": "Category",
+  "@nbdCategory": {
+    "description": "Label of the category choice of a post."
+  },
+  "nbdAudience": "Who is it for",
+  "@nbdAudience": {
+    "description": "Label of the audience choice of a post."
+  },
+  "nbdAudAll": "All parents",
+  "@nbdAudAll": {
+    "description": "Audience: every parent of the school."
+  },
+  "nbdAudGrade": "A grade",
+  "@nbdAudGrade": {
+    "description": "Audience: the parents of one grade."
+  },
+  "nbdAudClass": "A class",
+  "@nbdAudClass": {
+    "description": "Audience: the parents of one class."
+  },
+  "nbdGrade": "Grade",
+  "@nbdGrade": {
+    "description": "Label of the grade choice."
+  },
+  "nbdClass": "Class",
+  "@nbdClass": {
+    "description": "Label of the class choice."
+  },
+  "nbdPinned": "Pin to the top",
+  "@nbdPinned": {
+    "description": "Tick box: keep this post at the top of the list."
+  },
+  "nbdPublishAt": "Show from (empty means now)",
+  "@nbdPublishAt": {
+    "description": "Label of the date and time a post becomes visible."
+  },
+  "nbdExpiresAt": "Remove on (optional)",
+  "@nbdExpiresAt": {
+    "description": "Label of the date and time a post stops being shown."
+  },
+  "nbdReach": "This will tell {parents} parent accounts, for {students} students.",
+  "@nbdReach": {
+    "description": "Shown before posting: how many parent accounts get a notice.",
+    "placeholders": {
+      "parents": {
+        "type": "String"
+      },
+      "students": {
+        "type": "String"
+      }
+    }
+  },
+  "nbdReachNone": "Nobody would be told: no parent account is linked to these students.",
+  "@nbdReachNone": {
+    "description": "Shown before posting when the audience has no parent account."
+  },
+  "nbdPost": "Post",
+  "@nbdPost": {
+    "description": "Button that posts to the notice board."
+  },
+  "nbdPosted": "Posted. {told} parent accounts were told.",
+  "@nbdPosted": {
+    "description": "Shown after a post. {told} is how many parent accounts got a notice.",
+    "placeholders": {
+      "told": {
+        "type": "String"
+      }
+    }
+  },
+  "nbdNone": "Nothing posted yet.",
+  "@nbdNone": {
+    "description": "Shown when the notice board has no posts."
+  },
+  "nbdPin": "Pin",
+  "@nbdPin": {
+    "description": "Button that pins a post."
+  },
+  "nbdUnpin": "Unpin",
+  "@nbdUnpin": {
+    "description": "Button that unpins a post."
+  },
+  "nbdPinChanged": "Saved.",
+  "@nbdPinChanged": {
+    "description": "Shown after pinning or unpinning."
+  },
+  "nbdWithdraw": "Withdraw",
+  "@nbdWithdraw": {
+    "description": "Button that takes a post down."
+  },
+  "nbdWithdrawnOk": "Withdrawn. Parents no longer see it.",
+  "@nbdWithdrawnOk": {
+    "description": "Shown after a post was withdrawn."
+  },
+  "nbdStateLive": "Live",
+  "@nbdStateLive": {
+    "description": "State of a post that parents can see now."
+  },
+  "nbdStateScheduled": "Scheduled",
+  "@nbdStateScheduled": {
+    "description": "State of a post that parents will see later."
+  },
+  "nbdStateExpired": "Expired",
+  "@nbdStateExpired": {
+    "description": "State of a post whose end time has passed."
+  },
+  "nbdStateWithdrawn": "Withdrawn",
+  "@nbdStateWithdrawn": {
+    "description": "State of a post that was taken down."
+  },
+  "nbdPinnedTag": "Pinned",
+  "@nbdPinnedTag": {
+    "description": "Tag on a pinned post."
+  },
+  "nbdFor": "For: {target}",
+  "@nbdFor": {
+    "description": "Who a post is for. {target} is a grade or a class.",
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "nbdCatGENERAL": "General",
+  "@nbdCatGENERAL": {
+    "description": "Category of a notice board post."
+  },
+  "nbdCatHOLIDAY": "Holiday",
+  "@nbdCatHOLIDAY": {
+    "description": "Category of a notice board post."
+  },
+  "nbdCatEXAM": "Exam",
+  "@nbdCatEXAM": {
+    "description": "Category of a notice board post."
+  },
+  "nbdCatEVENT": "Event",
+  "@nbdCatEVENT": {
+    "description": "Category of a notice board post."
+  },
+  "nbdCatFEES": "Fees",
+  "@nbdCatFEES": {
+    "description": "Category of a notice board post."
+  },
+  "nbdCatTRANSPORT": "Transport",
+  "@nbdCatTRANSPORT": {
+    "description": "Category of a notice board post."
   }
 }

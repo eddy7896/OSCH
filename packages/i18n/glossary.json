@@ -1480,6 +1480,23 @@
    ]
   },
   {
+   "term": "Notice board",
+   "category": "Communication",
+   "definition": "The school's posts for parents: a headline and text for all parents, a grade or a class.",
+   "hi": {
+    "preferred": "सूचना पट",
+    "alternatives": []
+   },
+   "ur": {
+    "preferred": "نوٹس بورڈ",
+    "alternatives": []
+   },
+   "note": "Draft wording; needs a native-speaker review.",
+   "match": [
+    "notice board"
+   ]
+  },
+  {
    "term": "Message",
    "category": "Communication",
    "definition": "A message between a parent and a teacher.",
