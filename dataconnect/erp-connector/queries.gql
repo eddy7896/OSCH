@@ -891,3 +891,15 @@ query PingsOfTrip($schoolId: UUID!, $tripId: UUID!) @auth(level: NO_ACCESS) {
   locationPings(where: {schoolId: {eq: $schoolId}, tripId: {eq: $tripId}}, orderBy: [{recordedAt: DESC}], limit: 400) { latMicro lngMicro speedKmh recordedAt }
 }
 
+# ---- Parent consent (P6-5c)
+# The latest answers of one parent, newest first (the gateway keeps the first of each purpose).
+query ConsentOfUser($schoolId: UUID!, $userId: String!) @auth(level: NO_ACCESS) {
+  consentRecords(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}}, orderBy: [{createdAt: DESC}], limit: 50) { purpose noticeVersion language given createdAt }
+}
+
+# Every parent of the school and every consent answer, for the school's access review (read only).
+query ConsentOverview($schoolId: UUID!) @auth(level: NO_ACCESS) {
+  parents: schoolMembers(where: {schoolId: {eq: $schoolId}, schoolRole: {eq: PARENT}, status: {eq: ACTIVE}}, limit: 5000) { user { id displayName email } }
+  consentRecords(where: {schoolId: {eq: $schoolId}}, orderBy: [{createdAt: DESC}], limit: 10000) { userId purpose noticeVersion language given createdAt }
+}
+

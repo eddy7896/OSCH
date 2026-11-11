@@ -11,6 +11,7 @@ import { InvitationsModule } from './invitations/invitations.module.js';
 import { MembershipsModule } from './memberships/memberships.module.js';
 import { MeModule } from './me/me.module.js';
 import { PermissionModule } from './permission/permission.module.js';
+import { ConsentModule } from './consent/consent.module.js';
 import { PublicModule } from './public/public.module.js';
 import { PlatformModule } from './platform/platform.module.js';
 import { PayrollModule } from './payroll/payroll.module.js';
@@ -74,6 +75,7 @@ import { HealthModule } from './health/health.module.js';
     AuthModule,
     TenantModule,
     PermissionModule,
+    ConsentModule,
     HealthModule,
     MeModule,
     UploadsModule,

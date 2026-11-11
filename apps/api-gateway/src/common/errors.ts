@@ -11,6 +11,7 @@ import { REQUEST_ID_HEADER } from './request-id.js';
 export const ErrorCode = {
   AUTH_REQUIRED: 'AUTH_REQUIRED',
   FORBIDDEN: 'FORBIDDEN',
+  CONSENT_REQUIRED: 'CONSENT_REQUIRED',
   SCHOOL_SUSPENDED: 'SCHOOL_SUSPENDED',
   CANNOT_CHANGE_OWN_MEMBERSHIP: 'CANNOT_CHANGE_OWN_MEMBERSHIP',
   INVITATION_INVALID: 'INVITATION_INVALID',
@@ -29,6 +30,7 @@ export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
 const MESSAGES: Record<ErrorCode, string> = {
   AUTH_REQUIRED: 'Sign in to continue.',
   FORBIDDEN: 'You do not have access to this.',
+  CONSENT_REQUIRED: 'Read and accept the privacy notice to continue.',
   SCHOOL_SUSPENDED: 'This school is suspended. Contact the platform administrator.',
   CANNOT_CHANGE_OWN_MEMBERSHIP: 'You cannot change your own role or access. Ask another System Admin.',
   INVITATION_INVALID: 'This invitation is not valid, or it has expired. Ask the school for a new one.',

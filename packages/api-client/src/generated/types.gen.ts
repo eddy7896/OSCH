@@ -412,6 +412,41 @@ export type ConcessionListDto = {
     items: Array<ConcessionDto>;
 };
 
+export type ConsentOverviewDto = {
+    counts: {
+        current: number;
+        none: number;
+        oldVersion: number;
+        parents: number;
+        withdrawn: number;
+    };
+    items: Array<ConsentOverviewParentDto>;
+    noticeVersion: number;
+};
+
+export type ConsentOverviewParentDto = {
+    id: string;
+    language: string | null;
+    name: string;
+    noticeVersion: number | null;
+    recordedAt: string | null;
+    state: 'NONE' | 'CURRENT' | 'WITHDRAWN' | 'OLD_VERSION';
+};
+
+export type ConsentPurposeStatusDto = {
+    given: boolean;
+    noticeVersion: number | null;
+    purpose: string;
+    recordedAt: string | null;
+    required: boolean;
+};
+
+export type ConsentStatusDto = {
+    current: boolean;
+    noticeVersion: number;
+    purposes: Array<ConsentPurposeStatusDto>;
+};
+
 export type ContactDto = {
     label: string;
     name: string;
@@ -801,7 +836,7 @@ export type ErrorEnvelope = {
         /**
          * Machine-readable; clients localise the text from it.
          */
-        code: 'AUTH_REQUIRED' | 'FORBIDDEN' | 'SCHOOL_SUSPENDED' | 'CANNOT_CHANGE_OWN_MEMBERSHIP' | 'INVITATION_INVALID' | 'ACCOUNT_EXISTS' | 'EMAIL_NOT_VERIFIED' | 'NOT_FOUND' | 'INVALID_REQUEST' | 'CONFLICT' | 'RATE_LIMITED' | 'TENANT_REFERENCE_FORBIDDEN' | 'UPSTREAM_UNAVAILABLE' | 'INTERNAL';
+        code: 'AUTH_REQUIRED' | 'FORBIDDEN' | 'CONSENT_REQUIRED' | 'SCHOOL_SUSPENDED' | 'CANNOT_CHANGE_OWN_MEMBERSHIP' | 'INVITATION_INVALID' | 'ACCOUNT_EXISTS' | 'EMAIL_NOT_VERIFIED' | 'NOT_FOUND' | 'INVALID_REQUEST' | 'CONFLICT' | 'RATE_LIMITED' | 'TENANT_REFERENCE_FORBIDDEN' | 'UPSTREAM_UNAVAILABLE' | 'INTERNAL';
         /**
          * Field and rule names only, never the submitted values.
          */
@@ -1304,7 +1339,7 @@ export type NoticeDto = {
     id: string;
     pinned: boolean;
     publishAt: string | null;
-    state: 'EXPIRED' | 'SCHEDULED' | 'LIVE' | 'WITHDRAWN';
+    state: 'EXPIRED' | 'WITHDRAWN' | 'SCHEDULED' | 'LIVE';
     target: string | null;
     title: string;
     told: number | null;
@@ -1657,6 +1692,12 @@ export type ReceiptSummaryDto = {
         id: string;
         name: string;
     };
+};
+
+export type RecordConsentDto = {
+    given: boolean;
+    language: string;
+    noticeVersion: number;
 };
 
 export type RecordPaymentDto = {
@@ -5699,6 +5740,120 @@ export type BroadcastsReadResponses = {
 };
 
 export type BroadcastsReadResponse = BroadcastsReadResponses[keyof BroadcastsReadResponses];
+
+export type ConsentStatusData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/consent';
+};
+
+export type ConsentStatusErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ConsentStatusError = ConsentStatusErrors[keyof ConsentStatusErrors];
+
+export type ConsentStatusResponses = {
+    200: ConsentStatusDto;
+};
+
+export type ConsentStatusResponse = ConsentStatusResponses[keyof ConsentStatusResponses];
+
+export type ConsentRecordData = {
+    body: RecordConsentDto;
+    path?: never;
+    query?: never;
+    url: '/v1/consent';
+};
+
+export type ConsentRecordErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ConsentRecordError = ConsentRecordErrors[keyof ConsentRecordErrors];
+
+export type ConsentRecordResponses = {
+    200: ConsentStatusDto;
+};
+
+export type ConsentRecordResponse = ConsentRecordResponses[keyof ConsentRecordResponses];
+
+export type ConsentOverviewData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/consent/overview';
+};
+
+export type ConsentOverviewErrors = {
+    /**
+     * The request is not valid (unknown or invalid fields, or a missing or malformed X-School-Id).
+     */
+    400: ErrorEnvelope;
+    /**
+     * No valid sign-in.
+     */
+    401: ErrorEnvelope;
+    /**
+     * Not allowed: the caller is not an active member of the school, or lacks the permission, or a record rule refused it. The answer never says which.
+     */
+    403: ErrorEnvelope;
+    /**
+     * Too many requests.
+     */
+    429: ErrorEnvelope;
+    /**
+     * Something went wrong on the server.
+     */
+    500: ErrorEnvelope;
+};
+
+export type ConsentOverviewError = ConsentOverviewErrors[keyof ConsentOverviewErrors];
+
+export type ConsentOverviewResponses = {
+    200: ConsentOverviewDto;
+};
+
+export type ConsentOverviewResponse = ConsentOverviewResponses[keyof ConsentOverviewResponses];
 
 export type DevicesRemoveData = {
     body: RemoveDeviceDto;

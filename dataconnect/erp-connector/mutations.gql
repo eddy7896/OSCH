@@ -1806,3 +1806,13 @@ mutation PurgeOldPings($schoolId: UUID!, $before: Timestamp!) @auth(level: NO_AC
   locationPing_deleteMany(where: {schoolId: {eq: $schoolId}, receivedAt: {lt: $before}})
 }
 
+# ---- Parent consent (P6-5c)
+# A parent gives or withdraws consent. Only a parent of this school can; the row and its audit entry are written together.
+mutation RecordConsent($schoolId: UUID!, $userId: String!, $purpose: String!, $noticeVersion: Int!, $language: String!, $given: Boolean!, $students: Any, $details: Any) @auth(level: NO_ACCESS) @transaction {
+  query {
+    actor: schoolMembers(where: {schoolId: {eq: $schoolId}, userId: {eq: $userId}, schoolRole: {eq: PARENT}, status: {eq: ACTIVE}}) @check(expr: "this.size() == 1", message: "only a parent of this school records consent") { userId }
+  }
+  consentRecord_insert(data: { schoolId: $schoolId, userId: $userId, purpose: $purpose, noticeVersion: $noticeVersion, language: $language, given: $given, students: $students })
+  auditLog_insert(data: { schoolId: $schoolId, actorId: $userId, action: "consent.record", entityType: "ConsentRecord", details: $details })
+}
+

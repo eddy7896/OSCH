@@ -41,6 +41,8 @@ export const RESOURCES = [
   "resource_comments", // comments under a shared worksheet: the class's parents, the uploading teacher, the Academic admin (ADR-0016)
   "broadcasts", // one-way messages from the class teacher, the Principal or the Academic admin to the parents of a class (ADR-0018)
   "notice_board", // the parents' notice board: posts from the school to all parents, a grade or a class (ADR-0018 decisions 5 and 8)
+  "consent", // a parent gives, reads and withdraws their own consent to the privacy notice (P6-5c)
+  "consent_overview", // which parents have consented to which notice version: read only, for the school's access review (P6-5c)
   "message_reports", // messages a person reported; the Principal reads the conversation and closes the report (ADR-0018 decision 7)
   "messages", // 1:1 direct messaging (office hours enforced separately)
   // Administration

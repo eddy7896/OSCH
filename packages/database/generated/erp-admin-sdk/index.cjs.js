@@ -1501,6 +1501,13 @@ function purgeOldPings(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.purgeOldPings = purgeOldPings;
 
+function recordConsent(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('RecordConsent', inputVars, inputOpts);
+}
+exports.recordConsent = recordConsent;
+
 function listStaff(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
@@ -2557,4 +2564,18 @@ function pingsOfTrip(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('PingsOfTrip', inputVars, inputOpts);
 }
 exports.pingsOfTrip = pingsOfTrip;
+
+function consentOfUser(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ConsentOfUser', inputVars, inputOpts);
+}
+exports.consentOfUser = consentOfUser;
+
+function consentOverview(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ConsentOverview', inputVars, inputOpts);
+}
+exports.consentOverview = consentOverview;
 

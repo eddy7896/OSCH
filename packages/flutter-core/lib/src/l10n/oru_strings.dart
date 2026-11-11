@@ -7669,6 +7669,216 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'The school has no notices for you right now.'**
   String get mobNbEmpty;
+
+  /// The version number of the privacy notice. Do not translate. The gateway holds the same number; a test keeps them equal.
+  ///
+  /// In en, this message translates to:
+  /// **'1'**
+  String get privNoticeVersion;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy and consent'**
+  String get privTitle;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you see your child\'s school information, please read how the school and OruSchools use it.'**
+  String get privLead;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'In short'**
+  String get privSummaryTitle;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'The school uses your child\'s information only for teaching, your child\'s safety and running the school: attendance, marks, the timetable, fees, the school bus and messages from teachers.'**
+  String get privPoint1;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'It is never sold, never used for advertising and never shared for marketing.'**
+  String get privPoint2;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'You see only your own children. Other families cannot see your child, and notifications on your phone never name your child.'**
+  String get privPoint3;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'You can withdraw your consent at any time in More, Privacy. The app then no longer shows your child\'s information. The school keeps the records the law requires it to keep.'**
+  String get privPoint4;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'The school is responsible for your child\'s information and OruSchools handles it on the school\'s behalf. For questions or complaints, ask the school office.'**
+  String get privContact;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy notice, version {version}'**
+  String privVersionLine(String version);
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read this and I agree'**
+  String get privAgreeBox;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get privContinue;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick the box to continue.'**
+  String get privNeedAgree;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Without your consent the app cannot show your child\'s information. You can agree whenever you are ready.'**
+  String get privCannotWithout;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer could not be saved. Check your connection and try again.'**
+  String get privFailed;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your privacy choice'**
+  String get privChecking;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get privMoreRow;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'You agreed on {date}.'**
+  String privGivenOn(String date);
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw my consent'**
+  String get privWithdraw;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'The app will no longer show your child\'s information until you agree again. Withdraw your consent?'**
+  String get privWithdrawAsk;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get privWithdrawYes;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep my consent'**
+  String get privKeep;
+
+  /// Parent app privacy and consent screen.
+  ///
+  /// In en, this message translates to:
+  /// **'I do not agree'**
+  String get privDisagree;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Parent consent'**
+  String get navConsent;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Parent consent'**
+  String get pcsTitle;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Which parents have agreed to the privacy notice. A parent sees no information about a child until they have agreed. Names and dates only; nothing about the children.'**
+  String get pcsNote;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy notice, version {version}'**
+  String pcsVersion(String version);
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {parents} parents have agreed to this version.'**
+  String pcsCounts(String current, String parents);
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'There are no parent accounts yet.'**
+  String get pcsNone;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Agreed'**
+  String get pcsStateCURRENT;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawn'**
+  String get pcsStateWITHDRAWN;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Agreed to an earlier version'**
+  String get pcsStateOLD_VERSION;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get pcsStateNONE;
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'On {date}'**
+  String pcsOn(String date);
+
+  /// Web admin, Parent consent screen (read only).
+  ///
+  /// In en, this message translates to:
+  /// **'Language: {language}'**
+  String pcsLang(String language);
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

@@ -67,6 +67,7 @@ export const NAV: readonly NavSectionDef[] = [
     { key: "settings", label: "School settings", requires: "settings" },
     { key: "memberships", label: "Users and roles", requires: "memberships" },
     { key: "audit", label: "Audit log", requires: "audit_log" },
+    { key: "consent", label: "Parent consent", requires: "consent_overview" },
   ] },
 ];
 
