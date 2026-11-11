@@ -112,7 +112,7 @@ export function NoticeBoard({ grants }: { grants: NoticeBoardGrants }) {
             {n.publishAt && <p className="text-caption text-text-muted">{t("nbdListFrom", { date: day(n.publishAt, locale) })}</p>}
             {n.expiresAt && <p className="text-caption text-text-muted">{t("nbdListUntil", { date: day(n.expiresAt, locale) })}</p>}
             {!n.withdrawn && <p className="whitespace-pre-line text-body">{n.body}</p>}
-            {grants.manage && !n.withdrawn && (
+            {grants.manage && !n.withdrawn && (grants.onlyCategory === null || n.category === grants.onlyCategory) && (
               <div className="flex flex-wrap gap-2">
                 <Button size="compact" variant="ghost" aria-label={`${n.pinned ? t("nbdUnpin") : t("nbdPin")}: ${n.title}`} disabled={busy} onClick={() => void togglePin(n)}>{n.pinned ? t("nbdUnpin") : t("nbdPin")}</Button>
                 <Button size="compact" variant="ghost" aria-label={`${t("nbdWithdraw")}: ${n.title}`} disabled={busy} onClick={() => void run(() => api!.noticeBoardWithdraw({ path: { id: n.id } }), "nbdWithdrawnOk")}>{t("nbdWithdraw")}</Button>

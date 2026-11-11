@@ -66,6 +66,13 @@ describe("notice board", () => {
     await waitFor(() => expect(noticeBoardPost).toHaveBeenCalledWith({ body: expect.objectContaining({ category: "FEES", audience: "ALL_PARENTS" }) }));
   });
 
+  it("the Bursar sees the whole board but can pin and withdraw only Fees posts", async () => {
+    await go(fakeApi({ meGet: vi.fn(async () => bursar()), noticeBoardList: vi.fn(async () => ({ items: [NOTICE("1"), NOTICE("2", { category: "FEES" })] })), academicsLevels: vi.fn(async () => { throw new Error("no"); }), academicsClasses: vi.fn(async () => { throw new Error("no"); }) }));
+    expect(await screen.findByText("Post 1")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Withdraw: Post 1" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Withdraw: Post 2" })).toBeTruthy();
+  });
+
   it("pin keeps the other fields, withdraw says parents no longer see it", async () => {
     const noticeBoardEdit = vi.fn(async () => NOTICE("1", { pinned: true }));
     const noticeBoardWithdraw = vi.fn(async () => NOTICE("1", { withdrawn: true, state: "WITHDRAWN" }));
