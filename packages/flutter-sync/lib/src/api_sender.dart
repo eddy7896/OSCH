@@ -44,6 +44,15 @@ abstract final class OutboxKinds {
 
   /// Body: `{id}`: a parent opened a class message.
   static const broadcastRead = 'broadcast.read';
+
+  /// Body: `{id, routeId}`: the driver started a trip (the entry id is the trip id, chosen on the phone, so a repeat is the same trip).
+  static const tripStart = 'trip.start';
+
+  /// Body: `{tripId, lat, lng, speedKmh?, recordedAt}`: one position of the bus. Waits for the trip's start.
+  static const tripPing = 'trip.ping';
+
+  /// Body: `{tripId}`: the driver ended the trip.
+  static const tripEnd = 'trip.end';
 }
 
 /// Sends a queued change to the gateway through the generated client. The outbox id goes as the gateway's own
@@ -96,6 +105,15 @@ class OruApiSender implements OutboxSender {
           await api.broadcastsCreate(body: CreateBroadcastDto(clientId: e.id, classId: b['classId'] as String, title: b['title'] as String, body: b['body'] as String));
         case OutboxKinds.broadcastRead:
           await api.broadcastsRead(id: b['id'] as String);
+        case OutboxKinds.tripStart:
+          await api.tripsStart(body: StartTripDto(id: b['id'] as String, routeId: b['routeId'] as String));
+        case OutboxKinds.tripPing:
+          await api.tripsPings(
+            id: b['tripId'] as String,
+            body: PingsDto(pings: [PingDto(lat: b['lat'] as num, lng: b['lng'] as num, speedKmh: (b['speedKmh'] as num?)?.round(), recordedAt: b['recordedAt'] as String)]),
+          );
+        case OutboxKinds.tripEnd:
+          await api.tripsEnd(id: b['tripId'] as String);
         default:
           return SendResult.refused('UNKNOWN_KIND', message: e.kind);
       }

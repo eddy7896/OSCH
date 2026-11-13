@@ -4464,6 +4464,95 @@ class OruStringsHi extends OruStrings {
   }
 
   @override
+  String get drvTabRoutes => 'मार्ग';
+
+  @override
+  String get drvTitle => 'आपके मार्ग';
+
+  @override
+  String get drvEmpty =>
+      'आपको अभी कोई मार्ग नहीं सौंपा गया है। परिवहन प्रबंधक से पूछें।';
+
+  @override
+  String get drvDirMORNING => 'सुबह';
+
+  @override
+  String get drvDirAFTERNOON => 'दोपहर';
+
+  @override
+  String drvRouteMeta(String stops, String students) {
+    return '$stops स्टॉप, $students छात्र';
+  }
+
+  @override
+  String get drvStart => 'यात्रा शुरू करें';
+
+  @override
+  String get drvEnd => 'यात्रा समाप्त करें';
+
+  @override
+  String get drvRunning => 'यात्रा जारी है';
+
+  @override
+  String drvRunningOn(String route) {
+    return '$route पर यात्रा जारी है';
+  }
+
+  @override
+  String get drvSharing =>
+      'बस की स्थिति लगभग हर 30 सेकंड में भेजी जाती है। इस मार्ग के बच्चों के अभिभावक इसे देख सकते हैं।';
+
+  @override
+  String get drvLocationOff =>
+      'इस फ़ोन में लोकेशन बंद है या अनुमति नहीं है, इसलिए बस दिखाई नहीं दे सकती। लोकेशन चालू करें।';
+
+  @override
+  String drvWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count स्थितियाँ भेजे जाने की प्रतीक्षा में हैं',
+      one: '$count स्थिति भेजे जाने की प्रतीक्षा में है',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drvAllSent => 'सभी स्थितियाँ भेज दी गई हैं';
+
+  @override
+  String get drvEndAsk =>
+      'क्या यह यात्रा समाप्त करें? अभिभावक अब बस नहीं देख पाएँगे।';
+
+  @override
+  String get drvKeep => 'जारी रखें';
+
+  @override
+  String drvStartRefused(String reason) {
+    return 'स्कूल ने यह यात्रा स्वीकार नहीं की: $reason';
+  }
+
+  @override
+  String get drvStopsTitle => 'स्टॉप और कौन सवार है';
+
+  @override
+  String get drvNoStudents => 'इस मार्ग पर अभी कोई छात्र नहीं बैठाया गया है।';
+
+  @override
+  String drvStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count छात्र',
+      one: '$count छात्र',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drvOpenTrip => 'यात्रा खोलें';
+
+  @override
   String get trnStopPosHelp =>
       'हर स्टॉप कहाँ है, अंशों में (उदाहरण: 12.9716 और 77.5946)। आगमन का अनुमान और बस कौन से स्टॉप पर पहुँच चुकी है, यह केवल उन स्टॉप के लिए निकलता है जिनकी स्थिति दर्ज है।';
 

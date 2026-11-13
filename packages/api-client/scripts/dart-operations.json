@@ -5,7 +5,11 @@
   "Timetable_mine",
   "Timetable_forClass",
   "Transport_children",
-  "Trips_active",
+  "Transport_routes",
+  "Transport_manifest",
+  "Trips_start",
+  "Trips_pings",
+  "Trips_end",
   "StudentLeave_list",
   "StudentLeave_create",
   "StudentLeave_one",
@@ -81,5 +85,6 @@
   "Broadcasts_one",
   "Broadcasts_read",
   "Consent_status",
-  "Consent_record"
+  "Consent_record",
+  "Trips_active"
 ]

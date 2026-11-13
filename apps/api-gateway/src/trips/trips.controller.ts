@@ -1,6 +1,5 @@
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { Audit, NoAudit } from '../audit/audit.decorators.js';
-import { Strict } from '../common/throttle.guards.js';
 import { Granted, Permission, type GrantedPermission } from '../permission/permission.decorator.js';
 import { Tenant, type TenantContext } from '../tenant/tenant.decorators.js';
 import { PingsDto, StartTripDto, TripParamDto, type PingResultDto, type TripDto, type TripListDto } from './dto/trips.dto.js';
@@ -33,8 +32,7 @@ export class TripsController {
     return this.trips.start(t, dto);
   }
 
-  /** A batch of positions; the phone sends one about every 30 seconds, or several after being offline. Counted against the tighter per-user limit. */
-  @Strict()
+  /** A batch of positions; the phone sends one about every 30 seconds, or several after being offline. Limited per driver by the per-user limit (240 a minute), which leaves room for a phone catching up after being offline. */
   @Permission('trips', 'update')
   @NoAudit('vehicle positions of a trip that is already audited (trip.start and trip.end); about one every 30 seconds, and the position of a bus is not personal data of a person acting')
   @HttpCode(200)

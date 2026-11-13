@@ -4465,6 +4465,94 @@ class OruStringsOr extends OruStrings {
   }
 
   @override
+  String get drvTabRoutes => 'Routes';
+
+  @override
+  String get drvTitle => 'Your routes';
+
+  @override
+  String get drvEmpty =>
+      'No route is assigned to you yet. Ask the transport manager.';
+
+  @override
+  String get drvDirMORNING => 'Morning';
+
+  @override
+  String get drvDirAFTERNOON => 'Afternoon';
+
+  @override
+  String drvRouteMeta(String stops, String students) {
+    return '$stops stops, $students students';
+  }
+
+  @override
+  String get drvStart => 'Start trip';
+
+  @override
+  String get drvEnd => 'End trip';
+
+  @override
+  String get drvRunning => 'Trip in progress';
+
+  @override
+  String drvRunningOn(String route) {
+    return 'Trip in progress on $route';
+  }
+
+  @override
+  String get drvSharing =>
+      'The bus position is sent about every 30 seconds. Parents of children on this route can see it.';
+
+  @override
+  String get drvLocationOff =>
+      'Location is off or not allowed on this phone, so the bus cannot be seen. Turn location on.';
+
+  @override
+  String drvWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count positions are waiting to be sent',
+      one: '$count position is waiting to be sent',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drvAllSent => 'All positions have been sent';
+
+  @override
+  String get drvEndAsk => 'End this trip? Parents will no longer see the bus.';
+
+  @override
+  String get drvKeep => 'Keep going';
+
+  @override
+  String drvStartRefused(String reason) {
+    return 'The school did not accept this trip: $reason';
+  }
+
+  @override
+  String get drvStopsTitle => 'Stops and who rides';
+
+  @override
+  String get drvNoStudents => 'Nobody is seated on this route yet.';
+
+  @override
+  String drvStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count students',
+      one: '$count student',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drvOpenTrip => 'Open the trip';
+
+  @override
   String get trnStopPosHelp =>
       'Where each stop is, in degrees (for example 12.9716 and 77.5946). Arrival estimates and the stops the bus has reached are worked out only for stops that have a position.';
 

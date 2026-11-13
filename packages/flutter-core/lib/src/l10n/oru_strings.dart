@@ -7880,6 +7880,132 @@ abstract class OruStrings {
   /// **'Language: {language}'**
   String pcsLang(String language);
 
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Routes'**
+  String get drvTabRoutes;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Your routes'**
+  String get drvTitle;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'No route is assigned to you yet. Ask the transport manager.'**
+  String get drvEmpty;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get drvDirMORNING;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon'**
+  String get drvDirAFTERNOON;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'{stops} stops, {students} students'**
+  String drvRouteMeta(String stops, String students);
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Start trip'**
+  String get drvStart;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'End trip'**
+  String get drvEnd;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip in progress'**
+  String get drvRunning;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip in progress on {route}'**
+  String drvRunningOn(String route);
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'The bus position is sent about every 30 seconds. Parents of children on this route can see it.'**
+  String get drvSharing;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is off or not allowed on this phone, so the bus cannot be seen. Turn location on.'**
+  String get drvLocationOff;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} position is waiting to be sent} other{{count} positions are waiting to be sent}}'**
+  String drvWaiting(int count);
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'All positions have been sent'**
+  String get drvAllSent;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'End this trip? Parents will no longer see the bus.'**
+  String get drvEndAsk;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep going'**
+  String get drvKeep;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'The school did not accept this trip: {reason}'**
+  String drvStartRefused(String reason);
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops and who rides'**
+  String get drvStopsTitle;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody is seated on this route yet.'**
+  String get drvNoStudents;
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} student} other{{count} students}}'**
+  String drvStudentCount(int count);
+
+  /// Driver app.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the trip'**
+  String get drvOpenTrip;
+
   /// Web admin, Transport: stop positions.
   ///
   /// In en, this message translates to:
