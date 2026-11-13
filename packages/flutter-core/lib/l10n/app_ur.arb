@@ -1321,5 +1321,7 @@
   "mobBusStopsTitle": "اسٹاپ",
   "mobBusReached": "پہنچ گئی",
   "mobBusBoardsHere": "{child} یہاں سوار ہوتا ہے",
-  "mobBusRough": "وقت بس کی آخری جگہ سے لگایا گیا موٹا اندازہ ہے۔"
+  "mobBusRough": "وقت بس کی آخری جگہ سے لگایا گیا موٹا اندازہ ہے۔",
+  "pushTitle": "نئی اطلاع",
+  "pushBody": "پڑھنے کے لیے ایپ کھولیں۔"
 }

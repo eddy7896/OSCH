@@ -1,4 +1,4 @@
-import { categoryOf, fill, KINDS, render } from './notification-rules.js';
+import { categoryOf, fill, KINDS, render, pushWords } from './notification-rules.js';
 
 describe('notification words', () => {
   it('fills placeholders, shows dates as day-month-year, and leaves nothing in braces', () => {
@@ -20,5 +20,26 @@ describe('notification words', () => {
   it('every kind has a category and its words', () => {
     for (const [kind, info] of Object.entries(KINDS)) { expect(categoryOf(kind)).toBe(info.category); expect(info.title).toMatch(/^notif/); expect(info.body).toMatch(/^notif/); }
     expect(categoryOf('x.y')).toBeNull();
+  });
+});
+
+describe('push words (E-PRIV-5): nothing about a child can be in them', () => {
+  const english = { pushTitle: 'New notification', pushBody: 'Open the app to read it.', notifStudentleaveApprovedBody: '{studentName}: {startDate} to {endDate}.' };
+  const hostile = { studentName: 'Asha Rao', name: 'Asha Rao', reason: 'chickenpox', note: 'marks 12 of 50', title: 'Asha failed' };
+
+  it('are the same for every kind, whatever its params hold', () => {
+    const plain = pushWords({}, english);
+    expect(plain).toEqual({ title: 'New notification', body: 'Open the app to read it.' });
+    for (const kind of Object.keys(KINDS)) {
+      const w = pushWords({}, english); // the kind and params are not even inputs
+      expect(w).toEqual(plain);
+      expect(JSON.stringify(w)).not.toMatch(/Asha|chickenpox|marks|failed/);
+      // while the inbox words of the same kind do use the params (inside the app, behind sign-in and consent)
+      void render(kind, hostile, english, english);
+    }
+  });
+
+  it('use the reader\'s language when it has the words, and English when it does not', () => {
+    expect(pushWords({ pushTitle: 'नई सूचना' }, english)).toEqual({ title: 'नई सूचना', body: 'Open the app to read it.' });
   });
 });

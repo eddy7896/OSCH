@@ -1326,7 +1326,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobBusStopsTitle": "Stops",
     "mobBusReached": "Reached",
     "mobBusBoardsHere": "{child} gets on here",
-    "mobBusRough": "Times are a rough estimate from the bus's last position."
+    "mobBusRough": "Times are a rough estimate from the bus's last position.",
+    "pushTitle": "New notification",
+    "pushBody": "Open the app to read it."
   },
   "hi": {
     "appTeacher": "OruSchools शिक्षक",
@@ -2650,7 +2652,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobBusStopsTitle": "स्टॉप",
     "mobBusReached": "पहुँच गई",
     "mobBusBoardsHere": "{child} यहाँ चढ़ता है",
-    "mobBusRough": "समय बस की अंतिम स्थिति से लगाया गया मोटा अनुमान है।"
+    "mobBusRough": "समय बस की अंतिम स्थिति से लगाया गया मोटा अनुमान है।",
+    "pushTitle": "नई सूचना",
+    "pushBody": "पढ़ने के लिए ऐप खोलें।"
   },
   "ur": {
     "appTeacher": "OruSchools استاد",
@@ -3974,7 +3978,9 @@ export const MESSAGES: Readonly<Record<LocaleCode, Readonly<Record<string, strin
     "mobBusStopsTitle": "اسٹاپ",
     "mobBusReached": "پہنچ گئی",
     "mobBusBoardsHere": "{child} یہاں سوار ہوتا ہے",
-    "mobBusRough": "وقت بس کی آخری جگہ سے لگایا گیا موٹا اندازہ ہے۔"
+    "mobBusRough": "وقت بس کی آخری جگہ سے لگایا گیا موٹا اندازہ ہے۔",
+    "pushTitle": "نئی اطلاع",
+    "pushBody": "پڑھنے کے لیے ایپ کھولیں۔"
   },
   "ks": {},
   "sd": {},

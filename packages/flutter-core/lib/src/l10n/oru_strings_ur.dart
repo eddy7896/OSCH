@@ -4625,4 +4625,10 @@ class OruStringsUr extends OruStrings {
 
   @override
   String get mobBusRough => 'وقت بس کی آخری جگہ سے لگایا گیا موٹا اندازہ ہے۔';
+
+  @override
+  String get pushTitle => 'نئی اطلاع';
+
+  @override
+  String get pushBody => 'پڑھنے کے لیے ایپ کھولیں۔';
 }
