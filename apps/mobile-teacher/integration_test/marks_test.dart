@@ -18,7 +18,7 @@ Future<void> until(WidgetTester tester, bool Function() check, String what, {int
     await tester.pump(const Duration(milliseconds: 100));
     if (check()) return;
   }
-  fail('never happened: $what');
+  fail('never happened: $what; on screen: ${tester.widgetList<Text>(find.byType(Text)).map((w) => w.data ?? w.textSpan?.toPlainText()).toList()}; fields: ${tester.widgetList<TextField>(find.byType(TextField)).length}');
 }
 
 Future<void> untilFound(WidgetTester tester, Finder f, {int seconds = 25}) => until(tester, () => f.evaluate().isNotEmpty, '$f', seconds: seconds);
@@ -80,17 +80,22 @@ void main() {
 
     // a mark above the maximum is refused ON THE PHONE
     final boxes = find.byWidgetPredicate((w) => w is TextField && w.controller != null);
-    await tester.enterText(boxes.at(0), '${maxTenthsOpened ~/ 10 + 1}');
+    // A student marked absent (the demo school has one) takes no mark: use the first two who can be given one. The boxes are in the roster's order.
+    final usable = [for (var i = 0; i < openedRoster.length; i++) if (openedRoster[i]['absent'] != true) i];
+    expect(usable.length, greaterThanOrEqualTo(2), reason: 'two students who are not absent');
+    final first = usable[0];
+    final second = usable[1];
+    await tester.enterText(boxes.at(first), '${maxTenthsOpened ~/ 10 + 1}');
     await untilFound(tester, find.textContaining('Marks cannot be more than')); // the draft is written to the phone's database first
     expect(find.textContaining('Marks cannot be more than'), findsOneWidget);
     expect(tester.widget<TextButton>(find.widgetWithText(TextButton, 'Save marks')).onPressed, isNull);
 
     // a valid mark for the second student (a value different from what the school has now)
-    final haveSecond = openedRoster[1]['marksTenths'] as num?;
+    final haveSecond = openedRoster[second]['marksTenths'] as num?;
     final typed = haveSecond == 15 ? '2.5' : '1.5';
-    await tester.enterText(boxes.at(0), '');
+    await tester.enterText(boxes.at(first), '');
     await until(tester, () => find.textContaining('Marks cannot be more than').evaluate().isEmpty, 'the error clears');
-    await tester.enterText(boxes.at(1), typed);
+    await tester.enterText(boxes.at(second), typed);
     await until(tester, () => tester.widget<TextButton>(find.widgetWithText(TextButton, 'Save marks')).onPressed != null, 'Save is on');
     await tester.tap(find.text('Save marks'));
     await untilFound(tester, find.text('Saved on this phone. It reaches the school when you are connected.'));
@@ -105,7 +110,7 @@ void main() {
     }
     expect(await svc.store.all(), isEmpty, reason: 'sent and accepted');
     final grid = await svc.api.gradesGrid(id: openedExam['id'] as String);
-    expect(grid.rows.firstWhere((r) => r.studentId == openedRoster[1]['studentId']).marks, typed);
+    expect(grid.rows.firstWhere((r) => r.studentId == openedRoster[second]['studentId']).marks, typed);
 
     await tester.pumpWidget(const SizedBox());
     await svc.session.signOut(force: true);
