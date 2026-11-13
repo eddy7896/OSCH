@@ -8107,6 +8107,18 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Times are a rough estimate from the bus\'s last position.'**
   String get mobBusRough;
+
+  /// Title of a push notification on the phone. The same for every kind and never filled with a name, a score or a reason (E-PRIV-5).
+  ///
+  /// In en, this message translates to:
+  /// **'New notification'**
+  String get pushTitle;
+
+  /// Body of a push notification on the phone. The same for every kind; the details are read inside the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the app to read it.'**
+  String get pushBody;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {

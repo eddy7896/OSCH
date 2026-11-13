@@ -1320,5 +1320,7 @@
   "mobBusStopsTitle": "Stops",
   "mobBusReached": "Reached",
   "mobBusBoardsHere": "{child} gets on here",
-  "mobBusRough": "Times are a rough estimate from the bus's last position."
+  "mobBusRough": "Times are a rough estimate from the bus's last position.",
+  "pushTitle": "New notification",
+  "pushBody": "Open the app to read it."
 }

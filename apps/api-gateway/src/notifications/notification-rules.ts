@@ -55,3 +55,12 @@ export function render(kind: string, params: unknown, messages: Readonly<Record<
   const pick = (key: string): string => messages[key] ?? english[key] ?? '';
   return { title: fill(pick(info.title), p, rtl), body: fill(pick(info.body), p, rtl) };
 }
+
+/**
+ * The words a VISIBLE push may carry (P6-5d, E-PRIV-5, documentation/modules/children-data-protection.md): the same for every kind and never filled from the notification's params, so no child's name,
+ * score or reason can leave through the push provider. Today's pushes are silent and carry only ids (fcm-push-sender.ts); when the apps show an alert, these are its only words.
+ */
+export function pushWords(messages: Readonly<Record<string, string>>, english: Readonly<Record<string, string>>): { title: string; body: string } {
+  const pick = (key: string): string => messages[key] ?? english[key] ?? '';
+  return { title: pick('pushTitle'), body: pick('pushBody') };
+}

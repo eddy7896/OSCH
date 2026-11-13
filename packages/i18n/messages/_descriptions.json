@@ -1321,5 +1321,7 @@
   "mobBusStopsTitle": "Parent app, Where is the bus screen.",
   "mobBusReached": "Parent app, Where is the bus screen.",
   "mobBusBoardsHere": "Parent app, Where is the bus screen.",
-  "mobBusRough": "Parent app, Where is the bus screen."
+  "mobBusRough": "Parent app, Where is the bus screen.",
+  "pushTitle": "Title of a push notification on the phone. The same for every kind and never filled with a name, a score or a reason (E-PRIV-5).",
+  "pushBody": "Body of a push notification on the phone. The same for every kind; the details are read inside the app."
 }

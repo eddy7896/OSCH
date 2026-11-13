@@ -1320,5 +1320,7 @@
   "mobBusStopsTitle": "स्टॉप",
   "mobBusReached": "पहुँच गई",
   "mobBusBoardsHere": "{child} यहाँ चढ़ता है",
-  "mobBusRough": "समय बस की अंतिम स्थिति से लगाया गया मोटा अनुमान है।"
+  "mobBusRough": "समय बस की अंतिम स्थिति से लगाया गया मोटा अनुमान है।",
+  "pushTitle": "नई सूचना",
+  "pushBody": "पढ़ने के लिए ऐप खोलें।"
 }

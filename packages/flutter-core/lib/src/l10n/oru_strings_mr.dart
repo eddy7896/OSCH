@@ -4628,4 +4628,10 @@ class OruStringsMr extends OruStrings {
   @override
   String get mobBusRough =>
       'Times are a rough estimate from the bus\'s last position.';
+
+  @override
+  String get pushTitle => 'New notification';
+
+  @override
+  String get pushBody => 'Open the app to read it.';
 }

@@ -280,6 +280,16 @@ if (existsSync(join(ROOT, ".git"))) {
       add("error", "web-fonts-local", `${f}:${line} imports next/font/google; use next/font/local with the committed WOFF2 files (packages/i18n/fonts, packages/shared-design-tokens/fonts)`, f);
 }
 
+// 15. No advertising or third-party analytics SDK in any app or package (P6-5b, E-PRIV-1: a child's data never reaches an advertiser or an analytics vendor). -----
+{
+  const { trackingPackagesIn, trackingMarkersIn } = await import("./tracking-rule.mjs");
+  const skip = (n) => n.includes("/node_modules/") || n.includes("/.next/") || n.includes("/dist/") || n.includes("/build/") || n.includes("/.dart_tool/") || n.includes("/generated/");
+  for (const f of ["apps", "packages"].flatMap((d) => walk(d, (n) => /(^|\/)(package\.json|pubspec\.yaml)$/.test(n))).filter((n) => !skip(n)))
+    for (const name of trackingPackagesIn(read(f))) add("error", "no-tracking-sdks", `${name} is an advertising or analytics SDK; children's data must never reach one (children-data-protection.md, E-PRIV-1)`, f);
+  for (const f of ["apps", "packages"].flatMap((d) => walk(d, (n) => /\.(ts|tsx|js|jsx|mjs|html|dart|swift|kt|plist)$/.test(n))).filter((n) => !skip(n)))
+    for (const what of trackingMarkersIn(read(f))) add("error", "no-tracking-sdks", `${what} tag or call found; children's data must never reach an advertiser or an analytics vendor (E-PRIV-1)`, f);
+}
+
 // Report -----------------------------------------------------------------------
 const errors = findings.filter((f) => f.severity === "error");
 const warns = findings.filter((f) => f.severity === "warn");
