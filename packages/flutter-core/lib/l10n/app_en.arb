@@ -6253,7 +6253,7 @@
       }
     }
   },
-  "mobBusEta": "{minutes, plural, one{about {minutes} minute} other{about {minutes} minutes}}",
+  "mobBusEta": "about {minutes, plural, one{{minutes} minute} other{{minutes} minutes}}",
   "@mobBusEta": {
     "description": "Parent app, Where is the bus screen.",
     "placeholders": {

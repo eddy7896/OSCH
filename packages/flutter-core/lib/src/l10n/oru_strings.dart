@@ -7949,7 +7949,7 @@ abstract class OruStrings {
   /// Parent app, Where is the bus screen.
   ///
   /// In en, this message translates to:
-  /// **'{minutes, plural, one{about {minutes} minute} other{about {minutes} minutes}}'**
+  /// **'about {minutes, plural, one{{minutes} minute} other{{minutes} minutes}}'**
   String mobBusEta(int minutes);
 
   /// Parent app, Where is the bus screen.

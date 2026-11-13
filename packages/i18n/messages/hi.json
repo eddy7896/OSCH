@@ -1294,7 +1294,7 @@
   "mobBusOldCopy": "यह {time} की स्थिति है, जब इस फ़ोन में आख़िरी बार कनेक्शन था।",
   "mobBusPassed": "बस {child} के स्टॉप, {stop}, से निकल चुकी है।",
   "mobBusComing": "{child} का स्टॉप, {stop}: {when}",
-  "mobBusEta": "{minutes, plural, one{लगभग {minutes} मिनट} other{लगभग {minutes} मिनट}}",
+  "mobBusEta": "लगभग {minutes, plural, one{{minutes} मिनट} other{{minutes} मिनट}}",
   "mobBusNoEstimate": "अभी कोई अनुमान नहीं",
   "mobBusStopsTitle": "स्टॉप",
   "mobBusReached": "पहुँच गई",

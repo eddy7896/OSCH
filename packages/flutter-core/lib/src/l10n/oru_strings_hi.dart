@@ -4516,10 +4516,10 @@ class OruStringsHi extends OruStrings {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: 'लगभग $minutes मिनट',
-      one: 'लगभग $minutes मिनट',
+      other: '$minutes मिनट',
+      one: '$minutes मिनट',
     );
-    return '$_temp0';
+    return 'लगभग $_temp0';
   }
 
   @override

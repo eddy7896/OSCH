@@ -1294,7 +1294,7 @@
   "mobBusOldCopy": "This is how it was at {time}, when this phone last had a connection.",
   "mobBusPassed": "The bus has passed {child}'s stop, {stop}.",
   "mobBusComing": "{child}'s stop, {stop}: {when}",
-  "mobBusEta": "{minutes, plural, one{about {minutes} minute} other{about {minutes} minutes}}",
+  "mobBusEta": "about {minutes, plural, one{{minutes} minute} other{{minutes} minutes}}",
   "mobBusNoEstimate": "no estimate yet",
   "mobBusStopsTitle": "Stops",
   "mobBusReached": "Reached",
