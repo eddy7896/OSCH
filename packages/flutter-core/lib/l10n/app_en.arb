@@ -6171,5 +6171,117 @@
         "type": "String"
       }
     }
+  },
+  "drvTabRoutes": "Routes",
+  "@drvTabRoutes": {
+    "description": "Driver app."
+  },
+  "drvTitle": "Your routes",
+  "@drvTitle": {
+    "description": "Driver app."
+  },
+  "drvEmpty": "No route is assigned to you yet. Ask the transport manager.",
+  "@drvEmpty": {
+    "description": "Driver app."
+  },
+  "drvDirMORNING": "Morning",
+  "@drvDirMORNING": {
+    "description": "Driver app."
+  },
+  "drvDirAFTERNOON": "Afternoon",
+  "@drvDirAFTERNOON": {
+    "description": "Driver app."
+  },
+  "drvRouteMeta": "{stops} stops, {students} students",
+  "@drvRouteMeta": {
+    "description": "Driver app.",
+    "placeholders": {
+      "stops": {
+        "type": "String"
+      },
+      "students": {
+        "type": "String"
+      }
+    }
+  },
+  "drvStart": "Start trip",
+  "@drvStart": {
+    "description": "Driver app."
+  },
+  "drvEnd": "End trip",
+  "@drvEnd": {
+    "description": "Driver app."
+  },
+  "drvRunning": "Trip in progress",
+  "@drvRunning": {
+    "description": "Driver app."
+  },
+  "drvRunningOn": "Trip in progress on {route}",
+  "@drvRunningOn": {
+    "description": "Driver app.",
+    "placeholders": {
+      "route": {
+        "type": "String"
+      }
+    }
+  },
+  "drvSharing": "The bus position is sent about every 30 seconds. Parents of children on this route can see it.",
+  "@drvSharing": {
+    "description": "Driver app."
+  },
+  "drvLocationOff": "Location is off or not allowed on this phone, so the bus cannot be seen. Turn location on.",
+  "@drvLocationOff": {
+    "description": "Driver app."
+  },
+  "drvWaiting": "{count, plural, one{{count} position is waiting to be sent} other{{count} positions are waiting to be sent}}",
+  "@drvWaiting": {
+    "description": "Driver app.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drvAllSent": "All positions have been sent",
+  "@drvAllSent": {
+    "description": "Driver app."
+  },
+  "drvEndAsk": "End this trip? Parents will no longer see the bus.",
+  "@drvEndAsk": {
+    "description": "Driver app."
+  },
+  "drvKeep": "Keep going",
+  "@drvKeep": {
+    "description": "Driver app."
+  },
+  "drvStartRefused": "The school did not accept this trip: {reason}",
+  "@drvStartRefused": {
+    "description": "Driver app.",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "drvStopsTitle": "Stops and who rides",
+  "@drvStopsTitle": {
+    "description": "Driver app."
+  },
+  "drvNoStudents": "Nobody is seated on this route yet.",
+  "@drvNoStudents": {
+    "description": "Driver app."
+  },
+  "drvStudentCount": "{count, plural, one{{count} student} other{{count} students}}",
+  "@drvStudentCount": {
+    "description": "Driver app.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drvOpenTrip": "Open the trip",
+  "@drvOpenTrip": {
+    "description": "Driver app."
   }
 }

@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Confirm it is you to open OruSchools.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>OruSchools Driver uses your location while a trip is running, so the school and the parents of children on your route can see where the bus is. It is not used at any other time.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

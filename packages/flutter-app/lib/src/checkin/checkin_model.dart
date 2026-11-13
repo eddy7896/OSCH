@@ -20,10 +20,13 @@ class Geofence {
 }
 
 class Fix {
-  const Fix({required this.lat, required this.lng, this.accuracyM});
+  const Fix({required this.lat, required this.lng, this.accuracyM, this.speedKmh});
   final double lat;
   final double lng;
   final double? accuracyM;
+
+  /// How fast the phone is moving, when it knows (the Driver app reports it so the school can estimate arrivals).
+  final double? speedKmh;
 }
 
 /// Metres between two points on the earth (haversine, the same as the gateway's, so both sides ask for a reason in the same places).

@@ -4461,4 +4461,93 @@ class OruStringsUr extends OruStrings {
   String pcsLang(String language) {
     return 'زبان: $language';
   }
+
+  @override
+  String get drvTabRoutes => 'روٹ';
+
+  @override
+  String get drvTitle => 'آپ کے روٹ';
+
+  @override
+  String get drvEmpty =>
+      'آپ کو ابھی کوئی روٹ نہیں دیا گیا۔ ٹرانسپورٹ مینیجر سے پوچھیں۔';
+
+  @override
+  String get drvDirMORNING => 'صبح';
+
+  @override
+  String get drvDirAFTERNOON => 'دوپہر';
+
+  @override
+  String drvRouteMeta(String stops, String students) {
+    return '$stops اسٹاپ، $students طالب علم';
+  }
+
+  @override
+  String get drvStart => 'سفر شروع کریں';
+
+  @override
+  String get drvEnd => 'سفر ختم کریں';
+
+  @override
+  String get drvRunning => 'سفر جاری ہے';
+
+  @override
+  String drvRunningOn(String route) {
+    return '$route پر سفر جاری ہے';
+  }
+
+  @override
+  String get drvSharing =>
+      'بس کی جگہ تقریباً ہر 30 سیکنڈ میں بھیجی جاتی ہے۔ اس روٹ کے بچوں کے والدین اسے دیکھ سکتے ہیں۔';
+
+  @override
+  String get drvLocationOff =>
+      'اس فون میں لوکیشن بند ہے یا اجازت نہیں ہے، اس لیے بس نظر نہیں آ سکتی۔ لوکیشن آن کریں۔';
+
+  @override
+  String drvWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count جگہیں بھیجے جانے کے انتظار میں ہیں',
+      one: '$count جگہ بھیجے جانے کے انتظار میں ہے',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drvAllSent => 'تمام جگہیں بھیج دی گئی ہیں';
+
+  @override
+  String get drvEndAsk =>
+      'کیا یہ سفر ختم کریں؟ والدین اب بس نہیں دیکھ سکیں گے۔';
+
+  @override
+  String get drvKeep => 'جاری رکھیں';
+
+  @override
+  String drvStartRefused(String reason) {
+    return 'اسکول نے یہ سفر قبول نہیں کیا: $reason';
+  }
+
+  @override
+  String get drvStopsTitle => 'اسٹاپ اور کون سوار ہے';
+
+  @override
+  String get drvNoStudents => 'اس روٹ پر ابھی کوئی طالب علم نہیں بٹھایا گیا۔';
+
+  @override
+  String drvStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count طالب علم',
+      one: '$count طالب علم',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drvOpenTrip => 'سفر کھولیں';
 }

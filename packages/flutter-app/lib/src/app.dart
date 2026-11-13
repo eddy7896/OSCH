@@ -9,7 +9,7 @@ import 'services.dart';
 /// The app both phone apps share until their own screens arrive: sign-in, school choice, the lock, and a signed-in home with the
 /// sync status and the account panel. [title] picks the app's name from the catalogue.
 class OruStaffApp extends StatelessWidget {
-  const OruStaffApp({super.key, required this.services, required this.title, this.home, this.locale = const Locale(OruLocales.defaultCode)});
+  const OruStaffApp({super.key, required this.services, required this.title, this.home, this.locale = const Locale(OruLocales.defaultCode), this.density = OruDensity.touch});
 
   final OruServices services;
 
@@ -20,6 +20,9 @@ class OruStaffApp extends StatelessWidget {
   /// An explicit choice (ADR-0006), never the device language.
   final Locale locale;
 
+  /// The Driver app uses the large targets (64 px).
+  final OruDensity density;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,8 +32,8 @@ class OruStaffApp extends StatelessWidget {
       localizationsDelegates: oruLocalizationsDelegates,
       supportedLocales: oruSupportedLocales,
       localeResolutionCallback: oruLocaleResolution,
-      theme: OruTheme.light(locale: locale),
-      builder: oruAppBuilder(),
+      theme: OruTheme.light(density: density, locale: locale),
+      builder: oruAppBuilder(density: density),
       home: Builder(builder: (context) {
         final s = OruStrings.of(context);
         services.lockReason.value = s.mobLockBody;
