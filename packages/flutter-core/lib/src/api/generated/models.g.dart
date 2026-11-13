@@ -3954,6 +3954,19 @@ class TripDtoRoute {
       };
 }
 
+class TripListDto {
+  const TripListDto({required this.items});
+  final List<TripDto> items;
+
+  factory TripListDto.fromJson(Map<String, dynamic> j) => TripListDto(
+        items: (j['items'] as List<dynamic>).map((e) => TripDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
 class TripPositionDto {
   const TripPositionDto({required this.lat, required this.lng, required this.recordedAt, required this.speedKmh});
   final num lat;

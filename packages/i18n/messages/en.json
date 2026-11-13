@@ -1303,5 +1303,22 @@
   "drvStopsTitle": "Stops and who rides",
   "drvNoStudents": "Nobody is seated on this route yet.",
   "drvStudentCount": "{count, plural, one{{count} student} other{{count} students}}",
-  "drvOpenTrip": "Open the trip"
+  "drvOpenTrip": "Open the trip",
+  "trnStopPosHelp": "Where each stop is, in degrees (for example 12.9716 and 77.5946). Arrival estimates and the stops the bus has reached are worked out only for stops that have a position.",
+  "trnStopPosInvalid": "Give both latitude and longitude as numbers, or keep both empty. Latitude is from -90 to 90 and longitude from -180 to 180.",
+  "mobBusRow": "Where is the bus?",
+  "mobBusNone": "The bus is not on a trip right now. When it starts, you will see it here.",
+  "mobBusWho": "{route}, driver {driver}",
+  "mobBusLastSeen": "Last position at {time}",
+  "mobBusNoPosition": "The bus has started but no position has arrived yet.",
+  "mobBusStale": "No new position for a few minutes. The phone in the bus may be without a connection.",
+  "mobBusOldCopy": "This is how it was at {time}, when this phone last had a connection.",
+  "mobBusPassed": "The bus has passed {child}'s stop, {stop}.",
+  "mobBusComing": "{child}'s stop, {stop}: {when}",
+  "mobBusEta": "about {minutes, plural, one{{minutes} minute} other{{minutes} minutes}}",
+  "mobBusNoEstimate": "no estimate yet",
+  "mobBusStopsTitle": "Stops",
+  "mobBusReached": "Reached",
+  "mobBusBoardsHere": "{child} gets on here",
+  "mobBusRough": "Times are a rough estimate from the bus's last position."
 }

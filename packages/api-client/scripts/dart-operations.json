@@ -85,5 +85,6 @@
   "Broadcasts_one",
   "Broadcasts_read",
   "Consent_status",
-  "Consent_record"
+  "Consent_record",
+  "Trips_active"
 ]

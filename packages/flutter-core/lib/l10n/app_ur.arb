@@ -1304,5 +1304,22 @@
   "drvStopsTitle": "اسٹاپ اور کون سوار ہے",
   "drvNoStudents": "اس روٹ پر ابھی کوئی طالب علم نہیں بٹھایا گیا۔",
   "drvStudentCount": "{count, plural, one{{count} طالب علم} other{{count} طالب علم}}",
-  "drvOpenTrip": "سفر کھولیں"
+  "drvOpenTrip": "سفر کھولیں",
+  "trnStopPosHelp": "ہر اسٹاپ کہاں ہے، ڈگری میں (مثال: 12.9716 اور 77.5946)۔ پہنچنے کا اندازہ اور بس کن اسٹاپ پر پہنچ چکی ہے، یہ صرف ان اسٹاپ کے لیے نکلتا ہے جن کی جگہ درج ہے۔",
+  "trnStopPosInvalid": "عرض بلد اور طول بلد دونوں عدد میں دیں، یا دونوں خالی چھوڑیں۔ عرض بلد -90 سے 90 اور طول بلد -180 سے 180 کے درمیان ہوتا ہے۔",
+  "mobBusRow": "بس کہاں ہے؟",
+  "mobBusNone": "بس ابھی سفر پر نہیں ہے۔ جب یہ شروع ہوگی، آپ اسے یہاں دیکھیں گے۔",
+  "mobBusWho": "{route}، ڈرائیور {driver}",
+  "mobBusLastSeen": "آخری جگہ {time} بجے",
+  "mobBusNoPosition": "بس چل پڑی ہے، لیکن ابھی کوئی جگہ نہیں آئی۔",
+  "mobBusStale": "کچھ منٹ سے کوئی نئی جگہ نہیں آئی۔ بس میں رکھے فون کا کنکشن بند ہو سکتا ہے۔",
+  "mobBusOldCopy": "یہ {time} کی جگہ ہے، جب اس فون میں آخری بار کنکشن تھا۔",
+  "mobBusPassed": "بس {child} کے اسٹاپ، {stop}، سے گزر چکی ہے۔",
+  "mobBusComing": "{child} کا اسٹاپ، {stop}: {when}",
+  "mobBusEta": "تقریباً {minutes, plural, one{{minutes} منٹ} other{{minutes} منٹ}}",
+  "mobBusNoEstimate": "ابھی کوئی اندازہ نہیں",
+  "mobBusStopsTitle": "اسٹاپ",
+  "mobBusReached": "پہنچ گئی",
+  "mobBusBoardsHere": "{child} یہاں سوار ہوتا ہے",
+  "mobBusRough": "وقت بس کی آخری جگہ سے لگایا گیا موٹا اندازہ ہے۔"
 }

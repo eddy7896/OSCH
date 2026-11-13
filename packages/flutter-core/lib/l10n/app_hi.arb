@@ -1304,5 +1304,22 @@
   "drvStopsTitle": "स्टॉप और कौन सवार है",
   "drvNoStudents": "इस मार्ग पर अभी कोई छात्र नहीं बैठाया गया है।",
   "drvStudentCount": "{count, plural, one{{count} छात्र} other{{count} छात्र}}",
-  "drvOpenTrip": "यात्रा खोलें"
+  "drvOpenTrip": "यात्रा खोलें",
+  "trnStopPosHelp": "हर स्टॉप कहाँ है, अंशों में (उदाहरण: 12.9716 और 77.5946)। आगमन का अनुमान और बस कौन से स्टॉप पर पहुँच चुकी है, यह केवल उन स्टॉप के लिए निकलता है जिनकी स्थिति दर्ज है।",
+  "trnStopPosInvalid": "अक्षांश और देशांतर दोनों संख्या में दें, या दोनों खाली छोड़ें। अक्षांश -90 से 90 और देशांतर -180 से 180 के बीच होता है।",
+  "mobBusRow": "बस कहाँ है?",
+  "mobBusNone": "बस अभी यात्रा पर नहीं है। जब यह शुरू होगी, आप इसे यहाँ देखेंगे।",
+  "mobBusWho": "{route}, ड्राइवर {driver}",
+  "mobBusLastSeen": "अंतिम स्थिति {time} बजे",
+  "mobBusNoPosition": "बस चल पड़ी है, लेकिन अभी कोई स्थिति नहीं आई है।",
+  "mobBusStale": "कुछ मिनटों से कोई नई स्थिति नहीं आई। बस में रखे फ़ोन का कनेक्शन बंद हो सकता है।",
+  "mobBusOldCopy": "यह {time} की स्थिति है, जब इस फ़ोन में आख़िरी बार कनेक्शन था।",
+  "mobBusPassed": "बस {child} के स्टॉप, {stop}, से निकल चुकी है।",
+  "mobBusComing": "{child} का स्टॉप, {stop}: {when}",
+  "mobBusEta": "लगभग {minutes, plural, one{{minutes} मिनट} other{{minutes} मिनट}}",
+  "mobBusNoEstimate": "अभी कोई अनुमान नहीं",
+  "mobBusStopsTitle": "स्टॉप",
+  "mobBusReached": "पहुँच गई",
+  "mobBusBoardsHere": "{child} यहाँ चढ़ता है",
+  "mobBusRough": "समय बस की अंतिम स्थिति से लगाया गया मोटा अनुमान है।"
 }

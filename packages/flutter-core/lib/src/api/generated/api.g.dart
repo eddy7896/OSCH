@@ -91,6 +91,7 @@ const List<OruRoute> kOruRoutes = [
   _rTransportChildren,
   _rTransportManifest,
   _rTransportRoutes,
+  _rTripsActive,
   _rTripsEnd,
   _rTripsPings,
   _rTripsStart,
@@ -180,6 +181,7 @@ const _rTimetableMine = OruRoute('GET', '/v1/academics/timetable/mine', OruAcces
 const _rTransportChildren = OruRoute('GET', '/v1/transport/children', OruAccess.tenant, 'Transport_children');
 const _rTransportManifest = OruRoute('GET', '/v1/transport/routes/{id}/manifest', OruAccess.tenant, 'Transport_manifest');
 const _rTransportRoutes = OruRoute('GET', '/v1/transport/routes', OruAccess.tenant, 'Transport_routes');
+const _rTripsActive = OruRoute('GET', '/v1/trips/active', OruAccess.tenant, 'Trips_active');
 const _rTripsEnd = OruRoute('POST', '/v1/trips/{id}/end', OruAccess.tenant, 'Trips_end');
 const _rTripsPings = OruRoute('POST', '/v1/trips/{id}/pings', OruAccess.tenant, 'Trips_pings');
 const _rTripsStart = OruRoute('POST', '/v1/trips', OruAccess.tenant, 'Trips_start');
@@ -683,6 +685,12 @@ class OruApi {
   Future<RouteListDto> transportRoutes() async {
     final j = await _t.send(_rTransportRoutes, "/v1/transport/routes");
     return RouteListDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/trips/active
+  Future<TripListDto> tripsActive() async {
+    final j = await _t.send(_rTripsActive, "/v1/trips/active");
+    return TripListDto.fromJson(j as Map<String, dynamic>);
   }
 
   /// POST /v1/trips/{id}/end

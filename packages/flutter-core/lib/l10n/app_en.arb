@@ -6283,5 +6283,120 @@
   "drvOpenTrip": "Open the trip",
   "@drvOpenTrip": {
     "description": "Driver app."
+  },
+  "trnStopPosHelp": "Where each stop is, in degrees (for example 12.9716 and 77.5946). Arrival estimates and the stops the bus has reached are worked out only for stops that have a position.",
+  "@trnStopPosHelp": {
+    "description": "Web admin, Transport: stop positions."
+  },
+  "trnStopPosInvalid": "Give both latitude and longitude as numbers, or keep both empty. Latitude is from -90 to 90 and longitude from -180 to 180.",
+  "@trnStopPosInvalid": {
+    "description": "Web admin, Transport: stop positions."
+  },
+  "mobBusRow": "Where is the bus?",
+  "@mobBusRow": {
+    "description": "Parent app, Where is the bus screen."
+  },
+  "mobBusNone": "The bus is not on a trip right now. When it starts, you will see it here.",
+  "@mobBusNone": {
+    "description": "Parent app, Where is the bus screen."
+  },
+  "mobBusWho": "{route}, driver {driver}",
+  "@mobBusWho": {
+    "description": "Parent app, Where is the bus screen.",
+    "placeholders": {
+      "route": {
+        "type": "String"
+      },
+      "driver": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBusLastSeen": "Last position at {time}",
+  "@mobBusLastSeen": {
+    "description": "Parent app, Where is the bus screen.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBusNoPosition": "The bus has started but no position has arrived yet.",
+  "@mobBusNoPosition": {
+    "description": "Parent app, Where is the bus screen."
+  },
+  "mobBusStale": "No new position for a few minutes. The phone in the bus may be without a connection.",
+  "@mobBusStale": {
+    "description": "Parent app, Where is the bus screen."
+  },
+  "mobBusOldCopy": "This is how it was at {time}, when this phone last had a connection.",
+  "@mobBusOldCopy": {
+    "description": "Parent app, Where is the bus screen.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBusPassed": "The bus has passed {child}'s stop, {stop}.",
+  "@mobBusPassed": {
+    "description": "Parent app, Where is the bus screen.",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      },
+      "stop": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBusComing": "{child}'s stop, {stop}: {when}",
+  "@mobBusComing": {
+    "description": "Parent app, Where is the bus screen.",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      },
+      "stop": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBusEta": "about {minutes, plural, one{{minutes} minute} other{{minutes} minutes}}",
+  "@mobBusEta": {
+    "description": "Parent app, Where is the bus screen.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "mobBusNoEstimate": "no estimate yet",
+  "@mobBusNoEstimate": {
+    "description": "Parent app, Where is the bus screen."
+  },
+  "mobBusStopsTitle": "Stops",
+  "@mobBusStopsTitle": {
+    "description": "Parent app, Where is the bus screen."
+  },
+  "mobBusReached": "Reached",
+  "@mobBusReached": {
+    "description": "Parent app, Where is the bus screen."
+  },
+  "mobBusBoardsHere": "{child} gets on here",
+  "@mobBusBoardsHere": {
+    "description": "Parent app, Where is the bus screen.",
+    "placeholders": {
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "mobBusRough": "Times are a rough estimate from the bus's last position.",
+  "@mobBusRough": {
+    "description": "Parent app, Where is the bus screen."
   }
 }

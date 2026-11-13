@@ -104,6 +104,9 @@ function Vehicles({ grants }: { grants: TransportGrants }) {
   );
 }
 
+/** A number within -max..max, written in degrees. */
+const inRange = (v: string, max: number): boolean => v.trim() !== "" && Number.isFinite(Number(v)) && Math.abs(Number(v)) <= max;
+
 /** One route: its details, its stops in order, who rides it, and the card that seats a student. */
 function RouteDetail({ route, vehicles, drivers, grants, onChanged }: { route: RouteDto; vehicles: VehicleDto[]; drivers: DriverListDto["items"]; grants: TransportGrants; onChanged: () => void }) {
   const t = useTranslations();
@@ -116,13 +119,14 @@ function RouteDetail({ route, vehicles, drivers, grants, onChanged }: { route: R
   const [start, setStart] = useState(route.startTime ?? "");
   const [vehicleId, setVehicleId] = useState(route.vehicle?.id ?? "");
   const [driverId, setDriverId] = useState(route.driver?.id ?? "");
-  const [stops, setStops] = useState(route.stops.map((s) => ({ name: s.name, time: s.arrivalTime ?? "" })));
+  const [stops, setStops] = useState(route.stops.map((s) => ({ name: s.name, time: s.arrivalTime ?? "", lat: s.lat == null ? "" : String(s.lat), lng: s.lng == null ? "" : String(s.lng) })));
   const [query, setQuery] = useState("");
   const [found, setFound] = useState<StudentFoundDto[]>([]);
   const [student, setStudent] = useState<StudentFoundDto | null>(null);
   const [stopId, setStopId] = useState(route.stops[0]?.id ?? "");
   const move = (i: number, d: -1 | 1) => setStops((s) => { const n = [...s]; const j = i + d; if (j < 0 || j >= n.length) return s; [n[i], n[j]] = [n[j]!, n[i]!]; return n; });
-  const stopsValid = stops.every((s) => s.name.trim() !== "" && (s.time === "" || TIME.test(s.time)));
+  const posOk = (s: { lat: string; lng: string }) => (s.lat.trim() === "" && s.lng.trim() === "") || (inRange(s.lat, 90) && inRange(s.lng, 180));
+  const stopsValid = stops.every((s) => s.name.trim() !== "" && (s.time === "" || TIME.test(s.time)) && posOk(s));
   const detailsValid = name.trim() !== "" && (start === "" || TIME.test(start));
   const stopNote = (r: unknown) => { const dropped = (r as { droppedSeats?: number }).droppedSeats ?? 0; return dropped > 0 ? `${t("trnStopsSaved")} ${t("trnStopsDropped", { count: dropped })}` : t("trnStopsSaved"); };
   const search = async (text: string) => {
@@ -147,11 +151,15 @@ function RouteDetail({ route, vehicles, drivers, grants, onChanged }: { route: R
 
         <section aria-label={t("trnStops")} className="flex flex-col gap-3">
           <h3 className="text-heading">{t("trnStops")}</h3>
+          <p className="text-caption text-text-muted">{t("trnStopPosHelp")}</p>
+          {!stops.every(posOk) && <Banner tone="warning" title={t("trnStopPosInvalid")} />}
           {stops.map((s, i) => (
             <div key={i} className="flex flex-wrap items-end gap-3">
               <span className="w-6 text-body text-text-muted" dir="ltr">{i + 1}</span>
               <TextField size="comfortable" label={t("trnStopName")} value={s.name} disabled={!grants.update} onChange={(e) => setStops((p) => p.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
               <TextField size="comfortable" label={t("trnStopTime")} placeholder="07:30" dir="ltr" value={s.time} disabled={!grants.update} onChange={(e) => setStops((p) => p.map((x, j) => (j === i ? { ...x, time: e.target.value } : x)))} />
+              <TextField size="comfortable" label={`${t("setGeoLat")}: ${s.name || i + 1}`} placeholder="12.9716" dir="ltr" inputMode="decimal" value={s.lat} disabled={!grants.update} onChange={(e) => setStops((p) => p.map((x, j) => (j === i ? { ...x, lat: e.target.value } : x)))} />
+              <TextField size="comfortable" label={`${t("setGeoLng")}: ${s.name || i + 1}`} placeholder="77.5946" dir="ltr" inputMode="decimal" value={s.lng} disabled={!grants.update} onChange={(e) => setStops((p) => p.map((x, j) => (j === i ? { ...x, lng: e.target.value } : x)))} />
               {grants.update && (
                 <span className="flex gap-2">
                   <Button size="compact" variant="ghost" aria-label={`${t("trnMoveUp")}: ${s.name || i + 1}`} disabled={i === 0} onClick={() => move(i, -1)}>{t("trnMoveUp")}</Button>
@@ -163,8 +171,8 @@ function RouteDetail({ route, vehicles, drivers, grants, onChanged }: { route: R
           ))}
           {grants.update && (
             <div className="flex gap-3">
-              <Button size="comfortable" onClick={() => setStops((p) => [...p, { name: "", time: "" }])}>{t("trnAdd")}</Button>
-              <Button variant="primary" size="comfortable" disabled={busy || !stopsValid} onClick={() => void act(() => api!.transportSetStops({ path: { id: route.id }, body: { stops: stops.map((s) => ({ name: s.name.trim(), ...(s.time ? { arrivalTime: s.time } : {}) })) } }), stopNote)}>{t("trnSaveStops")}</Button>
+              <Button size="comfortable" onClick={() => setStops((p) => [...p, { name: "", time: "", lat: "", lng: "" }])}>{t("trnAdd")}</Button>
+              <Button variant="primary" size="comfortable" disabled={busy || !stopsValid} onClick={() => void act(() => api!.transportSetStops({ path: { id: route.id }, body: { stops: stops.map((s) => ({ name: s.name.trim(), ...(s.time ? { arrivalTime: s.time } : {}), ...(s.lat.trim() !== "" ? { lat: Number(s.lat), lng: Number(s.lng) } : {}) })) } }), stopNote)}>{t("trnSaveStops")}</Button>
             </div>
           )}
         </section>

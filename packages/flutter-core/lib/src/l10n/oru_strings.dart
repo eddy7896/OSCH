@@ -8005,6 +8005,108 @@ abstract class OruStrings {
   /// In en, this message translates to:
   /// **'Open the trip'**
   String get drvOpenTrip;
+
+  /// Web admin, Transport: stop positions.
+  ///
+  /// In en, this message translates to:
+  /// **'Where each stop is, in degrees (for example 12.9716 and 77.5946). Arrival estimates and the stops the bus has reached are worked out only for stops that have a position.'**
+  String get trnStopPosHelp;
+
+  /// Web admin, Transport: stop positions.
+  ///
+  /// In en, this message translates to:
+  /// **'Give both latitude and longitude as numbers, or keep both empty. Latitude is from -90 to 90 and longitude from -180 to 180.'**
+  String get trnStopPosInvalid;
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Where is the bus?'**
+  String get mobBusRow;
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'The bus is not on a trip right now. When it starts, you will see it here.'**
+  String get mobBusNone;
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'{route}, driver {driver}'**
+  String mobBusWho(String route, String driver);
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Last position at {time}'**
+  String mobBusLastSeen(String time);
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'The bus has started but no position has arrived yet.'**
+  String get mobBusNoPosition;
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'No new position for a few minutes. The phone in the bus may be without a connection.'**
+  String get mobBusStale;
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'This is how it was at {time}, when this phone last had a connection.'**
+  String mobBusOldCopy(String time);
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'The bus has passed {child}\'s stop, {stop}.'**
+  String mobBusPassed(String child, String stop);
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'{child}\'s stop, {stop}: {when}'**
+  String mobBusComing(String child, String stop, String when);
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'about {minutes, plural, one{{minutes} minute} other{{minutes} minutes}}'**
+  String mobBusEta(int minutes);
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'no estimate yet'**
+  String get mobBusNoEstimate;
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops'**
+  String get mobBusStopsTitle;
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Reached'**
+  String get mobBusReached;
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'{child} gets on here'**
+  String mobBusBoardsHere(String child);
+
+  /// Parent app, Where is the bus screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Times are a rough estimate from the bus\'s last position.'**
+  String get mobBusRough;
 }
 
 class _OruStringsDelegate extends LocalizationsDelegate<OruStrings> {
