@@ -4463,4 +4463,81 @@ class OruStringsTa extends OruStrings {
   String pcsLang(String language) {
     return 'Language: $language';
   }
+
+  @override
+  String get trnStopPosHelp =>
+      'Where each stop is, in degrees (for example 12.9716 and 77.5946). Arrival estimates and the stops the bus has reached are worked out only for stops that have a position.';
+
+  @override
+  String get trnStopPosInvalid =>
+      'Give both latitude and longitude as numbers, or keep both empty. Latitude is from -90 to 90 and longitude from -180 to 180.';
+
+  @override
+  String get mobBusRow => 'Where is the bus?';
+
+  @override
+  String get mobBusNone =>
+      'The bus is not on a trip right now. When it starts, you will see it here.';
+
+  @override
+  String mobBusWho(String route, String driver) {
+    return '$route, driver $driver';
+  }
+
+  @override
+  String mobBusLastSeen(String time) {
+    return 'Last position at $time';
+  }
+
+  @override
+  String get mobBusNoPosition =>
+      'The bus has started but no position has arrived yet.';
+
+  @override
+  String get mobBusStale =>
+      'No new position for a few minutes. The phone in the bus may be without a connection.';
+
+  @override
+  String mobBusOldCopy(String time) {
+    return 'This is how it was at $time, when this phone last had a connection.';
+  }
+
+  @override
+  String mobBusPassed(String child, String stop) {
+    return 'The bus has passed $child\'s stop, $stop.';
+  }
+
+  @override
+  String mobBusComing(String child, String stop, String when) {
+    return '$child\'s stop, $stop: $when';
+  }
+
+  @override
+  String mobBusEta(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'about $minutes minutes',
+      one: 'about $minutes minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobBusNoEstimate => 'no estimate yet';
+
+  @override
+  String get mobBusStopsTitle => 'Stops';
+
+  @override
+  String get mobBusReached => 'Reached';
+
+  @override
+  String mobBusBoardsHere(String child) {
+    return '$child gets on here';
+  }
+
+  @override
+  String get mobBusRough =>
+      'Times are a rough estimate from the bus\'s last position.';
 }

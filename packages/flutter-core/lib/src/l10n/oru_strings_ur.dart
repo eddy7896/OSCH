@@ -4461,4 +4461,79 @@ class OruStringsUr extends OruStrings {
   String pcsLang(String language) {
     return 'زبان: $language';
   }
+
+  @override
+  String get trnStopPosHelp =>
+      'ہر اسٹاپ کہاں ہے، ڈگری میں (مثال: 12.9716 اور 77.5946)۔ پہنچنے کا اندازہ اور بس کن اسٹاپ پر پہنچ چکی ہے، یہ صرف ان اسٹاپ کے لیے نکلتا ہے جن کی جگہ درج ہے۔';
+
+  @override
+  String get trnStopPosInvalid =>
+      'عرض بلد اور طول بلد دونوں عدد میں دیں، یا دونوں خالی چھوڑیں۔ عرض بلد -90 سے 90 اور طول بلد -180 سے 180 کے درمیان ہوتا ہے۔';
+
+  @override
+  String get mobBusRow => 'بس کہاں ہے؟';
+
+  @override
+  String get mobBusNone =>
+      'بس ابھی سفر پر نہیں ہے۔ جب یہ شروع ہوگی، آپ اسے یہاں دیکھیں گے۔';
+
+  @override
+  String mobBusWho(String route, String driver) {
+    return '$route، ڈرائیور $driver';
+  }
+
+  @override
+  String mobBusLastSeen(String time) {
+    return 'آخری جگہ $time بجے';
+  }
+
+  @override
+  String get mobBusNoPosition => 'بس چل پڑی ہے، لیکن ابھی کوئی جگہ نہیں آئی۔';
+
+  @override
+  String get mobBusStale =>
+      'کچھ منٹ سے کوئی نئی جگہ نہیں آئی۔ بس میں رکھے فون کا کنکشن بند ہو سکتا ہے۔';
+
+  @override
+  String mobBusOldCopy(String time) {
+    return 'یہ $time کی جگہ ہے، جب اس فون میں آخری بار کنکشن تھا۔';
+  }
+
+  @override
+  String mobBusPassed(String child, String stop) {
+    return 'بس $child کے اسٹاپ، $stop، سے گزر چکی ہے۔';
+  }
+
+  @override
+  String mobBusComing(String child, String stop, String when) {
+    return '$child کا اسٹاپ، $stop: $when';
+  }
+
+  @override
+  String mobBusEta(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'تقریباً $minutes منٹ',
+      one: 'تقریباً $minutes منٹ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobBusNoEstimate => 'ابھی کوئی اندازہ نہیں';
+
+  @override
+  String get mobBusStopsTitle => 'اسٹاپ';
+
+  @override
+  String get mobBusReached => 'پہنچ گئی';
+
+  @override
+  String mobBusBoardsHere(String child) {
+    return '$child یہاں سوار ہوتا ہے';
+  }
+
+  @override
+  String get mobBusRough => 'وقت بس کی آخری جگہ سے لگایا گیا موٹا اندازہ ہے۔';
 }

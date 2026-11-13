@@ -5,6 +5,7 @@
   "Timetable_mine",
   "Timetable_forClass",
   "Transport_children",
+  "Trips_active",
   "StudentLeave_list",
   "StudentLeave_create",
   "StudentLeave_one",

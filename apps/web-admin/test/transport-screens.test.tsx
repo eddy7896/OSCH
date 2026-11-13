@@ -67,6 +67,26 @@ describe("transport screen", () => {
     expect(await screen.findByText(/Stops saved\. 2 students lost their seat/)).toBeTruthy();
   });
 
+  it("stop positions: typed in degrees and sent as numbers; one without the other, or out of range, cannot be saved; saving other changes keeps a position already set", async () => {
+    const placed = { ...ROUTE, stops: [{ ...stop("s1", 1, "Lake Road", "07:20"), lat: 12.9716, lng: 77.5946 }, stop("s2", 2, "Market")] };
+    const transportSetStops = vi.fn(async () => placed);
+    await go(fakeApi(base({ transportRoutes: vi.fn(async () => ({ items: [placed] })), transportSetStops })));
+    await openRoute();
+    await screen.findByText("1 of 2 seats taken");
+    expect((screen.getByLabelText("Latitude: Lake Road") as HTMLInputElement).value).toBe("12.9716");
+    expect((screen.getByLabelText("Longitude: Market") as HTMLInputElement).value).toBe("");
+    const save = screen.getByRole("button", { name: "Save stops" }) as HTMLButtonElement;
+    fireEvent.change(screen.getByLabelText("Latitude: Market"), { target: { value: "12.98" } });
+    expect(save.disabled).toBe(true); // a latitude with no longitude
+    expect(screen.getByText(/Give both latitude and longitude/)).toBeTruthy();
+    fireEvent.change(screen.getByLabelText("Longitude: Market"), { target: { value: "181" } });
+    expect(save.disabled).toBe(true); // out of range
+    fireEvent.change(screen.getByLabelText("Longitude: Market"), { target: { value: "77.59" } });
+    expect(save.disabled).toBe(false);
+    fireEvent.click(save);
+    await waitFor(() => expect(transportSetStops).toHaveBeenCalledWith({ path: { id: "r1" }, body: { stops: [{ name: "Lake Road", arrivalTime: "07:20", lat: 12.9716, lng: 77.5946 }, { name: "Market", lat: 12.98, lng: 77.59 }] } }));
+  });
+
   it("a stop with no name or a time that is not HH:MM cannot be saved", async () => {
     await go(fakeApi(base()));
     await openRoute();

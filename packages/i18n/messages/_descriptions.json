@@ -1283,5 +1283,22 @@
   "pcsStateOLD_VERSION": "Web admin, Parent consent screen (read only).",
   "pcsStateNONE": "Web admin, Parent consent screen (read only).",
   "pcsOn": "Web admin, Parent consent screen (read only).",
-  "pcsLang": "Web admin, Parent consent screen (read only)."
+  "pcsLang": "Web admin, Parent consent screen (read only).",
+  "trnStopPosHelp": "Web admin, Transport: stop positions.",
+  "trnStopPosInvalid": "Web admin, Transport: stop positions.",
+  "mobBusRow": "Parent app, Where is the bus screen.",
+  "mobBusNone": "Parent app, Where is the bus screen.",
+  "mobBusWho": "Parent app, Where is the bus screen.",
+  "mobBusLastSeen": "Parent app, Where is the bus screen.",
+  "mobBusNoPosition": "Parent app, Where is the bus screen.",
+  "mobBusStale": "Parent app, Where is the bus screen.",
+  "mobBusOldCopy": "Parent app, Where is the bus screen.",
+  "mobBusPassed": "Parent app, Where is the bus screen.",
+  "mobBusComing": "Parent app, Where is the bus screen.",
+  "mobBusEta": "Parent app, Where is the bus screen.",
+  "mobBusNoEstimate": "Parent app, Where is the bus screen.",
+  "mobBusStopsTitle": "Parent app, Where is the bus screen.",
+  "mobBusReached": "Parent app, Where is the bus screen.",
+  "mobBusBoardsHere": "Parent app, Where is the bus screen.",
+  "mobBusRough": "Parent app, Where is the bus screen."
 }

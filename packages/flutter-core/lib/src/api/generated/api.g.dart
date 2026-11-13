@@ -89,6 +89,7 @@ const List<OruRoute> kOruRoutes = [
   _rTimetableForClass,
   _rTimetableMine,
   _rTransportChildren,
+  _rTripsActive,
 ];
 
 const _rAcademicsClasses = OruRoute('GET', '/v1/academics/classes', OruAccess.tenant, 'Academics_classes');
@@ -173,6 +174,7 @@ const _rTeachingMine = OruRoute('GET', '/v1/academics/mine', OruAccess.tenant, '
 const _rTimetableForClass = OruRoute('GET', '/v1/academics/timetable/classes/{id}', OruAccess.tenant, 'Timetable_forClass');
 const _rTimetableMine = OruRoute('GET', '/v1/academics/timetable/mine', OruAccess.tenant, 'Timetable_mine');
 const _rTransportChildren = OruRoute('GET', '/v1/transport/children', OruAccess.tenant, 'Transport_children');
+const _rTripsActive = OruRoute('GET', '/v1/trips/active', OruAccess.tenant, 'Trips_active');
 
 /// The operations the phone apps call, as typed methods. Every method throws an [OruApiError] on failure.
 class OruApi {
@@ -661,6 +663,12 @@ class OruApi {
   Future<ChildrenSeatsDto> transportChildren() async {
     final j = await _t.send(_rTransportChildren, "/v1/transport/children");
     return ChildrenSeatsDto.fromJson(j as Map<String, dynamic>);
+  }
+
+  /// GET /v1/trips/active
+  Future<TripListDto> tripsActive() async {
+    final j = await _t.send(_rTripsActive, "/v1/trips/active");
+    return TripListDto.fromJson(j as Map<String, dynamic>);
   }
 
 }

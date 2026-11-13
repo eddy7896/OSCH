@@ -10,6 +10,8 @@ export 'src/attendance/attendance_data.dart';
 export 'src/attendance/attendance_model.dart';
 export 'src/attendance/attendance_screens.dart';
 export 'src/announcements/announcements_data.dart';
+export 'src/bus/bus_data.dart';
+export 'src/bus/bus_screen.dart';
 export 'src/consent/consent_data.dart';
 export 'src/consent/consent_screens.dart';
 export 'src/announcements/announcements_screens.dart';

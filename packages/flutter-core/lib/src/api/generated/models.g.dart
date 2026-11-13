@@ -3644,6 +3644,158 @@ class TombstoneListDto {
       };
 }
 
+class TripChildDto {
+  const TripChildDto({required this.id, required this.name, required this.stopId});
+  final String id;
+  final String name;
+  final String stopId;
+
+  factory TripChildDto.fromJson(Map<String, dynamic> j) => TripChildDto(
+        id: j['id'] as String,
+        name: j['name'] as String,
+        stopId: j['stopId'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'stopId': stopId,
+      };
+}
+
+class TripDto {
+  const TripDto({required this.children, required this.driver, required this.endedAt, required this.id, required this.last, required this.route, required this.stale, required this.startedAt, required this.state, required this.stops, required this.vehicle});
+  final List<TripChildDto> children;
+  final String driver;
+  final String? endedAt;
+  final String id;
+  final TripPositionDto? last;
+  final TripDtoRoute route;
+  final bool stale;
+  final String startedAt;
+  /// One of: IN_PROGRESS, ENDED.
+  final String state;
+  final List<TripStopDto> stops;
+  final String? vehicle;
+
+  factory TripDto.fromJson(Map<String, dynamic> j) => TripDto(
+        children: (j['children'] as List<dynamic>).map((e) => TripChildDto.fromJson(e as Map<String, dynamic>)).toList(),
+        driver: j['driver'] as String,
+        endedAt: j['endedAt'] == null ? null : j['endedAt'] as String,
+        id: j['id'] as String,
+        last: j['last'] == null ? null : TripPositionDto.fromJson(j['last'] as Map<String, dynamic>),
+        route: TripDtoRoute.fromJson(j['route'] as Map<String, dynamic>),
+        stale: j['stale'] as bool,
+        startedAt: j['startedAt'] as String,
+        state: j['state'] as String,
+        stops: (j['stops'] as List<dynamic>).map((e) => TripStopDto.fromJson(e as Map<String, dynamic>)).toList(),
+        vehicle: j['vehicle'] == null ? null : j['vehicle'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'children': children.map((e) => e.toJson()).toList(),
+        'driver': driver,
+        if (endedAt != null) 'endedAt': endedAt!,
+        'id': id,
+        if (last != null) 'last': last!.toJson(),
+        'route': route.toJson(),
+        'stale': stale,
+        'startedAt': startedAt,
+        'state': state,
+        'stops': stops.map((e) => e.toJson()).toList(),
+        if (vehicle != null) 'vehicle': vehicle!,
+      };
+}
+
+class TripDtoRoute {
+  const TripDtoRoute({required this.direction, required this.id, required this.name});
+  /// One of: MORNING, AFTERNOON.
+  final String direction;
+  final String id;
+  final String name;
+
+  factory TripDtoRoute.fromJson(Map<String, dynamic> j) => TripDtoRoute(
+        direction: j['direction'] as String,
+        id: j['id'] as String,
+        name: j['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'direction': direction,
+        'id': id,
+        'name': name,
+      };
+}
+
+class TripListDto {
+  const TripListDto({required this.items});
+  final List<TripDto> items;
+
+  factory TripListDto.fromJson(Map<String, dynamic> j) => TripListDto(
+        items: (j['items'] as List<dynamic>).map((e) => TripDto.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((e) => e.toJson()).toList(),
+      };
+}
+
+class TripPositionDto {
+  const TripPositionDto({required this.lat, required this.lng, required this.recordedAt, required this.speedKmh});
+  final num lat;
+  final num lng;
+  final String recordedAt;
+  final num? speedKmh;
+
+  factory TripPositionDto.fromJson(Map<String, dynamic> j) => TripPositionDto(
+        lat: j['lat'] as num,
+        lng: j['lng'] as num,
+        recordedAt: j['recordedAt'] as String,
+        speedKmh: j['speedKmh'] == null ? null : j['speedKmh'] as num,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'lat': lat,
+        'lng': lng,
+        'recordedAt': recordedAt,
+        if (speedKmh != null) 'speedKmh': speedKmh!,
+      };
+}
+
+class TripStopDto {
+  const TripStopDto({required this.etaMinutes, required this.id, required this.lat, required this.lng, required this.name, required this.plannedTime, required this.reached, required this.sequence});
+  final num? etaMinutes;
+  final String id;
+  final num? lat;
+  final num? lng;
+  final String name;
+  final String? plannedTime;
+  final bool reached;
+  final num sequence;
+
+  factory TripStopDto.fromJson(Map<String, dynamic> j) => TripStopDto(
+        etaMinutes: j['etaMinutes'] == null ? null : j['etaMinutes'] as num,
+        id: j['id'] as String,
+        lat: j['lat'] == null ? null : j['lat'] as num,
+        lng: j['lng'] == null ? null : j['lng'] as num,
+        name: j['name'] as String,
+        plannedTime: j['plannedTime'] == null ? null : j['plannedTime'] as String,
+        reached: j['reached'] as bool,
+        sequence: j['sequence'] as num,
+      );
+
+  Map<String, dynamic> toJson() => {
+        if (etaMinutes != null) 'etaMinutes': etaMinutes!,
+        'id': id,
+        if (lat != null) 'lat': lat!,
+        if (lng != null) 'lng': lng!,
+        'name': name,
+        if (plannedTime != null) 'plannedTime': plannedTime!,
+        'reached': reached,
+        'sequence': sequence,
+      };
+}
+
 class TypeRefDto {
   const TypeRefDto({required this.id, required this.name, required this.paid});
   final String id;

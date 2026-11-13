@@ -4462,4 +4462,81 @@ class OruStringsHi extends OruStrings {
   String pcsLang(String language) {
     return 'भाषा: $language';
   }
+
+  @override
+  String get trnStopPosHelp =>
+      'हर स्टॉप कहाँ है, अंशों में (उदाहरण: 12.9716 और 77.5946)। आगमन का अनुमान और बस कौन से स्टॉप पर पहुँच चुकी है, यह केवल उन स्टॉप के लिए निकलता है जिनकी स्थिति दर्ज है।';
+
+  @override
+  String get trnStopPosInvalid =>
+      'अक्षांश और देशांतर दोनों संख्या में दें, या दोनों खाली छोड़ें। अक्षांश -90 से 90 और देशांतर -180 से 180 के बीच होता है।';
+
+  @override
+  String get mobBusRow => 'बस कहाँ है?';
+
+  @override
+  String get mobBusNone =>
+      'बस अभी यात्रा पर नहीं है। जब यह शुरू होगी, आप इसे यहाँ देखेंगे।';
+
+  @override
+  String mobBusWho(String route, String driver) {
+    return '$route, ड्राइवर $driver';
+  }
+
+  @override
+  String mobBusLastSeen(String time) {
+    return 'अंतिम स्थिति $time बजे';
+  }
+
+  @override
+  String get mobBusNoPosition =>
+      'बस चल पड़ी है, लेकिन अभी कोई स्थिति नहीं आई है।';
+
+  @override
+  String get mobBusStale =>
+      'कुछ मिनटों से कोई नई स्थिति नहीं आई। बस में रखे फ़ोन का कनेक्शन बंद हो सकता है।';
+
+  @override
+  String mobBusOldCopy(String time) {
+    return 'यह $time की स्थिति है, जब इस फ़ोन में आख़िरी बार कनेक्शन था।';
+  }
+
+  @override
+  String mobBusPassed(String child, String stop) {
+    return 'बस $child के स्टॉप, $stop, से निकल चुकी है।';
+  }
+
+  @override
+  String mobBusComing(String child, String stop, String when) {
+    return '$child का स्टॉप, $stop: $when';
+  }
+
+  @override
+  String mobBusEta(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'लगभग $minutes मिनट',
+      one: 'लगभग $minutes मिनट',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mobBusNoEstimate => 'अभी कोई अनुमान नहीं';
+
+  @override
+  String get mobBusStopsTitle => 'स्टॉप';
+
+  @override
+  String get mobBusReached => 'पहुँच गई';
+
+  @override
+  String mobBusBoardsHere(String child) {
+    return '$child यहाँ चढ़ता है';
+  }
+
+  @override
+  String get mobBusRough =>
+      'समय बस की अंतिम स्थिति से लगाया गया मोटा अनुमान है।';
 }

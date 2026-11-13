@@ -22,6 +22,8 @@ import '../resources/resources_data.dart' show resourcesListPullTask;
 import '../studentleave/parent_leave_screen.dart';
 import '../studentleave/studentleave_data.dart';
 import '../sync_pill.dart';
+import '../bus/bus_data.dart' show parentBusPullTasks;
+import '../bus/bus_screen.dart';
 import '../classes/classes_screens.dart' show OruReportCardScreen;
 import 'parent_academics.dart';
 import 'parent_academics_screens.dart';
@@ -31,7 +33,7 @@ import 'parent_fees_screens.dart';
 import 'parent_model.dart';
 
 /// The pull for the Parent app: the children and their day, and the notifications.
-List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...parentAcademicsPullTasks(api), ...parentFeesPullTasks(api), ...studentLeavePullTasks(api), resourcesListPullTask(api), commentsPullTask(api), ...messagingPullTasks(api), ...noticeBoardPullTasks(api), ...inboxPullTasks(api)];
+List<PullTask> parentAppPullTasks(OruApi api) => [...parentPullTasks(api), ...parentAcademicsPullTasks(api), ...parentFeesPullTasks(api), ...studentLeavePullTasks(api), resourcesListPullTask(api), commentsPullTask(api), ...messagingPullTasks(api), ...noticeBoardPullTasks(api), ...parentBusPullTasks(api), ...inboxPullTasks(api)];
 
 String _isolate(String text) => '\u2066$text\u2069';
 
@@ -181,6 +183,8 @@ class _OruChildHomeScreenState extends State<OruChildHomeScreen> {
                     if (t == null || !t.hasData) OruEmptyState(title: s.mobTodayTitle, description: s.mobParentFirstLoad, icon: OruIconName.cloudOff) else ..._cards(context, s, text, child, t),
                     const SizedBox(height: OruSpacing.space4),
                     Text(s.mobPaMoreAbout(_firstName(child['name'] as String)), style: text.titleMedium),
+                    const SizedBox(height: OruSpacing.space2),
+                    OruCard(child: OruListRow(title: s.mobBusRow, leading: const OruIcon(OruIconName.bus, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruBusScreen(services: widget.services, child: child))))),
                     const SizedBox(height: OruSpacing.space2),
                     OruCard(child: OruListRow(title: s.mobPaReportCard, leading: const OruIcon(OruIconName.chart, color: OruColors.primaryText), onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OruReportCardScreen(services: widget.services, student: child))))),
                     const SizedBox(height: OruSpacing.space2),
