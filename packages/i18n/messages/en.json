@@ -1308,7 +1308,7 @@
   "trnStopPosInvalid": "Give both latitude and longitude as numbers, or keep both empty. Latitude is from -90 to 90 and longitude from -180 to 180.",
   "mobBusRow": "Where is the bus?",
   "mobBusNone": "The bus is not on a trip right now. When it starts, you will see it here.",
-  "mobBusWho": "{route}, driver {driver}",
+  "mobBusWho": "Driver {driver}",
   "mobBusLastSeen": "Last position at {time}",
   "mobBusNoPosition": "The bus has started but no position has arrived yet.",
   "mobBusStale": "No new position for a few minutes. The phone in the bus may be without a connection.",

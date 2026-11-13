@@ -6300,13 +6300,10 @@
   "@mobBusNone": {
     "description": "Parent app, Where is the bus screen."
   },
-  "mobBusWho": "{route}, driver {driver}",
+  "mobBusWho": "Driver {driver}",
   "@mobBusWho": {
     "description": "Parent app, Where is the bus screen.",
     "placeholders": {
-      "route": {
-        "type": "String"
-      },
       "driver": {
         "type": "String"
       }

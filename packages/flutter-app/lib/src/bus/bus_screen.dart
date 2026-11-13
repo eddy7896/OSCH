@@ -91,7 +91,7 @@ class _OruBusScreenState extends State<OruBusScreen> {
     final String when = v.etaMinutes != null ? s.mobBusEta(v.etaMinutes!) : s.mobBusNoEstimate;
     return [
       Semantics(header: true, child: Text(_isolate(route['name'] as String), style: text.titleLarge)),
-      Text(s.mobBusWho(_isolate(route['name'] as String), v.trip['driver'] as String), style: text.bodyMedium?.copyWith(color: OruColors.textMuted)),
+      Text(s.mobBusWho(v.trip['driver'] as String), style: text.bodyMedium?.copyWith(color: OruColors.textMuted)),
       const SizedBox(height: OruSpacing.space3),
       if (v.copyFrom != null) ...[OruBanner(title: s.mobBusOldCopy(_time(v.copyFrom!)), tone: OruTone.warning, icon: OruIconName.cloudOff), const SizedBox(height: OruSpacing.space3)],
       if (v.noPosition)
@@ -120,8 +120,8 @@ class _OruBusScreenState extends State<OruBusScreen> {
               subtitle: [
                 if (st['plannedTime'] != null) _isolate(st['plannedTime'] as String),
                 if (st['reached'] == true) s.mobBusReached else if (st['etaMinutes'] != null) s.mobBusEta((st['etaMinutes'] as num).toInt()),
-                if (st['id'] == v.child['stopId']) s.mobBusBoardsHere(first),
               ].join(' · '),
+              trailing: st['id'] == v.child['stopId'] ? OruBadge(label: first, tone: OruTone.brand) : null,
               leading: OruIcon(st['reached'] == true ? OruIconName.checkCircle : OruIconName.mapPin, color: OruColors.primaryText),
             ),
           ),

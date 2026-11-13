@@ -8033,8 +8033,8 @@ abstract class OruStrings {
   /// Parent app, Where is the bus screen.
   ///
   /// In en, this message translates to:
-  /// **'{route}, driver {driver}'**
-  String mobBusWho(String route, String driver);
+  /// **'Driver {driver}'**
+  String mobBusWho(String driver);
 
   /// Parent app, Where is the bus screen.
   ///

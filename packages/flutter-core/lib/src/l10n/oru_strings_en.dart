@@ -4568,8 +4568,8 @@ class OruStringsEn extends OruStrings {
       'The bus is not on a trip right now. When it starts, you will see it here.';
 
   @override
-  String mobBusWho(String route, String driver) {
-    return '$route, driver $driver';
+  String mobBusWho(String driver) {
+    return 'Driver $driver';
   }
 
   @override

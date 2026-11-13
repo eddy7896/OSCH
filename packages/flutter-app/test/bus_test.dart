@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:drift/native.dart';
 import 'package:flutter/widgets.dart' show SizedBox;
+import 'package:flutter_core/flutter_core.dart' show OruBadge;
 import 'package:flutter_app/flutter_app.dart';
 import 'package:flutter_auth/flutter_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -118,7 +119,7 @@ void main() {
       expect(find.textContaining('about 3 minutes'), findsWidgets);
       expect(find.textContaining('Salim Dar'), findsOneWidget);
       expect(find.textContaining('Reached'), findsOneWidget);
-      expect(find.textContaining('Aarav gets on here'), findsOneWidget);
+      expect(find.widgetWithText(OruBadge, 'Aarav'), findsOneWidget, reason: 'their own stop is marked');
       expect(find.textContaining('rough estimate'), findsOneWidget);
       // the bus moves past Market: the next ask changes the screen
       g.trips = [trip(stops: [stop('s1', 1, 'Lake Road', reached: true), stop('s2', 2, 'Market', reached: true), stop('s3', 3, 'School gate', eta: 4)])];
