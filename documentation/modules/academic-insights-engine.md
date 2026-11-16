@@ -1,5 +1,7 @@
 # Academic Insights Engine (plan, nothing built)
 
+> **2026-11-16: the LMS (ADR-0019 proposed).** Students answer workbooks, tests and exams in the LMS (`documentation/modules/lms.md`), which records every answer to every question. This engine stays a separate product that **reads that data through an allow-listed internal feed**; the workbook authoring and student answering described below move to the LMS, and the P7 tasks for them become Phase 8 tasks once ADR-0019 is accepted.
+
 Status: **plan; ADR-0017 accepted in part 2026-10-31 (D1 to D7 and D10 answered).** Decision record: `documentation/decisions/ADR-0017-academic-insights-engine.md`. Nothing here exists in code or schema. Tasks: Phase 7 (P7-1 to P7-14) in `documentation/project_plan.md` and the Project Hub.
 
 ## 1. What the owner asked for
