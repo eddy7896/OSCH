@@ -31,6 +31,13 @@ Future<void> until(WidgetTester tester, Finder f, {int seconds = 20}) async {
   fail('never appeared: $f');
 }
 
+/// Scrolls the More list (found by an item at its top) until [target] is built and on screen.
+Future<void> scrollMore(WidgetTester tester, Finder target) async {
+  final list = find.ancestor(of: find.text('Cover duties'), matching: find.byType(Scrollable)).first;
+  await tester.scrollUntilVisible(target, 300, scrollable: list);
+  await tester.pump(const Duration(milliseconds: 300));
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   final skip = _config.gatewayUrl.isEmpty || _config.authEmulator == null ? 'give ORU_GATEWAY_URL and ORU_AUTH_EMULATOR as --dart-define' : null;
@@ -54,9 +61,14 @@ void main() {
     // her day arrives from the school once, and is shown from the phone
     await until(tester, find.text('Leave'));
     await until(tester, find.text('Synced'));
-    expect(find.text('Connect once to load your day. After that it works without a connection.'), findsNothing);
+    // "Synced" can show before the first pull has finished: wait for her day to arrive instead of expecting it at once
+    for (var i = 0; i < 300 && find.text('Connect once to load your day. After that it works without a connection.').evaluate().isNotEmpty; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    expect(find.text('Connect once to load your day. After that it works without a connection.'), findsNothing, reason: 'on screen: ${tester.widgetList<Text>(find.byType(Text)).map((w) => w.data ?? w.textSpan?.toPlainText()).toList()}');
     await tester.tap(find.text('More'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
+    await scrollMore(tester, find.textContaining('Signed in as')); // the account is at the bottom of the longer More list, which builds as it scrolls
     expect(find.textContaining('Signed in as'), findsOneWidget);
     expect(find.textContaining('Teacher at'), findsOneWidget);
     await tester.tap(find.text('Today').last);
@@ -70,12 +82,13 @@ void main() {
     await until(tester, find.text('Today'));
     expect(find.text('Email address'), findsNothing);
     // the day is still there, from the phone's own database, before the network has been asked
-    expect(find.text('Leave'), findsOneWidget);
+    expect(find.text('Leave'), findsWidgets); // the tab, and her leave card on the Today screen
     await until(tester, find.text('Synced'));
     await tester.tap(find.text('More'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
 
     // Sign out: asked first, then the sign-in screen is back and the phone holds nothing of her.
+    await scrollMore(tester, find.text('Sign out'));
     await tester.tap(find.text('Sign out'));
     await tester.pumpAndSettle();
     expect(find.text('Sign out of this phone?'), findsOneWidget);
