@@ -35,7 +35,7 @@ It touches rules that need an explicit decision: a **new role** (ADR-0007), **ac
 ## Open decisions (owner; recommendations in `modules/lms.md` section 9)
 1. The live video provider and where the video is processed (**needs the lawyer and the sub-processor register**; prices, terms and regions are **unverified here**).
 2. The cut-off grade (**recommended 6**).
-3. How a student signs in without a personal email (**needs a short test of Firebase Auth** before P8-2).
+3. How a student signs in without a personal email. **Tested on the Auth emulator on 2026-11-19 (15 of 15 checks, `tools/spikes/student-signin/`):** a synthetic address on a reserved domain (`<enrolment id>.<school code>@students.oruschools.invalid`) with a temporary password works, the student changes it at first sign-in, and the System Admin resets it (no mailbox). **Not verified on a real project:** that it accepts the address, its password policy, refresh-token revocation on reset, and rate limits on guessable names. **Owner to confirm:** the System Admin is shown the temporary passwords once, on a printable sheet (unlike staff accounts, ADR-0011, because a child has no mailbox); the cost is that the admin knows them until the first change, so issue and every reset are audited.
 4. Marking arrangements (by question across students; whether exams need a second marker).
 5. Evidence when cheating is suspected without recordings (a note and the roster only, by this decision).
 6. Teacher web access for authoring (a small LMS-only set of screens).
