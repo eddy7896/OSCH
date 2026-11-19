@@ -90,3 +90,6 @@ local.properties
 .DS_Store
 .idea
 apps/api-gateway/test-results/
+
+# Design mockups kept on the machine only, for now
+documentation/mockups/
